@@ -4,7 +4,7 @@
     <body>
       <!-- New Account Email -->
       <trans-unit id="email.newaccount.subject">
-        <source xml:space="preserve">Your @@PRODUCT_NAME@@ Account is ready</source>
+        <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -13,10 +13,10 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target xml:space="preserve">Учетная запись @@PRODUCT_NAME@@ создана</target>
+        <target>Учетная запись @@PRODUCT_NAME@@ создана</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -47,7 +47,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -78,7 +78,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -104,7 +104,7 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target xml:space="preserve">Здравствуйте,
+        <target>Здравствуйте,
 
 Ваше имя входа Red Hat успешно создано с помощью {0} {1}.
 Имя входа Red Hat в совокупности с активной подпиской Red Hat
@@ -120,7 +120,7 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject">
-        <source xml:space="preserve">@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
+        <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -131,10 +131,10 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target xml:space="preserve">Пользователь @@PRODUCT_NAME@@ создан: {0} ({1}, {2} &lt;{3}&gt;)</target>
+        <target>Пользователь @@PRODUCT_NAME@@ создан: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A new user has been added to your account.
 
@@ -159,7 +159,7 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target xml:space="preserve">Здравствуйте,
+        <target>Здравствуйте,
 
 Новый пользователь добавлен к вашей учетной записи.
 
@@ -178,7 +178,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
         <trans-unit id="email.errata.notification.body.summary">
-          <source xml:space="preserve">
+          <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -206,7 +206,7 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target xml:space="preserve">
+          <target>
 Вашим системам предложены рекомендации:
 
 Подробную информацию можно найти здесь:
@@ -223,7 +223,7 @@ Summary:
     </target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader">
-          <source xml:space="preserve">
+          <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -233,7 +233,7 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
-          <target xml:space="preserve">
+          <target>
 ---------------------
 Список систем
 ---------------------
@@ -244,17 +244,17 @@ as root on the system in question to refresh your software profile.
 а начиная с RHEL5,  — «rhn-profile-sync» (в режиме root).</target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source xml:space="preserve">
+          <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <target xml:space="preserve">
+          <target>
 На странице «Обзор» указана одна система
 (показаны только системы, для которых включены 
 уведомления о наличии исправлений).</target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
-          <source xml:space="preserve">
+          <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -263,13 +263,13 @@ which you have explicitly enabled Patch Alerts are shown).
         {0} - system count
       </context>
           </context-group>
-          <target xml:space="preserve">
+          <target>
 Число затронутых систем на странице «Обзор»: {0}
 (показаны только системы, для которых включены
 уведомления о наличии исправлений).</target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected">
-          <source xml:space="preserve">
+          <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -289,7 +289,7 @@ You may address the issues outlined in this advisory in two ways:
         {1} - system list URL
       </context>
           </context-group>
-          <target xml:space="preserve">
+          <target>
 Выпуск    Арх.       Профиль
 ---------- ---------- ---------------------------------------------
 {0}
@@ -303,7 +303,7 @@ You may address the issues outlined in this advisory in two ways:
     </target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences">
-          <source xml:space="preserve">
+          <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -325,7 +325,7 @@ click the "Details" tab.
         {2} - account info
       </context>
           </context-group>
-          <target xml:space="preserve">
+          <target>
 Настройка уведомлений
 ---------------------------------
 Чтобы настроить или отключить получение уведомлений о новых исправлениях,
@@ -341,7 +341,7 @@ click the "Details" tab.
         </trans-unit>
       </group>
       <trans-unit id="dailysummary.email.subject">
-        <source xml:space="preserve">@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
@@ -350,10 +350,10 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target xml:space="preserve">Ежедневный отчет @@PRODUCT_NAME@@ для {0}</target>
+        <target>Ежедневный отчет @@PRODUCT_NAME@@ для {0}</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body">
-        <source xml:space="preserve">This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -385,7 +385,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target xml:space="preserve">Отчет для {0} на {1}.
+        <target>Отчет для {0} на {1}.
 
 Если вы получили это сообщение, это означает одно из двух:
 
@@ -406,7 +406,7 @@ https://{4}/rhn/account/UserPreferences.do
 </target>
       </trans-unit>
       <trans-unit id="email.forgotten.password">
-        <source xml:space="preserve">
+        <source>
 [ This is an automated email sent to {0} at your request. ]
 
 A request to reset the @@PRODUCT_NAME@@ password for login {2} has been made.
@@ -432,7 +432,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.logins">
-        <source xml:space="preserve">
+        <source>
 [ This is an automated email sent to {0} at your request. ]
 
 You have requested a list of all @@PRODUCT_NAME@@ logins associated
@@ -458,7 +458,7 @@ Thank you for using @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target xml:space="preserve">
+        <target>
 [ Это сообщение было создано автоматически для {0}. ]
 
 В ответ на ваш запрос ниже прилагается список учетных записей @@PRODUCT_NAME@@
@@ -479,7 +479,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </target>
       </trans-unit>
       <trans-unit id="email.reset.password">
-        <source xml:space="preserve">
+        <source>
 [ This is an automated email sent to {0}. ]
 
 The @@PRODUCT_NAME@@ password for login {1} has been reset in response to a reset-request

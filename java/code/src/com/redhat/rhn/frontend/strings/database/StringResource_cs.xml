@@ -4,51 +4,51 @@
     <body>
       <!-- Action Statuses -->
       <trans-unit id="Queued">
-        <source xml:space="preserve">Queued</source>
-        <target xml:space="preserve" />
+        <source>Queued</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Picked Up">
-        <source xml:space="preserve">Picked Up</source>
-        <target xml:space="preserve" />
+        <source>Picked Up</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Completed">
-        <source xml:space="preserve">Completed</source>
-        <target xml:space="preserve" />
+        <source>Completed</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Failed">
-        <source xml:space="preserve">Failed</source>
-        <target xml:space="preserve" />
+        <source>Failed</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <!-- System Group Types -->
       <trans-unit id="Spacewalk Management Entitled Servers">
-        <source xml:space="preserve">Management</source>
-        <target xml:space="preserve" />
+        <source>Management</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Provisioning Entitled Servers">
-        <source xml:space="preserve">Provisioning</source>
-        <target xml:space="preserve" />
+        <source>Provisioning</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Monitoring Entitled Servers">
-        <source xml:space="preserve">Monitoring</source>
-        <target xml:space="preserve" />
+        <source>Monitoring</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
@@ -61,2754 +61,2754 @@
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <trans-unit id="bootstrap_entitled">
-          <source xml:space="preserve">Bootstrap</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Bootstrap</source>
+        <target /></trans-unit>
         <trans-unit id="enterprise_entitled">
-          <source xml:space="preserve">Management</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Management</source>
+        <target /></trans-unit>
         <trans-unit id="unentitled">
-          <source xml:space="preserve">&lt;em&gt;(none)&lt;/em&gt;</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>&lt;em&gt;(none)&lt;/em&gt;</source>
+        <target /></trans-unit>
         <trans-unit id="base">
-          <source xml:space="preserve">Base</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Base</source>
+        <target /></trans-unit>
         <trans-unit id="add-on">
-          <source xml:space="preserve">Add-On</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Add-On</source>
+        <target /></trans-unit>
         <trans-unit id="virtualization_host">
-          <source xml:space="preserve">Virtualization Host</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Virtualization Host</source>
+        <target /></trans-unit>
       </group>
       <!-- TimeZones -->
       <trans-unit id="Australia/Brisbane">
-        <source xml:space="preserve">(GMT+1000) Australia (Eastern Standard)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+1000) Australia (Eastern Standard)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Sydney">
-        <source xml:space="preserve">(GMT+1000) Australia (Eastern Daylight)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+1000) Australia (Eastern Daylight)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Tokyo">
-        <source xml:space="preserve">(GMT+0900) Japan</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0900) Japan</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Seoul">
-        <source xml:space="preserve">(GMT+0900) Korea</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0900) Korea</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Perth">
-        <source xml:space="preserve">(GMT+0800) Australia (Western)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0800) Australia (Western)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Europe/Moscow">
-        <source xml:space="preserve">(GMT+0400) Russia (Moscow)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0400) Russia (Moscow)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Africa/Johannesburg">
-        <source xml:space="preserve">(GMT+0200) South Africa (Johannesburg)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0200) South Africa (Johannesburg)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Europe/Bucharest">
-        <source xml:space="preserve">(GMT+0200) Europe (Eastern)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0200) Europe (Eastern)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Europe/Paris">
-        <source xml:space="preserve">(GMT+0100) Europe (Central)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0100) Europe (Central)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GMT">
-        <source xml:space="preserve">(GMT+0000) Greenwich Mean Time</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0000) Greenwich Mean Time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/St_Johns">
-        <source xml:space="preserve">(GMT-0330) Canada (Newfoundland)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0330) Canada (Newfoundland)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Halifax">
-        <source xml:space="preserve">(GMT-0400) Canada (Atlantic)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0400) Canada (Atlantic)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/New_York">
-        <source xml:space="preserve">(GMT-0500) United States (Eastern)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0500) United States (Eastern)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Chicago">
-        <source xml:space="preserve">(GMT-0600) United States (Central)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0600) United States (Central)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Regina">
-        <source xml:space="preserve">(GMT-0600) Canada (Regina)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0600) Canada (Regina)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Denver">
-        <source xml:space="preserve">(GMT-0700) United States (Mountain)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0700) United States (Mountain)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Los_Angeles">
-        <source xml:space="preserve">(GMT-0800) United States (Pacific)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0800) United States (Pacific)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Anchorage">
-        <source xml:space="preserve">(GMT-0900) United States (Alaska)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0900) United States (Alaska)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Easter">
-        <source xml:space="preserve">(GMT-0500) Chile (Easter Island)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0500) Chile (Easter Island)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Honolulu">
-        <source xml:space="preserve">(GMT-1000) United States (Hawaii)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-1000) United States (Hawaii)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Enderbury">
-        <source xml:space="preserve">(GMT+1300) Tonga</source>
-        <target xml:space="preserve" />
+        <source>(GMT+1300) Tonga</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Wallis">
-        <source xml:space="preserve">(GMT+1200) New Zealand (Wallis)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+1200) New Zealand (Wallis)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Auckland">
-        <source xml:space="preserve">(GMT+1200) New Zealand (Auckland)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+1200) New Zealand (Auckland)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Norfolk">
-        <source xml:space="preserve">(GMT+1130) Norfolk Island</source>
-        <target xml:space="preserve" />
+        <source>(GMT+1130) Norfolk Island</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Guadalcanal">
-        <source xml:space="preserve">(GMT+1100) Micronesia</source>
-        <target xml:space="preserve" />
+        <source>(GMT+1100) Micronesia</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Darwin">
-        <source xml:space="preserve">(GMT+0930) Australia (Central/Darwin)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0930) Australia (Central/Darwin)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Adelaide">
-        <source xml:space="preserve">Australia Adelaide</source>
-        <target xml:space="preserve" />
+        <source>Australia Adelaide</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Jakarta">
-        <source xml:space="preserve">(GMT+0700) Thailand</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0700) Thailand</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Cocos">
-        <source xml:space="preserve">(GMT+0630) Burma</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0630) Burma</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Chagos">
-        <source xml:space="preserve">(GMT+0600) Bangladesh</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0600) Bangladesh</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Katmandu">
-        <source xml:space="preserve">(GMT+0545) Nepal</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0545) Nepal</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Calcutta">
-        <source xml:space="preserve">(GMT+0530) India (Calcutta)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0530) India (Calcutta)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Maldives">
-        <source xml:space="preserve">(GMT+0500) Pakistan</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0500) Pakistan</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Kabul">
-        <source xml:space="preserve">(GMT+0430) Afghanistan</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0430) Afghanistan</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Mauritius">
-        <source xml:space="preserve">(GMT+0400) Russia (Samara)</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0400) Russia (Samara)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Atlantic/Azores">
-        <source xml:space="preserve">(GMT-0100) Azores</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0100) Azores</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Atlantic/South_Georgia">
-        <source xml:space="preserve">(GMT-0200) Sandwich Islands</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0200) Sandwich Islands</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Midway">
-        <source xml:space="preserve">(GMT-1100) Midway</source>
-        <target xml:space="preserve" />
+        <source>(GMT-1100) Midway</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Santiago">
-        <source xml:space="preserve">(GMT-0300) Chile (Continental)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0300) Chile (Continental)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Sao_Paulo">
-        <source xml:space="preserve">(GMT-0300) Brazil</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0300) Brazil</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Indianapolis">
-        <source xml:space="preserve">(GMT-0500) United States (Indiana)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0500) United States (Indiana)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Phoenix">
-        <source xml:space="preserve">(GMT-0700) United States (Arizona)</source>
-        <target xml:space="preserve" />
+        <source>(GMT-0700) United States (Arizona)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Riyadh">
-        <source xml:space="preserve">(GMT+0300) Saudi Arabia</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0300) Saudi Arabia</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Tehran">
-        <source xml:space="preserve">(GMT+0330) Iran</source>
-        <target xml:space="preserve" />
+        <source>(GMT+0330) Iran</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
       <trans-unit id="MAIL_MX">
-        <source xml:space="preserve">Local mail exchanger</source>
-        <target xml:space="preserve" />
+        <source>Local mail exchanger</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MDOM">
-        <source xml:space="preserve">Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
-        <target xml:space="preserve" />
+        <source>Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHN_ADMIN_EMAIL">
-        <source xml:space="preserve">@@PRODUCT_NAME@@ administrator email</source>
-        <target xml:space="preserve" />
+        <source>@@PRODUCT_NAME@@ administrator email</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHN_SAT_HOSTNAME">
-        <source xml:space="preserve">@@PRODUCT_NAME@@ hostname (FQDN)</source>
-        <target xml:space="preserve" />
+        <source>@@PRODUCT_NAME@@ hostname (FQDN)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHN_SAT_WEB_PORT">
-        <source xml:space="preserve">@@PRODUCT_NAME@@ webserver port (80 for http, 443 for https)</source>
-        <target xml:space="preserve" />
+        <source>@@PRODUCT_NAME@@ webserver port (80 for http, 443 for https)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="XPROTO">
-        <source xml:space="preserve">External protocol ('http' or 'https')</source>
-        <target xml:space="preserve" />
+        <source>External protocol ('http' or 'https')</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <!-- Monitoring Probe Command Parameter descriptions -->
       <trans-unit id="Application Protocol">
-        <source xml:space="preserve">Application Protocol</source>
-        <target xml:space="preserve" />
+        <source>Application Protocol</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Critical if Above">
-        <source xml:space="preserve">Available Space Percent Used Critical if Above</source>
-        <target xml:space="preserve" />
+        <source>Available Space Percent Used Critical if Above</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Warn if Above">
-        <source xml:space="preserve">Available Space Percent Used Warn if Above</source>
-        <target xml:space="preserve" />
+        <source>Available Space Percent Used Warn if Above</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEA Domain Admin Server">
-        <source xml:space="preserve">BEA Domain Admin Server</source>
-        <target xml:space="preserve" />
+        <source>BEA Domain Admin Server</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEA Server Name">
-        <source xml:space="preserve">BEA Server Name</source>
-        <target xml:space="preserve" />
+        <source>BEA Server Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Basic regular expression">
-        <source xml:space="preserve">Basic regular expression</source>
-        <target xml:space="preserve" />
+        <source>Basic regular expression</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Command">
-        <source xml:space="preserve">Command</source>
-        <target xml:space="preserve" />
+        <source>Command</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Command name">
-        <source xml:space="preserve">Command name</source>
-        <target xml:space="preserve" />
+        <source>Command name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Count process groups">
-        <source xml:space="preserve">Count process groups</source>
-        <target xml:space="preserve" />
+        <source>Count process groups</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical 1 min">
-        <source xml:space="preserve">Critical 1 min</source>
-        <target xml:space="preserve" />
+        <source>Critical 1 min</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical 15 min">
-        <source xml:space="preserve">Critical 15 min</source>
-        <target xml:space="preserve" />
+        <source>Critical 15 min</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical 5 min">
-        <source xml:space="preserve">Critical 5 min</source>
-        <target xml:space="preserve" />
+        <source>Critical 5 min</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Accesses">
-        <source xml:space="preserve">Critical Accesses</source>
-        <target xml:space="preserve" />
+        <source>Critical Accesses</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Active Locks">
-        <source xml:space="preserve">Critical Active Locks</source>
-        <target xml:space="preserve" />
+        <source>Critical Active Locks</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Active Sessions">
-        <source xml:space="preserve">Critical Active Sessions</source>
-        <target xml:space="preserve" />
+        <source>Critical Active Sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Avail Sessions Used Pct">
-        <source xml:space="preserve">Critical Avail Sessions Used Pct</source>
-        <target xml:space="preserve" />
+        <source>Critical Avail Sessions Used Pct</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Blocked Process Count">
-        <source xml:space="preserve">Critical Blocked Process Count</source>
-        <target xml:space="preserve" />
+        <source>Critical Blocked Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Blocking Sessions">
-        <source xml:space="preserve">Critical Blocking Sessions</source>
-        <target xml:space="preserve" />
+        <source>Critical Blocking Sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Buffer Cache Hit Ratio">
-        <source xml:space="preserve">Critical Buffer Cache Hit Ratio</source>
-        <target xml:space="preserve" />
+        <source>Critical Buffer Cache Hit Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CLOSE_WAIT Connections">
-        <source xml:space="preserve">Critical CLOSE_WAIT Connections</source>
-        <target xml:space="preserve" />
+        <source>Critical CLOSE_WAIT Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Load 1-Min Ave">
-        <source xml:space="preserve">Critical CPU Load 1-Min Ave</source>
-        <target xml:space="preserve" />
+        <source>Critical CPU Load 1-Min Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Load 15-Min Ave">
-        <source xml:space="preserve">Critical CPU Load 15-Min Ave</source>
-        <target xml:space="preserve" />
+        <source>Critical CPU Load 15-Min Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Load 5-Min Ave">
-        <source xml:space="preserve">Critical CPU Load 5-Min Ave</source>
-        <target xml:space="preserve" />
+        <source>Critical CPU Load 5-Min Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Pct Used">
-        <source xml:space="preserve">Critical CPU Pct Used</source>
-        <target xml:space="preserve" />
+        <source>Critical CPU Pct Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Time Rate">
-        <source xml:space="preserve">Critical CPU Time Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical CPU Time Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Child Process Count">
-        <source xml:space="preserve">Critical Child Process Count</source>
-        <target xml:space="preserve" />
+        <source>Critical Child Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Child Process Groups">
-        <source xml:space="preserve">Critical Child Process Groups</source>
-        <target xml:space="preserve" />
+        <source>Critical Child Process Groups</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Connection Rate">
-        <source xml:space="preserve">Critical Connection Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Connection Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Connections">
-        <source xml:space="preserve">Critical Connections</source>
-        <target xml:space="preserve" />
+        <source>Critical Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Count">
-        <source xml:space="preserve">Critical Count</source>
-        <target xml:space="preserve" />
+        <source>Critical Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Data Dictionary Hit Ratio">
-        <source xml:space="preserve">Critical Data Dictionary Hit Ratio</source>
-        <target xml:space="preserve" />
+        <source>Critical Data Dictionary Hit Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Defunct Process Count">
-        <source xml:space="preserve">Critical Defunct Process Count</source>
-        <target xml:space="preserve" />
+        <source>Critical Defunct Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Disk Sort Ratio">
-        <source xml:space="preserve">Critical Disk Sort Ratio</source>
-        <target xml:space="preserve" />
+        <source>Critical Disk Sort Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical ESTABLISHED Connections">
-        <source xml:space="preserve">Critical ESTABLISHED Connections</source>
-        <target xml:space="preserve" />
+        <source>Critical ESTABLISHED Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Execution Time Moving Ave">
-        <source xml:space="preserve">Critical Execution Time Moving Ave</source>
-        <target xml:space="preserve" />
+        <source>Critical Execution Time Moving Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Exit Status">
-        <source xml:space="preserve">Critical Exit Status</source>
-        <target xml:space="preserve" />
+        <source>Critical Exit Status</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical FIN_WAIT Connections">
-        <source xml:space="preserve">Critical FIN_WAIT Connections</source>
-        <target xml:space="preserve" />
+        <source>Critical FIN_WAIT Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Filesystem Pct Used">
-        <source xml:space="preserve">Critical Filesystem Pct Used</source>
-        <target xml:space="preserve" />
+        <source>Critical Filesystem Pct Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Heap Free">
-        <source xml:space="preserve">Critical Heap Free</source>
-        <target xml:space="preserve" />
+        <source>Critical Heap Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical High Execution Time">
-        <source xml:space="preserve">Critical High Execution Time</source>
-        <target xml:space="preserve" />
+        <source>Critical High Execution Time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Idle Sessions">
-        <source xml:space="preserve">Critical Idle Sessions</source>
-        <target xml:space="preserve" />
+        <source>Critical Idle Sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Idle Threads">
-        <source xml:space="preserve">Critical Idle Threads</source>
-        <target xml:space="preserve" />
+        <source>Critical Idle Threads</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Inodes Pct Used">
-        <source xml:space="preserve">Critical Inodes Pct Used</source>
-        <target xml:space="preserve" />
+        <source>Critical Inodes Pct Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Input Rate">
-        <source xml:space="preserve">Critical Input Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Input Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Latency">
-        <source xml:space="preserve">Critical Latency</source>
-        <target xml:space="preserve" />
+        <source>Critical Latency</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Library Cache Miss Ratio">
-        <source xml:space="preserve">Critical Library Cache Miss Ratio</source>
-        <target xml:space="preserve" />
+        <source>Critical Library Cache Miss Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Line Rate">
-        <source xml:space="preserve">Critical Line Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Line Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Lines">
-        <source xml:space="preserve">Critical Lines</source>
-        <target xml:space="preserve" />
+        <source>Critical Lines</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Match Rate">
-        <source xml:space="preserve">Critical Match Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Match Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Matches">
-        <source xml:space="preserve">Critical Matches</source>
-        <target xml:space="preserve" />
+        <source>Critical Matches</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Number Running Maximum">
-        <source xml:space="preserve">Critical Number Running Maximum</source>
-        <target xml:space="preserve" />
+        <source>Critical Number Running Maximum</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Number Running Minimum">
-        <source xml:space="preserve">Critical Number Running Minimum</source>
-        <target xml:space="preserve" />
+        <source>Critical Number Running Minimum</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Open Tables">
-        <source xml:space="preserve">Critical Open Tables</source>
-        <target xml:space="preserve" />
+        <source>Critical Open Tables</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Opened Tables">
-        <source xml:space="preserve">Critical Opened Tables</source>
-        <target xml:space="preserve" />
+        <source>Critical Opened Tables</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Output Rate">
-        <source xml:space="preserve">Critical Output Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Output Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Packet Loss Pct">
-        <source xml:space="preserve">Critical Packet Loss Pct</source>
-        <target xml:space="preserve" />
+        <source>Critical Packet Loss Pct</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Percent">
-        <source xml:space="preserve">Critical Percent</source>
-        <target xml:space="preserve" />
+        <source>Critical Percent</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Physical Memory Used">
-        <source xml:space="preserve">Critical Physical Memory Used</source>
-        <target xml:space="preserve" />
+        <source>Critical Physical Memory Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Process Count">
-        <source xml:space="preserve">Critical Process Count</source>
-        <target xml:space="preserve" />
+        <source>Critical Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Processes">
-        <source xml:space="preserve">Critical Processes</source>
-        <target xml:space="preserve" />
+        <source>Critical Processes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Query Rate">
-        <source xml:space="preserve">Critical Query Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Query Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Query Time">
-        <source xml:space="preserve">Critical Query Time</source>
-        <target xml:space="preserve" />
+        <source>Critical Query Time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Queue Length">
-        <source xml:space="preserve">Critical Queue Length</source>
-        <target xml:space="preserve" />
+        <source>Critical Queue Length</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical RAM Free">
-        <source xml:space="preserve">Critical RAM Free</source>
-        <target xml:space="preserve" />
+        <source>Critical RAM Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Read Rate">
-        <source xml:space="preserve">Critical Read Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Read Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Redo Buffer Allocation Retries">
-        <source xml:space="preserve">Critical Redo Buffer Allocation Retries</source>
-        <target xml:space="preserve" />
+        <source>Critical Redo Buffer Allocation Retries</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Redo Log Space Requests">
-        <source xml:space="preserve">Critical Redo Log Space Requests</source>
-        <target xml:space="preserve" />
+        <source>Critical Redo Log Space Requests</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Request Rate">
-        <source xml:space="preserve">Critical Request Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Request Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Requests">
-        <source xml:space="preserve">Critical Requests</source>
-        <target xml:space="preserve" />
+        <source>Critical Requests</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Round-trip Ave">
-        <source xml:space="preserve">Critical Round-trip Ave</source>
-        <target xml:space="preserve" />
+        <source>Critical Round-trip Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Round-trip Avg">
-        <source xml:space="preserve">Critical Round-trip Avg</source>
-        <target xml:space="preserve" />
+        <source>Critical Round-trip Avg</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical SYN_RCVD Connections">
-        <source xml:space="preserve">Critical SYN_RCVD Connections</source>
-        <target xml:space="preserve" />
+        <source>Critical SYN_RCVD Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Seconds">
-        <source xml:space="preserve">Critical Seconds</source>
-        <target xml:space="preserve" />
+        <source>Critical Seconds</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Size">
-        <source xml:space="preserve">Critical Size</source>
-        <target xml:space="preserve" />
+        <source>Critical Size</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Space Available">
-        <source xml:space="preserve">Critical Space Available</source>
-        <target xml:space="preserve" />
+        <source>Critical Space Available</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Space Used">
-        <source xml:space="preserve">Critical Space Used</source>
-        <target xml:space="preserve" />
+        <source>Critical Space Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Stopped Process Count">
-        <source xml:space="preserve">Critical Stopped Process Count</source>
-        <target xml:space="preserve" />
+        <source>Critical Stopped Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Swap Pct Free">
-        <source xml:space="preserve">Critical Swap Pct Free</source>
-        <target xml:space="preserve" />
+        <source>Critical Swap Pct Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical TIME_WAIT Connections">
-        <source xml:space="preserve">Critical TIME_WAIT Connections</source>
-        <target xml:space="preserve" />
+        <source>Critical TIME_WAIT Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Threads">
-        <source xml:space="preserve">Critical Threads</source>
-        <target xml:space="preserve" />
+        <source>Critical Threads</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Threads Running">
-        <source xml:space="preserve">Critical Threads Running</source>
-        <target xml:space="preserve" />
+        <source>Critical Threads Running</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Total Connections">
-        <source xml:space="preserve">Critical Total Connections</source>
-        <target xml:space="preserve" />
+        <source>Critical Total Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Traffic">
-        <source xml:space="preserve">Critical Traffic</source>
-        <target xml:space="preserve" />
+        <source>Critical Traffic</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Transferred Per Child">
-        <source xml:space="preserve">Critical Transferred Per Child</source>
-        <target xml:space="preserve" />
+        <source>Critical Transferred Per Child</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Transferred Per Slot">
-        <source xml:space="preserve">Critical Transferred Per Slot</source>
-        <target xml:space="preserve" />
+        <source>Critical Transferred Per Slot</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Users">
-        <source xml:space="preserve">Critical Users</source>
-        <target xml:space="preserve" />
+        <source>Critical Users</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Value">
-        <source xml:space="preserve">Critical Value</source>
-        <target xml:space="preserve" />
+        <source>Critical Value</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Virtual Mem Pct Free">
-        <source xml:space="preserve">Critical Virtual Mem Pct Free</source>
-        <target xml:space="preserve" />
+        <source>Critical Virtual Mem Pct Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Virtual Memory Used">
-        <source xml:space="preserve">Critical Virtual Memory Used</source>
-        <target xml:space="preserve" />
+        <source>Critical Virtual Memory Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Waiters">
-        <source xml:space="preserve">Critical Waiters</source>
-        <target xml:space="preserve" />
+        <source>Critical Waiters</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Write Rate">
-        <source xml:space="preserve">Critical Write Rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Write Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Write rate">
-        <source xml:space="preserve">Critical Write rate</source>
-        <target xml:space="preserve" />
+        <source>Critical Write rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Database">
-        <source xml:space="preserve">Database</source>
-        <target xml:space="preserve" />
+        <source>Database</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Device">
-        <source xml:space="preserve">Device</source>
-        <target xml:space="preserve" />
+        <source>Device</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Disk number or disk name (from iostat)">
-        <source xml:space="preserve">Disk number or disk name (from iostat)</source>
-        <target xml:space="preserve" />
+        <source>Disk number or disk name (from iostat)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect">
-        <source xml:space="preserve">Expect</source>
-        <target xml:space="preserve" />
+        <source>Expect</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect Content">
-        <source xml:space="preserve">Expect Content</source>
-        <target xml:space="preserve" />
+        <source>Expect Content</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect Header">
-        <source xml:space="preserve">Expect Header</source>
-        <target xml:space="preserve" />
+        <source>Expect Header</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expected DB Name (V$DATABASE.NAME)">
-        <source xml:space="preserve">Expected DB Name (V$DATABASE.NAME)</source>
-        <target xml:space="preserve" />
+        <source>Expected DB Name (V$DATABASE.NAME)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FTP Port">
-        <source xml:space="preserve">FTP Port</source>
-        <target xml:space="preserve" />
+        <source>FTP Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Filesystem">
-        <source xml:space="preserve">Filesystem</source>
-        <target xml:space="preserve" />
+        <source>Filesystem</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HTTP Port">
-        <source xml:space="preserve">HTTP Port</source>
-        <target xml:space="preserve" />
+        <source>HTTP Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HTTPS Port">
-        <source xml:space="preserve">HTTPS Port</source>
-        <target xml:space="preserve" />
+        <source>HTTPS Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Host or Address to Look Up">
-        <source xml:space="preserve">Host or Address to Look Up</source>
-        <target xml:space="preserve" />
+        <source>Host or Address to Look Up</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IMAP Port">
-        <source xml:space="preserve">IMAP Port</source>
-        <target xml:space="preserve" />
+        <source>IMAP Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IP Address (optional; defaults to host IP)">
-        <source xml:space="preserve">IP Address (optional; defaults to host IP)</source>
-        <target xml:space="preserve" />
+        <source>IP Address (optional; defaults to host IP)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Include reclaimable memory">
-        <source xml:space="preserve">Include reclaimable memory</source>
-        <target xml:space="preserve" />
+        <source>Include reclaimable memory</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Name">
-        <source xml:space="preserve">Index Name</source>
-        <target xml:space="preserve" />
+        <source>Index Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Owner">
-        <source xml:space="preserve">Index Owner</source>
-        <target xml:space="preserve" />
+        <source>Index Owner</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Input Traffic Critical">
-        <source xml:space="preserve">Input Traffic Critical</source>
-        <target xml:space="preserve" />
+        <source>Input Traffic Critical</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Interface">
-        <source xml:space="preserve">Interface</source>
-        <target xml:space="preserve" />
+        <source>Interface</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="JDBC Pool Name">
-        <source xml:space="preserve">JDBC Pool Name</source>
-        <target xml:space="preserve" />
+        <source>JDBC Pool Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Local IP address filter pattern list">
-        <source xml:space="preserve">Local IP address filter pattern list</source>
-        <target xml:space="preserve" />
+        <source>Local IP address filter pattern list</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Local port number filter">
-        <source xml:space="preserve">Local port number filter</source>
-        <target xml:space="preserve" />
+        <source>Local port number filter</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log file">
-        <source xml:space="preserve">Log file</source>
-        <target xml:space="preserve" />
+        <source>Log file</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MySQL Port">
-        <source xml:space="preserve">MySQL Port</source>
-        <target xml:space="preserve" />
+        <source>MySQL Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Critical if Above">
-        <source xml:space="preserve">Number of Allocated Extents Critical if Above</source>
-        <target xml:space="preserve" />
+        <source>Number of Allocated Extents Critical if Above</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Warn if Above">
-        <source xml:space="preserve">Number of Allocated Extents Warn if Above</source>
-        <target xml:space="preserve" />
+        <source>Number of Allocated Extents Warn if Above</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OK Exit Status">
-        <source xml:space="preserve">OK Exit Status</source>
-        <target xml:space="preserve" />
+        <source>OK Exit Status</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ORACLE_HOME">
-        <source xml:space="preserve">ORACLE_HOME</source>
-        <target xml:space="preserve" />
+        <source>ORACLE_HOME</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Hostname or IP">
-        <source xml:space="preserve">Oracle Hostname or IP</source>
-        <target xml:space="preserve" />
+        <source>Oracle Hostname or IP</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Password">
-        <source xml:space="preserve">Oracle Password</source>
-        <target xml:space="preserve" />
+        <source>Oracle Password</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Port">
-        <source xml:space="preserve">Oracle Port</source>
-        <target xml:space="preserve" />
+        <source>Oracle Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle SID">
-        <source xml:space="preserve">Oracle SID</source>
-        <target xml:space="preserve" />
+        <source>Oracle SID</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Username">
-        <source xml:space="preserve">Oracle Username</source>
-        <target xml:space="preserve" />
+        <source>Oracle Username</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Output Traffic Critical">
-        <source xml:space="preserve">Output Traffic Critical</source>
-        <target xml:space="preserve" />
+        <source>Output Traffic Critical</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PID file (overrides command name)">
-        <source xml:space="preserve">PID file (overrides command name)</source>
-        <target xml:space="preserve" />
+        <source>PID file (overrides command name)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Packets to send">
-        <source xml:space="preserve">Packets to send</source>
-        <target xml:space="preserve" />
+        <source>Packets to send</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Password">
-        <source xml:space="preserve">Password</source>
-        <target xml:space="preserve" />
+        <source>Password</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pathname">
-        <source xml:space="preserve">Pathname</source>
-        <target xml:space="preserve" />
+        <source>Pathname</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Critical if Above">
-        <source xml:space="preserve">Percent of Available Extents Critical if Above</source>
-        <target xml:space="preserve" />
+        <source>Percent of Available Extents Critical if Above</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Warn if Above">
-        <source xml:space="preserve">Percent of Available Extents Warn if Above</source>
-        <target xml:space="preserve" />
+        <source>Percent of Available Extents Warn if Above</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Port">
-        <source xml:space="preserve">Port</source>
-        <target xml:space="preserve" />
+        <source>Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Protocol (TCP/UDP)">
-        <source xml:space="preserve">Protocol (TCP/UDP)</source>
-        <target xml:space="preserve" />
+        <source>Protocol (TCP/UDP)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Queue Name">
-        <source xml:space="preserve">Queue Name</source>
-        <target xml:space="preserve" />
+        <source>Queue Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHNMD Port">
-        <source xml:space="preserve">RHNMD Port</source>
-        <target xml:space="preserve" />
+        <source>RHNMD Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHNMD User">
-        <source xml:space="preserve">RHNMD User</source>
-        <target xml:space="preserve" />
+        <source>RHNMD User</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SSH banner (number of lines)">
-        <source xml:space="preserve">SSH banner (number of lines)</source>
-        <target xml:space="preserve" />
+        <source>SSH banner (number of lines)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote IP Address">
-        <source xml:space="preserve">Remote IP Address</source>
-        <target xml:space="preserve" />
+        <source>Remote IP Address</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote IP address filter pattern list">
-        <source xml:space="preserve">Remote IP address filter pattern list</source>
-        <target xml:space="preserve" />
+        <source>Remote IP address filter pattern list</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote port number filter">
-        <source xml:space="preserve">Remote port number filter</source>
-        <target xml:space="preserve" />
+        <source>Remote port number filter</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SMTP Port">
-        <source xml:space="preserve">SMTP Port</source>
-        <target xml:space="preserve" />
+        <source>SMTP Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SNMP Community String">
-        <source xml:space="preserve">SNMP Community String</source>
-        <target xml:space="preserve" />
+        <source>SNMP Community String</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SNMP OID">
-        <source xml:space="preserve">SNMP OID</source>
-        <target xml:space="preserve" />
+        <source>SNMP OID</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SNMP Port">
-        <source xml:space="preserve">SNMP Port</source>
-        <target xml:space="preserve" />
+        <source>SNMP Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SNMP Version">
-        <source xml:space="preserve">SNMP Version</source>
-        <target xml:space="preserve" />
+        <source>SNMP Version</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SSH Port">
-        <source xml:space="preserve">SSH Port</source>
-        <target xml:space="preserve" />
+        <source>SSH Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Send">
-        <source xml:space="preserve">Send</source>
-        <target xml:space="preserve" />
+        <source>Send</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Service Name">
-        <source xml:space="preserve">Service Name</source>
-        <target xml:space="preserve" />
+        <source>Service Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Servlet Name">
-        <source xml:space="preserve">Servlet Name</source>
-        <target xml:space="preserve" />
+        <source>Servlet Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Status (OK/WARNING/CRITICAL/UNKNOWN)">
-        <source xml:space="preserve">Status (OK/WARNING/CRITICAL/UNKNOWN)</source>
-        <target xml:space="preserve" />
+        <source>Status (OK/WARNING/CRITICAL/UNKNOWN)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="TNS Listener Port">
-        <source xml:space="preserve">TNS Listener Port</source>
-        <target xml:space="preserve" />
+        <source>TNS Listener Port</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Table Name">
-        <source xml:space="preserve">Table Name</source>
-        <target xml:space="preserve" />
+        <source>Table Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Table Owner">
-        <source xml:space="preserve">Table Owner</source>
-        <target xml:space="preserve" />
+        <source>Table Owner</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tablespace Name">
-        <source xml:space="preserve">Tablespace Name</source>
-        <target xml:space="preserve" />
+        <source>Tablespace Name</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Time Blocking (seconds)">
-        <source xml:space="preserve">Time Blocking (seconds)</source>
-        <target xml:space="preserve" />
+        <source>Time Blocking (seconds)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Time Idle (seconds)">
-        <source xml:space="preserve">Time Idle (seconds)</source>
-        <target xml:space="preserve" />
+        <source>Time Idle (seconds)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Timeout (seconds)">
-        <source xml:space="preserve">Timeout (seconds)</source>
-        <target xml:space="preserve" />
+        <source>Timeout (seconds)</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="URL Path">
-        <source xml:space="preserve">URL Path</source>
-        <target xml:space="preserve" />
+        <source>URL Path</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="UserAgent">
-        <source xml:space="preserve">UserAgent</source>
-        <target xml:space="preserve" />
+        <source>UserAgent</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Username">
-        <source xml:space="preserve">Username</source>
-        <target xml:space="preserve" />
+        <source>Username</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Virtual Host">
-        <source xml:space="preserve">Virtual Host</source>
-        <target xml:space="preserve" />
+        <source>Virtual Host</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn 1 min">
-        <source xml:space="preserve">Warn 1 min</source>
-        <target xml:space="preserve" />
+        <source>Warn 1 min</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn 15 min">
-        <source xml:space="preserve">Warn 15 min</source>
-        <target xml:space="preserve" />
+        <source>Warn 15 min</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn 5 min">
-        <source xml:space="preserve">Warn 5 min</source>
-        <target xml:space="preserve" />
+        <source>Warn 5 min</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn Percent">
-        <source xml:space="preserve">Warn Percent</source>
-        <target xml:space="preserve" />
+        <source>Warn Percent</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn Processes">
-        <source xml:space="preserve">Warn Processes</source>
-        <target xml:space="preserve" />
+        <source>Warn Processes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn Users">
-        <source xml:space="preserve">Warn Users</source>
-        <target xml:space="preserve" />
+        <source>Warn Users</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Accesses">
-        <source xml:space="preserve">Warning Accesses</source>
-        <target xml:space="preserve" />
+        <source>Warning Accesses</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Active Locks">
-        <source xml:space="preserve">Warning Active Locks</source>
-        <target xml:space="preserve" />
+        <source>Warning Active Locks</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Active Sessions">
-        <source xml:space="preserve">Warning Active Sessions</source>
-        <target xml:space="preserve" />
+        <source>Warning Active Sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Avail Sessions Used Pct">
-        <source xml:space="preserve">Warning Avail Sessions Used Pct</source>
-        <target xml:space="preserve" />
+        <source>Warning Avail Sessions Used Pct</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocked Process Count">
-        <source xml:space="preserve">Warning Blocked Process Count</source>
-        <target xml:space="preserve" />
+        <source>Warning Blocked Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocking Sessions">
-        <source xml:space="preserve">Warning Blocking Sessions</source>
-        <target xml:space="preserve" />
+        <source>Warning Blocking Sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Buffer Cache Hit Ratio">
-        <source xml:space="preserve">Warning Buffer Cache Hit Ratio</source>
-        <target xml:space="preserve" />
+        <source>Warning Buffer Cache Hit Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CLOSE_WAIT Connections">
-        <source xml:space="preserve">Warning CLOSE_WAIT Connections</source>
-        <target xml:space="preserve" />
+        <source>Warning CLOSE_WAIT Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 1-Min Ave">
-        <source xml:space="preserve">Warning CPU Load 1-Min Ave</source>
-        <target xml:space="preserve" />
+        <source>Warning CPU Load 1-Min Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 15-Min Ave">
-        <source xml:space="preserve">Warning CPU Load 15-Min Ave</source>
-        <target xml:space="preserve" />
+        <source>Warning CPU Load 15-Min Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 5-Min Ave">
-        <source xml:space="preserve">Warning CPU Load 5-Min Ave</source>
-        <target xml:space="preserve" />
+        <source>Warning CPU Load 5-Min Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Pct Used">
-        <source xml:space="preserve">Warning CPU Pct Used</source>
-        <target xml:space="preserve" />
+        <source>Warning CPU Pct Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Time Rate">
-        <source xml:space="preserve">Warning CPU Time Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning CPU Time Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Child Process Count">
-        <source xml:space="preserve">Warning Child Process Count</source>
-        <target xml:space="preserve" />
+        <source>Warning Child Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Child Process Groups">
-        <source xml:space="preserve">Warning Child Process Groups</source>
-        <target xml:space="preserve" />
+        <source>Warning Child Process Groups</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Connection Rate">
-        <source xml:space="preserve">Warning Connection Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Connection Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Connections">
-        <source xml:space="preserve">Warning Connections</source>
-        <target xml:space="preserve" />
+        <source>Warning Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Count">
-        <source xml:space="preserve">Warning Count</source>
-        <target xml:space="preserve" />
+        <source>Warning Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Data Dictionary Hit Ratio">
-        <source xml:space="preserve">Warning Data Dictionary Hit Ratio</source>
-        <target xml:space="preserve" />
+        <source>Warning Data Dictionary Hit Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Defunct Process Count">
-        <source xml:space="preserve">Warning Defunct Process Count</source>
-        <target xml:space="preserve" />
+        <source>Warning Defunct Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Disk Sort Ratio">
-        <source xml:space="preserve">Warning Disk Sort Ratio</source>
-        <target xml:space="preserve" />
+        <source>Warning Disk Sort Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning ESTABLISHED Connections">
-        <source xml:space="preserve">Warning ESTABLISHED Connections</source>
-        <target xml:space="preserve" />
+        <source>Warning ESTABLISHED Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Execution Time Moving Ave">
-        <source xml:space="preserve">Warning Execution Time Moving Ave</source>
-        <target xml:space="preserve" />
+        <source>Warning Execution Time Moving Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Exit Status">
-        <source xml:space="preserve">Warning Exit Status</source>
-        <target xml:space="preserve" />
+        <source>Warning Exit Status</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning FIN_WAIT Connections">
-        <source xml:space="preserve">Warning FIN_WAIT Connections</source>
-        <target xml:space="preserve" />
+        <source>Warning FIN_WAIT Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Filesystem Pct Used">
-        <source xml:space="preserve">Warning Filesystem Pct Used</source>
-        <target xml:space="preserve" />
+        <source>Warning Filesystem Pct Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Heap Free">
-        <source xml:space="preserve">Warning Heap Free</source>
-        <target xml:space="preserve" />
+        <source>Warning Heap Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning High Execution Time">
-        <source xml:space="preserve">Warning High Execution Time</source>
-        <target xml:space="preserve" />
+        <source>Warning High Execution Time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Idle Sessions">
-        <source xml:space="preserve">Warning Idle Sessions</source>
-        <target xml:space="preserve" />
+        <source>Warning Idle Sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Idle Threads">
-        <source xml:space="preserve">Warning Idle Threads</source>
-        <target xml:space="preserve" />
+        <source>Warning Idle Threads</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Inodes Pct Used">
-        <source xml:space="preserve">Warning Inodes Pct Used</source>
-        <target xml:space="preserve" />
+        <source>Warning Inodes Pct Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Input Rate">
-        <source xml:space="preserve">Warning Input Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Input Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Latency">
-        <source xml:space="preserve">Warning Latency</source>
-        <target xml:space="preserve" />
+        <source>Warning Latency</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Library Cache Miss Ratio">
-        <source xml:space="preserve">Warning Library Cache Miss Ratio</source>
-        <target xml:space="preserve" />
+        <source>Warning Library Cache Miss Ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Line Rate">
-        <source xml:space="preserve">Warning Line Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Line Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Lines">
-        <source xml:space="preserve">Warning Lines</source>
-        <target xml:space="preserve" />
+        <source>Warning Lines</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Match Rate">
-        <source xml:space="preserve">Warning Match Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Match Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Matches">
-        <source xml:space="preserve">Warning Matches</source>
-        <target xml:space="preserve" />
+        <source>Warning Matches</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Open Tables">
-        <source xml:space="preserve">Warning Open Tables</source>
-        <target xml:space="preserve" />
+        <source>Warning Open Tables</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Opened Tables">
-        <source xml:space="preserve">Warning Opened Tables</source>
-        <target xml:space="preserve" />
+        <source>Warning Opened Tables</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Output Rate">
-        <source xml:space="preserve">Warning Output Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Output Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Packet Loss Pct">
-        <source xml:space="preserve">Warning Packet Loss Pct</source>
-        <target xml:space="preserve" />
+        <source>Warning Packet Loss Pct</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Physical Memory Used">
-        <source xml:space="preserve">Warning Physical Memory Used</source>
-        <target xml:space="preserve" />
+        <source>Warning Physical Memory Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Process Count">
-        <source xml:space="preserve">Warning Process Count</source>
-        <target xml:space="preserve" />
+        <source>Warning Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Query Rate">
-        <source xml:space="preserve">Warning Query Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Query Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Query Time">
-        <source xml:space="preserve">Warning Query Time</source>
-        <target xml:space="preserve" />
+        <source>Warning Query Time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Queue Length">
-        <source xml:space="preserve">Warning Queue Length</source>
-        <target xml:space="preserve" />
+        <source>Warning Queue Length</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning RAM Free">
-        <source xml:space="preserve">Warning RAM Free</source>
-        <target xml:space="preserve" />
+        <source>Warning RAM Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Read Rate">
-        <source xml:space="preserve">Warning Read Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Read Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Redo Buffer Allocation Retries">
-        <source xml:space="preserve">Warning Redo Buffer Allocation Retries</source>
-        <target xml:space="preserve" />
+        <source>Warning Redo Buffer Allocation Retries</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Redo Log Space Requests">
-        <source xml:space="preserve">Warning Redo Log Space Requests</source>
-        <target xml:space="preserve" />
+        <source>Warning Redo Log Space Requests</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Request Rate">
-        <source xml:space="preserve">Warning Request Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Request Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Requests">
-        <source xml:space="preserve">Warning Requests</source>
-        <target xml:space="preserve" />
+        <source>Warning Requests</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Ave">
-        <source xml:space="preserve">Warning Round-trip Ave</source>
-        <target xml:space="preserve" />
+        <source>Warning Round-trip Ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Avg">
-        <source xml:space="preserve">Warning Round-trip Avg</source>
-        <target xml:space="preserve" />
+        <source>Warning Round-trip Avg</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning SYN_RCVD Connections">
-        <source xml:space="preserve">Warning SYN_RCVD Connections</source>
-        <target xml:space="preserve" />
+        <source>Warning SYN_RCVD Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Seconds">
-        <source xml:space="preserve">Warning Seconds</source>
-        <target xml:space="preserve" />
+        <source>Warning Seconds</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Size">
-        <source xml:space="preserve">Warning Size</source>
-        <target xml:space="preserve" />
+        <source>Warning Size</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Space Available">
-        <source xml:space="preserve">Warning Space Available</source>
-        <target xml:space="preserve" />
+        <source>Warning Space Available</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Space Used">
-        <source xml:space="preserve">Warning Space Used</source>
-        <target xml:space="preserve" />
+        <source>Warning Space Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Stopped Process Count">
-        <source xml:space="preserve">Warning Stopped Process Count</source>
-        <target xml:space="preserve" />
+        <source>Warning Stopped Process Count</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Swap Pct Free">
-        <source xml:space="preserve">Warning Swap Pct Free</source>
-        <target xml:space="preserve" />
+        <source>Warning Swap Pct Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning TIME_WAIT Connections">
-        <source xml:space="preserve">Warning TIME_WAIT Connections</source>
-        <target xml:space="preserve" />
+        <source>Warning TIME_WAIT Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Threads">
-        <source xml:space="preserve">Warning Threads</source>
-        <target xml:space="preserve" />
+        <source>Warning Threads</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Threads Running">
-        <source xml:space="preserve">Warning Threads Running</source>
-        <target xml:space="preserve" />
+        <source>Warning Threads Running</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Total Connections">
-        <source xml:space="preserve">Warning Total Connections</source>
-        <target xml:space="preserve" />
+        <source>Warning Total Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Traffic">
-        <source xml:space="preserve">Warning Traffic</source>
-        <target xml:space="preserve" />
+        <source>Warning Traffic</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Transferred Per Child">
-        <source xml:space="preserve">Warning Transferred Per Child</source>
-        <target xml:space="preserve" />
+        <source>Warning Transferred Per Child</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Transferred Per Slot">
-        <source xml:space="preserve">Warning Transferred Per Slot</source>
-        <target xml:space="preserve" />
+        <source>Warning Transferred Per Slot</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Users">
-        <source xml:space="preserve">Warning Users</source>
-        <target xml:space="preserve" />
+        <source>Warning Users</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Value">
-        <source xml:space="preserve">Warning Value</source>
-        <target xml:space="preserve" />
+        <source>Warning Value</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Mem Pct Free">
-        <source xml:space="preserve">Warning Virtual Mem Pct Free</source>
-        <target xml:space="preserve" />
+        <source>Warning Virtual Mem Pct Free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Memory Used">
-        <source xml:space="preserve">Warning Virtual Memory Used</source>
-        <target xml:space="preserve" />
+        <source>Warning Virtual Memory Used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Waiters">
-        <source xml:space="preserve">Warning Waiters</source>
-        <target xml:space="preserve" />
+        <source>Warning Waiters</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Write Rate">
-        <source xml:space="preserve">Warning Write Rate</source>
-        <target xml:space="preserve" />
+        <source>Warning Write Rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <!-- PROBE METRICS -->
       <trans-unit id="metrics.Active locks">
-        <source xml:space="preserve">Active locks</source>
-        <target xml:space="preserve" />
+        <source>Active locks</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Active sessions">
-        <source xml:space="preserve">Active sessions</source>
-        <target xml:space="preserve" />
+        <source>Active sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Blocked processes">
-        <source xml:space="preserve">Blocked processes</source>
-        <target xml:space="preserve" />
+        <source>Blocked processes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Blocking sessions">
-        <source xml:space="preserve">Blocking sessions</source>
-        <target xml:space="preserve" />
+        <source>Blocking sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Buffer cache hit ratio">
-        <source xml:space="preserve">Buffer cache hit ratio</source>
-        <target xml:space="preserve" />
+        <source>Buffer cache hit ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CLOSE_WAIT conns">
-        <source xml:space="preserve">CLOSE_WAIT conns</source>
-        <target xml:space="preserve" />
+        <source>CLOSE_WAIT conns</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min ave">
-        <source xml:space="preserve">CPU load 1-min ave</source>
-        <target xml:space="preserve" />
+        <source>CPU load 1-min ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min avg">
-        <source xml:space="preserve">CPU load 1-min avg</source>
-        <target xml:space="preserve" />
+        <source>CPU load 1-min avg</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min ave">
-        <source xml:space="preserve">CPU load 15-min ave</source>
-        <target xml:space="preserve" />
+        <source>CPU load 15-min ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min avg">
-        <source xml:space="preserve">CPU load 15-min avg</source>
-        <target xml:space="preserve" />
+        <source>CPU load 15-min avg</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min ave">
-        <source xml:space="preserve">CPU load 5-min ave</source>
-        <target xml:space="preserve" />
+        <source>CPU load 5-min ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min avg">
-        <source xml:space="preserve">CPU load 5-min avg</source>
-        <target xml:space="preserve" />
+        <source>CPU load 5-min avg</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU pct used">
-        <source xml:space="preserve">CPU pct used</source>
-        <target xml:space="preserve" />
+        <source>CPU pct used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU usage">
-        <source xml:space="preserve">CPU usage</source>
-        <target xml:space="preserve" />
+        <source>CPU usage</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Cache miss rate">
-        <source xml:space="preserve">Cache miss rate</source>
-        <target xml:space="preserve" />
+        <source>Cache miss rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Child process groups">
-        <source xml:space="preserve">Child process groups</source>
-        <target xml:space="preserve" />
+        <source>Child process groups</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Conn rate">
-        <source xml:space="preserve">Conn rate</source>
-        <target xml:space="preserve" />
+        <source>Conn rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Connections">
-        <source xml:space="preserve">Connections</source>
-        <target xml:space="preserve" />
+        <source>Connections</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Consistent get rate">
-        <source xml:space="preserve">Consistent get rate</source>
-        <target xml:space="preserve" />
+        <source>Consistent get rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Current requests">
-        <source xml:space="preserve">Current requests</source>
-        <target xml:space="preserve" />
+        <source>Current requests</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.DB block get rate">
-        <source xml:space="preserve">DB block get rate</source>
-        <target xml:space="preserve" />
+        <source>DB block get rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Data dict hit ratio">
-        <source xml:space="preserve">Data dict hit ratio</source>
-        <target xml:space="preserve" />
+        <source>Data dict hit ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Defunct processes">
-        <source xml:space="preserve">Defunct processes</source>
-        <target xml:space="preserve" />
+        <source>Defunct processes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Disk sort rate">
-        <source xml:space="preserve">Disk sort rate</source>
-        <target xml:space="preserve" />
+        <source>Disk sort rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Disk sort ratio">
-        <source xml:space="preserve">Disk sort ratio</source>
-        <target xml:space="preserve" />
+        <source>Disk sort ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.ESTABLISHED conns">
-        <source xml:space="preserve">ESTABLISHED conns</source>
-        <target xml:space="preserve" />
+        <source>ESTABLISHED conns</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Exec time moving ave">
-        <source xml:space="preserve">Exec time moving ave</source>
-        <target xml:space="preserve" />
+        <source>Exec time moving ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution rate">
-        <source xml:space="preserve">Execution rate</source>
-        <target xml:space="preserve" />
+        <source>Execution rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution time ave">
-        <source xml:space="preserve">Execution time ave</source>
-        <target xml:space="preserve" />
+        <source>Execution time ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.FIN_WAIT conns">
-        <source xml:space="preserve">FIN_WAIT conns</source>
-        <target xml:space="preserve" />
+        <source>FIN_WAIT conns</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Filesystem pct used">
-        <source xml:space="preserve">Filesystem pct used</source>
-        <target xml:space="preserve" />
+        <source>Filesystem pct used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Get rate">
-        <source xml:space="preserve">Get rate</source>
-        <target xml:space="preserve" />
+        <source>Get rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.High exec time">
-        <source xml:space="preserve">High exec time</source>
-        <target xml:space="preserve" />
+        <source>High exec time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Idle sessions">
-        <source xml:space="preserve">Idle sessions</source>
-        <target xml:space="preserve" />
+        <source>Idle sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Idle threads">
-        <source xml:space="preserve">Idle threads</source>
-        <target xml:space="preserve" />
+        <source>Idle threads</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Inodes pct used">
-        <source xml:space="preserve">Inodes pct used</source>
-        <target xml:space="preserve" />
+        <source>Inodes pct used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Input rate">
-        <source xml:space="preserve">Input rate</source>
-        <target xml:space="preserve" />
+        <source>Input rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Invocation rate">
-        <source xml:space="preserve">Invocation rate</source>
-        <target xml:space="preserve" />
+        <source>Invocation rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Latency">
-        <source xml:space="preserve">Latency</source>
-        <target xml:space="preserve" />
+        <source>Latency</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Library cache miss ratio">
-        <source xml:space="preserve">Library cache miss ratio</source>
-        <target xml:space="preserve" />
+        <source>Library cache miss ratio</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Line rate">
-        <source xml:space="preserve">Line rate</source>
-        <target xml:space="preserve" />
+        <source>Line rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Lines">
-        <source xml:space="preserve">Lines</source>
-        <target xml:space="preserve" />
+        <source>Lines</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Low exec time">
-        <source xml:space="preserve">Low exec time</source>
-        <target xml:space="preserve" />
+        <source>Low exec time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per child">
-        <source xml:space="preserve">Max transferred per child</source>
-        <target xml:space="preserve" />
+        <source>Max transferred per child</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per slot">
-        <source xml:space="preserve">Max transferred per slot</source>
-        <target xml:space="preserve" />
+        <source>Max transferred per slot</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Memory sort rate">
-        <source xml:space="preserve">Memory sort rate</source>
-        <target xml:space="preserve" />
+        <source>Memory sort rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Open objects">
-        <source xml:space="preserve">Open objects</source>
-        <target xml:space="preserve" />
+        <source>Open objects</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Opened objects">
-        <source xml:space="preserve">Opened objects</source>
-        <target xml:space="preserve" />
+        <source>Opened objects</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Output rate">
-        <source xml:space="preserve">Output rate</source>
-        <target xml:space="preserve" />
+        <source>Output rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Packet loss pct">
-        <source xml:space="preserve">Packet loss pct</source>
-        <target xml:space="preserve" />
+        <source>Packet loss pct</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Pattern match rate">
-        <source xml:space="preserve">Pattern match rate</source>
-        <target xml:space="preserve" />
+        <source>Pattern match rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Pattern matches">
-        <source xml:space="preserve">Pattern matches</source>
-        <target xml:space="preserve" />
+        <source>Pattern matches</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Physical memory used">
-        <source xml:space="preserve">Physical memory used</source>
-        <target xml:space="preserve" />
+        <source>Physical memory used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Physical read rate">
-        <source xml:space="preserve">Physical read rate</source>
-        <target xml:space="preserve" />
+        <source>Physical read rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probe exec time ave">
-        <source xml:space="preserve">Probe exec time ave</source>
-        <target xml:space="preserve" />
+        <source>Probe exec time ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probe latency ave">
-        <source xml:space="preserve">Probe latency ave</source>
-        <target xml:space="preserve" />
+        <source>Probe latency ave</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probes">
-        <source xml:space="preserve">Probes</source>
-        <target xml:space="preserve" />
+        <source>Probes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Processes">
-        <source xml:space="preserve">Processes</source>
-        <target xml:space="preserve" />
+        <source>Processes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Query rate">
-        <source xml:space="preserve">Query rate</source>
-        <target xml:space="preserve" />
+        <source>Query rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Query time">
-        <source xml:space="preserve">Query time</source>
-        <target xml:space="preserve" />
+        <source>Query time</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Queue length">
-        <source xml:space="preserve">Queue length</source>
-        <target xml:space="preserve" />
+        <source>Queue length</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.RAM free">
-        <source xml:space="preserve">RAM free</source>
-        <target xml:space="preserve" />
+        <source>RAM free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Read rate">
-        <source xml:space="preserve">Read rate</source>
-        <target xml:space="preserve" />
+        <source>Read rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Redo buffer allocation retry rate">
-        <source xml:space="preserve">Redo buffer allocation retry rate</source>
-        <target xml:space="preserve" />
+        <source>Redo buffer allocation retry rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Redo log space request rate">
-        <source xml:space="preserve">Redo log space request rate</source>
-        <target xml:space="preserve" />
+        <source>Redo log space request rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Reload rate">
-        <source xml:space="preserve">Reload rate</source>
-        <target xml:space="preserve" />
+        <source>Reload rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Request rate">
-        <source xml:space="preserve">Request rate</source>
-        <target xml:space="preserve" />
+        <source>Request rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Round-trip avg">
-        <source xml:space="preserve">Round-trip avg</source>
-        <target xml:space="preserve" />
+        <source>Round-trip avg</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.SYN_RCVD conns">
-        <source xml:space="preserve">SYN_RCVD conns</source>
-        <target xml:space="preserve" />
+        <source>SYN_RCVD conns</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Size">
-        <source xml:space="preserve">Size</source>
-        <target xml:space="preserve" />
+        <source>Size</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Sleeping processes">
-        <source xml:space="preserve">Sleeping processes</source>
-        <target xml:space="preserve" />
+        <source>Sleeping processes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Space available">
-        <source xml:space="preserve">Space available</source>
-        <target xml:space="preserve" />
+        <source>Space available</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Space used">
-        <source xml:space="preserve">Space used</source>
-        <target xml:space="preserve" />
+        <source>Space used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Stopped processes">
-        <source xml:space="preserve">Stopped processes</source>
-        <target xml:space="preserve" />
+        <source>Stopped processes</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Swap pct free">
-        <source xml:space="preserve">Swap pct free</source>
-        <target xml:space="preserve" />
+        <source>Swap pct free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.TIME_WAIT conns">
-        <source xml:space="preserve">TIME_WAIT conns</source>
-        <target xml:space="preserve" />
+        <source>TIME_WAIT conns</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Threads">
-        <source xml:space="preserve">Threads</source>
-        <target xml:space="preserve" />
+        <source>Threads</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Threads running">
-        <source xml:space="preserve">Threads running</source>
-        <target xml:space="preserve" />
+        <source>Threads running</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Total conns">
-        <source xml:space="preserve">Total conns</source>
-        <target xml:space="preserve" />
+        <source>Total conns</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Traffic">
-        <source xml:space="preserve">Traffic</source>
-        <target xml:space="preserve" />
+        <source>Traffic</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Used Sessions">
-        <source xml:space="preserve">Used Sessions</source>
-        <target xml:space="preserve" />
+        <source>Used Sessions</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Users">
-        <source xml:space="preserve">Users</source>
-        <target xml:space="preserve" />
+        <source>Users</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Value">
-        <source xml:space="preserve">Value</source>
-        <target xml:space="preserve" />
+        <source>Value</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual mem pct free">
-        <source xml:space="preserve">Virtual mem pct free</source>
-        <target xml:space="preserve" />
+        <source>Virtual mem pct free</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual memory used">
-        <source xml:space="preserve">Virtual memory used</source>
-        <target xml:space="preserve" />
+        <source>Virtual memory used</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Waiters">
-        <source xml:space="preserve">Waiters</source>
-        <target xml:space="preserve" />
+        <source>Waiters</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Write rate">
-        <source xml:space="preserve">Write rate</source>
-        <target xml:space="preserve" />
+        <source>Write rate</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.value">
-        <source xml:space="preserve">value</source>
-        <target xml:space="preserve" />
+        <source>value</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="METOO">
-        <source xml:space="preserve">Supplemental Notification</source>
-        <target xml:space="preserve" />
+        <source>Supplemental Notification</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BLACKHOLE">
-        <source xml:space="preserve">Suspend Standard Notifications</source>
-        <target xml:space="preserve" />
+        <source>Suspend Standard Notifications</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ACK">
-        <source xml:space="preserve">Automatic Acknowledgement</source>
-        <target xml:space="preserve" />
+        <source>Automatic Acknowledgement</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REDIR">
-        <source xml:space="preserve">Redirect Standard Notifications</source>
-        <target xml:space="preserve" />
+        <source>Redirect Standard Notifications</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CRITICAL">
-        <source xml:space="preserve">CRITICAL</source>
-        <target xml:space="preserve" />
+        <source>CRITICAL</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OK">
-        <source xml:space="preserve">OK</source>
-        <target xml:space="preserve" />
+        <source>OK</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="UNKNOWN">
-        <source xml:space="preserve">UNKNOWN</source>
-        <target xml:space="preserve" />
+        <source>UNKNOWN</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PENDING">
-        <source xml:space="preserve">PENDING</source>
-        <target xml:space="preserve" />
+        <source>PENDING</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="WARNING">
-        <source xml:space="preserve">WARNING</source>
-        <target xml:space="preserve" />
+        <source>WARNING</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2820,23 +2820,23 @@
         <note>Probe command requirements:
           rhn_command_requirements.name -&gt; rhn_command_requirements.description</note>
         <trans-unit id="npunix">
-          <source xml:space="preserve">RHNMD must be running on the monitored host to perform this check.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>RHNMD must be running on the monitored host to perform this check.</source>
+        <target /></trans-unit>
         <trans-unit id="oracle">
-          <source xml:space="preserve">Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
+        <target /></trans-unit>
         <trans-unit id="snmp">
-          <source xml:space="preserve">SNMP must be running on the monitored host to perform this check.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>SNMP must be running on the monitored host to perform this check.</source>
+        <target /></trans-unit>
         <trans-unit id="bea61_snmp">
-          <source xml:space="preserve">This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
+        <target /></trans-unit>
         <trans-unit id="npunix_oracle">
-          <source xml:space="preserve">RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
+        <target /></trans-unit>
         <trans-unit id="apache1_3">
-          <source xml:space="preserve">The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
+        <target /></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -2845,38 +2845,38 @@
         <note>Command group names:
       rhn_command_groups.description -&gt; rhn_command_groups.description</note>
         <trans-unit id="All">
-          <source xml:space="preserve">All</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>All</source>
+        <target /></trans-unit>
         <trans-unit id="Apache">
-          <source xml:space="preserve">Apache</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Apache</source>
+        <target /></trans-unit>
         <trans-unit id="BEA Weblogic">
-          <source xml:space="preserve">BEA Weblogic</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>BEA Weblogic</source>
+        <target /></trans-unit>
         <trans-unit id="General">
-          <source xml:space="preserve">General</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>General</source>
+        <target /></trans-unit>
         <trans-unit id="Linux">
-          <source xml:space="preserve">Linux</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Linux</source>
+        <target /></trans-unit>
         <trans-unit id="Log Agent">
-          <source xml:space="preserve">Log Agent</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Log Agent</source>
+        <target /></trans-unit>
         <trans-unit id="MySQL">
-          <source xml:space="preserve">MySQL</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>MySQL</source>
+        <target /></trans-unit>
         <trans-unit id="Network Services">
-          <source xml:space="preserve">Network Services</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Network Services</source>
+        <target /></trans-unit>
         <trans-unit id="Oracle">
-          <source xml:space="preserve">Oracle</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Oracle</source>
+        <target /></trans-unit>
         <trans-unit id="Spacewalk">
-          <source xml:space="preserve">@@PRODUCT_NAME@@</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>@@PRODUCT_NAME@@</source>
+        <target /></trans-unit>
         <trans-unit id="Satellite">
-          <source xml:space="preserve">@@PRODUCT_NAME@@</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>@@PRODUCT_NAME@@</source>
+        <target /></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -2885,292 +2885,292 @@
         <note>Command names:
       rhn_command.description -&gt; rhn_command.description</note>
         <trans-unit id="Active Sessions">
-          <source xml:space="preserve">Active Sessions</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Active Sessions</source>
+        <target /></trans-unit>
         <trans-unit id="Availability">
-          <source xml:space="preserve">Availability</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Availability</source>
+        <target /></trans-unit>
         <trans-unit id="Blocking Sessions">
-          <source xml:space="preserve">Blocking Sessions</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Blocking Sessions</source>
+        <target /></trans-unit>
         <trans-unit id="Buffer Cache">
-          <source xml:space="preserve">Buffer Cache</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Buffer Cache</source>
+        <target /></trans-unit>
         <trans-unit id="CPU Usage">
-          <source xml:space="preserve">CPU Usage</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>CPU Usage</source>
+        <target /></trans-unit>
         <trans-unit id="Check Nothing">
-          <source xml:space="preserve">Check Nothing</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Check Nothing</source>
+        <target /></trans-unit>
         <trans-unit id="Client Connectivity">
-          <source xml:space="preserve">Client Connectivity</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Client Connectivity</source>
+        <target /></trans-unit>
         <trans-unit id="DNS Lookup">
-          <source xml:space="preserve">DNS Lookup</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>DNS Lookup</source>
+        <target /></trans-unit>
         <trans-unit id="Data Dictionary Cache">
-          <source xml:space="preserve">Data Dictionary Cache</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Data Dictionary Cache</source>
+        <target /></trans-unit>
         <trans-unit id="Database Accessibility">
-          <source xml:space="preserve">Database Accessibility</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Database Accessibility</source>
+        <target /></trans-unit>
         <trans-unit id="Disk I/O Throughput">
-          <source xml:space="preserve">Disk I/O Throughput</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Disk I/O Throughput</source>
+        <target /></trans-unit>
         <trans-unit id="Disk Sort Ratio">
-          <source xml:space="preserve">Disk Sort Ratio</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Disk Sort Ratio</source>
+        <target /></trans-unit>
         <trans-unit id="Disk Space">
-          <source xml:space="preserve">Disk Space</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Disk Space</source>
+        <target /></trans-unit>
         <trans-unit id="Disk Usage">
-          <source xml:space="preserve">Disk Usage</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Disk Usage</source>
+        <target /></trans-unit>
         <trans-unit id="Execute Queue">
-          <source xml:space="preserve">Execute Queue</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Execute Queue</source>
+        <target /></trans-unit>
         <trans-unit id="Execution Time">
-          <source xml:space="preserve">Execution Time</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Execution Time</source>
+        <target /></trans-unit>
         <trans-unit id="FTP">
-          <source xml:space="preserve">FTP</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>FTP</source>
+        <target /></trans-unit>
         <trans-unit id="Heap Free">
-          <source xml:space="preserve">Heap Free</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Heap Free</source>
+        <target /></trans-unit>
         <trans-unit id="Host Availability">
-          <source xml:space="preserve">Host Availability</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Host Availability</source>
+        <target /></trans-unit>
         <trans-unit id="ICMP Blocked">
-          <source xml:space="preserve">ICMP Blocked</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>ICMP Blocked</source>
+        <target /></trans-unit>
         <trans-unit id="IMAP Mail">
-          <source xml:space="preserve">IMAP Mail</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>IMAP Mail</source>
+        <target /></trans-unit>
         <trans-unit id="Idle Sessions">
-          <source xml:space="preserve">Idle Sessions</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Idle Sessions</source>
+        <target /></trans-unit>
         <trans-unit id="Index Extents">
-          <source xml:space="preserve">Index Extents</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Index Extents</source>
+        <target /></trans-unit>
         <trans-unit id="Inodes">
-          <source xml:space="preserve">Inodes</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Inodes</source>
+        <target /></trans-unit>
         <trans-unit id="Interface Traffic">
-          <source xml:space="preserve">Interface Traffic</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Interface Traffic</source>
+        <target /></trans-unit>
         <trans-unit id="JDBC Connection Pool">
-          <source xml:space="preserve">JDBC Connection Pool</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>JDBC Connection Pool</source>
+        <target /></trans-unit>
         <trans-unit id="Latency">
-          <source xml:space="preserve">Latency</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Latency</source>
+        <target /></trans-unit>
         <trans-unit id="Library Cache">
-          <source xml:space="preserve">Library Cache</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Library Cache</source>
+        <target /></trans-unit>
         <trans-unit id="Load">
-          <source xml:space="preserve">Load</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Load</source>
+        <target /></trans-unit>
         <trans-unit id="Locks">
-          <source xml:space="preserve">Locks</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Locks</source>
+        <target /></trans-unit>
         <trans-unit id="Log Pattern Match">
-          <source xml:space="preserve">Log Pattern Match</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Log Pattern Match</source>
+        <target /></trans-unit>
         <trans-unit id="Log Size Growth">
-          <source xml:space="preserve">Log Size Growth</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Log Size Growth</source>
+        <target /></trans-unit>
         <trans-unit id="LongLegs">
-          <source xml:space="preserve">LongLegs</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>LongLegs</source>
+        <target /></trans-unit>
         <trans-unit id="Mail Transfer (SMTP)">
-          <source xml:space="preserve">Mail Transfer (SMTP)</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Mail Transfer (SMTP)</source>
+        <target /></trans-unit>
         <trans-unit id="Memory Usage">
-          <source xml:space="preserve">Memory Usage</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Memory Usage</source>
+        <target /></trans-unit>
         <trans-unit id="Open Tables">
-          <source xml:space="preserve">Open Tables</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Open Tables</source>
+        <target /></trans-unit>
         <trans-unit id="Opened Tables">
-          <source xml:space="preserve">Opened Tables</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Opened Tables</source>
+        <target /></trans-unit>
         <trans-unit id="POP Mail">
-          <source xml:space="preserve">POP Mail</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>POP Mail</source>
+        <target /></trans-unit>
         <trans-unit id="Ping">
-          <source xml:space="preserve">Ping</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Ping</source>
+        <target /></trans-unit>
         <trans-unit id="Probe Count">
-          <source xml:space="preserve">Probe Count</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Probe Count</source>
+        <target /></trans-unit>
         <trans-unit id="Process Count Total">
-          <source xml:space="preserve">Process Count Total</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Process Count Total</source>
+        <target /></trans-unit>
         <trans-unit id="Process Counts">
-          <source xml:space="preserve">Process Counts</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Process Counts</source>
+        <target /></trans-unit>
         <trans-unit id="Process Counts by State">
-          <source xml:space="preserve">Process Counts by State</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Process Counts by State</source>
+        <target /></trans-unit>
         <trans-unit id="Process Health">
-          <source xml:space="preserve">Process Health</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Process Health</source>
+        <target /></trans-unit>
         <trans-unit id="Process Running">
-          <source xml:space="preserve">Process Running</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Process Running</source>
+        <target /></trans-unit>
         <trans-unit id="Processes">
-          <source xml:space="preserve">Processes</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Processes</source>
+        <target /></trans-unit>
         <trans-unit id="Query Rate">
-          <source xml:space="preserve">Query Rate</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Query Rate</source>
+        <target /></trans-unit>
         <trans-unit id="RPC Service">
-          <source xml:space="preserve">RPC Service</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>RPC Service</source>
+        <target /></trans-unit>
         <trans-unit id="Redo Log">
-          <source xml:space="preserve">Redo Log</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Redo Log</source>
+        <target /></trans-unit>
         <trans-unit id="Remote Ping">
-          <source xml:space="preserve">Remote Ping</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Remote Ping</source>
+        <target /></trans-unit>
         <trans-unit id="Remote Program">
-          <source xml:space="preserve">Remote Program</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Remote Program</source>
+        <target /></trans-unit>
         <trans-unit id="Remote Program with Data">
-          <source xml:space="preserve">Remote Program with Data</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Remote Program with Data</source>
+        <target /></trans-unit>
         <trans-unit id="Requests">
-          <source xml:space="preserve">Requests</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Requests</source>
+        <target /></trans-unit>
         <trans-unit id="SNMP Check">
-          <source xml:space="preserve">SNMP Check</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>SNMP Check</source>
+        <target /></trans-unit>
         <trans-unit id="SSH">
-          <source xml:space="preserve">SSH</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>SSH</source>
+        <target /></trans-unit>
         <trans-unit id="Secure Web server (HTTPS)">
-          <source xml:space="preserve">Secure Web server (HTTPS)</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Secure Web server (HTTPS)</source>
+        <target /></trans-unit>
         <trans-unit id="Server State">
-          <source xml:space="preserve">Server State</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Server State</source>
+        <target /></trans-unit>
         <trans-unit id="Servlet">
-          <source xml:space="preserve">Servlet</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Servlet</source>
+        <target /></trans-unit>
         <trans-unit id="Swap">
-          <source xml:space="preserve">Swap</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Swap</source>
+        <target /></trans-unit>
         <trans-unit id="Swap Usage">
-          <source xml:space="preserve">Swap Usage</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Swap Usage</source>
+        <target /></trans-unit>
         <trans-unit id="TCP Check">
-          <source xml:space="preserve">TCP Check</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>TCP Check</source>
+        <target /></trans-unit>
         <trans-unit id="TCP Connections by State">
-          <source xml:space="preserve">TCP Connections by State</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>TCP Connections by State</source>
+        <target /></trans-unit>
         <trans-unit id="TNS Ping">
-          <source xml:space="preserve">TNS Ping</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>TNS Ping</source>
+        <target /></trans-unit>
         <trans-unit id="Table Extents">
-          <source xml:space="preserve">Table Extents</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Table Extents</source>
+        <target /></trans-unit>
         <trans-unit id="Tablespace Usage">
-          <source xml:space="preserve">Tablespace Usage</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Tablespace Usage</source>
+        <target /></trans-unit>
         <trans-unit id="Threads Running">
-          <source xml:space="preserve">Threads Running</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Threads Running</source>
+        <target /></trans-unit>
         <trans-unit id="UDP Check">
-          <source xml:space="preserve">UDP Check</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>UDP Check</source>
+        <target /></trans-unit>
         <trans-unit id="Uptime">
-          <source xml:space="preserve">Uptime</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Uptime</source>
+        <target /></trans-unit>
         <trans-unit id="Uptime (SNMP)">
-          <source xml:space="preserve">Uptime (SNMP)</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Uptime (SNMP)</source>
+        <target /></trans-unit>
         <trans-unit id="Users">
-          <source xml:space="preserve">Users</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Users</source>
+        <target /></trans-unit>
         <trans-unit id="Virtual Memory">
-          <source xml:space="preserve">Virtual Memory</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Virtual Memory</source>
+        <target /></trans-unit>
         <trans-unit id="Web server (HTTP)">
-          <source xml:space="preserve">Web server (HTTP)</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Web server (HTTP)</source>
+        <target /></trans-unit>
         <!-- Kickstart Install Types -->
         <trans-unit id="Red Hat Enterprise Linux 4">
-          <source xml:space="preserve">Red Hat Enterprise Linux 4</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Red Hat Enterprise Linux 4</source>
+        <target /></trans-unit>
         <trans-unit id="Red Hat Enterprise Linux 3">
-          <source xml:space="preserve">Red Hat Enterprise Linux 3</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Red Hat Enterprise Linux 3</source>
+        <target /></trans-unit>
         <trans-unit id="Red Hat Enterprise Linux 2.1">
-          <source xml:space="preserve">Red Hat Enterprise Linux 2.1</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Red Hat Enterprise Linux 2.1</source>
+        <target /></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
         <trans-unit id="kickstart.state.created">
-          <source xml:space="preserve">Autoinstallation session created but has not yet been used.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Autoinstallation session created but has not yet been used.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.deployed">
-          <source xml:space="preserve">Files required for autoinstallation action have been installed.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Files required for autoinstallation action have been installed.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.injected">
-          <source xml:space="preserve">The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.restarted">
-          <source xml:space="preserve">The system has been restarted in order to begin the autoinstallation process.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>The system has been restarted in order to begin the autoinstallation process.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.configuration_accessed">
-          <source xml:space="preserve">The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.started">
-          <source xml:space="preserve">The initial files required for autoinstallation have been downloaded.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>The initial files required for autoinstallation have been downloaded.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.in_progress">
-          <source xml:space="preserve">The system is downloading the RPMs required to install.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>The system is downloading the RPMs required to install.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.registered">
-          <source xml:space="preserve">The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.package_synch">
-          <source xml:space="preserve">Package synchronization in progress.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Package synchronization in progress.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.package_synch_scheduled">
-          <source xml:space="preserve">Package synchronization scheduled.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Package synchronization scheduled.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.configuration_deploy">
-          <source xml:space="preserve">Configuration files are being deployed.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Configuration files are being deployed.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.complete">
-          <source xml:space="preserve">Autoinstallation complete.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Autoinstallation complete.</source>
+        <target /></trans-unit>
         <trans-unit id="kickstart.state.failed">
-          <source xml:space="preserve">Autoinstallation failed.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Autoinstallation failed.</source>
+        <target /></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
         <trans-unit id="error.unsupported_db_min">
-          <source xml:space="preserve">Running postgresql {0} is not supported. Minimal required version is {1}.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
+        <target /></trans-unit>
         <trans-unit id="error.unsupported_db_max">
-          <source xml:space="preserve">Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
+        <target /></trans-unit>
         <trans-unit id="error.unsupported_db_migrate">
-          <source xml:space="preserve">Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
+        <target /></trans-unit>
         <trans-unit id="error.unfinished_schema_upgrade">
-          <source xml:space="preserve">Database schema upgrade in progress!</source>
-        <target xml:space="preserve" /></trans-unit>
+          <source>Database schema upgrade in progress!</source>
+        <target /></trans-unit>
       </group>
     </body>
   </file>

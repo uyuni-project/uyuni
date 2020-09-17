@@ -3,528 +3,528 @@
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
       <trans-unit id="common.nav.overview">
-        <source xml:space="preserve">Overview</source>
+        <source>Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">概要</target>
+        <target>概要</target>
       </trans-unit>
       <trans-unit id="common.nav.systems">
-        <source xml:space="preserve">Systems</source>
+        <source>Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">システム</target>
+        <target>システム</target>
       </trans-unit>
       <trans-unit id="users.nav.all">
-        <source xml:space="preserve">All</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">すべて</target>
+        <target>すべて</target>
       </trans-unit>
       <trans-unit id="users.nav.active">
-        <source xml:space="preserve">Active</source>
+        <source>Active</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">アクティブ</target>
+        <target>アクティブ</target>
       </trans-unit>
       <trans-unit id="users.nav.disabled">
-        <source xml:space="preserve">Deactivated</source>
+        <source>Deactivated</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">停止</target>
+        <target>停止</target>
       </trans-unit>
       <trans-unit id="User">
-        <source xml:space="preserve">User</source>
+        <source>User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ユーザー</target>
+        <target>ユーザー</target>
       </trans-unit>
       <trans-unit id="action.nav.backout">
-        <source xml:space="preserve">Back Out Patches</source>
+        <source>Back Out Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">バックアウトパッチ</target>
+        <target>バックアウトパッチ</target>
       </trans-unit>
       <trans-unit id="action.nav.install">
-        <source xml:space="preserve">Install Patches</source>
+        <source>Install Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">パッチのインストール</target>
+        <target>パッチのインストール</target>
       </trans-unit>
       <trans-unit id="virtualization.entitlements">
-        <source xml:space="preserve">Virtualization Entitlements</source>
+        <source>Virtualization Entitlements</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Subscription Management Menu</context>
         </context-group>
-        <target xml:space="preserve">Virtualization エンタイトルメント</target>
+        <target>Virtualization エンタイトルメント</target>
       </trans-unit>
       <trans-unit id="guest.limited.hosts">
-        <source xml:space="preserve">Virtualization Hosts</source>
+        <source>Virtualization Hosts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target xml:space="preserve">Virtualization ホスト</target>
+        <target>Virtualization ホスト</target>
       </trans-unit>
       <trans-unit id="guests.without.hosts">
-        <source xml:space="preserve">Guests Without Hosts</source>
+        <source>Guests Without Hosts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target xml:space="preserve">ホストなしのゲスト</target>
+        <target>ホストなしのゲスト</target>
       </trans-unit>
       <trans-unit id="Virtualization">
-        <source xml:space="preserve">Virtualization</source>
+        <source>Virtualization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">仮想化</target>
+        <target>仮想化</target>
       </trans-unit>
       <trans-unit id="Virtual Systems">
-        <source xml:space="preserve">Virtual Systems</source>
+        <source>Virtual Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">仮想システム</target>
+        <target>仮想システム</target>
       </trans-unit>
       <trans-unit id="Bare Metal Systems">
-        <source xml:space="preserve">Unprovisioned Systems</source>
-        <target xml:space="preserve">プロビジョンされていないシステム</target>
+        <source>Unprovisioned Systems</source>
+        <target>プロビジョンされていないシステム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Physical Systems">
-        <source xml:space="preserve">Physical Systems</source>
+        <source>Physical Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">物理システム</target>
+        <target>物理システム</target>
       </trans-unit>
       <trans-unit id="Duplicate Systems">
-        <source xml:space="preserve">Duplicate Systems</source>
+        <source>Duplicate Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">重複するシステム</target>
+        <target>重複するシステム</target>
       </trans-unit>
       <trans-unit id="Requiring Reboot">
-        <source xml:space="preserve">Requiring Reboot</source>
+        <source>Requiring Reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">再起動が必要</target>
+        <target>再起動が必要</target>
       </trans-unit>
       <trans-unit id="Extra Packages">
-        <source xml:space="preserve">Non Compliant</source>
+        <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">非準拠</target>
+        <target>非準拠</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips">
-        <source xml:space="preserve">Duplicate IP Address</source>
+        <source>Duplicate IP Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">重複する IP アドレス</target>
+        <target>重複する IP アドレス</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ip6s">
-        <source xml:space="preserve">Duplicate IPv6 Address</source>
+        <source>Duplicate IPv6 Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">重複する IPv6 アドレス</target>
+        <target>重複する IPv6 アドレス</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.mac_address">
-        <source xml:space="preserve">Duplicate MAC Address</source>
+        <source>Duplicate MAC Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">重複する MAC アドレス</target>
+        <target>重複する MAC アドレス</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.hostname">
-        <source xml:space="preserve">Duplicate Hostname</source>
+        <source>Duplicate Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">重複するホスト名</target>
+        <target>重複するホスト名</target>
       </trans-unit>
       <trans-unit id="System Currency">
-        <source xml:space="preserve">System Currency</source>
+        <source>System Currency</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">システムの状態</target>
+        <target>システムの状態</target>
       </trans-unit>
       <trans-unit id="software.crashes">
-        <source xml:space="preserve">Software Crashes</source>
+        <source>Software Crashes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ソフトウェアのクラッシュ</target>
+        <target>ソフトウェアのクラッシュ</target>
       </trans-unit>
       <trans-unit id="software.crashes.overview">
-        <source xml:space="preserve">Software Crashes Overview</source>
+        <source>Software Crashes Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ソフトウェアクラッシュの概要</target>
+        <target>ソフトウェアクラッシュの概要</target>
       </trans-unit>
       <trans-unit id="software.crashes.overview.summary">
-        <source xml:space="preserve">The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
+        <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">以下の表は、お使いのシステムで生じたソフトウェアのクラッシュを UUID ごとに分類した一覧です。同一のクラッシュ UUID は、ソフトウェアクラッシュの同様または同一のタイプを示している可能性があります。</target>
+        <target>以下の表は、お使いのシステムで生じたソフトウェアのクラッシュを UUID ごとに分類した一覧です。同一のクラッシュ UUID は、ソフトウェアクラッシュの同様または同一のタイプを示している可能性があります。</target>
       </trans-unit>
       <trans-unit id="software.crashes.by.uuid.summary">
-        <source xml:space="preserve">The table below lists systems where a crash with the above UUID occurred.</source>
+        <source>The table below lists systems where a crash with the above UUID occurred.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">以下の表は、上記の UUID のクラッシュが発生したシステムの一覧です。</target>
+        <target>以下の表は、上記の UUID のクラッシュが発生したシステムの一覧です。</target>
       </trans-unit>
       <trans-unit id="software.crashes.uuid.header">
-        <source xml:space="preserve">Summary for crashes with identical UUID</source>
+        <source>Summary for crashes with identical UUID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">同一 UUID のクラッシュの要約</target>
+        <target>同一 UUID のクラッシュの要約</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config">
-        <source xml:space="preserve">Configuration</source>
+        <source>Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">設定</target>
+        <target>設定</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.deploy">
-        <source xml:space="preserve">Deploy Files</source>
+        <source>Deploy Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ファイルの配備</target>
+        <target>ファイルの配備</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.diff">
-        <source xml:space="preserve">Compare Files</source>
+        <source>Compare Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ファイルの比較</target>
+        <target>ファイルの比較</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.subscribe">
-        <source xml:space="preserve">Subscribe to Channels</source>
+        <source>Subscribe to Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">チャンネルにサブスクライブ</target>
+        <target>チャンネルにサブスクライブ</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.unsubscribe">
-        <source xml:space="preserve">Unsubscribe from Channels</source>
+        <source>Unsubscribe from Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">チャンネルのサブスクライブを中止</target>
+        <target>チャンネルのサブスクライブを中止</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.enable">
-        <source xml:space="preserve">Enable Configuration</source>
+        <source>Enable Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">設定を有効にする</target>
+        <target>設定を有効にする</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status">
-        <source xml:space="preserve">Task Log</source>
-        <target xml:space="preserve">タスクログ</target>
+        <source>Task Log</source>
+        <target>タスクログ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.status.inprogress">
-        <source xml:space="preserve">In Progress</source>
+        <source>In Progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">実行中</target>
+        <target>実行中</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.completed">
-        <source xml:space="preserve">Completed</source>
+        <source>Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">完了</target>
+        <target>完了</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.all">
-        <source xml:space="preserve">All</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">すべて</target>
+        <target>すべて</target>
       </trans-unit>
       <trans-unit id="channel.nav.all">
-        <source xml:space="preserve">All</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">すべてのチャンネル</target>
+        <target>すべてのチャンネル</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared">
-        <source xml:space="preserve">Shared</source>
+        <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">共有チャンネル</target>
+        <target>共有チャンネル</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source xml:space="preserve">@@VENDOR_NAME@@</source>
+        <source>@@VENDOR_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">@@VENDOR_NAME@@</target>
+        <target>@@VENDOR_NAME@@</target>
       </trans-unit>
       <trans-unit id="channel.nav.popular">
-        <source xml:space="preserve">Popular</source>
+        <source>Popular</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">利用が多いチャンネル</target>
+        <target>利用が多いチャンネル</target>
       </trans-unit>
       <trans-unit id="channel.nav.custom">
-        <source xml:space="preserve">My Channels</source>
+        <source>My Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">マイチャンネル</target>
+        <target>マイチャンネル</target>
       </trans-unit>
       <trans-unit id="channel.nav.retired">
-        <source xml:space="preserve">Retired</source>
+        <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">リタイアチャンネル</target>
+        <target>リタイアチャンネル</target>
       </trans-unit>
       <trans-unit id="config.nav.managed">
-        <source xml:space="preserve">Managed</source>
+        <source>Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">管理システム</target>
+        <target>管理システム</target>
       </trans-unit>
       <trans-unit id="config.nav.target">
-        <source xml:space="preserve">Target</source>
+        <source>Target</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">目的のシステム</target>
+        <target>目的のシステム</target>
       </trans-unit>
       <trans-unit id="config.nav.config">
-        <source xml:space="preserve">Configuration</source>
+        <source>Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">設定</target>
+        <target>設定</target>
       </trans-unit>
       <trans-unit id="config.nav.channels">
-        <source xml:space="preserve">Channels</source>
+        <source>Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">設定チャンネル</target>
+        <target>設定チャンネル</target>
       </trans-unit>
       <trans-unit id="config.nav.files">
-        <source xml:space="preserve">Files</source>
+        <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">設定ファイル</target>
+        <target>設定ファイル</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles">
-        <source xml:space="preserve">Centrally Managed</source>
+        <source>Centrally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">中央管理ファイル</target>
+        <target>中央管理ファイル</target>
       </trans-unit>
       <trans-unit id="config.nav.localfiles">
-        <source xml:space="preserve">Locally Managed</source>
+        <source>Locally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ローカル管理ファイル</target>
+        <target>ローカル管理ファイル</target>
       </trans-unit>
       <!-- ConfigChannel details navigation -->
       <trans-unit id="configchannel.nav.overview">
-        <source xml:space="preserve">Overview</source>
+        <source>Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">概要</target>
+        <target>概要</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.list">
-        <source xml:space="preserve">List/Remove Files</source>
+        <source>List/Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルの一覧表示/削除</target>
+        <target>ファイルの一覧表示/削除</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add">
-        <source xml:space="preserve">Add Files</source>
+        <source>Add Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルの追加</target>
+        <target>ファイルの追加</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.upload">
-        <source xml:space="preserve">Upload File</source>
+        <source>Upload File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルのアップロード</target>
+        <target>ファイルのアップロード</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.import">
-        <source xml:space="preserve">Import Files</source>
+        <source>Import Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルのインポート</target>
+        <target>ファイルのインポート</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.create">
-        <source xml:space="preserve">Create File</source>
+        <source>Create File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルの作成</target>
+        <target>ファイルの作成</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.deploy">
-        <source xml:space="preserve">Deploy Files</source>
+        <source>Deploy Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルの配備</target>
+        <target>ファイルの配備</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems">
-        <source xml:space="preserve">Systems</source>
+        <source>Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target xml:space="preserve">システム</target>
+        <target>システム</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.subscribed">
-        <source xml:space="preserve">Subscribed Systems</source>
+        <source>Subscribed Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target xml:space="preserve">サブスクライブしているシステム</target>
+        <target>サブスクライブしているシステム</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.target">
-        <source xml:space="preserve">Target Systems</source>
+        <source>Target Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target xml:space="preserve">目的のシステム</target>
+        <target>目的のシステム</target>
       </trans-unit>
       <!-- END config channel nav -->
       <!-- config file nav -->
       <trans-unit id="configfile.nav.details">
-        <source xml:space="preserve">Details</source>
+        <source>Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target xml:space="preserve">詳細</target>
+        <target>詳細</target>
       </trans-unit>
       <trans-unit id="configfile.nav.revisions">
-        <source xml:space="preserve">Manage Revisions</source>
+        <source>Manage Revisions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileRevisions.do</context>
         </context-group>
-        <target xml:space="preserve">リビジョンの管理</target>
+        <target>リビジョンの管理</target>
       </trans-unit>
       <trans-unit id="configfile.nav.deploy">
-        <source xml:space="preserve">Deploy File</source>
+        <source>Deploy File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDeploy.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルの配備</target>
+        <target>ファイルの配備</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy">
-        <source xml:space="preserve">Copy File</source>
+        <source>Copy File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルのコピー</target>
+        <target>ファイルのコピー</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.central">
-        <source xml:space="preserve">Copy To Centrally-Managed</source>
+        <source>Copy To Centrally-Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">中央管理にコピーする</target>
+        <target>中央管理にコピーする</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.local">
-        <source xml:space="preserve">Copy To Locally-Managed</source>
+        <source>Copy To Locally-Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">ローカル管理にコピーする</target>
+        <target>ローカル管理にコピーする</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.sandbox">
-        <source xml:space="preserve">Copy To System Sandbox</source>
+        <source>Copy To System Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">システムサンドボックスにコピーする</target>
+        <target>システムサンドボックスにコピーする</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare">
-        <source xml:space="preserve">Compare File</source>
+        <source>Compare File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">ファイルの比較</target>
+        <target>ファイルの比較</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.deployed">
-        <source xml:space="preserve">Deployed Files</source>
+        <source>Deployed Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">配備されたファイル</target>
+        <target>配備されたファイル</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.revision">
-        <source xml:space="preserve">Other Revisions</source>
+        <source>Other Revisions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">その他のリビジョン</target>
+        <target>その他のリビジョン</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.copy">
-        <source xml:space="preserve">Other Copies</source>
+        <source>Other Copies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">その他のコピー</target>
+        <target>その他のコピー</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.file">
-        <source xml:space="preserve">Other Files</source>
+        <source>Other Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">その他のファイル</target>
+        <target>その他のファイル</target>
       </trans-unit>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
         <trans-unit id="nav.system.audit.list_scans">
-          <source xml:space="preserve">List Scans</source> <target xml:space="preserve">スキャンの一覧</target>
+          <source>List Scans</source> <target>スキャンの一覧</target>
         </trans-unit>
         <trans-unit id="nav.system.audit.schedule">
-          <source xml:space="preserve">Schedule</source> <target xml:space="preserve">スケジュール</target>
+          <source>Schedule</source> <target>スケジュール</target>
         </trans-unit>
       </group>
       <!-- SDC Config file navigation-->
@@ -533,36 +533,36 @@
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         <trans-unit id="nav.sdc.config.overview">
-          <source xml:space="preserve">Overview</source> <target xml:space="preserve">概要</target>
+          <source>Overview</source> <target>概要</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_modify_files">
-          <source xml:space="preserve">View/Modify Files</source> <target xml:space="preserve">ファイルの表示/変更</target>
+          <source>View/Modify Files</source> <target>ファイルの表示/変更</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_files">
-          <source xml:space="preserve">View Files</source> <target xml:space="preserve">ファイルの表示</target></trans-unit>
+          <source>View Files</source> <target>ファイルの表示</target></trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
-          <source xml:space="preserve">Compare Files</source> <target xml:space="preserve">ファイルの比較</target>
+          <source>Compare Files</source> <target>ファイルの比較</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.manage_channels">
-          <source xml:space="preserve">Manage Configuration Channels</source> <target xml:space="preserve">設定チャンネルの管理</target>
+          <source>Manage Configuration Channels</source> <target>設定チャンネルの管理</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.list_unsubscribe_channels">
-          <source xml:space="preserve">List/Unsubscribe from Channels</source> <target xml:space="preserve">チャンネルの一覧表示/サブスクライブの中止</target>
+          <source>List/Unsubscribe from Channels</source> <target>チャンネルの一覧表示/サブスクライブの中止</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.subscribe_channels">
-          <source xml:space="preserve">Subscribe to Channels</source> <target xml:space="preserve">チャンネルにサブスクライブ</target>
+          <source>Subscribe to Channels</source> <target>チャンネルにサブスクライブ</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.rank_channels">
-          <source xml:space="preserve">View/Modify Rankings</source> <target xml:space="preserve">ランキングの表示/変更</target>
+          <source>View/Modify Rankings</source> <target>ランキングの表示/変更</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.centrally_managed_files">
-          <source xml:space="preserve">Centrally-Managed Files</source> <target xml:space="preserve">中央管理ファイル</target>
+          <source>Centrally-Managed Files</source> <target>中央管理ファイル</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.locally_managed_files">
-          <source xml:space="preserve">Locally-Managed Files</source> <target xml:space="preserve">ローカル管理ファイル</target>
+          <source>Locally-Managed Files</source> <target>ローカル管理ファイル</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.sandbox_managed_files">
-          <source xml:space="preserve">Local Sandbox</source> <target xml:space="preserve">ローカルのサンドボックス</target>
+          <source>Local Sandbox</source> <target>ローカルのサンドボックス</target>
         </trans-unit>
       </group>
       <!-- END config file nav -->
@@ -571,600 +571,600 @@
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
         <trans-unit id="system.detail.nav.list">
-          <source xml:space="preserve">List</source> <target xml:space="preserve">一覧</target>
+          <source>List</source> <target>一覧</target>
         </trans-unit>
         <trans-unit id="system.detail.nav.remove">
-          <source xml:space="preserve">List / Remove</source> <target xml:space="preserve">一覧表示 / 削除</target>
+          <source>List / Remove</source> <target>一覧表示 / 削除</target>
         </trans-unit>
       </group>
       <trans-unit id="Add">
-        <source xml:space="preserve">Add</source>
+        <source>Add</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">追加</target>
+        <target>追加</target>
       </trans-unit>
       <trans-unit id="Verify">
-        <source xml:space="preserve">Verify</source>
+        <source>Verify</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">検証</target>
+        <target>検証</target>
       </trans-unit>
       <trans-unit id="Snapshots">
-        <source xml:space="preserve">Snapshots</source>
+        <source>Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">スナップショット</target>
+        <target>スナップショット</target>
       </trans-unit>
       <trans-unit id="Installation Guide">
-        <source xml:space="preserve">Installation Guide</source>
+        <source>Installation Guide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">インストールガイド</target>
+        <target>インストールガイド</target>
       </trans-unit>
       <trans-unit id="Software">
-        <source xml:space="preserve">Software</source>
+        <source>Software</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ソフトウェア</target>
+        <target>ソフトウェア</target>
       </trans-unit>
       <trans-unit id="Provisioning">
-        <source xml:space="preserve">Provisioning</source>
+        <source>Provisioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-        <target xml:space="preserve">プロビジョニング</target>
+        <target>プロビジョニング</target>
       </trans-unit>
       <trans-unit id="Misc">
-        <source xml:space="preserve">Misc</source>
+        <source>Misc</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">その他</target>
+        <target>その他</target>
       </trans-unit>
       <trans-unit id="Snapshot Tags">
-        <source xml:space="preserve">Snapshot Tags</source>
+        <source>Snapshot Tags</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">スナップショットタグ</target>
+        <target>スナップショットタグ</target>
       </trans-unit>
       <trans-unit id="Session Status">
-        <source xml:space="preserve">Session Status</source>
+        <source>Session Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">セッションの状態</target>
+        <target>セッションの状態</target>
       </trans-unit>
       <trans-unit id="Sandbox">
-        <source xml:space="preserve">Sandbox</source>
+        <source>Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">サンドボックス</target>
+        <target>サンドボックス</target>
       </trans-unit>
       <trans-unit id="Spacewalk">
-        <source xml:space="preserve">@@PRODUCT_NAME@@</source>
+        <source>@@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">@@PRODUCT_NAME@@</target>
+        <target>@@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration">
-        <source xml:space="preserve">Manager Configuration</source>
+        <source>Manager Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">@@PRODUCT_NAME@@ 設定</target>
+        <target>@@PRODUCT_NAME@@ 設定</target>
       </trans-unit>
       <trans-unit id="ISS Configuration">
-        <source xml:space="preserve">ISS Configuration</source>
+        <source>ISS Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ISS 設定</target>
+        <target>ISS 設定</target>
       </trans-unit>
       <trans-unit id="External Authentication">
-        <source xml:space="preserve">External Authentication</source>
-        <target xml:space="preserve">外部認証</target>
+        <source>External Authentication</source>
+        <target>外部認証</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Group Role Mapping">
-        <source xml:space="preserve">Group Role Mapping</source>
-        <target xml:space="preserve">グループと役割のマッピング</target>
+        <source>Group Role Mapping</source>
+        <target>グループと役割のマッピング</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Configuration">
-        <source xml:space="preserve">System Group Configuration</source>
-        <target xml:space="preserve">システムグループの設定</target>
+        <source>System Group Configuration</source>
+        <target>システムグループの設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Master Setup">
-        <source xml:space="preserve">Master Setup</source>
+        <source>Master Setup</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">マスターセットアップ</target>
+        <target>マスターセットアップ</target>
       </trans-unit>
       <trans-unit id="Slave Setup">
-        <source xml:space="preserve">Slave Setup</source>
+        <source>Slave Setup</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">スレーブセットアップ</target>
+        <target>スレーブセットアップ</target>
       </trans-unit>
       <trans-unit id="Remote Command">
-        <source xml:space="preserve">Remote Command</source>
+        <source>Remote Command</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">リモートコマンド</target>
+        <target>リモートコマンド</target>
       </trans-unit>
       <trans-unit id="Power Management Configuration">
-        <source xml:space="preserve">Power Management Configuration</source>
-        <target xml:space="preserve">電源管理の設定</target>
+        <source>Power Management Configuration</source>
+        <target>電源管理の設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Operations">
-        <source xml:space="preserve">Power Management Operations</source>
-        <target xml:space="preserve">電源管理の操作</target>
+        <source>Power Management Operations</source>
+        <target>電源管理の操作</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tag Systems">
-        <source xml:space="preserve">Tag Systems</source>
+        <source>Tag Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">システムにタグを付ける</target>
+        <target>システムにタグを付ける</target>
       </trans-unit>
       <trans-unit id="Reactivation">
-        <source xml:space="preserve">Reactivation</source>
+        <source>Reactivation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">再アクティベーション</target>
+        <target>再アクティベーション</target>
       </trans-unit>
       <trans-unit id="Properties">
-        <source xml:space="preserve">Properties</source>
+        <source>Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">プロパティ</target>
+        <target>プロパティ</target>
       </trans-unit>
       <trans-unit id="Pending">
-        <source xml:space="preserve">Pending</source>
+        <source>Pending</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">待機中</target>
+        <target>待機中</target>
       </trans-unit>
       <trans-unit id="Patches">
-        <source xml:space="preserve">Patches</source>
+        <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">パッチ</target>
+        <target>パッチ</target>
       </trans-unit>
       <trans-unit id="Patch List">
-        <source xml:space="preserve">Patch List</source>
-        <target xml:space="preserve">パッチリスト</target>
+        <source>Patch List</source>
+        <target>パッチリスト</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Patch Clusters">
-        <source xml:space="preserve">Patch Clusters</source>
+        <source>Patch Clusters</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">パッチクラスター</target>
+        <target>パッチクラスター</target>
       </trans-unit>
       <trans-unit id="Notes">
-        <source xml:space="preserve">Notes</source>
+        <source>Notes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">メモ</target>
+        <target>メモ</target>
       </trans-unit>
       <trans-unit id="Managed Files">
-        <source xml:space="preserve">Managed Files</source>
+        <source>Managed Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">管理ファイル</target>
+        <target>管理ファイル</target>
       </trans-unit>
       <trans-unit id="List / Remove">
-        <source xml:space="preserve">List / Remove</source>
+        <source>List / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">一覧表示/削除</target>
+        <target>一覧表示/削除</target>
       </trans-unit>
       <trans-unit id="Add / Remove">
-        <source xml:space="preserve">Add / Remove</source>
+        <source>Add / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">追加/削除</target>
+        <target>追加/削除</target>
       </trans-unit>
       <trans-unit id="List / Leave">
-        <source xml:space="preserve">List / Leave</source>
+        <source>List / Leave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">一覧表示/終了</target>
+        <target>一覧表示/終了</target>
       </trans-unit>
       <trans-unit id="History">
-        <source xml:space="preserve">History</source>
+        <source>History</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">履歴</target>
+        <target>履歴</target>
       </trans-unit>
       <trans-unit id="Hardware">
-        <source xml:space="preserve">Hardware</source>
+        <source>Hardware</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ハードウェア</target>
+        <target>ハードウェア</target>
       </trans-unit>
       <trans-unit id="Diff">
-        <source xml:space="preserve">Diff</source>
+        <source>Diff</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">差分</target>
+        <target>差分</target>
       </trans-unit>
       <trans-unit id="Custom Info">
-        <source xml:space="preserve">Custom Info</source>
+        <source>Custom Info</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">カスタム情報</target>
+        <target>カスタム情報</target>
       </trans-unit>
       <trans-unit id="Configuration">
-        <source xml:space="preserve">Configuration</source>
+        <source>Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">設定</target>
+        <target>設定</target>
       </trans-unit>
       <trans-unit id="Config Files">
-        <source xml:space="preserve">Config Files</source>
+        <source>Config Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">設定ファイル</target>
+        <target>設定ファイル</target>
       </trans-unit>
       <trans-unit id="Join">
-        <source xml:space="preserve">Join</source>
+        <source>Join</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">参加</target>
+        <target>参加</target>
       </trans-unit>
       <trans-unit id="Rollback">
-        <source xml:space="preserve">Rollback</source>
+        <source>Rollback</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ロールバック</target>
+        <target>ロールバック</target>
       </trans-unit>
       <trans-unit id="Supported">
-        <source xml:space="preserve">Supported</source>
+        <source>Supported</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">対応</target>
+        <target>対応</target>
       </trans-unit>
       <trans-unit id="Retired">
-        <source xml:space="preserve">Retired</source>
+        <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">リタイア</target>
+        <target>リタイア</target>
       </trans-unit>
       <trans-unit id="Connection">
-        <source xml:space="preserve">Connection</source>
+        <source>Connection</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">接続</target>
+        <target>接続</target>
       </trans-unit>
       <trans-unit id="Activation">
-        <source xml:space="preserve">Activation</source>
+        <source>Activation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">アクティベーション</target>
+        <target>アクティベーション</target>
       </trans-unit>
       <trans-unit id="Systems Using Proxy">
-        <source xml:space="preserve">Systems Using Proxy</source>
+        <source>Systems Using Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">Proxy 使用のシステム</target>
+        <target>Proxy 使用のシステム</target>
       </trans-unit>
       <trans-unit id="Help Desk">
-        <source xml:space="preserve">Help Desk</source>
+        <source>Help Desk</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ヘルプデスク</target>
+        <target>ヘルプデスク</target>
       </trans-unit>
       <trans-unit id="Kickstart Details">
-        <source xml:space="preserve">Autoinstallation Details</source>
+        <source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">キックスタートの詳細</target>
+        <target>キックスタートの詳細</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.edit.nav">
-        <source xml:space="preserve">Edit</source>
+        <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target xml:space="preserve">編集</target>
+        <target>編集</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.nav">
-        <source xml:space="preserve">Variables</source>
+        <source>Variables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target xml:space="preserve">変数</target>
+        <target>変数</target>
       </trans-unit>
       <trans-unit id="System Details">
-        <source xml:space="preserve">System Details</source>
+        <source>System Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">システムの詳細</target>
+        <target>システムの詳細</target>
       </trans-unit>
       <trans-unit id="Scripts">
-        <source xml:space="preserve">Scripts</source>
+        <source>Scripts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">スクリプト</target>
+        <target>スクリプト</target>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source xml:space="preserve">Autoinstallation File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">キックスタートファイル</target>
+        <target>キックスタートファイル</target>
       </trans-unit>
       <trans-unit id="Operating System">
-        <source xml:space="preserve">Operating System</source>
+        <source>Operating System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">オペレーティングシステム</target>
+        <target>オペレーティングシステム</target>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source xml:space="preserve">Unprovisioned Autoinstallation</source>
+        <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">ベアメタルキックスタート</target>
+        <target>ベアメタルキックスタート</target>
       </trans-unit>
       <trans-unit id="Bare Metal">
-        <source xml:space="preserve">Unprovisioned</source>
+        <source>Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
-        <target xml:space="preserve">ベアメタル</target>
+        <target>ベアメタル</target>
       </trans-unit>
       <trans-unit id="Advanced Options">
-        <source xml:space="preserve">Advanced Options</source>
+        <source>Advanced Options</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">高度なオプション</target>
+        <target>高度なオプション</target>
       </trans-unit>
       <trans-unit id="Locale">
-        <source xml:space="preserve">Locale</source>
+        <source>Locale</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">ロケール</target>
+        <target>ロケール</target>
       </trans-unit>
       <trans-unit id="Partitioning">
-        <source xml:space="preserve">Partitioning</source>
+        <source>Partitioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">パーティション作成</target>
+        <target>パーティション作成</target>
       </trans-unit>
       <trans-unit id="GPG_SSL">
-        <source xml:space="preserve">GPG &amp; SSL</source>
+        <source>GPG &amp; SSL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">GPG &amp; SSL</target>
+        <target>GPG &amp; SSL</target>
       </trans-unit>
       <trans-unit id="Troubleshooting">
-        <source xml:space="preserve">Troubleshooting</source>
+        <source>Troubleshooting</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">トラブルシューティング</target>
+        <target>トラブルシューティング</target>
       </trans-unit>
       <trans-unit id="Package Groups">
-        <source xml:space="preserve">Package Groups</source>
+        <source>Package Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
-        <target xml:space="preserve">パッケージグループ</target>
+        <target>パッケージグループ</target>
       </trans-unit>
       <trans-unit id="Package Profiles">
-        <source xml:space="preserve">Package Profiles</source>
+        <source>Package Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
-        <target xml:space="preserve">パッケージプロファイル</target>
+        <target>パッケージプロファイル</target>
       </trans-unit>
       <trans-unit id="Critical">
-        <source xml:space="preserve">Critical</source>
+        <source>Critical</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target xml:space="preserve">重大</target>
+        <target>重大</target>
       </trans-unit>
       <trans-unit id="Unknown">
-        <source xml:space="preserve">Unknown</source>
+        <source>Unknown</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target xml:space="preserve">不明</target>
+        <target>不明</target>
       </trans-unit>
       <trans-unit id="Recently Registered">
-        <source xml:space="preserve">Recently Registered</source>
+        <source>Recently Registered</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target xml:space="preserve">最近登録</target>
+        <target>最近登録</target>
       </trans-unit>
       <trans-unit id="Target Systems">
-        <source xml:space="preserve">Target Systems</source>
+        <source>Target Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">目的のシステム</target>
+        <target>目的のシステム</target>
       </trans-unit>
       <trans-unit id="Admins">
-        <source xml:space="preserve">Admins</source>
+        <source>Admins</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/*.do</context>
         </context-group>
-        <target xml:space="preserve">管理者</target>
+        <target>管理者</target>
       </trans-unit>
       <trans-unit id="Subscribed Systems">
-        <source xml:space="preserve">Subscribed Systems</source>
+        <source>Subscribed Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">サブスクライブしているシステム</target>
+        <target>サブスクライブしているシステム</target>
       </trans-unit>
       <trans-unit id="Repositories">
-        <source xml:space="preserve">Repositories</source>
+        <source>Repositories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target xml:space="preserve">リポジトリ</target>
+        <target>リポジトリ</target>
       </trans-unit>
       <trans-unit id="Managers">
-        <source xml:space="preserve">Managers</source>
+        <source>Managers</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">マネージャ</target>
+        <target>マネージャ</target>
       </trans-unit>
       <trans-unit id="Subscribers">
-        <source xml:space="preserve">Subscribers</source>
+        <source>Subscribers</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">サブスクライバー</target>
+        <target>サブスクライバー</target>
       </trans-unit>
       <trans-unit id="Downloads">
-        <source xml:space="preserve">Downloads</source>
+        <source>Downloads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">ダウンロード</target>
+        <target>ダウンロード</target>
       </trans-unit>
       <trans-unit id="License">
-        <source xml:space="preserve">License</source>
+        <source>License</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">ライセンス</target>
+        <target>ライセンス</target>
       </trans-unit>
       <trans-unit id="Sync">
-        <source xml:space="preserve">Sync</source>
+        <source>Sync</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/SyncErrata.do</context>
         </context-group>
-        <target xml:space="preserve">同期</target>
+        <target>同期</target>
       </trans-unit>
       <trans-unit id="Organizations">
-        <source xml:space="preserve">Organizations</source>
+        <source>Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target xml:space="preserve">組織</target>
+        <target>組織</target>
       </trans-unit>
       <trans-unit id="Trusts">
-        <source xml:space="preserve">Trusts</source>
+        <source>Trusts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target xml:space="preserve">信頼</target>
+        <target>信頼</target>
       </trans-unit>
       <trans-unit id="Channels Consumed">
-        <source xml:space="preserve">Channels Consumed</source>
+        <source>Channels Consumed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target xml:space="preserve">使用済みチャンネル</target>
+        <target>使用済みチャンネル</target>
       </trans-unit>
       <trans-unit id="Channels Provided">
-        <source xml:space="preserve">Channels Provided</source>
+        <source>Channels Provided</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target xml:space="preserve">提供チャンネル</target>
+        <target>提供チャンネル</target>
       </trans-unit>
       <trans-unit id="Subscriptions">
-        <source xml:space="preserve">Subscriptions</source>
+        <source>Subscriptions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Subscriptions.do</context>
         </context-group>
-        <target xml:space="preserve">サブスクリプション</target>
+        <target>サブスクリプション</target>
       </trans-unit>
       <!-- SSM NAV -->
       <group>
         <trans-unit id="Child Channels">
-          <source xml:space="preserve">Child Channels</source> <context-group name="ctx">
+          <source>Child Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target xml:space="preserve">子チャンネル</target>
+          <target>子チャンネル</target>
         </trans-unit>
         <trans-unit id="Chat">
-          <source xml:space="preserve">Chat</source> <context-group name="ctx">
+          <source>Chat</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
-          <target xml:space="preserve">チャット</target>
+          <target>チャット</target>
         </trans-unit>
         <trans-unit id="Base Channels">
-          <source xml:space="preserve">Base Channels</source> <context-group name="ctx">
+          <source>Base Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target xml:space="preserve">ベースチャンネル</target>
+          <target>ベースチャンネル</target>
         </trans-unit>
       </group>
       <!-- Activation Keys nav -->
       <group>
         <trans-unit id="activation-keys.nav.activated_systems">
-          <source xml:space="preserve">Activated Systems</source> <context-group name="ctx">
+          <source>Activated Systems</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
-          <target xml:space="preserve">アクティベートしたシステム</target>
+          <target>アクティベートしたシステム</target>
         </trans-unit>
       </group>
       <!-- Main nav -->
@@ -1173,19 +1173,19 @@
           <context context-type="sourcefile">Title bar</context>
         </context-group>
         <trans-unit id="manage">
-          <source xml:space="preserve">Manage</source> <target xml:space="preserve">管理</target>
+          <source>Manage</source> <target>管理</target>
         </trans-unit>
         <trans-unit id="clear">
-          <source xml:space="preserve">Clear</source> <target xml:space="preserve">消去</target>
+          <source>Clear</source> <target>消去</target>
         </trans-unit>
       </group>
       <trans-unit id="Deployment">
-        <source xml:space="preserve">Deployment</source>
-        <target xml:space="preserve">デプロイメント</target>
+        <source>Deployment</source>
+        <target>デプロイメント</target>
       </trans-unit>
       <trans-unit id="Image List">
-        <source xml:space="preserve">Image List</source>
-        <target xml:space="preserve">イメージリスト</target>
+        <source>Image List</source>
+        <target>イメージリスト</target>
       </trans-unit>
     </body>
   </file>
