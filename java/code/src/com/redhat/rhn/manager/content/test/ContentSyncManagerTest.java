@@ -80,7 +80,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.io.FileUtils;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -786,6 +785,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertContains(avChanLanbels, "sles12-ltss-updates-x86_64");
         assertContains(avChanLanbels, "sle-ha-geo12-debuginfo-pool-x86_64");
         assertContains(avChanLanbels, "sle-we12-updates-x86_64");
+        // Installer Updates is optional and not in repositories.json
+        assertFalse("unexpected optional channel found", avChanLanbels.contains("sles12-installer-updates-x86_64"));
         // Storage 2 is not in repositories.json to emulate no subscription
         assertFalse("Storage should not be avaliable", avChanLanbels.contains("suse-enterprise-storage-2-updates-x86_64"));
     }
@@ -1222,6 +1223,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<MgrSyncChannelDto> channels = csm.listChannels();
         boolean foundPool = false;
         boolean foundDebugPool = false;
+        boolean foundInstallerUpdate = false;
         for (MgrSyncChannelDto c : channels) {
             if (c.getLabel().equals("sles12-pool-x86_64")) {
                 assertEquals("https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/", c.getSourceUrl());
@@ -1233,12 +1235,17 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
                 foundDebugPool = true;
             }
+            else if (c.getLabel().equals("sles12-installer-updates-x86_64")) {
+                assertEquals("https://updates.suse.com/SUSE/Updates/SLE-SERVER-INSTALLER/12/x86_64/update/", c.getSourceUrl());
+                foundInstallerUpdate = true;
+            }
             else if (c.getLabel().startsWith("suse-enterprise-storage")) {
                 assertTrue("Storage Channels should not be listed", false);
             }
         }
         assertTrue("Pool channel not found", foundPool);
         assertTrue("Debuginfo Pool channel not found", foundDebugPool);
+        assertFalse("Unexpected Installer Update channel found", foundInstallerUpdate);
         Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream().collect(Collectors.groupingBy(c -> c.getStatus()));
         assertEquals(2, collect.get(MgrSyncStatus.INSTALLED).size());
         assertEquals(62, collect.get(MgrSyncStatus.AVAILABLE).size());
@@ -1267,6 +1274,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         for (MgrSyncProductDto product : products) {
             if (product.getFriendlyName().equals("SUSE Linux Enterprise Server 12 x86_64")) {
                 assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
+                assertFalse("Unexpected Installer Update Channel found",
+                        product.getChannels().stream().anyMatch(c -> c.getLabel().equals("sles12-installer-updates-x86_64")));
                 foundSLES = true;
 
                 for (MgrSyncProductDto ext : product.getExtensions()) {
@@ -1313,7 +1322,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // if mgr-sync never ran, return true
         WriteMode clear = ModeFactory.getWriteMode("test_queries","delete_last_mgr_sync_refresh");
-        clear.executeUpdate(new HashMap());
+        clear.executeUpdate(new HashMap<>());
         assertTrue(csm.isRefreshNeeded(null));
     }
 
