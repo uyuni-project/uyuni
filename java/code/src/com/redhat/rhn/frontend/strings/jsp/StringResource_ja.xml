@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
@@ -217,7 +217,7 @@
         <target>{0} が必要です。</target>
       </trans-unit>
       <trans-unit id="errors.ascii">
-        <source>{0} contains invalid characters.  Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
+        <source>{0} contains invalid characters. Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required ascii fields</context>
         </context-group>
@@ -515,7 +515,7 @@
         </trans-unit>
       </group>
       <trans-unit id="emptyspace.jsp">
-        <source> </source>
+        <source></source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -572,9 +572,7 @@
           <target>ユーザーは {0} ロールを前回の {0} から削除することはできません。</target>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.deleteuser">
-          <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source> <target>
-Satellite の 組織管理者でないとユーザーを削除できません。</target>
-        </trans-unit>
+          <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source> <target>ユーザの削除を行なうには、 @@PRODUCT_NAME@@ の 組織管理者でなければなりません。</target> </trans-unit>
         <trans-unit id="permission.jsp.summary.disableuser">
           <source>You must be an organization administrator to deactivate a user.</source> <target>組織管理者でないとユーザーを停止できません。</target>
         </trans-unit>
@@ -615,8 +613,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Can not display Organization Details</source> <target>組織の詳細を表示できません。</target>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.general">
-          <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source> <target>Satellite 管理者でないと、このページを表示できません。このシステムの組織に関する情報を取得するには、Satellite 管理者に連絡してください。</target>
-        </trans-unit>
+          <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source> <target>このページを表示するには @@PRODUCT_NAME@@ 管理者でなければなりません。このシステムの組織に関する情報を取得するには、 @@PRODUCT_NAME@@ 管理者に連絡してください。</target> </trans-unit>
       </group>
       <trans-unit id="badparam.jsp.title">
         <source>Page Request Error</source>
@@ -626,7 +623,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>ページ要求のエラー</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.summary">
-        <source>We could not display the requested page because of a missing parameter.  This error could have occurred several ways:</source>
+        <source>We could not display the requested page because of a missing parameter. This error could have occurred several ways:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
@@ -647,7 +644,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>ハイパーリンクが誤っているか、古すぎて失効しています。</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason3">
-        <source>Your browser encountered an error handling request parameters.  Continued use of this browser may yield unexpected results.</source>
+        <source>Your browser encountered an error handling request parameters. Continued use of this browser may yield unexpected results.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
@@ -685,8 +682,8 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。コピーしているアドレスが古いために使われていない可能性もあるかもしれません。</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason2">
-        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
-        <target state="needs-adaptation">リンクをたどった場合、リンクが誤っていたり古かったりすることがあります。このような場合はブラウザの戻るボタンを押して戻って別のリンクを試すか、もしくは上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索してください。</target>
+        <source>If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
+        <target state="translated">リンクをたどった場合、リンクが誤っていたり古かったりすることがあります。このような場合はブラウザの戻るボタンを押して戻って別のリンクを試すか、もしくは上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -728,7 +725,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>内部サーバーのエラー</target>
       </trans-unit>
       <trans-unit id="500.jsp.summary">
-        <source>The server experienced a problem which prevented your request from being filled out.  It may not be possible to execute this action at this time.</source>
+        <source>The server experienced a problem which prevented your request from being filled out. It may not be possible to execute this action at this time.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
@@ -973,15 +970,15 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>@@PRODUCT_NAME@@ では、ご使用のシステムに該当するパッチがリリースされた時に電子メールで通知を行ないます。また、ご使用のシステムのイベントの要約もメールで毎日送信します。</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivenote">
-        <source> Receive email notifications</source>
+        <source>Receive email notifications</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
         <target state="needs-adaptation">電子メールの通知を受け取る</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivetaskonote">
-        <source> Receive taskomatic notifications</source>
-        <target state="needs-adaptation">taskomatic 通知の受信</target>
+        <source>Receive taskomatic notifications</source>
+        <target state="translated">taskomatic 通知の受信</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1016,7 +1013,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>タスク</target>
       </trans-unit>
       <trans-unit id="preferences.tasks.description">
-        <source> A task-oriented menu of quick links to different areas of the @@PRODUCT_NAME@@ user interface.</source>
+        <source>A task-oriented menu of quick links to different areas of the @@PRODUCT_NAME@@ user interface.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1030,7 +1027,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>最も重要なシステム</target>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.description">
-        <source> A listing of the systems with the most critical update and health status.</source>
+        <source>A listing of the systems with the most critical update and health status.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1044,7 +1041,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>システムグループ</target>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.description">
-        <source> Preview the overall status of your system groups.</source>
+        <source>Preview the overall status of your system groups.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1058,7 +1055,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>該当するセキュリティエラータ</target>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.description">
-        <source> View the most recent security errata applicable to your systems.</source>
+        <source>View the most recent security errata applicable to your systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1072,7 +1069,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>休止中のシステム</target>
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.description">
-        <source> Lists the registered @@PRODUCT_NAME@@ systems that recently stopped checking in.</source>
+        <source>Lists the registered @@PRODUCT_NAME@@ systems that recently stopped checking in.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1086,7 +1083,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>最近スケジュールされた動作</target>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.description">
-        <source> Lists the scheduled actions of the user.</source>
+        <source>Lists the scheduled actions of the user.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1100,7 +1097,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>最近登録されたシステム</target>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.description">
-        <source> A listing of the most recently registered systems within the past 30 days.</source>
+        <source>A listing of the most recently registered systems within the past 30 days.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1108,7 +1105,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <!--END of  the Pane entries Section-->
       <trans-unit id="preferences.jsp.entriesperpage">
-        <source> entries per list page</source>
+        <source>entries per list page</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1557,14 +1554,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>チャンネル管理のパーミッション</target>
       </trans-unit>
       <trans-unit id="channelManagementPerms.summary">
-        <source> Below is the list of channels available to your organization. You may grant explicit channel management permission to this user for each of the channels listed.</source>
+        <source>Below is the list of channels available to your organization. You may grant explicit channel management permission to this user for each of the channels listed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
         <target state="needs-adaptation">以下がご利用頂けるチャンネルの一覧になります。このユーザーに対して表示されている各チャンネルごとに明示的にチャンネル管理のパーミッションを与えることができます。</target>
       </trans-unit>
       <trans-unit id="channelManagementPerms.granted">
-        <source> Management permission granted through org/channel admin status </source>
+        <source>Management permission granted through org/channel admin status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
@@ -1579,14 +1576,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <!-- addresses.jsp -->
       <trans-unit id="addresses.summary">
-        <source> Addresses associated with your @@PRODUCT_NAME@@ account are listed below. </source>
+        <source>Addresses associated with your @@PRODUCT_NAME@@ account are listed below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
         <target state="needs-adaptation"> ご使用の @@PRODUCT_NAME@@ アカウントに関連付けられているアドレスは以下の通りです。</target>
       </trans-unit>
       <trans-unit id="address.jsp.associated">
-        <source> The following addresses are associated with this user's account. </source>
+        <source>The following addresses are associated with this user's account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
@@ -1607,8 +1604,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>アカウントを停止する</target>
       </trans-unit>
       <trans-unit id="disableself.jsp.message">
-        <source>You may deactivate your @@PRODUCT_NAME@@ account below. &lt;b&gt;This will remove your ability
-to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
+        <source>You may deactivate your @@PRODUCT_NAME@@ account below. &lt;b&gt;This will remove your ability to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
@@ -1616,8 +1612,7 @@ to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
 @@PRODUCT_NAME@@ にログインできなくなります。&lt;/b&gt;</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning">
-        <source>You will be logged out immediately after pressing the 'Deactivate Account'
-button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
+        <source>You will be logged out immediately after pressing the 'Deactivate Account' button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
@@ -1639,14 +1634,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>アカウントを停止する</target>
       </trans-unit>
       <trans-unit id="details.jsp.account_details">
-        <source> My Account </source>
+        <source>My Account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
         <target state="needs-adaptation"> ユーザーのアカウント </target>
       </trans-unit>
       <trans-unit id="details.jsp.personal_info">
-        <source> Personal Info </source>
+        <source>Personal Info</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -1661,7 +1656,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>チャンネルサブスクリプションのパーミッション</target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.summary">
-        <source>Below is the list of channels available to your organization. You may grant explicit channel subscription permission to this user for each of the channels listed </source>
+        <source>Below is the list of channels available to your organization. You may grant explicit channel subscription permission to this user for each of the channels listed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
@@ -1768,14 +1763,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>ログインの作成</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam">
-        <source>Pluggable Authentication Modules (PAM): </source>
+        <source>Pluggable Authentication Modules (PAM):</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
         <target state="needs-adaptation">Pluggable Authentication Modules (PAM): </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions">
-        <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems. </source>
+        <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -1793,7 +1788,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>LDAP、kerberos、その他ネットワークベースの認証システムに対して認証を行うよう Satellite を設定する場合は、&lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;インストールガイド&lt;/a&gt; で PAM の設定方法をご覧ください。</target>
+        <target>LDAP, kerberos やその他のネットワークベースの認証システムに対して認証を行なうよう @@PRODUCT_NAME@@ を設定する場合は、 &lt;a href="/docs/administration/auth-methods.html"&gt;ドキュメンテーション&lt;/a&gt; 内にある PAM のセットアップ方法をお読みください。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly">
         <source>Read-only API user:</source>
@@ -1839,7 +1834,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>ユーザーを再度アクティベートする</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.summary">
-        <source> This user's information may be edited using the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;. </source>
+        <source>This user's information may be edited using the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -1895,14 +1890,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>ユーザー {0} は最後の @@PRODUCT_NAME@@ 管理者であるため、@@PRODUCT_NAME@@ 管理者のロールから削除できません。</target>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.notsatadmin">
-        <source>The user {0} is the not a @@PRODUCT_NAME@@ Administrator. Only users with @@PRODUCT_NAME@@ Administrator role can grant  or revoke @@PRODUCT_NAME@@ Administrator roles from other users.</source>
+        <source>The user {0} is the not a @@PRODUCT_NAME@@ Administrator. Only users with @@PRODUCT_NAME@@ Administrator role can grant or revoke @@PRODUCT_NAME@@ Administrator roles from other users.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
         <target state="needs-adaptation">ユーザー {0} は @@PRODUCT_NAME@@ 管理者ではありません。@@PRODUCT_NAME@@ 管理者のロールを持つユーザーのみが、他のユーザーに対して @@PRODUCT_NAME@@ 管理者のロールを認可したり、取り消すことができます。</target>
       </trans-unit>
       <trans-unit id="userdetails.usepam">
-        <source>Use PAM: </source>
+        <source>Use PAM:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -2013,7 +2008,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>ユーザーの再アクティベートの確認</target>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.summary">
-        <source>The following users will be reactivated.  These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
+        <source>The following users will be reactivated. These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
@@ -2064,7 +2059,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>ユーザーの停止の確認</target>
       </trans-unit>
       <trans-unit id="disableuser.jsp.body">
-        <source>&lt;p&gt;This action will deactivate this user.  This user will no longer be able to log in or perform actions unless it is reactivated.&lt;/p&gt;</source>
+        <source>&lt;p&gt;This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
@@ -2086,7 +2081,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>ユーザーの再アクティベートの確認</target>
       </trans-unit>
       <trans-unit id="enableuser.jsp.body">
-        <source>&lt;p&gt;This action will allow this user to access @@PRODUCT_NAME@@.  This user will retain all permissions, roles, and data that he or she had before being deactivated.&lt;/p&gt;</source>
+        <source>&lt;p&gt;This action will allow this user to access @@PRODUCT_NAME@@. This user will retain all permissions, roles, and data that he or she had before being deactivated.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
@@ -2169,14 +2164,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       <!-- subscription_management.jsp" -->
       <!-- edit_address.jsp -->
       <trans-unit id="edit_address.jsp.address">
-        <source> Address</source>
+        <source>Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
         <target state="needs-adaptation">アドレス</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.summary">
-        <source>This user's address information may be edited in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <source>This user's address information may be edited in the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
@@ -2239,7 +2234,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>国</target>
       </trans-unit>
       <trans-unit id="yourdetails.jsp.summary">
-        <source> Please enter your information in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <source>Please enter your information in the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -2253,7 +2248,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>記録:</target>
       </trans-unit>
       <trans-unit id="your_edit_address.jsp.summary">
-        <source>Please enter your information in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <source>Please enter your information in the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
@@ -2268,21 +2263,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>割り当てられたシステムグループ</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.summary">
-        <source>A list of system groups follows. Use the check boxes to set this user's access permissions to each system group.  Org Admins have permissions to all system groups. </source>
+        <source>A list of system groups follows. Use the check boxes to set this user's access permissions to each system group. Org Admins have permissions to all system groups.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
         <target state="needs-adaptation">システムグループの一覧が続きます。チェックボックスを使用してこのユーザーのアクセスパーミッションを各システムグループに設定します。組織管理者はすべてのシステムグループに対するパーミッションを有します。</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.asadmin">
-        <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups. </source>
+        <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
         <target state="needs-adaptation">システムグループ管理者として、このユーザーは選択したシステムグループに関してあらゆる変更を行うことができます。</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.youcanselect">
-        <source>You can select one or more default system groups for this user. When the user registers a system, that system will be assigned to the selected group or groups. This allows the user to have access to the newly-registered system immediately, if he or she has permissions to one or more of the groups the system is assigned to. System Groups to which this user has access to are preceded by a (*). </source>
+        <source>You can select one or more default system groups for this user. When the user registers a system, that system will be assigned to the selected group or groups. This allows the user to have access to the newly-registered system immediately, if he or she has permissions to one or more of the groups the system is assigned to. System Groups to which this user has access to are preceded by a (*).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
@@ -2509,11 +2504,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>動作アイコン</target>
       </trans-unit>
       <trans-unit id="actions.jsp.totalnote">
-        <source>
-          Note: For multi-system scheduled actions, the ability to cancel individual
-          systems means that the number of clients mentioned in the Action column may not match the number in Total.
-        </source>
-        <target state="needs-adaptation">注意: 複数のシステムのスケジュール処理の場合、個別のシステムに対するキャンセルを実行すると、アクション列内に書かれたクライアント数と合計数が一致しない場合があります。</target>
+        <source>Note: For multi-system scheduled actions, the ability to cancel individual systems means that the number of clients mentioned in the Action column may not match the number in Total.</source>
+        <target state="translated">注意: 複数のシステムのスケジュール処理の場合、個別のシステムに対するキャンセルを実行すると、アクション列内に書かれたクライアント数と合計数が一致しない場合があります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2530,7 +2522,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>待機中の動作</target>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.summary">
-        <source> The following actions have been scheduled, and are awaiting execution by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
+        <source>The following actions have been scheduled, and are awaiting execution by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
@@ -2567,7 +2559,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>失敗した動作</target>
       </trans-unit>
       <trans-unit id="failedactions.jsp.summary">
-        <source> The following actions have failed to execute properly on one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
+        <source>The following actions have failed to execute properly on one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
@@ -2589,7 +2581,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>完了した動作</target>
       </trans-unit>
       <trans-unit id="completedactions.jsp.summary">
-        <source> The following actions have been completed by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
+        <source>The following actions have been completed by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
@@ -2611,7 +2603,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>アーカイブされた動作</target>
       </trans-unit>
       <trans-unit id="archivedactions.jsp.summary">
-        <source> The following actions have been archived. </source>
+        <source>The following actions have been archived.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
@@ -2640,15 +2632,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>現在のユーザーが使用できる全動作チェーンの一覧です。ラベルをクリックするとその動作チェーンの表示または編集を行うことができます。</target>
       </trans-unit>
       <trans-unit id="actionchains.jsp.summarydetail">
-        <source>
-            You can create a new Action Chain by scheduling any supported operation, such as
-            &lt;a href="/rhn/ssm/PackageInstall.do"&gt;installing&lt;/a&gt; or
-            &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;upgrading&lt;/a&gt; a package, running a
-            &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote command&lt;/a&gt; or
-            &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;.
-            Both System Set Manager and single system actions are supported.
-        </source>
-        <target state="needs-adaptation">任意の対応する操作をスケジュールすることで、新しい動作チェーンを作成することができます。これにはたとえばパッケージの &lt;a href="/rhn/ssm/PackageInstall.do"&gt;インストール&lt;/a&gt; や &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;アップグレード&lt;/a&gt; のほか、 &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;リモートコマンド&lt;/a&gt; や &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;設定ファイルの配置&lt;/a&gt; などの処理があります。また、システムセットマネージャと単一システムの処理の両方に対応しています。</target>
+        <source>You can create a new Action Chain by scheduling any supported operation, such as &lt;a href="/rhn/ssm/PackageInstall.do"&gt;installing&lt;/a&gt; or &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;upgrading&lt;/a&gt; a package, running a &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote command&lt;/a&gt; or &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;. Both System Set Manager and single system actions are supported.</source>
+        <target state="translated">任意の対応する操作をスケジュールすることで、新しい動作チェーンを作成することができます。これにはたとえばパッケージの &lt;a href="/rhn/ssm/PackageInstall.do"&gt;インストール&lt;/a&gt; や &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;アップグレード&lt;/a&gt; のほか、 &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;リモートコマンド&lt;/a&gt; や &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;設定ファイルの配置&lt;/a&gt; などの処理があります。また、システムセットマネージャと単一システムの処理の両方に対応しています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
@@ -2704,11 +2689,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>この動作チェーンの動作一覧です。&lt;em&gt;ドラッグアンドドロップ&lt;/em&gt; で順番を変更できます。</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.summarydetail">
-        <source>
-            You add Actions to this Action Chain by scheduling any supported operation, such as
-            installing or upgrading a package, running a remote command or deploying a configuration file.
-            Both System Set Manager and single system actions are supported.
-        </source>
+        <source>You add Actions to this Action Chain by scheduling any supported operation, such as installing or upgrading a package, running a remote command or deploying a configuration file. Both System Set Manager and single system actions are supported.</source>
         <target state="needs-adaptation">任意の対応する操作をスケジュールすることで、新しい動作チェーンを作成することができます。これにはたとえばパッケージのインストールやアップグレードのほか、リモートコマンドや設定ファイルの配置などの処理があります。また、システムセットマネージャと単一システムの処理の両方に対応しています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
@@ -3000,7 +2981,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>インストール済み</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removepagesummary">
-        <source>The following packages are installed on this system.  Packages may be scheduled for removal by selecting them and clicking "Remove Packages" below.</source>
+        <source>The following packages are installed on this system. Packages may be scheduled for removal by selecting them and clicking "Remove Packages" below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
@@ -3522,7 +3503,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>パッチ {0}-{1} が作成されました。</target>
       </trans-unit>
       <trans-unit id="errata.edit.toolbar">
-        <source>Patch: </source>
+        <source>Patch:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3537,7 +3518,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>パッチの編集</target>
       </trans-unit>
       <trans-unit id="errata.edit.instructions">
-        <source>Edit patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+        <source>Edit patch here. Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3744,7 +3725,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>パッケージの削除を確認</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.remove.instructions">
-        <source>Below is the list of packages which you have selected to remove from this patch.  Click 'Confirm' to remove them.</source>
+        <source>Below is the list of packages which you have selected to remove from this patch. Click 'Confirm' to remove them.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -3789,7 +3770,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>次のパッケージはこのパッチに関連付けられています。このパッチからパッケージを削除するには、パッケージを選択して下記の 'パッケージの削除' を押してください。このパッチにパッケージを追加するには、上記の '追加' を押してください。</target>
       </trans-unit>
       <trans-unit id="errata.publish.toolbar">
-        <source>Publish Patch: </source>
+        <source>Publish Patch:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -3906,7 +3887,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>これは利用可能なパッチの一覧です。このパッチに対してパッケージを追加するには、それらを選択して 'パッケージの追加' を押してください。 &lt;br/&gt; 下記のドロップダウンリストを使用すると、チャンネルで利用可能なパッケージの表示を制限することもできます。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel">
-        <source>View: </source>
+        <source>View:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4017,7 +3998,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>以下は、このパッチの影響を受けるシステムの一覧です。</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl">
-        <source>You can select one or more systems and apply this patch to them.  Only systems with Management system type can be selected.</source>
+        <source>You can select one or more systems and apply this patch to them. Only systems with Management system type can be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
@@ -4396,11 +4377,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>システム</target>
       </trans-unit>
       <trans-unit id="satusers.tip">
-        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can
-not be modified on this page. Instead, please visit the "Users" top-level
-navigational tab above to access the profiles of individual users in your
-organization. You may grant or remove the organization administrator role in the
-"Roles" section of the "Details" tab in individual users' profiles.</source>
+        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can not be modified on this page. Instead, please visit the "Users" top-level navigational tab above to access the profiles of individual users in your organization. You may grant or remove the organization administrator role in the "Roles" section of the "Details" tab in individual users' profiles.</source>
         <target state="needs-adaptation">&lt;strong&gt;*ヒント:&lt;/strong&gt; 組織管理者の権限は、このページ上では変更できません。
 その代わりに、最上部のナビゲーションバーの 「ユーザー」タブに行き、
 組織内の各個人ユーザーのプロファイルにアクセスして下さい。
@@ -4431,14 +4408,14 @@ organization. You may grant or remove the organization administrator role in the
         <target>終了日:</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date">
-        <source>Issue Start Date: </source>
+        <source>Issue Start Date:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
         <target state="needs-adaptation">発行開始日:</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.end_date">
-        <source>Issue End Date: </source>
+        <source>Issue End Date:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
@@ -4536,7 +4513,7 @@ organization. You may grant or remove the organization administrator role in the
         <target>検索する発行日:</target>
       </trans-unit>
       <trans-unit id="errata_search_by_all_fields">
-        <source>All Fields </source>
+        <source>All Fields</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4578,7 +4555,7 @@ organization. You may grant or remove the organization administrator role in the
         <target>発行日</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary">
-        <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
+        <source>&lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target state="needs-adaptation">&lt;p&gt;次のパッチ一覧はお客様の企業／組織が所有するパッチになります。&lt;/p&gt; &lt;p&gt;詳細や適用先パッケージの一覧を編集するには、パッチのアドバイザリの部分を押してください。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.unpublishederrata">
@@ -4717,7 +4694,7 @@ organization. You may grant or remove the organization administrator role in the
         <target>パッチの作成</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions">
-        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
+        <source>Create new patch here. Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -4937,7 +4914,7 @@ organization. You may grant or remove the organization administrator role in the
         <target>検索</target>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.pagesummary">
-        <source>Package Search will return packages from the specified set of software channels. </source>
+        <source>Package Search will return packages from the specified set of software channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search.do</context>
         </context-group>
@@ -5796,7 +5773,7 @@ organization. You may grant or remove the organization administrator role in the
         <target>登録者</target>
       </trans-unit>
       <trans-unit id="registeredlist.jsp.view">
-        <source>View systems registered: </source>
+        <source>View systems registered:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
@@ -6600,7 +6577,7 @@ organization. You may grant or remove the organization administrator role in the
         <target>全般的な Monitoring 設定</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary">
-        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
+        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted. These actions will be scheduled automatically when you update this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
@@ -7002,17 +6979,11 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.summary">
-        <source>
-                You can lock packages so they will remain unmodified.
-                However, it is important to keep in mind that requesting a 
-                lock might be delayed. If a package has been updated 
-                before the lock took action and the package is newer, the
-                lock will be canceled.
-        </source>
+        <source>You can lock packages so they will remain unmodified. However, it is important to keep in mind that requesting a lock might be delayed. If a package has been updated before the lock took action and the package is newer, the lock will be canceled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="pkg.lock.message.locksuccess">
         <source>Packages has been requested for being locked.</source>
@@ -7182,11 +7153,7 @@ organization. You may grant or remove the organization administrator role in the
         <target>@@PRODUCT_NAME@@ 管理者の変更を確認　</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.satadmin.description">
-        <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from
-your own login? You will need to contact another @@PRODUCT_NAME@@ administrator to
-regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
-organization management tools if you choose to remove this role from your login.
-</source>
+        <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from your own login? You will need to contact another @@PRODUCT_NAME@@ administrator to regain this role if you choose to remove it now. You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and organization management tools if you choose to remove this role from your login.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/SatRoleConfirm</context>
         </context-group>
@@ -7246,10 +7213,7 @@ organization management tools if you choose to remove this role from your login.
         <target>信頼された組織のチャンネルコンテンツへのアクセス　</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.orgaccess.summary">
-        <source>The organizations listed below are organizations with which
-          your organization has a trust. The organizations checked below will be
-          granted access to view and consume the content in
-          &lt;strong&gt;{0}&lt;/strong&gt; channel. Organizations that are not checked below will not have access to this software channel. You can modify an organization's access to this channel below.</source>
+        <source>The organizations listed below are organizations with which your organization has a trust. The organizations checked below will be granted access to view and consume the content in &lt;strong&gt;{0}&lt;/strong&gt; channel. Organizations that are not checked below will not have access to this software channel. You can modify an organization's access to this channel below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/OrgList</context>
         </context-group>
@@ -7294,14 +7258,14 @@ organization management tools if you choose to remove this role from your login.
         <target>組織より使用されたチャンネル</target>
       </trans-unit>
       <trans-unit id="orgtrust.jsp.channelconsume.summary">
-        <source>Below is a list of channels your organization is sharing with &lt;strong&gt;{0}&lt;/strong&gt;. This list also shows how many packages are in each channel and how many systems in that organization are consuming from these shared channels. If you would like to modify how many of these channels are shared, click on the channel's name for more details. </source>
+        <source>Below is a list of channels your organization is sharing with &lt;strong&gt;{0}&lt;/strong&gt;. This list also shows how many packages are in each channel and how many systems in that organization are consuming from these shared channels. If you would like to modify how many of these channels are shared, click on the channel's name for more details.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/Consume</context>
         </context-group>
         <target state="needs-adaptation">ユーザーの組織が &lt;strong&gt;{0}&lt;/strong&gt; と共有しているチャンネルの一覧は下記の通りです。この一覧には、各チャンネルのパッケージ数や、共有チャンネルから使用する組織のシステム数も記載されています。共有するチャンネル数を変更したい場合は、チャンネル名をクリックして詳細を確認してください。</target>
       </trans-unit>
       <trans-unit id="orgtrust.jsp.channelprovide.summary">
-        <source>Below is a list of channels that organization &lt;strong&gt;{0}&lt;/strong&gt; has shared with your organization, also showing how many packages are in each channel and how many systems in your organization are consuming from these shared channels. </source>
+        <source>Below is a list of channels that organization &lt;strong&gt;{0}&lt;/strong&gt; has shared with your organization, also showing how many packages are in each channel and how many systems in your organization are consuming from these shared channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/Provide</context>
         </context-group>
@@ -7354,7 +7318,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target>以下のボタンをクリックして &lt;strong&gt;{0}&lt;/strong&gt; から Satellite 管理者ロールの削除を確認します。</target>
+        <target>以下のボタンを押すと、 &lt;strong&gt;{0}&lt;/strong&gt; から @@PRODUCT_NAME@@ の管理者ロールを削除します。</target>
       </trans-unit>
       <trans-unit id="syncprofile.jsp.selection">
         <source>Date Selection</source>
@@ -7399,7 +7363,7 @@ organization management tools if you choose to remove this role from your login.
         <target>パッケージ</target>
       </trans-unit>
       <trans-unit id="missingpkgs.jsp.pagesummary">
-        <source> The following packages are listed in the package profile which you have selected to sync</source>
+        <source>The following packages are listed in the package profile which you have selected to sync</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
@@ -7531,7 +7495,7 @@ organization management tools if you choose to remove this role from your login.
         <target>同期のスケジュール</target>
       </trans-unit>
       <trans-unit id="systemcompare.jsp.pagesummary">
-        <source>Below is a comparison of the package profiles of this system and the system selected for comparison. </source>
+        <source>Below is a comparison of the package profiles of this system and the system selected for comparison.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
@@ -7883,7 +7847,7 @@ organization management tools if you choose to remove this role from your login.
         <target>すべての通知に合致するにはこのフィールドを空白のままにしておきます。エントリは有効な正規表現でなければなりません。</target>
       </trans-unit>
       <trans-unit id="filter-form.jsp.ksoverviewprofiles">
-        <source> Autoinstallation Profiles</source>
+        <source>Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
         </context-group>
@@ -8246,8 +8210,7 @@ organization management tools if you choose to remove this role from your login.
         <target>@@PRODUCT_NAME@@ の組織　</target>
       </trans-unit>
       <trans-unit id="general.jsp.org.summary1">
-        <source>@@PRODUCT_NAME@@ allows for the creation of multiple 'organizations'
-on a @@PRODUCT_NAME@@.</source>
+        <source>@@PRODUCT_NAME@@ allows for the creation of multiple 'organizations' on a @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
@@ -8255,23 +8218,14 @@ on a @@PRODUCT_NAME@@.</source>
 ことが可能になります。</target>
       </trans-unit>
       <trans-unit id="general.jsp.org.summary2">
-        <source>Organizations are a way to place boundaries between sets of systems, system
-groups, software channels, autoinstallation profiles,
-activation keys, configuration channels and files, users - everything
-you manage using @@PRODUCT_NAME@@. Each organization is managed by at least one
-organization administrator, and the entire @@PRODUCT_NAME@@ is managed by a @@PRODUCT_NAME@@
-administrator. The organizations on one @@PRODUCT_NAME@@ with multiple organizations
-function similarly to the organizations on multiple @@PRODUCT_NAME@@s with one
-organization.
-</source>
+        <source>Organizations are a way to place boundaries between sets of systems, system groups, software channels, autoinstallation profiles, activation keys, configuration channels and files, users - everything you manage using @@PRODUCT_NAME@@. Each organization is managed by at least one organization administrator, and the entire @@PRODUCT_NAME@@ is managed by a @@PRODUCT_NAME@@ administrator. The organizations on one @@PRODUCT_NAME@@ with multiple organizations function similarly to the organizations on multiple @@PRODUCT_NAME@@s with one organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
         <target state="needs-adaptation">組織は、一連のシステム、システムグループ、ソフトウェアチャンネル、 サブスクリプションおよびエンタイトルメント、自動インストールプロファイル、 アクティベーションキー、設定チャンネルおよびファイル、ユーザーなどの @@PRODUCT_NAME@@ を使用して管理するすべてのもの を区切るために使用します。各組織は少なくとも 1 つの組織管理者によって管理され、 @@PRODUCT_NAME@@ 全体は @@PRODUCT_NAME@@ 管理者によって管理されます。 複数の組織を持つ 1 つの @@PRODUCT_NAME@@ の組織は、1 つの組織を持つ 複数の @@PRODUCT_NAME@@ の組織と同じように機能します。</target>
       </trans-unit>
       <trans-unit id="general.jsp.org.summary3">
-        <source>To get started creating and managing organizations on your @@PRODUCT_NAME@@, refer to
-the following tabs in the left navigation menu:</source>
+        <source>To get started creating and managing organizations on your @@PRODUCT_NAME@@, refer to the following tabs in the left navigation menu:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
@@ -8321,11 +8275,7 @@ the following tabs in the left navigation menu:</source>
         <target>ユーザー</target>
       </trans-unit>
       <trans-unit id="general.jsp.org.tbl.description3">
-        <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the
-users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization
-administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you
-may also assign or take away an organization administrator's @@PRODUCT_NAME@@
-administrator privileges.</source>
+        <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you may also assign or take away an organization administrator's @@PRODUCT_NAME@@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
@@ -8454,7 +8404,7 @@ administrator privileges.</source>
         <target>@@PRODUCT_NAME@@ 管理者の最初のアカウントを作成してください。このアカウントはこの @@PRODUCT_NAME@@ 上のリソースすべてにアクセスすることができます。また、このアカウントは新規ユーザーの作成やユーザーへのパーミッションの委任を行なうことができます。</target>
       </trans-unit>
       <trans-unit id="monitoring.jsp.monitoringdisabled">
-        <source>Monitoring is disabled.  Please go to the &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;General&lt;/strong&gt;&lt;/a&gt; configuration page and select the Enable Monitoring checkbox.</source>
+        <source>Monitoring is disabled. Please go to the &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;General&lt;/strong&gt;&lt;/a&gt; configuration page and select the Enable Monitoring checkbox.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
@@ -8468,8 +8418,7 @@ administrator privileges.</source>
         <target>@@PRODUCT_NAME@@ の設定 - ブートストラップ</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.summary">
-        <source> The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from  &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
-Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
+        <source>The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Please note that some manual configuration of these scripts may still be required. The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
@@ -8560,7 +8509,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>@@PRODUCT_NAME@@ の設定 - 再起動</target>
       </trans-unit>
       <trans-unit id="restart.jsp.summary">
-        <source> The configuration changes require a restart of the @@PRODUCT_NAME@@. Please click Restart to restart the @@PRODUCT_NAME@@. This page will auto refresh in 4 minutes.  Be aware that this will affect all users logged into this application as well as systems attempting to register or interact with the @@PRODUCT_NAME@@.</source>
+        <source>The configuration changes require a restart of the @@PRODUCT_NAME@@. Please click Restart to restart the @@PRODUCT_NAME@@. This page will auto refresh in 4 minutes. Be aware that this will affect all users logged into this application as well as systems attempting to register or interact with the @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
@@ -8741,7 +8690,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.message.taskomaticdown">
         <source>The scheduling service appears down. Please contact your @@PRODUCT_NAME@@ administrator.</source>
-        <target>スケジュール機能のサービスがダウンしているようです。Satellite 管理者に連絡してください。</target>
+        <target>スケジュール機能のサービスがダウンしているようです。 @@PRODUCT_NAME@@ 管理者に連絡してください。</target>
       </trans-unit>
       <trans-unit id="toolbar.create.repos">
         <source>Create Repository</source>
@@ -9094,11 +9043,7 @@ Please note that some manual configuration of these scripts may still be require
       </group>
       <!-- Kickstart -->
       <trans-unit id="kickstarts.jsp.diskwarning">
-        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile selected is set to destroy all
-        partitions on all disks, including logical disks on attached SANs.
-        If you do not want to lose data on one or
-        more disks you should remove the disk from the server before
-        kickstarting or edit the "clearpart" option for this Kickstart Profile.</source>
+        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile selected is set to destroy all partitions on all disks, including logical disks on attached SANs. If you do not want to lose data on one or more disks you should remove the disk from the server before kickstarting or edit the "clearpart" option for this Kickstart Profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/</context>
         </context-group>
@@ -9109,11 +9054,7 @@ Please note that some manual configuration of these scripts may still be require
         「clearpart」オプションを編集する必要があります。</target>
       </trans-unit>
       <trans-unit id="kickstarts.jsp.diskwarningssm">
-        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile(s) used may destroy all
-        partitions on all disks of the kickstarted machines, including logical disks on attached SANs.
-        If you do not want to lose data on one or more disks you should remove the disks from the
-        servers before kickstarting or ensure that the Kickstart Profile(s) used will not destroy the
-        partitions by editing the "clearpart" option.</source>
+        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile(s) used may destroy all partitions on all disks of the kickstarted machines, including logical disks on attached SANs. If you do not want to lose data on one or more disks you should remove the disks from the servers before kickstarting or ensure that the Kickstart Profile(s) used will not destroy the partitions by editing the "clearpart" option.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/</context>
         </context-group>
@@ -9201,15 +9142,14 @@ Please note that some manual configuration of these scripts may still be require
         <target>変数の更新　</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.summary">
-        <source>Autoinstallation variables can be used to substitute values into autoinstallation profiles.  To define a variable simply add 'name=value' to the box below.
-                    You would then use $name within the profile to substitute in the value.</source>
+        <source>Autoinstallation variables can be used to substitute values into autoinstallation profiles. To define a variable simply add 'name=value' to the box below. You would then use $name within the profile to substitute in the value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
         <target state="needs-adaptation">自動インストール変数を使用すると、自動インストールプロファイルに値を代用できます。変数を定義するには、name=value を下記のボックスに追加します。 その後、プロファイル内の $name を使用して値を代用することができます。</target>
       </trans-unit>
       <trans-unit id="kickstarttree.variable.jsp.summary">
-        <source>Any variables specified below will be usable in any profile that uses this distro.  They can be overridden in each profile as well.</source>
+        <source>Any variables specified below will be usable in any profile that uses this distro. They can be overridden in each profile as well.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -9237,7 +9177,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>仮想ストレージへのパス　</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.virt_disk_path.tip">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; You may specify a file path (/var/lib/xen/images/disk), a Volume Group (VolGroup00), or a partition (/dev/sda5).  You can also specify multiple virtual disks by comma separating the filepaths, volume group, or partition (/dev/sdb1,/devsdc1).</source>
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; You may specify a file path (/var/lib/xen/images/disk), a Volume Group (VolGroup00), or a partition (/dev/sda5). You can also specify multiple virtual disks by comma separating the filepaths, volume group, or partition (/dev/sdb1,/devsdc1).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -9286,7 +9226,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>変数</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.invalidvariable">
-        <source>You have specified an invalid variable: '{0}'.  Variables should be name value pairs, separated by a '=' symbol, with each pair being separated by a new line.  For example: 'ip=192.168.0.1'</source>
+        <source>You have specified an invalid variable: '{0}'. Variables should be name value pairs, separated by a '=' symbol, with each pair being separated by a new line. For example: 'ip=192.168.0.1'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -9580,7 +9520,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>本当にこの自動インストールを削除してもよいですか?&lt;strong&gt;&lt;p&gt;警告: この自動インストールを削除すると、それに対応するオプションとオプションを削除することになります。&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;ボタンをクリックするのは 1 回のみにしてください。削除が完了するまでには少し時間がかかります。&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.summary2">
-        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files. Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file. The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -9789,10 +9729,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>&lt;strong&gt;ヒント:&lt;/strong&gt; このキックスタートプロファイルに関する情報が第三者に漏洩する可能性があるため、ラベルフィールドには簡単に推測できるような名前を使用しないでください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.virtTypeChangeWarning">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Changing the Virtualization Type may require changes to the
-            autoinstallation profile's bootloader and partition options, potentially overwriting user customizations.
-            Please visit the &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;Partitioning&lt;/a&gt;
-            tab to verify the new settings.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Changing the Virtualization Type may require changes to the autoinstallation profile's bootloader and partition options, potentially overwriting user customizations. Please visit the &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;Partitioning&lt;/a&gt; tab to verify the new settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -9841,7 +9778,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>仮想化タイプ:</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary">
-        <source>The distribution associated to this kickstart profile is invalid. </source>
+        <source>The distribution associated to this kickstart profile is invalid.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -9855,14 +9792,14 @@ Please note that some manual configuration of these scripts may still be require
         <target>このキックスタートプロファイルで利用可能な操作を有効にするには、&lt;a href = "{1}"&gt;キックスタートディストリビューション詳細&lt;/a&gt; ページに移動してディストリビューション (&lt;strong&gt;{0}&lt;/strong&gt;) を修正します。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary-option2">
-        <source> Alternatively you may associate a different distribution to this kickstart profile by visiting the &lt;a href = "{0}"&gt;Kickstart Operating System Details&lt;/a&gt; page.</source>
+        <source>Alternatively you may associate a different distribution to this kickstart profile by visiting the &lt;a href = "{0}"&gt;Kickstart Operating System Details&lt;/a&gt; page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
         <target state="needs-adaptation">または、&lt;a href = "{0}"&gt;キックスタートオペレーティングシステム詳細&lt;/a&gt; ページに移動してこのキックスタートプロファイルに異なるディストリビューションを関連付けることができます。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.advanced.invalid.jsp.summary-option2">
-        <source> Alternatively you may associate a different distribution to this kickstart profile by selecting a distribution and choosing '{0}'.</source>
+        <source>Alternatively you may associate a different distribution to this kickstart profile by selecting a distribution and choosing '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -9882,7 +9819,7 @@ Please note that some manual configuration of these scripts may still be require
         <trans-unit id="kickstart.advanced.jsp.create">
           <source>Create Autoinstallation Profile</source> <target>自動インストールプロファイルを作成</target> </trans-unit>
         <trans-unit id="kickstart.advanced.jsp.para1">
-          <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source> <target>後で参照できるようにするため、Satellite にアップロードする自動インストールファイルにはラベルが必要となります。この自動インストールのラベルを選択し、以下に入力してください。アスタリスク (*) の付いたエントリが必須項目になります。</target> </trans-unit>
+          <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source> <target>後から参照できるようにするため、 @@PRODUCT_NAME@@ にアップロードする自動インストールファイルにはラベルが必要となります。この自動インストールのラベルを選択し、以下に入力してください。アスタリスク (*) の付いたエントリが必須項目になります。</target> </trans-unit>
         <trans-unit id="kickstart.advanced.jsp.uploadtab">
           <source>File to Upload</source> <target>アップロードするファイル</target>
         </trans-unit>
@@ -9900,7 +9837,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>自動インストールの削除</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.summary">
-        <source>You can associate one or more activation keys with this kickstart profile.  Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups.  Activation keys can also specify packages to be installed on a system.  Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
+        <source>You can associate one or more activation keys with this kickstart profile. Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups. Activation keys can also specify packages to be installed on a system. Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -9963,11 +9900,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>アクティベーションキーの更新</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.note">
-        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
+        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt; You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeysEdit.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.warning">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Any child channel subscriptions associated with this profile will be overridden if any activation keys are selected above. If you wish to associate activation keys with this profile, please use an activation key to specify child channel subscriptions.</source>
@@ -9977,7 +9914,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>&lt;strong&gt;警告:&lt;/strong&gt; 上記でいずれかのアクティベーションキーが選択されると、このプロファイルに関連付けられる子チャンネルサブスクリプションはすべて上書きされます。このプロファイルにアクティベーションキーを関連付ける場合は、アクティベーションキーを使用して子チャンネルサブスクリプションを指定してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.summary">
-        <source>You can associate file preservation lists with this kickstart profile by selecting them below.  When a system is kickstarted, any files or directories listed in the file preservation lists associated with this kickstart profile will be saved before the kickstart is performed and restored once it is complete. If you would like to create a new file preservation list, you can do so at the &lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;File Preservation&lt;/a&gt; tab.</source>
+        <source>You can associate file preservation lists with this kickstart profile by selecting them below. When a system is kickstarted, any files or directories listed in the file preservation lists associated with this kickstart profile will be saved before the kickstart is performed and restored once it is complete. If you would like to create a new file preservation list, you can do so at the &lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;File Preservation&lt;/a&gt; tab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
@@ -10332,14 +10269,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>パブリックキーまたは SSL 証明書が定義されていません</target>
       </trans-unit>
       <trans-unit id="keys.jsp.summary">
-        <source>
-You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
-A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart. A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server. For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -10412,7 +10346,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>キーを削除中</target>
       </trans-unit>
       <trans-unit id="keycreate.jsp.summary">
-        <source>Please enter the information for your key in the form provided below.  Entries marked with an (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt; and must be unique. The actual key content can be provided by uploading a file or by filling out the dedicated text area. In case both ways were used, the file selected for upload takes precedence.</source>
+        <source>Please enter the information for your key in the form provided below. Entries marked with an (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt; and must be unique. The actual key content can be provided by uploading a file or by filling out the dedicated text area. In case both ways were used, the file selected for upload takes precedence.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -10447,7 +10381,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>キーの内容:</target>
       </trans-unit>
       <trans-unit id="keycreate.jsp.selectfile">
-        <source>Select file to upload: </source>
+        <source>Select file to upload:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -10489,18 +10423,14 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>ファイル保持</target>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.summary">
-        <source>
-        File preservation lists are lists of files that will be restored to a system during a particular kickstart.
-        You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
-        The following file preservation lists have been created for use by your organization:</source>
+        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart. You can reference a file preservation list in a kickstart profile. For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;. The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary">
-        <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
+        <source>Are you sure you want to delete the selected File List(s)? &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListConfirmDelete.do</context>
         </context-group>
@@ -10521,7 +10451,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>ファイル一覧の削除</target>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.nokeys">
-        <source>There are currently no file preservation lists defined.  Click the "Create File Preservation List" link above to create a new list.</source>
+        <source>There are currently no file preservation lists defined. Click the "Create File Preservation List" link above to create a new list.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
@@ -10633,11 +10563,11 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>キックスタートファイル保持一覧の作成</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;. For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1">
         <source>You can modify the software this kickstart profile will deploy below.</source>
@@ -10745,7 +10675,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>パッケージプロファイルをクリア</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.summary">
-        <source>Below is a list of the GPG and SSL keys you have &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;created.&lt;/a&gt;  Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
+        <source>Below is a list of the GPG and SSL keys you have &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;created.&lt;/a&gt; Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
@@ -10773,7 +10703,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>詳細</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.nokeys">
-        <source>No keys defined.  Please go &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;here&lt;/a&gt; to create a new Key to use with this Profile.  Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
+        <source>No keys defined. Please go &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;here&lt;/a&gt; to create a new Key to use with this Profile. Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
@@ -10808,13 +10738,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>キックスタートスクリプトの詳細</target>
       </trans-unit>
       <trans-unit id="kickstart.script.summary">
-        <source>You can edit the pre and post scripts for this kickstart below.  Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system.
-You can access the network in this section, but you must use IP addresses (name service has not been configured at this point).  For more details on
-kickstart pre scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;
-&lt;br/&gt;&lt;br/&gt;
-You can also edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).
-Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to
-the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;</source>
+        <source>You can edit the pre and post scripts for this kickstart below. Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system. You can access the network in this section, but you must use IP addresses (name service has not been configured at this point). For more details on kickstart pre scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt; &lt;br/&gt;&lt;br/&gt; You can also edit the post script for this kickstart below. First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@). Next, the non-chroot post script will be executed, and finally the post script will be executed. For more details on kickstart post scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
@@ -10891,15 +10815,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>&lt;span class="small-text"&gt;&lt;strong&gt;ヒント:&lt;/strong&gt; スクリプトが実行される時間を指定します(キックスタートの前か後)。&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="post.jsp.summary">
-        <source>You can edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).  Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
+        <source>You can edit the post script for this kickstart below. First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@). Next, the non-chroot post script will be executed, and finally the post script will be executed. For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPostEdit.do</context>
         </context-group>
         <target state="needs-adaptation">このキックスタートのポストスクリプトを以下で編集することができます。最初に、@@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます(例: @@PRODUCT_NAME@@ へのシステム登録)。次に、非 chrootのポストスクリプトが実行され、最後にポストスクリプトが実行されます。キックスタートのポストスクリプトに関する詳細は、&lt;strong&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/strong&gt;を参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main1">
-        <source>Specify below the packages and package groups you'd like to install on systems during kickstart. Please list packages and groups one per line. For more information please see &lt;em&gt;The Red Hat Enterprise Linux System Administration Guide.&lt;/em&gt; If you would prefer to specify packages to be installed by package profile sync, please visit the &lt;em&gt; Package Profiles &lt;/em&gt; tab to change the kickstart software installation method.
-      </source>
+        <source>Specify below the packages and package groups you'd like to install on systems during kickstart. Please list packages and groups one per line. For more information please see &lt;em&gt;The Red Hat Enterprise Linux System Administration Guide.&lt;/em&gt; If you would prefer to specify packages to be installed by package profile sync, please visit the &lt;em&gt; Package Profiles &lt;/em&gt; tab to change the kickstart software installation method.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
@@ -10907,8 +10830,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
 </target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main2">
-        <source>&lt;b&gt;Note: only packages available in your Enterprise Linux install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.
-      </source>
+        <source>&lt;b&gt;Note: only packages available in your Enterprise Linux install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
@@ -11405,7 +11327,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>全ての該当パッチを表示</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.relevanterrata.description">
-        <source>relevant patches </source>
+        <source>relevant patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -11629,7 +11551,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>最低</target>
       </trans-unit>
       <trans-unit id="channels.popular.jsp.label2">
-        <source> systems subscribed below.</source>
+        <source>systems subscribed below.</source>
         <target state="needs-adaptation">台のシステムがサブスクライブするチャンネルを以下に表示。</target>
       </trans-unit>
       <trans-unit id="channels.retired.jsp.toolbar">
@@ -11648,7 +11570,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>ユーザーの組織が所有するソフトウェアチャンネルは以下の通りです。</target>
       </trans-unit>
       <trans-unit id="channels.manage.jsp.header2">
-        <source>Modify an existing software channel by selecting it from the list below, or create a new software channel. </source>
+        <source>Modify an existing software channel by selecting it from the list below, or create a new software channel.</source>
         <target state="needs-adaptation">以下のリストより既存のソフトウェアチャンネルを選択して変更するか、または新しいソフトウェアチャンネルを作成します。</target>
       </trans-unit>
       <trans-unit id="toolbar.create.channel">
@@ -11709,7 +11631,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>up2date および yum のデバッグを有効にする</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.bootloadertip.text">
-        <source>LILO is a text-based bootloader.  Choose LILO as your bootloader if you are having video card issues.</source>
+        <source>LILO is a text-based bootloader. Choose LILO as your bootloader if you are having video card issues.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
@@ -13688,7 +13610,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>チャンネルにファイルとサブスクライブしているシステムのいずれかまたは両方がありません。比較の動作が取り消されました。</target>
       </trans-unit>
       <trans-unit id="channelOverview.error.labelexists">
-        <source>Label '{0}' already exists.  Please choose a different label for the new channel.</source>
+        <source>Label '{0}' already exists. Please choose a different label for the new channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelCreate.do</context>
           <context context-type="paramnotes">"Label 'NEWCHANNEL' already exists.  Please choose a different label for the new channel."</context>
@@ -13704,8 +13626,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>設定ファイル</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.description">
-        <source>This list shows the files that this configuration channel contains.  You can remove
-a file or files, or copy the latest version into a set of local overrides or into other central configuration channels.</source>
+        <source>This list shows the files that this configuration channel contains. You can remove a file or files, or copy the latest version into a set of local overrides or into other central configuration channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
@@ -13983,9 +13904,7 @@ a file or files, or copy the latest version into a set of local overrides or int
         <target>目的のシステム</target>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.descr">
-        <source>The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management
-(meaning they have the required client software installed)
-but are not subscribed to {0}.</source>
+        <source>The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management (meaning they have the required client software installed) but are not subscribed to {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/TargetSystems.do</context>
           <context context-type="paramnotes">The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management
@@ -14122,12 +14041,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <target>設定ファイルを配備: 配備するシステムとフィールドを確認します</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note">
-        <source>The files shown below will be deployed to the systems shown below.
-Choose a scheduled date, or "earliest possible", from the date-chooser below.
-Click the confirm button to schedule the deployment,
-or press your browser's back button to make modifications to your file and system selections.
-
-Note that if a given system overrides a given file, or has it in that system's local configuration channel, the file will NOT be deployed.</source>
+        <source>The files shown below will be deployed to the systems shown below. Choose a scheduled date, or "earliest possible", from the date-chooser below. Click the confirm button to schedule the deployment, or press your browser's back button to make modifications to your file and system selections. Note that if a given system overrides a given file, or has it in that system's local configuration channel, the file will NOT be deployed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
@@ -14177,7 +14091,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>現在のバージョン</target>
       </trans-unit>
@@ -14185,7 +14099,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>前回の変更</target>
       </trans-unit>
@@ -14207,7 +14121,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>このチャンネルにサブスクライブしていて配備できるシステムはありません。</target>
       </trans-unit>
@@ -14215,7 +14129,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>動作</target>
       </trans-unit>
@@ -14223,7 +14137,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -14231,7 +14145,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>すべてのファイルを配備</target>
       </trans-unit>
@@ -14239,7 +14153,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備</target>
       </trans-unit>
@@ -14247,15 +14161,15 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.description">
-        <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
+        <source>You may select the files you wish to deploy from the list below. You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="needs-adaptation">以下の一覧から配備したいファイルを選択することができます。選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
@@ -14263,7 +14177,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -14271,7 +14185,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>確認して選択したシステムに配備</target>
       </trans-unit>
@@ -14279,7 +14193,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備: 配備するシステムを選択します</target>
       </trans-unit>
@@ -14287,7 +14201,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備するシステムを選択してください。</target>
       </trans-unit>
@@ -14295,7 +14209,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりもランクが低くなる場合、この上書き/最上位ランクのファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
@@ -14319,7 +14233,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <target>&lt;strong&gt;ヒント:&lt;/strong&gt; このファイルのこのバージョンを他のシステムに配備したい場合、&lt;a href="{0}"&gt;このファイルを中央管理の設定チャンネルにコピー&lt;/a&gt; する必要があります。</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.tip.global-1">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; If a system has a locally-managed override for this file, you will not be able to deploy it.  However, you may click on the 'Modify rank' link to re-rank the overriding channels.</source>
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; If a system has a locally-managed override for this file, you will not be able to deploy it. However, you may click on the 'Modify rank' link to re-rank the overriding channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
@@ -14346,14 +14260,14 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
         <target>&lt;strong&gt;ヒント:&lt;/strong&gt; このファイルをこの一覧にはないシステムに配備したい場合、まず {0} 設定チャンネルの &lt;a href="{1}"&gt;'目的のシステム' タブ&lt;/a&gt; を使ってシステムを {0} 設定チャンネルにサブスクライブしてからこの画面に戻る必要があります。また、目的のシステムには Provisioning エンタイトルメントが必要になります。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.not_deployable">
-        <source>These systems do not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system. You may ensure that configuration deployment capability will be enabled on these systems by selecting them in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
+        <source>These systems do not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system. You may ensure that configuration deployment capability will be enabled on these systems by selecting them in the &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
         <target state="needs-adaptation">これらのシステムには設定配備機能がまだありません。設定配備では、特定のソフトウェアがシステムにインストールされ、有効にされている必要があります。&lt;a href={0}&gt;{1}&lt;/a&gt; 画面でシステムを選択し、"{2}" をクリックすることにより、これらのシステムで設定配備機能を有効にできます。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.orgadmin">
-        <source> </source>
+        <source></source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
@@ -14386,9 +14300,7 @@ You may grant provisioning entitlements _here_.
         <target>ファイルの配備</target>
       </trans-unit>
       <trans-unit id="deploylocal.jspf.local">
-        <source>
-    You can deploy the latest revision (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to &lt;a href="{3}"&gt;{2}&lt;/a&gt; - this file is part of that system's locally-managed config channel.
-</source>
+        <source>You can deploy the latest revision (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to &lt;a href="{3}"&gt;{2}&lt;/a&gt; - this file is part of that system's locally-managed config channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">You can deploy the latest revision (_Revision 7_) of this file to _zanarkand.boston.redhat.com_ - this file is part of that system's locally-managed config channel.</context>
@@ -14456,8 +14368,7 @@ You may grant provisioning entitlements _here_.
         <target>配備は正常にスケジュールされました。</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note1">
-        <source>You can't deploy this file to any systems because this file is part of a config sandbox local to system
-&lt;a href="{1}"&gt;{0}&lt;/a&gt;.</source>
+        <source>You can't deploy this file to any systems because this file is part of a config sandbox local to system &lt;a href="{1}"&gt;{0}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">You can't deploy this file to any systems because this file is part of a config sandbox local to
@@ -14467,10 +14378,7 @@ system _zanarkand.boston.redhat.com_.</context>
 &lt;a href="{1}"&gt;{0}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note2">
-        <source>Configuration sandboxes are a place to store configuration files that are under development.
-If you believe this configuration file is ready for deployment to a system, you can &lt;a href="{0}"&gt;copy it to a locally-managed config channel&lt;/a&gt;
-or &lt;a href="{1}"&gt;copy it to a globally-managed config channel&lt;/a&gt; via the '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' tab above.
-From there, you can deploy the file to systems.</source>
+        <source>Configuration sandboxes are a place to store configuration files that are under development. If you believe this configuration file is ready for deployment to a system, you can &lt;a href="{0}"&gt;copy it to a locally-managed config channel&lt;/a&gt; or &lt;a href="{1}"&gt;copy it to a globally-managed config channel&lt;/a&gt; via the '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' tab above. From there, you can deploy the file to systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
@@ -14480,10 +14388,7 @@ From there, you can deploy the file to systems.</source>
 そこから、そのファイルをシステムに配備します。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.note">
-        <source>
-You can deploy the latest revision of this file (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to any of the systems subscribed to this file's
-centrally-managed configuration channel, {2}; below is a list of systems you may deploy this file to.
-</source>
+        <source>You can deploy the latest revision of this file (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to any of the systems subscribed to this file's centrally-managed configuration channel, {2}; below is a list of systems you may deploy this file to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">
@@ -15003,10 +14908,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target>テキストファイルとバイナリファイルの違いに関する詳細は、&lt;a href="{0}"&gt;ここ&lt;/a&gt; をクリックしてください。</target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-edit">
-        <source>
-You can't edit this file because it is a binary file.
-(If you think that this file is incorrectly set as a 'binary' file, you may change this with the 'File Type' property above. After setting it as a plaintext file, you can edit it here.)
-</source>
+        <source>You can't edit this file because it is a binary file. (If you think that this file is incorrectly set as a 'binary' file, you may change this with the 'File Type' property above. After setting it as a plaintext file, you can edit it here.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">arg0 is a link-target that isn't visible to the user</context>
@@ -15017,9 +14919,7 @@ You can't edit this file because it is a binary file.
 </target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-display">
-        <source>
-This is a binary file, and can not be displayed.
-</source>
+        <source>This is a binary file, and can not be displayed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -15043,10 +14943,7 @@ This is a binary file, and can not be displayed.
         <target>編集するにはファイルが大きすぎます</target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.toolarge-edit">
-        <source>
-You can't edit this file here because it is too large (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be editable in this form - this size can be set by @@PRODUCT_NAME@@ administrators via the java.config_file_edit_size option in /etc/rhn/rhn.conf).
-You can, however, download this file, edit it locally on your computer, and upload your changes here.
-</source>
+        <source>You can't edit this file here because it is too large (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be editable in this form - this size can be set by @@PRODUCT_NAME@@ administrators via the java.config_file_edit_size option in /etc/rhn/rhn.conf). You can, however, download this file, edit it locally on your computer, and upload your changes here.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
@@ -15060,10 +14957,7 @@ You can, however, download this file, edit it locally on your computer, and uplo
 </target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.toolarge-display">
-        <source>
-This file is too large to display here. (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be displayed).
-You can, however, download this file.
-</source>
+        <source>This file is too large to display here. (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be displayed). You can, however, download this file.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
@@ -15084,9 +14978,7 @@ You can, however, download this file.
         <target>ファイルのダウンロード</target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.download">
-        <source>
-&lt;a href="{0}"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
-</source>
+        <source>&lt;a href="{0}"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
@@ -15164,10 +15056,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <target>設定ファイルの削除</target>
       </trans-unit>
       <trans-unit id="deletefile.jsp.info">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Deleting the configuration file described below
-will remove ALL revisions of the file from this channel.  It will also remove all currently-pending
-deployment actions for any of those revisions, as well as all deployment history regarding
-any of these revisions.  Are you sure you want to do this?</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Deleting the configuration file described below will remove ALL revisions of the file from this channel. It will also remove all currently-pending deployment actions for any of those revisions, as well as all deployment history regarding any of these revisions. Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/DeleteFile.do</context>
         </context-group>
@@ -17143,12 +17032,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <target>キックスタートプロファイルがありません。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.summary">
-        <source>You may sync kickstarting systems to the package profile
-of a system registered to @@PRODUCT_NAME@@ by choosing a package profile
-below.  &lt;strong&gt;Note&lt;/strong&gt;: This list will
-only show package profiles that were made against the same
-Base Channel chosen on the
-&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;Operating System&lt;/a&gt; page.</source>
+        <source>You may sync kickstarting systems to the package profile of a system registered to @@PRODUCT_NAME@@ by choosing a package profile below. &lt;strong&gt;Note&lt;/strong&gt;: This list will only show package profiles that were made against the same Base Channel chosen on the &lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;Operating System&lt;/a&gt; page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEdit.do</context>
         </context-group>
@@ -17160,11 +17044,7 @@ Base Channel chosen on the
 のみが表示されます。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip">
-        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
-Make sure you subscribe systems to the appropriate software channels during kickstart
-so they have access to the packages in the package profile you sync them to.  Visit
-the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Keys&lt;/a&gt;
- tab to subscribe systems to software channels during kickstart.&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; Make sure you subscribe systems to the appropriate software channels during kickstart so they have access to the packages in the package profile you sync them to. Visit the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Keys&lt;/a&gt; tab to subscribe systems to software channels during kickstart.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEditSubmit.do</context>
         </context-group>
@@ -17537,7 +17417,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>Mac アドレス</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.cobbler-only.tooltip">
-        <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
+        <source>Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -17636,7 +17516,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>自動インストールプロファイルの複製</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.summary">
-        <source>Please specify a new label for this Autoinstallation Profile.  All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
+        <source>Please specify a new label for this Autoinstallation Profile. All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
@@ -17650,7 +17530,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>自動インストールの複製を作成する: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.summary2">
-        <source>This is current status of this system's Autoinstallation progress.  &lt;strong&gt;NOTE:&lt;/strong&gt;  This page refreshes every 15 seconds</source>
+        <source>This is current status of this system's Autoinstallation progress. &lt;strong&gt;NOTE:&lt;/strong&gt; This page refreshes every 15 seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -17678,7 +17558,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>システムのアクティベーション</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.activation2">
-        <source>using existing profile: </source>
+        <source>using existing profile:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -18004,14 +17884,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>自動インストール可能なディストリビューションの編集</target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header1">
-        <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
-
-The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
-
-The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
-
-&lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution including kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  If you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value. &lt;/p&gt;
-</source>
+        <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt; The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt; The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt; &lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution including kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users. If you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value. &lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
@@ -18074,9 +17947,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>自動インストール可能なチャンネルは見つかりませんでした。</target>
       </trans-unit>
       <trans-unit id="tree-form.jspf.noinstalltypes">
-        <source>
- &lt;strong&gt;No applicable installer generations found for selected base channel.&lt;/strong&gt;
-</source>
+        <source>&lt;strong&gt;No applicable installer generations found for selected base channel.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
@@ -18170,7 +18041,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ホストされている仮想システム</target>
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.summary">
-        <source>This is a list of virtual guests which are configured to run on this host.  You can perform actions on these guests with the buttons below.</source>
+        <source>This is a list of virtual guests which are configured to run on this host. You can perform actions on these guests with the buttons below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
@@ -18345,7 +18216,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>以下の「確認」ボタンをクリックして次の動作をスケジュールします。</target>
       </trans-unit>
       <trans-unit id="virtualguests_confirm.jsp.summary.delete">
-        <source>Click the Confirm button below to delete the following virtual systems.  This will remove all information about the virtual system from the @@PRODUCT_NAME@@. &lt;strong&gt;NOTE:&lt;/strong&gt; This will not remove the actual virtual machine from the host.</source>
+        <source>Click the Confirm button below to delete the following virtual systems. This will remove all information about the virtual system from the @@PRODUCT_NAME@@. &lt;strong&gt;NOTE:&lt;/strong&gt; This will not remove the actual virtual machine from the host.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
@@ -18408,7 +18279,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>動作</target>
       </trans-unit>
       <trans-unit id="distro-delete.jsp.profilesusing">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Autoinstallable Distribution you have chosen to delete is in use by the following Autoinstallation Profiles.  You must change the Distribution used in the profiles below before deleting this Distribution.  Click the label in the link to edit the profile's Distribution.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Autoinstallable Distribution you have chosen to delete is in use by the following Autoinstallation Profiles. You must change the Distribution used in the profiles below before deleting this Distribution. Click the label in the link to edit the profile's Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
@@ -18513,7 +18384,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.override.jsp.message">
-        <source>The following fields may be left blank (in which case default values as defined in the selected autoinstallation profile will be used).  Each field may be set individually to override the profile's default value.</source>
+        <source>The following fields may be left blank (in which case default values as defined in the selected autoinstallation profile will be used). Each field may be set individually to override the profile's default value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -18971,7 +18842,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>OSA の状態:</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.message">
-        <source>{0} as of </source>
+        <source>{0} as of</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - Ping status, will be either online or offline
@@ -19148,7 +19019,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>&lt;strong&gt;システムが @@PRODUCT_NAME@@ にチェックインしていません&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.inactive2">
-        <source> (&lt;a href="{0}"&gt;more info&lt;/a&gt;)</source>
+        <source>(&lt;a href="{0}"&gt;more info&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -19833,11 +19704,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary">
-        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility.  The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
+        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility. The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="sdc.details.activation.key">
         <source>Key:</source>
@@ -20176,7 +20047,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
-        <target>このエラーは、中断されたログアウトや別のブラウザタブからのログインによって引き起こされた可能性があります。問題が解消されない場合は、Satellite の管理者に問い合わせてください。</target>
+        <target>このエラーは、中断されたログアウトや別のブラウザタブからのログインによって引き起こされた可能性があります。問題が解消されない場合は、 SUSE Manager の管理者に問い合わせてください。</target>
       </trans-unit>
       <trans-unit id="login.jsp.error.currentlyLoggedInAs">
         <source>Currently logged in as: {0}</source>
@@ -20186,7 +20057,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ログイン名: {0}</target>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group />
+      <group/>
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -20239,7 +20110,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>サブスクリプションの変更</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.summary">
-        <source>This system is subscribed to the base channel, listed at top, and to the checked channels beneath, if any.  Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from.</source>
+        <source>This system is subscribed to the base channel, listed at top, and to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
@@ -20253,7 +20124,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>システムがサブスクライブしているベースソフトウェアチャンネルを変更することができます。すべてのソフトウェアチャンネルからサブスクライブを中止して、新しいベースソフトウエアチャンネルにサブスクライブさせます。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.subwarning">
-        <source>You do not have subscription rights to the current base channel for this system.  If you change the base channel, you will not be able to return it to this channel without administrator assistance.</source>
+        <source>You do not have subscription rights to the current base channel for this system. If you change the base channel, you will not be able to return it to this channel without administrator assistance.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
@@ -20267,7 +20138,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>確認</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.markedwarning">
-        <source>You do not have subscription rights to the marked channels below.  You will not be able to resubscribe this system to such channels without administrator intervention.</source>
+        <source>You do not have subscription rights to the marked channels below. You will not be able to resubscribe this system to such channels without administrator intervention.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
@@ -20288,7 +20159,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ベースソフトウェアチャンネル</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.nobasechannel">
-        <source>This system has no Base Software Channel.  You can select a Base Channel from the list below.</source>
+        <source>This system has no Base Software Channel. You can select a Base Channel from the list below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
@@ -20400,7 +20271,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ヒント:</target>
       </trans-unit>
       <trans-unit id="orgcreate.header2">
-        <source>Your &lt;strong&gt;@@PRODUCT_NAME@@ Administrator&lt;/strong&gt; role will not allow you to login into or modify this new organization, and your @@PRODUCT_NAME@@ login cannot be a member of more than one organization.  Consequently, you will need to create a new login for the initial &lt;strong&gt;Organization Administrator&lt;/strong&gt; for this organization:</source>
+        <source>Your &lt;strong&gt;@@PRODUCT_NAME@@ Administrator&lt;/strong&gt; role will not allow you to login into or modify this new organization, and your @@PRODUCT_NAME@@ login cannot be a member of more than one organization. Consequently, you will need to create a new login for the initial &lt;strong&gt;Organization Administrator&lt;/strong&gt; for this organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
@@ -20478,11 +20349,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <!-- multiorg trustedorg strings  -->
       <trans-unit id="org.trust.summary">
-        <source>
-          The organizations checked off below are trusted organizations of the {0} organization. This means that it is
-          possible to share content and migrate systems between these two organizations. You may add a trust by checking
-          the box next to an organization (or remove a trust by unchecking it) and clicking the 'Modify Trusts' button.
-        </source>
+        <source>The organizations checked off below are trusted organizations of the {0} organization. This means that it is possible to share content and migrate systems between these two organizations. You may add a trust by checking the box next to an organization (or remove a trust by unchecking it) and clicking the 'Modify Trusts' button.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
@@ -20493,14 +20360,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </target>
       </trans-unit>
       <trans-unit id="org.trust.confirm.summary">
-        <source>
-            Are you sure you want to remove the trust(s) listed below?  There are systems in the
-            {0} organization that subscribe to content provided by the organization(s) whose trust(s)
-            you are removing.  This may adversely affect those systems.  For example, those systems may
-            no longer receive security updates for content provided through the trust.
-            &lt;p/&gt;
-            Please review the changes you are about to make before confirming the trust removal(s).
-        </source>
+        <source>Are you sure you want to remove the trust(s) listed below? There are systems in the {0} organization that subscribe to content provided by the organization(s) whose trust(s) you are removing. This may adversely affect those systems. For example, those systems may no longer receive security updates for content provided through the trust. &lt;p/&gt; Please review the changes you are about to make before confirming the trust removal(s).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
@@ -20514,12 +20374,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </target>
       </trans-unit>
       <trans-unit id="org.trust.affectedsystems.summary">
-        <source>
-            The systems listed below will be affected by removing the trust relationship between
-            the &lt;b&gt;{0}&lt;/b&gt; organization and the &lt;b&gt;{1}&lt;/b&gt; organization.
-            Removing this trust may adversely affect these systems.  For example, these systems may
-            no longer receive security updates for content provided through this trust.
-        </source>
+        <source>The systems listed below will be affected by removing the trust relationship between the &lt;b&gt;{0}&lt;/b&gt; organization and the &lt;b&gt;{1}&lt;/b&gt; organization. Removing this trust may adversely affect these systems. For example, these systems may no longer receive security updates for content provided through this trust.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
@@ -20953,7 +20808,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>要求した CSV にアクセスするには、データのエクスポート元となるページを再度開き、「CSV をエクスポート」リンクを再度クリックします。</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptions">
-        <source>Custom  options:</source>
+        <source>Custom options:</source>
         <target state="needs-adaptation">カスタムオプション:</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionsnote">
@@ -20993,23 +20848,23 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>独自パッチの作成</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerratamsg">
-        <source>Choose this option to create a patch from scratch.  You may import a new patch into this channel at publication time.</source>
+        <source>Choose this option to create a patch from scratch. You may import a new patch into this channel at publication time.</source>
         <target state="needs-adaptation">ゼロからパッチを作成するには、このオプションを選択します。発行した時点でこのチャンネルに新しいパッチを取り込むことができます。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.confirmmsg">
-        <source>Below is a summary of the patches you have selected to clone.  Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
+        <source>Below is a summary of the patches you have selected to clone. Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
         <target state="needs-adaptation">下記は複製するよう選択したパッチの概要です。それぞれの CSV ダウンロード内に含まれているものは、チャンネルに対してプッシュされる予定のパッチやパッケージの一覧です。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.custommsg">
-        <source>Below is a list of patches that can pushed to the current channel.  Use the channel selection drop down filter to narrow down patches to choose from.</source>
+        <source>Below is a list of patches that can pushed to the current channel. Use the channel selection drop down filter to narrow down patches to choose from.</source>
         <target state="needs-adaptation">下記は、現在のチャンネルに対してプッシュできるパッチの一覧です。チャンネル選択のドロップダウンボックスを利用することで、パッチを絞り込むことができます。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.redhatmsg">
-        <source>Below is a list of patches that can pushed to the current channel.  Use the drop down filters to narrow down which patches you may choose from.</source>
+        <source>Below is a list of patches that can pushed to the current channel. Use the drop down filters to narrow down which patches you may choose from.</source>
         <target state="needs-adaptation">下記は、現在のチャンネルに対してプッシュできるパッチの一覧です。ドロップダウンボックスを利用することで、パッチを絞り込むことができます。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.packageassocmsg">
-        <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
+        <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown. Also, package architecture will match what is currently in the channel.</source>
         <target state="needs-adaptation">&lt;em&gt;(推奨)&lt;/em&gt; これを選択すると、このチャンネルに適用されるパッケージを含むパッチのみが表示されます。なお、パッケージのアーキテクチャがチャンネル内のものと一致するものが表示されます。</target>
       </trans-unit>
       <trans-unit id="toolbar.ssm.add">
@@ -21029,9 +20884,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>名前別のパッケージ</target>
       </trans-unit>
       <trans-unit id="packagesbyname.jsp.introparagraph">
-        <source>NOTE: Different architectures of the same package can exist in a
-single channel, this may cause a package to be listed twice for a
-given channel.</source>
+        <source>NOTE: Different architectures of the same package can exist in a single channel, this may cause a package to be listed twice for a given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NameOverview.do</context>
         </context-group>
@@ -21089,7 +20942,7 @@ given channel.</source>
         <target>ドキュメント検索</target>
       </trans-unit>
       <trans-unit id="docsearch.jsp.pagesummary">
-        <source>Document Search will return links to pages matching your search term. </source>
+        <source>Document Search will return links to pages matching your search term.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>
@@ -21156,19 +21009,11 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="help.jsp.about.overviewsummary">
-        <source>
-        All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
-        is stored locally on the customer's network. This provides customers with the ability to take their
-        @@PRODUCT_NAME@@ solution off of the public internet if desired, and also allows for greater
-        optimization and control of their systems.
-        By using a @@PRODUCT_NAME@@ Proxy server in conjunction with the @@PRODUCT_NAME@@ server,
-        the customer's individual systems connect to a locally hosted Proxy.
-        The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers.
-        All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
+        <source>All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.) is stored locally on the customer's network. This provides customers with the ability to take their @@PRODUCT_NAME@@ solution off of the public internet if desired, and also allows for greater optimization and control of their systems. By using a @@PRODUCT_NAME@@ Proxy server in conjunction with the @@PRODUCT_NAME@@ server, the customer's individual systems connect to a locally hosted Proxy. The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers. All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="help.jsp.helpdesk">
         <source>Welcome to the Help Desk</source>
@@ -21179,7 +21024,7 @@ given channel.</source>
         <target>(翻訳版をご利用いただけます)</target>
       </trans-unit>
       <trans-unit id="help.jsp.install">
-        <source>Detailed information regarding @@PRODUCT_NAME@@ server and its installation. </source>
+        <source>Detailed information regarding @@PRODUCT_NAME@@ server and its installation.</source>
         <target state="needs-adaptation">@@PRODUCT_NAME@@ サーバーとそのインストールに関しての詳細が記載されています。</target>
       </trans-unit>
       <trans-unit id="help.jsp.install.title">
@@ -21273,19 +21118,16 @@ given channel.</source>
         <target>不明</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.remove">
-        <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
-        </source>
+        <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.</source>
         <target state="needs-adaptation">以下は、このチャンネルから削除するよう選択したパッケージの一覧です。このチャンネルからパッケージを削除しても、サブスクライブしているシステムまたは適用可能なパッチには影響がありません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.details.title">
-        <source>Details
-        </source>
+        <source>Details</source>
         <target state="needs-adaptation">詳細
         </target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.removesuccess">
-        <source>{0} package(s) removed from channel {1}
-        </source>
+        <source>{0} package(s) removed from channel {1}</source>
         <target state="needs-adaptation">{0} パッケージがチャンネル {1} から削除されました
 		</target>
       </trans-unit>
@@ -21332,8 +21174,7 @@ given channel.</source>
         <source>Source Packages</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addsuccess">
-        <source>{0} package(s) added to channel {1}
-        </source>
+        <source>{0} package(s) added to channel {1}</source>
         <target state="needs-adaptation">{0} パッケージがチャンネル {1} に追加されました
 		</target>
       </trans-unit>
@@ -21349,9 +21190,7 @@ given channel.</source>
         <source>No packages found for this criteria.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addmessage">
-        <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
-
-            Only packages of a compatible arch will be shown</source>
+        <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below. Only packages of a compatible arch will be shown</source>
         <target state="needs-adaptation">このチャンネルに追加できるパッケージの一覧を以下に示します。「チャンネル」選択ボックスを使用すると利用可能な一連のパッケージを制限できます。このチャンネルにパッケージを追加するには、ここでパッケージを選択し、下にある「パッケージの追加」をクリックします。
 
 			互換性のあるアーキテクチャーのパッケージのみが表示されます。</target>
@@ -21361,8 +21200,7 @@ given channel.</source>
         <target>パッケージ追加の確認</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.add.confirm.msg">
-        <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.
-        </source>
+        <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.</source>
         <target state="needs-adaptation">以下は、このチャンネルに追加するよう選択したパッケージの一覧です。このチャンネルにパッケージを追加しても、サブスクライブされたシステムまたは適用できるパッチは影響を受けません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle">
@@ -21421,10 +21259,7 @@ given channel.</source>
         <target>{0} で実施する変更を選択します:</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.comparemergemessage2">
-        <source>Please note that all of the packages associated with these
-                channels are listed here, not just the latest versions of each
-                package. Older versions of a given package will not appear in the
-                channel's package list unless the newer version is removed.</source>
+        <source>Please note that all of the packages associated with these channels are listed here, not just the latest versions of each package. Older versions of a given package will not appear in the channel's package list unless the newer version is removed.</source>
         <target state="needs-adaptation">各パッケージの最新バージョンだけではなく、これらの
                 チャンネルに関連付けられている全パッケージが表示されます。
                 チャンネルのパッケージ一覧には新しいバージョンが削除されない
@@ -21630,9 +21465,7 @@ given channel.</source>
         <target>なし</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.remove.message">
-        <source>Are you certain you want to delete these packages?
-
-            This process can take several seconds. Be patient and do not click the button below more than once.</source>
+        <source>Are you certain you want to delete these packages? This process can take several seconds. Be patient and do not click the button below more than once.</source>
         <target state="needs-adaptation">本当にこれらのパッケージを削除しますか?
 
 			この処理は数秒かかることがあります。下のボタンを 1 回だけクリックし、しばらくお待ちください。</target>
@@ -21971,14 +21804,11 @@ given channel.</source>
         <target>Yum リポジトリのチェックサムタイプ</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksumtip">
-        <source>&lt;strong&gt; Tip:&lt;/strong&gt;
-          sha1 offers the widest compatibility with clients. sha256 offers higher security,
-          but is compatible only with newer clients: Fedora 11 and newer, Red Hat Enterprise Linux 6 and newer or SLES11-SP1 and newer.
-         </source>
+        <source>&lt;strong&gt; Tip:&lt;/strong&gt; sha1 offers the widest compatibility with clients. sha256 offers higher security, but is compatible only with newer clients: Fedora 11 and newer, Red Hat Enterprise Linux 6 and newer or SLES11-SP1 and newer.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.summary">
         <source>Channel Summary</source>
@@ -22200,15 +22030,7 @@ given channel.</source>
         <target>チャンネルの削除</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.introparagraph">
-        <source>Are you sure you wish to delete this channel? Packages in the channel will
-           be removed from the channel, but will remain on the server. You will be
-           given the option to delete them after the channel has been deleted. Patches
-           related to the channel will no longer be related to the channel, and may be
-           orphaned. If the channel has child channels, it cannot be deleted; the child
-           channels must be deleted first. If the channel has autoinstallable distributions
-           associated to it, it cannot be deleted; the distributions must be
-           dissociated from the channel or deleted first.
-         </source>
+        <source>Are you sure you wish to delete this channel? Packages in the channel will be removed from the channel, but will remain on the server. You will be given the option to delete them after the channel has been deleted. Patches related to the channel will no longer be related to the channel, and may be orphaned. If the channel has child channels, it cannot be deleted; the child channels must be deleted first. If the channel has autoinstallable distributions associated to it, it cannot be deleted; the distributions must be dissociated from the channel or deleted first.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
@@ -22243,9 +22065,7 @@ given channel.</source>
         <target>組織の作成</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsparagraph">
-        <source>Channel deletion will affect any Trusted Organizations that have systems
-            subscribed to the {0} channel.
-         </source>
+        <source>Channel deletion will affect any Trusted Organizations that have systems subscribed to the {0} channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
@@ -22254,8 +22074,7 @@ given channel.</source>
          </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsaffected">
-        <source>Organizations Affected:
-         </source>
+        <source>Organizations Affected:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
@@ -22270,9 +22089,7 @@ given channel.</source>
         <target>システムのサブスクライブを中止します。</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.unsubparagraph">
-        <source>Unsubscribe all trusted organization systems that are subscribed to the
-            {0} channel. Subscribed systems will lose access to packages specific to this channel.
-         </source>
+        <source>Unsubscribe all trusted organization systems that are subscribed to the {0} channel. Subscribed systems will lose access to packages specific to this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
@@ -22288,21 +22105,7 @@ given channel.</source>
         <target>なし</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.introparagraph">
-        <source>Create or edit software channels from this page.
-        &lt;p/&gt;
-        If the parent channel is set to 'none', the channel is a base channel.
-        Otherwise, the channel is a child of the specified channel.
-        &lt;p/&gt;
-        Channel name and label are required.&lt;br&gt;
-        They each must be at least 6 characters in length.&lt;br&gt;
-        Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt;
-        Channel name and label may begin with a letter or digit.&lt;br&gt;
-        They each must not begin with rhn, redhat or red hat.&lt;br&gt;
-        They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt;
-        Channel name may also contain spaces, parentheses () and forward slashes ('/').
-        &lt;p/&gt;
-        Channel summary is also required and must not exceed 500 characters.
-        </source>
+        <source>Create or edit software channels from this page. &lt;p/&gt; If the parent channel is set to 'none', the channel is a base channel. Otherwise, the channel is a child of the specified channel. &lt;p/&gt; Channel name and label are required.&lt;br&gt; They each must be at least 6 characters in length.&lt;br&gt; Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt; Channel name and label may begin with a letter or digit.&lt;br&gt; They each must not begin with rhn, redhat or red hat.&lt;br&gt; They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt; Channel name may also contain spaces, parentheses () and forward slashes ('/'). &lt;p/&gt; Channel summary is also required and must not exceed 500 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -22323,9 +22126,7 @@ given channel.</source>
         </target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.public">
-        <source>This channel is &lt;strong&gt;public&lt;/strong&gt; and may be
-        accessed by any of the &lt;a href="{0}"&gt;trusted
-        organizations&lt;/a&gt; trusted by this organization.</source>
+        <source>This channel is &lt;strong&gt;public&lt;/strong&gt; and may be accessed by any of the &lt;a href="{0}"&gt;trusted organizations&lt;/a&gt; trusted by this organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -22334,9 +22135,7 @@ given channel.</source>
         組織&lt;/a&gt; がアクセスすることができます。</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.protected">
-        <source>This channel is &lt;strong&gt;protected&lt;/strong&gt; and may
-        only be accessed by specific &lt;a href="{0}"&gt;trusted
-        organizations&lt;/a&gt;.</source>
+        <source>This channel is &lt;strong&gt;protected&lt;/strong&gt; and may only be accessed by specific &lt;a href="{0}"&gt;trusted organizations&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -22345,8 +22144,7 @@ given channel.</source>
         できます。</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.private">
-        <source>This channel is &lt;strong&gt;private&lt;/strong&gt; and cannot
-        be accessed by any other organization.</source>
+        <source>This channel is &lt;strong&gt;private&lt;/strong&gt; and cannot be accessed by any other organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -22640,7 +22438,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>本当にスケジュールを削除してもよいですか? 関連付けられているバンチがスケジュールされなくなります。これにより Satellite の機能性に多大な影響を及ぼす可能性があります。削除による影響をよく理解した上で続行してください。</target>
+        <target>本当にスケジュールを削除してもよいですか? 関連付けられているバンチがスケジュールされなくなります。これにより SUSE Manager の機能性に多大な影響を及ぼす可能性があります。削除による影響をよく理解した上で続行してください。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -22785,13 +22583,7 @@ given channel.</source>
         <target>終了時間</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg">
-        <source>Are you sure you want to set this channel to
-        &lt;strong&gt;private&lt;/strong&gt;, accessible only by systems in your
-        organization? There are system(s) in other organization(s) listed below
-        that subscribe to content provided by this channel. Removing access to
-        this channel may adversely affect those systems. For example, those
-        systems may no longer receive critical security updates to content
-        provided by this channel.</source>
+        <source>Are you sure you want to set this channel to &lt;strong&gt;private&lt;/strong&gt;, accessible only by systems in your organization? There are system(s) in other organization(s) listed below that subscribe to content provided by this channel. Removing access to this channel may adversely affect those systems. For example, those systems may no longer receive critical security updates to content provided by this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
@@ -22804,8 +22596,7 @@ given channel.</source>
         できなくなる恐れがあります。</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg.deux">
-        <source>Please review the change you are about to make before confirming
-        this access removal.</source>
+        <source>Please review the change you are about to make before confirming this access removal.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -22813,12 +22604,7 @@ given channel.</source>
 ください。</target>
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg">
-        <source>Are you sure you want to set this channel's access policy to
-        being a &lt;strong&gt;protected&lt;/strong&gt; channel, note that the
-        organizations below have systems that subscribe to this channel.
-        Removing these organizations' access may adversely affect those systems.
-        For example, they may no longer receive critical security updates to
-        content provided by this channel.</source>
+        <source>Are you sure you want to set this channel's access policy to being a &lt;strong&gt;protected&lt;/strong&gt; channel, note that the organizations below have systems that subscribe to this channel. Removing these organizations' access may adversely affect those systems. For example, they may no longer receive critical security updates to content provided by this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
@@ -22830,10 +22616,7 @@ given channel.</source>
         受信できなくなる恐れがあります。</target>
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg.deux">
-        <source>You may choose to grant the organizations below access to this
-        channel, or you may deny them access. Once the channel is protected, you can
-        modify access to this channel at any time using the 'Organizations' tab.
-        </source>
+        <source>You may choose to grant the organizations below access to this channel, or you may deny them access. Once the channel is protected, you can modify access to this channel at any time using the 'Organizations' tab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
@@ -22996,8 +22779,7 @@ given channel.</source>
         <target>自動インストールが見つかりませんでした</target>
       </trans-unit>
       <trans-unit id="unknown.kickstart.message">
-        <source>The requested autoinstallation file could not be found.
-         If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
+        <source>The requested autoinstallation file could not be found. If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
         <target state="needs-adaptation">要求された自動インストールファイルは見つかりませんでした。 組織のデフォルトの自動インストールを要求する場合は、「組織のデフォルト」として自動インストールを選択するようにしてください。</target>
       </trans-unit>
       <trans-unit id="task.status.last.execution">
@@ -23106,8 +22888,7 @@ given channel.</source>
         <target>パッチの同期</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.message">
-        <source>The following patches were cloned from patches that have since been updated.
-		   This page will allow you to synchronize your cloned patches to that of its original.</source>
+        <source>The following patches were cloned from patches that have since been updated. This page will allow you to synchronize your cloned patches to that of its original.</source>
         <target state="needs-adaptation">下記のパッチは、更新以降にパッチから複製されたものの一覧です。このページでは、元のパッチと複製されたパッチの同期を行なうことができます。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.note">
@@ -23123,7 +22904,7 @@ given channel.</source>
         <target>プッシュするパッケージ</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.packages.message">
-        <source>The following packages will be pushed to this channel as part of the patches sync process.  Please review this list and unselect any unwanted packages.</source>
+        <source>The following packages will be pushed to this channel as part of the patches sync process. Please review this list and unselect any unwanted packages.</source>
         <target state="needs-adaptation">パッチの同期処理の際、このチャンネルに対して下記のパッケージがプッシュされます。不要なパッケージが存在する場合は、この一覧で選択を外してください。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.complete">
@@ -23135,16 +22916,16 @@ given channel.</source>
         <target>リポジトリキャッシュの状態</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.completed">
-        <source> Completed </source>
+        <source>Completed</source>
         <target state="needs-adaptation">完了</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.inProgress">
-        <source> In Progress </source>
+        <source>In Progress</source>
         <target state="needs-adaptation">実行中</target>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck">
-        <source>Enable GPG Check </source>
-      <target state="needs-adaptation" />
+        <source>Enable GPG Check</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild">
         <source>Last Repo Build</source>
@@ -23233,7 +23014,7 @@ given channel.</source>
         <source>DebugSource Package</source>
       </trans-unit>
       <trans-unit id="debuginfo.external">
-        <source>Note:  A local debuginfo rpm could not be found.  The above links to an external FTP server and may not be valid.</source>
+        <source>Note: A local debuginfo rpm could not be found. The above links to an external FTP server and may not be valid.</source>
         <target state="needs-adaptation">注記: ローカルの debuginfo RPM が見つかりませんでした。上記は外部の FTP サーバーにリンクするため不適切です。</target>
       </trans-unit>
       <trans-unit id="debuginfo.unavailable">
@@ -23247,7 +23028,7 @@ given channel.</source>
         <target>変更ログ</target>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.error">
-        <source>There was an error reading the selected package changelog.  Please check that the package physically exists and has the correct permissions.</source>
+        <source>There was an error reading the selected package changelog. Please check that the package physically exists and has the correct permissions.</source>
         <target state="needs-adaptation">選択されたパッケージの変更ログを読み込む際にエラーが発生しました。物理的にこのパッケージが存在しているのか、また適切なパーミッションがあるのかどうかを確認してください。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.dependencies.requires.title">
@@ -23775,8 +23556,8 @@ given channel.</source>
         <source>Please select one target product to migrate</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.notSyncedChannels">
-        <source>Target not available, the following channels are not synced: </source>
-      <target state="needs-adaptation" />
+        <source>Target not available, the following channels are not synced:</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title">
         <source>Service Pack Migration - Channels</source>
@@ -23935,15 +23716,8 @@ given channel.</source>
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni">
-        <source>
-&lt;p&gt;
-    @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution.
-&lt;/p&gt;
-&lt;p&gt;
-    For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
-&lt;/p&gt;
-        </source>
-      <target state="needs-adaptation" />
+        <source>&lt;p&gt; @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution. &lt;/p&gt; &lt;p&gt; For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;. &lt;/p&gt;</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="compare.jsp.noprovisioning">
         <source>Syncing the packages to the list above is not available for this system.</source>
@@ -23995,14 +23769,12 @@ given channel.</source>
         <source>Channel Label</source>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
-              This might take a few extra seconds.</source>
-      <target state="needs-adaptation" />
+        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion. This might take a few extra seconds.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
-            In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-      <target state="needs-adaptation" />
+        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems. In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -24032,15 +23804,11 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.state.scheduled.info">
-        <source>
-           Application of the channel state will be scheduled immediately after confirming on any minions
-           that currently have this channel assigned. This will update repository files on those minions to
-           remove the deleted channel.
-        </source>
+        <source>Application of the channel state will be scheduled immediately after confirming on any minions that currently have this channel assigned. This will update repository files on those minions to remove the deleted channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-      <target state="needs-adaptation" />
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
@@ -24070,30 +23838,8 @@ given channel.</source>
         <source>Bootstrap</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.body">
-        <source>
-&lt;p&gt;
-    This software is a modular operating system comprised of numerous components
-    that may be accompanied by separate license terms. The software is a
-    collective work of SUSE; although SUSE does not own the copyright to every
-    component of the software, SUSE owns the collective work copyright for the
-    software.
-&lt;/p&gt;
-&lt;p&gt;
-    This SUSE product includes materials licensed to SUSE under the GNU
-    General Public License (GPL). The GPL requires that SUSE makes available
-    certain source code that corresponds to the GPL-licensed material. The source
-    code is available for download at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    Also, for up to three years from SUSE's distribution of the SUSE product, upon
-    request SUSE will mail a copy of the source code. Requests should be sent by
-    e-mail to
-    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
-    or as otherwise instructed at
-    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    SUSE may charge a fee to recover its reasonable costs of distribution
-&lt;/p&gt;
-        </source>
-      <target state="needs-adaptation" />
+        <source>&lt;p&gt; This software is a modular operating system comprised of numerous components that may be accompanied by separate license terms. The software is a collective work of SUSE; although SUSE does not own the copyright to every component of the software, SUSE owns the collective work copyright for the software. &lt;/p&gt; &lt;p&gt; This SUSE product includes materials licensed to SUSE under the GNU General Public License (GPL). The GPL requires that SUSE makes available certain source code that corresponds to the GPL-licensed material. The source code is available for download at &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;. Also, for up to three years from SUSE's distribution of the SUSE product, upon request SUSE will mail a copy of the source code. Requests should be sent by e-mail to &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt; or as otherwise instructed at &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;. SUSE may charge a fee to recover its reasonable costs of distribution &lt;/p&gt;</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Salt">
         <source>Salt</source>
@@ -24117,79 +23863,79 @@ given channel.</source>
       <trans-unit id="Formula">
         <source>Formula</source>
       </trans-unit>
-    <trans-unit id="actionchain.jsp.maintenanceschedule">
+      <trans-unit id="actionchain.jsp.maintenanceschedule">
         <source>maintenance schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="schedule.jsp.maint-window">
         <source>Maintenance window:</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="schedule.jsp.multiple_maintenance_schedules">
         <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="schedule.jsp.no_maintenance_windows">
         <source>No upcoming maintenance windows for selected systems.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.lang.default">
         <source>Use configured default ({0})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.schedule">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.schedule.none">
         <source>(none)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.edit.schedule">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.none">
         <source>None</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.cancelaffected">
         <source>Cancel affected actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Maintenance Windows">
         <source>Maintenance Windows</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Schedules">
         <source>Schedules</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Calendars">
         <source>Calendars</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
     </body>
   </file>
 </xliff>
