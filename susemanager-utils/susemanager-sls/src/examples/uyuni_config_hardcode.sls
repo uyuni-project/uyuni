@@ -7,6 +7,8 @@ my_org:
     - first_name: first_name
     - last_name: last_name__
     - email: my_org_user@org.com
+    - admin_user: admin
+    - admin_password: admin
 
 org_trust_present:
   uyuni.org_trust:
@@ -35,7 +37,7 @@ user_1:
     - org_admin_password: my_org_user
     - roles: ["system_group_admin", "channel_admin"]
     - system_groups:
-      - app_servers
+      - httpd_servers
 
 user_1_channels:
   ## remane it to user_channels (without _present)
