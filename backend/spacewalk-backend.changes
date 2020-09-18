@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Sep 18 12:13:40 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Only regenerate bootstrap repositories when linking new packages (bsc#1174636)
 - support installer_updates flag in ISS
 - Take care of SCC auth tokens on DEB repos GPG checks (bsc#1175485)
