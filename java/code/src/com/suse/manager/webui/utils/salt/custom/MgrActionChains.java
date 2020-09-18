@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils.salt;
+package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.reflect.TypeToken;
 import com.suse.salt.netapi.calls.LocalCall;

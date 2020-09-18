@@ -58,7 +58,7 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.manager.webui.utils.salt.MinionStartupGrains;
+import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
