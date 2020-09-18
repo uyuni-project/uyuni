@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Sep 18 12:25:33 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - support installer update channels during autoinstallation
 - migrate all occurrences of kickstart to autoinstall in cobbler database (bsc#1169780)
 - define bootstrap repo data for SUSE Manager Proxies (bsc#1174470)
