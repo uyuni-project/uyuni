@@ -29,6 +29,12 @@
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------
+Wed Sep 16 16:49:35 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
+
+-------------------------------------------------------------------
 Thu Jul 23 13:26:41 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.16-1
