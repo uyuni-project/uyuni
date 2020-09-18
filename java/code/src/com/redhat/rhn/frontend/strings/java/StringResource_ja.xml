@@ -2244,7 +2244,30 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt; &lt;p&gt;この問題を解決するには、下記をご確認ください: &lt;/p&gt; &lt;ul&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、組織が 'rhn-tools' 子ソフトウェア チャンネルを利用できることを確認してください。利用できない場合は、@@PRODUCT_NAME@@ 管理者 から 'rhn-tools' ソフトウェアチャンネルのエンタイトルメントを要求する必要があります。 &lt;/li&gt; &lt;li&gt; @@PRODUCT_NAME@@ が、このキックスタートプロファイルのベースチャンネルに対応する 'rhn-tools' 子チャンネルを利用できるようにしてください。利用できない場合は、  @@PRODUCT_NAME@@ 管理者に連絡し、 rhn-tools チャンネルの mgr-inter-sync を要求してもう一度試してください。 &lt;/li&gt; &lt;li&gt; このキックスタートに対応する spacewalk-koan パッケージが、このキックスタートのベースチャンネルの 'rhn-tools' チャンネル内で利用可能であることを確認してください。利用できない場合は、 このキックスタートプロファイルでこれらのパッケージを利用できるようにする必要があります。 &lt;/li&gt; &lt;li&gt; 上記のパッケージが、このキックスタートベースチャンネルで利用可能であることを確認してください。利用できない場合は、 このキックスタートプロファイルでこれらのパッケージを利用できるようにする必要があります。 &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;この問題を解決するには、下記をご確認ください: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、組織が 'rhn-tools' 子ソフトウェア
+チャンネルを利用できることを確認してください。利用できない場合は、@@PRODUCT_NAME@@ 管理者
+から 'rhn-tools' ソフトウェアチャンネルのエンタイトルメントを要求する必要があります。
+&lt;/li&gt;
+&lt;li&gt;
+@@PRODUCT_NAME@@ が、このキックスタートプロファイルのベースチャンネルに対応する 'rhn-tools'
+子チャンネルを利用できるようにしてください。利用できない場合は、  @@PRODUCT_NAME@@ 管理者に連絡し、
+rhn-tools チャンネルの mgr-inter-sync を要求してもう一度試してください。
+&lt;/li&gt;
+&lt;li&gt;
+このキックスタートに対応する spacewalk-koan パッケージが、このキックスタートのベースチャンネルの
+'rhn-tools' チャンネル内で利用可能であることを確認してください。利用できない場合は、
+このキックスタートプロファイルでこれらのパッケージを利用できるようにする必要があります。
+&lt;/li&gt;
+&lt;li&gt;
+上記のパッケージが、このキックスタートベースチャンネルで利用可能であることを確認してください。
+利用できない場合は、 このキックスタートプロファイルでこれらのパッケージを利用できるようにする必要があります。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
@@ -2264,7 +2287,22 @@ and try again.
 &lt;/ul&gt;
 &lt;/div&gt;
 </source>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt; &lt;p&gt;この問題を解決するには下記の点を確認してください:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' という子ソフトウェアチャンネルが組織内で提供されていますか？ 提供されていない場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて、 'appstream' ソフトウェアチャンネルに必要な資格を得る必要があります。 &lt;/li&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' 子チャンネルが @@PRODUCT_NAME@@ 向けに利用可能になっているかどうか。利用可能になっていない場合は、 @@PRODUCT_NAME@@ 管理者に問い合わせて appstream チャンネル向けの cdn-sync をリクエストしてから再度実行してください。 &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;この問題を解決するには下記の点を確認してください:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+このキックスタートプロファイルのベースチャンネルに対して、 'appstream' という子ソフトウェアチャンネルが
+組織内で提供されていますか？提供されていない場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて、
+'appstream' ソフトウェアチャンネルに必要な資格を得る必要があります。
+&lt;/li&gt;
+&lt;li&gt;
+このキックスタートプロファイルのベースチャンネルに対して、 'appstream' 子チャンネルが @@PRODUCT_NAME@@
+向けに利用可能になっているかどうか。利用可能になっていない場合は、 @@PRODUCT_NAME@@ 管理者に
+問い合わせて appstream チャンネル向けの cdn-sync をリクエストしてから再度実行してください。
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2295,7 +2333,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">選択した自動インストールラベルが正しくありません。 {0} 文字以上で、次の文字のみが含まれている必要があります: A-Z, a-z, 0-9, _, -</target>
+        <target state="translated">選択した自動インストールラベルが正しくありません。 {0} 文字以上で、かつ次の文字のみが含まれている必要があります: A-Z, a-z, 0-9, _, - </target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists" xml:space="preserve">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
@@ -2432,7 +2470,7 @@ and try again.
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message" xml:space="preserve">
         <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
-        <target state="needs-adaptation">要求したスニペットファイル名が正しくありません。キックスタートのスニペットファイル名にはスラッシュ (/) が含まれていてはならず、かつピリオド (.) で始まってもいけません</target>
+        <target state="translated">要求したスニペットファイル名が正しくありません。キックスタートのスニペットファイル名にはスラッシュ (/) が含まれていてはならず、かつピリオド (.) で始まってもいけません</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -3066,7 +3104,7 @@ and try again.
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="needs-adaptation">検索サーバーにインデックスファイルがありません。データベースにデータが存在する場合、/usr/sbin/rhn-search cleanindex を実行した後に rhn-search を再起動するとインデックスを再生成できます</target>
+        <target state="translated">検索サーバーにインデックスファイルがありません。データベースにデータが存在する場合、/usr/sbin/rhn-search cleanindex を実行した後に rhn-search を再起動するとインデックスを再生成できます</target>
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing_for_docs" xml:space="preserve">
         <source>Index files were missing from search-server for your locale. The search operation was performed using the default locale. Assuming data exists in database for your locale, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
@@ -3453,7 +3491,9 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target state="needs-adaptation">別の組織の管理者のユーザーアカウントを停止することはできません。 まず、このユーザーから '組織の管理者' のロールを外してから、 アカウントの停止を行なってください。</target>
+        <target state="translated">別の組織の管理者のユーザーアカウントを停止することはできません。
+まず、このユーザーから '組織の管理者' のロールを外してから、 
+アカウントの停止を行なってください。</target>
       </trans-unit>
       <trans-unit id="userdisable.error.userdisabled" xml:space="preserve">
         <source>User is already deactivated.</source>
