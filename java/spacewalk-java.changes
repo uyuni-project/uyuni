@@ -1,3 +1,4 @@
+- Log exception trace on fatal Taskomatic startup error
 - Notify about missing libvirt or hypervisor on virtual host
 - Redesign maintenance schedule systems table to use paginated data from server
 - Fix SP migration after dry run for cloned channels (bsc#1176307)
