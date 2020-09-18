@@ -1,3 +1,5 @@
+- Log exception trace on fatal Taskomatic startup error
+
 -------------------------------------------------------------------
 Fri Sep 18 12:34:25 CEST 2020 - jgonzalez@suse.com
 
