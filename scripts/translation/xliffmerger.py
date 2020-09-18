@@ -26,6 +26,7 @@ def delete_trans_units(body_element, trans_units, units_to_remove):
 def add_trans_units(body_element, trans_units, units_to_add):
     to_add = [tr_unit for tr_unit in trans_units if tr_unit.attrib['id'] in units_to_add]
     for item in to_add:
+        item.set('{http://www.w3.org/XML/1998/namespace}space', "preserve")
         target_element = ET.Element('target', {'state': 'new'})
         target_element.tail = "\n  "
         item.append(target_element)
@@ -35,6 +36,7 @@ def add_trans_units(body_element, trans_units, units_to_add):
 def update_trans_units(body_element, trans_units, id_new_value_dict):
     to_update = [tr_unit for tr_unit in trans_units if tr_unit.attrib['id'] in id_new_value_dict]
     for trans_unit in to_update:
+        trans_unit.set('{http://www.w3.org/XML/1998/namespace}space', "preserve")
         source_element = trans_unit.find('d:source', ns)
         source_element.text = id_new_value_dict[trans_unit.attrib['id']]
         target_element = trans_unit.find('d:target', ns)
@@ -79,7 +81,7 @@ def process(original_file, translation_file):
     # add the 'needs-adaptation' state attribute
     logging.info("########## UPDATE THE CHANGED TRANS_UNITS ##########")
     # Get again so we get the updated list after deletion/addition
-    trans_trans_units = list(translation_body_element.findall('d:trans-unit', ns))
+    trans_trans_units = list(translation_body_element.findall('.//d:trans-unit', ns))
 
     logging.debug(f'{len(orig_trans_units)} trans_units in original file {original_file}')
     logging.debug(f'{len(trans_trans_units)} trans_units in original file {original_file}')
@@ -93,14 +95,22 @@ def process(original_file, translation_file):
     else:
         logging.info("Something went wrong, this should not have happend!")
 
-    xml_tree_translation.write(translation, encoding='utf-8', xml_declaration=True)
+    for t in list(translation_body_element.findall('d:trans-unit', ns)):
+        if not t.get('{http://www.w3.org/XML/1998/namespace}space'):
+            t.set('xml:space', 'preserve')
 
+    xml_tree_translation.write(translation, encoding='UTF-8', xml_declaration=True)
+
+#    for o in list(original_body_element.findall('d:trans-unit', ns)):
+#        if not o.get('{http://www.w3.org/XML/1998/namespace}space'):
+#            o.set('xml:space', 'preserve')
+#    xml_tree_original.write(original_file, encoding='utf-8', xml_declaration=True)
 
 def get_trans_units(xml_tree):
     root_node = xml_tree.getroot()
     file_tag = root_node.find('d:file', ns)
     body_element = file_tag.find('d:body', ns)
-    return body_element, list(body_element.findall('d:trans-unit', ns))
+    return body_element, list(body_element.findall('.//d:trans-unit', ns))
 
 
 ET.register_namespace('', "urn:oasis:names:tc:xliff:document:1.1")
