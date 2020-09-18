@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
@@ -32,7 +32,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
-        <target state="needs-adaptation">こんにちは。 {0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。 @@PRODUCT_NAME@@ ログイン: {2} パスワード: {3} 電子メール: {4} {5} 重要: ログイン後はパスワードを変更してください。 @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 {6}</target>
+        <target state="translated">こんにちは。
+
+{0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。
+ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
+組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。
+
+  @@PRODUCT_NAME@@ ログイン: {2}
+       パスワード: {3}
+         電子メール: {4}
+
+  {5}
+
+重要: ログイン後はパスワードを変更してください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -64,7 +79,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
-        <target state="needs-adaptation">こんにちは。 @@PRODUCT_NAME@@ ログインが作成されました。ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。 @@PRODUCT_NAME@@ ログイン: {0} パスワード: {1} 電子メール: {2} {3} 重要: ログイン後はパスワードを変更してください。 @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 {4}</target>
+        <target state="translated">こんにちは。
+
+@@PRODUCT_NAME@@ ログインが作成されました。
+ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
+組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。
+
+  @@PRODUCT_NAME@@ ログイン: {0}
+       パスワード: {1}
+         電子メール: {2}
+
+  {3}
+
+重要: ログイン後はパスワードを変更してください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -106,7 +136,19 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target state="needs-adaptation">こんにちは。 {0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。 @@PRODUCT_NAME@@ ログイン: {2} 電子メール: {4} {5} @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 {6}</target>
+        <target state="translated">こんにちは。
+
+{0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。
+ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
+組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。
+
+  @@PRODUCT_NAME@@ ログイン: {2}
+         電子メール: {4}
+
+  {5}
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+{6}</target>
       </trans-unit>
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject" xml:space="preserve">
@@ -149,7 +191,19 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target state="needs-adaptation">こんにちは。新しいユーザーがアカウントに追加されました。 {0} アカウントに関連付けられている有効なユーザーや @@PRODUCT_NAME@@ ログインをすべて表示するには、 以下をご確認ください: {1} @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。 {2}</target>
+        <target state="translated">こんにちは。
+
+新しいユーザーがアカウントに追加されました。
+
+{0}
+
+アカウントに関連付けられている有効なユーザーや @@PRODUCT_NAME@@ ログインを
+すべて表示するには、 以下をご確認ください:
+
+  {1}
+
+@@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
+{2}</target>
       </trans-unit>
       <group>
         <context-group name="ctx">
@@ -305,7 +359,26 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="needs-adaptation">これはアカウント {0} ({1}) の @@PRODUCT_NAME@@ ステータスレポートです。 この電子メールは以下のいずれかの状況に該当する場合に送信されます: 1. システムが、24 時間以内に @@PRODUCT_NAME@@ にチェックインするのに失敗した場合。 2. システムが、スケジュールされた動作を登録した場合。 {2} {3} この電子メールの無効化について: ---------------------- システムに対する電子メールを無効化する方法については、以下のページをお読みください: https://{4}/rhn/account/UserPreferences.do @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。 {5} {6}</target>
+        <target state="translated">これはアカウント {0} ({1}) の @@PRODUCT_NAME@@ ステータスレポートです。
+
+この電子メールは以下のいずれかの状況に該当する場合に送信されます:
+
+1. システムが、24 時間以内に @@PRODUCT_NAME@@ にチェックインするのに失敗した場合。
+2. システムが、スケジュールされた動作を登録した場合。
+
+{2}
+{3}
+この電子メールの無効化について:
+----------------------
+
+システムに対する電子メールを無効化する方法については、以下のページをお読みください:
+https://{4}/rhn/account/UserPreferences.do
+
+
+@@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
+{5}
+{6}
+</target>
       </trans-unit>
       <trans-unit id="email.forgotten.password" xml:space="preserve">
         <source>
@@ -324,7 +397,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target state="needs-adaptation">[ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。 ] ログイン {2} に対する @@PRODUCT_NAME@@ パスワードのリセット要求が行なわれました。この処理をこのまま続行するには、下記に進んでください: {1} 。パスワードのリセットを行ないたくない場合は、この電子メールを無視してください。また、パスワードのリセットに際して何か問題がある場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて支援を求めてください。 @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。</target>
+        <target state="translated">
+[ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。 ]
+
+ログイン {2} に対する @@PRODUCT_NAME@@ パスワードのリセット要求が行なわれました。
+
+この処理をこのまま続行するには、下記に進んでください:
+
+{1}
+
+パスワードのリセットを行ないたくない場合は、この電子メールを無視してください。
+
+また、パスワードのリセットに際して何か問題がある場合は、 @@PRODUCT_NAME@@ の管理者に
+問い合わせて支援を求めてください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -361,7 +449,24 @@ Thank you for using @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target state="needs-adaptation">[ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。] 電子メールアドレス {0} に関連するすべての @@PRODUCT_NAME@@ ログインの一覧についての要求が行なわれました。 既存のログインは下記のとおりです: {1} 上記の @@PRODUCT_NAME@@ ログインのいずれのパスワードも、以下でリセットできます: https://{2}/rhn/help/ForgotCredentials.do ログインに問題がある場合には、@@PRODUCT_NAME@@ 管理者にお問い合わせください。 この電子メールの送信をリクエストされなかった場合は、このメッセージを無視してください。 @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。</target>
+        <target state="translated">
+[ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。]
+
+電子メールアドレス {0} に関連するすべての @@PRODUCT_NAME@@ ログインの一覧についての
+要求が行なわれました。
+
+既存のログインは下記のとおりです:
+
+{1}
+上記の @@PRODUCT_NAME@@ ログインのいずれのパスワードも、以下でリセットできます:
+
+  https://{2}/rhn/help/ForgotCredentials.do
+
+ログインに問題がある場合には、@@PRODUCT_NAME@@ 管理者にお問い合わせください。 
+この電子メールの送信をリクエストされなかった場合は、このメッセージを無視してください。 
+
+@@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
+        </target>
       </trans-unit>
       <trans-unit id="email.reset.password" xml:space="preserve">
         <source>
@@ -375,7 +480,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target state="needs-adaptation">[ この電子メールは {0} 宛に自動送信されているものです。 ] {2} で要求されたとおり、ログイン {1} に対する @@PRODUCT_NAME@@ パスワードのリセットを行ないました。このパスワードのリセットがあなたからのものではない場合、 {2} の @@PRODUCT_NAME@@ 管理者に *すぐに* 連絡して支援を求めてください。 @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。</target>
+        <target state="translated">
+[ この電子メールは {0} 宛に自動送信されているものです。 ]
+
+{2} で要求されたとおり、ログイン {1} に対する @@PRODUCT_NAME@@ パスワードの
+リセットを行ないました。
+
+このパスワードのリセットがあなたからのものではない場合、 {2} の @@PRODUCT_NAME@@ 管理者に
+*すぐに* 連絡して支援を求めてください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
