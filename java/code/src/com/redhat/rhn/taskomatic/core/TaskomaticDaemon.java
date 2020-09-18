@@ -163,7 +163,7 @@ public class TaskomaticDaemon {
             t.start();
         }
         catch (Throwable t) {
-            LOG.fatal(t.getMessage());
+            LOG.fatal("Fatal error starting Taskomatic", t);
             System.exit(-1);
         }
         return retval;
