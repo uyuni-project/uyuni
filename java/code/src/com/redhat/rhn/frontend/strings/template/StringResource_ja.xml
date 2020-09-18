@@ -209,8 +209,23 @@ Thank you for using @@PRODUCT_NAME@@.
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
-          <source>@@PRODUCT_NAME@@ has determined that the following advisory is applicable to one or more of the systems you have registered: Complete information about this patch can be found at the following location: {0} {1} - {2} ------------------------------------------------------------------------------ Summary: {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</source> <context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+          <source>
+@@PRODUCT_NAME@@ has determined that the following advisory is applicable to
+one or more of the systems you have registered:
+
+Complete information about this patch can be found at the following location:
+     {0}
+
+{1} - {2}
+------------------------------------------------------------------------------
+Summary:
+{3}
+
+{4} {5} {6}
+{7}
+------------------------------------------------------------------------------
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -222,7 +237,7 @@ Thank you for using @@PRODUCT_NAME@@.
         {7} - errata refs
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 @@PRODUCT_NAME@@ は以下のアドバイザリーが、登録した 1 つまたは複数のシステムに
 適用可能であると判断しました。
 
@@ -239,8 +254,17 @@ Thank you for using @@PRODUCT_NAME@@.
 ------------------------------------------------------------------------------
     </target>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
-          <source>--------------------- Affected Systems List --------------------- This Patch Advisory may apply to the systems listed below. If you know that this patch does not apply to a system listed, it might be possible that the package profile for that server is out of date. In that case you should run 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) as root on the system in question to refresh your software profile.</source> <target>
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+          <source>
+---------------------
+Affected Systems List
+---------------------
+This Patch Advisory may apply to the systems listed below. If you know that
+this patch does not apply to a system listed, it might be possible that the
+package profile for that server is out of date. In that case you should run
+'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
+as root on the system in question to refresh your software profile.
+    </source> <target state="needs-adaptation">
 ---------------------
 影響を受けるシステムのリスト
 ---------------------
@@ -250,31 +274,50 @@ Thank you for using @@PRODUCT_NAME@@.
 'rhn-profile-sync' (RHEL 5 以上) を実行し、ソフトウェアプロファイルを更新する必要があります。
     </target>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
-          <source>There is 1 affected system registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+          <source>
+There is 1 affected system registered in 'Overview' (only systems for
+which you have explicitly enabled Patch Alerts are shown).
+    </source> <target state="needs-adaptation">
 [概要] で登録された 1 つのシステムが影響を受けています (明示的にエラータアラートを
 有効にしたシステムのみが表示されます)。
     </target>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
-          <source>There are {0} affected systems registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+          <source>
+There are {0} affected systems registered in 'Overview' (only systems for
+which you have explicitly enabled Patch Alerts are shown).
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 [概要] で登録された {0} 個のシステムが影響を受けています (明示的にエラータアラートを
 有効にしたシステムのみが表示されます)。
     </target>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
-          <source>Release Arch Profile Name ---------- ---------- --------------------------------------------- {0} You may address the issues outlined in this advisory in two ways: - select your server name by clicking on its name from the list available at the following location, and then schedule a patch update for it: {1} - run the Update Agent on each affected server.</source> <context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+          <source>
+Release    Arch       Profile Name
+---------- ---------- ---------------------------------------------
+{0}
+
+You may address the issues outlined in this advisory in two ways:
+
+     - select your server name by clicking on its name from the list
+       available at the following location, and then schedule a
+       patch update for it:
+           {1}
+
+     - run the Update Agent on each affected server.
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 リリース    アーキテクチャー       プロファイル名
 ---------- ---------- ---------------------------------------------
 {0}
@@ -289,15 +332,29 @@ Thank you for using @@PRODUCT_NAME@@.
      - 影響を受けた各サーバーで Update Agent を実行します。
 </target>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
-          <source>Changing Notification Preferences --------------------------------- To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@ and navigate from "Overview" / "My Account" to the "Preferences" tab. URL: {0} You can also enable/disable notification on a per system basis by selecting an individual system from the "Systems List". From the individual system view click the "Details" tab. {1} {2}</source> <context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+          <source>
+Changing Notification Preferences
+---------------------------------
+To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
+and navigate from "Overview" / "My Account" to the "Preferences" tab.
+
+        URL: {0}
+
+You can also enable/disable notification on a per system basis by selecting an
+individual system from the "Systems List". From the individual system view
+click the "Details" tab.
+
+{1}
+{2}
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 通知設定の変更
 ---------------------------------
 エラータアラート設定をグローバルで有効または無効にするには、@@PRODUCT_NAME@@ にログインし、

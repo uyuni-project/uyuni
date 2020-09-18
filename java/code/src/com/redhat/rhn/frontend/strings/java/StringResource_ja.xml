@@ -6730,8 +6730,8 @@ Follow this url to see the full list of inactive systems:
         <trans-unit id="system.sdc.missing.config_deploy1">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source> <target>このシステムには設定配備機能がありません。設定配備には特定のソフトウェアがシステムにインストールされ、有効になっていなければなりません。</target>
         </trans-unit>
-        <trans-unit id="system.sdc.missing.config_deploy2">
-          <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source> <target>このシステムで設定配備機能が有効になるかを確認するには、&lt;a href={0}&gt;{1}&lt;/a&gt; スクリーンでこのシステムを選択し、"{2}" をクリックします</target> </trans-unit>
+        <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
+          <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source> <target state="needs-adaptation">このシステムで設定配備機能が有効になるかを確認するには、&lt;a href={0}&gt;{1}&lt;/a&gt; スクリーンでこのシステムを選択し、"{2}" をクリックします</target> </trans-unit>
         <trans-unit id="system.sdc.addtossm">
           <source>System added to the System Set Manager.</source> <target>システム設定マネージャーにシステムが追加されました。</target>
         </trans-unit>

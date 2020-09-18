@@ -410,43 +410,43 @@
         </trans-unit>
         <trans-unit id="lookup.jsp.actionchain.reason1">
           <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source> <target>要求された動作チェーンは存在しません。動作チェーンが既にスケジュールされているか、削除されている可能性があります。</target></trans-unit>
-        <trans-unit id="lookup.jsp.reason1.user">
-          <source>The user requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたユーザーが存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.jsp.reason1.user" xml:space="preserve">
+          <source>The user requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたユーザーが存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.activationkey.reason1">
-          <source>The activation key requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたアクティベーションキーは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.activationkey.reason1" xml:space="preserve">
+          <source>The activation key requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたアクティベーションキーは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.servergroup.reason1">
-          <source>The system group requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたシステムグループは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.servergroup.reason1" xml:space="preserve">
+          <source>The system group requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたシステムグループは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.profile">
-          <source>The system profile requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたシステムプロファイルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.jsp.reason1.profile" xml:space="preserve">
+          <source>The system profile requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたシステムプロファイルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.channel">
-          <source>The channel requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたチャンネルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.jsp.reason1.channel" xml:space="preserve">
+          <source>The channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたチャンネルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.errata">
-          <source>The patch requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたパッチは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.action">
-          <source>The action requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求された動作は存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.jsp.reason1.errata" xml:space="preserve">
+          <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたパッチは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.action" xml:space="preserve">
+          <source>The action requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求された動作は存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.system">
-          <source>The system requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたシステムは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.jsp.reason1.system" xml:space="preserve">
+          <source>The system requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたシステムは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.crash">
-          <source>The software crash requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>指定されたソフトウェアクラッシュは存在しません。ブックマークを使用したりハイパーリンクではない手段でアクセスするとこのページが表示されることがよくあります。</target>
+        <trans-unit id="lookup.jsp.reason1.crash" xml:space="preserve">
+          <source>The software crash requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">指定されたソフトウェアクラッシュは存在しません。ブックマークを使用したりハイパーリンクではない手段でアクセスするとこのページが表示されることがよくあります。</target>
         </trans-unit>
-        <trans-unit id="lookup.default.reason1">
-          <source>The required data object does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたデータオブジェクトは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.default.reason1" xml:space="preserve">
+          <source>The required data object does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求されたデータオブジェクトは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.configchan.reason1">
-          <source>The configuration channel requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求された設定チャンネルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.configchan.reason1" xml:space="preserve">
+          <source>The configuration channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求された設定チャンネルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.configfile.reason1">
-          <source>The configuration file requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求された設定ファイルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.configfile.reason1" xml:space="preserve">
+          <source>The configuration file requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求された設定ファイルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
-        <trans-unit id="lookup.configrev.reason1">
-          <source>The configuration revision requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求された設定リビジョンは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
+        <trans-unit id="lookup.configrev.reason1" xml:space="preserve">
+          <source>The configuration revision requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求された設定リビジョンは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason2.user">
           <source>You do not have permission to view this user.</source> <target>このユーザーを表示するパーミッションがありません。</target>
@@ -504,8 +504,8 @@
         <trans-unit id="lookup.issmaster.local.title">
           <source>We're sorry, but the requested organization could not be found</source> <target>残念ながら、要求された組織は見つかりませんでした。</target>
         </trans-unit>
-        <trans-unit id="lookup.issmaster.local.reason1">
-          <source>No local organization with the ID {0} exists on this slave.</source> <target>ID  {0} を持つローカル組織はこのスレーブ上にありません。</target>
+        <trans-unit id="lookup.issmaster.local.reason1" xml:space="preserve">
+          <source>No local organization with the ID  {0} exists on this slave.</source> <target state="needs-adaptation">ID  {0} を持つローカル組織はこのスレーブ上にありません。</target>
         </trans-unit>
         <trans-unit id="lookup.issmasterorg.title">
           <source>We're sorry, but the requested organization could not be found</source> <target>残念ながら、要求された組織は見つかりませんでした。</target>
@@ -5187,8 +5187,8 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.migrate.systems.header">
           <source>Migrate Systems</source> <target>システムの移行</target>
         </trans-unit>
-        <trans-unit id="ssm.migrate.systems.summary">
-          <source>Migrate the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source> <target>選択したシステムを選択した組織に移行します。操作が正常に行われると、システムはこの組織内には表示されなくなります。</target>
+        <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
+          <source>Migrate the selected systems to the selected organization.  If the operation is successful, the systems will no longer be visible in this organization.</source> <target state="needs-adaptation">選択したシステムを選択した組織に移行します。操作が正常に行われると、システムはこの組織内には表示されなくなります。</target>
         </trans-unit>
         <trans-unit id="ssm.migrate.systems.org">
           <source>Target Organization</source> <target>ターゲットの組織</target>
@@ -5304,8 +5304,8 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.misc.index.migrate.header">
           <source>Migrate Systems</source> <target>システムの移行</target>
         </trans-unit>
-        <trans-unit id="ssm.misc.index.migrate.summary">
-          <source>Migrate multiple systems from the current organization to another (trusted) organization in a single action. The migrated systems will no longer be visible in the original organization.</source> <target>現在の組織から別の (信頼できる) 組織への複数のシステムの移行を単一動作で行います。移行したシステムは元の組織では表示されなくなります。</target>
+        <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve">
+          <source>Migrate multiple systems from the current organization to another (trusted) organization in a single action.  The migrated systems will no longer be visible in the original organization.</source> <target state="needs-adaptation">現在の組織から別の (信頼できる) 組織への複数のシステムの移行を単一動作で行います。移行したシステムは元の組織では表示されなくなります。</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.migrate.migrate">
           <source>Migrate Systems to another organization</source> <target>システムを別の組織に移行</target>
@@ -5334,8 +5334,8 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.misc.index.lock.header">
           <source>Lock Systems</source> <target>システムのロック</target>
         </trans-unit>
-        <trans-unit id="ssm.misc.index.lock.summary">
-          <source>Systems may be locked or unlocked. Locking prevents changes from the @@PRODUCT_NAME@@ website.</source> <target>システムのロックおよびロックの解除ができます。 システムをロックすると @@PRODUCT_NAME@@ の Web サイトの変更を防止します。</target>
+        <trans-unit id="ssm.misc.index.lock.summary" xml:space="preserve">
+          <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source> <target state="needs-adaptation">システムのロックおよびロックの解除ができます。 システムをロックすると @@PRODUCT_NAME@@ の Web サイトの変更を防止します。</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.lock">
           <source>Lock System Profiles</source> <target>システムプロファイルのロック</target>
@@ -5346,8 +5346,8 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.misc.index.delete.header">
           <source>Delete Systems</source> <target>システムの削除</target>
         </trans-unit>
-        <trans-unit id="ssm.misc.index.delete.summary">
-          <source>Deletes all selected system profiles. All information about these systems will be removed.</source> <target>選択したシステムのプロファイルをすべて削除します。システムに関する情報はすべて削除されます。</target>
+        <trans-unit id="ssm.misc.index.delete.summary" xml:space="preserve">
+          <source>Deletes all selected system profiles.  All information about these systems will be removed.</source> <target state="needs-adaptation">選択したシステムのプロファイルをすべて削除します。システムに関する情報はすべて削除されます。</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.delete.delete">
           <source>Delete System Profiles</source> <target>システムのプロファイルを削除</target>
@@ -6008,8 +6008,8 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="Delete Selected">
           <source>Delete Selected</source> <target>選択項目を削除</target>
         </trans-unit>
-        <trans-unit id="duplicate.systems.delete.confirm.message">
-          <source>There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source> <target>「重複するシステムプロファイル」ページで選択されていないシステムプロファイルの削除が以下で選択されている可能性があります。以下のリストをよく確認し、システム設定マネージャー に存在していた可能性があるプロファイルを間違って削除しないようにしてください。</target>
+        <trans-unit id="duplicate.systems.delete.confirm.message" xml:space="preserve">
+          <source> There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source> <target state="needs-adaptation">「重複するシステムプロファイル」ページで選択されていないシステムプロファイルの削除が以下で選択されている可能性があります。以下のリストをよく確認し、システム設定マネージャー に存在していた可能性があるプロファイルを間違って削除しないようにしてください。</target>
         </trans-unit>
         <trans-unit id="duplicate.systems.delete.confirmmessage">
           <source>Selected systems have been queued for deletion.</source> <target>選択されたシステムが削除のためにキューに格納されました。</target>
@@ -6142,14 +6142,14 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="systemgroup.admins.title">
           <source>Group Administrators</source> <target>グループの管理者</target>
         </trans-unit>
-        <trans-unit id="systemgroup.admins.summary">
-          <source>Checked users may administer the systems in this group. Org Admins may always administer all systems. System Group Admins are marked with (*) and may modify all aspects of system groups assigned to them.</source> <target>印が付いているユーザーはこのグループ内のシステム群の管理を行うことができます。すべてのシステムの管理を常に行うことができるのは組織の管理者になります。(*) の印が付いているシステムグループ管理者は割り当てられたシステムグループのあらゆる変更を行うことができます。</target>
+        <trans-unit id="systemgroup.admins.summary" xml:space="preserve">
+          <source>Checked users may administer the systems in this group.  Org Admins may always administer all systems. System Group Admins are marked with (*) and may modify all aspects of system groups assigned to them.</source> <target state="needs-adaptation">印が付いているユーザーはこのグループ内のシステム群の管理を行うことができます。すべてのシステムの管理を常に行うことができるのは組織の管理者になります。(*) の印が付いているシステムグループ管理者は割り当てられたシステムグループのあらゆる変更を行うことができます。</target>
         </trans-unit>
         <trans-unit id="systemgroup.admins.updated">
           <source>Admin list for system group &lt;strong&gt;{0}&lt;/strong&gt; updated.</source> <target>システムグループ &lt;strong&gt;{0}&lt;/strong&gt; の管理者一覧が更新されました。</target>
         </trans-unit>
-        <trans-unit id="systemgroup.erratalist.title">
-          <source>Relevant Patches</source> <target>該当パッチ</target> </trans-unit>
+        <trans-unit id="systemgroup.erratalist.title" xml:space="preserve">
+          <source>Relevant Patches </source> <target state="needs-adaptation">該当パッチ</target> </trans-unit>
         <trans-unit id="systemgroup.erratalist.summary">
           <source>The following patches apply to one or more of the systems in this group.</source> <target>以下のパッチがこのグループ内の 1 つもしくは複数のシステムに適用されます。</target> </trans-unit>
         <trans-unit id="systemgroup.errata-systems-affected.title">
@@ -6379,13 +6379,15 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="system_entitlements.setToManagementEntitled.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Management&lt;/strong&gt;.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; システムが &lt;strong&gt;Management&lt;/strong&gt; に設定されています。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.setToManagementEntitled.failure">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional management entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source> </trans-unit>
-        <trans-unit id="system_entitlements.unentitle.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) &lt;strong&gt;Unentitled&lt;/strong&gt;.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; システムに&lt;strong&gt;エンタイトルメントがありません&lt;/strong&gt;。</target>
+        <trans-unit id="system_entitlements.setToManagementEntitled.failure" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have  enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional management entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.
+    </source> <target state="needs-adaptation" />
+      </trans-unit>
+        <trans-unit id="system_entitlements.unentitle.success" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s)  &lt;strong&gt;Unentitled&lt;/strong&gt;.</source> <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; システムに&lt;strong&gt;エンタイトルメントがありません&lt;/strong&gt;。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.unentitle.failure">
-          <source>Unable to &lt;strong&gt;Unentitle {0}&lt;/strong&gt; system(s).</source> <target>&lt;strong&gt;{0} システムからエンタイトルメントを外す&lt;/strong&gt; ことができません</target>
+        <trans-unit id="system_entitlements.unentitle.failure" xml:space="preserve">
+          <source>Unable to  &lt;strong&gt;Unentitle {0}&lt;/strong&gt; system(s).</source> <target state="needs-adaptation">&lt;strong&gt;{0} システムからエンタイトルメントを外す&lt;/strong&gt; ことができません</target>
         </trans-unit>
         <trans-unit id="system_entitlements.provisioning.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Provisioning&lt;/strong&gt;.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; システムが &lt;strong&gt;Provisioning&lt;/strong&gt; に設定されています。</target>
@@ -6399,11 +6401,11 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="system_entitlements.virtualization.success_note">
           <source>&lt;strong&gt;NOTE:&lt;/strong&gt; We subscribed the system(s) to the {0} and {1} channel as well as scheduled an install of the {2} package to prepare the system(s) for hosting virtual guests.</source> <target>&lt;strong&gt;注記:&lt;/strong&gt; システムを {0} と {1} チャンネルにサブスクライブしたほかに、システムに仮想ゲストをホストさせる準備として {2} パッケージのインストールをスケジュールしました。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization.&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; システムに &lt;strong&gt;仮想化&lt;/strong&gt; が設定されました。&lt;br/&gt; &lt;strong&gt;注記: &lt;/strong&gt; このシステムが以前に仮想化プラットフォームを有していた場合、仮想化にダウングレードしたことになります。</target>
+        <trans-unit id="system_entitlements.virtualization_host.success" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source> <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; システムに &lt;strong&gt;仮想化&lt;/strong&gt; が設定されました。&lt;br/&gt; &lt;strong&gt;注記: &lt;/strong&gt; このシステムが以前に仮想化プラットフォームを有していた場合、仮想化にダウングレードしたことになります。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.removed.success">
-          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s) This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; システムから&lt;strong&gt;仮想化&lt;/strong&gt;が削除されました。 これにより選択したホストに関連付けられるゲストはすべて物理的にチャンネル及びシステムのエンタイトルメントを使用することになります。</target>
+        <trans-unit id="system_entitlements.virtualization_host.removed.success" xml:space="preserve">
+          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source> <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; システムから&lt;strong&gt;仮想化&lt;/strong&gt;が削除されました。 これにより選択したホストに関連付けられるゲストはすべて物理的にチャンネル及びシステムのエンタイトルメントを使用することになります。</target>
         </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noManagement">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source> <target>&lt;strong&gt;Management&lt;/strong&gt;ベースのエンタイトルメントがないため、&lt;strong&gt;{0}&lt;/strong&gt; システムへ &lt;strong&gt;&lt;/strong&gt; エンタイトルメントを付与できませんでした。 付与できなかったシステムはまだ以下通り選択された状態になっています。 最初に &lt;strong&gt;Management エンタイトルメントの設定&lt;/strong&gt; ボタンを以下でクリックして、 次に &lt;strong&gt;付属エンタイトルメントの選択&lt;/strong&gt; 内にあるドロップダウンリストのアイテム &lt;strong&gt;仮想化&lt;/strong&gt;を選択し、&lt;strong&gt;エンタイトルメントの追加&lt;/strong&gt; ボタンをクリックします。 これでシステムに&lt;strong&gt;仮想化&lt;/strong&gt;エンタイトルメントを追加することができます。</target>
@@ -6423,11 +6425,11 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="system_entitlements.monitoring.noSolarisSupport">
           <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Monitoring is not supported on Solaris systems.</source> <target>Monitoring が Solaris システム上でサポートされていないため、&lt;strong&gt;{0}&lt;/strong&gt; システム用の &lt;strong&gt;Monitoring&lt;/strong&gt; エンタイトルメントの付与は失敗しました。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.virtualization.setup_error">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add &lt;strong&gt;Virtualization(Platform)&lt;/strong&gt;. This was caused by errors attempting to automatically subscribe the system to the @@PRODUCT_NAME@@ Tools and RHEL Virtualization channels which are required for virtualization.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; システムが&lt;strong&gt;仮想化 (プラットフォーム)&lt;/strong&gt; の追加に失敗しました。仮想化に必要な @@PRODUCT_NAME@@ ツールと RHEL 仮想化チャンネルに対してシステムを自動的にサブスクライブさせる際に発生したエラーが原因です。</target>
+        <trans-unit id="system_entitlements.virtualization.setup_error" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add &lt;strong&gt;Virtualization(Platform)&lt;/strong&gt;.  This was caused by errors attempting to automatically subscribe the system to the @@PRODUCT_NAME@@ Tools and RHEL Virtualization channels which are required for virtualization.</source> <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; システムが&lt;strong&gt;仮想化 (プラットフォーム)&lt;/strong&gt; の追加に失敗しました。仮想化に必要な @@PRODUCT_NAME@@ ツールと RHEL 仮想化チャンネルに対してシステムを自動的にサブスクライブさせる際に発生したエラーが原因です。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.unknown.error">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add an entitlement. This was caused by an unknown error. Please contact support.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; システムがエンタイトルメントの追加に失敗しました。不明なエラーが原因です。サポートに連絡してください。</target>
+        <trans-unit id="system_entitlements.unknown.error" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add an entitlement.  This was caused by an unknown error.  Please contact support.</source> <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; システムがエンタイトルメントの追加に失敗しました。不明なエラーが原因です。サポートに連絡してください。</target>
         </trans-unit>
       </group>
       <group>
@@ -7009,7 +7011,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="pkg.lock.message.locksuccess" xml:space="preserve">
         <source>Packages has been requested for being locked.</source>
@@ -8123,8 +8125,8 @@ organization management tools if you choose to remove this role from your login.
         <trans-unit id="method-create.jsp.header2">
           <source>Create Notification Method</source> <target>通知メソッドの作成</target>
         </trans-unit>
-        <trans-unit id="method-create.jsp.summary">
-          <source>Fill out this form to create a new Notification Method. Changes to Probes that use this new Method will require a Scout Config Push.</source> <target>このフォームを入力して新しい通知メソッドを作成します。この新しいメソッドを使用するプローブへの変更にはスカウト設定のプッシュが必要になります。</target>
+        <trans-unit id="method-create.jsp.summary" xml:space="preserve">
+          <source>Fill out this form to create a new Notification Method.  Changes to Probes that use this new Method will require a Scout Config Push.</source> <target state="needs-adaptation">このフォームを入力して新しい通知メソッドを作成します。この新しいメソッドを使用するプローブへの変更にはスカウト設定のプッシュが必要になります。</target>
         </trans-unit>
         <trans-unit id="method-form.jspf.name">
           <source>Name</source> <target>名前</target>
@@ -8640,8 +8642,9 @@ Please note that some manual configuration of these scripts may still be require
           <source>Automatic bare-metal system discovery has been successfully enabled</source> </trans-unit>
         <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled">
           <source>Automatic bare-metal system discovery has been successfully disabled</source> </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first.</source> </trans-unit>
+        <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
+          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="bootstrapsystems.kernel_not_found">
           <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source> </trans-unit>
         <trans-unit id="bootstrapsystems.initrd_not_found">
@@ -9040,18 +9043,18 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
         </context-group>
-        <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp">
-          <source>Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source> <target>選択されたシステムの自動インストール動作をスケジュールします。これらの動作により、指定された自動インストールオプションを使用して選択されたシステムが再インストールされます。</target> </trans-unit>
+        <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp" xml:space="preserve">
+          <source> Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source> <target state="needs-adaptation">選択されたシステムの自動インストール動作をスケジュールします。これらの動作により、指定された自動インストールオプションを使用して選択されたシステムが再インストールされます。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.heading2.text.jsp">
           <source>Please select the autoinstallation profile you'd like to use to autoinstall the selected systems.</source> <target>選択されたシステムを自動インストールするために使用する自動インストールプロファイルを選択してください。</target> </trans-unit>
-        <trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp">
-          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration. If no match is found, the organizational default profile will be used if set.</source> <target>自動インストールプロファイルは、ネットワーク設定に基づいて各システムに対して自動的に選択されます。一致する候補が見つかれない場合は、デフォルトの組織プロファイルが使用されます (設定されている場合)。</target> </trans-unit>
+        <trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp" xml:space="preserve">
+          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration.  If no match is found, the organizational default profile will be used if set.</source> <target state="needs-adaptation">自動インストールプロファイルは、ネットワーク設定に基づいて各システムに対して自動的に選択されます。一致する候補が見つかれない場合は、デフォルトの組織プロファイルが使用されます (設定されている場合)。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.proxy.jsp.summary">
           <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source> <target>@@PRODUCT_NAME@@ Proxy を使用して自動インストールに必要なファイルにアクセスすることを選択できます。自動インストールの完了後に、選択されたシステムは @@PRODUCT_NAME@@ Proxy に登録されます。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.create.records.button.jsp">
           <source>Create PXE installation configuration</source> </trans-unit>
-        <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip">
-          <source>Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source> <target>自動インストール後に、@@PRODUCT_NAME@@ によって管理されないプロファイルにより、@@PRODUCT_NAME@@ にシステムが登録されることは保証されません。これらの自動インストールをチェックして (プロファイル名をクリックします)、自動インストール後に選択されたシステムが @@PRODUCT_NAME@@ システム一覧に再び現れるようにするかどうかを確認します。</target> </trans-unit>
+        <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip" xml:space="preserve">
+          <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source> <target state="needs-adaptation">自動インストール後に、@@PRODUCT_NAME@@ によって管理されないプロファイルにより、@@PRODUCT_NAME@@ にシステムが登録されることは保証されません。これらの自動インストールをチェックして (プロファイル名をクリックします)、自動インストール後に選択されたシステムが @@PRODUCT_NAME@@ システム一覧に再び現れるようにするかどうかを確認します。</target> </trans-unit>
       </group>
       <!-- SSM Rollback -->
       <group>
@@ -9883,11 +9886,11 @@ Please note that some manual configuration of these scripts may still be require
         <trans-unit id="kickstart.advanced.jsp.uploadtab">
           <source>File to Upload</source> <target>アップロードするファイル</target>
         </trans-unit>
-        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.edit">
-          <source>Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source> <target> または、以下の '{0}' より新しいバージョンをアップロードし、'{1}' を選択することもできます。</target>
+        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.edit" xml:space="preserve">
+          <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source> <target state="needs-adaptation"> または、以下の '{0}' より新しいバージョンをアップロードし、'{1}' を選択することもできます。</target>
         </trans-unit>
-        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste">
-          <source>If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser. This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target>既存の自動インストールプロファイルを再び使用したい場合は、ブラウザではなく /var/lib/rhn/kickstarts からテンプレートをコピーアンドペーストします。これにより、テンプレート変数が保持され、自動インストール後に登録プロセスが適切に機能するようになります。</target> </trans-unit>
+        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target state="needs-adaptation">既存の自動インストールプロファイルを再び使用したい場合は、ブラウザではなく /var/lib/rhn/kickstarts からテンプレートをコピーアンドペーストします。これにより、テンプレート変数が保持され、自動インストール後に登録プロセスが適切に機能するようになります。</target> </trans-unit>
       </group>
       <trans-unit id="kickstartdatadelete.jsp.confirmdelete" xml:space="preserve">
         <source>Delete Autoinstallation</source>
@@ -9964,7 +9967,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeysEdit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.warning" xml:space="preserve">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Any child channel subscriptions associated with this profile will be overridden if any activation keys are selected above. If you wish to associate activation keys with this profile, please use an activation key to specify child channel subscriptions.</source>
@@ -10336,7 +10339,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar" xml:space="preserve">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -10494,7 +10497,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary" xml:space="preserve">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -10634,7 +10637,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1" xml:space="preserve">
         <source>You can modify the software this kickstart profile will deploy below.</source>
@@ -11037,8 +11040,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="snippetcreate.jsp.kickstart_rules_details">
           <source>Details</source> <target>詳細</target>
         </trans-unit>
-        <trans-unit id="snippetcreate.jsp.kickstart_rules_1">
-          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt; &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the content will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt; &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source> </trans-unit>
+        <trans-unit id="snippetcreate.jsp.kickstart_rules_1" xml:space="preserve">
+          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_2">
           <source>An additional attention needs to be paid to the similar scenarios:</source> <target>次のような場合にも注意が必要になります。</target>
         </trans-unit>
@@ -12021,22 +12025,22 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="activation-key.jsp.delete.para">
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source> <target>このキーを本当に削除したいですか？ アクティベーションキーは一度削除されると復元することができません。（注記: キーは &lt;a href="{0}"&gt;key list page&lt;/a&gt; 上で無効にすることが可能であり、この方法で使用不可にできますが、後日の使用に保存することができます。）</target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.delete.warning">
-          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated. Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target>&lt;STRONG&gt;注記&lt;/STRONG&gt;: Satellite に既知のシステムとプロファイルのみが更新されます。この鍵が削除される場合、この鍵を使用する他のエンティティ (例: cobbler コマンドラインツールを使用して作成されたシステムプロファイル) は &lt;STRONG&gt;失敗します&lt;/STRONG&gt;。</target>
+        <trans-unit id="activation-key.jsp.delete.warning" xml:space="preserve">
+          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target state="needs-adaptation">&lt;STRONG&gt;注記&lt;/STRONG&gt;: Satellite に既知のシステムとプロファイルのみが更新されます。この鍵が削除される場合、この鍵を使用する他のエンティティ (例: cobbler コマンドラインツールを使用して作成されたシステムプロファイル) は &lt;STRONG&gt;失敗します&lt;/STRONG&gt;。</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source> <target>設定ファイルの配備</target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip">
-          <source>Deploy configuration files to systems on registration</source> <target> 設定ファイルがこのアクティベーションキーで登録される際に、設定ファイルをシステムに配備します。</target>
+        <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip" xml:space="preserve">
+          <source> Deploy configuration files to systems on registration</source> <target state="needs-adaptation"> 設定ファイルがこのアクティベーションキーで登録される際に、設定ファイルをシステムに配備します。</target>
         </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/packages/* pages</context>
         </context-group>
-        <trans-unit id="activation-key.packages.jsp.summary">
-          <source>Any system registered with this activation key will have the packages listed below installed, if those packages are available. Package names may be listed as package name only or may include an extension to specify the desired architecture. There should only one package name included per line.</source> <target>以下のパッケージが利用可能な場合、このアクティベーションキーで登録されたシステムにこれらのパッケージがインストールされます。パッケージ名のみが表示されているパッケージと、希望のアーキテクチャーを指定するための拡張子と共に表示されるパッケージがあります。1 行に 1 つのパッケージ名のみが表示されているはずです。</target>
+        <trans-unit id="activation-key.packages.jsp.summary" xml:space="preserve">
+          <source>Any system registered with this activation key will have the packages listed below installed, if those packages are available. Package names may be listed as package name only or may include an extension to specify the desired architecture.  There should only one package name included per line.</source> <target state="needs-adaptation">以下のパッケージが利用可能な場合、このアクティベーションキーで登録されたシステムにこれらのパッケージがインストールされます。パッケージ名のみが表示されているパッケージと、希望のアーキテクチャーを指定するための拡張子と共に表示されるパッケージがあります。1 行に 1 つのパッケージ名のみが表示されているはずです。</target>
         </trans-unit>
         <trans-unit id="activation-key.packages.jsp.enter-names">
           <source>Enter package names below</source> <target>以下にパッケージ名を入力してください</target>
@@ -12144,8 +12148,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
-        <trans-unit id="profile.details.toolbar">
-          <source>Stored Profile:</source> <target>保存プロファイル: </target>
+        <trans-unit id="profile.details.toolbar" xml:space="preserve">
+          <source>Stored Profile: </source> <target state="needs-adaptation">保存プロファイル: </target>
         </trans-unit>
         <trans-unit id="profile.details.summary">
           <source>Edit the profile below.</source> <target>以下でプロファイルを編集します。</target>
@@ -12760,8 +12764,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="system.event.runAs">
           <source>Run as: &lt;strong&gt;{0}:{1}&lt;/strong&gt;</source> <target>ユーザーを指定して実行: &lt;strong&gt;{0}:{1}&lt;/strong&gt;</target>
         </trans-unit>
-        <trans-unit id="system.event.timeout">
-          <source>Timeout: &lt;strong&gt;{0}&lt;/strong&gt; seconds</source> <target>タイムアウト:  &lt;strong&gt;{0}&lt;/strong&gt; 秒</target>
+        <trans-unit id="system.event.timeout" xml:space="preserve">
+          <source>Timeout:  &lt;strong&gt;{0}&lt;/strong&gt; seconds</source> <target state="needs-adaptation">タイムアウト:  &lt;strong&gt;{0}&lt;/strong&gt; 秒</target>
         </trans-unit>
         <trans-unit id="system.event.scriptContents">
           <source>Script contents:</source> <target>スクリプトの内容:</target>
@@ -12775,19 +12779,19 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="system.event.scriptReturnCode">
           <source>Return Code: {0}</source> <target>リターンコード: {0}</target>
         </trans-unit>
-        <trans-unit id="system.event.scriptRawOutput">
-          <source>Raw Output:</source> <target>生の出力:</target>
+        <trans-unit id="system.event.scriptRawOutput" xml:space="preserve">
+          <source>Raw Output: </source> <target state="needs-adaptation">生の出力:</target>
         </trans-unit>
         <trans-unit id="system.event.downloadRawOutput">
           <source>view/download raw script output</source> <target>生のスクリプト出力を表示またはダウンロード</target>
         </trans-unit>
-        <trans-unit id="system.event.scriptFilteredOutput">
-          <source>Filtered Output:</source> <target>フィルター済みの出力:</target>
+        <trans-unit id="system.event.scriptFilteredOutput" xml:space="preserve">
+          <source>Filtered Output: </source> <target state="needs-adaptation">フィルター済みの出力:</target>
         </trans-unit>
         <trans-unit id="system.event.affectedErrata">
           <source>Patches Affected:</source> <target>影響を受けるパッチ:</target> </trans-unit>
-        <trans-unit id="system.event.scapPath">
-          <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt;</source> <target>&lt;strong&gt;XCCDF ドキュメントへのパス: &lt;/strong&gt; </target>
+        <trans-unit id="system.event.scapPath" xml:space="preserve">
+          <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt; </source> <target state="needs-adaptation">&lt;strong&gt;XCCDF ドキュメントへのパス: &lt;/strong&gt; </target>
         </trans-unit>
         <trans-unit id="system.event.scapParams">
           <source>&lt;strong&gt;Parameters: &lt;/strong&gt;</source> <target>&lt;strong&gt;パラメーター: &lt;/strong&gt;</target>
@@ -12869,8 +12873,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="system.history.snapshot.summary1">
           <source>System Snapshot Rollback functionality allows you to restore a system's package profile, configuration files, and Spacewalk configuration to previously recorded values.</source> <target>システムのスナップショットロールバック機能を使用するとシステムのパッケージプロファイル、設定ファイル、Spacewalk の設定などを前回記録した値に復元することができます。</target>
         </trans-unit>
-        <trans-unit id="system.history.snapshot.summary2">
-          <source>Below are a list of snapshots of your system. To rollback to a previous configuration, or to view the changes that would have if you rolled back, click the desired snapshot below.</source> <target>ご使用のシステムのスナップショット一覧です。以前の設定にロールバックする、またはロールバックした場合の変更点を表示させる場合は以下の該当スナップショットをクリックします。</target>
+        <trans-unit id="system.history.snapshot.summary2" xml:space="preserve">
+          <source>Below are a list of snapshots of your system.  To rollback to a previous configuration, or to view the changes that would have if you rolled back, click the desired snapshot below.</source> <target state="needs-adaptation">ご使用のシステムのスナップショット一覧です。以前の設定にロールバックする、またはロールバックした場合の変更点を表示させる場合は以下の該当スナップショットをクリックします。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.summary3">
           <source>Note that snapshots are recorded after each change is performed. To undo the effects of an action, please click on a snapshot before the corresponding one in the list below.</source> </trans-unit>
@@ -13005,25 +13009,31 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="system.history.snapshot.config-files-link">
           <source>Config Files</source> <target>設定ファイル</target>
         </trans-unit>
-        <trans-unit id="system.history.snapshot.summary-rollback2">
-          <source>Are you certain you wish to rollback to the selected system snapshot? Doing so will cancel all pending scheduled actions for the system, and the following items will be changed to match the pre-snapshot values:</source> <target>選択されているシステムスナップショットに本当にロールバックしてもよいですか?
+        <trans-unit id="system.history.snapshot.summary-rollback2" xml:space="preserve">
+          <source>Are you certain you wish to rollback to the selected system snapshot?
+          Doing so will cancel all pending scheduled actions for the system,
+          and the following items will be changed to match the pre-snapshot values:</source> <target state="needs-adaptation">選択されているシステムスナップショットに本当にロールバックしてもよいですか?
           ロールバックを行うとシステムにスケジュールされている保留中の動作がすべて
           取り消され、スナップショット前の値と一致するよう次の事項が変更されます。</target>
         </trans-unit>
-        <trans-unit id="system.history.snapshot.sg_removed">
-          <source>One or more of the system groups from the snapshot has been deleted.{0} This may have some effect upon who may manage the system upon rollback.</source> <target>スナップショットから一つまたは複数のシステムグループが削除されました。{0}
+        <trans-unit id="system.history.snapshot.sg_removed" xml:space="preserve">
+          <source>One or more of the system groups from the snapshot has been deleted.{0}
+          This may have some effect upon who may manage the system upon rollback.</source> <target state="needs-adaptation">スナップショットから一つまたは複数のシステムグループが削除されました。{0}
           このため、ロールバックを行うとシステム管理の対象者に影響が出ている可能性があります。</target>
         </trans-unit>
-        <trans-unit id="system.history.snapshot.channel_removed">
-          <source>One or more of the channels from the snapshot has been deleted.{0} This might affect the ability of the system to rollback to the snapshot package set.</source> <target>スナップショットから一つまたは複数のチャンネルが削除されました。{0}
+        <trans-unit id="system.history.snapshot.channel_removed" xml:space="preserve">
+          <source>One or more of the channels from the snapshot has been deleted.{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="needs-adaptation">スナップショットから一つまたは複数のチャンネルが削除されました。{0}
           このため、スナップショットパッケージセットにシステムをロールバックさせる機能に影響が出ている可能性があります。</target>
         </trans-unit>
-        <trans-unit id="system.history.snapshot.channel_modified">
-          <source>One or more of the channels from the snapshot has been modified.{0} This might affect the ability of the system to rollback to the snapshot package set.</source> <target>スナップショットからの一つまたは複数のチャンネルに変更が加えられました。{0}
+        <trans-unit id="system.history.snapshot.channel_modified" xml:space="preserve">
+          <source>One or more of the channels from the snapshot has been modified.{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="needs-adaptation">スナップショットからの一つまたは複数のチャンネルに変更が加えられました。{0}
           このため、スナップショットパッケージセットにシステムをロールバックさせる機能に影響が出ている可能性があります。</target>
         </trans-unit>
-        <trans-unit id="system.history.snapshot.ns_removed">
-          <source>One or more of the namespaces from the snapshot has been deleted.{0} This may have an effect upon the configuration files that will be deployed upon rollback.</source> <target>スナップショットから一つまたは複数のネームスペースが削除されました。{0}
+        <trans-unit id="system.history.snapshot.ns_removed" xml:space="preserve">
+          <source>One or more of the namespaces from the snapshot has been deleted.{0}
+          This may have an effect upon the configuration files that will be deployed upon rollback.</source> <target state="needs-adaptation">スナップショットから一つまたは複数のネームスペースが削除されました。{0}
           このため、ロールバックを行うと配備される設定ファイルに影響が出ている可能性があります。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.unservable_packages">
@@ -13113,8 +13123,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="config.common.localAlt">
           <source>locally-managed configuration channel</source> <target>ローカル管理の設定チャンネル</target>
         </trans-unit>
-        <trans-unit id="config.common.sandboxAlt">
-          <source>configuration sandbox</source> <target>設定サンドボックス</target>
+        <trans-unit id="config.common.sandboxAlt" xml:space="preserve">
+          <source>configuration sandbox </source> <target state="needs-adaptation">設定サンドボックス</target>
         </trans-unit>
         <trans-unit id="config.common.fileAlt">
           <source>file</source> <target>ファイル</target>
@@ -13191,8 +13201,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="targetsystems.jsp.toolbar">
           <source>Target Systems</source> <target>目的のシステム</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target>以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の rhncfg-* パッケージをインストールする以外に、Provisioning エンタイトルメントも必要になります。以下の「@@PRODUCT_NAME@@ 設定管理を有効にする」ボタンを使って選択したシステムで設定管理を有効にすることができます。</target>
+        <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="needs-adaptation">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の rhncfg-* パッケージをインストールする以外に、Provisioning エンタイトルメントも必要になります。以下の「@@PRODUCT_NAME@@ 設定管理を有効にする」ボタンを使って選択したシステムで設定管理を有効にすることができます。</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source> <target>管理されていないシステムはありません。</target>
@@ -14174,7 +14184,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>現在のバージョン</target>
       </trans-unit>
@@ -14182,7 +14192,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>前回の変更</target>
       </trans-unit>
@@ -14204,7 +14214,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>このチャンネルにサブスクライブしていて配備できるシステムはありません。</target>
       </trans-unit>
@@ -14212,7 +14222,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>動作</target>
       </trans-unit>
@@ -14220,7 +14230,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -14228,7 +14238,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>すべてのファイルを配備</target>
       </trans-unit>
@@ -14236,7 +14246,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>選択したファイルを配備</target>
       </trans-unit>
@@ -14244,7 +14254,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>設定ファイルの配備</target>
       </trans-unit>
@@ -14252,7 +14262,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="needs-adaptation">以下の一覧から配備したいファイルを選択することができます。選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
@@ -14260,7 +14270,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -14268,7 +14278,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>確認して選択したシステムに配備</target>
       </trans-unit>
@@ -14276,7 +14286,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>設定ファイルの配備: 配備するシステムを選択します</target>
       </trans-unit>
@@ -14284,7 +14294,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>選択したファイルを配備するシステムを選択してください。</target>
       </trans-unit>
@@ -14292,7 +14302,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりもランクが低くなる場合、この上書き/最上位ランクのファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
@@ -15574,11 +15584,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="copycentral.jsp.header">
           <source>Copy File to Centrally-Managed Config Channels</source> <target>ファイルを中央管理の設定チャンネルにコピー</target>
         </trans-unit>
-        <trans-unit id="copycentral.jsp.summary">
-          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;centrally-managed config channels&lt;/strong&gt;. When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
+        <trans-unit id="copycentral.jsp.summary" xml:space="preserve">
+          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;centrally-managed config channels&lt;/strong&gt;.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into centrally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target>このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;中央管理の設定チャンネル&lt;/strong&gt; にコピーできます。このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
+          <target state="needs-adaptation">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;中央管理の設定チャンネル&lt;/strong&gt; にコピーできます。このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
         </trans-unit>
         <trans-unit id="copycentral.jsp.select">
           <source>Please select destination channels below.</source> <target>以下でコピー先チャンネルを選択してください。</target>
@@ -15616,11 +15626,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="copylocal.jsp.header">
           <source>Copy File to Locally-Managed Config Channels</source> <target>ファイルをローカル管理の設定チャンネルにコピー</target>
         </trans-unit>
-        <trans-unit id="copylocal.jsp.summary">
-          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;locally-managed config channels&lt;/strong&gt;. When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
+        <trans-unit id="copylocal.jsp.summary" xml:space="preserve">
+          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;locally-managed config channels&lt;/strong&gt;.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into locally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target>このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;ローカル管理の設定チャンネル&lt;/strong&gt; にコピーできます。このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
+          <target state="needs-adaptation">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;ローカル管理の設定チャンネル&lt;/strong&gt; にコピーできます。このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
         </trans-unit>
         <trans-unit id="copylocal.jsp.channel">
           <source>Local Config Channel Name</source> <target>ローカル設定チャンネル名</target>
@@ -15634,11 +15644,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="copysandbox.jsp.header">
           <source>Copy File to System Sandboxes</source> <target>ファイルをシステムのサンドボックスにコピー</target>
         </trans-unit>
-        <trans-unit id="copysandbox.jsp.summary">
-          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;system sandboxes&lt;/strong&gt;. When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</source> <context-group name="ctx">
+        <trans-unit id="copysandbox.jsp.summary" xml:space="preserve">
+          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;system sandboxes&lt;/strong&gt;.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 7 of this file into system sandboxes.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</context>
           </context-group>
-          <target>このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;システムのサンドボックス&lt;/strong&gt; にコピーできます。 このファイルをサンドボックスにコピーする場合は、これがそのサンドボックス内のファイルに対して最新のリビジョンになります。</target>
+          <target state="needs-adaptation">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;システムのサンドボックス&lt;/strong&gt; にコピーできます。 このファイルをサンドボックスにコピーする場合は、これがそのサンドボックス内のファイルに対して最新のリビジョンになります。</target>
         </trans-unit>
         <trans-unit id="copysandbox.jsp.channel">
           <source>System Sandbox Name</source> <target>システムサンドボックス名</target>
@@ -16960,8 +16970,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="ssm.package.remove.select.header">
           <source>Package Removal</source> <target>パッケージの削除</target>
         </trans-unit>
-        <trans-unit id="ssm.package.remove.select.summary">
-          <source>Packages listed below may be removed from one or more systems. Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.</source> <target>以下に表示されるパッケージは 1 つまたは複数のシステムから削除できます。
+        <trans-unit id="ssm.package.remove.select.summary" xml:space="preserve">
+          <source>Packages listed below may be removed from one or more systems.
+
+             Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.
+          </source> <target state="needs-adaptation">以下に表示されるパッケージは 1 つまたは複数のシステムから削除できます。
 
              1 つまたは複数のシステムを選択し、&lt;b&gt;選択したパッケージを削除&lt;/b&gt;ボタンをクリックしてパッケージ削除をスケジュールします。
           </target>
@@ -16978,8 +16991,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
-        <trans-unit id="ssm.package.remove.schedule.summary">
-          <source>Below is a list of the packages that will be removed, on a per system basis.</source> <target>以下は、システムごとに削除するパッケージの一覧です。
+        <trans-unit id="ssm.package.remove.schedule.summary" xml:space="preserve">
+          <source>Below is a list of the packages that will be removed, on a per system basis.
+          </source> <target state="needs-adaptation">以下は、システムごとに削除するパッケージの一覧です。
           </target>
         </trans-unit>
         <trans-unit id="ssm.package.remove.schedule.packages">
@@ -16988,8 +17002,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="ssm.package.remove.schedule.toomanypackages">
           <source>Package list truncated</source> <target>パッケージ一覧は省略　</target>
         </trans-unit>
-        <trans-unit id="ssm.package.remove.message.packageremovals">
-          <source>Package removals are being scheduled, it may take several minutes for this to complete.</source> <target>パッケージ削除がスケジュールされています。この操作が完了するには数分間かかることがあります。</target>
+        <trans-unit id="ssm.package.remove.message.packageremovals" xml:space="preserve">
+          <source>Package removals are being scheduled, it may take several minutes for this to complete. </source> <target state="needs-adaptation">パッケージ削除がスケジュールされています。この操作が完了するには数分間かかることがあります。</target>
         </trans-unit>
         <trans-unit id="ssm.package.remove.operationname">
           <source>Schedule Package Removals</source> <target>パッケージ削除のスケジュール</target>
@@ -17003,8 +17017,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="ssm.package.upgrade.select.header">
           <source>Select Packages to Upgrade</source> <target>アップグレードするパッケージを選択</target>
         </trans-unit>
-        <trans-unit id="ssm.package.upgrade.select.summary">
-          <source>Select the packages to be upgraded. Only those systems to which the package updates apply will receive the updates.</source> <target>アップグレードするパッケージを選択します。パッケージ更新が適用されるシステムのみが更新を受け取ります。
+        <trans-unit id="ssm.package.upgrade.select.summary" xml:space="preserve">
+          <source>Select the packages to be upgraded. Only those systems to which the package updates apply will receive the updates.
+         </source> <target state="needs-adaptation">アップグレードするパッケージを選択します。パッケージ更新が適用されるシステムのみが更新を受け取ります。
          </target>
         </trans-unit>
         <trans-unit id="ssm.package.upgrade.select.confirm">
@@ -17025,8 +17040,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgradeSchedule.do</context>
         </context-group>
-        <trans-unit id="ssm.package.upgrade.message.packageupgrade">
-          <source>Package upgrades are being scheduled, it may take several minutes for this to complete.</source> <target>パッケージアップグレードがスケジュールされています。この操作が完了するには数分間かかることがあります。</target>
+        <trans-unit id="ssm.package.upgrade.message.packageupgrade" xml:space="preserve">
+          <source>Package upgrades are being scheduled, it may take several minutes for this to complete. </source> <target state="needs-adaptation">パッケージアップグレードがスケジュールされています。この操作が完了するには数分間かかることがあります。</target>
         </trans-unit>
         <trans-unit id="ssm.package.upgrade.schedule.toomanypackages">
           <source>Package list truncated</source> <target>パッケージ一覧は省略　</target>
@@ -17043,8 +17058,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="ssm.package.verify.select.header">
           <source>Verifiable Packages</source> <target>検証できるパッケージ</target>
         </trans-unit>
-        <trans-unit id="ssm.package.verify.select.summary">
-          <source>Packages listed below may be verified on one or more systems. Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.</source> <target>以下に表示されるパッケージは 1 つまたは複数のシステムで検証できます。
+        <trans-unit id="ssm.package.verify.select.summary" xml:space="preserve">
+          <source>Packages listed below may be verified on one or more systems.
+
+            Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.
+         </source> <target state="needs-adaptation">以下に表示されるパッケージは 1 つまたは複数のシステムで検証できます。
 
             1 つまたは複数のシステムを選択し、&lt;b&gt;選択したパッケージの検証&lt;/b&gt;ボタンをクリックしてパッケージ検証をスケジュールします。
          </target>
@@ -17061,8 +17079,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerifySchedule.do</context>
         </context-group>
-        <trans-unit id="ssm.package.verify.schedule.summary">
-          <source>Below is a list of the packages that will be verified, on a per system basis.</source> <target>以下は、システムごとに検証するパッケージの一覧です。
+        <trans-unit id="ssm.package.verify.schedule.summary" xml:space="preserve">
+          <source>Below is a list of the packages that will be verified, on a per system basis.
+         </source> <target state="needs-adaptation">以下は、システムごとに検証するパッケージの一覧です。
          </target>
         </trans-unit>
         <trans-unit id="ssm.package.verify.schedule.packages">
@@ -18773,8 +18792,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <trans-unit id="sdc.config.subscriptions.jsp.continue">
           <source>Continue</source> <target>続行</target>
         </trans-unit>
-        <trans-unit id="sdc.config.subscriptions.jsp.noChannels">
-          <source>No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source> <target>サブスクライブできる設定チャンネルはありません。このシステムを使用できるすべてのチャンネルにすでにサブスクライブさせているか (&lt;a href="{0}"&gt;サブスクライブしているチャンネルを表示&lt;/a&gt;)、または使用できるいずれのチャンネルにもアクセス権を持っていないかのどちらです。</target>
+        <trans-unit id="sdc.config.subscriptions.jsp.noChannels" xml:space="preserve">
+          <source> No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source> <target state="needs-adaptation">サブスクライブできる設定チャンネルはありません。このシステムを使用できるすべてのチャンネルにすでにサブスクライブさせているか (&lt;a href="{0}"&gt;サブスクライブしているチャンネルを表示&lt;/a&gt;)、または使用できるいずれのチャンネルにもアクセス権を持っていないかのどちらです。</target>
         </trans-unit>
         <trans-unit id="common.config.subscription.jsp.error.nojavascript">
           <source>Please enable Javascript before selecting your channel subscriptions.</source> <target>チャンネルサブスクリプションを選択する前に Javascript を有効にしてください。</target>
@@ -18806,8 +18825,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <trans-unit id="sdc.config.rank.jsp.subscribed_channels">
           <source>Subscribed Channels</source> <target>サブスクライブしているチャンネル</target>
         </trans-unit>
-        <trans-unit id="common.config.rank.jsp.warning">
-          <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below.</source> <target>&lt;strong&gt;警告:&lt;/strong&gt; このシステムにサブスクライブさせる新しい設定チャンネルを選択しました。以下でチャンネルのランクを確定して "{0}" をクリックし、サブスクリプションを確認するまで、このシステムはこれらのチャンネルにサブスクライブ &lt;strong&gt;されません&lt;/strong&gt;。</target>
+        <trans-unit id="common.config.rank.jsp.warning" xml:space="preserve">
+          <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below. </source> <target state="needs-adaptation">&lt;strong&gt;警告:&lt;/strong&gt; このシステムにサブスクライブさせる新しい設定チャンネルを選択しました。以下でチャンネルのランクを確定して "{0}" をクリックし、サブスクリプションを確認するまで、このシステムはこれらのチャンネルにサブスクライブ &lt;strong&gt;されません&lt;/strong&gt;。</target>
         </trans-unit>
         <trans-unit id="common.config.rank.jsp.error.nojavascript">
           <source>Please enable Javascript before ordering your channel subscriptions.</source> <target>チャンネルサブスクリプションの順位付けを行う前に、 Javascript を有効にしてください。</target>
@@ -19834,7 +19853,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.activation.key" xml:space="preserve">
         <source>Key:</source>
@@ -20183,7 +20202,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ログイン名: {0}</target>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group/>
+      <group />
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -20207,11 +20226,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           </context-group>
           <target>ISO イメージのダウンロードは @@PRODUCT_NAME@@ ではサポートされていません。</target>
         </trans-unit>
-        <trans-unit id="isodownload.no-access">
-          <source>The channel you have attempted to access either does not exist, or you are not allowed access. Please recheck the link that brought you to this page.</source> <context-group name="ctx">
+        <trans-unit id="isodownload.no-access" xml:space="preserve">
+          <source>The channel you have attempted to access either does not exist, or you are not allowed access.  Please recheck the link that brought you to this page.</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-          <target>アクセスを試行したチャンネルが存在しないか、またはユーザーはアクセスを許可されていないかのどちらかになります。使用したこのページのリンク元を再確認してください。</target>
+          <target state="needs-adaptation">アクセスを試行したチャンネルが存在しないか、またはユーザーはアクセスを許可されていないかのどちらかになります。使用したこのページのリンク元を再確認してください。</target>
         </trans-unit>
       </group>
       <trans-unit id="sdc.channels.edit.unlimited" xml:space="preserve">
@@ -20635,11 +20654,19 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           </context-group>
           <target>チャンネルサブスクリプション</target>
         </trans-unit>
-        <trans-unit id="ssmchildsubs.jsp.summary">
-          <source>Below is a list of channels in your organization. &lt;ul&gt; &lt;li&gt;To make no changes for a channel, check Do Nothing for that channel.&lt;/li&gt; &lt;li&gt;To subscribe selected systems to a channel, check Subscribed for that channel.&lt;/li&gt; &lt;li&gt;To unsubscribe selected systems from a channel, check Unsubscribed for that channel.&lt;/li&gt; &lt;/ul&gt; &lt;strong&gt;Note:&lt;/strong&gt; attempts to assign a system to an incompatible channel will fail.</source> <context-group name="ctx">
+        <trans-unit id="ssmchildsubs.jsp.summary" xml:space="preserve">
+          <source>
+Below is a list of channels in your organization.
+&lt;ul&gt;
+&lt;li&gt;To make no changes for a channel, check Do Nothing for that channel.&lt;/li&gt;
+&lt;li&gt;To subscribe selected systems to a channel, check Subscribed for that channel.&lt;/li&gt;
+&lt;li&gt;To unsubscribe selected systems from a channel, check Unsubscribed for that channel.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;strong&gt;Note:&lt;/strong&gt; attempts to assign a system to an incompatible channel will fail.
+        </source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 以下に組織のチャンネルの一覧を示します。
 &lt;ul&gt;
 &lt;li&gt;チャンネルに変更を加えないようにするには、該当するチャンネルに対して「何も実行しない」チェックボックスをオンにします。&lt;/li&gt;
@@ -20709,11 +20736,15 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           </context-group>
           <target>ベースチャンネルの変更</target>
         </trans-unit>
-        <trans-unit id="basesub.jsp.summary">
-          <source>As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. &lt;p/&gt; &lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;</source> <context-group name="ctx">
+        <trans-unit id="basesub.jsp.summary" xml:space="preserve">
+          <source>
+As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
+&lt;p/&gt;
+&lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;
+          </source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target>チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの @@VENDOR_NAME@@ ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。 &lt;p/&gt; &lt;strong&gt;この操作は、システムで利用可能なパッケージとパッチに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;</target> </trans-unit>
+          <target state="needs-adaptation">チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの @@VENDOR_NAME@@ ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。 &lt;p/&gt; &lt;strong&gt;この操作は、システムで利用可能なパッケージとパッチに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="basesub.jsp.custom-channels">
           <source>Custom Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -21166,7 +21197,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="help.jsp.helpdesk" xml:space="preserve">
         <source>Welcome to the Help Desk</source>
@@ -21976,7 +22007,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.edit.jsp.summary" xml:space="preserve">
         <source>Channel Summary</source>
@@ -23142,7 +23173,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild" xml:space="preserve">
         <source>Last Repo Build</source>
@@ -23542,8 +23573,11 @@ given channel.</source>
         <trans-unit id="iss.confirmslaveremove.jsp.toolbar">
           <source>ISS Configuration - Confirm Slave Removal</source> <target>ISS 設定 - スレーブ削除の確認</target>
         </trans-unit>
-        <trans-unit id="iss.confirmslaveremove.jsp.areyousure">
-          <source>Removing the slave(s) below will remove whatever setup you have done for them, as well as preventing them from being able to synchronize from this @@PRODUCT_NAME@@ instance. This operation cannot be undone - make sure you really want to do this!</source> <target>
+        <trans-unit id="iss.confirmslaveremove.jsp.areyousure" xml:space="preserve">
+          <source>
+          Removing the slave(s) below will remove whatever setup you have done for them, as well as preventing them from being able to synchronize from this @@PRODUCT_NAME@@ instance.
+          This operation cannot be undone - make sure you really want to do this!
+          </source> <target state="needs-adaptation">
           以下のスレーブを削除することにより、それらに対するいずれのセットアップも削除され、それらがこの @@PRODUCT_NAME@@ インスタンスから同期されるのを防ぐことができます。
           この操作をやり直すことはできないため、本当に実行する必要があるかを確認してください!
           </target>
@@ -23576,8 +23610,11 @@ given channel.</source>
         <trans-unit id="iss.confirmmasterremove.jsp.toolbar">
           <source>ISS Configuration - Confirm Master Removal</source> <target>ISS 設定 - マスター削除の確認</target>
         </trans-unit>
-        <trans-unit id="iss.confirmmasterremove.jsp.areyousure">
-          <source>Removing the masters below will remove any master-to-slave organization mappings you have created. This operation cannot be undone - make sure you really want to do this!</source> <target>
+        <trans-unit id="iss.confirmmasterremove.jsp.areyousure" xml:space="preserve">
+          <source>
+          Removing the masters below will remove any master-to-slave organization mappings you have created.
+          This operation cannot be undone - make sure you really want to do this!
+          </source> <target state="needs-adaptation">
           以下のマスターの削除により、作成したマスターとスレーブ組織のすべてのマッピングが作成されます。
           この操作をやり直すことはできないため、本当に実行する必要があるかを確認してください!
           </target>
@@ -23596,8 +23633,10 @@ given channel.</source>
         <trans-unit id="iss.editmaster.jsp.toolbar">
           <source>ISS Configuration - Update Master</source> <target>ISS 設定 - マスターの更新</target>
         </trans-unit>
-        <trans-unit id="iss.editmaster.jsp.explanation">
-          <source>Update the details of the master selected below</source> <target>
+        <trans-unit id="iss.editmaster.jsp.explanation" xml:space="preserve">
+          <source>
+            Update the details of the master selected below
+          </source> <target state="needs-adaptation">
             以下の選択したマスターの詳細を更新します
           </target>
         </trans-unit>
@@ -23610,8 +23649,13 @@ given channel.</source>
         <trans-unit id="iss.editmaster.jsp.maporgs.header">
           <source>Configure Master-to-Slave Org Mappings for {0}</source> <target>{0} についてのマスターとスレーブ組織のマッピングの設定</target>
         </trans-unit>
-        <trans-unit id="iss.editmaster.jsp.maporgs.explanation">
-          <source>In order to synchronize channel access-permissions from Master to Slave, each known Master organization must be mapped to a local organization in this @@PRODUCT_NAME@@ instance. On this page the administrator can accomplish this mapping. Note that if a Master organization is not mapped, channels that were restricted to that organization on the Master will be public in this @@PRODUCT_NAME@@ instance.</source> <target>
+        <trans-unit id="iss.editmaster.jsp.maporgs.explanation" xml:space="preserve">
+          <source>
+          In order to synchronize channel access-permissions from Master to Slave,
+          each known Master organization must be mapped to a local organization in this @@PRODUCT_NAME@@ instance.
+          On this page the administrator can accomplish this mapping.  Note that if a Master organization is not mapped,
+          channels that were restricted to that organization on the Master will be public in this @@PRODUCT_NAME@@ instance.
+          </source> <target state="needs-adaptation">
           マスターからスレーブへのチャンネルアクセス権限を同期するには、
           それぞれの既知のマスター組織をこの @@PRODUCT_NAME@@ インスタンスのローカス組織にマッピングする必要があります。
           このページでは、管理者がこのマッピングを行うことができます。マスター組織がマップされていない場合、マスターの組織に制限されたチャンネルがこの @@PRODUCT_NAME@@ インスタンスで公開されることに注意してください。
@@ -23629,8 +23673,12 @@ given channel.</source>
         </context-group>
         <trans-unit id="resetpassword.jsp.error.header">
           <source>Reset Password Link Error</source> </trans-unit>
-        <trans-unit id="resetpassword.jsp.error.message">
-          <source>The reset-password link used is invalid. Please contact your @@PRODUCT_NAME@@ administrator for assistance.</source> </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.message" xml:space="preserve">
+          <source>
+          The reset-password link used is invalid.
+          Please contact your @@PRODUCT_NAME@@ administrator for assistance.
+          </source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="resetpassword.jsp.error.invalidtoken">
           <source>Reset token has been invalidated.</source> </trans-unit>
         <trans-unit id="resetpassword.jsp.error.disabled_user">
@@ -23646,8 +23694,11 @@ given channel.</source>
         </context-group>
         <trans-unit id="passwordreset.jsp.header">
           <source>Reset Password</source> </trans-unit>
-        <trans-unit id="passwordreset.jsp.passwordtip">
-          <source>Passwords can be between {0} and {1} characters, and cannot contain tabs or newlines.</source> </trans-unit>
+        <trans-unit id="passwordreset.jsp.passwordtip" xml:space="preserve">
+          <source>
+          Passwords can be between {0} and {1} characters,
+          and cannot contain tabs or newlines.</source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="passwordreset.jsp.update">
           <source>Update Password</source> </trans-unit>
       </group>
@@ -23774,7 +23825,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.notSyncedChannels" xml:space="preserve">
         <source>Target not available, the following channels are not synced: </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
         <source>Service Pack Migration - Channels</source>
@@ -23941,7 +23992,7 @@ given channel.</source>
     For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
 &lt;/p&gt;
         </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
         <source>Syncing the packages to the list above is not available for this system.</source>
@@ -23995,12 +24046,12 @@ given channel.</source>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
         <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -24038,7 +24089,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
@@ -24091,7 +24142,7 @@ given channel.</source>
     SUSE may charge a fee to recover its reasonable costs of distribution
 &lt;/p&gt;
         </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="Salt" xml:space="preserve">
         <source>Salt</source>
@@ -24120,74 +24171,82 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="schedule.jsp.maint-window" xml:space="preserve">
         <source>Maintenance window:</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="schedule.jsp.multiple_maintenance_schedules" xml:space="preserve">
         <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="schedule.jsp.no_maintenance_windows" xml:space="preserve">
         <source>No upcoming maintenance windows for selected systems.</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.default" xml:space="preserve">
         <source>Use configured default ({0})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule.none" xml:space="preserve">
         <source>(none)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.none" xml:space="preserve">
         <source>None</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.cancelaffected" xml:space="preserve">
         <source>Cancel affected actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Maintenance Windows" xml:space="preserve">
         <source>Maintenance Windows</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Schedules" xml:space="preserve">
         <source>Schedules</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Calendars" xml:space="preserve">
         <source>Calendars</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
-    </body>
+    <trans-unit id="ssm.overview.schedule.assign" xml:space="preserve">
+          <source>&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Assign&lt;/a&gt; a maintenance schedule to selected systems</source>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="ssm.misc.index.tabs.maintenanceschedule" xml:space="preserve">
+          <source>Maintenance Windows</source>
+        <target state="new" />
+  </trans-unit>
+        </body>
   </file>
 </xliff>
