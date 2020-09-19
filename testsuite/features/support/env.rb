@@ -268,6 +268,16 @@ Before('@server_http_proxy') do
   skip_this_scenario unless $server_http_proxy
 end
 
+# do test only if the registry is available
+Before('@no_auth_registry') do
+  skip_this_scenario unless $no_auth_registry
+end
+
+# do test only if the registry with authentication is available
+Before('@auth_registry') do
+  skip_this_scenario unless $auth_registry
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   puts '=> /var/log/rhn/rhn_web_ui.log'
