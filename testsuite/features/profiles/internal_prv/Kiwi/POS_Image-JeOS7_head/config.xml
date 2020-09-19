@@ -93,7 +93,6 @@
         <package name="iproute2"/>
         <package name="openssh"/>
         <package name="rsync"/>
-        <package name="plymouth-plugin-label-ft"/>
 
         <package name="kernel-default"/>
 	<package name="salt-minion"/>
@@ -106,10 +105,10 @@
         <package name="plymouth"/>
         <package name="plymouth-dracut"/>
         <package name="plymouth-branding-SLE"/>
-        <package name="plymouth-plugin-label-ft"/>
         <package name="fontconfig"/>
         <package name="fonts-config"/>
         <package name="noto-sans-fonts"/>
+        <package name="wpa_supplicant"/>
         <package name="busybox"/>
         <package name="bind-utils"/>
         <package name="kiwi-tools"/>
