@@ -49,14 +49,18 @@ Then(/^it should be possible to reach the test suite profiles$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
-Then(/^it should be possible to reach the portus registry$/) do
-  url = 'https://portus.mgr.suse.de:5000'
-  $server.run("curl --insecure --location #{url} --output /dev/null")
+Then(/^it should be possible to reach the authenticated registry$/) do
+  if not ($auth_registry.nil? || $auth_registry.empty?)
+    url = "https://#{$auth_registry}"
+    $server.run("curl --insecure --location #{url} --output /dev/null")
+  end
 end
 
-Then(/^it should be possible to reach the other registry$/) do
-  url = 'https://registry.mgr.suse.de:443'
-  $server.run("curl --insecure --location #{url} --output /dev/null")
+Then(/^it should be possible to reach the not authenticated registry$/) do
+  if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
+    url = "https://#{$no_auth_registry}"
+    $server.run("curl --insecure --location #{url} --output /dev/null")
+  end
 end
 
 # Channels
