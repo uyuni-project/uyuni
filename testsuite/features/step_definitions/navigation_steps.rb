@@ -176,6 +176,10 @@ When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
   end
 end
 
+When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
+  fill_in arg1, with: $no_auth_registry
+end
+
 #
 # Click on a button
 #
@@ -888,12 +892,11 @@ When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field
 end
 
 When(/^I enter URI, username and password for portus$/) do
-  portus_uri = ENV['PORTUS_URI']
-  portus_username, portus_password = ENV['PORTUS_CREDENTIALS'].split('|')
+  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
-    When I enter "#{portus_uri}" as "uri"
-    And I enter "#{portus_username}" as "username"
-    And I enter "#{portus_password}" as "password"
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
   )
 end
 
