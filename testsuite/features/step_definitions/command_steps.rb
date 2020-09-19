@@ -52,13 +52,15 @@ end
 Then(/^it should be possible to reach the authenticated registry$/) do
   if not ($auth_registry.nil? || $auth_registry.empty?)
     url = "https://#{$auth_registry}"
-  $server.run("curl --insecure --location #{url} --output /dev/null")
+    $server.run("curl --insecure --location #{url} --output /dev/null")
+  end
 end
 
 Then(/^it should be possible to reach the not authenticated registry$/) do
   if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
     url = "https://#{$no_auth_registry}"
-  $server.run("curl --insecure --location #{url} --output /dev/null")
+    $server.run("curl --insecure --location #{url} --output /dev/null")
+  end
 end
 
 # Channels
