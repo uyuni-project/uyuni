@@ -78,5 +78,7 @@ insert into rhnCpuArch (id, label, name) values
 (sequence_nextval('rhn_cpu_arch_id_seq'), 'armv6hl', 'ARMv6hl');
 insert into rhnCpuArch (id, label, name) values
 (sequence_nextval('rhn_cpu_arch_id_seq'), 'cloud', 'cloud');
+insert into rhnCpuArch (id, label, name) values
+(sequence_nextval('rhn_cpu_arch_id_seq'), 'arm64', 'ARM64');
 commit;
 

@@ -1,3 +1,5 @@
+- Schema upgrade for Debian with ARM64v8+ (cpuach=aarch64, cpuarch=arm64) architecture
+
 -------------------------------------------------------------------
 Fri Sep 18 12:27:41 CEST 2020 - jgonzalez@suse.com
 

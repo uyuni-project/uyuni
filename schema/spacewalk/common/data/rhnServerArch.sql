@@ -129,5 +129,8 @@ insert into rhnServerArch (id, label, name, arch_type_id) values
 insert into rhnServerArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_server_arch_id_seq'), 'cloud', 'cloud', lookup_arch_type('rpm'));
 
+insert into rhnServerArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_server_arch_id_seq'), 'arm64-debian-linux', 'ARM64 Debian', lookup_arch_type('deb'));
+
 commit;
 
