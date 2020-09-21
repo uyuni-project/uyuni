@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Sep 21 18:42:16 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
 - Schema upgrade for Debian with ARM64v8+ (cpuach=aarch64, cpuarch=arm64) architecture
 
 -------------------------------------------------------------------
