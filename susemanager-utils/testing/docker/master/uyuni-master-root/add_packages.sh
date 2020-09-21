@@ -16,5 +16,4 @@ zypper in -y  make \
               curl
 
 zypper -n in vim \
-             less \
-             hardlink
+             less
