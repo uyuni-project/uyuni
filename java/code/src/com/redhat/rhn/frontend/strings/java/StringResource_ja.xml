@@ -1954,7 +1954,7 @@
             (10 selected)
           </context>
         </context-group>
-        <target>({0} 選択されました)</target>
+        <target>({0} 個を選択しています)</target>
       </trans-unit>
       <trans-unit id="message.items.per.page" xml:space="preserve">
         <source>{0} items per page</source>
@@ -3010,7 +3010,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>セキュリティーに関するアドバイザリー</target>
+        <target>セキュリティアドバイザリ</target>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.crit" xml:space="preserve">
         <source>Security Advisory (Critical)</source>
@@ -6963,7 +6963,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
-        <target>中央管理</target>
+        <target>通常</target>
       </trans-unit>
       <trans-unit id="config_channel.state" xml:space="preserve">
         <source>State</source>
