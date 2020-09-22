@@ -596,7 +596,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>重大: CPU 使用率 </target>
+        <target>重大: CPU 使用率</target>
       </trans-unit>
       <trans-unit id="Critical CPU Time Rate" xml:space="preserve">
         <source>Critical CPU Time Rate</source>
@@ -729,7 +729,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>重大: Inode 使用率 </target>
+        <target>重大: Inode 使用率</target>
       </trans-unit>
       <trans-unit id="Critical Input Rate" xml:space="preserve">
         <source>Critical Input Rate</source>
@@ -1576,7 +1576,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>警告 15分 </target>
+        <target>警告 15 分</target>
       </trans-unit>
       <trans-unit id="Warn 5 min" xml:space="preserve">
         <source>Warn 5 min</source>
@@ -1919,7 +1919,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>警告: クエリー率 </target>
+        <target>警告: クエリー率</target>
       </trans-unit>
       <trans-unit id="Warning Query Time" xml:space="preserve">
         <source>Warning Query Time</source>
