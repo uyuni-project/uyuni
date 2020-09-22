@@ -3182,6 +3182,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
         <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
+        <target>このシステムがサブスクライブしているチャンネルの中に、モジュールが含まれているものがあります。このシステムでモジュールを有効化している場合は、パッケージ操作の際に @@PRODUCT_NAME@@ を使用するのはおやめください。その代わり、 dnf を利用してクライアントからパッケージ操作を行なってください。</target>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -4133,12 +4134,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="satconfig.jsp.header" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration</source>
+        <target>@@PRODUCT_NAME@@ の設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satconfig.jsp.description" xml:space="preserve">
         <source>As @@PRODUCT_NAME@@ Admin you can configure, whether Organization Administrators may configure Organization Configuration. Organizaton Configuration settings may have huge impact on the @@PRODUCT_NAME@@ performance.</source>
+        <target>設定可能な @@PRODUCT_NAME@@ の管理者と同様に、組織管理者は組織の設定を行なうことができます。組織の設定は、 @@PRODUCT_NAME@@ の性能に大きく影響するものです。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4152,12 +4155,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
         <source>Below you configure your organization to use staging content, errata e-mail notifications, software crash reporting (Crash file upload limit is a non negative number, zero means no limit) and SCAP settings.</source>
+        <target>下記では組織内でのステージングコンテンツの使用可否やエラータの電子メール通知、ソフトウェアクラッシュのレポート (クラッシュファイルのアップロード制限は正の数で指定することができます。 0 を指定すると無制限です) や SCAP 設定などを行なうことができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications, software crash reporting and SCAP settings are configured.</source>
+        <target>下記はお使いの組織の設定一覧です。ここではステージングプロジェクトの使用可否やエラータの電子メール通知、ソフトウェアクラッシュのレポートや SCAP 設定などを行なうことができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4192,6 +4197,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org-config.orgadm-mgmt.jsp" xml:space="preserve">
         <source>Allow Organization Admin to manage Organization Configuration</source>
+        <target>組織管理者に対する組織設定の許可</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4205,6 +4211,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp" xml:space="preserve">
         <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
+        <target>パッチ電子メール通知の有効化 (この組織に所属するユーザ向け)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4337,6 +4344,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org.users.summary" xml:space="preserve">
         <source>The following is a list of all users in the {0} organization. Note that you will only have access to modify the details of these users if you are logged into the {0} organization and have organization administrator privileges.</source>
+        <target>下記は {0} 組織内に存在する全てのユーザの一覧です。なお、これらのユーザの詳細を変更するには {0} 組織内にログインし、かつ組織管理者の権限が必要となります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/UserList</context>
         </context-group>
@@ -4397,6 +4405,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="organizations.tip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
+        <target>&lt;strong&gt;ヒント:&lt;/strong&gt; この組織は @@PRODUCT_NAME@@ の既定の組織です。</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.unlimited" xml:space="preserve">
         <source>unlimited</source>
@@ -4741,6 +4750,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryseverity" xml:space="preserve">
         <source>Advisory Severity:</source>
+        <target>アドバイザリの重要度:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -4838,6 +4848,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="errata.create.jsp.channels" xml:space="preserve">
         <source>Channels to add:</source>
+        <target>追加すべきチャンネル:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -4886,18 +4897,21 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="errata.channel.intersection.summary" xml:space="preserve">
         <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has the following packages in common with &lt;strong&gt;{1}&lt;/strong&gt;. If the version of the package from the erratum is newer than the one in your channel, you will have the opportunity to update the channel when you publish this erratum.</source>
+        <target>チャンネル &lt;strong&gt;{0}&lt;/strong&gt; には &lt;strong&gt;{1}&lt;/strong&gt; と共通する下記のパッケージが存在しています。エラータ経由で提供されるパッケージがチャンネルで提供されるものよりも新しい場合、エラータを公開するとチャンネルを更新できるようになります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.channel_version" xml:space="preserve">
         <source>Channel Version</source>
+        <target>チャンネルバージョン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.errata_version" xml:space="preserve">
         <source>Errata Version</source>
+        <target>エラータバージョン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
@@ -5031,18 +5045,18 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.overview.errata">
           <source>Patches</source> <target>パッチ</target> </trans-unit>
         <trans-unit id="ssm.overview.errata.schedule">
-          <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source> </trans-unit>
+          <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source> <target>選択したシステムに関連する &lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;パッチ更新のスケジュール&lt;/a&gt;</target></trans-unit>
         <trans-unit id="ssm.overview.packages">
           <source>Packages</source> <target>パッケージ</target>
         </trans-unit>
         <trans-unit id="ssm.overview.packages.upgrade">
           <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source> <target>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;アップグレード&lt;/a&gt;</target> </trans-unit>
         <trans-unit id="ssm.overview.packages.install">
-          <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source> </trans-unit>
+          <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source> <target>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;インストール&lt;/a&gt;</target></trans-unit>
         <trans-unit id="ssm.overview.packages.remove">
-          <source>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt;</source> </trans-unit>
+          <source>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt;</source> <target>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;削除&lt;/a&gt;</target></trans-unit>
         <trans-unit id="ssm.overview.packages.verify">
-          <source>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt;</source> </trans-unit>
+          <source>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt;</source> <target>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;検証&lt;/a&gt;</target></trans-unit>
         <trans-unit id="ssm.overview.groups">
           <source>Groups</source> <target>グループ</target>
         </trans-unit>
@@ -5065,7 +5079,7 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.overview.provisioning.kickstart">
           <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source> <target>システムの &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;自動インストール&lt;/a&gt; を行ないます</target> </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
-          <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source> </trans-unit>
+          <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source> <target>&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;スナップショットへのロールバック&lt;/a&gt; 向けのシステムの &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;タグ付け&lt;/a&gt;</target></trans-unit>
         <trans-unit id="ssm.overview.provisioning.remotecommands">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source> <target>&lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;リモートコマンド&lt;/a&gt; を実行します</target>
         </trans-unit>
@@ -6311,7 +6325,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target>エンタイトルメントを外す</target>
+        <target>なし</target>
       </trans-unit>
       <trans-unit id="systementitlements.jsp.add_entitlement" xml:space="preserve">
         <source>Add System Type</source>
@@ -8608,7 +8622,7 @@ Please note that some manual configuration of these scripts may still be require
       <!-- Bare-metal system listing configuration -->
       <group>
         <trans-unit id="Bare-metal systems">
-          <source>Bare-metal systems</source> </trans-unit>
+          <source>Bare-metal systems</source> <target>ベアメタルシステム</target></trans-unit>
         <trans-unit id="bootstrapsystems.jsp.toolbar">
           <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source> </trans-unit>
         <trans-unit id="bootstrapsystems.jsp.header">
@@ -8616,7 +8630,7 @@ Please note that some manual configuration of these scripts may still be require
         <trans-unit id="bootstrapsystems.jsp.summary">
           <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source> </trans-unit>
         <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery">
-          <source>Bare-metal systems</source> </trans-unit>
+          <source>Bare-metal systems</source> <target>ベアメタルシステム</target></trans-unit>
         <trans-unit id="enable">
           <source>Enable adding to this organization</source> </trans-unit>
         <trans-unit id="disable">
@@ -15568,7 +15582,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;centrally-managed config channels&lt;/strong&gt;.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into centrally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target state="needs-adaptation">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;中央管理の設定チャンネル&lt;/strong&gt; にコピーできます。このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
+          <target state="translated">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;中央管理の設定チャンネル&lt;/strong&gt; にコピーできます。  このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
         </trans-unit>
         <trans-unit id="copycentral.jsp.select">
           <source>Please select destination channels below.</source> <target>以下でコピー先チャンネルを選択してください。</target>
@@ -15610,7 +15624,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;locally-managed config channels&lt;/strong&gt;.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into locally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target state="needs-adaptation">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;ローカル管理の設定チャンネル&lt;/strong&gt; にコピーできます。このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
+          <target state="translated">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;ローカル管理の設定チャンネル&lt;/strong&gt; にコピーできます。  このファイルを別のチャンネルにコピーする場合は、これがそのチャンネル内のファイルに対して最新のリビジョンになります。</target>
         </trans-unit>
         <trans-unit id="copylocal.jsp.channel">
           <source>Local Config Channel Name</source> <target>ローカル設定チャンネル名</target>
@@ -15628,7 +15642,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;system sandboxes&lt;/strong&gt;.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 7 of this file into system sandboxes.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</context>
           </context-group>
-          <target state="needs-adaptation">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;システムのサンドボックス&lt;/strong&gt; にコピーできます。 このファイルをサンドボックスにコピーする場合は、これがそのサンドボックス内のファイルに対して最新のリビジョンになります。</target>
+          <target state="translated">このファイルの &lt;a href="{0}"&gt;リビジョン {1}&lt;/a&gt; を &lt;strong&gt;システムのサンドボックス&lt;/strong&gt; にコピーできます。   このファイルをサンドボックスにコピーする場合は、これがそのサンドボックス内のファイルに対して最新のリビジョンになります。</target>
         </trans-unit>
         <trans-unit id="copysandbox.jsp.channel">
           <source>System Sandbox Name</source> <target>システムサンドボックス名</target>
@@ -16946,9 +16960,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Packages listed below may be removed from one or more systems.
 
              Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.
-          </source> <target state="needs-adaptation">以下に表示されるパッケージは 1 つまたは複数のシステムから削除できます。
+          </source> <target state="translated">以下に表示されるパッケージは 1 つまたは複数のシステムから削除できます。
 
-             1 つまたは複数のシステムを選択し、&lt;b&gt;選択したパッケージを削除&lt;/b&gt;ボタンをクリックしてパッケージ削除をスケジュールします。
+             1 つまたは複数のシステムを選択し、 &lt;b&gt;選択したパッケージを削除&lt;/b&gt; ボタンをクリックしてパッケージ削除をスケジュールします。
           </target>
         </trans-unit>
         <trans-unit id="ssm.package.remove.select.confirm">
@@ -16965,7 +16979,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="ssm.package.remove.schedule.summary" xml:space="preserve">
           <source>Below is a list of the packages that will be removed, on a per system basis.
-          </source> <target state="needs-adaptation">以下は、システムごとに削除するパッケージの一覧です。
+          </source> <target state="translated">以下は削除するパッケージの一覧です。システムごとに並べられています。
           </target>
         </trans-unit>
         <trans-unit id="ssm.package.remove.schedule.packages">
@@ -16975,7 +16989,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Package list truncated</source> <target>パッケージ一覧は省略　</target>
         </trans-unit>
         <trans-unit id="ssm.package.remove.message.packageremovals" xml:space="preserve">
-          <source>Package removals are being scheduled, it may take several minutes for this to complete. </source> <target state="needs-adaptation">パッケージ削除がスケジュールされています。この操作が完了するには数分間かかることがあります。</target>
+          <source>Package removals are being scheduled, it may take several minutes for this to complete. </source> <target state="translated">パッケージ削除がスケジュールされています。この操作が完了するには数分間かかることがあります。 </target>
         </trans-unit>
         <trans-unit id="ssm.package.remove.operationname">
           <source>Schedule Package Removals</source> <target>パッケージ削除のスケジュール</target>
@@ -16991,7 +17005,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="ssm.package.upgrade.select.summary" xml:space="preserve">
           <source>Select the packages to be upgraded. Only those systems to which the package updates apply will receive the updates.
-         </source> <target state="needs-adaptation">アップグレードするパッケージを選択します。パッケージ更新が適用されるシステムのみが更新を受け取ります。
+         </source> <target state="translated">アップグレードするパッケージを選択します。パッケージ更新が適用されるシステムのみが更新を受け取ります。
          </target>
         </trans-unit>
         <trans-unit id="ssm.package.upgrade.select.confirm">
@@ -17013,7 +17027,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/ssm/PackageUpgradeSchedule.do</context>
         </context-group>
         <trans-unit id="ssm.package.upgrade.message.packageupgrade" xml:space="preserve">
-          <source>Package upgrades are being scheduled, it may take several minutes for this to complete. </source> <target state="needs-adaptation">パッケージアップグレードがスケジュールされています。この操作が完了するには数分間かかることがあります。</target>
+          <source>Package upgrades are being scheduled, it may take several minutes for this to complete. </source> <target state="translated">パッケージアップグレードがスケジュールされています。この操作が完了するには数分間かかることがあります。 </target>
         </trans-unit>
         <trans-unit id="ssm.package.upgrade.schedule.toomanypackages">
           <source>Package list truncated</source> <target>パッケージ一覧は省略　</target>
@@ -17034,9 +17048,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Packages listed below may be verified on one or more systems.
 
             Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.
-         </source> <target state="needs-adaptation">以下に表示されるパッケージは 1 つまたは複数のシステムで検証できます。
+         </source> <target state="translated">以下に表示されるパッケージは 1 つまたは複数のシステムで検証できます。
 
-            1 つまたは複数のシステムを選択し、&lt;b&gt;選択したパッケージの検証&lt;/b&gt;ボタンをクリックしてパッケージ検証をスケジュールします。
+            1 つまたは複数のシステムを選択し、 &lt;b&gt;選択したパッケージの検証&lt;/b&gt; ボタンをクリックしてパッケージ検証をスケジュールします。
          </target>
         </trans-unit>
         <trans-unit id="ssm.package.verify.select.confirm">
@@ -17053,7 +17067,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="ssm.package.verify.schedule.summary" xml:space="preserve">
           <source>Below is a list of the packages that will be verified, on a per system basis.
-         </source> <target state="needs-adaptation">以下は、システムごとに検証するパッケージの一覧です。
+         </source> <target state="translated">以下は検証するパッケージの一覧です。システムごとに並べられています。
          </target>
         </trans-unit>
         <trans-unit id="ssm.package.verify.schedule.packages">
@@ -19855,7 +19869,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target>一般</target>
+        <target>全般</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.dmi" xml:space="preserve">
         <source>DMI Info</source>
@@ -23936,6 +23950,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.header" xml:space="preserve">
         <source>Setup Wizard</source>
+        <target>セットアップウィザード</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.h1" xml:space="preserve">
         <source>What are Organization Credentials?</source>
@@ -24008,6 +24023,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
         <source>Monitoring</source>
+        <target>モニタリング</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -24087,6 +24103,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Setup Wizard" xml:space="preserve">
         <source>Setup Wizard</source>
+        <target>セットアップウィザード</target>
       </trans-unit>
       <trans-unit id="HTTP Proxy" xml:space="preserve">
         <source>HTTP Proxy</source>
