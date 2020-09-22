@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-22 06:48+0000\n"
+"PO-Revision-Date: 2020-09-22 10:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -21,17 +21,17 @@ msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "残り"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
-msgstr ""
+msgstr "Internet Explorer ブラウザはサポート対象外です。Firefox, Chrome, Edge のいずれかをお使いください"
 
 #: ../html/src/components/action-schedule.js:54
 msgid "new action chain"
-msgstr ""
+msgstr "新しい動作チェーン"
 
 #: ../html/src/components/action-schedule.js:197
 msgid ""
@@ -39,38 +39,40 @@ msgid ""
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
 msgstr ""
+"選択したシステムには複数のメンテナンススケジュールが存在しています。日付やメンテナンスウィンドウでスケジュールを設定したい場合は、"
+"システムに対して最大でも 1 つのメンテナンススケジュールのみを設定してください。"
 
 #: ../html/src/components/action-schedule.js:204
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "次のメンテナンスウィンドウはありません"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Earliest:"
-msgstr ""
+msgstr "指定時刻以降にスケジュール:"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "メンテナンスウィンドウ:"
 
 #: ../html/src/components/action-schedule.js:274
 msgid "Add to:"
-msgstr ""
+msgstr "以下に追加:"
 
 #: ../html/src/components/action-schedule.js:290
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "スケジューラを読み込んでいます..."
 
 #: ../html/src/components/config-channels.js:26
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "状態設定チャンネル"
 
 #: ../html/src/components/config-channels.js:29
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "通常設定チャンネル"
 
 #: ../html/src/components/config-channels.js:54
 msgid "Configuration Channel: {0}"
-msgstr ""
+msgstr "設定チャンネル: {0}"
 
 #: ../html/src/components/config-channels.js:58
 #: ../html/src/manager/images/image-profiles.js:161
@@ -85,32 +87,32 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:153
 msgid "Edit"
-msgstr ""
+msgstr "編集"
 
 #: ../html/src/components/config-channels.js:59
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "設定チャンネルの編集"
 
 #: ../html/src/components/config-channels.js:111
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "保存されていない変更があります。続行してもよろしいですか？"
 
 #: ../html/src/components/config-channels.js:149
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "状態の割り当てが保存されました。"
 
 #: ../html/src/components/config-channels.js:158
 msgid "An error occurred on save."
-msgstr ""
+msgstr "保存時にエラーが発生しました。"
 
 #: ../html/src/components/config-channels.js:281
 #: ../html/src/manager/minion/packages/package-states.js:275
 msgid "No current changes."
-msgstr ""
+msgstr "現時点での変更はありません。"
 
 #: ../html/src/components/config-channels.js:282
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
+msgstr "状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なってください。"
 
 #: ../html/src/components/config-channels.js:341
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:51
@@ -127,7 +129,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
 msgid "Back"
-msgstr ""
+msgstr "戻る"
 
 #: ../html/src/components/config-channels.js:342
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:166
@@ -135,34 +137,34 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
-msgstr ""
+msgstr "確認"
 
 #: ../html/src/components/config-channels.js:349
 msgid "Save Changes"
-msgstr ""
+msgstr "変更点の保存"
 
 #: ../html/src/components/config-channels.js:355
 msgid "Apply"
-msgstr ""
+msgstr "適用"
 
 #: ../html/src/components/config-channels.js:360
 msgid "Reorder"
-msgstr ""
+msgstr "並べ替え"
 
 #: ../html/src/components/config-channels.js:372
 #: ../html/src/components/config-channels.js:376
 msgid "Changes"
-msgstr ""
+msgstr "変更"
 
 #: ../html/src/components/config-channels.js:374
 msgid "1 Change"
-msgstr ""
+msgstr "1 個の変更"
 
 #: ../html/src/components/config-channels.js:383
 #: ../html/src/components/config-channels.js:412
 #: ../html/src/manager/minion/packages/package-states.js:244
 msgid "Search"
-msgstr ""
+msgstr "検索"
 
 #: ../html/src/components/config-channels.js:389
 #: ../html/src/manager/admin/config/monitoring-admin.js:43
@@ -174,50 +176,50 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:65
 msgid "System"
-msgstr ""
+msgstr "システム"
 
 #: ../html/src/components/config-channels.js:399
 msgid "Configuration Channels"
-msgstr ""
+msgstr "設定チャンネル"
 
 #: ../html/src/components/config-channels.js:409
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "設定チャンネル内での検索"
 
 #: ../html/src/components/config-channels.js:423
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr ""
+msgstr "設定チャンネルの順位を変更するには、それらをドラッグしてください。"
 
 #: ../html/src/components/config-channels.js:424
 msgid "There are no states assigned."
-msgstr ""
+msgstr "状態が何も割り当てられていません。"
 
 #: ../html/src/components/config-channels.js:431
 msgid "Channel Name"
-msgstr ""
+msgstr "チャンネル名"
 
 #: ../html/src/components/config-channels.js:432
 msgid "Channel Label"
-msgstr ""
+msgstr "チャンネルラベル"
 
 #: ../html/src/components/config-channels.js:433
 #: ../html/src/manager/maintenance/details/schedule-details.js:179
 #: ../html/src/manager/maintenance/details/schedule-details.js:186
 msgid "Assign"
-msgstr ""
+msgstr "割り当て"
 
 #: ../html/src/components/config-channels.js:455
 #: ../html/src/components/table/TableDataHandler.js:249
 msgid "There are no entries to show."
-msgstr ""
+msgstr "表示すべき項目がありません。"
 
 #: ../html/src/components/dialog/ActionConfirm.js:71
 msgid "Are you sure you want to {0} {1} "
-msgstr ""
+msgstr "{1} を {0} してよろしいですか "
 
 #: ../html/src/components/dialog/ActionConfirm.js:81
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
-msgstr ""
+msgstr "選択した {1} に対して {0} してよろしいですか？ ({2} 個の {1} が選択されています)"
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
@@ -236,7 +238,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
-msgstr ""
+msgstr "取り消し"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
 #: ../html/src/components/panels/CreatorPanel.js:91
@@ -266,51 +268,51 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:271
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:306
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
-msgstr ""
+msgstr "プロジェクトの削除"
 
 #: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
-msgstr ""
+msgstr "下記のプロジェクトを削除してよろしいですか "
 
 #: ../html/src/components/FormulaForm.js:17
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
+msgstr "formula を保存しました。この formula に対する highstate の適用は不要です。"
 
 #: ../html/src/components/FormulaForm.js:79
 msgid ""
 "Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
 "on each system!"
-msgstr ""
+msgstr "複数のグループ formula が検出されました。各システムに対しては 1 つの \"{0}\" 向け formula のみを設定できます！"
 
 #: ../html/src/components/FormulaForm.js:107
 #: ../html/src/manager/clusters/cluster/cluster-config.js:50
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:60
 msgid "Please input required fields: {0}"
-msgstr ""
+msgstr "必須の項目に入力を行なってください: {0}"
 
 #: ../html/src/components/FormulaForm.js:110
 #: ../html/src/manager/clusters/cluster/cluster-config.js:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:63
 msgid "Invalid format of fields: {0}"
-msgstr ""
+msgstr "項目の書式が正しくありません: {0}"
 
 #: ../html/src/components/FormulaForm.js:157
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
-msgstr ""
+msgstr "このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定を行なうことができます。"
 
 #: ../html/src/components/formulas/EditGroup.js:266
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
+msgstr "この項目は、生成される pillar データの 'key' 識別子として使用されます。"
 
 #: ../html/src/components/formula-selection.js:130
 msgid " No group"
-msgstr ""
+msgstr " グループ無し"
 
 #: ../html/src/components/formula-selection.js:230
 msgid ""
@@ -318,6 +320,8 @@ msgid ""
 "then be configured on group and system level. This allows you to "
 "automatically install and configure software."
 msgstr ""
+"このページでは、このグループやシステムに対する Salt Formula を選択することができます。設定後、グループやシステムのレベルで設定を行なうことが"
+"できるようになります。これはソフトウェアの自動インストールや設定を行なうためのものです。"
 
 #: ../html/src/components/formula-selection.js:236
 #: ../html/src/components/panels/CreatorPanel.js:116
@@ -326,25 +330,25 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:143
 #: ../html/src/manager/minion/packages/package-states.js:201
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: ../html/src/components/formula-selection.js:244
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:59
 msgid "Formulas"
-msgstr ""
+msgstr "Formula"
 
 #: ../html/src/components/formulas/PasswordInput.js:52
 msgid "Generate new password"
-msgstr ""
+msgstr "新しいパスワードの生成"
 
 #: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
-msgstr ""
+msgstr "パスワードの表示／非表示"
 
 #: ../html/src/components/formulas/SectionToggle.js:15
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "セクション表示の切り替え"
 
 #: ../html/src/components/input/Check.stories.js:31
 #: ../html/src/components/input/DateTime.stories.js:35
@@ -358,23 +362,23 @@ msgstr ""
 #: ../html/src/components/input/Select.stories.js:38
 #: ../html/src/components/input/Text.stories.js:36
 msgid "Submit"
-msgstr ""
+msgstr "送信"
 
 #: ../html/src/components/input/Combo.stories.js:30
 msgid "Flavor"
-msgstr ""
+msgstr "フレーバー"
 
 #: ../html/src/components/input/Combo.stories.js:32
 msgid "Start typing..."
-msgstr ""
+msgstr "入力してください..."
 
 #: ../html/src/components/input/Combo.stories.js:33
 msgid "No flavors"
-msgstr ""
+msgstr "フレーバー無し"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
-msgstr ""
+msgstr "時刻"
 
 #: ../html/src/components/input/FormMultiInput.js:122
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:59
@@ -401,7 +405,7 @@ msgstr "名"
 #: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/Text.stories.js:28
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "最低 2 文字"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
@@ -416,7 +420,7 @@ msgstr "パスワード"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
-msgstr ""
+msgstr "最低 4 文字"
 
 #: ../html/src/components/input/Radio.stories.js:26
 #: ../html/src/components/input/Radio.stories.js:55
@@ -424,32 +428,32 @@ msgstr ""
 #: ../html/src/components/input/Radio.stories.js:116
 #: ../html/src/components/input/Select.stories.js:26
 msgid "Level"
-msgstr ""
+msgstr "レベル"
 
 #: ../html/src/components/input/Radio.stories.js:31
 #: ../html/src/components/input/Radio.stories.js:61
 #: ../html/src/components/input/Radio.stories.js:91
 #: ../html/src/components/input/Radio.stories.js:122
 msgid "Beginner"
-msgstr ""
+msgstr "初心者"
 
 #: ../html/src/components/input/Radio.stories.js:32
 #: ../html/src/components/input/Radio.stories.js:62
 #: ../html/src/components/input/Radio.stories.js:92
 #: ../html/src/components/input/Radio.stories.js:123
 msgid "Normal"
-msgstr ""
+msgstr "通常"
 
 #: ../html/src/components/input/Radio.stories.js:33
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
-msgstr ""
+msgstr "熟練者"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
-msgstr ""
+msgstr "最初"
 
 #: ../html/src/components/pagination.js:16
 #: ../html/src/manager/admin/setup/products/products.js:358
@@ -460,92 +464,92 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
-msgstr ""
+msgstr "次へ"
 
 #: ../html/src/components/pagination.js:54
 msgid "Page"
-msgstr ""
+msgstr "ページ"
 
 #: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:363
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:766
 msgid "of"
-msgstr ""
+msgstr "／"
 
 #: ../html/src/components/pagination.js:72
 msgid "Page {0} of {1}"
-msgstr ""
+msgstr "{0} / {1} ページ"
 
 #: ../html/src/components/picker/recurring-event-picker.js:305
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:84
 #: ../html/src/manager/maintenance/list/schedule-list.js:36
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
-msgstr ""
+msgstr "スケジュール名"
 
 #: ../html/src/components/picker/recurring-event-picker.js:309
 msgid "Select a Schedule"
-msgstr ""
+msgstr "スケジュールの選択:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:316
 msgid "Hourly:"
-msgstr ""
+msgstr "毎時:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:322
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "動作は 1 時間に 1 回、指定された分に実行されます"
 
 #: ../html/src/components/picker/recurring-event-picker.js:328
 msgid "Daily:"
-msgstr ""
+msgstr "毎日:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:337
 msgid "Weekly:"
-msgstr ""
+msgstr "毎週:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:353
 msgid "Monthly:"
-msgstr ""
+msgstr "毎月:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:366
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
-msgstr ""
+msgstr "日は必ず毎月実行できるよう、最大でも 28 までの範囲で指定します"
 
 #: ../html/src/components/picker/recurring-event-picker.js:372
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "独自のクォーツ書式:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:375
 msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
+msgstr "例: \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:221
 msgid "Security Advisory"
-msgstr ""
+msgstr "セキュリティアドバイザリ"
 
 #: ../html/src/components/systems.js:58
 msgid "System Locked"
-msgstr ""
+msgstr "システムはロック済み"
 
 #: ../html/src/components/table/SearchPanel.js:39
 msgid "Items {0} - {1} of {2}"
-msgstr ""
+msgstr "項目 {0} - {1} ／ {2}"
 
 #: ../html/src/components/table/SearchPanel.js:42
 msgid "({0} selected)"
-msgstr ""
+msgstr "({0} 個を選択しています)"
 
 #: ../html/src/components/table/SearchPanel.js:43
 #: ../html/src/manager/admin/setup/products/products.js:288
 msgid "Clear"
-msgstr ""
+msgstr "消去"
 
 #: ../html/src/components/table/SearchPanel.js:48
 msgid "Select All"
-msgstr ""
+msgstr "すべてを選択"
 
 #: ../html/src/components/table/TableDataHandler.js:250
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
@@ -554,23 +558,23 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:229
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
 msgid "Loading..."
-msgstr ""
+msgstr "読み込んでいます..."
 
 #: ../html/src/components/table/TableDataHandler.js:277
 msgid "items per page"
-msgstr ""
+msgstr "1 ページ当たりの項目数"
 
 #: ../html/src/components/tree/tree.js:116
 msgid "Invalid data"
-msgstr ""
+msgstr "データが正しくありません"
 
 #: ../html/src/components/tree/tree.js:124
 msgid "No data"
-msgstr ""
+msgstr "データがありません"
 
 #: ../html/src/components/utils/HelpLink.js:20
 msgid "Help"
-msgstr ""
+msgstr "ヘルプ"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:10
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
@@ -3694,7 +3698,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.js:126
 msgid "Quartz format string"
-msgstr ""
+msgstr "クォーツ書式文字列"
 
 #: ../html/src/manager/state/recurring-states-details.js:174
 #: ../html/src/manager/state/recurring-states-list.js:136
