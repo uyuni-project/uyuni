@@ -187,14 +187,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
-        <target>動作チェーンに追加:</target>
+        <target>以下に追加:</target>
       </trans-unit>
       <trans-unit id="schedule-options.placeholder" xml:space="preserve">
         <source>new action chain</source>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
-        <target>新規動作チェーン</target>
+        <target>新しい動作チェーン</target>
       </trans-unit>
       <!--# Struts Validator Error Messages-->
       <trans-unit id="errors.invalid.value" xml:space="preserve">
@@ -2630,7 +2630,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
             これにはたとえばパッケージの &lt;a href="/rhn/ssm/PackageInstall.do"&gt;インストール&lt;/a&gt; や
             &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;アップグレード&lt;/a&gt; のほか、
             &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;リモートコマンド&lt;/a&gt; や
-            &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;設定ファイルの配置&lt;/a&gt; などの処理があります。
+            &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;設定ファイルの配備&lt;/a&gt; などの処理があります。
             また、システムセットマネージャと単一システムの処理の両方に対応しています。
         </target>
         <context-group name="ctx">
@@ -2696,7 +2696,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target state="translated">
             任意の対応する操作をスケジュールすることで、新しい動作チェーンを作成することができます。
             これにはたとえばパッケージのインストールやアップグレードのほか、リモートコマンドや設定ファイルの
-            配置などの処理があります。また、システムセットマネージャと単一システムの処理の両方に対応しています。
+            配備などの処理があります。また、システムセットマネージャと単一システムの処理の両方に対応しています。
         </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
@@ -3543,7 +3543,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>サブミット</target>
+        <target>送信</target>
       </trans-unit>
       <trans-unit id="errata.edit.delete" xml:space="preserve">
         <source>Delete</source>
@@ -8181,7 +8181,7 @@ organization management tools if you choose to remove this role from your login.
           <context context-type="sourcefile">Any page that uses the Download to CSV function.  Shows
               up as a Column header in the CSV export.</context>
         </context-group>
-        <target>時間</target>
+        <target>時刻</target>
       </trans-unit>
       <trans-unit id="general.jsp.toolbar" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration - General Configuration</source>
@@ -9779,7 +9779,10 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;注記:&lt;/strong&gt; 仮想化タイプを変更すると自動インストールプロファイルのブートローダーやパーティションオプションの変更が必要となることがあるため、ユーザーがカスタマイズした内容が上書きされる可能性があります。 &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;パーティション&lt;/a&gt; タブを選択して 新しい設定を確認してください。</target>
+        <target state="translated">&lt;strong&gt;注記:&lt;/strong&gt; 仮想化タイプを変更すると自動インストールプロファイルのブートローダーやパーティション
+            オプションの変更が必要となることがあるため、ユーザーがカスタマイズした内容が上書きされる可能性があります。
+            &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;パーティション&lt;/a&gt; タブを選択して、
+            新しい設定を確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active" xml:space="preserve">
         <source>Active:</source>
@@ -9828,7 +9831,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">このキックスタートプロファイルに関連付けられたディストリビューションは無効です。</target>
+        <target state="translated">このキックスタートプロファイルに関連付けられたディストリビューションが正しくありません。 </target>
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary-option1" xml:space="preserve">
         <source>To enable operations available to this kickstart profile, you may correct the distribution(&lt;strong&gt;{0}&lt;/strong&gt;) by visiting the &lt;a href = "{1}"&gt;Kickstart Distribution Details&lt;/a&gt; page.</source>
@@ -9842,14 +9845,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">または、&lt;a href = "{0}"&gt;キックスタートオペレーティングシステム詳細&lt;/a&gt; ページに移動してこのキックスタートプロファイルに異なるディストリビューションを関連付けることができます。</target>
+        <target state="translated"> それ以外にも、 &lt;a href = "{0}"&gt;キックスタートオペレーティングシステム詳細&lt;/a&gt; ページに移動して、このキックスタートプロファイルに異なるディストリビューションを関連付ける方法があります。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.advanced.invalid.jsp.summary-option2" xml:space="preserve">
         <source> Alternatively you may associate a different distribution to this kickstart profile by selecting a distribution and choosing '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">または、ディストリビューションを選択し、'{0}' を選択することにより、このキックスタートプロファイルに異なるディストリビューションを関連付けることができます。</target>
+        <target state="translated"> それ以外にも、ディストリビューションを選択して '{0}' を選択することにより、このキックスタートプロファイルに異なるディストリビューションを関連付ける方法があります。</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.updatekickstart" xml:space="preserve">
         <source>Update Kickstart</source>
@@ -9870,10 +9873,10 @@ Please note that some manual configuration of these scripts may still be require
           <source>File to Upload</source> <target>アップロードするファイル</target>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.edit" xml:space="preserve">
-          <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source> <target state="needs-adaptation"> または、以下の '{0}' より新しいバージョンをアップロードし、'{1}' を選択することもできます。</target>
+          <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source> <target state="translated"> それ以外にも、以下の '{0}' セクションで新しいバージョンをアップロードし、 '{1}' を選択することもできます。</target>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target state="needs-adaptation">既存の自動インストールプロファイルを再び使用したい場合は、ブラウザではなく /var/lib/rhn/kickstarts からテンプレートをコピーアンドペーストします。これにより、テンプレート変数が保持され、自動インストール後に登録プロセスが適切に機能するようになります。</target> </trans-unit>
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target state="translated"> 既存の自動インストールプロファイルを再利用したい場合は、ブラウザではなく /var/lib/rhn/kickstarts からテンプレートをコピーアンドペーストしてください。 これによりテンプレート変数が保持され、自動インストール後に登録プロセスが適切に機能するようになります。</target> </trans-unit>
       </group>
       <trans-unit id="kickstartdatadelete.jsp.confirmdelete" xml:space="preserve">
         <source>Delete Autoinstallation</source>
@@ -9887,7 +9890,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">1 つ以上のアクティベーションキーをこのキックスタートプロファイルに関連付けることができます。アクティベーションキーにより、このプロファイルでキックスタートされるシステムは自動的に @@PRODUCT_NAME@@ に登録され、@@PRODUCT_NAME@@ サービスレベルのエンタイトルメントを取得したり、指定のソフトウェアおよび設定チャンネルへのサブスクライブや指定のシステムグループへのサブスクライブを行なうことができるようになります。また、アクティベーションキーでシステムにインストールするパッケージを指定することもできます。このプロファイルの&lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;ソフトウェア&lt;/a&gt;タブにあるパッケージ選択への影響を考慮してください。</target>
+        <target state="translated">1 つもしくはそれ以上のアクティベーションキーを、このキックスタートプロファイルに関連付けることができます。  アクティベーションキーにより、このプロファイルでキックスタートされるシステムは自動的に @@PRODUCT_NAME@@ に登録され、@@PRODUCT_NAME@@ のシステムタイプを取得して、指定したソフトウェアおよび設定チャンネル、そしてシステムグループへのサブスクライブを行なうようになります。  また、アクティベーションキーではシステムにインストールすべきパッケージを指定することもできます。  このプロファイル内でのパッケージ選択への影響については、 &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;ソフトウェア&lt;/a&gt; タブをご覧ください。</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.nokeys" xml:space="preserve">
         <source>No activation keys available</source>
@@ -9964,7 +9967,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">以下でファイル保持一覧を選択すると、このキックスタートプロファイルと関連付けることができます。システムがキックスタートされると、このキックスタートプロファイルに関連付けられたファイル保持一覧に記載されているファイルやディレクトリはすべてキックスタートが実行される前に保存され、キックスタートが完了すると復元されます。新規のファイル保持一覧を作成する場合には、&lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;ファイルの保持&lt;/a&gt;タブで行なうことができます。</target>
+        <target state="translated">以下でファイル保持一覧を選択すると、このキックスタートプロファイルと関連付けることができます。  システムがキックスタートされると、このキックスタートプロファイルに関連付けられたファイル保持一覧に記載されているファイルやディレクトリは、すべてキックスタートが実行される前に保存され、キックスタートが完了すると復元されます。新規のファイル保持一覧を作成する場合には、 &lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;ファイルの保持&lt;/a&gt; タブで行なうことができます。</target>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.nolists" xml:space="preserve">
         <source>No file preservation lists available</source>
@@ -10399,7 +10402,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">下記のフォームにキーの詳細を入力します。「&lt;span class="required-form-field"&gt;*&lt;/span&gt;」の印が付いた項目は &lt;strong&gt;必須&lt;/strong&gt; であり、固有の情報でなければなりません。実際のキーのコンテンツはファイルをアップロードするかテキスト入力部分に入力します。両方とも記入するとアップロード選択したファイルの方が優先されます。</target>
+        <target state="translated">下記のフォームにキーの詳細を入力してください。 '&lt;span class="required-form-field"&gt;*&lt;/span&gt;' 印が付いた項目は &lt;strong&gt;必須&lt;/strong&gt; であり、固有の情報でなければなりません。実際のキーのコンテンツは、ファイルをアップロードするかテキスト項目に入力してください。両方とも記入した場合は、アップロード選択したファイルの方が優先されます。</target>
       </trans-unit>
       <trans-unit id="keydelete.jsp.summary" xml:space="preserve">
         <source>Are you sure you want to delete this Key permanently?&lt;p&gt;&lt;strong&gt;If so please click the button once.&lt;/strong&gt;&lt;/p&gt;</source>
@@ -10434,7 +10437,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">アップロードするファイルの選択:</target>
+        <target state="translated">アップロードするファイルの選択: </target>
       </trans-unit>
       <trans-unit id="keycreate.jsp.submit" xml:space="preserve">
         <source>Create Key</source>
@@ -10487,7 +10490,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListConfirmDelete.do</context>
         </context-group>
-        <target state="needs-adaptation">本当に選択されているファイル一覧を削除しますか?  &lt;strong&gt;警告: 選択されているファイル一覧を削除すると、関連付けられているファイル群すべてを削除することになります。&lt;/strong&gt;</target>
+        <target state="translated">選択されているファイル一覧を削除してよろしいですか？  &lt;strong&gt;警告: 選択されているファイル一覧を削除すると、関連付けられているファイル群すべてを削除することになります。 &lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.header2" xml:space="preserve">
         <source>Confirm File List(s) deletion.</source>
@@ -10508,7 +10511,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        <target state="needs-adaptation">現在、指定されているファイル保持一覧はありません。上記の「ファイル保持一覧の作成」リンクをクリックして新しい一覧を作成してください。</target>
+        <target state="translated">現在設定されているファイル保持一覧はありません。  上記の "ファイル保持一覧の作成" リンクをクリックして、新しい一覧を作成してください。</target>
       </trans-unit>
       <trans-unit id="preservation_list_delete.jsp.noneselected" xml:space="preserve">
         <source>There were no files selected for deletion</source>
@@ -10732,7 +10735,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target state="needs-adaptation">以下は、このユーザーが&lt;a href="/rhn/keys/CryptoKeysList.do"&gt;作成した&lt;/a&gt; GPG キーおよび SSL キーの一覧になります。選択されているキーは、このプロファイルを使ってスケジュールされているキックスタートのすべての %post セクションでインポートされます。</target>
+        <target state="translated">下記は、このユーザーが &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;作成&lt;/a&gt; した GPG 鍵および SSL 鍵の一覧になります。  選択されているキーの取り込みは、このプロファイルを使ってスケジュールされているキックスタートのすべての %post セクションで行なわれます。</target>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.note" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; If you want clients to continue to be able to SSH into machines kickstarted with this profile without getting host key errors, it is recommended you setup a file preservation list for this profile containing the files in /etc/ssh&lt;/span&gt;</source>
@@ -10760,7 +10763,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target state="needs-adaptation">定義されているキーがありません。&lt;a href="/rhn/keys/CryptoKeysList.do"&gt;ここ&lt;/a&gt;に移動し、このプロファイルで使用する新しいキーを作成してください。選択されているキーは、このプロファイルを使ってスケジュールされているすべてのキックスタートの %post セクションでインポートされます。</target>
+        <target state="translated">設定されている鍵がありません。  &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;ここ&lt;/a&gt;に移動し、このプロファイルで使用する新しい鍵を作成してください。  選択されているキーの取り込みは、このプロファイルを使ってスケジュールされているキックスタートのすべての %post セクションで行なわれます。</target>
       </trans-unit>
       <trans-unit id="kickstart.script.language" xml:space="preserve">
         <source>Scripting Language</source>
@@ -10801,7 +10804,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">以下で、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。 このセクションではネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。 キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。 &lt;br/&gt;&lt;br/&gt; 以下では、このキックスタートのポストスクリプトも編集することができます。最初に、@@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。 次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。キックスタートのポストスクリプトに関する詳細は、 &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
+        <target state="translated">以下では、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。  キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。
+このセクションではネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。
+キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。
+&lt;br/&gt;&lt;br/&gt;
+以下では、このキックスタートのポストスクリプトも編集することができます。  最初に @@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。
+次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。  キックスタートのポストスクリプトに関する詳細は、 &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.script.langheader" xml:space="preserve">
         <source>Kickstart Script Scripting Language</source>
@@ -10878,7 +10886,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPostEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">このキックスタートのポストスクリプトを以下で編集することができます。最初に、@@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます(例: @@PRODUCT_NAME@@ へのシステム登録)。次に、非 chrootのポストスクリプトが実行され、最後にポストスクリプトが実行されます。キックスタートのポストスクリプトに関する詳細は、&lt;strong&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/strong&gt;を参照してください。</target>
+        <target state="translated">以下では、このキックスタートのポストスクリプトを編集することができます。  最初に @@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます(例: @@PRODUCT_NAME@@ へのシステム登録)。  次に、非 chrootのポストスクリプトが実行され、最後にポストスクリプトが実行されます。  キックスタートのポストスクリプトに関する詳細は、&lt;strong&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/strong&gt;を参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main1" xml:space="preserve">
         <source>Specify below the packages and package groups you'd like to install on systems during kickstart. Please list packages and groups one per line. For more information please see &lt;em&gt;The Red Hat Enterprise Linux System Administration Guide.&lt;/em&gt; If you would prefer to specify packages to be installed by package profile sync, please visit the &lt;em&gt; Package Profiles &lt;/em&gt; tab to change the kickstart software installation method.
@@ -10886,8 +10894,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">以下で、キックスタート中にインストールするパッケージおよびパッケージグループを指定します。パッケージとグループは 1 行ごとに 1 つずつリストしてください。詳細については、&lt;em&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/em&gt; を参照してください。パッケージプロファイルの同期によりインストールするパッケージを指定する場合は、&lt;em&gt;パッケージプロファイル&lt;/em&gt;タブに移動してキックスタートソフトウェアのインストール方法を変更してください。
-</target>
+        <target state="translated">以下で、キックスタート中にインストールするパッケージおよびパッケージグループを指定します。パッケージとグループは 1 行ごとに 1 つずつリストしてください。詳細については、&lt;em&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/em&gt; を参照してください。パッケージプロファイルの同期によりインストールするパッケージを指定する場合は、&lt;em&gt;パッケージプロファイル&lt;/em&gt;タブに移動してキックスタートソフトウェアのインストール方法を変更してください。
+      </target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main2" xml:space="preserve">
         <source>&lt;b&gt;Note: only packages available in your Enterprise Linux install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.
@@ -10895,7 +10903,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">&lt;b&gt;注記: ここでは、Enterprise Linux インストールツリーで利用可能なパッケージのみを指定する必要があります。&lt;/b&gt;@@PRODUCT_NAME@@ ソフトウェアチャンネルで利用可能なパッケージをインストールするには、&lt;em&gt;アクティベーションキー&lt;/em&gt;タブでこのキックスタートプロファイルに適切なアクティベーションキーを関連付けてください。
+        <target state="translated">&lt;b&gt;注記: ここでは、Enterprise Linux インストールツリーで利用可能なパッケージのみを指定する必要があります。&lt;/b&gt;@@PRODUCT_NAME@@ ソフトウェアチャンネルで利用可能なパッケージをインストールするには、&lt;em&gt;アクティベーションキー&lt;/em&gt;タブでこのキックスタートプロファイルに適切なアクティベーションキーを関連付けてください。
       </target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.header1" xml:space="preserve">
@@ -11393,7 +11401,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="needs-adaptation">該当するパッチ</target>
+        <target state="translated">該当するパッチ </target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noerrata" xml:space="preserve">
         <source>&lt;strong&gt;No relevant security patches.&lt;/strong&gt;&lt;p&gt;There are no security patches that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; patches for the software your organization has entitlements to at &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;Patches &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
@@ -11614,7 +11622,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="channels.popular.jsp.label2" xml:space="preserve">
         <source> systems subscribed below.</source>
-        <target state="needs-adaptation">台のシステムがサブスクライブするチャンネルを以下に表示。</target>
+        <target state="translated"> 台のシステムがサブスクライブするチャンネルを以下に表示。</target>
       </trans-unit>
       <trans-unit id="channels.retired.jsp.toolbar" xml:space="preserve">
         <source>Retired Software Channel List</source>
@@ -11633,7 +11641,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="channels.manage.jsp.header2" xml:space="preserve">
         <source>Modify an existing software channel by selecting it from the list below, or create a new software channel. </source>
-        <target state="needs-adaptation">以下のリストより既存のソフトウェアチャンネルを選択して変更するか、または新しいソフトウェアチャンネルを作成します。</target>
+        <target state="translated">以下のリストにある既存のソフトウェアチャンネルを選択して変更するか、または新しいソフトウェアチャンネルを作成してください。 </target>
       </trans-unit>
       <trans-unit id="toolbar.create.channel" xml:space="preserve">
         <source>Create Channel</source>
@@ -11697,7 +11705,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="needs-adaptation">LILO はテキストベースのブートローダーになります。ビデオカード関連の問題がある場合にはブートローダーに LILO を選択します。</target>
+        <target state="translated">LILO はテキストベースのブートローダーになります。  ビデオカード関連の問題がある場合にはブートローダーに LILO を選択します。</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.kernelparams" xml:space="preserve">
         <source>Extra Kernel Parameters (for auto-kickstart only)</source>
@@ -12009,13 +12017,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source> <target>このキーを本当に削除したいですか？ アクティベーションキーは一度削除されると復元することができません。（注記: キーは &lt;a href="{0}"&gt;key list page&lt;/a&gt; 上で無効にすることが可能であり、この方法で使用不可にできますが、後日の使用に保存することができます。）</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.warning" xml:space="preserve">
-          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target state="needs-adaptation">&lt;STRONG&gt;注記&lt;/STRONG&gt;: Satellite に既知のシステムとプロファイルのみが更新されます。この鍵が削除される場合、この鍵を使用する他のエンティティ (例: cobbler コマンドラインツールを使用して作成されたシステムプロファイル) は &lt;STRONG&gt;失敗します&lt;/STRONG&gt;。</target>
+          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target state="translated">&lt;STRONG&gt;注記&lt;/STRONG&gt;: Satellite に既知のシステムとプロファイルのみが更新されます。  この鍵が削除されると、この鍵を使用する他のエンティティ (例: cobbler コマンドラインツールを使用して作成されたシステムプロファイル) は &lt;STRONG&gt;失敗します&lt;/STRONG&gt;。</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source> <target>設定ファイルの配備</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip" xml:space="preserve">
-          <source> Deploy configuration files to systems on registration</source> <target state="needs-adaptation"> 設定ファイルがこのアクティベーションキーで登録される際に、設定ファイルをシステムに配備します。</target>
+          <source> Deploy configuration files to systems on registration</source> <target state="translated"> 登録時にシステムに対して設定ファイルを配備します</target>
         </trans-unit>
       </group>
       <group>
@@ -12023,7 +12031,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/activationkeys/packages/* pages</context>
         </context-group>
         <trans-unit id="activation-key.packages.jsp.summary" xml:space="preserve">
-          <source>Any system registered with this activation key will have the packages listed below installed, if those packages are available. Package names may be listed as package name only or may include an extension to specify the desired architecture.  There should only one package name included per line.</source> <target state="needs-adaptation">以下のパッケージが利用可能な場合、このアクティベーションキーで登録されたシステムにこれらのパッケージがインストールされます。パッケージ名のみが表示されているパッケージと、希望のアーキテクチャーを指定するための拡張子と共に表示されるパッケージがあります。1 行に 1 つのパッケージ名のみが表示されているはずです。</target>
+          <source>Any system registered with this activation key will have the packages listed below installed, if those packages are available. Package names may be listed as package name only or may include an extension to specify the desired architecture.  There should only one package name included per line.</source> <target state="translated">以下のパッケージが利用可能な場合、このアクティベーションキーで登録されたシステムにこれらのパッケージがインストールされます。パッケージ名のみが表示されているパッケージと、希望のアーキテクチャーを指定するための拡張子と共に表示されるパッケージがあります。  1 行に 1 つのパッケージ名のみが表示されているはずです。</target>
         </trans-unit>
         <trans-unit id="activation-key.packages.jsp.enter-names">
           <source>Enter package names below</source> <target>以下にパッケージ名を入力してください</target>
@@ -12131,7 +12139,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
         <trans-unit id="profile.details.toolbar" xml:space="preserve">
-          <source>Stored Profile: </source> <target state="needs-adaptation">保存プロファイル: </target>
+          <source>Stored Profile: </source> <target state="translated">保存プロファイル: </target>
         </trans-unit>
         <trans-unit id="profile.details.summary">
           <source>Edit the profile below.</source> <target>以下でプロファイルを編集します。</target>
@@ -12740,7 +12748,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Run as: &lt;strong&gt;{0}:{1}&lt;/strong&gt;</source> <target>ユーザーを指定して実行: &lt;strong&gt;{0}:{1}&lt;/strong&gt;</target>
         </trans-unit>
         <trans-unit id="system.event.timeout" xml:space="preserve">
-          <source>Timeout:  &lt;strong&gt;{0}&lt;/strong&gt; seconds</source> <target state="needs-adaptation">タイムアウト:  &lt;strong&gt;{0}&lt;/strong&gt; 秒</target>
+          <source>Timeout:  &lt;strong&gt;{0}&lt;/strong&gt; seconds</source> <target state="translated">タイムアウト:  &lt;strong&gt;{0}&lt;/strong&gt; 秒</target>
         </trans-unit>
         <trans-unit id="system.event.scriptContents">
           <source>Script contents:</source> <target>スクリプトの内容:</target>
@@ -12755,18 +12763,18 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Return Code: {0}</source> <target>リターンコード: {0}</target>
         </trans-unit>
         <trans-unit id="system.event.scriptRawOutput" xml:space="preserve">
-          <source>Raw Output: </source> <target state="needs-adaptation">生の出力:</target>
+          <source>Raw Output: </source> <target state="translated">生の出力: </target>
         </trans-unit>
         <trans-unit id="system.event.downloadRawOutput">
           <source>view/download raw script output</source> <target>生のスクリプト出力を表示またはダウンロード</target>
         </trans-unit>
         <trans-unit id="system.event.scriptFilteredOutput" xml:space="preserve">
-          <source>Filtered Output: </source> <target state="needs-adaptation">フィルター済みの出力:</target>
+          <source>Filtered Output: </source> <target state="translated">フィルター済みの出力: </target>
         </trans-unit>
         <trans-unit id="system.event.affectedErrata">
           <source>Patches Affected:</source> <target>影響を受けるパッチ:</target> </trans-unit>
         <trans-unit id="system.event.scapPath" xml:space="preserve">
-          <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt; </source> <target state="needs-adaptation">&lt;strong&gt;XCCDF ドキュメントへのパス: &lt;/strong&gt; </target>
+          <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt; </source> <target state="translated">&lt;strong&gt;XCCDF ドキュメントへのパス: &lt;/strong&gt; </target>
         </trans-unit>
         <trans-unit id="system.event.scapParams">
           <source>&lt;strong&gt;Parameters: &lt;/strong&gt;</source> <target>&lt;strong&gt;パラメーター: &lt;/strong&gt;</target>
@@ -12849,7 +12857,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>System Snapshot Rollback functionality allows you to restore a system's package profile, configuration files, and Spacewalk configuration to previously recorded values.</source> <target>システムのスナップショットロールバック機能を使用するとシステムのパッケージプロファイル、設定ファイル、Spacewalk の設定などを前回記録した値に復元することができます。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.summary2" xml:space="preserve">
-          <source>Below are a list of snapshots of your system.  To rollback to a previous configuration, or to view the changes that would have if you rolled back, click the desired snapshot below.</source> <target state="needs-adaptation">ご使用のシステムのスナップショット一覧です。以前の設定にロールバックする、またはロールバックした場合の変更点を表示させる場合は以下の該当スナップショットをクリックします。</target>
+          <source>Below are a list of snapshots of your system.  To rollback to a previous configuration, or to view the changes that would have if you rolled back, click the desired snapshot below.</source> <target state="translated">ご使用のシステムのスナップショット一覧です。  以前の設定にロールバックする、またはロールバックした場合の変更点を表示させる場合は、以下の該当するスナップショットをクリックしてください。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.summary3">
           <source>Note that snapshots are recorded after each change is performed. To undo the effects of an action, please click on a snapshot before the corresponding one in the list below.</source> </trans-unit>
@@ -12996,12 +13004,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="system.history.snapshot.channel_removed" xml:space="preserve">
           <source>One or more of the channels from the snapshot has been deleted.{0}
-          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="needs-adaptation">スナップショットから一つまたは複数のチャンネルが削除されました。{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="translated">スナップショットから 1 つまたは複数のチャンネルが削除されました。{0}
           このため、スナップショットパッケージセットにシステムをロールバックさせる機能に影響が出ている可能性があります。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.channel_modified" xml:space="preserve">
           <source>One or more of the channels from the snapshot has been modified.{0}
-          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="needs-adaptation">スナップショットからの一つまたは複数のチャンネルに変更が加えられました。{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="translated">スナップショットからの 1 つまたは複数のチャンネルに変更が行なわれました。{0}
           このため、スナップショットパッケージセットにシステムをロールバックさせる機能に影響が出ている可能性があります。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.ns_removed" xml:space="preserve">
@@ -13097,7 +13105,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>locally-managed configuration channel</source> <target>ローカル管理の設定チャンネル</target>
         </trans-unit>
         <trans-unit id="config.common.sandboxAlt" xml:space="preserve">
-          <source>configuration sandbox </source> <target state="needs-adaptation">設定サンドボックス</target>
+          <source>configuration sandbox </source> <target state="translated">設定サンドボックス </target>
         </trans-unit>
         <trans-unit id="config.common.fileAlt">
           <source>file</source> <target>ファイル</target>
@@ -13175,7 +13183,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Target Systems</source> <target>目的のシステム</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="needs-adaptation">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の rhncfg-* パッケージをインストールする以外に、Provisioning エンタイトルメントも必要になります。以下の「@@PRODUCT_NAME@@ 設定管理を有効にする」ボタンを使って選択したシステムで設定管理を有効にすることができます。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="translated">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の rhncfg-* パッケージをインストールする以外に、 Provisioning エンタイトルメントも必要になります。以下の'@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source> <target>管理されていないシステムはありません。</target>
@@ -13672,7 +13680,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/ChannelCreate.do</context>
           <context context-type="paramnotes">"Label 'NEWCHANNEL' already exists.  Please choose a different label for the new channel."</context>
         </context-group>
-        <target state="needs-adaptation">ラベル '{0}' はすでに存在しています。新しいチャンネル用に別のラベルを選択してください。</target>
+        <target state="translated">ラベル '{0}' はすでに存在しています。  新しいチャンネル用に別のラベルを選択してください。</target>
       </trans-unit>
       <!-- channelfiles.jsp -->
       <trans-unit id="channelfiles.jsp.header2" xml:space="preserve">
@@ -13971,8 +13979,8 @@ but are not subscribed to {0}.</source>
 (meaning they have the required client software installed and have provisioning entitlements)
 but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
-        <target state="needs-adaptation">以下のシステムは @@PRODUCT_NAME@@ 設定管理による管理が可能ですが
-(必要なクライアントソフトウェアがインストールされていて、Provisioning エンタイトルメントを有している)、
+        <target state="translated">以下のシステムは @@PRODUCT_NAME@@ 設定管理による管理が可能ですが
+(必要なクライアントソフトウェアがインストールされていて、Provisioning エンタイトルメントを有している) 、
 {0} にサブスクライブされていません。</target>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.subscribe" xml:space="preserve">
@@ -14110,10 +14118,10 @@ Note that if a given system overrides a given file, or has it in that system's l
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="needs-adaptation">以下のファイルは、以下に示されているシステムに配備されます。
-スケジュールの日付、または「次回 (earliest possible)」を以下の日付選択から選択してください。
-「確認」ボタンをクリックして配備をスケジュールするか、または
-ブラウザの「戻る」ボタンを押してファイルおよびシステムの選択に変更を加えます。
+        <target state="translated">以下のファイルは、以下に示されているシステムに配備されます。
+スケジュールの日付、または "次回 (earliest possible)" を以下の日付選択から選択してください。
+"確認" ボタンをクリックして配備をスケジュールするか、または
+ブラウザの "戻る" ボタンを押してファイルおよびシステムの選択に変更を加えることもできます。
 
 特定のシステムが特定のファイルを上書きするか、または特定のシステムが特定のファイルをそのシステムのローカル設定チャンネル内に持っている場合、このファイルは配備されないので注意してください。</target>
       </trans-unit>
@@ -14236,7 +14244,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/</context>
           <context context-type="paramnotes"/>
         </context-group>
-        <target state="needs-adaptation">以下の一覧から配備したいファイルを選択することができます。選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
+        <target state="translated">以下の一覧から配備したいファイルを選択することができます。  選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.filepath" xml:space="preserve">
         <source>Filename</source>
@@ -14302,7 +14310,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;ヒント:&lt;/strong&gt; システムにこのファイルに対してローカル管理のオーバーライドがある場合、それを配備することはできません。ただし、「ランクの変更」リンクをクリックしてオーバーライドチャンネルを再度ランク付けすることができます。</target>
+        <target state="translated">&lt;strong&gt;ヒント:&lt;/strong&gt; システムに対して、このファイルに対するローカル管理のオーバーライドがある場合、それを配備することはできません。  その代わり、 'ランクの変更' リンクをクリックしてオーバーライドチャンネルの順位を再設定することができます。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.needadmin" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, request a {0} to subscribe the system to the {1} configuration channel, then return to this screen.</source>
@@ -14329,7 +14337,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="needs-adaptation">これらのシステムには設定配備機能がまだありません。設定配備では、特定のソフトウェアがシステムにインストールされ、有効にされている必要があります。&lt;a href={0}&gt;{1}&lt;/a&gt; 画面でシステムを選択し、"{2}" をクリックすることにより、これらのシステムで設定配備機能を有効にできます。</target>
+        <target state="translated">これらのシステムには設定配備機能がまだありません。設定配備では、設定配備機能を使用するには、特定のソフトウェアがシステムにインストールされ、有効化されている必要があります。 &lt;a href={0}&gt;{1}&lt;/a&gt; 画面でシステムを選択して "{2}" をクリックすると設定配備機能を有効にできます</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.orgadmin" xml:space="preserve">
         <source> </source>
@@ -14372,8 +14380,8 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">You can deploy the latest revision (_Revision 7_) of this file to _zanarkand.boston.redhat.com_ - this file is part of that system's locally-managed config channel.</context>
         </context-group>
-        <target state="needs-adaptation">
-	このファイルの最新リビジョン (&lt;a href="{1}"&gt;リビジョン {0}&lt;/a&gt;) を &lt;a href="{3}"&gt;{2}&lt;/a&gt; にデプロイできます。このファイルはシステムのローカルで管理された設定チャンネルの一部です
+        <target state="translated">
+    このファイルの最新リビジョン (&lt;a href="{1}"&gt;リビジョン {0}&lt;/a&gt;) を &lt;a href="{3}"&gt;{2}&lt;/a&gt; に配備できます。このファイルはシステムのローカルで管理された設定チャンネルの一部です。
 </target>
       </trans-unit>
       <trans-unit id="deploy.jsp.filedetails" xml:space="preserve">
@@ -14442,8 +14450,8 @@ You may grant provisioning entitlements _here_.
           <context context-type="paramnotes">You can't deploy this file to any systems because this file is part of a config sandbox local to
 system _zanarkand.boston.redhat.com_.</context>
         </context-group>
-        <target state="needs-adaptation">このファイルはシステムに対してローカルな設定サンドボックスの一部であるため、いずれのシステムにも配備できません。
-&lt;a href="{1}"&gt;{0}&lt;/a&gt;</target>
+        <target state="translated">このファイルはシステムに対してローカルな設定サンドボックスの一部であるため、いずれのシステムにも配備できません:
+&lt;a href="{1}"&gt;{0}&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note2" xml:space="preserve">
         <source>Configuration sandboxes are a place to store configuration files that are under development.
@@ -14453,8 +14461,8 @@ From there, you can deploy the file to systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="needs-adaptation">設定サンドボックスは、開発中の設定ファイルを格納する場所です。
-この設定ファイルがシステムに配備できる場合は、&lt;a href="{0}"&gt;それをローカル管理設定チャンネルにコピー&lt;/a&gt; するか、または
+        <target state="translated">設定サンドボックスは、開発中の設定ファイルを格納する場所です。
+この設定ファイルがシステムに配備できる場合は、 &lt;a href="{0}"&gt;それをローカル管理設定チャンネルにコピー&lt;/a&gt; するか、または
 上記の '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' タブから &lt;a href="{1}"&gt;それをグローバル管理設定チャンネルにコピー&lt;/a&gt; することができます。
 そこから、そのファイルをシステムに配備します。</target>
       </trans-unit>
@@ -14470,9 +14478,9 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         centrally-managed configuration channel, _@@PRODUCT_NAME@@Config_; below is a list of systems you may deploy this file to.
           </context>
         </context-group>
-        <target state="needs-adaptation">
-このファイルの最新リビジョン (&lt;a href="{1}"&gt;リビジョン {0}&lt;/a&gt;) を、このファイルの中央管理設定チャンネル {2} にサブスクライブされたいずれかの
-システムに配備できます。以下はこのファイルを配備できるシステムの一覧です。
+        <target state="translated">
+このファイルの最新リビジョン (&lt;a href="{1}"&gt;リビジョン {0}&lt;/a&gt;) を、このファイルの中央管理設定チャンネル {2} にサブスクライブされた
+いずれかのシステムに配備できます。以下はこのファイルを配備できるシステムの一覧です。
 </target>
       </trans-unit>
       <trans-unit id="globalDeploy.jsp.noSystems" xml:space="preserve">
@@ -14990,9 +14998,9 @@ You can't edit this file because it is a binary file.
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">arg0 is a link-target that isn't visible to the user</context>
         </context-group>
-        <target state="needs-adaptation">
+        <target state="translated">
 このファイルはバイナリファイルであるため編集できません。
-(このファイルがバイナリファイルとして間違って設定されている場合は、上記の 'ファイルタイプ' プロパティでこれを変更できます。ファイルはプレーンテキストファイルとして設定した後にここで編集できます)
+(このファイルがバイナリファイルとして間違って設定されている場合は、上記の 'ファイルタイプ' プロパティでこれを変更できます。ファイルはプレーンテキストファイルとして設定した後にここで編集できます。)
 </target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-display" xml:space="preserve">
@@ -15002,8 +15010,8 @@ This is a binary file, and can not be displayed.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="needs-adaptation">
-これはバイナリファイルであり、表示できません。
+        <target state="translated">
+これはバイナリファイルであるため表示できません。
 </target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-canupload" xml:space="preserve">
@@ -15050,8 +15058,8 @@ This file is too large to display here. (files must be less than &lt;strong&gt;3
 You can, however, download this file.
           </context>
         </context-group>
-        <target state="needs-adaptation">
-このファイルはここで表示するには大きすぎます (表示するにはファイルが &lt;strong&gt;{0}&lt;/strong&gt; よりも小さい必要があります)。
+        <target state="translated">
+このファイルは、ここで表示するには大きすぎます (表示するにはファイルが &lt;strong&gt;{0}&lt;/strong&gt; よりも小さい必要があります)。
 ただし、このファイルをダウンロードできます。
 </target>
       </trans-unit>
@@ -15072,7 +15080,7 @@ You can, however, download this file.
 _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           </context>
         </context-group>
-        <target state="needs-adaptation">
+        <target state="translated">
 &lt;a href="{0}"&gt;{1} のダウンロード&lt;/a&gt; (リビジョン {2}, {3})
 </target>
       </trans-unit>
@@ -23912,15 +23920,19 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
+        <target>取り消し</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.save" xml:space="preserve">
         <source>Save</source>
+        <target>保存</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.delete" xml:space="preserve">
         <source>Delete</source>
+        <target>削除</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.close" xml:space="preserve">
         <source>Close</source>
+        <target>閉じる</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.header" xml:space="preserve">
         <source>Setup Wizard</source>
@@ -23999,12 +24011,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
+        <target>Formula</target>
       </trans-unit>
       <trans-unit id="sdc.config.subscriptions.jsp.label" xml:space="preserve">
         <source>Channel Label</source>
+        <target>チャンネルラベル</target>
       </trans-unit>
       <trans-unit id="ssm.config.subscriptions.jsp.label" xml:space="preserve">
         <source>Channel Label</source>
+        <target>チャンネルラベル</target>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
@@ -24030,6 +24045,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.cancel" xml:space="preserve">
         <source>Cancel</source>
+        <target>取り消し</target>
       </trans-unit>
       <trans-unit id="filedetails.properties.jspf.saltpath" xml:space="preserve">
         <source>Salt Filesystem Path</source>
@@ -24142,7 +24158,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="schedule.jsp.multiple_maintenance_schedules" xml:space="preserve">
         <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
-        <target state="new"/>
+        <target state="translated">選択したシステムには複数のメンテナンススケジュールが存在しています。日付やメンテナンスウィンドウでスケジュールを設定したい場合は、システムに対して最大でも 1 つのメンテナンススケジュールのみを設定してください。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.no_maintenance_windows" xml:space="preserve">
         <source>No upcoming maintenance windows for selected systems.</source>
