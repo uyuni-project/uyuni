@@ -624,6 +624,54 @@ class UyuniActivationKey(UyuniRemoteObject):
         """
         return self._convert_bool_response(self.client("activationkey.delete", id))
 
+    def create(self, key: str, description: str,
+               base_channel_label: str = '', usage_limit: int = None,
+               system_types: List[int] = [],
+               universal_default: bool = False) -> bool:
+        """
+        Create an Uyuni Activation Key.
+
+        :param key: activation key name
+        :param description: activation key description
+        :param base_channel_label:
+        :param usage_limit:
+        :param system_types:
+        :param universal_default:
+
+        :return: boolean, True indicates success
+        """
+        if usage_limit:
+            return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
+                                                            usage_limit, system_types, universal_default))
+        else:
+            return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
+                                                           system_types, universal_default))
+
+    def set_details(self, key: str, description: str,
+                    base_channel_label: str = '', usage_limit: int = None,
+                    universal_default: bool = False):
+        """
+        Create an Uyuni Activation Key.
+
+        :param key: activation key name
+        :param description: activation key description
+        :param base_channel_label:
+        :param usage_limit:
+        :param universal_default:
+
+        :return: boolean, True indicates success
+        """
+        data = {
+            'description': description,
+            'base_channel_label': base_channel_label,
+            'universal_default': universal_default
+        }
+        if usage_limit:
+            data['usage_limit'] = usage_limit
+        else:
+            data['unlimited_usage_limit'] = True
+        return self._convert_bool_response(self.client("activationkey.setDetails", key, data))
+
 
 class UyuniChildMasterIntegration:
     """
@@ -1265,3 +1313,54 @@ def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
     :return: boolean, True indicates success
     """
     return UyuniActivationKey(org_admin_user, org_admin_password).delete(id)
+
+
+def activation_key_create(key, description,
+                          base_channel_label='', usage_limit=None,
+                          system_types=[], universal_default=False,
+                          org_admin_user=None, org_admin_password=None):
+    """
+    Creates an Uyuni Activation Key
+
+    :param key: activation key name
+    :param description: activation key description
+    :param base_channel_label:
+    :param usage_limit:
+    :param system_types:
+    :param universal_default:
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).create(key,
+                                                                         description,
+                                                                         base_channel_label,
+                                                                         usage_limit,
+                                                                         system_types,
+                                                                         universal_default)
+
+
+def activation_key_set_details(key, description,
+                               base_channel_label='',
+                               usage_limit=None,
+                               universal_default=False,
+                               org_admin_user=None, org_admin_password=None):
+    """
+    Updates an Uyuni Activation Key
+
+    :param key: activation key name
+    :param description: activation key description
+    :param base_channel_label:
+    :param usage_limit:
+    :param universal_default:
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).set_details(key,
+                                                                              description,
+                                                                              base_channel_label,
+                                                                              usage_limit,
+                                                                              universal_default)

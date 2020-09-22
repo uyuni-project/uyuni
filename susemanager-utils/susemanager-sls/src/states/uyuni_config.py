@@ -634,6 +634,107 @@ class UyuniOrgsTrust:
 
 
 class UyuniActivationKeys:
+
+    @staticmethod
+    def _compute_changes(ak_paramters: Dict[str, Any],
+                         current_ak: Dict[str, Any]) -> Dict[str, Any]:
+        changes = {}
+        for field in ["description", 'base_channel_label', 'usage_limit', 'universal_default']:
+            if (current_ak or {}).get(field) != ak_paramters.get(field):
+                changes[field] = {"new": ak_paramters[field]}
+                if current_ak:
+                    changes[field]["old"] = (current_ak or {}).get(field)
+
+        # list fields
+        for field in ['entitlements']:
+            if Counter((ak_paramters or {}).get(field) or []) != Counter((current_ak or {}).get(field) or []):
+                changes[field] = {"new": ak_paramters[field]}
+                if current_ak:
+                    changes[field]["old"] = (current_ak or {}).get(field)
+        return changes
+
+    def manage(self, name: str, description: str,
+               base_channel: str = '',
+               usage_limit: int = None,
+               system_types: List[int] = [],
+               universal_default: bool = False,
+               org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
+        """
+
+        :param name:
+        :param description:
+        :param base_channel:
+        :param usage_limit:
+        :param system_types:
+        :param universal_default:
+        :param org_admin_user:
+        :param org_admin_password:
+        :return:
+        """
+        current_ak = None
+        current_org_user = None
+        key = None
+        try:
+            current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
+            key = "{}-{}".format(current_org_user['org_id'], name)
+            current_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
+                                                                      org_admin_password=org_admin_password)
+        except Exception as exc:
+            if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
+                return StateResult.state_error(key, "Error retrieving information about Activation Key '{}': {}".format(key, exc))
+
+        ak_paramters = {'description': description,
+                        'base_channel_label': base_channel,
+                        'usage_limit': usage_limit,
+                        'entitlements': system_types,
+                        'universal_default': universal_default}
+
+        changes = self._compute_changes(ak_paramters, current_ak)
+
+        if not current_ak:
+            changes["key"] = {"new": key}
+
+        if not changes:
+            return StateResult.prepare_result(key, True, "{0} is already in the desired state".format(key))
+        if __opts__['test']:
+            return StateResult.prepare_result(key, None, "{0} would be updated".format(key), changes)
+
+        try:
+            if current_ak:
+                __salt__['uyuni.activation_key_set_details'](key, description,
+                                                             base_channel_label=base_channel,
+                                                             usage_limit=usage_limit,
+                                                             universal_default=universal_default,
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
+
+                # missing execution modules
+                # if changes['entitlements']:
+                #     __salt__['uyuni.activation_key_add_entitlements'](key,
+                #                                                       [t for t in (system_types or []) not in (current_ak['entitlements'] or [])],
+                #                                                       org_admin_user=org_admin_user,
+                #                                                       org_admin_password=org_admin_password)
+                #
+                #     __salt__['uyuni.activation_key_remove_entitlements'](key,
+                #                                                       [t for t in (current_ak['entitlements'] or []) not in (system_types or [])],
+                #                                                       org_admin_user=org_admin_user,
+                #                                                       org_admin_password=org_admin_password)
+            else:
+                __salt__['uyuni.activation_key_create'](key=name,
+                                                        description=description,
+                                                        base_channel_label=base_channel,
+                                                        usage_limit=usage_limit,
+                                                        system_types=system_types,
+                                                        universal_default=universal_default,
+                                                        org_admin_user=org_admin_user,
+                                                        org_admin_password=org_admin_password)
+
+        except Exception as exc:
+            return StateResult.state_error(key, "Error updating activation key '{}': {}".format(key, exc))
+        else:
+            return StateResult.prepare_result(key, True, "{0} activation key successfully modified".format(key), changes)
+
+
     def delete(self, id: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
         Remove an Uyuni Activation Key.
@@ -815,6 +916,7 @@ def group_absent(name, org_admin_user=None, org_admin_password=None):
     """
     return UyuniGroups().delete(name, org_admin_user, org_admin_password)
 
+
 def activation_key_absent(name, org_admin_user=None, org_admin_password=None):
     """
     Ensure an Uyuni Activation Key is not present.
@@ -826,3 +928,32 @@ def activation_key_absent(name, org_admin_user=None, org_admin_password=None):
     :return:  dict for Salt communication
     """
     return UyuniActivationKeys().delete(name, org_admin_user, org_admin_password)
+
+
+def activation_key_present(name,
+                           description,
+                           base_channel='',
+                           usage_limit=None,
+                           system_types=[],
+                           universal_default=False,
+                           org_admin_user=None, org_admin_password=None):
+    """
+    Ensure an Uyuni Activation Key is present.
+
+    :param name: the Activation Key ID
+    :param description: the Activation Key ID
+    :param base_channel:
+    :param usage_limit:
+    :param system_types:
+    :param universal_default:
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return:  dict for Salt communication
+    """
+    return UyuniActivationKeys().manage(name, description,
+                                        base_channel,
+                                        usage_limit,
+                                        system_types,
+                                        universal_default,
+                                        org_admin_user, org_admin_password)
