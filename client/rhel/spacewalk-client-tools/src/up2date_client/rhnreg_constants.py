@@ -159,8 +159,8 @@ FINISH_WINDOW_TEXT_TUI  = _("You may now run '%s update' from this system's "
                             "periodically to "
                             "get the latest updates. Alternatively, you may configure this "
                             "system for automatic software updates (also known as 'auto errata update') "
-                            "via the Uyuni web interface.  (Instructions for this are in chapter 6 "
-                            "of the Uyuni Reference Guide, available from the 'Help' button in the main Uyuni "
+                            "via the Uyuni web interface. (Instructions for this are in the Uyuni Reference "
+                            "Guide, available from the 'Help' button in the main Uyuni "
                             "web interface.)") % PM_NAME
 
 # Review Window
@@ -196,19 +196,19 @@ NO_BASE_CHANNEL            = _(
 "to this system's profile in the Uyuni web interface and subscribe this system "
 "to software channels via the software > software channels tab.")
 SLOTS_TITLE             = _("Service Level:")
-OK_SLOTS                = _("Depending on what Uyuni modules are associated with a system, you'll "
+OK_SLOTS                = _("Depending on what Uyuni system types are associated with a system, you'll "
                             "enjoy different benefits. The following are the "
-                            "Uyuni modules associated with this system:")
+                            "Uyuni system types associated with this system:")
 SLOTS                   =  SLOTS_TITLE + "\n" + OK_SLOTS + "\n%s"
 FAILED_SLOTS            = _("This system was unable to be associated with the "
-                            "following Uyuni module(s) because there were "
+                            "following Uyuni system type(s) because there were "
                             "insufficient subscriptions available in your account:")
-MANAGEMENT              = _("Management module: automatic updates, systems "
+MANAGEMENT              = _("Management type: automatic updates, systems "
                             "grouping, systems permissions, system package profiling, "
                             "bare-metal provisioning, existing state provisioning, "
                             "rollbacks, configuration management")
 
-VIRT = _("Virtualization module: software updates for a limited number of "
+VIRT = _("Virtualization type: software updates for a limited number of "
         "virtual guests on this system.")
 
 
@@ -221,7 +221,7 @@ VIRT_FAILED = _("<b>Warning:</b> Any guest systems you create on this system "
         "this system to consume additional subscriptions.")
 
 NO_SYS_ENTITLEMENT         = _("This system was unable to be associated with "
-"any Uyuni service level modules. This system will not receive any software "
+"any Uyuni system types. This system will not receive any software "
 "updates to keep it secure and supported. Contace your Uyuni administrator "
 "about this problem. Once you make the "
 "appropriate active subscriptions available in your account, you may browse "
