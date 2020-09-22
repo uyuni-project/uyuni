@@ -1112,7 +1112,7 @@ class Registration(rhnHandler):
         log_debug(1, "lang: %s" % lang)
         if lang:
             cat.setlangs(lang)
-        msg = _("Red Hat Satellite Welcome Message")
+        msg = _("Uyuni Welcome Message")
         # compress this one
         rhnFlags.set("compress_response", 1)
         return msg
@@ -1122,7 +1122,7 @@ class Registration(rhnHandler):
         log_debug(1, "lang: %s" % lang)
         if lang:
             cat.setlangs(lang)
-        msg = _("Red Hat Satellite Privacy Statement")
+        msg = _("Privacy Statement")
         # compress this one
         rhnFlags.set("compress_response", 1)
         return msg

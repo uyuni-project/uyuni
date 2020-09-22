@@ -35,8 +35,8 @@ class moduleClass(Module):
     def __init__(self):
         Module.__init__(self)
         self.priority = 108.5
-        self.sidebarTitle = _("Red Hat Account")
-        self.title = _("Red Hat Account")
+        self.sidebarTitle = _("Uyuni Account")
+        self.title = _("Uyuni Account")
 
     def needsNetwork(self):
         return True

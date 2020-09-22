@@ -42,7 +42,7 @@ class RhnCreateProfileWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.CreateProf
     runPriority = 108.7
     moduleName = _("Create Profile")
     windowTitle =  moduleName
-    shortMessage = _("Connect to Red Hat Satellite")
+    shortMessage = _("Connect to Uyuni")
     needsparent = 1
     needsnetwork = 1
     noSidebar = True
