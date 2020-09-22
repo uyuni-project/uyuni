@@ -6314,8 +6314,8 @@ organization. You may grant or remove the organization administrator role in the
       <trans-unit id="pkg.lock.summary" xml:space="preserve">
         <source>
                 You can lock packages so they will remain unmodified.
-                However, it is important to keep in mind that requesting a
-                lock might be delayed. If a package has been updated
+                However, it is important to keep in mind that requesting a 
+                lock might be delayed. If a package has been updated 
                 before the lock took action and the package is newer, the
                 lock will be canceled.
         </source>
