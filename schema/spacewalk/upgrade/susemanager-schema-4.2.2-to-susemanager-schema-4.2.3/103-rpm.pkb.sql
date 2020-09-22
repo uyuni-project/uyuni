@@ -15,11 +15,11 @@ create or replace function isdigit(ch CHAR)
     END ;
 $$ language 'plpgsql';
 
-    
+
     create or replace FUNCTION isalpha(ch CHAR)
     RETURNS BOOLEAN as $$
     BEGIN
-        if ascii(ch) between ascii('a') and ascii('z') or 
+        if ascii(ch) between ascii('a') and ascii('z') or
             ascii(ch) between ascii('A') and ascii('Z')
         then
             return TRUE;
@@ -30,9 +30,9 @@ $$ language 'plpgsql';
 
 
     create or replace FUNCTION isalphanum(ch CHAR)
-    RETURNS BOOLEAN as $$ 
+    RETURNS BOOLEAN as $$
     BEGIN
-        if ascii(ch) between ascii('a') and ascii('z') or 
+        if ascii(ch) between ascii('a') and ascii('z') or
             ascii(ch) between ascii('A') and ascii('Z') or
             ascii(ch) between ascii('0') and ascii('9')
         then
@@ -64,12 +64,13 @@ $$ language 'plpgsql';
         then
             RAISE EXCEPTION 'VALUE_ERROR.';
         end if;
-      
+
         if str1 = str2
         then
             return 0;
         end if;
         if POSITION('+' in str1) <> 0 AND POSITION('+' in str2) <> 0 AND POSITION('~' in str1) = 0 AND POSITION('~' in str2) = 0
+
         then
             str1 := SUBSTR(str1, 0, POSITION('+' in str1));
             str2 := SUBSTR(str2, 0, POSITION('+' in str2));
@@ -213,7 +214,7 @@ $$ language 'plpgsql';
                 two := str2;
             end;
         end loop segment_loop;
-     
+
         if one = '' and two = '' then return 0; end if;
         if one = '' then return -1; end if;
         return 1;
@@ -223,7 +224,7 @@ $$ language 'plpgsql';
 
 
    create or replace FUNCTION vercmp(
-        e1 VARCHAR, v1 VARCHAR, r1 VARCHAR, 
+        e1 VARCHAR, v1 VARCHAR, r1 VARCHAR,
         e2 VARCHAR, v2 VARCHAR, r2 VARCHAR)
     RETURNS INTEGER as $$
     declare
@@ -252,4 +253,3 @@ $$ language 'plpgsql';
 
 -- restore the original setting
 update pg_settings set setting = overlay( setting placing '' from 1 for (length('rpm')+1) ) where name = 'search_path';
-
