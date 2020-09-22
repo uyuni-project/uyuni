@@ -21,8 +21,6 @@ import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
 import type {MessageType} from "components/messages";
 
-declare var userPrefPageSize: number;
-
 type MaintenanceWindowType = {
     start: string,
     end: string
@@ -199,7 +197,6 @@ const SystemPicker = (props: SystemPickerProps) => {
                     selectable
                     selectedItems={selectedSystems}
                     onSelect={onSelect}
-                    initialItemsPerPage={userPrefPageSize}
                     initialSortColumnKey="name"
                 >
                     <Column

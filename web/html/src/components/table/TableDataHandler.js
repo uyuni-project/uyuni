@@ -88,7 +88,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       data: [],
       provider: this.getProvider(),
       currentPage: 1,
-      itemsPerPage: this.props.initialItemsPerPage || 15,
+      itemsPerPage: this.props.initialItemsPerPage || window.userPrefPageSize || 15,
       totalItems: 0,
       criteria: undefined,
       sortColumnKey: this.props.initialSortColumnKey || null,
