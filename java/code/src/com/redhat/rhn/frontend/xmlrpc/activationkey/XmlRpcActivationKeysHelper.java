@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.activationkey;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
@@ -55,12 +56,13 @@ public class XmlRpcActivationKeysHelper {
      */
     public ActivationKey lookupKey(User user, String key) {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
-        ActivationKey activationKey = manager.lookupByKey(key, user);
-        if (activationKey == null) {
+        try {
+            return manager.lookupByKey(key, user);
+        }
+        catch (LookupException e) {
             String msg = "Activation Key [" + key + "] Not Found!";
             throw new FaultException(-212, "ActivationKeyNotFound", msg);
         }
-        return activationKey;
     }
 
     /**
