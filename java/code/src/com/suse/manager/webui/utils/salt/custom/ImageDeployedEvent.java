@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils.salt;
+package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.salt.netapi.datatypes.Event;
@@ -66,7 +66,7 @@ public class ImageDeployedEvent {
      * Parse the generic event
      *
      * @param event the generic event to parse
-     * @return Optional of {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent} or
+     * @return Optional of {@link ImageDeployedEvent} or
      * an empty Optional if the event data did not match the ImageDeployedEvent shape
      */
     public static Optional<ImageDeployedEvent> parse(Event event) {

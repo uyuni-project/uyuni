@@ -36,7 +36,7 @@ import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltTop;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.salt.MgrActionChains;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalCall;

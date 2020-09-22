@@ -29,7 +29,7 @@ import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
+import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -46,7 +46,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Test for {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent}
+ * Test for {@link ImageDeployedEvent}
  */
 public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
