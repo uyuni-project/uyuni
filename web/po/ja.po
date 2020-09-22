@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-17 09:18+0000\n"
+"PO-Revision-Date: 2020-09-22 06:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -2316,7 +2316,7 @@ msgstr ""
 
 #: ../html/src/manager/errors/not-found.js:11
 msgid "Page Not Found"
-msgstr ""
+msgstr "ページが見つかりません"
 
 #: ../html/src/manager/errors/not-found.js:16
 msgid ""
