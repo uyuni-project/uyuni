@@ -153,7 +153,6 @@ class UyuniRemoteObject:
     def _convert_bool_response(response: int):
         return response == 1
 
-
 class UyuniUser(UyuniRemoteObject):
     """
     CRUD operation on users.
@@ -600,6 +599,32 @@ class UyuniSystems(UyuniRemoteObject):
         return __context__[minions_token_key]
 
 
+class UyuniActivationKey(UyuniRemoteObject):
+    """
+    CRUD operations on Activation Keys.
+    """
+
+    def get_details(self, id: str) -> Dict[str, Any]:
+        """
+        Retrieve details of an Uyuni Activation Key.
+
+        :param id: the Activation Key ID
+
+        :return: Dictionary with Activation Key details
+        """
+        return self.client("activationkey.getDetails", id)
+
+    def delete(self, id: str) -> bool:
+        """
+        Remove an Uyuni Activation Key.
+
+        :param id: the Activation Key ID
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.delete", id))
+
+
 class UyuniChildMasterIntegration:
     """
     Integration with the Salt Master which is running
@@ -646,6 +671,8 @@ def __virtual__():
 
     return __virtualname__
 
+
+# Users
 
 def user_get_details(login, password=None, org_admin_user=None, org_admin_password=None):
     """
@@ -828,7 +855,8 @@ def user_remove_assigned_system_groups(login, server_group_names, set_default=Fa
                                                                        set_default=set_default)
 
 
-## channel.software
+# Software channels
+
 def channel_list_manageable_channels(login, password):
     """
     List all of manageable channels for the authenticated user
@@ -1097,10 +1125,7 @@ def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_passwo
     return UyuniOrgTrust(admin_user, admin_password).remove_trust(org_id, org_untrust_id)
 
 
-"""
-System group management
-"""
-
+# System Groups
 
 def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None):
     """
@@ -1213,3 +1238,30 @@ def systems_get_minion_id_map(username=None, password=None, refresh=False):
     :return: Map between minion ID and system ID of all system accessible by authenticated user
     """
     return UyuniSystems(username, password).get_minion_id_map(refresh)
+
+
+# Activation Keys
+
+def activation_key_get_details(id, org_admin_user=None, org_admin_password=None):
+    """
+    Get details of an Uyuni Activation Key
+
+    :param id: the Activation Key ID
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: Activation Key information
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).get_details(id)
+
+def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
+    """
+    Deletes an Uyuni Activation Key
+
+    :param id: the Activation Key ID
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).delete(id)
