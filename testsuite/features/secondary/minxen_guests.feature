@@ -157,12 +157,13 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
+    And I select "test-pool0" from "disk1_source_pool"
     And I click on "add_disk"
     And I select "CDROM" from "disk2_device"
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen_server" should have a "test-vm_disk-1" xen disk from pool "test-pool0"
+    And "test-vm" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm_disk-1" xen disk
     And "test-vm" virtual machine on "xen_server" should have a ide cdrom
 
 @virthost_xen
@@ -199,7 +200,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system" xen disk from pool "test-pool0"
+    And "test-vm2" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm2_system" xen disk
 
 @virthost_xen
   Scenario: Show the Spice graphical console for Xen
@@ -224,7 +225,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
     And "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system" xen disk from pool "test-pool0"
+    And "test-vm3" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm3_system" xen disk
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen

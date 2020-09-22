@@ -129,7 +129,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have spice graphics device
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "kvm_server" should have a NIC with 02:34:56:78:9a:bc MAC address
-    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" scsi disk
+    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" SCSI disk from pool "tmp"
 
 @virthost_kvm
   Scenario: Add a network interface to a KVM virtual machine
@@ -349,7 +349,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Create auto installation distribution
     Given I am authorized
-    And I install package "tftpboot-installation-SLE-15-SP2-x86_64" on this "server" 
+    And I install package "tftpboot-installation-SLE-15-SP2-x86_64" on this "server"
     And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be installed on "server"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
