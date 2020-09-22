@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-22 10:48+0000\n"
+"PO-Revision-Date: 2020-09-23 00:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -580,68 +580,68 @@ msgstr "ヘルプ"
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
 msgid "Base channel not found or not authorized."
-msgstr ""
+msgstr "ベースチャンネルが見つからないか、認可されていません。"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:11
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
 msgid "Child channel not found or not authorized."
-msgstr ""
+msgstr "子チャンネルが見つからないか、認可されていません。"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:12
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
 msgid "Invalid channel id"
-msgstr ""
+msgstr "チャンネル ID が正しくありません"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 msgid "Required channels"
-msgstr ""
+msgstr "必要なチャンネル"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "none"
-msgstr ""
+msgstr "なし"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "Require this channel"
-msgstr ""
+msgstr "このチャンネルが必要"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:17
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr ""
+msgstr "変更した設定を反映させるには、再起動が必要です。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:20
 msgid "An internal error has occured. See the server logs for details."
-msgstr ""
+msgstr "内部エラーが発生しました。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "モニタリングの有効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:22
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
-msgstr ""
+msgstr "全てのモニタリングサービスの有効化に失敗しました。いくつかのサービスが無効化されています。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:23
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "モニタリングの無効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:24
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
-msgstr ""
+msgstr "全てのモニタリングサービスの無効化に失敗しました。いくつかのサービスが有効化されています。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:25
 msgid "Monitoring enabled successfully."
-msgstr ""
+msgstr "モニタリングの有効化が正常に完了しました。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:26
 msgid "Monitoring disabled successfully."
-msgstr ""
+msgstr "モニタリングの無効化が正常に完了しました。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:27
 msgid ""
@@ -649,6 +649,8 @@ msgid ""
 "Click the Enable button to enable the JMX configuration or click Disable to "
 "stop the Prometheus exporter."
 msgstr ""
+"Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX 設定を有効化するか、"
+"もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:29
 msgid ""
@@ -656,6 +658,8 @@ msgid ""
 "Click the Disable button to disable the JMX configuration or click Enable to "
 "start the Prometheus exporter."
 msgstr ""
+"Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX 設定を無効化するか、"
+"もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:31
 msgid ""
@@ -663,6 +667,8 @@ msgid ""
 "disabled. Click the Enable button to enable the JMX configuration of click "
 "Disable to stop the Prometheus exporter."
 msgstr ""
+"Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。有効化ボタンを押して JMX "
+"設定を有効化するか、もしくは無効化ボタンを押して Prometheus エクスポータを停止してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:33
 msgid ""
@@ -670,138 +676,142 @@ msgid ""
 "enabled. Click the Disable button to disable the JMX configuration of click "
 "Enable to start the Prometheus exporter."
 msgstr ""
+"Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。無効化ボタンを押して JMX "
+"設定を無効化するか、もしくは有効化ボタンを押して Prometheus エクスポータを開始してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:38
 msgid "Monitoring status hasn't changed."
-msgstr ""
+msgstr "モニタリング状態は変更されていません。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "An error occured. Monitoring status unknown. Refresh the page."
-msgstr ""
+msgstr "エラーが発生しました。モニタリング状態は不明です。ページを更新してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:44
 msgid "Tomcat (Java JMX)"
-msgstr ""
+msgstr "Tomcat (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:45
 msgid "Taskomatic (Java JMX)"
-msgstr ""
+msgstr "Taskomatic (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:46
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "PostgreSQL データベース"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:47
 msgid "Server self monitoring"
-msgstr ""
+msgstr "サーバ自己監視"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:56
 #: ../html/src/manager/admin/config/monitoring-admin.js:58
 msgid "Enabled"
-msgstr ""
+msgstr "有効"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:64
 #: ../html/src/manager/admin/config/monitoring-admin.js:66
 msgid "Disabled"
-msgstr ""
+msgstr "無効"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:109
 msgid "The server uses "
-msgstr ""
+msgstr "サーバは "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:109
 msgid "Prometheus"
-msgstr ""
+msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:112
 msgid "Refer to the "
-msgstr ""
+msgstr "詳しくは "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:112
 msgid "documentation"
-msgstr ""
+msgstr "ドキュメンテーション"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:170
 #: ../html/src/manager/admin/config/monitoring-admin.js:179
 #: ../html/src/manager/admin/config/monitoring-admin.js:188
 #: ../html/src/manager/admin/config/monitoring-admin.js:201
 msgid "Enable"
-msgstr ""
+msgstr "有効"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:172
 #: ../html/src/manager/admin/config/monitoring-admin.js:181
 #: ../html/src/manager/admin/config/monitoring-admin.js:190
 #: ../html/src/manager/admin/config/monitoring-admin.js:206
 msgid "Disable"
-msgstr ""
+msgstr "無効"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:218
 msgid "SUSE Manager Configuration - Monitoring"
-msgstr ""
+msgstr "SUSE Manager 設定 - モニタリング"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:224
 msgid "Setup your SUSE Manager server monitoring."
-msgstr ""
+msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:229
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:118
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:234
 msgid "General"
-msgstr ""
+msgstr "全般"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:230
 msgid "Bootstrap Script"
-msgstr ""
+msgstr "ブートストラップスクリプト"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Organizations"
-msgstr ""
+msgstr "組織"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Restart"
-msgstr ""
+msgstr "再起動"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:233
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Bare-metal systems"
-msgstr ""
+msgstr "ベアメタルシステム"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:235
 #: ../html/src/manager/admin/config/monitoring-admin.js:240
 #: ../html/src/manager/admin/config/monitoring-admin.js:252
 msgid "Monitoring"
-msgstr ""
+msgstr "モニタリング"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:263
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
-msgstr ""
+msgstr " 変更した設定を反映させるには、 Tomcat と Taskomatic が必要です。"
 
 #: ../html/src/manager/admin/setup/products/products.js:115
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
+"利用可能な SUSE Manager サーバサブスクリプションがありません。 Client Tools Channel "
+"を必要とする製品は表示されなくなります。"
 
 #: ../html/src/manager/admin/setup/products/products.js:157
 msgid "The product catalog refresh is running..."
-msgstr ""
+msgstr "製品カタログの更新を行なっています..."
 
 #: ../html/src/manager/admin/setup/products/products.js:227
 msgid "Setup Wizard"
-msgstr ""
+msgstr "セットアップウィザード"
 
 #: ../html/src/manager/admin/setup/products/products.js:245
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
-msgstr ""
+msgstr "製品データの更新処理が裏で動作しています。しばらくしてからやり直してください。"
 
 #: ../html/src/manager/admin/setup/products/products.js:252
 msgid "The product catalog is still refreshing, please wait."
