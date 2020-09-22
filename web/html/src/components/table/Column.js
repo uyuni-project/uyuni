@@ -1,6 +1,8 @@
 // @flow
 import * as React from 'react';
 
+import type {Comparator} from 'utils/data-providers';
+
 type ColumnProps = {
   /** key differenciating a column from its sibblings */
   key?: string,
@@ -13,7 +15,7 @@ type ColumnProps = {
   /** key used to identify the column */
   columnKey?: string,
   /** Row comparison function. See sortBy functions in utils/functions.js */
-  comparator?: (a: Object, b: Object, columnKey: string, sortDirection: number) => number,
+  comparator?: Comparator,
   /**
    * If the column should be sortable
    * If a comparator is specified, this defaults to true.

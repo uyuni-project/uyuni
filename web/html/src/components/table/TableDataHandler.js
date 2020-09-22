@@ -10,6 +10,8 @@ import {PageControl, SimpleDataProvider, AsyncDataProvider} from 'utils/data-pro
 import {Utils} from "utils/functions";
 import {StatePersistedContext} from '../utils/StatePersistedContext';
 
+import type {PagedData, Comparator} from 'utils/data-providers';
+
 type ChildrenArgsProps = {
   currItems: Array<any>,
   headers: React.Node,
@@ -101,7 +103,7 @@ export class TableDataHandler extends React.Component<Props, State> {
     const data = this.props.data;
     if (Array.isArray(data)) {
       // Gather comparators from columns
-      const comparators = this.props.columns.reduce((comparators, col) => {
+      const comparators: {[string]: Comparator} = this.props.columns.reduce((comparators, col) => {
         if (col.props.columnKey) {
           comparators[col.props.columnKey] = col.props.comparator;
         }
@@ -136,7 +138,7 @@ export class TableDataHandler extends React.Component<Props, State> {
     });
   }
 
-  updateData({items, total}: {items: Array<any>, total: number}) {
+  updateData({items, total}: PagedData) {
     this.setState({data: items, totalItems: total}, () => {
       const lastPage = this.getLastPage();
       if (this.state.currentPage > lastPage) {
