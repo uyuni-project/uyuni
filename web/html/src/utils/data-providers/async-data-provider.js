@@ -3,10 +3,7 @@
 import PagedDataEndpoint from './paged-data-endpoint';
 import PageControl from './page-control';
 
-type PagedData = {
-  items: Array<any>,
-  total: number
-};
+import type {PagedData} from '.';
 
 export default class AsyncDataProvider {
   endpoint: PagedDataEndpoint;

@@ -2,20 +2,17 @@
 
 import PageControl from './page-control';
 
-type PagedData = {
-  items: Array<any>,
-  total: number
-};
+import type {PagedData, Comparator} from '.';
 
 export default class SimpleDataProvider {
   data: Array<any>;
   identifier: (row: any) => any;
   filter: ?(row: any, criteria: string) => boolean;
-  comparators: ?{column: (a: any, b: any, key: string, direction: number) => number};
+  comparators: ?{[string]: Comparator};
 
   constructor(data: Array<any>, identifier: (row: any) => any,
       filter?: (row: any, criteria: string) => boolean,
-      comparators?: {[string]: (a: any, b: any, key: string, direction: number) => number}) {
+      comparators?: {[string]: Comparator}) {
     this.data = data;
     this.identifier = identifier;
     this.filter = filter;
