@@ -70,6 +70,7 @@ import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -79,11 +80,13 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import com.suse.salt.netapi.datatypes.target.Target;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
@@ -110,8 +113,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
-    private SystemSummary sshPushSystemMock;
     private SystemEntitlementManager systemEntitlementManager;
+    private TaskomaticApi taskomaticMock;
 
     @Override
     public void setUp() throws Exception {
@@ -139,7 +142,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                         serverGroupManager)
         );
 
-        sshPushSystemMock = mock(SystemSummary.class);
+        taskomaticMock = mock(TaskomaticApi.class);
+        saltServerActionService.setTaskomaticApi(taskomaticMock);
     }
 
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
@@ -454,7 +458,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
 
         saltServerActionService.setSaltActionChainGeneratorService(generatorService);
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainFactory.setTaskomaticApi(taskomaticMock);
 
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -645,10 +648,23 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     private ServerAction createChildServerAction(Action action, ActionStatus status,
                                                  long remainingTries) throws Exception {
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
+        return createChildServerAction(action, status, minion, remainingTries);
+    }
+
+    private ServerAction createChildServerAction(Action action, ActionStatus status,
+                                                 MinionServer minionIn,
+                                                 long remainingTries) throws Exception {
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minionIn, action);
         serverAction.setStatus(status);
         serverAction.setRemainingTries(remainingTries);
-        action.setServerActions(Collections.singleton(serverAction));
+        if (action.getServerActions() == null) {
+            Set set = new HashSet();
+            set.add(serverAction);
+            action.setServerActions(set);
+        }
+        else {
+            action.getServerActions().add(serverAction);
+        }
         return serverAction;
     }
 
@@ -833,6 +849,33 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(STATUS_QUEUED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
         assertEquals(0, counter.get());
+    }
+
+    public void testExectueSSHAction() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        createChildServerAction(action, STATUS_QUEUED, sshMinion,5L);
+        createChildServerAction(action, STATUS_QUEUED, minion,5L);
+        HibernateFactory.getSession().flush();
+
+        SaltService saltServiceMock = mock(SaltService.class);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(saltServiceMock, saltServiceMock);
+        saltServerActionService.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion);
+            oneOf(saltServiceMock).callAsync(with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
+            LocalAsyncResult<?> result = new LocalAsyncResult() {
+                public List<String> getMinions() {
+                    return Arrays.asList(minion.getMinionId());
+                }
+            };
+            will(returnValue(Optional.of(result)));
+        } });
+
+        saltServerActionService.execute(action, false, false, Optional.empty());
+
     }
 
     private void assertActionWillBeRetried() throws Exception {

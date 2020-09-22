@@ -109,6 +109,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.clusters.ClusterManager;
@@ -228,6 +229,7 @@ public class SaltServerActionService {
     private final FormulaManager formulaManager;
     private final ClusterManager clusterManager;
     private boolean skipCommandScriptPerms;
+    private TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * @param saltApiIn instance for getting information from a system.
@@ -492,8 +494,16 @@ public class SaltServerActionService {
         List<MinionServer> sshPushMinions = MinionServerFactory.findMinionsByServerIds(
                 sshMinionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
-        for (MinionServer sshMinion: sshPushMinions) {
-            executeSSHAction(actionIn, sshMinion);
+        if (!sshPushMinions.isEmpty()) {
+            for (MinionServer sshMinion : sshPushMinions) {
+                try {
+                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
+                            " minion=" + sshMinion.getMinionId(), e);
+                }
+            }
         }
     }
 
@@ -2100,7 +2110,7 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = GlobalInstanceHolder.SALT_API
+            List<String> results = saltApi
                     .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
                     .get().getMinions();
 
@@ -2508,4 +2518,11 @@ public class SaltServerActionService {
         this.skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
+    /**
+     * Only needed for unit test.
+     * @param taskomaticApiIn to set
+     */
+    public void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        this.taskomaticApi = taskomaticApiIn;
+    }
 }
