@@ -1168,7 +1168,8 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) di
     output, _code = node.run("virsh dumpxml #{vm}")
     tree = Nokogiri::XML(output)
     disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) && (x.xpath('target/@bus')[0].to_s == bus)
+      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
+        (x.xpath('target/@bus')[0].to_s == bus.downcase)
     end
     break if !disks.empty?
     sleep 3
