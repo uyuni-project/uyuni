@@ -132,9 +132,12 @@ public class ActivationKeyHandler extends BaseHandler {
      * default.")
      * @xmlrpc.param #param_desc("int", "usageLimit", "If unlimited usage is desired,
      * use the create API that does not include the parameter.")
-     * @xmlrpc.param #array_desc("string", "Add-on entitlement label to associate with the
+     * @xmlrpc.param #array_desc("string", "Add-on system type labels to associate with the
      * key.")
      *   #options()
+     *     #item("container_build_host")
+     *     #item("monitoring_entitled")
+     *     #item("osimage_build_host")
      *     #item("virtualization_host")
      *   #options_end()
      * #array_desc_end()
@@ -522,12 +525,15 @@ public class ActivationKeyHandler extends BaseHandler {
      * @param entitlements List of string entitlement labels to be added.
      * @return 1 on success, exception thrown otherwise.
      *
-     * @xmlrpc.doc Add entitlements to an activation key. Currently only
-     * virtualization_host add-on entitlement is permitted.
+     * @xmlrpc.doc Add add-on System Types to an activation key.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "key")
-     * @xmlrpc.param #array_desc("string", "entitlement label")
+     * @xmlrpc.param #array_desc("string", "Add-on system type labels to associate with the
+     * key.")
      *   #options()
+     *     #item("container_build_host")
+     *     #item("monitoring_entitled")
+     *     #item("osimage_build_host")
      *     #item("virtualization_host")
      *   #options_end()
      * #array_desc_end()
