@@ -61,6 +61,7 @@ import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
@@ -521,7 +522,9 @@ public class SPMigrationAction extends RhnAction {
         List<Long> channelIds = channels.stream().map(Channel::getId).collect(Collectors.toList());
         List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel, channelIds);
 
-        SUSEProduct baseProduct = SUSEProductFactory.lookupByChannelName(baseChannel.getName()).get(0).getRootProduct();
+        // Get name of original base channel if channel is cloned
+        String origBaseChannelName = ChannelManager.getOriginalChannel(baseChannel).getName();
+        SUSEProduct baseProduct = SUSEProductFactory.lookupByChannelName(origBaseChannelName).get(0).getRootProduct();
 
         Server server = ctx.lookupAndBindServer();
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
