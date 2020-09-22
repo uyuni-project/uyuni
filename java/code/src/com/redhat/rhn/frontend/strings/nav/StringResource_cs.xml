@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="software.crashes.overview.summary" xml:space="preserve">
         <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
-        <target>V tabulce níže jsou uvedeny chyby softwaru seskupené podle UUID, ke kterým došlo ve vašich systémech. Identická UUID havarií mohou potenciálně indikovat podobné nebo identické typy selhání softwaru.</target>
+        <target>V tabulce níže jsou uvedeny chyby softwaru seskupené podle UUID, ke kterým došlo ve vašich systémech. Identická UUID havárií mohou potenciálně indikovat podobné nebo identické typy selhání softwaru.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -469,7 +469,7 @@
       </trans-unit>
       <trans-unit id="configfile.nav.copy.local" xml:space="preserve">
         <source>Copy To Locally-Managed</source>
-        <target>Kopírovat do lokálně spravovaného</target>
+        <target>Kopírovat do Lokálně spravovaného</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
@@ -572,161 +572,161 @@
       </trans-unit>
       <trans-unit id="Verify" xml:space="preserve">
         <source>Verify</source>
-        <target/>
+        <target>Ověřit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Snapshots" xml:space="preserve">
         <source>Snapshots</source>
-        <target/>
+        <target state="translated">Snímky (momentky)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Installation Guide" xml:space="preserve">
         <source>Installation Guide</source>
-        <target/>
+        <target>Instalační příručka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Software" xml:space="preserve">
         <source>Software</source>
-        <target/>
+        <target>Software</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Provisioning" xml:space="preserve">
         <source>Provisioning</source>
-        <target/>
+        <target>Zajišťování</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Misc" xml:space="preserve">
         <source>Misc</source>
-        <target/>
+        <target>Různé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Snapshot Tags" xml:space="preserve">
         <source>Snapshot Tags</source>
-        <target/>
+        <target>Značky snímku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Session Status" xml:space="preserve">
         <source>Session Status</source>
-        <target/>
+        <target>Stav relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sandbox" xml:space="preserve">
         <source>Sandbox</source>
-        <target/>
+        <target>Sandbox</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk" xml:space="preserve">
         <source>@@PRODUCT_NAME@@</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration" xml:space="preserve">
         <source>Manager Configuration</source>
-        <target/>
+        <target>Konfigurace Správce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ISS Configuration" xml:space="preserve">
         <source>ISS Configuration</source>
-        <target/>
+        <target>Konfigurace ISS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="External Authentication" xml:space="preserve">
         <source>External Authentication</source>
-        <target/>
+        <target>Externí autentizace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Group Role Mapping" xml:space="preserve">
         <source>Group Role Mapping</source>
-        <target/>
+        <target>Mapování skupinových rolí</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Configuration" xml:space="preserve">
         <source>System Group Configuration</source>
-        <target/>
+        <target>Konfigurace systémových skupin</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Master Setup" xml:space="preserve">
         <source>Master Setup</source>
-        <target/>
+        <target>Hlavní nastavení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Slave Setup" xml:space="preserve">
         <source>Slave Setup</source>
-        <target/>
+        <target>Podřízené nastavení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Command" xml:space="preserve">
         <source>Remote Command</source>
-        <target/>
+        <target>Dálkové ovládání</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Configuration" xml:space="preserve">
         <source>Power Management Configuration</source>
-        <target/>
+        <target>Konfigurace správy napájení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Operations" xml:space="preserve">
         <source>Power Management Operations</source>
-        <target/>
+        <target>Operace správy napájení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tag Systems" xml:space="preserve">
         <source>Tag Systems</source>
-        <target/>
+        <target>Systémy značek</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Reactivation" xml:space="preserve">
         <source>Reactivation</source>
-        <target/>
+        <target>Reaktivace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Properties" xml:space="preserve">
         <source>Properties</source>
-        <target/>
+        <target>Vlastnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
