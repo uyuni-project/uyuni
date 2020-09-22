@@ -40,9 +40,9 @@ gtk.glade.bindtextdomain("rhn-client-tools", "/usr/share/locale")
 class RhnLoginWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.LoginPage):
     #You must specify a runPriority for the order in which you wish your module to run
     runPriority = 108
-    moduleName = _("Red Hat Login")
+    moduleName = _("Login")
     windowTitle = moduleName
-    shortMessage = _("Register with Red Hat Satellite")
+    shortMessage = _("Register with Uyuni")
     needsparent = 1
     needsnetwork = 1
     noSidebar = True

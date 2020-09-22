@@ -1341,7 +1341,7 @@ def main():
     screen = snack.SnackScreen()
 
     if geteuid() != 0 and not test:
-        FatalErrorWindow(screen, _("You must run the RHN registration program as root."))
+        FatalErrorWindow(screen, _("You must run the Uyuni registration program as root."))
 
     tui = Tui(screen, test)
     tui.run()

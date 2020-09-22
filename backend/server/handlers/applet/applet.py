@@ -75,7 +75,7 @@ class Applet(rhnHandler):
         row = h.fetchone_dict()
         if not row:
             raise rhnFault(140,
-                           _("Your system was not found in the RHN database"),
+                           _("Your system was not found in the Uyuni database"),
                            explain=0)
         server_id = row['id']
 

@@ -190,6 +190,7 @@ class RegistrationDeniedError(RhnServerException):
         return self.value
 
     def changeExplanation(self):
+        # TODO no idea
         return _("""
 Red Hat Network Classic is not supported.
 To register with Red Hat Subscription Management please run:
@@ -299,9 +300,10 @@ class InsuffMgmntEntsError(RhnServerException):
         return self.value
 
     def changeExplanation(self, msg):
+        # TODO No idea
         newExpln = _("""
     Your organization does not have enough Management entitlements to register this
-    system to Red Hat Satellite. Please notify your organization administrator of this error.
+    system to Uyuni. Please notify your organization administrator of this error.
     You should be able to register this system after your organization frees existing
     or purchases additional entitlements. Additional entitlements may be purchased by your
     organization administrator by logging into Red Hat Network Classic and visiting

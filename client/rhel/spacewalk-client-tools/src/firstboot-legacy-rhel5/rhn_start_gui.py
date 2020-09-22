@@ -33,7 +33,7 @@ class RhnStartWindow(RhnRegisterFirstbootGuiWindow):
     runPriority=106
     moduleName = _("Set Up Software Updates")
     windowTitle = moduleName
-    shortMessage = _("Register with Red Hat Satellite")
+    shortMessage = _("Register with Uyuni")
     needsparent = 1
 
     def __init__(self):

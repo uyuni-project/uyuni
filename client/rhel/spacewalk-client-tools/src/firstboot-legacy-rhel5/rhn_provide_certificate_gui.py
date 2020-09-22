@@ -34,7 +34,7 @@ class RhnProvideCertificateWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.Provi
     runPriority=107
     moduleName = _("Provide Certificate")
     windowTitle = moduleName
-    shortMessage = _("Provide a certificate for this Red Hat Satellite server")
+    shortMessage = _("Provide a certificate for this Uyuni server")
     needsparent = 1
     needsnetwork = 1
     noSidebar = True

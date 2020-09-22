@@ -45,7 +45,7 @@ versionRHNRepoFile = 'rhnversion'
 
 rhn_enabled = True
 
-COMMUNICATION_ERROR = _("There was an error communicating with RHN.")
+COMMUNICATION_ERROR = _("There was an error communicating with Uyuni.")
 
 from M2Crypto.SSL import SSLError
 
@@ -60,7 +60,7 @@ def init_hook(conduit):
 
     global rhn_enabled
 
-    RHN_DISABLED = _("Red Hat Satellite or RHN Classic support will be disabled.")
+    RHN_DISABLED = _("Uyuni or RHN Classic support will be disabled.")
 
     conduit_conf = conduit.getConf()
     timeout = conduit.confFloat('main', 'timeout', conduit_conf.timeout)
@@ -83,7 +83,7 @@ def init_hook(conduit):
                 proxy_dict = {'https' : proxy_url}
     except BadProxyConfig:
         rhn_enabled = False
-        PROXY_ERROR =  _("There was an error parsing the Red Hat Satellite Proxy settings.")
+        PROXY_ERROR =  _("There was an error parsing the Uyuni Proxy settings.")
         conduit.error(0, PROXY_ERROR + "\n" + RHN_DISABLED)
         return
 
@@ -109,7 +109,7 @@ def init_hook(conduit):
             or '--cacheonly' in cmd_args):
             rhn_enabled = False
             addCachedRepos(conduit)
-            conduit.info(10, _("Using list of RHN repos from cache") +
+            conduit.info(10, _("Using list of Uyuni repos from cache") +
                      "\n" + RHN_DISABLED)
             return
 
@@ -125,14 +125,14 @@ def init_hook(conduit):
         return
 
     if not login_info:
-        conduit.error(0, _("This system is not registered with RHN Classic or Red Hat Satellite.") +
+        conduit.error(0, _("This system is not registered with RHN Classic or Uyuni.") +
                 "\n" + _("You can use rhn_register to register.") +
                 "\n" + RHN_DISABLED)
         rhn_enabled = False
         truncateRHNReposCache(conduit)
         return
 
-    CHANNELS_DISABLED = _("RHN channel support will be disabled.")
+    CHANNELS_DISABLED = _("Uyuni channel support will be disabled.")
     try:
         svrChannels = rhnChannel.getChannelDetails(timeout=timeout)
     except up2dateErrors.NoChannelsError:
@@ -141,7 +141,7 @@ def init_hook(conduit):
         truncateRHNReposCache(conduit)
         return
     except up2dateErrors.NoSystemIdError:
-        conduit.error(0, _("This system may not be registered to RHN Classic or Red Hat Satellite. SystemId could not be acquired.") +
+        conduit.error(0, _("This system may not be registered to RHN Classic or Uyuni. SystemId could not be acquired.") +
                 "\n" + _("You can use rhn_register to register.") +
                 "\n" + RHN_DISABLED)
         rhn_enabled = False
@@ -154,7 +154,7 @@ def init_hook(conduit):
         return
 
     if rhn_enabled:
-        conduit.info(2, _("This system is receiving updates from RHN Classic or Red Hat Satellite."))
+        conduit.info(2, _("This system is receiving updates from RHN Classic or Uyuni."))
 
     repos = conduit.getRepos()
     cachedir = conduit_conf.cachedir
@@ -352,7 +352,7 @@ class RhnRepo(YumRepository):
 
         for header in RhnRepo.rhn_needed_headers:
             if not li.has_key(header):
-                error = _("Missing required login information for RHN: %s") \
+                error = _("Missing required login information for Uyuni: %s") \
                     % header
                 raise yum.Errors.RepoError(error)
 
