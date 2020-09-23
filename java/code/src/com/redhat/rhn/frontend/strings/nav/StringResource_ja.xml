@@ -259,7 +259,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>完了</target>
+        <target>完了しました</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.all" xml:space="preserve">
         <source>All</source>
@@ -273,14 +273,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>すべてのチャンネル</target>
+        <target>すべて</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared" xml:space="preserve">
         <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>共有チャンネル</target>
+        <target>共有</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor" xml:space="preserve">
         <source>@@VENDOR_NAME@@</source>
@@ -294,7 +294,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>利用が多いチャンネル</target>
+        <target>利用が多いもの</target>
       </trans-unit>
       <trans-unit id="channel.nav.custom" xml:space="preserve">
         <source>My Channels</source>
@@ -336,14 +336,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>設定チャンネル</target>
+        <target>チャンネル</target>
       </trans-unit>
       <trans-unit id="config.nav.files" xml:space="preserve">
         <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>設定ファイル</target>
+        <target>ファイル</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles" xml:space="preserve">
         <source>Centrally Managed</source>
