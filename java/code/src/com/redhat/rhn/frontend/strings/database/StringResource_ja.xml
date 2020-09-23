@@ -8,21 +8,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target>キュー待ち</target>
+        <target>キュー済み</target>
       </trans-unit>
       <trans-unit id="Picked Up" xml:space="preserve">
         <source>Picked Up</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target>開始</target>
+        <target>ピックアップ済み</target>
       </trans-unit>
       <trans-unit id="Completed" xml:space="preserve">
         <source>Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target>完了</target>
+        <target>完了しました</target>
       </trans-unit>
       <trans-unit id="Failed" xml:space="preserve">
         <source>Failed</source>
@@ -1555,7 +1555,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>ユーザー名</target>
+        <target>ユーザ名</target>
       </trans-unit>
       <trans-unit id="Virtual Host" xml:space="preserve">
         <source>Virtual Host</source>
