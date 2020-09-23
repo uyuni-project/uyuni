@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-23 03:48+0000\n"
+"PO-Revision-Date: 2020-09-23 09:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1054,15 +1054,15 @@ msgstr "実行時の状態"
 msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
-msgstr ""
+msgstr "サーバは下記のタスクを処理中であるか、もしくは直近 5 分の間に実行が完了しています。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:130
 msgid "Data is refreshed every "
-msgstr ""
+msgstr "データ更新間隔 "
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:130
 msgid " seconds"
-msgstr ""
+msgstr " 秒"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:140
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
@@ -1070,27 +1070,27 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:143
 #: ../html/src/manager/virtualization/ListTab.js:231
 msgid "Filter by name"
-msgstr ""
+msgstr "名前でフィルタ"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:145
 msgid "Task Id"
-msgstr ""
+msgstr "タスク ID"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:151
 msgid "Task Name"
-msgstr ""
+msgstr "タスク名"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:157
 msgid "Start Time"
-msgstr ""
+msgstr "開始時刻"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:163
 msgid "End Time"
-msgstr ""
+msgstr "終了時刻"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:169
 msgid "Elapsed Time"
-msgstr ""
+msgstr "経過時間"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:235
@@ -1099,22 +1099,22 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
 msgid "Status"
-msgstr ""
+msgstr "状態"
 
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:181
 msgid "Data"
-msgstr ""
+msgstr "データ"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:193
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "現時点では、サーバ内で動作しているタスクはありません。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:211
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
 #: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
+msgstr "セッションの期限が切れました。最新のデータを表示するには、ページを再読み込みしてください。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:213
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
@@ -1123,23 +1123,23 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.js:61
 msgid "Server error, please check log files."
-msgstr ""
+msgstr "サーバエラーです。ログファイルをご確認ください。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:165
 msgid "CVE Audit"
-msgstr ""
+msgstr "CVE 監査"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:171
 msgid "CVE"
-msgstr ""
+msgstr "CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:214
 msgid "Audit Servers"
-msgstr ""
+msgstr "監査サーバ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:215
 msgid "Audit Images"
-msgstr ""
+msgstr "監査イメージ"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:246
@@ -1160,7 +1160,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:332
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:263
 #: ../html/src/manager/images/image-profiles.js:148
@@ -1174,214 +1174,214 @@ msgstr ""
 #: ../html/src/manager/virtualization/ListTab.js:255
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:339
 msgid "Actions"
-msgstr ""
+msgstr "動作"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
 msgid "Edit Virtual Host Managers"
-msgstr ""
+msgstr "仮想ホストマネージャの編集"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
 msgid "Subscription Matching"
-msgstr ""
+msgstr "サブスクリプションマッチング"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Subscriptions"
-msgstr ""
+msgstr "サブスクリプション"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:103
 msgid "Unmatched Products"
-msgstr ""
+msgstr "該当のない製品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Pins "
-msgstr ""
+msgstr "ピン "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Messages "
-msgstr ""
+msgstr "メッセージ "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
 msgid "Match data status"
-msgstr ""
+msgstr "マッチングデータの状態"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:62
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
-msgstr ""
+msgstr "マッチング処理を開始できません。 SUSE Manager の管理者に連絡して、タスクスケジューラが動作しているかどうかをご確認ください。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:68
 msgid "No match data is currently available."
-msgstr ""
+msgstr "利用可能なマッチングデータはありません。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:69
 msgid "You can also trigger a first run now by clicking the button below."
-msgstr ""
+msgstr "下記のボタンを押すことで、初回の起動を行なうことができます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:75
 msgid "Matching data is currently being recomputed, it was started {0}."
-msgstr ""
+msgstr "マッチングデータは現在計算中です。 {0} に開始しています。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:78
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
-msgstr ""
+msgstr "直近のマッチングデータは {0} に計算されていますが、下記のボタンを押すことで新たに実行することもできます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
+msgstr "マッチングデータは通常、夜間のタスクスケジュールとして実行されます ( "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
 msgid "change the task schedule from the administration page"
-msgstr ""
+msgstr "管理ページからタスクスケジュールを変更できます"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
 msgid "). "
-msgstr ""
+msgstr ") 。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
 msgid "Refresh matching data"
-msgstr ""
+msgstr "マッチングデータの更新"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:24
 msgid "Unsupported part number detected"
-msgstr ""
+msgstr "サポート対象外のパーツ番号が検出されました"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:28
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
+msgstr "物理システムが仮想化ゲストであるものとして報告されました。ハードウェアデータをご確認ください"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:32
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
+msgstr "仮想化ゲストは未知のホストです。物理システムであるものとして処理します"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:36
 msgid "System has an unknown number of sockets, assuming 16"
-msgstr ""
+msgstr "システムのソケット数が未知です。 16 個あるものとして処理します"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:40
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
-msgstr ""
+msgstr "同じパーツ番号の 2 つのサブスクリプションが設定されています - これらは 1 つにまとめられます"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:44
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
-msgstr ""
+msgstr "同じパーツ番号および同じプロパティの 2 つのサブスクリプションを 1 つにまとめました - 開始／終了日をご確認ください"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:48
 msgid "Pinned match adjusted due to merged subscriptions"
-msgstr ""
+msgstr "サブスクリプションをまとめたことにより、ピンマッチも調整されました"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:49
 msgid "Subscription IDs"
-msgstr ""
+msgstr "サブスクリプション ID"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:71
 msgid "Please review warning and information messages below."
-msgstr ""
+msgstr "下記の警告および情報メッセージをご確認ください。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:81
 msgid "Message"
-msgstr ""
+msgstr "メッセージ"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:87
 msgid "Additional information"
-msgstr ""
+msgstr "追加情報"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:97
 msgid "No messages from the last match run."
-msgstr ""
+msgstr "直近のマッチ実行でのメッセージはありません。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:102
 msgid "Messages"
-msgstr ""
+msgstr "メッセージ"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:84
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
-msgstr ""
+msgstr "サブスクリプションに対してピンを設定することで、マッチングアルゴリズムに特定の関連づけを提案させることができます。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:86
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
-msgstr ""
+msgstr "次回のマッチング処理の動作でアルゴリズムは、指定したシステムにサブスクリプションを適用する結果を生成しようとします。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:88
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
-msgstr ""
+msgstr "なお、アルゴリズム側では特定のピンを無視するよう判断する場合があります。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:89
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
-msgstr ""
+msgstr "これはサブスクリプションが利用できるかどうかと、適用ルールに従って決まります。この場合、満たされていないものとして表示されます。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:114
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:334
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:83
 msgid "Policy"
-msgstr ""
+msgstr "ポリシー"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:149
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:150
 msgid "Add a Pin"
-msgstr ""
+msgstr "ピンの追加"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:169
 msgid "pending next run"
-msgstr ""
+msgstr "次回の実行まで保留しています"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:174
 msgid "not satisfied"
-msgstr ""
+msgstr "満たされていません"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
 msgid "Available Systems"
-msgstr ""
+msgstr "利用可能なシステム"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:224
 msgid "Step 1/2: select the system to pin from the table below."
-msgstr ""
+msgstr "ステップ 1/2: 下記の表で、ピンを設定するシステムを選択してください。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:244
 msgid "Socket/IFL count"
-msgstr ""
+msgstr "ソケット/IFL カウント"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:249
 msgid "Products"
-msgstr ""
+msgstr "製品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:259
 msgid "Select"
-msgstr ""
+msgstr "選択"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:271
 msgid "Available Subscriptions for the Selected System"
-msgstr ""
+msgstr "選択したシステムで利用可能なサブスクリプション"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:272
 msgid "Step 2/2: pick a subscription for system "
-msgstr ""
+msgstr "ステップ 2/2: システムに対するサブスクリプションの選択 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:280
 msgid "Back to sytem selection"
-msgstr ""
+msgstr "システム選択に戻る"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:71
 msgid "Part number"
-msgstr ""
+msgstr "パーツ番号"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:77
@@ -1393,12 +1393,12 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
-msgstr ""
+msgstr "説明"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:339
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:104
 msgid "End date"
-msgstr ""
+msgstr "終了日"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:347
 msgid "Save Pin"
@@ -3423,11 +3423,11 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:416
 msgid "Summary"
-msgstr ""
+msgstr "概要"
 
 #: ../html/src/manager/notifications/notification-messages.js:422
 msgid "Created"
-msgstr ""
+msgstr "作成日"
 
 #: ../html/src/manager/notifications/notification-messages.js:427
 msgid "Action"
@@ -3788,7 +3788,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
-msgstr ""
+msgstr "ブートストラップ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
@@ -3833,7 +3833,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
 msgid "Proxy"
-msgstr ""
+msgstr "プロキシ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:311
 msgid ""
