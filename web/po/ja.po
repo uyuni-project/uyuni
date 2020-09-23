@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-23 00:48+0000\n"
+"PO-Revision-Date: 2020-09-23 03:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -815,63 +815,63 @@ msgstr "製品データの更新処理が裏で動作しています。しばら
 
 #: ../html/src/manager/admin/setup/products/products.js:252
 msgid "The product catalog is still refreshing, please wait."
-msgstr ""
+msgstr "まだ製品カタログを更新しています。しばらくお待ちください。"
 
 #: ../html/src/manager/admin/setup/products/products.js:254
 msgid "Select some product first."
-msgstr ""
+msgstr "まずは製品を選択してください。"
 
 #: ../html/src/manager/admin/setup/products/products.js:263
 #: ../html/src/manager/admin/setup/products/products.js:270
 msgid "Add products"
-msgstr ""
+msgstr "製品の追加"
 
 #: ../html/src/manager/admin/setup/products/products.js:287
 msgid "Clear products selection"
-msgstr ""
+msgstr "製品の選択解除"
 
 #: ../html/src/manager/admin/setup/products/products.js:327
 msgid "Why aren't all products displayed in the list?"
-msgstr ""
+msgstr "なぜ一覧に全ての製品が表示されていないのですか？"
 
 #: ../html/src/manager/admin/setup/products/products.js:328
 msgid ""
 "The products displayed on this list are directly linked to "
 "your                   Organization credentials (Mirror credentials) as well "
 "as your SUSE subscriptions."
-msgstr ""
+msgstr "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 (ミラークレデンシャル) に直接結びついています。"
 
 #: ../html/src/manager/admin/setup/products/products.js:330
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct                   Organization credentials in the previous wizard "
 "step."
-msgstr ""
+msgstr "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情報を追加していることをご確認ください。"
 
 #: ../html/src/manager/admin/setup/products/products.js:339
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
-msgstr ""
+msgstr "このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マスター上でのみ管理することができます。"
 
 #: ../html/src/manager/admin/setup/products/products.js:352
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
-msgstr ""
+msgstr "前へ"
 
 #: ../html/src/manager/admin/setup/products/products.js:402
 msgid "Filter by architecture"
-msgstr ""
+msgstr "アーキテクチャでフィルタ"
 
 #: ../html/src/manager/admin/setup/products/products.js:489
 msgid "Filter by product Description"
-msgstr ""
+msgstr "製品説明でフィルタ"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 msgid "Product Description"
-msgstr ""
+msgstr "製品説明"
 
 #: ../html/src/manager/admin/setup/products/products.js:540
 #: ../html/src/manager/admin/setup/products/products.js:866
@@ -879,39 +879,39 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:184
 msgid "Architecture"
-msgstr ""
+msgstr "アーキテクチャ"
 
 #: ../html/src/manager/admin/setup/products/products.js:540
 msgid "Arch"
-msgstr ""
+msgstr "Arch"
 
 #: ../html/src/manager/admin/setup/products/products.js:541
 msgid "Channels"
-msgstr ""
+msgstr "チャンネル"
 
 #: ../html/src/manager/admin/setup/products/products.js:705
 msgid " channels sync failed"
-msgstr ""
+msgstr " チャンネル同期に失敗しました"
 
 #: ../html/src/manager/admin/setup/products/products.js:711
 msgid " channels sync in progress"
-msgstr ""
+msgstr " チャンネル同期を実行しています"
 
 #: ../html/src/manager/admin/setup/products/products.js:717
 msgid " channels synced"
-msgstr ""
+msgstr " チャンネルを同期しました"
 
 #: ../html/src/manager/admin/setup/products/products.js:735
 msgid "To enable this product, the parent product should be selected first"
-msgstr ""
+msgstr "この製品を有効化するには、先に親製品を選択しておく必要があります"
 
 #: ../html/src/manager/admin/setup/products/products.js:735
 msgid "Select this product"
-msgstr ""
+msgstr "この製品を選択"
 
 #: ../html/src/manager/admin/setup/products/products.js:745
 msgid "This product is mirrored."
-msgstr ""
+msgstr "この製品はミラーされています。"
 
 #: ../html/src/manager/admin/setup/products/products.js:771
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
@@ -919,7 +919,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
-msgstr ""
+msgstr "推奨"
 
 #: ../html/src/manager/admin/setup/products/products.js:785
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
@@ -927,59 +927,59 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
-msgstr ""
+msgstr "推奨を含める"
 
 #: ../html/src/manager/admin/setup/products/products.js:825
 msgid "SCC product catalog refresh in progress"
-msgstr ""
+msgstr "SCC 製品カタログの更新を実行しています"
 
 #: ../html/src/manager/admin/setup/products/products.js:829
 msgid "Scheduling channels product resync"
-msgstr ""
+msgstr "チャンネル製品の再同期をスケジュールしています"
 
 #: ../html/src/manager/admin/setup/products/products.js:833
 msgid "Channels product resync scheduled"
-msgstr ""
+msgstr "チャンネル製品の再同期をスケジュールしました"
 
 #: ../html/src/manager/admin/setup/products/products.js:837
 msgid "Schedule channels product resync"
-msgstr ""
+msgstr "チャンネル製品の再同期をスケジュール"
 
 #: ../html/src/manager/admin/setup/products/products.js:876
 msgid "Show product's channels"
-msgstr ""
+msgstr "製品チャンネルの表示"
 
 #: ../html/src/manager/admin/setup/products/products.js:900
 msgid "Product Channels - "
-msgstr ""
+msgstr "製品チャンネル - "
 
 #: ../html/src/manager/admin/setup/products/products.js:905
 msgid "Mandatory Channels"
-msgstr ""
+msgstr "必須チャンネル"
 
 #: ../html/src/manager/admin/setup/products/products.js:910
 msgid "Optional Channels"
-msgstr ""
+msgstr "任意チャンネル"
 
 #: ../html/src/manager/admin/setup/products/products.js:932
 msgid "not synced"
-msgstr ""
+msgstr "同期されていません"
 
 #: ../html/src/manager/admin/setup/products/products.js:934
 msgid "sync in progress"
-msgstr ""
+msgstr "同期を行なっています"
 
 #: ../html/src/manager/admin/setup/products/products.js:936
 msgid "synced"
-msgstr ""
+msgstr "同期済み"
 
 #: ../html/src/manager/admin/setup/products/products.js:938
 msgid "sync failed"
-msgstr ""
+msgstr "同期が失敗しました"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
 msgid "Refresh the product catalog from SUSE Customer Center"
-msgstr ""
+msgstr "SUSE カスタマーセンターから製品カタログを更新"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:214
@@ -989,20 +989,20 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:238
 msgid "Refresh"
-msgstr ""
+msgstr "更新"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
 msgid "Please be patient, this might take several minutes."
-msgstr ""
+msgstr "この処理にはしばらくの時間がかかります。お待ちください。"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
 #: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
-msgstr ""
+msgstr "完了しました"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
 msgid "Operation not successful: Empty reply from the server"
-msgstr ""
+msgstr "操作は成功しませんでした: サーバからの応答が空です"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
 #: ../html/src/manager/images/image-view.js:600
@@ -1012,43 +1012,43 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
-msgstr ""
+msgstr "詳細"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:87
 msgid " running"
-msgstr ""
+msgstr " 実行しています"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:88
 msgid " finished"
-msgstr ""
+msgstr " 完了"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:89
 msgid " failed"
-msgstr ""
+msgstr " 失敗"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:90
 msgid " interrupted"
-msgstr ""
+msgstr " 割り込み"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:91
 msgid " ready to run"
-msgstr ""
+msgstr " 実行可能"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:92
 msgid " skipped"
-msgstr ""
+msgstr " 飛ばしました"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:108
 msgid "Task Engine Status"
-msgstr ""
+msgstr "タスクエンジンの状態"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:116
 msgid "Last Execution Times"
-msgstr ""
+msgstr "直近の実行時間"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:117
 msgid "Runtime Status"
-msgstr ""
+msgstr "実行時の状態"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:129
 msgid ""
@@ -2596,7 +2596,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
 #: ../html/src/manager/virtualization/pools/pool-properties.js:517
 msgid "Username"
-msgstr ""
+msgstr "ユーザ名"
 
 #: ../html/src/manager/images/image-store-edit.js:178
 msgid "Edit Image Store: '"
@@ -2715,17 +2715,17 @@ msgstr ""
 #: ../html/src/manager/images/image-view.js:416
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid "Queued"
-msgstr ""
+msgstr "キュー済み"
 
 #: ../html/src/manager/images/image-view.js:418
 msgid "Building"
-msgstr ""
+msgstr "構築しています"
 
 #: ../html/src/manager/images/image-view.js:424
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:227
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:296
 msgid "Unknown"
-msgstr ""
+msgstr "不明"
 
 #: ../html/src/manager/images/image-view.js:432
 #: ../html/src/manager/images/image-view.js:473
@@ -2847,7 +2847,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
-msgstr ""
+msgstr "ピックアップ済み"
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
