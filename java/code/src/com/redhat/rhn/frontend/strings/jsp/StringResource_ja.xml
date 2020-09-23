@@ -743,14 +743,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>ユーザー名</target>
+        <target>ユーザ名</target>
       </trans-unit>
       <trans-unit id="username.displayname" xml:space="preserve">
         <source>Username:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>ユーザー名:</target>
+        <target>ユーザ名:</target>
       </trans-unit>
       <trans-unit id="realname.displayname" xml:space="preserve">
         <source>Real Name</source>
@@ -2968,7 +2968,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/AddPackagesConfirm.do</context>
         </context-group>
-        <target>アーキテクチャー</target>
+        <target>アーキテクチャ</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.notspecified" xml:space="preserve">
         <source>not specified</source>
@@ -5079,7 +5079,7 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.overview.provisioning.kickstart">
           <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source> <target>システムの &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;自動インストール&lt;/a&gt; を行ないます</target> </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
-          <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source> <target>&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;スナップショットへのロールバック&lt;/a&gt; 向けのシステムの &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;タグ付け&lt;/a&gt;</target></trans-unit>
+          <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source> <target>&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;スナップショットロールバック&lt;/a&gt; 向けのシステムの &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;タグ付け&lt;/a&gt;</target></trans-unit>
         <trans-unit id="ssm.overview.provisioning.remotecommands">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source> <target>&lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;リモートコマンド&lt;/a&gt; を実行します</target>
         </trans-unit>
@@ -12083,8 +12083,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source> <target>このアクティベーションキーは以下に表示される設定ファイルチャンネルにサブスクライブされています。設定ファイルチャンネルは順位の高いチャンネルから順に表示されています。特定のチャンネルからのファイルは、そのチャンネルより順位の低いチャンネルの同じファイルパスを持つファイルと同じ名前を持つファイルを上書きします。</target>
         </trans-unit>
         <trans-unit id="activation-keys.config.rank.jsp.para2">
-          <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source> <target>サブスクライブしているチャンネルの該当ランキングを変更するには、1 チャンネルを選択してから下の矢印ボタンを使って上下に移動させます。ランク付けが完了したら、下の "{0}" をクリックしてチャンネルのサブスクリプションと順位を確認する必要があります。</target>
-        </trans-unit>
+          <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source> <target>サブスクライブしているチャンネルの該当順位を変更するには、1 チャンネルを選択してから下の矢印ボタンを使って上下に移動させます。順位付けが完了したら、下の "{0}" をクリックしてチャンネルのサブスクリプションと順位を確認する必要があります。</target> </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -12686,14 +12685,11 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>This action's status is: {0}.</source> <target>この動作の状態は {0} です。</target>
         </trans-unit>
         <trans-unit id="system.event.details.statusPicked Up">
-          <source>Picked Up</source> <target>開始</target>
-        </trans-unit>
+          <source>Picked Up</source> <target>ピックアップ済み</target> </trans-unit>
         <trans-unit id="system.event.details.statusCompleted">
-          <source>Completed</source> <target>完了</target>
-        </trans-unit>
+          <source>Completed</source> <target>完了しました</target> </trans-unit>
         <trans-unit id="system.event.details.statusQueued">
-          <source>Queued</source> <target>キュー待ち</target>
-        </trans-unit>
+          <source>Queued</source> <target>キュー済み</target> </trans-unit>
         <trans-unit id="system.event.details.statusFailed">
           <source>Failed</source> <target>失敗</target>
         </trans-unit>
@@ -13937,7 +13933,7 @@ a file or files, or copy the latest version into a set of local overrides or int
           <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
           <context context-type="paramnotes">The following systems are subscribed to _@@PRODUCT_NAME@@Config_.  You may deploy any files from _@@PRODUCT_NAME@@Config_ to these systems except for those files that the systems override or that are outranked by files in other channels.</context>
         </context-group>
-        <target>次のシステムは {0} にサブスクライブされています。システムが上書きするファイル、または他のチャンネルにあるファイルよりもランクの低いファイルを除き、いずれのファイルでも {0} からこれらのシステムに配備することができます。</target>
+        <target>次のシステムは {0} にサブスクライブされています。システムが上書きするファイル、または他のチャンネルにあるファイルよりも順位の低いファイルを除き、いずれのファイルでも {0} からこれらのシステムに配備することができます。</target>
       </trans-unit>
       <trans-unit id="channelsystems.jsp.overridden" xml:space="preserve">
         <source>Overridden Files</source>
@@ -13951,7 +13947,7 @@ a file or files, or copy the latest version into a set of local overrides or int
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
         </context-group>
-        <target>ランクの低いファイル</target>
+        <target>順位の低いファイル</target>
       </trans-unit>
       <trans-unit id="channelsystems.jsp.unsubscribe" xml:space="preserve">
         <source>Unsubscribe systems</source>
@@ -14298,7 +14294,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/</context>
           <context context-type="paramnotes"/>
         </context-group>
-        <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりもランクが低くなる場合、この上書き/最上位ランクのファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
+        <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりも順位が低くなる場合、この上書きや最上位のファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
       <!-- deployrevision.jsp -->
       <!-- errors -->
@@ -14324,7 +14320,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;ヒント:&lt;/strong&gt; システムに対して、このファイルに対するローカル管理のオーバーライドがある場合、それを配備することはできません。  その代わり、 'ランクの変更' リンクをクリックしてオーバーライドチャンネルの順位を再設定することができます。</target>
+        <target state="translated">&lt;strong&gt;ヒント:&lt;/strong&gt; システムに対して、このファイルに対するローカル管理のオーバーライドがある場合、それを配備することはできません。  その代わり、 '順位の変更' リンクをクリックしてオーバーライドチャンネルの順位を再設定することができます。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.needadmin" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, request a {0} to subscribe the system to the {1} configuration channel, then return to this screen.</source>
@@ -14531,7 +14527,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">1 central override (_Modify Rank_)</context>
         </context-group>
-        <target>{0} 中央オーバーライド (&lt;a href="{1}"&gt;ランクの変更&lt;/a&gt;)</target>
+        <target>{0} 中央オーバーライド (&lt;a href="{1}"&gt;順位の変更&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="globaldeploy.jsp.override-number" xml:space="preserve">
         <source>{0} system override (&lt;a href="{1}"&gt;Remove System Override&lt;/a&gt;)</source>
@@ -14547,7 +14543,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">5 central overrides (_Modify rank_)</context>
         </context-group>
-        <target>{0} 中央オーバーライド (&lt;a href="{1}"&gt;ランクの変更&lt;/a&gt;)</target>
+        <target>{0} 中央オーバーライド (&lt;a href="{1}"&gt;順位の変更&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.header2" xml:space="preserve">
         <source>Confirm file deploy</source>
@@ -16067,7 +16063,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Subscribe to Configuration Channels</source> <target>設定チャンネルにサブスクライブ</target>
         </trans-unit>
         <trans-unit id="ssm.config.subscribe.jsp.summary">
-          <source>Below are available configuration channels to which you may subscribe systems. After selecting the channels to which you wish to subscribe, you will be given a chance to rank those channels. No changes will be made to your system set until after you have ranked channels.</source> <target>以下が、システムに対してサブスクライブさせることができる設定チャンネルになります。サブスクライブさせたいチャンネルを選択すると、それらのチャンネルのランク付けをする機会が与えられます。チャンネルのランク付けをするまで、システムセットに対する変更は一切行なうことができません。</target> </trans-unit>
+          <source>Below are available configuration channels to which you may subscribe systems. After selecting the channels to which you wish to subscribe, you will be given a chance to rank those channels. No changes will be made to your system set until after you have ranked channels.</source> <target>以下が、システムに対してサブスクライブさせることができる設定チャンネルになります。サブスクライブさせたいチャンネルを選択すると、それらのチャンネルの順位付けをする機会が与えられます。チャンネルの順位付けをするまで、システムセットに対する変更は一切行なうことができません。</target> </trans-unit>
         <trans-unit id="ssm.config.subscribe.jsp.step">
           <source>Step 1: Select Channels for Subscription.</source> <target>ステップ 1: サブスクライブさせるチャンネルを選択します。</target>
         </trans-unit>
@@ -16090,14 +16086,11 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/Rank.do</context>
         </context-group>
         <trans-unit id="ssm.config.rank.jsp.header">
-          <source>Rank Configuration Channels</source> <target>設定チャンネルのランク付け</target>
-        </trans-unit>
+          <source>Rank Configuration Channels</source> <target>設定チャンネルの順位付け</target> </trans-unit>
         <trans-unit id="ssm.config.rank.jsp.summary">
-          <source>Rank the new configuration channel subscriptions. Configuration files in channels appearing higher in the list will override configuration files with the same path in lower channels. Choose a channel in the list and then use the up and down arrows to change its priority. Also select what priority the configuration channels listed here will have in relation to current configuration channel subscriptions for each system.</source> <target>新しい設定チャンネルのサブスクリプションをランク付けします。一覧で高い順位で表示されるチャンネルの設定ファイルは低い順位のチャンネルの同じパスを持つ設定ファイルを上書きします。一覧にあるチャンネルを選択してから上下の矢印を使って順位を変更します。また、各システムの現在の設定チャンネルのサブスクリプションに応じて、ここに表示される設定チャンネルに持たせる順位も選択します。</target>
-        </trans-unit>
+          <source>Rank the new configuration channel subscriptions. Configuration files in channels appearing higher in the list will override configuration files with the same path in lower channels. Choose a channel in the list and then use the up and down arrows to change its priority. Also select what priority the configuration channels listed here will have in relation to current configuration channel subscriptions for each system.</source> <target>新しい設定チャンネルのサブスクリプションを順位付けします。一覧で高い順位で表示されるチャンネルの設定ファイルは低い順位のチャンネルの同じパスを持つ設定ファイルを上書きします。一覧にあるチャンネルを選択してから上下の矢印を使って順位を変更します。また、各システムの現在の設定チャンネルのサブスクリプションに応じて、ここに表示される設定チャンネルに持たせる順位も選択します。</target> </trans-unit>
         <trans-unit id="ssm.config.rank.jsp.step">
-          <source>Step 2: Rank Channels for Subscription.</source> <target>ステップ 2: サブスクライブさせるチャンネルのランク付けをします。</target>
-        </trans-unit>
+          <source>Step 2: Rank Channels for Subscription.</source> <target>ステップ 2: サブスクライブさせるチャンネルの順位付けをします。</target> </trans-unit>
         <trans-unit id="ssm.config.rank.jsp.up">
           <source>up</source> <target>上</target>
         </trans-unit>
@@ -16443,11 +16436,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Deployable Files*</source> <target>配備可能なファイル*</target>
         </trans-unit>
         <trans-unit id="sdc.configlist.jsp.rank">
-          <source>Rank</source> <target>ランク</target>
-        </trans-unit>
+          <source>Rank</source> <target>順位</target> </trans-unit>
         <trans-unit id="sdc.configlist.jsp.note">
-          <source>&lt;strong&gt;* - Note:&lt;/strong&gt; Deployable Files are files in a configuration channel that are not outranked by files in greater priority configuration channels nor overridden by files in the systems local configuration channel.</source> <target>&lt;strong&gt;* - 注記:&lt;/strong&gt; 配備可能なファイルとは、より優先順位の高い設定チャンネルにあるファイルよりもランクが高く、システムのローカル設定チャンネルにあるファイルで上書きされない設定チャンネルのファイルのことです。</target>
-        </trans-unit>
+          <source>&lt;strong&gt;* - Note:&lt;/strong&gt; Deployable Files are files in a configuration channel that are not outranked by files in greater priority configuration channels nor overridden by files in the systems local configuration channel.</source> <target>&lt;strong&gt;* - 注記:&lt;/strong&gt; 配備可能なファイルとは、より優先順位の高い設定チャンネルにあるファイルよりも順位が高く、システムのローカル設定チャンネルにあるファイルで上書きされない設定チャンネルのファイルのことです。</target> </trans-unit>
         <trans-unit id="sdc.configlist.jsp.unsubscribe">
           <source>Unsubscribe</source> <target>サブスクライブの中止</target>
         </trans-unit>
@@ -17154,12 +17145,11 @@ Base Channel chosen on the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEdit.do</context>
         </context-group>
-        <target state="needs-adaptation">以下でパッケージプロファイルを選択して、キックスタートしている
-システムを @@PRODUCT_NAME@@ に登録しているシステムのパッケージプロファイルと
-同期することができます。&lt;strong&gt;注記&lt;/strong&gt;: この一覧では、
-&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;オペレーティングシステム&lt;/a&gt; ページで選択された
-同じベースチャンネルに対して作成されたパッケージプロファイル
-のみが表示されます。</target>
+        <target state="translated">以下でパッケージプロファイルを選択することで、キックスタートしているシステムを
+@@PRODUCT_NAME@@ に登録しているシステムのパッケージプロファイルと
+同期することができます。  &lt;strong&gt;注記&lt;/strong&gt;: この一覧では、
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;オペレーティングシステム&lt;/a&gt; ページで選択された、
+同じベースチャンネルに対して作成されたパッケージプロファイルのみが表示されます。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
@@ -17170,10 +17160,10 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEditSubmit.do</context>
         </context-group>
-        <target state="needs-adaptation">&lt;span class="small-text"&gt;&lt;strong&gt;ヒント:&lt;/strong&gt;
-キックスタート中にシステムを必ず適切なソフトウェアチャンネルにサブスクライブするようにします。これによりシステムは同期されるパッケージプロファイル内の
-パッケージにアクセスできるようになります。
-  &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;アクティベーションキー&lt;/a&gt; タブに移動し、
+        <target state="translated">&lt;span class="small-text"&gt;&lt;strong&gt;ヒント:&lt;/strong&gt;
+キックスタート中に、システムを必ず適切なソフトウェアチャンネルにサブスクライブするようにしてください。
+これにより、システムは同期されるパッケージプロファイル内のパッケージにアクセスできるようになります。
+&lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;アクティベーションキー&lt;/a&gt; タブに移動し、
 キックスタート中にシステムをソフトウェアチャンネルにサブスクライブするようにします。&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.tip.proxy.jsp" xml:space="preserve">
@@ -17363,7 +17353,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target>ユーザー名</target>
+        <target>ユーザ名</target>
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.jsp.power_password" xml:space="preserve">
         <source>Password</source>
@@ -17543,7 +17533,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target state="needs-adaptation">@@PRODUCT_NAME@@ によって管理されないプロファイルは、自動インストールの後にシステムを @@PRODUCT_NAME@@ に登録できるとは限りません。自動インストールを再度チェックして (プロファイル名をクリック)、自動インストール後にシステムが @@PRODUCT_NAME@@ システム一覧に再表示されるか確認するとよいでしょう。</target>
+        <target state="translated"> @@PRODUCT_NAME@@ によって管理されないプロファイルは、自動インストールの後にシステムを @@PRODUCT_NAME@@ に登録できるとは限りません。自動インストールを再度チェックして (プロファイル名をクリック)、自動インストール後にシステムが @@PRODUCT_NAME@@ システム一覧に再表示されるか確認するとよいでしょう。</target>
       </trans-unit>
       <trans-unit id="kickstarts.distro.cobbler-only.tooltip" xml:space="preserve">
         <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
@@ -17642,7 +17632,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
-        <target state="needs-adaptation">この自動インストールプロファイルの新しいラベルを指定してください。IP 範囲の設定以外は、ソースの自動インストールプロファイルからのオプション、設定、およびスクリプトがすべて新しいプロファイルにコピーされます。</target>
+        <target state="translated">この自動インストールプロファイルの新しいラベルを指定してください。  IP 範囲の設定以外は、ソースの自動インストールプロファイルからのオプション、設定、およびスクリプトがすべて新しいプロファイルにコピーされます。</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header1" xml:space="preserve">
         <source>Create a Clone of Autoinstallation: {0}</source>
@@ -17656,14 +17646,14 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="needs-adaptation">これは、このシステムの自動インストールの現在の進渉状況です。&lt;strong&gt;注記:&lt;/strong&gt; このページは 15 秒毎にリフレッシュされます。</target>
+        <target state="translated">これは、このシステムの自動インストールの現在の進捗状況です。 &lt;strong&gt;注記:&lt;/strong&gt; このページは 15 秒ごとに更新されます</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.progress" xml:space="preserve">
         <source>Autoinstallation Progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>自動インストールの進渉</target>
+        <target>自動インストールの進捗</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.header2" xml:space="preserve">
         <source>Autoinstallation Status</source>
@@ -17684,7 +17674,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="needs-adaptation">既存のプロファイルを使用: </target>
+        <target state="translated">既存のプロファイルを使用: </target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.next_action" xml:space="preserve">
         <source>Next Action:</source>
@@ -18017,7 +18007,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">自動インストール可能なディストリビューションを定義するには次の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@ サーバーに存在するインストールツリーへの有効なパスである必要があります。&lt;br/&gt;&lt;br/&gt; 「ディストリビューションラベル」フィールドには文字、数字、ハイフン、ピリオド、およびアンダースコアのみを指定できます。また、このフィールドには少なくとも 4 文字を指定する必要があります。 &lt;br/&gt;&lt;br/&gt; ツリーパス、キックスタート RPM、ベースチャンネル、インストーラー生成は常に一致する必要があります。一般的に、これは各フィールドのバージョンが @@ENTERPRISE_LINUX_NAME@@ の同じバージョンとなることを意味します。 &lt;br/&gt;&lt;br/&gt; &lt;p&gt;ツリーパスは、カーネル、initrd、およびリポジトリ情報を含むが rpm を除く、ディストリビューションのキックスタートツリー全体を含む @@PRODUCT_NAME@@ サーバー上のローカルディスクパスである必要があります。このディレクトリは、apache ユーザーおよび tomcat ユーザーが読み取れる必要があります。たとえば @@PRODUCT_NAME@@ のサーバ内の &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; にメディアがある場合は、これをツリーパスとして指定する必要があります。 &lt;/p&gt;</target>
+        <target state="translated">自動インストール可能なディストリビューションを定義するには、以下の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@ サーバーに存在するインストールツリーへの有効なパスである必要があります。&lt;br/&gt;&lt;br/&gt;
+
+'ディストリビューションラベル' フィールドには文字、数字、ハイフン、ピリオド、およびアンダースコアのみを指定できます。また、このフィールドには少なくとも 4 文字を指定する必要があります。 &lt;br/&gt;&lt;br/&gt;
+
+ツリーパス、キックスタート RPM、ベースチャンネル、インストーラ生成は常に一致する必要があります。一般的に、これは各フィールドのバージョンが @@ENTERPRISE_LINUX_NAME@@ の同じバージョンとなることを意味します。 &lt;br/&gt;&lt;br/&gt;
+
+&lt;p&gt;ツリーパスは、カーネル、initrd、およびリポジトリ情報を含むが rpm を除く、ディストリビューションのキックスタートツリー全体を含む @@PRODUCT_NAME@@ サーバー上のローカルディスクパスである必要があります。このディレクトリは、apache ユーザーおよび tomcat ユーザーが読み取れる必要があります。たとえば @@PRODUCT_NAME@@ のサーバ内の &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; にメディアがある場合は、これをツリーパスとして指定する必要があります。 &lt;/p&gt;
+</target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2" xml:space="preserve">
         <source>Create Autoinstallable Distribution</source>
@@ -18082,8 +18079,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">
- &lt;strong&gt;選択されたベースチャンネルに該当するインストーラー生成が見つかりません。&lt;/strong&gt;
+        <target state="translated">
+ &lt;strong&gt; 選択されたベースチャンネルに該当するインストーラー生成が見つかりません。 &lt;/strong&gt;
 </target>
       </trans-unit>
       <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
@@ -18176,7 +18173,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target state="needs-adaptation">このホストで実行するよう設定されている仮想ゲストの一覧になります。以下のボタンを使ってこれらゲスト上で各種の動作を実行することができます。</target>
+        <target state="translated">これはこのホストで実行するよう設定されている仮想ゲストの一覧です。以下のボタンを利用して、これらゲスト上での各種動作を実行することができます。</target>
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.nosystems" xml:space="preserve">
         <source>No virtual systems.</source>
@@ -18351,7 +18348,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target state="needs-adaptation">以下の「確認」ボタンをクリックして次の仮想システムを削除します。これにより、@@PRODUCT_NAME@@ からの仮想システムに関する情報はすべて削除されます。&lt;strong&gt;注記:&lt;/strong&gt; これにより、ホストから実際の仮想マシンは削除されません。</target>
+        <target state="translated">以下の '確認' ボタンをクリックして以下の仮想システムを削除します。  これにより、@@PRODUCT_NAME@@ からの仮想システムに関する情報はすべて削除されます。&lt;strong&gt;注記:&lt;/strong&gt; なお、ホストから実際の仮想マシンは削除されません。</target>
       </trans-unit>
       <trans-unit id="virtualguests_confirm.jsp.nosystems" xml:space="preserve">
         <source>No systems selected.</source>
@@ -18414,7 +18411,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;注記:&lt;/strong&gt; 削除の選択をした自動インストールのディストリビューションは次の自動インストールプロファイルで使用中です。以下のプロファイルで使用されるディストリビューションの変更を行なってから、このディストリビューションを削除してください。リンク内のラベルをクリックしてプロファイルのディストリビューションを編集します。</target>
+        <target state="translated">&lt;strong&gt;注記:&lt;/strong&gt; 削除の選択をした自動インストールのディストリビューションは、次の自動インストールプロファイルで使用されています。以下のプロファイルで使用されるディストリビューションの変更を行なってから、このディストリビューションを削除してください。リンク内のラベルをクリックしてプロファイルのディストリビューションを編集します。</target>
       </trans-unit>
       <trans-unit id="distro-delete.jsp.cantdelete" xml:space="preserve">
         <source>This distribution cannot be deleted at this time.</source>
@@ -18519,7 +18516,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target state="needs-adaptation">以下のフィールドは空白にすることができます (この場合、選択された自動インストールプロファイルで定義されたデフォルト値が使用されます)。各フィールドは個別に設定でき、個別に設定した値はプロファイルのデフォルト値よりも優先されます。</target>
+        <target state="translated">以下の項目は空白にすることができます (この場合、選択された自動インストールプロファイルで定義された既定値が使用されます)。 それぞれの項目は個別に設定できるほか、個別に設定した値はプロファイルの既定値よりも優先されます。</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.storage.local.message" xml:space="preserve">
         <source>Size in gigabytes from the virtual host's disk space.</source>
@@ -18778,7 +18775,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <source>Continue</source> <target>続行</target>
         </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.noChannels" xml:space="preserve">
-          <source> No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source> <target state="needs-adaptation">サブスクライブできる設定チャンネルはありません。このシステムを使用できるすべてのチャンネルにすでにサブスクライブさせているか (&lt;a href="{0}"&gt;サブスクライブしているチャンネルを表示&lt;/a&gt;)、または使用できるいずれのチャンネルにもアクセス権を持っていないかのどちらです。</target>
+          <source> No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source> <target state="translated"> サブスクライブできる設定チャンネルはありません。このシステムを使用できるすべてのチャンネルにすでにサブスクライブさせているか (&lt;a href="{0}"&gt;サブスクライブしているチャンネルを表示&lt;/a&gt;)、または使用できるいずれのチャンネルにもアクセス権を持っていないかのどちらかです。</target>
         </trans-unit>
         <trans-unit id="common.config.subscription.jsp.error.nojavascript">
           <source>Please enable Javascript before selecting your channel subscriptions.</source> <target>チャンネルサブスクリプションを選択する前に Javascript を有効にしてください。</target>
@@ -18799,19 +18796,17 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <target>{0} に対するチャンネルサブスクリプションが正常に変更されました</target>
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.header">
-          <source>View/Modify Configuration Channel Ranks</source> <target>設定チャンネルのランクを表示/変更</target>
-        </trans-unit>
+          <source>View/Modify Configuration Channel Ranks</source> <target>設定チャンネルの順位を表示／変更</target> </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.para1">
           <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source> <target>このシステムは以下に表示される設定ファイルに順位の高い順から低い順でサブスクライブされています。特定チャンネルからのファイルはそれより下にあるチャンネルの同じファイルパスと同じ名前を持つファイルを上書きします。</target>
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.para2">
-          <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source> <target>サブスクライブしているチャンネルの該当ランキングを変更するには、1 度に 1 チャンネルを選択してから下の矢印ボタンを使って上下に移動させます。ランク付けが完了したら、下の "{0}" をクリックしてチャンネルのサブスクリプションと順位を確認する必要があります。</target>
-        </trans-unit>
+          <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source> <target>サブスクライブしているチャンネルの該当順位を変更するには、1 度に 1 チャンネルを選択してから下の矢印ボタンを使って上下に移動させます。順位付けが完了したら、下の "{0}" をクリックしてチャンネルのサブスクリプションと順位を確認する必要があります。</target> </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.subscribed_channels">
           <source>Subscribed Channels</source> <target>サブスクライブしているチャンネル</target>
         </trans-unit>
         <trans-unit id="common.config.rank.jsp.warning" xml:space="preserve">
-          <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below. </source> <target state="needs-adaptation">&lt;strong&gt;警告:&lt;/strong&gt; このシステムにサブスクライブさせる新しい設定チャンネルを選択しました。以下でチャンネルのランクを確定して "{0}" をクリックし、サブスクリプションを確認するまで、このシステムはこれらのチャンネルにサブスクライブ &lt;strong&gt;されません&lt;/strong&gt;。</target>
+          <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below. </source> <target state="translated">&lt;strong&gt;警告:&lt;/strong&gt; このシステムにサブスクライブさせる新しい設定チャンネルを選択しました。以下でチャンネルの順位付けを確定して "{0}" をクリックし、サブスクリプションを確認するまで、このシステムはこれらのチャンネルにサブスクライブ &lt;strong&gt;されません&lt;/strong&gt; 。 </target>
         </trans-unit>
         <trans-unit id="common.config.rank.jsp.error.nojavascript">
           <source>Please enable Javascript before ordering your channel subscriptions.</source> <target>チャンネルサブスクリプションの順位付けを行なう前に、 Javascript を有効にしてください。</target> </trans-unit>
@@ -18977,7 +18972,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="paramnotes">{0} - Ping status, will be either online or offline
                                                 This string will be followed by a date in a localized format</context>
         </context-group>
-        <target state="needs-adaptation">{0}: 以下の時点 </target>
+        <target state="translated">{0}: 以下の時点 </target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.ping" xml:space="preserve">
         <source>Ping System</source>
@@ -19103,7 +19098,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>ビルディング</target>
+        <target>構築しています</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updatesavailable" xml:space="preserve">
         <source>Software Updates Available</source>
@@ -19152,7 +19147,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation"> (&lt;a href="{0}"&gt;詳細&lt;/a&gt;)</target>
+        <target state="translated"> (&lt;a href="{0}"&gt;詳細&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unentitled" xml:space="preserve">
         <source>&lt;strong&gt;System not assigned to a system type&lt;/strong&gt; (&lt;a href="{0}"&gt;add it here&lt;/a&gt;)</source>
@@ -19419,7 +19414,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
-        <target>ユーザー名</target>
+        <target>ユーザ名</target>
       </trans-unit>
       <trans-unit id="crashes.jsp.storagepath" xml:space="preserve">
         <source>Storage Path</source>
@@ -20214,7 +20209,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <source>The channel you have attempted to access either does not exist, or you are not allowed access.  Please recheck the link that brought you to this page.</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-          <target state="needs-adaptation">アクセスを試行したチャンネルが存在しないか、またはユーザーはアクセスを許可されていないかのどちらかになります。使用したこのページのリンク元を再確認してください。</target>
+          <target state="translated">アクセスを試行したチャンネルが存在しないか、またはユーザーはアクセスを許可されていないかのどちらかです。  このページのリンク元を再確認してください。</target>
         </trans-unit>
       </group>
       <trans-unit id="sdc.channels.edit.unlimited" xml:space="preserve">
@@ -20257,7 +20252,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="needs-adaptation">このシステムの現在のベースチャンネルに対するサブスクリプション権がありません。ベースチャンネルを変更すると、管理者なしではシステムをこのチャンネル戻すことができなくなります。</target>
+        <target state="translated">このシステムの現在のベースチャンネルに対するサブスクリプション権がありません。  ベースチャンネルを変更すると、管理者側で作業を行なわない限り、システムをこのチャンネルに戻すことができなくなります。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.confirm_update_base" xml:space="preserve">
         <source>Confirm</source>
@@ -20271,7 +20266,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="needs-adaptation">以下に印が付いたチャンネルに対するサブスクリプション権がありません。管理者なしではこのシステムをこのようなチャンネルにサブスクライブし直すことができなくなります。</target>
+        <target state="translated">以下に印が付いたチャンネルに対するサブスクリプション権がありません。  管理者側で作業を行なわない限り、これらのチャンネルの再サブスクライブを行なうことができなくなっています。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.resubwarning" xml:space="preserve">
         <source>Resubscription Warning</source>
@@ -20292,7 +20287,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="needs-adaptation">このシステムにはベースソフトウェアチャンネルがありません。以下の一覧からベースチャンネルを選択することができます。</target>
+        <target state="translated">このシステムにはベースソフトウェアチャンネルがありません。  以下の一覧からベースチャンネルを選択することができます。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
@@ -20404,7 +20399,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
-        <target state="needs-adaptation">お持ちの &lt;strong&gt;@@PRODUCT_NAME@@ 管理者&lt;/strong&gt;ロールでは、この新規の組織へのログインや修正はできません。さらに、その @@PRODUCT_NAME@@ ログインには １ つ以上の組織のメンバーを使用することができません。そのため、この組織に対して初期の &lt;strong&gt;組織管理者&lt;/strong&gt; の新規ログインを作成する必要があります。</target>
+        <target state="translated">お使いの &lt;strong&gt;@@PRODUCT_NAME@@ 管理者&lt;/strong&gt; ロールでは、この新規の組織へのログインや修正はできません。また、その @@PRODUCT_NAME@@ ログインには １ つ以上の組織のメンバーを使用することができません。  そのため、この組織に対して最初の &lt;strong&gt;組織管理者&lt;/strong&gt; の新規ログインを作成する必要があります。</target>
       </trans-unit>
       <trans-unit id="org.channel.subscribed.systems" xml:space="preserve">
         <source>Subscribed Systems</source>
@@ -20486,10 +20481,10 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
-        <target state="needs-adaptation">
-      以下の一覧で、チェックマークが付いた組織は、{0} 組織の信頼できる組織です。これら 2 つの組織間では、
+        <target state="translated">
+          以下の一覧で、チェックマークが付いた組織は、{0} 組織の信頼できる組織です。これら 2 つの組織間では、
       コンテンツの共有やシステムの移行が可能ということになります。信頼を追加するには、組織の横にあるチェックボックスにチェックマークを付けて (または、
-      信頼を削除するにはチェックマークを外して)、「信頼の変更」ボタンをクリックします。
+      信頼を削除するにはチェックマークを外して)、 '信頼の変更' ボタンを押してください。
         </target>
       </trans-unit>
       <trans-unit id="org.trust.confirm.summary" xml:space="preserve">
@@ -20504,13 +20499,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
-        <target state="needs-adaptation">
-       本当に以下に表示される信頼を削除しますか? 削除しようとしている信頼の組織により提供された
-       コンテンツをサブスクライブする {0} 組織にシステムがあります。
-       このため、これらのシステムに悪い影響が出る可能性があります。たとえば、これらのシステムが
-       信頼を介して提供されたコンテンツのセキュリティ更新を受け取らなくなることがあります。
+        <target state="translated">
+            下記の信頼を削除してよろしいですか？  信頼先の組織が提供するコンテンツをサブスクライブして
+            いるシステムが {0} 組織内に存在しています。この信頼を削除してしまうと、それらのシステムに影響が
+            あります。たとえばそれらのサブスクライブでセキュリティ更新を受信しているような場合、セキュリティ
+            更新が受けられなくなってしまいます。
             &lt;p/&gt;
-       信頼の削除を確認する前に、加えようとしている変更を確認してください。
+            信頼を削除する前に、影響範囲をよくご確認ください。
         </target>
       </trans-unit>
       <trans-unit id="org.trust.affectedsystems.summary" xml:space="preserve">
@@ -20523,11 +20518,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
-        <target state="needs-adaptation">
-            &lt;b&gt;{0}&lt;/b&gt; 組織と &lt;b&gt;{1}&lt;/b&gt; 組織間の信頼関係を削除することにより、以下に表示された
-       システムに影響が出ます。
-       この信頼を削除すると、これらのシステムに悪い影響が出ます。たとえば、これらのシステムが
-       信頼を介して提供されたコンテンツのセキュリティ更新を受け取らなくなることがあります。
+        <target state="translated">
+            &lt;b&gt;{0}&lt;/b&gt; 組織と &lt;b&gt;{1}&lt;/b&gt; 組織間の信頼関係を削除することにより、
+       以下に表示されたシステムに影響があります。
+       この信頼を削除してしまうと、たとえばそれらのサブスクライブでセキュリティ更新を受信しているような
+       場合、セキュリティ更新が受けられなくなってしまいます。
         </target>
       </trans-unit>
       <trans-unit id="org.trust.org" xml:space="preserve">
@@ -20650,12 +20645,12 @@ Below is a list of channels in your organization.
         </source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target state="needs-adaptation">
+          <target state="translated">
 以下に組織のチャンネルの一覧を示します。
 &lt;ul&gt;
-&lt;li&gt;チャンネルに変更を加えないようにするには、該当するチャンネルに対して「何も実行しない」チェックボックスをオンにします。&lt;/li&gt;
-&lt;li&gt;選択されたシステムをチャンネルにサブスクライブするには、該当するチャンネルに対して「サブスクライブ」チェックボックスをオンにします。&lt;/li&gt;
-&lt;li&gt;選択されたシステムのチャンネルからのサブスクライブを中止するには、該当するチャンネルに対して「サブスクライブの中止」チェックボックスをオンにします。&lt;/li&gt;
+&lt;li&gt;チャンネルに変更を加えないようにするには、該当するチャンネルに対して '何もしない' チェックボックスを選択してください。&lt;/li&gt;
+&lt;li&gt;選択されたシステムをチャンネルにサブスクライブするには、該当するチャンネルに対して 'サブスクライブ'チェックボックスを選択してください。&lt;/li&gt;
+&lt;li&gt;選択されたシステムのチャンネルからのサブスクライブを中止するには、該当するチャンネルに対して 'サブスクライブの中止' チェックボックスを選択してください。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;strong&gt;注記:&lt;/strong&gt; 互換性のないチャンネルにシステムを割り当てようとしても失敗します。
         </target>
@@ -23015,10 +23010,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.last.execution" xml:space="preserve">
         <source>Last Execution Times</source>
-        <target>最終実行時間</target>
+        <target>直近の実行時間</target>
       </trans-unit>
       <trans-unit id="task.status.runtime.status" xml:space="preserve">
         <source>Runtime Status</source>
+        <target>実行時の状態</target>
       </trans-unit>
       <trans-unit id="task.status.taskomatic.on" xml:space="preserve">
         <source>Scheduling Service</source>
@@ -23892,9 +23888,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="setup-wizard.prev" xml:space="preserve">
         <source>Prev</source>
+        <target>前へ</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.username" xml:space="preserve">
         <source>Username</source>
+        <target>ユーザ名</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.password" xml:space="preserve">
         <source>Password</source>
