@@ -640,19 +640,26 @@ class UyuniActivationKeys:
                          current_ak: Dict[str, Any],
                          configure_after_registration: bool,
                          current_configure_after_registration: bool) -> Dict[str, Any]:
+        _current_ak = current_ak or {}
         changes = {}
-        for field in ["description", 'base_channel_label', 'usage_limit', 'universal_default']:
-            if (current_ak or {}).get(field) != ak_paramters.get(field):
+        for field in ["description", 'base_channel_label', 'usage_limit', 'universal_default', 'contact_method']:
+            if _current_ak.get(field) != ak_paramters.get(field):
                 changes[field] = {"new": ak_paramters[field]}
                 if current_ak:
-                    changes[field]["old"] = (current_ak or {}).get(field)
+                    changes[field]["old"] = _current_ak.get(field)
+
+        # if ak_paramters.get('contact_method') != _current_ak.get('contact_method'):
+        #     if not (_current_ak.get('contact_method') == 'default' and ak_paramters.get('contact_method') is None):
+        #         changes['contact_method'] = {"new": ak_paramters['contact_method']}
+        #         if current_ak:
+        #             changes['contact_method']["old"] = _current_ak.get('contact_method')
 
         # list fields
         for field in ['entitlements', 'child_channel_labels', 'server_group_ids']:
-            if Counter((ak_paramters or {}).get(field) or []) != Counter((current_ak or {}).get(field) or []):
+            if Counter((ak_paramters or {}).get(field) or []) != Counter(_current_ak.get(field) or []):
                 changes[field] = {"new": ak_paramters[field]}
                 if current_ak:
-                    changes[field]["old"] = (current_ak or {}).get(field)
+                    changes[field]["old"] = _current_ak.get(field)
 
         if configure_after_registration != current_configure_after_registration:
             changes['configure_after_registration'] = {"new": configure_after_registration}
@@ -677,7 +684,7 @@ class UyuniActivationKeys:
 
     @staticmethod
     def _update_child_channels(current_child_channels, new_child_channels,
-                            key, org_admin_user, org_admin_password):
+                               key, org_admin_user, org_admin_password):
         add_child_channels = [t for t in new_child_channels if t not in current_child_channels]
         if add_child_channels:
             __salt__['uyuni.activation_key_add_child_channels'](key, add_child_channels,
@@ -692,8 +699,8 @@ class UyuniActivationKeys:
 
     def manage(self, name: str, description: str,
                base_channel: str = '',
-               usage_limit: int = None,
-               contact_method: str = '',
+               usage_limit: int = 0,
+               contact_method: str = 'default',
                system_types: List[int] = [],
                universal_default: bool = False,
                child_channels: List[str] = [],
@@ -706,6 +713,7 @@ class UyuniActivationKeys:
         :param description:
         :param base_channel:
         :param usage_limit:
+        :param contact_method:
         :param system_types:
         :param universal_default:
         :param child_channels:
@@ -716,7 +724,6 @@ class UyuniActivationKeys:
         :return:
         """
         current_ak = None
-        current_org_user = None
         key = None
         current_configure_after_registration = None
         try:
@@ -724,6 +731,10 @@ class UyuniActivationKeys:
             key = "{}-{}".format(current_org_user['org_id'], name)
             current_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
                                                                       org_admin_password=org_admin_password)
+            ## FIXME big hack over here
+            if current_ak and current_ak.get('base_channel_label', None) == 'none':
+                current_ak['base_channel_label'] = ''
+
             current_configure_after_registration = __salt__['uyuni.activation_key_check_config_deployment'](key,
                                                                                                             org_admin_user,
                                                                                                             org_admin_password)
@@ -734,6 +745,7 @@ class UyuniActivationKeys:
         ak_paramters = {'description': description,
                         'base_channel_label': base_channel,
                         'usage_limit': usage_limit,
+                        'contact_method': contact_method,
                         'entitlements': system_types,
                         'universal_default': universal_default,
                         'child_channel_labels': child_channels,
@@ -753,7 +765,9 @@ class UyuniActivationKeys:
 
         try:
             if current_ak:
-                __salt__['uyuni.activation_key_set_details'](key, description,
+                __salt__['uyuni.activation_key_set_details'](key,
+                                                             description=description,
+                                                             contact_method=contact_method,
                                                              base_channel_label=base_channel,
                                                              usage_limit=usage_limit,
                                                              universal_default=universal_default,
@@ -774,9 +788,15 @@ class UyuniActivationKeys:
                                                         org_admin_user=org_admin_user,
                                                         org_admin_password=org_admin_password)
 
+                __salt__['uyuni.activation_key_set_details'](key, contact_method=contact_method,
+                                                             usage_limit=usage_limit,
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
+
             # TODO we have some mandatory channels, we need more tests/review on how they behave
             if changes.get('child_channel_labels', False):
-                self._update_child_channels(current_ak['child_channel_labels'] or [], child_channels or [],
+                self._update_child_channels((current_ak or {}).get('child_channel_labels', []),
+                                            child_channels or [],
                                             key, org_admin_user, org_admin_password)
 
             # TODO groups will be a more tricky since we need to get the system group id
@@ -997,7 +1017,8 @@ def activation_key_absent(name, org_admin_user=None, org_admin_password=None):
 def activation_key_present(name,
                            description,
                            base_channel='',
-                           usage_limit=None,
+                           usage_limit=0,
+                           contact_method='default',
                            system_types=[],
                            universal_default=False,
                            child_channels=[],
@@ -1011,6 +1032,7 @@ def activation_key_present(name,
     :param description: the Activation Key ID
     :param base_channel:
     :param usage_limit:
+    :param contact_method:
     :param system_types:
     :param universal_default:
     :param child_channels:
@@ -1022,11 +1044,13 @@ def activation_key_present(name,
     :return:  dict for Salt communication
     """
     return UyuniActivationKeys().manage(name, description,
-                                        base_channel,
-                                        usage_limit,
-                                        system_types,
-                                        universal_default,
-                                        child_channels,
-                                        server_groups,
-                                        configure_after_registration,
-                                        org_admin_user, org_admin_password)
+                                        base_channel=base_channel,
+                                        usage_limit=usage_limit,
+                                        contact_method=contact_method,
+                                        system_types=system_types,
+                                        universal_default=universal_default,
+                                        child_channels=child_channels,
+                                        server_groups=server_groups,
+                                        configure_after_registration=configure_after_registration,
+                                        org_admin_user=org_admin_user,
+                                        org_admin_password=org_admin_password)

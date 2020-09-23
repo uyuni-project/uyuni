@@ -647,25 +647,32 @@ class UyuniActivationKey(UyuniRemoteObject):
             return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
                                                            system_types, universal_default))
 
-    def set_details(self, key: str, description: str,
-                    base_channel_label: str = '', usage_limit: int = None,
+    def set_details(self, key: str,
+                    description: str = None,
+                    contact_method: str = None,
+                    base_channel_label: str = None,
+                    usage_limit: int = None,
                     universal_default: bool = False):
         """
         Create an Uyuni Activation Key.
 
         :param key: activation key name
         :param description: activation key description
+        :param contact_method:
         :param base_channel_label:
         :param usage_limit:
         :param universal_default:
 
         :return: boolean, True indicates success
         """
-        data = {
-            'description': description,
-            'base_channel_label': base_channel_label,
-            'universal_default': universal_default
-        }
+        data = {'universal_default': universal_default}
+        if description:
+            data['description'] = description
+        if base_channel_label is not None:
+            data['base_channel_label'] = base_channel_label
+        if contact_method:
+            data['contact_method'] = contact_method
+
         if usage_limit:
             data['usage_limit'] = usage_limit
         else:
@@ -1362,8 +1369,10 @@ def activation_key_create(key, description,
                                                                          universal_default)
 
 
-def activation_key_set_details(key, description,
-                               base_channel_label='',
+def activation_key_set_details(key,
+                               description=None,
+                               contact_method=None,
+                               base_channel_label=None,
                                usage_limit=None,
                                universal_default=False,
                                org_admin_user=None, org_admin_password=None):
@@ -1373,6 +1382,7 @@ def activation_key_set_details(key, description,
     :param key: activation key name
     :param description: activation key description
     :param base_channel_label:
+    :param contact_method:
     :param usage_limit:
     :param universal_default:
     :param org_admin_user: organization admin username
@@ -1381,10 +1391,11 @@ def activation_key_set_details(key, description,
     :return: boolean, True indicates success
     """
     return UyuniActivationKey(org_admin_user, org_admin_password).set_details(key,
-                                                                              description,
-                                                                              base_channel_label,
-                                                                              usage_limit,
-                                                                              universal_default)
+                                                                              description=description,
+                                                                              contact_method=contact_method,
+                                                                              base_channel_label=base_channel_label,
+                                                                              usage_limit=usage_limit,
+                                                                              universal_default=universal_default)
 
 
 def activation_key_add_entitlements(key, system_types, org_admin_user=None, org_admin_password=None):
