@@ -637,7 +637,9 @@ class UyuniActivationKeys:
 
     @staticmethod
     def _compute_changes(ak_paramters: Dict[str, Any],
-                         current_ak: Dict[str, Any]) -> Dict[str, Any]:
+                         current_ak: Dict[str, Any],
+                         configure_after_registration: bool,
+                         current_configure_after_registration: bool) -> Dict[str, Any]:
         changes = {}
         for field in ["description", 'base_channel_label', 'usage_limit', 'universal_default']:
             if (current_ak or {}).get(field) != ak_paramters.get(field):
@@ -646,18 +648,57 @@ class UyuniActivationKeys:
                     changes[field]["old"] = (current_ak or {}).get(field)
 
         # list fields
-        for field in ['entitlements']:
+        for field in ['entitlements', 'child_channel_labels', 'server_group_ids']:
             if Counter((ak_paramters or {}).get(field) or []) != Counter((current_ak or {}).get(field) or []):
                 changes[field] = {"new": ak_paramters[field]}
                 if current_ak:
                     changes[field]["old"] = (current_ak or {}).get(field)
+
+        if configure_after_registration != current_configure_after_registration:
+            changes['configure_after_registration'] = {"new": configure_after_registration}
+            if current_configure_after_registration is not None:
+                changes['configure_after_registration']["old"] = current_configure_after_registration
         return changes
+
+    @staticmethod
+    def _update_system_type(current_system_types, new_system_types,
+                            key, org_admin_user, org_admin_password):
+        add_system_types = [t for t in new_system_types if t not in current_system_types]
+        if add_system_types:
+            __salt__['uyuni.activation_key_add_entitlements'](key, add_system_types,
+                                                              org_admin_user=org_admin_user,
+                                                              org_admin_password=org_admin_password)
+
+        remove_system_types = [t for t in current_system_types if t not in new_system_types]
+        if remove_system_types:
+            __salt__['uyuni.activation_key_remove_entitlements'](key, remove_system_types,
+                                                                 org_admin_user=org_admin_user,
+                                                                 org_admin_password=org_admin_password)
+
+    @staticmethod
+    def _update_child_channels(current_child_channels, new_child_channels,
+                            key, org_admin_user, org_admin_password):
+        add_child_channels = [t for t in new_child_channels if t not in current_child_channels]
+        if add_child_channels:
+            __salt__['uyuni.activation_key_add_child_channels'](key, add_child_channels,
+                                                                org_admin_user=org_admin_user,
+                                                                org_admin_password=org_admin_password)
+
+        remove_child_channels = [t for t in current_child_channels if t not in new_child_channels]
+        if remove_child_channels:
+            __salt__['uyuni.activation_key_remove_child_channels'](key, remove_child_channels,
+                                                                   org_admin_user=org_admin_user,
+                                                                   org_admin_password=org_admin_password)
 
     def manage(self, name: str, description: str,
                base_channel: str = '',
                usage_limit: int = None,
+               contact_method: str = '',
                system_types: List[int] = [],
                universal_default: bool = False,
+               child_channels: List[str] = [],
+               server_groups: List[str] = [],
+               configure_after_registration: bool = False,
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
 
@@ -667,6 +708,9 @@ class UyuniActivationKeys:
         :param usage_limit:
         :param system_types:
         :param universal_default:
+        :param child_channels:
+        :param server_groups:
+        :param configure_after_registration:
         :param org_admin_user:
         :param org_admin_password:
         :return:
@@ -674,11 +718,15 @@ class UyuniActivationKeys:
         current_ak = None
         current_org_user = None
         key = None
+        current_configure_after_registration = None
         try:
             current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
             key = "{}-{}".format(current_org_user['org_id'], name)
             current_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
                                                                       org_admin_password=org_admin_password)
+            current_configure_after_registration = __salt__['uyuni.activation_key_check_config_deployment'](key,
+                                                                                                            org_admin_user,
+                                                                                                            org_admin_password)
         except Exception as exc:
             if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.state_error(key, "Error retrieving information about Activation Key '{}': {}".format(key, exc))
@@ -687,9 +735,13 @@ class UyuniActivationKeys:
                         'base_channel_label': base_channel,
                         'usage_limit': usage_limit,
                         'entitlements': system_types,
-                        'universal_default': universal_default}
+                        'universal_default': universal_default,
+                        'child_channel_labels': child_channels,
+                        'server_group_ids': server_groups}
 
-        changes = self._compute_changes(ak_paramters, current_ak)
+        changes = self._compute_changes(ak_paramters, current_ak,
+                                        configure_after_registration,
+                                        current_configure_after_registration)
 
         if not current_ak:
             changes["key"] = {"new": key}
@@ -708,17 +760,10 @@ class UyuniActivationKeys:
                                                              org_admin_user=org_admin_user,
                                                              org_admin_password=org_admin_password)
 
-                # missing execution modules
-                # if changes['entitlements']:
-                #     __salt__['uyuni.activation_key_add_entitlements'](key,
-                #                                                       [t for t in (system_types or []) not in (current_ak['entitlements'] or [])],
-                #                                                       org_admin_user=org_admin_user,
-                #                                                       org_admin_password=org_admin_password)
-                #
-                #     __salt__['uyuni.activation_key_remove_entitlements'](key,
-                #                                                       [t for t in (current_ak['entitlements'] or []) not in (system_types or [])],
-                #                                                       org_admin_user=org_admin_user,
-                #                                                       org_admin_password=org_admin_password)
+                if changes.get('entitlements', False):
+                    self._update_system_type(current_ak['entitlements'] or [], system_types or [],
+                                             key, org_admin_user, org_admin_password)
+
             else:
                 __salt__['uyuni.activation_key_create'](key=name,
                                                         description=description,
@@ -729,11 +774,29 @@ class UyuniActivationKeys:
                                                         org_admin_user=org_admin_user,
                                                         org_admin_password=org_admin_password)
 
+            # TODO we have some mandatory channels, we need more tests/review on how they behave
+            if changes.get('child_channel_labels', False):
+                self._update_child_channels(current_ak['child_channel_labels'] or [], child_channels or [],
+                                            key, org_admin_user, org_admin_password)
+
+            # TODO groups will be a more tricky since we need to get the system group id
+            # if changes.get('child_channel_labels', False):
+            #     self._update_server_groups(current_ak['server_group_ids'] or [], child_channels or [],
+            #                                 key, org_admin_user, org_admin_password)
+            if changes.get('configure_after_registration', False):
+                if configure_after_registration:
+                    __salt__['uyuni.activation_key_enable_config_deployment'](key,
+                                                                              org_admin_user=org_admin_user,
+                                                                              org_admin_password=org_admin_password)
+                else:
+                    __salt__['uyuni.activation_key_disable_config_deployment'](key,
+                                                                               org_admin_user=org_admin_user,
+                                                                               org_admin_password=org_admin_password)
+
         except Exception as exc:
             return StateResult.state_error(key, "Error updating activation key '{}': {}".format(key, exc))
         else:
             return StateResult.prepare_result(key, True, "{0} activation key successfully modified".format(key), changes)
-
 
     def delete(self, id: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
@@ -770,6 +833,7 @@ class UyuniActivationKeys:
                 return StateResult.prepare_result(id, True, "Activation Key {} has been deleted".format(id), changes)
             except Exception as exc:
                 return StateResult.state_error(id, "Error deleting Activation Key '{}': {}".format(id, exc))
+
 
 def __virtual__():
     return __virtualname__
@@ -936,6 +1000,9 @@ def activation_key_present(name,
                            usage_limit=None,
                            system_types=[],
                            universal_default=False,
+                           child_channels=[],
+                           server_groups=[],
+                           configure_after_registration = False,
                            org_admin_user=None, org_admin_password=None):
     """
     Ensure an Uyuni Activation Key is present.
@@ -946,6 +1013,9 @@ def activation_key_present(name,
     :param usage_limit:
     :param system_types:
     :param universal_default:
+    :param child_channels:
+    :param server_groups:
+    :param configure_after_registration:
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
@@ -956,4 +1026,7 @@ def activation_key_present(name,
                                         usage_limit,
                                         system_types,
                                         universal_default,
+                                        child_channels,
+                                        server_groups,
+                                        configure_after_registration,
                                         org_admin_user, org_admin_password)

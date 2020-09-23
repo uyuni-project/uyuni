@@ -672,6 +672,27 @@ class UyuniActivationKey(UyuniRemoteObject):
             data['unlimited_usage_limit'] = True
         return self._convert_bool_response(self.client("activationkey.setDetails", key, data))
 
+    def add_entitlements(self, key, system_types):
+        return self._convert_bool_response(self.client("activationkey.addEntitlements", key, system_types))
+
+    def remove_entitlements(self, key, system_types):
+        return self._convert_bool_response(self.client("activationkey.removeEntitlements", key, system_types))
+
+    def add_child_channels(self, key, child_channels):
+        return self._convert_bool_response(self.client("activationkey.addChildChannels", key, child_channels))
+
+    def remove_child_channels(self, key, child_channels):
+        return self._convert_bool_response(self.client("activationkey.removeChildChannels", key, child_channels))
+
+    def check_config_deployment(self, key):
+        return self._convert_bool_response(self.client("activationkey.checkConfigDeployment", key))
+
+    def enable_config_deployment(self, key):
+        return self._convert_bool_response(self.client("activationkey.enableConfigDeployment", key))
+
+    def disable_config_deployment(self, key):
+        return self._convert_bool_response(self.client("activationkey.disableConfigDeployment", key))
+
 
 class UyuniChildMasterIntegration:
     """
@@ -1364,3 +1385,84 @@ def activation_key_set_details(key, description,
                                                                               base_channel_label,
                                                                               usage_limit,
                                                                               universal_default)
+
+
+def activation_key_add_entitlements(key, system_types, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param system_types:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_entitlements(key, system_types)
+
+
+def activation_key_remove_entitlements(key, system_types, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param system_types:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_entitlements(key, system_types)
+
+
+def activation_key_add_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param child_channels:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_child_channels(key, child_channels)
+
+
+def activation_key_remove_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param child_channels:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_child_channels(key, child_channels)
+
+
+def activation_key_check_config_deployment(key, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).check_config_deployment(key)
+
+
+def activation_key_enable_config_deployment(key, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).enable_config_deployment(key)
+
+
+def activation_key_disable_config_deployment(key, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).disable_config_deployment(key)
