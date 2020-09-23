@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-23 09:48+0000\n"
+"PO-Revision-Date: 2020-09-24 00:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1697,7 +1697,7 @@ msgstr "クラスタ"
 #: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:208
 msgid "Type"
-msgstr ""
+msgstr "タイプ"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:39
 msgid "Remove nodes"
