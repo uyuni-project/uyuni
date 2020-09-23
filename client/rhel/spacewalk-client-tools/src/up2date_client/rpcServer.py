@@ -10,6 +10,7 @@ from up2date_client import clientCaps
 from up2date_client import up2dateLog
 from up2date_client import up2dateErrors
 from up2date_client import up2dateUtils
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 
 from rhn import SSL
 from rhn import rpclib
@@ -179,7 +180,7 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
     if need_ca:
         for rhns_ca_cert in rhns_ca_certs:
             if not os.access(rhns_ca_cert, os.R_OK):
-                msg = "%s: %s" % (_("ERROR: can not find Uyuni CA file"),
+                msg = "%s: %s" % (_("ERROR: can not find {PRODUCT_NAME} CA file").format(PRODUCT_NAME=PRODUCT_NAME),
                                      rhns_ca_cert)
                 log.log_me("%s" % msg)
                 raise up2dateErrors.SSLCertificateFileNotFound(msg)

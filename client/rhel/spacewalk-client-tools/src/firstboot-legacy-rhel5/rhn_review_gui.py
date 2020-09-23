@@ -18,6 +18,7 @@
 
 from up2date_client import rhnreg
 from up2date_client import rhnregGui
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 from rhn_register_firstboot_gui_window import RhnRegisterFirstbootGuiWindow
 
 import gtk
@@ -32,7 +33,7 @@ class RhnReviewWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.ReviewSubscriptio
     runPriority=108.9
     moduleName = _("Review Subscription")
     windowTitle = moduleName
-    shortMessage = _("Connect to Uyuni")
+    shortMessage = _("Connect to {PRODUCT_NAME} ").format(PRODUCT_NAME=PRODUCT_NAME)
     needsparent = 1
     needsnetwork = 1
     noSidebar = True

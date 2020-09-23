@@ -20,6 +20,7 @@ import os
 from up2date_client import rhnreg
 from up2date_client import rhnregGui
 from up2date_client import up2dateErrors
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 from rhn_register_firstboot_gui_window import RhnRegisterFirstbootGuiWindow
 
 import gtk
@@ -35,7 +36,7 @@ class RhnChooseServerWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.ChooseServe
     runPriority=106.5
     moduleName = _("Choose Server")
     windowTitle = moduleName
-    shortMessage = _("Choose an Uyuni server")
+    shortMessage = _("Choose an {PRODUCT_NAME} server").format(PRODUCT_NAME=PRODUCT_NAME)
     needsparent = 1
     needsnetwork = 1
     noSidebar = True
