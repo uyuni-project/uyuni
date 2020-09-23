@@ -31,6 +31,37 @@ public class PageControl extends ListControl {
     public static final int DEFAULT_PER_PAGE = 25;
 
     /**
+     * Initialize an object with controls starting from 1 and with the default page size
+     *
+     * See: {@link PageControl#DEFAULT_PER_PAGE}
+     */
+    public PageControl() {
+        this(1);
+    }
+
+    /**
+     * Initialize an object with controls starting from a specified index and with the default page size
+     *
+     * See: {@link PageControl#DEFAULT_PER_PAGE}
+     *
+     * @param startIn the start index of the page that counts from 1
+     */
+    public PageControl(int startIn) {
+        this(startIn, DEFAULT_PER_PAGE);
+    }
+
+    /**
+     * Initialize an object with the specified start index and and page size
+     *
+     * @param startIn the start index of the page that counts from 1
+     * @param pageSizeIn the page size
+     */
+    public PageControl(int startIn, int pageSizeIn) {
+        this.setStart(startIn);
+        this.setPageSize(pageSizeIn);
+    }
+
+    /**
      * Get the number of entries desired in this list
      * @return Returns the end.
      */
