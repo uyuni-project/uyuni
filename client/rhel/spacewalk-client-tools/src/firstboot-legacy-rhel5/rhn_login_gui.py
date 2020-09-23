@@ -29,6 +29,7 @@ from rhn_register_firstboot_gui_window import RhnRegisterFirstbootGuiWindow
 
 from up2date_client import rhnreg
 from up2date_client import rhnregGui
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
@@ -42,7 +43,7 @@ class RhnLoginWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.LoginPage):
     runPriority = 108
     moduleName = _("Login")
     windowTitle = moduleName
-    shortMessage = _("Register with Uyuni")
+    shortMessage = _("Register with {PRODUCT_NAME} ").format(PRODUCT_NAME=PRODUCT_NAME)
     needsparent = 1
     needsnetwork = 1
     noSidebar = True

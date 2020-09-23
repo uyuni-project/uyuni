@@ -20,7 +20,7 @@ import sys
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags, rhnMail
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _, cat
 from uyuni.common.rhnLib import checkValue
@@ -1112,7 +1112,7 @@ class Registration(rhnHandler):
         log_debug(1, "lang: %s" % lang)
         if lang:
             cat.setlangs(lang)
-        msg = _("Uyuni Welcome Message")
+        msg = _("{PRODUCT_NAME} Welcome Message").format(PRODUCT_NAME=PRODUCT_NAME)
         # compress this one
         rhnFlags.set("compress_response", 1)
         return msg

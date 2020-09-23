@@ -27,7 +27,7 @@ from uyuni.common.usix import LongType
 from uyuni.common import rhn_rpm
 from spacewalk.common import rhnCache, rhnFlags
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 
@@ -75,7 +75,7 @@ class Applet(rhnHandler):
         row = h.fetchone_dict()
         if not row:
             raise rhnFault(140,
-                           _("Your system was not found in the Uyuni database"),
+                           _("Your system was not found in the {PRODUCT_NAME} database").format(PRODUCT_NAME=PRODUCT_NAME),
                            explain=0)
         server_id = row['id']
 
