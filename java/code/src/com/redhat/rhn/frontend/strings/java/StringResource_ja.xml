@@ -828,7 +828,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>個人設定</target>
+        <target>設定</target>
       </trans-unit>
       <trans-unit id="Locale Preferences" xml:space="preserve">
         <source>Locale Preferences</source>
@@ -856,7 +856,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Proxy</target>
+        <target>プロキシ</target>
       </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
@@ -1839,7 +1839,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>作成完了</target>
+        <target>作成日</target>
       </trans-unit>
       <trans-unit id="last_sign_in" xml:space="preserve">
         <source>Last Sign In</source>
@@ -3272,14 +3272,14 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>詳細</target>
+        <target>説明</target>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_driver" xml:space="preserve">
         <source>Driver</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>ドライバー</target>
+        <target>ドライバ</target>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_device_id" xml:space="preserve">
         <source>Device ID</source>
@@ -3646,7 +3646,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target>パッケージアーキテクチャー</target>
+        <target>パッケージアーキテクチャ</target>
       </trans-unit>
       <trans-unit id="summary" xml:space="preserve">
         <source>Summary</source>
@@ -3654,7 +3654,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target>要約</target>
+        <target>概要</target>
       </trans-unit>
       <trans-unit id="topic" xml:space="preserve">
         <source>Topic</source>
@@ -3670,7 +3670,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target>詳細</target>
+        <target>説明</target>
       </trans-unit>
       <trans-unit id="solution" xml:space="preserve">
         <source>Solution</source>
