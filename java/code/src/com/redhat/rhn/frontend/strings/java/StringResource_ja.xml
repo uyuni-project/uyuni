@@ -8059,14 +8059,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>1 動作をスケジュールしました。</target>
+        <target>1 個の動作をスケジュールしました。</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.actions.scheduled" xml:space="preserve">
         <source>Scheduled {0} actions, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>{0} 動作をスケジュールしました。</target>
+        <target>{0} 個の動作をスケジュールしました。</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.no.virt.deleted" xml:space="preserve">
         <source>No virtual systems deleted.</source>
