@@ -686,16 +686,16 @@ class UyuniActivationKey(UyuniRemoteObject):
             data['unlimited_usage_limit'] = True
         return self._convert_bool_response(self.client("activationkey.setDetails", key, data))
 
-    def add_entitlements(self, key, system_types):
+    def add_entitlements(self, key, system_types: List[str]):
         return self._convert_bool_response(self.client("activationkey.addEntitlements", key, system_types))
 
-    def remove_entitlements(self, key, system_types):
+    def remove_entitlements(self, key, system_types: List[str]):
         return self._convert_bool_response(self.client("activationkey.removeEntitlements", key, system_types))
 
-    def add_child_channels(self, key, child_channels):
+    def add_child_channels(self, key, child_channels: List[str]):
         return self._convert_bool_response(self.client("activationkey.addChildChannels", key, child_channels))
 
-    def remove_child_channels(self, key, child_channels):
+    def remove_child_channels(self, key, child_channels: List[str]):
         return self._convert_bool_response(self.client("activationkey.removeChildChannels", key, child_channels))
 
     def check_config_deployment(self, key):
@@ -707,17 +707,23 @@ class UyuniActivationKey(UyuniRemoteObject):
     def disable_config_deployment(self, key):
         return self._convert_bool_response(self.client("activationkey.disableConfigDeployment", key))
 
-    def add_packages(self, key, packages):
+    def add_packages(self, key, packages: List[Any]):
         return self._convert_bool_response(self.client("activationkey.addPackages", key, packages))
 
-    def remove_packages(self, key, packages):
+    def remove_packages(self, key, packages: List[Any]):
         return self._convert_bool_response(self.client("activationkey.removePackages", key, packages))
 
-    def add_server_groups(self, key, server_groups):
+    def add_server_groups(self, key, server_groups: List[int]) -> bool:
         return self._convert_bool_response(self.client("activationkey.addServerGroups", key, server_groups))
 
-    def remove_server_groups(self, key, server_groups):
+    def remove_server_groups(self, key, server_groups: List[int]) -> bool:
         return self._convert_bool_response(self.client("activationkey.removeServerGroups", key, server_groups))
+
+    def list_config_channels(self, key):
+        return self.client("activationkey.listConfigChannels", key)
+
+    def set_config_channels(self, keys: List[str], config_channel_label: List[str]) -> bool:
+        return self._convert_bool_response(self.client("activationkey.setConfigChannels", keys, config_channel_label))
 
 
 
@@ -1556,3 +1562,27 @@ def activation_key_remove_server_groups(key, server_groups, org_admin_user=None,
     :return:
     """
     return UyuniActivationKey(org_admin_user, org_admin_password).remove_server_groups(key, server_groups)
+
+
+def activation_key_list_config_channels(key, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).list_config_channels(key)
+
+
+def activation_key_set_config_channels(keys, config_channel_label,
+                                       org_admin_user=None, org_admin_password=None):
+    """
+
+    :param keys:
+    :param config_channel_label:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).set_config_channels(keys, config_channel_label)
