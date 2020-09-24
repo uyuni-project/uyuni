@@ -1,3 +1,4 @@
+- Added support for i18n of user-facing strings
 - Python3 fix for sorted usage (bsc#1167907)
 
 -------------------------------------------------------------------
