@@ -236,7 +236,7 @@ ACTIVATION_KEY          = _("Universal default activation key detected\n"
                             "have been determined by the activation key rather than your "
                             "installation number.  "
                             "You may also refer to the {PRODUCT_NAME} Reference Guide for more details "
-                            "about activation keys (https://www.uyuni-project.org/uyuni-docs/uyuni/reference/intro.html)\n"
+                            "about activation keys. \n"
                             "Universal Default activation key: %s").format(PRODUCT_NAME=PRODUCT_NAME)
 
 # Error Messages.
