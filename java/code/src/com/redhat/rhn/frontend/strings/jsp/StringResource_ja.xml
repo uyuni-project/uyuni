@@ -21440,6 +21440,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewsourcepackages" xml:space="preserve">
         <source>Source Packages</source>
+        <target>ソースパッケージ</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addsuccess" xml:space="preserve">
         <source>{0} package(s) added to channel {1}
