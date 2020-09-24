@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-24 00:48+0000\n"
+"PO-Revision-Date: 2020-09-24 04:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1340,7 +1340,7 @@ msgstr "ピンの追加"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:169
 msgid "pending next run"
-msgstr "次回の実行まで保留しています"
+msgstr "次回の実行まで待機しています"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:174
 msgid "not satisfied"
@@ -4526,24 +4526,24 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:535
 msgid "Target"
-msgstr ""
+msgstr "ターゲット"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:548
 msgid "Owner UID"
-msgstr ""
+msgstr "所有者 UID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:552
 msgid "UID is a numeric value"
-msgstr ""
+msgstr "UID は数値です"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "Group ID"
-msgstr ""
+msgstr "グループ ID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:560
 #: ../html/src/manager/virtualization/pools/pool-properties.js:569
 msgid "GID is a numeric value"
-msgstr ""
+msgstr "GID は数値です"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:564
 msgid "Permission mode"
