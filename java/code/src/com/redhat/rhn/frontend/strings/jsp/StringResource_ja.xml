@@ -545,8 +545,7 @@
           <source>You cannot view package information for this package.</source> <target>ユーザーはこのパッケージのパッケージ情報を表示することはできません。</target>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.subscribechannel">
-          <source>You cannot subscribe or unsubscribe systems to this channel.</source> <target>ユーザーはこのチャンネルに対してシステムをサブスクライブするか、またはサブスクライブを中止することはできません。</target>
-        </trans-unit>
+          <source>You cannot subscribe or unsubscribe systems to this channel.</source> <target>ユーザーはこのチャンネルに対してシステムをサブスクライブするか、またはサブスクライブを中止することはできません。</target> </trans-unit>
         <trans-unit id="permission.jsp.summary.removerole">
           <source>You cannot remove the {0} role from the last {0}.</source> <context-group name="ctx">
             <context context-type="paramnotes">You cannot remove the Organization Administrator role from the last Organization Administrator.</context>
@@ -11973,8 +11972,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Create Key</source> <target>キーの作成</target>
         </trans-unit>
         <trans-unit id="toolbar.clone.activationkeys">
-          <source>Clone Key</source> <target>キーのクローンを作成</target>
-        </trans-unit>
+          <source>Clone Key</source> <target>キーのクローンを作成</target> </trans-unit>
         <trans-unit id="toolbar.delete.activationkeys">
           <source>Delete Key</source> <target>キーの削除</target></trans-unit>
         <trans-unit id="activation-keys.common.alt">
@@ -12069,11 +12067,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Clone Activation Key {0}</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Clone</context>
           </context-group>
-          <target>アクティベーションキー {0} のクローンを作成</target>
-        </trans-unit>
+          <target>アクティベーションキー {0} のクローンを作成</target> </trans-unit>
         <trans-unit id="activation-key.clone.jsp.summary">
-          <source>Please specify a new Description for the cloned Activation Key. All options and settings from the source ativation key will be copied to the cloned one without the Universal default option. In case no description is specified, the cloned activation key will be created with the same description as the source one preceded by "clone-".</source> <target>クローン作成したアクティベーションキーの新しい詳細を記入します。クローン元となったアクティベーションキーのオプションおよび設定はすべてこのキーにコピーされます。ユニバーサルのデフォルトオプションはコピーされません。詳細を記入しないと、クローン元と同じ詳細に "clone-" を付けたキーが作成されます。</target>
-        </trans-unit>
+          <source>Please specify a new Description for the cloned Activation Key. All options and settings from the source ativation key will be copied to the cloned one without the Universal default option. In case no description is specified, the cloned activation key will be created with the same description as the source one preceded by "clone-".</source> <target>クローン作成したアクティベーションキーの新しい詳細を記入します。クローン元となったアクティベーションキーのオプションおよび設定はすべてこのキーにコピーされます。ユニバーサルのデフォルトオプションはコピーされません。詳細を記入しないと、クローン元と同じ詳細に "clone-" を付けたキーが作成されます。</target> </trans-unit>
         <trans-unit id="activation-key.jsp.delete-key">
           <source>Delete Activation Key</source> <target>アクティベーションキーの削除</target>
         </trans-unit>
@@ -13187,14 +13183,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <target>設定チャンネル</target>
         </trans-unit>
         <trans-unit id="config.common.onefile">
-          <source>1 file</source> <target>1 ファイル</target>
-        </trans-unit>
+          <source>1 file</source> <target>1 ファイル</target> </trans-unit>
         <trans-unit id="config.common.numfiles">
           <source>{0} files</source> <context-group name="ctx">
             <context context-type="paramnotes">5 files</context>
           </context-group>
-          <target>{0} ファイル</target>
-        </trans-unit>
+          <target>{0} ファイル</target> </trans-unit>
         <trans-unit id="config.common.revision">
           <source>Revision {0}</source> <context-group name="ctx">
             <context context-type="paramnotes">Revision 5</context>
@@ -15796,11 +15790,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Files</source> <target>ファイル</target>
         </trans-unit>
         <trans-unit id="comparechannel.jsp.numfiles">
-          <source>{0} files</source> <target>{0} ファイル</target>
-        </trans-unit>
+          <source>{0} files</source> <target>{0} ファイル</target> </trans-unit>
         <trans-unit id="comparechannel.jsp.onefile">
-          <source>1 file</source> <target>1 ファイル</target>
-        </trans-unit>
+          <source>1 file</source> <target>1 ファイル</target> </trans-unit>
         <trans-unit id="comparechannel.jsp.continue">
           <source>Continue to File Selection</source> <target>ファイル選択を続行</target>
         </trans-unit>
@@ -15829,8 +15821,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>File Name</source> <target>ファイル名</target>
         </trans-unit>
         <trans-unit id="comparefile.jsp.modified">
-          <source>Last Modified</source> <target>前回の変更</target>
-        </trans-unit>
+          <source>Last Modified</source> <target>前回の変更</target> </trans-unit>
         <trans-unit id="comparefile.jsp.size">
           <source>File Size</source> <target>ファイルサイズ</target>
         </trans-unit>
@@ -16234,11 +16225,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
         </context-group>
         <trans-unit id="unsubscribe.jsp.header">
-          <source>Unsubscribe Systems.</source> <target>システムのサブスクライブを中止します。</target>
-        </trans-unit>
+          <source>Unsubscribe Systems.</source> <target>システムのサブスクライブを中止します。</target> </trans-unit>
         <trans-unit id="unsubscribe.jsp.summary">
-          <source>You can unsubscribe systems from the configuration channels below. The channels shown below are all of the global configuration channels to which at least one system in your system set is subscribed.</source> <target>以下の設定チャンネルに対するシステムのサブスクリプションを中止することができます。以下のチャンネルはすべて、少なくともユーザーのシステムセット内の 1 システムがサブスクライブしているグローバルな設定チャンネルになります。</target>
-        </trans-unit>
+          <source>You can unsubscribe systems from the configuration channels below. The channels shown below are all of the global configuration channels to which at least one system in your system set is subscribed.</source> <target>以下の設定チャンネルに対するシステムのサブスクリプションを中止することができます。以下のチャンネルはすべて、少なくともユーザーのシステムセット内の 1 システムがサブスクライブしているグローバルな設定チャンネルになります。</target> </trans-unit>
         <trans-unit id="unsubscribe.jsp.noChannels">
           <source>No configuration channels with subscribed systems in the current System Set!</source> <target>現在のシステムセットでサブスクライブされたシステムに設定チャンネルがありません!</target>
         </trans-unit>
@@ -16246,8 +16235,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Systems</source> <target>システム</target>
         </trans-unit>
         <trans-unit id="unsubscribe.jsp.unsubscribe">
-          <source>Unsubscribe systems</source> <target>システムのサブスクライブを中止</target>
-        </trans-unit>
+          <source>Unsubscribe systems</source> <target>システムのサブスクライブを中止</target> </trans-unit>
       </group>
       <!-- configuration/ssm/unsubscribeconfirm.jsp  -->
       <group>
@@ -16255,17 +16243,14 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/UnsubscribeConfirm.do</context>
         </context-group>
         <trans-unit id="unsubscribeconfirm.jsp.header">
-          <source>Unsubscribe Systems.</source> <target>システムのサブスクライブを中止します。</target>
-        </trans-unit>
+          <source>Unsubscribe Systems.</source> <target>システムのサブスクライブを中止します。</target> </trans-unit>
         <trans-unit id="unsubscribeconfirm.jsp.summary">
           <source>The systems shown below will be unsubscribed from the &lt;strong&gt;{0} configuration channels&lt;/strong&gt; you have selected. The systems shown below are those in your system set currently subscribed to at least one configuration channel you have selected.</source> <context-group name="ctx">
             <context context-type="paramnotes">The systems shown below will be unsubscribed from the 3 configuration channels you have selected. The systems shown below are those in your system set currently subscribed to at least one configuration channel you have selected.</context>
           </context-group>
-          <target>以下に表示されるシステムは、選択している &lt;strong&gt;{0} 設定チャンネル&lt;/strong&gt; に対するサブスクライブを中止します。以下に表示されるシステムはユーザーのシステムセット内にあるシステムで、選択している設定チャンネルの少なくとも 1 チャンネルに現在サブスクライブしています。</target>
-        </trans-unit>
+          <target>以下に表示されるシステムは、選択している &lt;strong&gt;{0} 設定チャンネル&lt;/strong&gt; に対するサブスクライブを中止します。以下に表示されるシステムはユーザーのシステムセット内にあるシステムで、選択している設定チャンネルの少なくとも 1 チャンネルに現在サブスクライブしています。</target> </trans-unit>
         <trans-unit id="unsubscribeconfirm.jsp.summary.one">
-          <source>The systems shown below will be unsubscribed from the &lt;strong&gt;configuration channel&lt;/strong&gt; you have selected. The systems shown below are those in your system set currently subscribed to the configuration channel you have selected.</source> <target>以下に表示されるシステムは、選択している &lt;strong&gt;設定チャンネル&lt;/strong&gt; に対するサブスクライブを中止します。 以下に表示されるシステムはユーザーのシステムセット内にあるシステムで、選択している設定チャンネルに現在サブスクライブしています。</target>
-        </trans-unit>
+          <source>The systems shown below will be unsubscribed from the &lt;strong&gt;configuration channel&lt;/strong&gt; you have selected. The systems shown below are those in your system set currently subscribed to the configuration channel you have selected.</source> <target>以下に表示されるシステムは、選択している &lt;strong&gt;設定チャンネル&lt;/strong&gt; に対するサブスクライブを中止します。 以下に表示されるシステムはユーザーのシステムセット内にあるシステムで、選択している設定チャンネルに現在サブスクライブしています。</target> </trans-unit>
         <trans-unit id="unsubscribeconfirm.jsp.noSystems">
           <source>No systems.</source> <target>システムがありません。</target>
         </trans-unit>
@@ -16273,8 +16258,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>System</source> <target>システム</target>
         </trans-unit>
         <trans-unit id="unsubscribeconfirm.jsp.confirm">
-          <source>Confirm Unsubscribe</source> <target>サブスクライブの中止を確認</target>
-        </trans-unit>
+          <source>Confirm Unsubscribe</source> <target>サブスクライブの中止を確認</target> </trans-unit>
         <trans-unit id="unsubscribeconfirm.jsp.channels">
           <source>Configuration Channels</source> <target>設定チャンネル</target>
         </trans-unit>
@@ -16443,8 +16427,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>None</source> <target>なし</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.last_modified">
-          <source>Last Modified</source> <target>前回の変更</target>
-        </trans-unit>
+          <source>Last Modified</source> <target>前回の変更</target> </trans-unit>
         <trans-unit id="sdc.config.file_list.delete_files">
           <source>Delete Files</source> <target>ファイルの削除</target>
         </trans-unit>
@@ -16498,8 +16481,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="sdc.configlist.jsp.note">
           <source>&lt;strong&gt;* - Note:&lt;/strong&gt; Deployable Files are files in a configuration channel that are not outranked by files in greater priority configuration channels nor overridden by files in the systems local configuration channel.</source> <target>&lt;strong&gt;* - 注記:&lt;/strong&gt; 配備可能なファイルとは、より優先順位の高い設定チャンネルにあるファイルよりも順位が高く、システムのローカル設定チャンネルにあるファイルで上書きされない設定チャンネルのファイルのことです。</target> </trans-unit>
         <trans-unit id="sdc.configlist.jsp.unsubscribe">
-          <source>Unsubscribe</source> <target>サブスクライブの中止</target>
-        </trans-unit>
+          <source>Unsubscribe</source> <target>サブスクライブの中止</target> </trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.success">
           <source>{0} configuration channel(s) were unsubscribed.</source> <target>{0} 個の設定チャンネルのサブスクライブを解除しました。</target></trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.failure">
@@ -16748,8 +16730,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Started</source> <target>開始 </target>
         </trans-unit>
         <trans-unit id="ssm.operations.viewlog.modified">
-          <source>Last Modified</source> <target>前回の変更</target>
-        </trans-unit>
+          <source>Last Modified</source> <target>前回の変更</target> </trans-unit>
         <trans-unit id="ssm.operations.viewlog.servers">
           <source>Servers</source> <target>サーバー</target>
         </trans-unit>
@@ -20688,8 +20669,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <source>Unsubscribe</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>サブスクライブの中止</target>
-        </trans-unit>
+          <target>サブスクライブの中止</target> </trans-unit>
         <trans-unit id="ssmchildsubs.jsp.donothing">
           <source>Do Nothing</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
@@ -20783,8 +20763,7 @@ Below is a list of channels in your organization.
           <source>To Unsubscribe From</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptionsAction.do</context>
           </context-group>
-          <target>サブスクライブの中止先</target>
-        </trans-unit>
+          <target>サブスクライブの中止先</target> </trans-unit>
         <trans-unit id="ssmchildsubconfirm.jsp.submit">
           <source>Change Subscriptions</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptionsAction.do</context>
@@ -20795,8 +20774,7 @@ Below is a list of channels in your organization.
           <source>There are no systems available in your System Set to process the subscribe/unsubscribe actions you have selected.</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptionsAction.do</context>
           </context-group>
-          <target>ご使用のシステムセット内には、選択した選択/選択解除の動作を処理するために利用できるシステムはありません。</target>
-        </trans-unit>
+          <target>ご使用のシステムセット内には、選択した選択/選択解除の動作を処理するために利用できるシステムはありません。</target> </trans-unit>
         <trans-unit id="basesub.jsp.header">
           <source>Base Channel Alteration</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -20934,8 +20912,7 @@ As a Channel Administrator, you may change the base channels your systems are su
           <source>Some of the systems in your set are currently subscribed to the channels in the 'Old Channel' column below, but suitable matches for the following child channels could not be found under the proposed new base channels. As a result, the systems in the 'Systems Affected' column will be unsubscribed from the 'Old Channels' listed below. Please note that these systems may have packages installed that will no longer receive updates, including security updates, after their base channel has been switched.</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target>ユーザーのシステムセットのシステムの一部が現在以下にある「旧チャンネル」内のチャンネルにサブスクライブしていて、提案された新規ベースチャンネル内に以下の子チャンネルと最適な一致が見つからない場合、結果として、「影響を受けるシステム」にあるシステムは 以下に一覧表示してある「旧チャンネル」からのサブスクライブが中止されます。これらのシステムは それらのベースチャンネルが切り替わった後にはセキュリティ更新を含む更新情報を受け取らないようなパッケージがインストールしてある可能性があることに注意して下さい。</target>
-        </trans-unit>
+          <target>ユーザーのシステムセットのシステムの一部が現在以下にある「旧チャンネル」内のチャンネルにサブスクライブしていて、提案された新規ベースチャンネル内に以下の子チャンネルと最適な一致が見つからない場合、結果として、「影響を受けるシステム」にあるシステムは 以下に一覧表示してある「旧チャンネル」からのサブスクライブが中止されます。これらのシステムは それらのベースチャンネルが切り替わった後にはセキュリティ更新を含む更新情報を受け取らないようなパッケージがインストールしてある可能性があることに注意して下さい。</target> </trans-unit>
         <trans-unit id="basesub.jsp.confirm.matchedHeader">
           <source>Matched Child Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -21458,6 +21435,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addemptylist" xml:space="preserve">
         <source>No packages found for this criteria.</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addmessage" xml:space="preserve">
         <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
@@ -21487,6 +21465,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.comparemessage" xml:space="preserve">
         <source>Compare packages in the current channel with packages from another channel. Only the latest version of packages will be compared. Choose a channel from the list below then select 'View Packages'.</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.compareto" xml:space="preserve">
         <source>Compare to</source>
@@ -21584,21 +21563,27 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.empty" xml:space="preserve">
         <source>No uncloned patches.</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.owned" xml:space="preserve">
         <source>Owned Patches</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.action" xml:space="preserve">
         <source>Action</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.merge" xml:space="preserve">
         <source>Merge with existing</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.clone" xml:space="preserve">
         <source>Clone as new</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.nothing" xml:space="preserve">
         <source>Do Nothing</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.button" xml:space="preserve">
         <source>Clone Patches</source>
@@ -21678,9 +21663,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.createtitle" xml:space="preserve">
         <source>Create Custom Value</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.updatetitle" xml:space="preserve">
         <source>Edit Custom Value</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.deletetitle" xml:space="preserve">
         <source>Remove Custom Value</source>
@@ -21812,6 +21799,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.eula" xml:space="preserve">
         <source>EULA</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="package.jsp.vendor" xml:space="preserve">
         <source>Vendor</source>
@@ -21819,6 +21807,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.vendor.unknown" xml:space="preserve">
         <source>Not defined</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="package.jsp.packagesize" xml:space="preserve">
         <source>Package Size</source>
@@ -21970,87 +21959,105 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="filelist.jsp.title" xml:space="preserve">
         <source>File List</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="filelist.jsp.message" xml:space="preserve">
         <source>This package contains the following files.</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="filelist.jsp.nofiles" xml:space="preserve">
         <source>No files.</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="filelist.jsp.filename" xml:space="preserve">
         <source>Filename</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="filelist.jsp.checksum" xml:space="preserve">
         <source>Checksum</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="filelist.jsp.lastmodified" xml:space="preserve">
         <source>Last Modified</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="filelist.jsp.size" xml:space="preserve">
         <source>Size</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="newversions.jsp.title" xml:space="preserve">
         <source>Newer Versions</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.newerversion" xml:space="preserve">
         <source>Newer Version</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.providingchannel" xml:space="preserve">
         <source>Providing Channel</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.relatederrata" xml:space="preserve">
         <source>Related Errata</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.noversions" xml:space="preserve">
         <source>No other versions.</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installedsystems.jsp.title" xml:space="preserve">
         <source>Systems with Package</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/InstalledSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installedsystems.jsp.summary" xml:space="preserve">
         <source>This package is installed on the following systems.</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/InstalledSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.title" xml:space="preserve">
         <source>Target System List</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.description" xml:space="preserve">
         <source>This package may be installed on the following systems.</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.installpackage" xml:space="preserve">
         <source>Install</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystemsconfirm.jsp.title" xml:space="preserve">
         <source>Confirm Package Installation</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystemsConfirm.do</context>
         </context-group>
@@ -22091,7 +22098,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated"></target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.summary" xml:space="preserve">
         <source>Channel Summary</source>
@@ -22228,72 +22235,84 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.clone.header" xml:space="preserve">
         <source>Clone Channel</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.summary" xml:space="preserve">
         <source>Select the channel you wish to clone from the list below. You can clone a channel in one of three ways:</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current" xml:space="preserve">
         <source>Current state of the channel (all patches)</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current.summary" xml:space="preserve">
         <source>The new channel will include all of the latest packages from the target channel, and all patches related to the channel will be cloned into your organization. If your organization already owns a clone of a patch, the new channel will be associated with that patch instead of creating another clone of the patch.</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original" xml:space="preserve">
         <source>Original state of the channel (no patches)</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original.summary" xml:space="preserve">
         <source>The new channel will be a clone of the original state of the target channel. This is done by cloning all of the packages from the target channel which do not have a patch associated with them. No patch will be cloned into your organization.</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.select" xml:space="preserve">
         <source>Select patches</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.select.summary" xml:space="preserve">
         <source>The original state of the target channel will be cloned into the new channel. You will then have the option to select the patches you wish to import into the new channel. Importing a patch will bring the packages from the target channel referred to by the patch into the new channel. Selecting all of the patches from the list of potential patches is the same as cloning the current state of the channel. Selecting none of the patches is the same as cloning the original state of the channel.</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.clonefrom" xml:space="preserve">
         <source>Clone From</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.clonetype" xml:space="preserve">
         <source>Clone Type</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.clone" xml:space="preserve">
         <source>Clone</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.button" xml:space="preserve">
         <source>Clone Channel</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
@@ -22506,6 +22525,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.manage.sync.latestonly.jsp" xml:space="preserve">
         <source>Sync only latest packages</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
@@ -22568,6 +22588,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="extauth.sg.message" xml:space="preserve">
         <source>When creating new users, a default System Group may be created for every single user, that would have the same name as the user. This is useful, when different users shall administer different groups of systems within one organization.</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemGroupConfig.do</context>
         </context-group>
@@ -22609,6 +22630,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.nullstarttime" xml:space="preserve">
         <source>Task never started</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -22720,12 +22742,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.auto-errata-bunch" xml:space="preserve">
         <source>Schedule auto errata updates as necessary</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.uuid-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated UUID records</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -22875,6 +22899,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.updateschedule" xml:space="preserve">
         <source>Update Schedule</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
@@ -22967,6 +22992,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
         <source>Delete software channel</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -22994,12 +23020,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
         <source>Delete software channel</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.misc.manage_channel" xml:space="preserve">
         <source>Manage Channel</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Managers.do</context>
         </context-group>
@@ -23083,6 +23111,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.subscribers.header" xml:space="preserve">
         <source>Subscribers</source>
+        <target></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Subscribers.do</context>
         </context-group>
@@ -24220,6 +24249,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.submit" xml:space="preserve">
         <source>Confirm</source>
+        <target></target>
       </trans-unit>
       <trans-unit id="Setup Wizard" xml:space="preserve">
         <source>Setup Wizard</source>
