@@ -231,7 +231,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>チャンネルのサブスクライブを中止</target>
+        <target>チャンネルのサブスクライブを解除</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.enable" xml:space="preserve">
         <source>Enable Configuration</source>
@@ -259,7 +259,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>完了</target>
+        <target>完了しました</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.all" xml:space="preserve">
         <source>All</source>
@@ -273,14 +273,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>すべてのチャンネル</target>
+        <target>すべて</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared" xml:space="preserve">
         <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>共有チャンネル</target>
+        <target>共有</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor" xml:space="preserve">
         <source>@@VENDOR_NAME@@</source>
@@ -294,7 +294,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>利用が多いチャンネル</target>
+        <target>利用が多いもの</target>
       </trans-unit>
       <trans-unit id="channel.nav.custom" xml:space="preserve">
         <source>My Channels</source>
@@ -308,21 +308,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>リタイアチャンネル</target>
+        <target>終了済み</target>
       </trans-unit>
       <trans-unit id="config.nav.managed" xml:space="preserve">
         <source>Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>管理システム</target>
+        <target>管理</target>
       </trans-unit>
       <trans-unit id="config.nav.target" xml:space="preserve">
         <source>Target</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>目的のシステム</target>
+        <target>ターゲット</target>
       </trans-unit>
       <trans-unit id="config.nav.config" xml:space="preserve">
         <source>Configuration</source>
@@ -336,28 +336,28 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>設定チャンネル</target>
+        <target>チャンネル</target>
       </trans-unit>
       <trans-unit id="config.nav.files" xml:space="preserve">
         <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>設定ファイル</target>
+        <target>ファイル</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles" xml:space="preserve">
         <source>Centrally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>中央管理ファイル</target>
+        <target>中央管理</target>
       </trans-unit>
       <trans-unit id="config.nav.localfiles" xml:space="preserve">
         <source>Locally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>ローカル管理ファイル</target>
+        <target>ローカル管理</target>
       </trans-unit>
       <!-- ConfigChannel details navigation -->
       <trans-unit id="configchannel.nav.overview" xml:space="preserve">
@@ -547,8 +547,7 @@
           <source>Manage Configuration Channels</source> <target>設定チャンネルの管理</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.list_unsubscribe_channels">
-          <source>List/Unsubscribe from Channels</source> <target>チャンネルの一覧表示/サブスクライブの中止</target>
-        </trans-unit>
+          <source>List/Unsubscribe from Channels</source> <target>チャンネルの一覧表示／サブスクライブの解除</target> </trans-unit>
         <trans-unit id="nav.sdc.config.subscribe_channels">
           <source>Subscribe to Channels</source> <target>チャンネルにサブスクライブ</target>
         </trans-unit>
@@ -729,7 +728,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>システムにタグを付ける</target>
+        <target>システムへのタグ付け</target>
       </trans-unit>
       <trans-unit id="Reactivation" xml:space="preserve">
         <source>Reactivation</source>
@@ -876,7 +875,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>リタイア</target>
+        <target>終了済み</target>
       </trans-unit>
       <trans-unit id="Connection" xml:space="preserve">
         <source>Connection</source>

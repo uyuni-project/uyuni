@@ -10023,11 +10023,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>您确认要删除这个 Kickstart 吗？&lt;strong&gt;&lt;p&gt;警告：删除这个 kickstart 将删除素有与其关联的系统和响应的选项。&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;请只点一次按钮，删除过程需要几分钟时间方可完成。&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.summary2" xml:space="preserve">
-        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_blank" rel="noreferrer noopener"&gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>&lt;span class="small-text"&gt;手动生成或者裸机 kickstart 文件可使用机构默认侧写设置。选择这个选项来表明当在您的 kickstart 文件的 &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; 部分指定来自  &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; 这个链接 &lt;/strong&gt; &lt;/a&gt; 的 URL 时您机构使用的侧写。除非指定机构默认，否则该链接无法工作。&lt;/span&gt;</target>
+        <target state="needs-adaptation">&lt;span class="small-text"&gt;手动生成或者裸机 kickstart 文件可使用机构默认侧写设置。选择这个选项来表明当在您的 kickstart 文件的 &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; 部分指定来自  &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; 这个链接 &lt;/strong&gt; &lt;/a&gt; 的 URL 时您机构使用的侧写。除非指定机构默认，否则该链接无法工作。&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription" xml:space="preserve">
         <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
