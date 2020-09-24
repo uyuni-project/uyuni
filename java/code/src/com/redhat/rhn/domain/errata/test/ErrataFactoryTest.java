@@ -21,12 +21,12 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.errata.impl.Bug;
+import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
@@ -308,7 +308,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         List list = ErrataFactory.lookupByOriginal(org, published);
 
         assertEquals(1, list.size());
-        var clone = (ClonedErrata) list.get(0);
+        var clone = (PublishedClonedErrata) list.get(0);
         assertTrue(clone.getOriginal().equals(published));
     }
 

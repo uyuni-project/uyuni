@@ -14,14 +14,13 @@
  */
 package com.redhat.rhn.domain.errata.impl;
 
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 
 /**
  * PublishedClonedErrata
  * @version $Rev$
  */
-public class PublishedClonedErrata extends PublishedErrata implements ClonedErrata {
+public class PublishedClonedErrata extends PublishedErrata {
 
     private Errata original;
 
