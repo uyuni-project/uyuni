@@ -81,7 +81,6 @@
 "/rhn/errata/details/SystemsAffectedSubmit.do",
 "/rhn/errata/details/ErrataConfirm.do",
 "/rhn/errata/details/ErrataConfirmSubmit.do",
-"/rhn/errata/manage/UnpublishedErrata.do",
 "/rhn/errata/manage/PublishedErrata.do",
 "/rhn/errata/manage/CloneErrata.do",
 "/rhn/errata/manage/CloneConfirm.do",
