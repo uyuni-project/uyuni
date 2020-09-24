@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.errata;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -32,7 +31,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CloneConfirmAction
- * @version $Rev$
  */
 public class CloneConfirmAction extends RhnSetAction {
 
@@ -76,24 +73,6 @@ public class CloneConfirmAction extends RhnSetAction {
         RhnSetManager.store(set);
 
         return mapping.findForward("success");
-    }
-
-    /**
-     * clones the dataresult
-     * @param user user the errata is being cloned for
-     * @param dr list of Errata to be cloned
-     */
-    protected void cloneDataResult(User user, DataResult<ErrataOverview> dr) {
-        dr.forEach(eo -> {
-            Long cloneId = PublishErrataHelper.cloneErrataFaster(eo.getId(), user.getOrg());
-
-        });
-        Iterator i = dr.iterator();
-
-        while (i.hasNext()) {
-            ErrataOverview eo = (ErrataOverview) i.next();
-
-        }
     }
 
     protected void processMethodKeys(Map<String, String> map) {
