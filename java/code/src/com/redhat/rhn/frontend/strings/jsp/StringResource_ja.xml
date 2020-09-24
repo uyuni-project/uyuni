@@ -21436,6 +21436,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewbinarypackages" xml:space="preserve">
         <source>Binary Packages</source>
+        <target>バイナリパッケージ</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewsourcepackages" xml:space="preserve">
         <source>Source Packages</source>
