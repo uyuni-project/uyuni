@@ -517,6 +517,13 @@ class UyuniSystemgroup(UyuniRemoteObject):
     Provides methods to access and modify system groups.
     """
 
+    def list_all_groups(self) -> List[Dict[str, Union[int, str]]]:
+        """
+        Retrieve a list of system groups that are accessible by the user
+        :return: list with group information
+        """
+        return self.client("systemgroup.listAllGroups")
+
     def get_details(self, name: str) -> Dict[str, Union[int, str]]:
         """
         Retrieve details of a system group.
@@ -705,6 +712,12 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def remove_packages(self, key, packages):
         return self._convert_bool_response(self.client("activationkey.removePackages", key, packages))
+
+    def add_server_groups(self, key, server_groups):
+        return self._convert_bool_response(self.client("activationkey.addServerGroups", key, server_groups))
+
+    def remove_server_groups(self, key, server_groups):
+        return self._convert_bool_response(self.client("activationkey.removeServerGroups", key, server_groups))
 
 
 
@@ -1224,6 +1237,17 @@ def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None
     return UyuniSystemgroup(org_admin_user, org_admin_password).create(name=name, description=descr)
 
 
+def systemgroup_list_all_groups(username, password):
+    """
+    Retrieve a list of system groups that are accessible by the user
+
+    :param username: username to authenticate with
+    :param password: password to authenticate with
+    :return:
+    """
+    return UyuniSystemgroup(username, password).list_all_groups()
+
+
 def systemgroup_get_details(name, org_admin_user=None, org_admin_password=None):
     """
     Return system group details.
@@ -1508,3 +1532,27 @@ def activation_key_remove_packages(key, packages, org_admin_user=None, org_admin
     :return:
     """
     return UyuniActivationKey(org_admin_user, org_admin_password).remove_packages(key, packages)
+
+
+def activation_key_add_server_groups(key, server_groups, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param server_groups:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_server_groups(key, server_groups)
+
+
+def activation_key_remove_server_groups(key, server_groups, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param server_groups:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_server_groups(key, server_groups)
