@@ -9759,8 +9759,8 @@ Thank you for using @@PRODUCT_NAME@@.
         <target>最初の文字を選択してください</target>
       </trans-unit>
       <trans-unit id="login.jsp.satbody2" xml:space="preserve">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-        <target state="translated">@@PRODUCT_NAME@@ に関する詳細については、 &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;こちら&lt;/i&gt;&lt;/a&gt; の Web サイトをご覧ください。 </target>
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+        <target state="needs-adaptation">@@PRODUCT_NAME@@ に関する詳細については、 &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;こちら&lt;/i&gt;&lt;/a&gt; の Web サイトをご覧ください。 </target>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3" xml:space="preserve">
         <source> </source>
