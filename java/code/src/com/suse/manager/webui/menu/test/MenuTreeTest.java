@@ -19,18 +19,18 @@ import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.menu.MenuItem;
 import com.suse.manager.webui.menu.MenuTree;
 import com.suse.manager.webui.menu.MenuTree.MenuItemList;
-
-import java.util.List;
-
-
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
+import java.util.List;
+
 import junit.framework.TestCase;
 
 public class MenuTreeTest extends TestCase {
@@ -82,9 +82,7 @@ public class MenuTreeTest extends TestCase {
                 .addChild(new MenuItem("Manage Errata")
                         .withDir("/rhn/errata/manage")
                         .addChild(new MenuItem("Published")
-                            .withPrimaryUrl("/rhn/errata/manage/PublishedErrata.do"))
-                        .addChild(new MenuItem("Unpublished")
-                            .withPrimaryUrl("/rhn/errata/manage/UnpublishedErrata.do")))
+                            .withPrimaryUrl("/rhn/errata/manage/PublishedErrata.do")))
                 .addChild(new MenuItem("Clone Errata")
                     .withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone")));
