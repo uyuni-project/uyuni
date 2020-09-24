@@ -231,7 +231,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>チャンネルのサブスクライブを中止</target>
+        <target>チャンネルのサブスクライブを解除</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.enable" xml:space="preserve">
         <source>Enable Configuration</source>
@@ -547,8 +547,7 @@
           <source>Manage Configuration Channels</source> <target>設定チャンネルの管理</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.list_unsubscribe_channels">
-          <source>List/Unsubscribe from Channels</source> <target>チャンネルの一覧表示/サブスクライブの中止</target>
-        </trans-unit>
+          <source>List/Unsubscribe from Channels</source> <target>チャンネルの一覧表示／サブスクライブの解除</target> </trans-unit>
         <trans-unit id="nav.sdc.config.subscribe_channels">
           <source>Subscribe to Channels</source> <target>チャンネルにサブスクライブ</target>
         </trans-unit>
