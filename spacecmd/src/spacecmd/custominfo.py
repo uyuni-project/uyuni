@@ -26,12 +26,18 @@
 # unused argument
 # pylint: disable=W0613
 
+import gettext
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_custominfo_createkey(self):
-    print('custominfo_createkey: Create a custom key')
-    print('usage: custominfo_createkey [NAME] [DESCRIPTION]')
+    print(_('custominfo_createkey: Create a custom key'))
+    print(_('usage: custominfo_createkey [NAME] [DESCRIPTION]'))
 
 
 def do_custominfo_createkey(self, args):
@@ -45,12 +51,12 @@ def do_custominfo_createkey(self, args):
         key = ''
 
     while key == '':
-        key = prompt_user('Name:')
+        key = prompt_user(_('Name:'))
 
     if len(args) > 1:
         description = ' '.join(args[1:])
     else:
-        description = prompt_user('Description:')
+        description = prompt_user(_('Description:'))
         if description == '':
             description = key
 
@@ -64,8 +70,8 @@ def do_custominfo_createkey(self, args):
 
 
 def help_custominfo_deletekey(self):
-    print('custominfo_deletekey: Delete a custom key')
-    print('usage: custominfo_deletekey KEY ...')
+    print(_('custominfo_deletekey: Delete a custom key'))
+    print(_('usage: custominfo_deletekey KEY ...'))
 
 
 def complete_custominfo_deletekey(self, text, line, beg, end):
@@ -105,8 +111,8 @@ def do_custominfo_deletekey(self, args):
 
 
 def help_custominfo_listkeys(self):
-    print('custominfo_listkeys: List all custom keys')
-    print('usage: custominfo_listkeys')
+    print(_('custominfo_listkeys: List all custom keys'))
+    print(_('usage: custominfo_listkeys'))
 
 
 def do_custominfo_listkeys(self, args, doreturn=False):
@@ -123,8 +129,8 @@ def do_custominfo_listkeys(self, args, doreturn=False):
 
 
 def help_custominfo_details(self):
-    print('custominfo_details: Show the details of a custom key')
-    print('usage: custominfo_details KEY ...')
+    print(_('custominfo_details: Show the details of a custom key'))
+    print(_('usage: custominfo_details KEY ...'))
 
 
 def complete_custominfo_details(self, text, line, beg, end):
@@ -146,7 +152,7 @@ def do_custominfo_details(self, args):
         ", ".join(args), ", ".join(keys)))
 
     if not keys:
-        logging.error("No keys matched argument '{}'.".format(", ".join(args)))
+        logging.error(_("No keys matched argument '{}'.").format(", ".join(args)))
         return 1
 
     add_separator = False
@@ -163,10 +169,10 @@ def do_custominfo_details(self, args):
             if add_separator:
                 print(self.SEPARATOR)
             add_separator = True
-            print('Label:        %s' % (details.get('label') or "N/A"))
-            print('Description:  %s' % (details.get('description') or "N/A"))
-            print('Modified:     %s' % (details.get('last_modified') or "N/A"))
-            print('System Count: %i' % (details.get('system_count') or 0))
+            print(_('Label:        %s') % (details.get('label') or "N/A"))
+            print(_('Description:  %s') % (details.get('description') or "N/A"))
+            print(_('Modified:     %s') % (details.get('last_modified') or "N/A"))
+            print(_('System Count: %i') % (details.get('system_count') or 0))
 
     return 0
 
@@ -174,8 +180,8 @@ def do_custominfo_details(self, args):
 
 
 def help_custominfo_updatekey(self):
-    print('custominfo_updatekey: Update a custom key')
-    print('usage: custominfo_updatekey [NAME] [DESCRIPTION]')
+    print(_('custominfo_updatekey: Update a custom key'))
+    print(_('usage: custominfo_updatekey [NAME] [DESCRIPTION]'))
 
 
 def do_custominfo_updatekey(self, args):
@@ -189,12 +195,12 @@ def do_custominfo_updatekey(self, args):
         key = ''
 
     while key == '':
-        key = prompt_user('Name:')
+        key = prompt_user(_('Name:'))
 
     if len(args) > 1:
         description = ' '.join(args[1:])
     else:
-        description = prompt_user('Description:')
+        description = prompt_user(_('Description:'))
         if description == '':
             description = key
 
