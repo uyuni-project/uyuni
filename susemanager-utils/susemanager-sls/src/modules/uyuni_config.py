@@ -700,6 +700,13 @@ class UyuniActivationKey(UyuniRemoteObject):
     def disable_config_deployment(self, key):
         return self._convert_bool_response(self.client("activationkey.disableConfigDeployment", key))
 
+    def add_packages(self, key, packages):
+        return self._convert_bool_response(self.client("activationkey.addPackages", key, packages))
+
+    def remove_packages(self, key, packages):
+        return self._convert_bool_response(self.client("activationkey.removePackages", key, packages))
+
+
 
 class UyuniChildMasterIntegration:
     """
@@ -1477,3 +1484,27 @@ def activation_key_disable_config_deployment(key, org_admin_user=None, org_admin
     :return:
     """
     return UyuniActivationKey(org_admin_user, org_admin_password).disable_config_deployment(key)
+
+
+def activation_key_add_packages(key, packages, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param packages:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_packages(key, packages)
+
+
+def activation_key_remove_packages(key, packages, org_admin_user=None, org_admin_password=None):
+    """
+
+    :param key:
+    :param packages:
+    :param org_admin_user:
+    :param org_admin_password:
+    :return:
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_packages(key, packages)
