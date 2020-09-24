@@ -135,7 +135,6 @@ SYSTEM_ALREADY_SETUP = _("System Already Registered")
 SYSTEM_ALREADY_REGISTERED = _("It appears this system has already been set up for software updates:")
 SYSTEM_ALREADY_REGISTERED_CONT = _("Are you sure you would like to continue?")
 
-# TODO: no idea about this:
 RHSM_SYSTEM_ALREADY_REGISTERED = _("This system has already been registered using Red Hat Subscription Management.\n\n"
                                 "Your system is being registered again using Red Hat Satellite"
                                 " or Red Hat Satellite Proxy technology. Red Hat recommends that customers only register once.\n\n"
