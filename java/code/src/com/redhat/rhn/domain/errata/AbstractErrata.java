@@ -19,8 +19,9 @@ package com.redhat.rhn.domain.errata;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
+import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.Keyword;
+import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.struts.Selectable;

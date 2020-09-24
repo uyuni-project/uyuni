@@ -41,12 +41,12 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -81,6 +81,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -314,7 +315,7 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Creates a new PublishedBug with the id and summary given.
+     * Creates a new Bug with the id and summary given.
      * @param id The id for the new bug
      * @param summary The summary for the new bug
      * @param url The url for the new bug.

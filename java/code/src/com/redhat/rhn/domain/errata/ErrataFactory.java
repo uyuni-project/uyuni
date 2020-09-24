@@ -28,7 +28,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.errata.impl.Keyword;
-import com.redhat.rhn.domain.errata.impl.PublishedBug;
+import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
@@ -373,7 +373,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return The new published bug.
      */
     public static Bug createPublishedBug(Long id, String summary, String url) {
-        Bug bug = new PublishedBug();
+        Bug bug = new Bug();
         bug.setId(id);
         bug.setSummary(summary);
         bug.setUrl(url);

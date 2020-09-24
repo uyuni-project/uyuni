@@ -32,10 +32,9 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.impl.PublishedBug;
+import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.Keyword;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -123,7 +122,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(e instanceof PublishedErrata);
 
         Bug b = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
-        assertTrue(b instanceof PublishedBug);
+        assertTrue(b instanceof Bug);
     }
 
     public void testSearchByPackagesIds() throws Exception {
@@ -145,7 +144,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
         Bug b1 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
-        assertTrue(b1 instanceof PublishedBug);
+        assertTrue(b1 instanceof Bug);
         Errata e = ErrataFactory.createPublishedErrata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");

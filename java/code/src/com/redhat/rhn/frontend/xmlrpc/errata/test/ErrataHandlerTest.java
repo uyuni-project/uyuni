@@ -25,12 +25,11 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.Keyword;
-import com.redhat.rhn.domain.errata.impl.PublishedBug;
 import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -327,7 +326,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         //unique errata, for user's org
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        Bug bug1 = new PublishedBug();
+        Bug bug1 = new Bug();
         bug1.setId(1001L);
         bug1.setSummary("This is a test summary for bug1");
 
@@ -353,7 +352,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         //two erratas, for user's and vendor's org, with the same advisoryName
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null, Optional.of(userErrata.getAdvisory()));
 
-        Bug bug2 = new PublishedBug();
+        Bug bug2 = new Bug();
         bug2.setId(1002L);
         bug2.setSummary("This is a test summary for bug2");
 

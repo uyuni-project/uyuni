@@ -16,11 +16,10 @@ package com.redhat.rhn.domain.errata.test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
-import com.redhat.rhn.domain.errata.impl.PublishedBug;
+import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
@@ -67,11 +66,11 @@ public class ErrataTest extends BaseTestCaseWithUser {
     public void testBugs() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
 
-        Bug bug1 = new PublishedBug();
+        Bug bug1 = new Bug();
         bug1.setId(1001L);
         bug1.setSummary("This is a test summary");
 
-        Bug bug2 = new PublishedBug();
+        Bug bug2 = new Bug();
         bug2.setId(1002L);
         bug2.setSummary("This is another test summary");
 

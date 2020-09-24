@@ -18,7 +18,6 @@
 package com.redhat.rhn.domain.errata.impl;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -28,9 +27,8 @@ import java.io.Serializable;
 
 /**
  * Bug
- * @version $Rev$
  */
-public class PublishedBug extends BaseDomainHelper implements Bug, Serializable {
+public class Bug extends BaseDomainHelper implements Serializable {
 
     private Long id;
     private String summary;
@@ -97,10 +95,10 @@ public class PublishedBug extends BaseDomainHelper implements Bug, Serializable 
      * {@inheritDoc}
      */
     public boolean equals(final Object other) {
-        if (!(other instanceof PublishedBug)) {
+        if (!(other instanceof Bug)) {
             return false;
         }
-        PublishedBug castOther = (PublishedBug) other;
+        Bug castOther = (Bug) other;
         return new EqualsBuilder().append(id, castOther.id)
                                   .isEquals();
     }
