@@ -17,14 +17,22 @@ package com.redhat.rhn.frontend.action.errata;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.struts.RhnListAction;
 import com.redhat.rhn.manager.errata.ErrataManager;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * PublishedDeleteConfirmSetupAction
- * @version $Rev$
  */
-public class PublishedDeleteConfirmSetupAction extends
-        BaseErrataListSetupAction {
+public class PublishedDeleteConfirmSetupAction extends RhnListAction {
 
     /**
      * {@inheritDoc}
@@ -33,4 +41,22 @@ public class PublishedDeleteConfirmSetupAction extends
         return ErrataManager.publishedInSet(user, pc, "errata_to_delete");
     }
 
+    /** {@inheritDoc} */
+    public ActionForward execute(ActionMapping mapping,
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
+
+        RequestContext requestContext = new RequestContext(request);
+
+        User user = requestContext.getCurrentUser();
+        PageControl pc = new PageControl();
+
+        clampListBounds(pc, request, user);
+
+        DataResult dr = getDataResult(user, pc);
+
+        request.setAttribute(RequestContext.PAGE_LIST, dr);
+        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+    }
 }
