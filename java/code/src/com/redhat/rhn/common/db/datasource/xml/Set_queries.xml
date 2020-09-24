@@ -204,11 +204,6 @@ DELETE
                                                   WHERE E.id = S.element
                                                     AND E.org_id = WC.org_id
                                                 )
-                   AND NOT EXISTS(SELECT 1
-                                                   FROM rhnErrataTmp ET
-                                                  WHERE ET.id = S.element
-                                                    AND ET.org_id = WC.org_id
-                                                )
                )
   </query>
 </write-mode>
@@ -226,11 +221,6 @@ DELETE
                                                    FROM rhnErrata E
                                                   WHERE E.id = S.element
                                                     AND (E.org_id = WC.org_id OR E.org_id IS NULL)
-                                                )
-                   AND NOT EXISTS(SELECT 1
-                                                   FROM rhnErrataTmp ET
-                                                  WHERE ET.id = S.element
-                                                    AND ET.org_id = WC.org_id
                                                 )
                )
   </query>

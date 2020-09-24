@@ -603,7 +603,6 @@ public class ErrataManager extends BaseManager {
                 "deleteChannelErrataPackagesBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataFileBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataPackageBulk"));
-        modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataTmpBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries",
                 "deleteServerErrataPackageCacheBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataBulk"));
