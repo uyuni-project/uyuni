@@ -21,6 +21,7 @@
 
 """ spacecmd - a command line interface to Spacewalk """
 
+import gettext
 import logging
 import os
 import re
@@ -38,12 +39,18 @@ except ImportError: # python 2
     from ConfigParser import SafeConfigParser
 import socket
 
-_INTRO = '''Welcome to spacecmd, a command-line interface to Spacewalk.
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
+
+_INTRO = _('''Welcome to spacecmd, a command-line interface to Spacewalk.
 
 Type: 'help' for a list of commands
       'help <cmd>' for command-specific help
       'quit' to quit
-'''
+''')
 
 _SYSTEM_CONF_FILE = '/etc/spacecmd.conf'
 
@@ -64,7 +71,7 @@ def get_localhost_fqdn():
     except socket.gaierror as exc:
         logging.debug("Error while getting FQDN over the network: %s", str(exc))
     except Exception as exc:
-        logging.error("Unhandled exception occurred while getting FQDN:", str(exc))
+        logging.error(_("Unhandled exception occurred while getting FQDN:"), str(exc))
 
     return fqdn or socket.getfqdn()
 
@@ -82,23 +89,23 @@ if __name__ == '__main__':
     usage = '%(prog)s [options] [command]'
     parser = argparse.ArgumentParser(usage=usage)
     parser.add_argument('-c', '--config',
-                         help='config file to use [default: ~/.spacecmd/config]')
+                         help=_('config file to use [default: ~/.spacecmd/config]'))
     parser.add_argument('-u', '--username',
-                        help='use this username to connect to the server')
+                        help=_('use this username to connect to the server'))
     parser.add_argument('-p', '--password',
-                        help='use this password to connect to the server (insecure). Use config instead or spacecmd will ask.')
+                        help=_('use this password to connect to the server (insecure). Use config instead or spacecmd will ask.'))
     parser.add_argument('-s', '--server',
-                        help='connect to this server [default: local hostname]')
+                        help=_('connect to this server [default: local hostname]'))
     parser.add_argument('--nossl', action='store_true',
-                        help='use HTTP instead of HTTPS')
+                        help=_('use HTTP instead of HTTPS'))
     parser.add_argument('--nohistory', action='store_true',
-                        help='do not store command history')
+                        help=_('do not store command history'))
     parser.add_argument('-y', '--yes', action='store_true',
-                        help='answer yes for all questions')
+                        help=_('answer yes for all questions'))
     parser.add_argument('-q', '--quiet', action='store_true',
-                        help='print only error messages')
+                        help=_('print only error messages'))
     parser.add_argument('-d', '--debug', action='count', default=0,
-                        help='print debug messages (can be passed multiple times)')
+                        help=_('print debug messages (can be passed multiple times)'))
     parser.add_argument('command', nargs='*',
                         help=argparse.SUPPRESS)
 
@@ -146,7 +153,7 @@ if __name__ == '__main__':
     # don't automatically create config files passed via --config
     if shell.options.config:
         if not os.path.isfile(shell.options.config):
-            logging.error('Config file %s does not exist.', shell.options.config)
+            logging.error(_('Config file %s does not exist.'), shell.options.config)
             sys.exit(1)
     else:
     # create an empty configuration file if one's not present
@@ -163,7 +170,7 @@ if __name__ == '__main__':
                 handle.write('[spacecmd]\n')
                 handle.close()
             except IOError:
-                logging.error('Could not create %s', user_conf_file)
+                logging.error(_('Could not create %s'), user_conf_file)
 
     # load options from configuration files
     if shell.options.config:
@@ -198,7 +205,7 @@ if __name__ == '__main__':
                 sys.exit(result)
         except KeyboardInterrupt:
             print
-            print('User Interrupt')
+            print(_('User Interrupt'))
         except UnknownCallException:
             sys.exit(1)
         except Exception as detail:
@@ -236,7 +243,7 @@ if __name__ == '__main__':
                     detail = detail.faultString
 
                     # the session expired
-                    if re.search('Could not find session', detail, re.I):
+                    if re.search(_('Could not find session'), detail, re.I):
                         shell.session = ''
 
                 if shell.options.debug:

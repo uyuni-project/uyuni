@@ -30,6 +30,7 @@
 # pylint: disable=C0103
 
 import base64
+import gettext
 from operator import itemgetter
 try:
     from xmlrpc import client as xmlrpclib
@@ -37,6 +38,11 @@ except ImportError:
     import xmlrpclib
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def print_schedule_summary(self, action_type, args):
     args = args.split() or []
@@ -79,7 +85,7 @@ def print_schedule_summary(self, action_type, args):
     if not actions:
         return
 
-    print('ID      Date                 C    F    P     Action')
+    print(_('ID      Date                 C    F    P     Action'))
     print('--      ----                ---  ---  ---    ------')
 
     for action in sorted(actions, key=itemgetter('id'), reverse=True):
@@ -125,8 +131,8 @@ def print_schedule_summary(self, action_type, args):
 
 
 def help_schedule_cancel(self):
-    print('schedule_cancel: Cancel scheduled actions')
-    print('usage: schedule_cancel ID|* ...')
+    print(_('schedule_cancel: Cancel scheduled actions'))
+    print(_('usage: schedule_cancel ID|* ...'))
 
 
 def complete_schedule_cancel(self, text, line, beg, end):
@@ -148,8 +154,8 @@ def do_schedule_cancel(self, args):
 
     # cancel all actions
     if '.*' in args:
-        if not self.user_confirm('Cancel all pending actions [y/N]:'):
-            logging.info("All pending actions left untouched")
+        if not self.user_confirm(_('Cancel all pending actions [y/N]:')):
+            logging.info(_("All pending actions left untouched"))
             return 1
 
         actions = self.client.schedule.listInProgressActions(self.session)
@@ -164,18 +170,18 @@ def do_schedule_cancel(self, args):
         try:
             actions.append(int(a))
         except ValueError:
-            logging.warning('"%s" is not a valid ID' % str(a))
+            logging.warning(_('"%s" is not a valid ID') % str(a))
             failed_actions.append(a)
 
     if actions:
         self.client.schedule.cancelActions(self.session, actions)
         for a in actions:
-            logging.info('Canceled action: %i', a)
+            logging.info(_('Canceled action: %i'), a)
     if failed_actions:
         for action in failed_actions:
-            logging.info("Failed action: %s", action)
+            logging.info(_("Failed action: %s"), action)
 
-    print('Canceled %i action(s)' % len(actions))
+    print(_('Canceled %i action(s)') % len(actions))
 
     return 0
 
@@ -183,8 +189,8 @@ def do_schedule_cancel(self, args):
 
 
 def help_schedule_reschedule(self):
-    print('schedule_reschedule: Reschedule failed actions')
-    print('usage: schedule_reschedule ID|* ...')
+    print(_('schedule_reschedule: Reschedule failed actions'))
+    print(_('usage: schedule_reschedule ID|* ...'))
 
 
 def complete_schedule_reschedule(self, text, line, beg, end):
@@ -211,7 +217,7 @@ def do_schedule_reschedule(self, args):
 
     # reschedule all failed actions
     if '.*' in args:
-        if not self.user_confirm('Reschedule all failed actions [y/N]:'):
+        if not self.user_confirm(_('Reschedule all failed actions [y/N]:')):
             return 1
         to_reschedule = failed_actions
     else:
@@ -223,17 +229,17 @@ def do_schedule_reschedule(self, args):
                 if action_id in failed_actions:
                     to_reschedule.append(action_id)
                 else:
-                    logging.warning('"%i" is not a failed action' % action_id)
+                    logging.warning(_('"%i" is not a failed action') % action_id)
             except ValueError:
-                logging.warning('"%s" is not a valid ID' % str(a))
+                logging.warning(_('"%s" is not a valid ID') % str(a))
                 continue
 
     if not to_reschedule:
-        logging.warning('No failed actions to reschedule')
+        logging.warning(_('No failed actions to reschedule'))
         return 1
     else:
         self.client.schedule.rescheduleActions(self.session, to_reschedule, True)
-        print('Rescheduled %i action(s)' % len(to_reschedule))
+        print(_('Rescheduled %i action(s)') % len(to_reschedule))
 
     return 0
 
@@ -241,8 +247,8 @@ def do_schedule_reschedule(self, args):
 
 
 def help_schedule_details(self):
-    print('schedule_details: Show the details of a scheduled action')
-    print('usage: schedule_details ID')
+    print(_('schedule_details: Show the details of a scheduled action'))
+    print(_('usage: schedule_details ID'))
 
 
 def do_schedule_details(self, args):
@@ -259,7 +265,7 @@ def do_schedule_details(self, args):
     try:
         action_id = int(action_id)
     except ValueError:
-        logging.warning('The ID "%s" is invalid' % action_id)
+        logging.warning(_('The ID "%s" is invalid') % action_id)
         return 1
 
     completed = self.client.schedule.listCompletedSystems(self.session, action_id)
@@ -268,37 +274,37 @@ def do_schedule_details(self, args):
     action = {acn.get("id"): acn for acn in self.client.schedule.listAllActions(self.session)}.get(action_id)
 
     if action is not None:
-        print('ID:        %i' % action.get('id'))
-        print('Action:    %s' % action.get('name'))
-        print('User:      %s' % action.get('scheduler'))
-        print('Date:      %s' % action.get('earliest'))
+        print(_('ID:        %i') % action.get('id'))
+        print(_('Action:    %s') % action.get('name'))
+        print(_('User:      %s') % action.get('scheduler'))
+        print(_('Date:      %s') % action.get('earliest'))
         print('')
-        print('Completed: %s' % str(len(completed)).rjust(3))
-        print('Failed:    %s' % str(len(failed)).rjust(3))
-        print('Pending:   %s' % str(len(pending)).rjust(3))
+        print(_('Completed: %s') % str(len(completed)).rjust(3))
+        print(_('Failed:    %s') % str(len(failed)).rjust(3))
+        print(_('Pending:   %s') % str(len(pending)).rjust(3))
 
         if completed:
             print('')
-            print('Completed Systems')
+            print(_('Completed Systems'))
             print('-----------------')
             for s in completed:
                 print(s.get('server_name'))
 
         if failed:
             print('')
-            print('Failed Systems')
+            print(_('Failed Systems'))
             print('--------------')
             for s in failed:
                 print(s.get('server_name'))
 
         if pending:
             print('')
-            print('Pending Systems')
+            print(_('Pending Systems'))
             print('---------------')
             for s in pending:
                 print(s.get('server_name'))
     else:
-        logging.error('No action found with the ID "%s"' % action_id)
+        logging.error(_('No action found with the ID "%s"') % action_id)
         return 1
 
     return 0
@@ -307,8 +313,8 @@ def do_schedule_details(self, args):
 
 
 def help_schedule_getoutput(self):
-    print('schedule_getoutput: Show the output from an action')
-    print('usage: schedule_getoutput ID')
+    print(_('schedule_getoutput: Show the output from an action'))
+    print(_('usage: schedule_getoutput ID'))
 
 
 def do_schedule_getoutput(self, args):
@@ -323,7 +329,7 @@ def do_schedule_getoutput(self, args):
     try:
         action_id = int(args[0])
     except ValueError:
-        logging.error('"%s" is not a valid action ID' % str(args[0]))
+        logging.error(_('"%s" is not a valid action ID') % str(args[0]))
         return 1
 
     script_results = None
@@ -345,12 +351,12 @@ def do_schedule_getoutput(self, args):
             else:
                 system = 'UNKNOWN'
 
-            print('System:      %s' % system)
-            print('Start Time:  %s' % r.get('startDate'))
-            print('Stop Time:   %s' % r.get('stopDate'))
-            print('Return Code: %i' % r.get('returnCode'))
+            print(_('System:      %s') % system)
+            print(_('Start Time:  %s') % r.get('startDate'))
+            print(_('Stop Time:   %s') % r.get('stopDate'))
+            print(_('Return Code: %i') % r.get('returnCode'))
             print('')
-            print('Output')
+            print(_('Output'))
             print('------')
             if r.get('output_enc64'):
                 print(base64.b64decode(r.get('output') or b'Ti9B\n').decode("utf-8"))
@@ -369,14 +375,14 @@ def do_schedule_getoutput(self, args):
                     print(self.SEPARATOR)
                 add_separator = True
 
-                print('System:    %s' % action.get('server_name'))
-                print('Completed: %s' % action.get('timestamp'))
+                print(_('System:    %s') % action.get('server_name'))
+                print(_('Completed: %s') % action.get('timestamp'))
                 print('')
-                print('Output')
+                print(_('Output'))
                 print('------')
                 print(action.get('message'))
         else:
-            logging.error("No systems found")
+            logging.error(_("No systems found"))
             return 1
 
     return 0
@@ -385,8 +391,8 @@ def do_schedule_getoutput(self, args):
 
 
 def help_schedule_listpending(self):
-    print('schedule_listpending: List pending actions')
-    print('usage: schedule_listpending [BEGINDATE] [ENDDATE]')
+    print(_('schedule_listpending: List pending actions'))
+    print(_('usage: schedule_listpending [BEGINDATE] [ENDDATE]'))
     print('')
     print(self.HELP_TIME_OPTS)
 
@@ -398,8 +404,8 @@ def do_schedule_listpending(self, args):
 
 
 def help_schedule_listcompleted(self):
-    print('schedule_listcompleted: List completed actions')
-    print('usage: schedule_listcompleted [BEGINDATE] [ENDDATE]')
+    print(_('schedule_listcompleted: List completed actions'))
+    print(_('usage: schedule_listcompleted [BEGINDATE] [ENDDATE]'))
     print('')
     print(self.HELP_TIME_OPTS)
 
@@ -411,8 +417,8 @@ def do_schedule_listcompleted(self, args):
 
 
 def help_schedule_listfailed(self):
-    print('schedule_listfailed: List failed actions')
-    print('usage: schedule_listfailed [BEGINDATE] [ENDDATE]')
+    print(_('schedule_listfailed: List failed actions'))
+    print(_('usage: schedule_listfailed [BEGINDATE] [ENDDATE]'))
     print('')
     print(self.HELP_TIME_OPTS)
 
@@ -424,8 +430,8 @@ def do_schedule_listfailed(self, args):
 
 
 def help_schedule_listarchived(self):
-    print('schedule_listarchived: List archived actions')
-    print('usage: schedule_listarchived [BEGINDATE] [ENDDATE]')
+    print(_('schedule_listarchived: List archived actions'))
+    print(_('usage: schedule_listarchived [BEGINDATE] [ENDDATE]'))
     print('')
     print(self.HELP_TIME_OPTS)
 
@@ -437,8 +443,8 @@ def do_schedule_listarchived(self, args):
 
 
 def help_schedule_list(self):
-    print('schedule_list: List all actions')
-    print('usage: schedule_list [BEGINDATE] [ENDDATE]')
+    print(_('schedule_list: List all actions'))
+    print(_('usage: schedule_list [BEGINDATE] [ENDDATE]'))
     print('')
     print(self.HELP_TIME_OPTS)
 

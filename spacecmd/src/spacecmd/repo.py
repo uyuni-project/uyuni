@@ -29,6 +29,7 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 import shlex
 try:
     from xmlrpc import client as xmlrpclib
@@ -36,11 +37,15 @@ except ImportError:
     import xmlrpclib
 from spacecmd.utils import *
 
-
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_repo_list(self):
-    print('repo_list: List all available user repos')
-    print('usage: repo_list')
+    print(_('repo_list: List all available user repos'))
+    print(_('usage: repo_list'))
 
 
 def do_repo_list(self, args, doreturn=False):
@@ -57,8 +62,8 @@ def do_repo_list(self, args, doreturn=False):
 
 
 def help_repo_details(self):
-    print('repo_details: Show the details of a user repo')
-    print('usage: repo_details <repo ...>')
+    print(_('repo_details: Show the details of a user repo'))
+    print(_('usage: repo_details <repo ...>'))
 
 
 def complete_repo_details(self, text, line, beg, end):
@@ -86,14 +91,14 @@ def do_repo_details(self, args):
                 print(self.SEPARATOR)
             add_separator = True
 
-            print('Repository Label:                  %s' % details.get('label'))
-            print('Repository URL:                    %s' % details.get('sourceUrl'))
-            print('Repository Type:                   %s' % details.get('type'))
-            print('Repository SSL Ca Certificate:     %s' % (details.get('sslCaDesc') or "None"))
-            print('Repository SSL Client Certificate: %s' % (details.get('sslCertDesc') or "None"))
-            print('Repository SSL Client Key:         %s' % (details.get('sslKeyDesc') or "None"))
+            print(_('Repository Label:                  %s') % details.get('label'))
+            print(_('Repository URL:                    %s') % details.get('sourceUrl'))
+            print(_('Repository Type:                   %s') % details.get('type'))
+            print(_('Repository SSL Ca Certificate:     %s') % (details.get('sslCaDesc') or "None"))
+            print(_('Repository SSL Client Certificate: %s') % (details.get('sslCertDesc') or "None"))
+            print(_('Repository SSL Client Key:         %s') % (details.get('sslKeyDesc') or "None"))
     else:
-        print("No repositories found for '{}' query".format(' '.join(args)))
+        print(_("No repositories found for '{}' query").format(' '.join(args)))
         return 1
 
     return 0
@@ -102,8 +107,8 @@ def do_repo_details(self, args):
 
 
 def help_repo_listfilters(self):
-    print('repo_listfilters: Show the filters for a user repo')
-    print('usage: repo_listfilters repo')
+    print(_('repo_listfilters: Show the filters for a user repo'))
+    print(_('usage: repo_listfilters repo'))
 
 
 def complete_repo_listfilters(self, text, line, beg, end):
@@ -124,7 +129,7 @@ def do_repo_listfilters(self, args):
         for flt in filters:
             print("%s%s" % (flt.get('flag'), flt.get('filter')))
     else:
-        print("No filters found")
+        print(_("No filters found"))
         return 1
 
     return 0
@@ -133,8 +138,8 @@ def do_repo_listfilters(self, args):
 
 
 def help_repo_addfilters(self):
-    print('repo_addfilters: Add filters for a user repo')
-    print('usage: repo_addfilters repo <filter ...>')
+    print(_('repo_addfilters: Add filters for a user repo'))
+    print(_('usage: repo_addfilters repo <filter ...>'))
 
 
 def complete_repo_addfilters(self, text, line, beg, end):
@@ -158,7 +163,7 @@ def do_repo_addfilters(self, args):
         repofilter = arg[1:]
 
         if not (flag == '+' or flag == '-'):
-            logging.error('Each filter must start with + or -')
+            logging.error(_('Each filter must start with + or -'))
             return 1
 
         self.client.channel.software.addRepoFilter(self.session,
@@ -172,8 +177,8 @@ def do_repo_addfilters(self, args):
 
 
 def help_repo_removefilters(self):
-    print('repo_removefilters: Remove filters from a user repo')
-    print('usage: repo_removefilters repo <filter ...>')
+    print(_('repo_removefilters: Remove filters from a user repo'))
+    print(_('usage: repo_removefilters repo <filter ...>'))
 
 
 def complete_repo_removefilters(self, text, line, beg, end):
@@ -195,7 +200,7 @@ def do_repo_removefilters(self, args):
         repofilter = arg[1:]
 
         if not (flag == '+' or flag == '-'):
-            logging.error('Each filter must start with + or -')
+            logging.error(_('Each filter must start with + or -'))
             return 1
 
         self.client.channel.software.removeRepoFilter(self.session,
@@ -209,8 +214,8 @@ def do_repo_removefilters(self, args):
 
 
 def help_repo_setfilters(self):
-    print('repo_setfilters: Set the filters for a user repo')
-    print('usage: repo_setfilters repo <filter ...>')
+    print(_('repo_setfilters: Set the filters for a user repo'))
+    print(_('usage: repo_setfilters repo <filter ...>'))
 
 
 def complete_repo_setfilters(self, text, line, beg, end):
@@ -234,7 +239,7 @@ def do_repo_setfilters(self, args):
         repofilter = arg[1:]
 
         if not (flag == '+' or flag == '-'):
-            logging.error('Each filter must start with + or -')
+            logging.error(_('Each filter must start with + or -'))
             return 1
 
         filters.append({'filter': repofilter, 'flag': flag})
@@ -247,13 +252,13 @@ def do_repo_setfilters(self, args):
 
 
 def help_repo_clearfilters(self):
-    print('repo_clearfilters: Clears the filters for a user repo')
-    print('''usage: repo_clearfilters repo <options>
+    print(_('repo_clearfilters: Clears the filters for a user repo'))
+    print(_('''usage: repo_clearfilters repo <options>
 
 options:
   -y, --yes   Confirm without prompt
 
-''')
+'''))
 
 
 def complete_repo_clearfilters(self, text, line, beg, end):
@@ -270,7 +275,7 @@ def do_repo_clearfilters(self, args):
         self.help_repo_clearfilters()
         return 1
 
-    if _options.yes or self.user_confirm('Remove these filters [y/N]:'):
+    if _options.yes or self.user_confirm(_('Remove these filters [y/N]:')):
         self.client.channel.software.clearRepoFilters(self.session, args[0])
 
     return 0
@@ -279,8 +284,8 @@ def do_repo_clearfilters(self, args):
 
 
 def help_repo_delete(self):
-    print('repo_delete: Delete a user repo')
-    print('usage: repo_delete <repo ...>')
+    print(_('repo_delete: Delete a user repo'))
+    print(_('usage: repo_delete <repo ...>'))
 
 
 def complete_repo_delete(self, text, line, beg, end):
@@ -299,16 +304,16 @@ def do_repo_delete(self, args):
     # allow globbing of repo names
     repos = filter_results(self.do_repo_list('', True), args)
 
-    print('Repos')
+    print(_('Repos'))
     print('-----')
     print('\n'.join(sorted(repos)))
 
-    if self.user_confirm('Delete these repos [y/N]:'):
+    if self.user_confirm(_('Delete these repos [y/N]:')):
         for repo in repos:
             try:
                 self.client.channel.software.removeRepo(self.session, repo)
             except xmlrpclib.Fault:
-                logging.error('Failed to remove repo %s' % repo)
+                logging.error(_('Failed to remove repo %s') % repo)
 
     return 0
 
@@ -316,8 +321,8 @@ def do_repo_delete(self, args):
 
 
 def help_repo_create(self):
-    print('repo_create: Create a user repository')
-    print('''usage: repo_create <options>)
+    print(_('repo_create: Create a user repository'))
+    print(_('''usage: repo_create <options>)
 
 options:
   -n, --name   name of repository
@@ -326,7 +331,7 @@ options:
 
   --ca         SSL CA certificate (not required)
   --cert       SSL Client certificate (not required)
-  --key        SSL Client key (not required)''')
+  --key        SSL Client key (not required)'''))
 
 
 def do_repo_create(self, args):
@@ -341,19 +346,19 @@ def do_repo_create(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
-        options.name = prompt_user('Name:', noblank=True)
-        options.url = prompt_user('URL:', noblank=True)
-        options.type = prompt_user('Type:', noblank=True)
-        options.ca = prompt_user('SSL CA cert:')
-        options.cert = prompt_user('SSL Client cert:')
-        options.key = prompt_user('SSL Client key:')
+        options.name = prompt_user(_('Name:'), noblank=True)
+        options.url = prompt_user(_('URL:'), noblank=True)
+        options.type = prompt_user(_('Type:'), noblank=True)
+        options.ca = prompt_user(_('SSL CA cert:'))
+        options.cert = prompt_user(_('SSL Client cert:'))
+        options.key = prompt_user(_('SSL Client key:'))
     else:
         if not options.name:
-            logging.error('A name is required')
+            logging.error(_('A name is required'))
             return 1
 
         if not options.url:
-            logging.error('A URL is required')
+            logging.error(_('A URL is required'))
             return 1
 
         if not options.type:
@@ -373,8 +378,8 @@ def do_repo_create(self, args):
 
 
 def help_repo_rename(self):
-    print('repo_rename: Rename a user repository')
-    print('usage: repo_rename OLDNAME NEWNAME')
+    print(_('repo_rename: Rename a user repository'))
+    print(_('usage: repo_rename OLDNAME NEWNAME'))
 
 
 def complete_repo_rename(self, text, line, beg, end):
@@ -396,7 +401,7 @@ def do_repo_rename(self, args):
         details = self.client.channel.software.getRepoDetails(self.session, args[0])
         oldname = details.get('id')
     except xmlrpclib.Fault:
-        logging.error('Could not find repo %s' % args[0])
+        logging.error(_('Could not find repo %s') % args[0])
         return 1
 
     newname = args[1]
@@ -409,8 +414,8 @@ def do_repo_rename(self, args):
 
 
 def help_repo_updateurl(self):
-    print('repo_updateurl: Change the URL of a user repository')
-    print('usage: repo_updateurl <repo> <url>')
+    print(_('repo_updateurl: Change the URL of a user repository'))
+    print(_('usage: repo_updateurl <repo> <url>'))
 
 
 def complete_repo_updateurl(self, text, line, beg, end):
@@ -435,12 +440,12 @@ def do_repo_updateurl(self, args):
 
 
 def help_repo_updatessl(self):
-    print('repo_updatessl: Change the SSL certificates of a user repository')
-    print('''usage: repo_updatessl <options>)
+    print(_('repo_updatessl: Change the SSL certificates of a user repository'))
+    print(_('''usage: repo_updatessl <options>)
 options:
   --ca         SSL CA certificate (not required)
   --cert       SSL Client certificate (not required)
-  --key        SSL Client key (not required)''')
+  --key        SSL Client key (not required)'''))
 
 
 def do_repo_updatessl(self, args):
@@ -453,13 +458,13 @@ def do_repo_updatessl(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
-        options.name = prompt_user('Name:', noblank=True)
-        options.ca = prompt_user('SSL CA cert:')
-        options.cert = prompt_user('SSL Client cert:')
-        options.key = prompt_user('SSL Client key:')
+        options.name = prompt_user(_('Name:'), noblank=True)
+        options.ca = prompt_user(_('SSL CA cert:'))
+        options.cert = prompt_user(_('SSL Client cert:'))
+        options.key = prompt_user(_('SSL Client key:'))
     else:
         if not options.name:
-            logging.error('A name is required')
+            logging.error(_('A name is required'))
             return 1
 
     self.client.channel.software.updateRepoSsl(self.session,
