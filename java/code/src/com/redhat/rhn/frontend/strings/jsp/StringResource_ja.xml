@@ -4794,7 +4794,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>要約:</target>
+        <target>概要:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.bugurl" xml:space="preserve">
         <source>Bugzilla URL:</source>
@@ -8124,8 +8124,7 @@ organization management tools if you choose to remove this role from your login.
           <source>Name</source> <target>名前</target>
         </trans-unit>
         <trans-unit id="methods.jsp.target">
-          <source>Target</source> <target>目標</target>
-        </trans-unit>
+          <source>Target</source> <target>ターゲット</target> </trans-unit>
         <trans-unit id="methods.jsp.type">
           <source>Type</source> <target>タイプ</target>
         </trans-unit>
@@ -10380,7 +10379,10 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+システムに対するキックスタートの際に鍵と証明書をインストールできるようにするため、キックスタートプロファイルから鍵と証明書を参照するように設定することができます。
+システムは署名済みのパッケージをインストールする際に正しい鍵が必要となるほか、 @@PRODUCT_NAME@@ プロキシサーバや @@PRODUCT_NAME@@ サーバでキックスタートを開始する際にも正しい証明書が必要となります。
+詳しくは &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。</target>
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar" xml:space="preserve">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -10538,7 +10540,11 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+        ファイル保持リストはファイルの一覧を設定するもので、特定のキックスタートの際にシステムに対して復元すべきファイルを指定します。
+        ファイル保持リストはキックスタートプロファイルから参照するように設定します。
+        詳しくは &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。
+        下記のファイル保持リストは、組織側で作成されているファイル保持リストです:</target>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary" xml:space="preserve">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -10678,7 +10684,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">ここで示されているファイルやディレクトリは、下記のキックスタートの際に保持されます。ファイルやディレクトリは 1 行に 1 つずつ記述します。&lt;br/&gt;それぞれのリストは最大でも &lt;strong&gt;1 MB&lt;/strong&gt; までのサイズである必要があります。詳しくは &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1" xml:space="preserve">
         <source>You can modify the software this kickstart profile will deploy below.</source>
@@ -11087,7 +11093,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Details</source> <target>詳細</target>
         </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_1" xml:space="preserve">
-          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source> <target state="needs-adaptation"/>
+          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source> <target state="translated">&lt;p&gt;キックスタートのプロファイル内に &lt;code&gt;$(example)&lt;/code&gt; のような変数表記を使用するシェルスクリプトがある場合、それらはバックスラッシュ記号でエスケープ処理を行なう必要があります:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt; なお、 &lt;em&gt;"example"&lt;/em&gt; という名前の変数がキックスタートスニペット内で設定されていると、テンプレートエンジンは &lt;code&gt;"$example"&lt;/code&gt; という変数を値に置き換えようとします。対応する値が存在しない場合は何も起こりません。 &lt;code&gt;$&lt;/code&gt; 記号をエスケープ処理することで、テンプレートエンジン側での処理を防いで、スクリプト内部で変数として使用できるようになります。&lt;/p&gt;  &lt;p&gt;長いスクリプトや文字列を使用するような場合は、 &lt;code&gt;#raw&lt;/code&gt; ディレクティブと &lt;code&gt;#end raw&lt;/code&gt; ディレクティブを使用することで、スクリプトを包みこむこともできます。例:&lt;/p&gt;</target>
       </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_2">
           <source>An additional attention needs to be paid to the similar scenarios:</source> <target>次のような場合にも注意が必要になります。</target>
@@ -11246,6 +11252,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nogroups" xml:space="preserve">
         <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
+        <target>&lt;strong&gt;システムグループがありません。&lt;/strong&gt;&lt;p&gt; システムグループを作成するには、 &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;システム &gt; システムセットマネージャ &gt; Groups &gt; グループの作成&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt; をお使いください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -11290,7 +11297,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>動作が待機中です</target>
+        <target>動作を待機しています</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.actions.failed" xml:space="preserve">
         <source>Action Failed</source>
@@ -11357,6 +11364,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="yourrhn.jsp.recentlyregistered" xml:space="preserve">
         <source>Recently Registered Systems</source>
+        <target>最近登録されたシステム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -11405,6 +11413,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="errata.sev.label.unspecified" xml:space="preserve">
         <source>Unspecified</source>
+        <target>未指定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -11474,6 +11483,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.reboot" xml:space="preserve">
         <source>Manage Systems &lt;strong&gt;Requiring Reboot&lt;/strong&gt; ({0})</source>
+        <target>&lt;strong&gt;再起動を必要とする&lt;/strong&gt; システム ({0}) の管理</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -11681,10 +11691,11 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="channels.retired.jsp.toolbar" xml:space="preserve">
         <source>Retired Software Channel List</source>
-        <target>リタイアしたソフトウェアチャンネルの一覧</target>
+        <target>終了済みソフトウェアチャンネルの一覧</target>
       </trans-unit>
       <trans-unit id="channels.retired.jsp.header1" xml:space="preserve">
         <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization is entitled to but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
+        <target>下記に示されたソフトウェアチャンネルは &lt;strong&gt;終了済みチャンネル&lt;/strong&gt; であり、お使いの組織でエンタイトルメントを所有しているものの、 'サポート終了' の状態になっているため、 @@VENDOR_NAME@@ によるサポートも終了していることを表わしています。</target>
       </trans-unit>
       <trans-unit id="channels.manage.jsp.toolbar" xml:space="preserve">
         <source>Software Channel Management</source>
@@ -11869,6 +11880,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="kickstart.jsp.create.wizard.kstree.always_new.label" xml:space="preserve">
         <source>Always newest tree</source>
+        <target>常に最新のツリー</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
@@ -11964,7 +11976,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Clone Key</source> <target>キーのクローンを作成</target>
         </trans-unit>
         <trans-unit id="toolbar.delete.activationkeys">
-          <source>Delete Key</source> </trans-unit>
+          <source>Delete Key</source> <target>キーの削除</target></trans-unit>
         <trans-unit id="activation-keys.common.alt">
           <source>Activation Key icon</source> <target>アクティベーションキーアイコン</target>
         </trans-unit>
@@ -12026,7 +12038,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Leave blank for automatic key generation. Note that the prefix is an indication of the @@PRODUCT_NAME@@ organization the key is associated with.</source> <target>自動的にキーを作成する場合は、空白のままにします。このプレフィックスは、キーが関連付けられている @@PRODUCT_NAME@@ 組織の表示です。</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.allowed-values">
-          <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source> </trans-unit>
+          <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source> <target>アクティベーションキーには数字 [0-9] のほか、文字 [a-z A-Z], '-', '_', '.' のみを使用します</target></trans-unit>
         <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
           <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; を選択すると、システムがインストールされている SUSE Linux のバージョンに対応する SUSE Manager へ登録できるようになります。ここでは、特定の SUSE 提供のチャンネルまたはカスタムベースチャンネルを選択できますが、このキーを使用しているシステムが選択したチャンネルとの互換性がない場合は SUSE Manager のデフォルトチャンネルが指定されます。</target> </trans-unit>
         <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
@@ -12100,7 +12112,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Any system registered using this activation key will be subscribed to the selected child channels.</source> <target>このアクティベーションキーを使って登録したすべてのシステムは選択された子チャンネルにサブスクライブされます。</target>
         </trans-unit>
         <trans-unit id="activation-key.childchannels.jsp.note">
-          <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source> </trans-unit>
+          <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source> <target>注意: 選択した "SUSE Manager default" ベースチャンネルの子チャンネルのサブスクライブを実施します。</target></trans-unit>
         <trans-unit id="activation-key.childchannels.jsp.blurb">
           <source>The following child channels of &lt;strong&gt;{0}&lt;/strong&gt; can be associated with this activation key.</source> <target>以下に示す &lt;strong&gt;{0}&lt;/strong&gt; の子チャンネルをこのアクティベーションキーに関連付けることができます。</target>
         </trans-unit>
@@ -12348,7 +12360,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Xccdf Test Result</source> <target>Xccdf のテスト結果</target>
         </trans-unit>
         <trans-unit id="system.audit.listscap.jsp.diff">
-          <source>Diff</source> </trans-unit>
+          <source>Diff</source> <target>差分</target></trans-unit>
         <trans-unit id="system.audit.listscap.jsp.completed">
           <source>Completed</source> <target>完了しました</target>
         </trans-unit>
@@ -12675,13 +12687,11 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>The following history events have been noted for this system.</source> <target>このシステムには次のような履歴のイベントが記されています。</target>
         </trans-unit>
         <trans-unit id="system.event.history.headerNoPending">
-          <source>Please note that this system has no pending events.</source> <target>このシステムに保留中のイベントはありません。</target>
-        </trans-unit>
+          <source>Please note that this system has no pending events.</source> <target>このシステムには待機中のイベントはありません。</target> </trans-unit>
         <trans-unit id="system.event.history.headerPending">
-          <source>Please note that this system has &lt;a href="{0}"&gt;{1} pending event(s)&lt;/a&gt;.</source> <target>このシステムには &lt;a href="{0}"&gt;{1} 件の保留中イベント&lt;/a&gt; があります。</target>
-        </trans-unit>
+          <source>Please note that this system has &lt;a href="{0}"&gt;{1} pending event(s)&lt;/a&gt;.</source> <target>このシステムには &lt;a href="{0}"&gt;{1} 個の待機中イベント&lt;/a&gt; があります。</target> </trans-unit>
         <trans-unit id="system.event.history.actionsWithoutDetails">
-          <source>Events marked with a star (*) happened within a different organization: migrate the system back to the original organization to access event details.</source> </trans-unit>
+          <source>Events marked with a star (*) happened within a different organization: migrate the system back to the original organization to access event details.</source> <target>星印 (*) の付けられたイベントは、異なる組織で発生したイベントを表わしています。元の組織に移行しなおすことで、イベントの詳細にアクセスできるようになります。</target></trans-unit>
         <trans-unit id="system.event.history.noevent">
           <source>No event history for this system.</source> <target>このシステムにイベント履歴はありません。</target>
         </trans-unit>
@@ -12703,7 +12713,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>System History Event</source> <target>システムの履歴イベント</target>
         </trans-unit>
         <trans-unit id="system.event.pendingHeader">
-          <source>System Pending Event</source> </trans-unit>
+          <source>System Pending Event</source> <target>システムの待機中イベント</target></trans-unit>
         <trans-unit id="system.event.summary">
           <source>Summary:</source> <target>概要:</target>
         </trans-unit>
@@ -12735,11 +12745,11 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Failed</source> <target>失敗</target>
         </trans-unit>
         <trans-unit id="system.event.failwarning">
-          <source>Forcibly changing status of Picked Up action is potentially &lt;strong&gt;dangerous&lt;/strong&gt;. Are you sure you want to continue?</source> </trans-unit>
+          <source>Forcibly changing status of Picked Up action is potentially &lt;strong&gt;dangerous&lt;/strong&gt;. Are you sure you want to continue?</source> <target>ピックアップアクションの状態を強制的に変更する処理は、潜在的な &lt;strong&gt;危険&lt;/strong&gt; をはらんでいます。続行してもよろしいですか？</target></trans-unit>
         <trans-unit id="system.event.faildescription">
-          <source>Description for the action</source> </trans-unit>
+          <source>Description for the action</source> <target>アクションに対する説明</target></trans-unit>
         <trans-unit id="system.event.failheader">
-          <source>Confirm Event Status Change</source> </trans-unit>
+          <source>Confirm Event Status Change</source> <target>イベント状態の変更確認</target></trans-unit>
         <trans-unit id="system.event.details.pickup">
           <source>The client picked up this action on {0}</source> <target>この動作は {0} にクライアントによって開始されました</target>
         </trans-unit>
@@ -12756,7 +12766,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Client execution returned &lt;pre&gt;{0}&lt;/pre&gt; (code {1})</source> <target>クライアントの実行により "{0}" が返されました (コード {1})</target>
         </trans-unit>
         <trans-unit id="system.event.details.syntaxerror">
-          <source>Could not parse state file. Please check YAML syntax.</source> </trans-unit>
+          <source>Could not parse state file. Please check YAML syntax.</source> <target>状態ファイルの処理ができませんでした。 YAML 書式を確認してください。</target></trans-unit>
         <trans-unit id="system.event.rescheduleText">
           <source>This history event was caused by a failed scheduled action.&lt;br /&gt;If you have corrected the problem, you may reschedule the action below.</source> <target>この履歴イベントは、スケジュールした動作が失敗したことが原因です。 &lt;br /&gt;問題を修正したら、以下の動作の再スケジュールを行なうことができます。</target> </trans-unit>
         <trans-unit id="system.event.rescheduled">
@@ -12766,14 +12776,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Return to history list for {0}</source> <target>{0} の履歴一覧に戻ります</target>
         </trans-unit>
         <trans-unit id="system.event.pendingReturn">
-          <source>Return to pending list for {0}</source> </trans-unit>
+          <source>Return to pending list for {0}</source> <target>{0} に対する待機リストに戻る</target></trans-unit>
         <trans-unit id="system.event.returnIcon">
           <source>Return to history list</source> <target>履歴一覧に戻る</target>
         </trans-unit>
         <trans-unit id="system.event.failActionButton">
-          <source>Set to Failed</source> </trans-unit>
+          <source>Set to Failed</source> <target>失敗に設定</target></trans-unit>
         <trans-unit id="system.event.failconfirm">
-          <source>Confirm</source> </trans-unit>
+          <source>Confirm</source> <target>確認</target></trans-unit>
         <trans-unit id="system.event.rescheduleButton">
           <source>Reschedule</source> <target>再スケジュール</target>
         </trans-unit>
@@ -12834,8 +12844,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>View detailed results.</source> <target>詳細な結果を表示します。</target>
         </trans-unit>
         <trans-unit id="system.event.pending.header">
-          <source>Pending Events</source> <target>保留中のイベント</target>
-        </trans-unit>
+          <source>Pending Events</source> <target>待機中のイベント</target> </trans-unit>
         <trans-unit id="system.event.pending.headerSummary">
           <source>The following events have been scheduled for this system.</source> <target>このシステムには次のイベントがスケジュールされています。</target>
         </trans-unit>
@@ -12843,8 +12852,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Selected Events&lt;/strong&gt; button.</source> <target>イベントを選択しページ下部にある &lt;strong&gt;イベントの取り消し&lt;/strong&gt; ボタンを押すとこのシステムのイベントを取り消すことができます。</target>
         </trans-unit>
         <trans-unit id="system.event.pending.noevent">
-          <source>No pending events</source> <target>保留中のイベントはありません</target>
-        </trans-unit>
+          <source>No pending events</source> <target>待機中のイベントはありません</target> </trans-unit>
         <trans-unit id="system.event.pending.earliest">
           <source>Earliest Occurrence</source> <target>最も古いイベント</target>
         </trans-unit>
@@ -12852,8 +12860,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Cancel Selected Events</source> <target>選択したイベントの取り消し</target>
         </trans-unit>
         <trans-unit id="system.event.pending.cancelSummary">
-          <source>The following pending events for this system will be canceled:</source> <target>このシステムの以下の保留中イベントを取り消します:</target>
-        </trans-unit>
+          <source>The following pending events for this system will be canceled:</source> <target>このシステムの以下の待機中イベントを取り消します:</target> </trans-unit>
         <trans-unit id="system.event.pending.confirm">
           <source>Cancel Events</source> <target>イベントの取り消し</target>
         </trans-unit>
@@ -12861,9 +12868,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>{0} system event(s) canceled.</source> <target>{0} 件のシステムイベントが取り消されました。</target>
         </trans-unit>
         <trans-unit id="system.event.spmigration.notification">
-          <source>&lt;strong&gt;Reload&lt;/strong&gt; the page after the action completed successfully to schedule the full migration.</source> </trans-unit>
+          <source>&lt;strong&gt;Reload&lt;/strong&gt; the page after the action completed successfully to schedule the full migration.</source> <target>完全移行をスケジュールするための処理が正常終了したら、ページの &lt;strong&gt;再読み込み&lt;/strong&gt; を行なってください。</target></trans-unit>
         <trans-unit id="system.event.spmigration.rescheduleDryRun">
-          <source>Run migration</source> </trans-unit>
+          <source>Run migration</source> <target>移行の実行</target></trans-unit>
       </group>
       <!-- System events legend -->
       <group>
@@ -12885,7 +12892,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>System Event</source> <target>システム関連のイベント</target>
         </trans-unit>
         <trans-unit id="system-history-legend.jsp.status.title">
-          <source>Event Status Legend</source> </trans-unit>
+          <source>Event Status Legend</source> <target>イベント状態の凡例</target></trans-unit>
         <trans-unit id="system-history-legend.status.jsp.ok">
           <source>Complete</source> <target>完了</target>
         </trans-unit>
@@ -12911,12 +12918,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Below are a list of snapshots of your system.  To rollback to a previous configuration, or to view the changes that would have if you rolled back, click the desired snapshot below.</source> <target state="translated">ご使用のシステムのスナップショット一覧です。  以前の設定にロールバックする、またはロールバックした場合の変更点を表示させる場合は、以下の該当するスナップショットをクリックしてください。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.summary3">
-          <source>Note that snapshots are recorded after each change is performed. To undo the effects of an action, please click on a snapshot before the corresponding one in the list below.</source> </trans-unit>
+          <source>Note that snapshots are recorded after each change is performed. To undo the effects of an action, please click on a snapshot before the corresponding one in the list below.</source> <target>それぞれの変更が実施されると、スナップショットが記録されます。特定の動作に対する効果を取り消したい場合は、下記の一覧から該当する動作以前のスナップショットを選択してください。</target></trans-unit>
         <trans-unit id="system.history.snapshot.nosnapshot">
           <source>No system snapshots.</source> <target>システムのスナップショットはありません。</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.reason">
-          <source>Recorded after</source> </trans-unit>
+          <source>Recorded after</source> <target>下記による記録</target></trans-unit>
         <trans-unit id="system.history.snapshot.timetaken">
           <source>Time Taken</source> <target>要した時間</target>
         </trans-unit>
@@ -13045,7 +13052,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Are you certain you wish to rollback to the selected system snapshot?
           Doing so will cancel all pending scheduled actions for the system,
           and the following items will be changed to match the pre-snapshot values:</source> <target state="translated">選択されているシステムスナップショットに本当にロールバックしてもよろしいですか?
-          ロールバックを行なうと、システムにスケジュールされている保留中の動作がすべて
+          ロールバックを行なうと、システムにスケジュールされている待機中の動作がすべて
           取り消され、スナップショット前の値と一致するよう次の事項が変更されます:</target>
         </trans-unit>
         <trans-unit id="system.history.snapshot.sg_removed" xml:space="preserve">
@@ -13258,7 +13265,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Subscribe to @@PRODUCT_NAME@@ Tools channel</source> <target>RHN ツールチャンネルにサブスクライブ</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribeappstream">
-          <source>Subscribe to AppStream channel</source> </trans-unit>
+          <source>Subscribe to AppStream channel</source> <target>AppStream チャンネルのサブスクライブ</target></trans-unit>
         <trans-unit id="targetsystems.jsp.installcfg">
           <source>Schedule rhncfg package install</source> <target>rhncfg パッケージインストールのスケジュール</target>
         </trans-unit>
@@ -13313,7 +13320,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Could not subscribe to the RHN Tools channel.</source> <target>RHN ツールチャンネルにサブスクライブできませんでした。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.appstream">
-          <source>Could not subscribe to the AppStream channel.</source> </trans-unit>
+          <source>Could not subscribe to the AppStream channel.</source> <target>AppStream チャンネルのサブスクライブができませんでした。</target></trans-unit>
         <trans-unit id="summary.jsp.packages">
           <source>Could not schedule rhncfg* package installations.</source> <target>rhncfg* パッケージのインストールをスケジュールできませんでした。</target>
         </trans-unit>
@@ -13355,6 +13362,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="toolbar.create.state.configchannel" xml:space="preserve">
         <source>Create State Channel</source>
+        <target>状態チャンネルの作成</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
         </context-group>
@@ -13495,6 +13503,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="channelOverview.jsp.sls-edit" xml:space="preserve">
         <source>SLS Contents</source>
+        <target>SLS コンテンツ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -13544,6 +13553,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="channelOverview.jsp.state.channel.numfiles" xml:space="preserve">
         <source>{0} sls, {1} files</source>
+        <target>{0} 個の SLS, {1} 個のファイル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"36 files, 2 directories, 0 symlinks"</context>
@@ -13555,14 +13565,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"38 total"</context>
         </context-group>
-        <target>{0} 合計</target>
+        <target>合計 {0} 個</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.systems-subscribed" xml:space="preserve">
         <source>subscribed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>サブスクライブしている</target>
+        <target>サブスクライブ済み</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.recentfile" xml:space="preserve">
         <source>by {0} {1}</source>
@@ -14956,6 +14966,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
       </trans-unit>
       <trans-unit id="filedetails.details.jspf.sls" xml:space="preserve">
         <source>SLS</source>
+        <target>SLS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -15241,6 +15252,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="deletefile.jsp.failure" xml:space="preserve">
         <source>File {0} failed to be deleted.</source>
+        <target>ファイル {0} の削除に失敗しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageRevisions.do</context>
           <context context-type="paramnotes">
@@ -15250,6 +15262,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="deletefile.jsp.error" xml:space="preserve">
         <source>{0}</source>
+        <target>{0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageRevisions.do</context>
           <context context-type="paramnotes">
@@ -15347,6 +15360,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- managedsystems.jsp -->
       <trans-unit id="managedsystems.jsp.toolbar" xml:space="preserve">
         <source>Managed Systems</source>
+        <target>管理済みシステム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
         </context-group>
@@ -15360,12 +15374,14 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="managedsystems.jsp.managedonly" xml:space="preserve">
         <source>Show systems with at least one locally or centrally managed files only</source>
+        <target>少なくとも 1 つ以上のローカル管理／中央管理のファイルがあるシステムのみを表示する</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="managedsystems.jsp.managedonly.btn" xml:space="preserve">
         <source>Show</source>
+        <target>表示</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
         </context-group>
@@ -16433,11 +16449,11 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Delete Files</source> <target>ファイルの削除</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_sandbox">
-          <source>Copy Latest to Local Sandbox</source> </trans-unit>
+          <source>Copy Latest to Local Sandbox</source> <target>最新のものをローカルのサンドボックスにコピーする</target></trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_local">
-          <source>Copy Latest to Locally-Managed Files</source> </trans-unit>
+          <source>Copy Latest to Locally-Managed Files</source> <target>最新のものをローカル管理ファイルにコピーする</target></trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_global">
-          <source>Copy Latest to Centrally-Managed Files</source> </trans-unit>
+          <source>Copy Latest to Centrally-Managed Files</source> <target>最新のものを中央管理ファイルにコピーする</target></trans-unit>
         <trans-unit id="sdc.config.file_list.sandbox.success">
           <source>{0} file(s) successfully copied to Sandbox</source> <target>{0} ファイルがサンドボックスに正常にコピーされました</target>
         </trans-unit>
@@ -16485,9 +16501,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Unsubscribe</source> <target>サブスクライブの中止</target>
         </trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.success">
-          <source>{0} configuration channel(s) were unsubscribed.</source> </trans-unit>
+          <source>{0} configuration channel(s) were unsubscribed.</source> <target>{0} 個の設定チャンネルのサブスクライブを解除しました。</target></trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.failure">
-          <source>Failed to unsubscribe {0} configuration channel(s).</source> </trans-unit>
+          <source>Failed to unsubscribe {0} configuration channel(s).</source> <target>{0} 個の設定チャンネルのサブスクライブ解除に失敗しました。</target></trans-unit>
       </group>
       <!-- configuration/sdc/createfile.jsp  -->
       <group>
@@ -16722,7 +16738,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/ssm/ViewLogDetails.do</context>
         </context-group>
         <trans-unit id="ssm.operations.viewlog.header">
-          <source>Task Log</source> </trans-unit>
+          <source>Task Log</source> <target>タスクログ</target></trans-unit>
         <trans-unit id="ssm.operations.viewlog.description">
           <source>Description</source> <target>説明</target> </trans-unit>
         <trans-unit id="ssm.operations.viewlog.status">
@@ -16793,7 +16809,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Group name on the target system is not specified.</source> <target>対象システムのグループ名が指定されていません。</target>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.form.timeout.max">
-          <source>Timeout value specified exceeds max value of 2147483647.</source> </trans-unit>
+          <source>Timeout value specified exceeds max value of 2147483647.</source> <target>タイムアウト値が最大値 2147483647 を超えています。</target></trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_body.missing">
           <source>No script has been specified.</source> <target>スクリプトが指定されていませんでした。</target>
         </trans-unit>
@@ -16836,15 +16852,15 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <!-- SSM Tag Systems -->
         <trans-unit id="ssm.operations.provisioning.tagsystems.header">
-          <source>Tag Systems</source> </trans-unit>
+          <source>Tag Systems</source> <target>システムへのタグ付け</target></trans-unit>
         <trans-unit id="ssm.operations.provisioning.tagsystems.summary">
-          <source>The following systems will be tagged:</source> </trans-unit>
+          <source>The following systems will be tagged:</source> <target>下記のシステムにタグを設定します:</target></trans-unit>
         <trans-unit id="ssm.operations.provisioning.tagsystems.label">
-          <source>Tag name:</source> </trans-unit>
+          <source>Tag name:</source> <target>タグ名:</target></trans-unit>
         <trans-unit id="ssm.operations.provisioning.tagsystems.help">
-          <source>You may tag the most recent snapshots for the selected systems.</source> </trans-unit>
+          <source>You may tag the most recent snapshots for the selected systems.</source> <target>選択したシステムに対する最新のスナップショットにタグを設定することができます。</target></trans-unit>
         <trans-unit id="ssm.operations.provisioning.tagsystems.button">
-          <source>Tag Current Snapshots</source> </trans-unit>
+          <source>Tag Current Snapshots</source> <target>現在のスナップショットへのタグ付け</target></trans-unit>
         <!-- SSM Remote Command Form Labels -->
         <trans-unit id="ssm.operations.provisioning.remotecommand.header">
           <source>Schedule Remote Command</source> <target>リモートコマンドのスケジュール</target>
@@ -16889,7 +16905,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Script does not contain shell definition.</source> <target>スクリプトにシェル定義がありません。</target>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noscript">
-          <source>Script does not seem to be doing anything.</source> </trans-unit>
+          <source>Script does not seem to be doing anything.</source> <target>スクリプトは何もしないように思われます。</target></trans-unit>
         <!-- Errata -->
         <trans-unit id="ssm.patches.list.header">
           <source>Relevant Patches List</source> <target>該当するパッチの一覧</target> </trans-unit>
@@ -17461,6 +17477,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.jsp.remove.cobblerprofile" xml:space="preserve">
         <source>Remove Cobbler System Profile</source>
+        <target>Cobbler システムプロファイルの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -17474,6 +17491,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.removed.cobblerprofile" xml:space="preserve">
         <source>Cobbler system profile successfully removed</source>
+        <target>Cobbler システムプロファイルを削除しました</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -17578,6 +17596,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="kickstarts.distro.cobbler-only.tooltip" xml:space="preserve">
         <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
+        <target>@@PRODUCT_NAME@@ で管理されていない自動インストールプロファイルは、 @@PRODUCT_NAME@@ の UI では編集することができません。これらのプロファイルを変更するには、 @@PRODUCT_NAME@@ サーバにログインして 'cobbler profile edit' コマンドを実行してください。詳しくは @@PRODUCT_NAME@@ のリファレンスガイドをお読みください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>
@@ -17605,14 +17624,14 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <source>Advanced Kickstart Configuration</source> <target>高度なキックスタート設定</target>
         </trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.distro">
-          <source>As specified by Kickstart Distribution</source> </trans-unit>
+          <source>As specified by Kickstart Distribution</source> <target>キックスタートディストリビューションによる指定にあわせる</target></trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.profile">
-          <source>As specified by Kickstart Profile</source> </trans-unit>
+          <source>As specified by Kickstart Profile</source> <target>キックスタートプロファイルによる指定にあわせる</target></trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.custom.tip">
           <source>If you would not like any kernel options, select '{0}' and leave the form field blank.</source> <target>必要なカーネルオプションがない場合は、'{0}' を選択し、フォームのフィールドを空白のままにします。</target>
         </trans-unit>
         <trans-unit id="kickstart.schedule.sync.pkg.profile.jsp">
-          <source>Sync Package Profile</source> </trans-unit>
+          <source>Sync Package Profile</source> <target>パッケージプロファイルの同期</target></trans-unit>
         <trans-unit id="kickstart.schedule.sync.pkg.profile.option1.jsp">
           <source>With system's existing package profile</source> <target>システムの既存パッケージプロファイルを使用</target>
         </trans-unit>
@@ -17879,6 +17898,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.ca" xml:space="preserve">
         <source>Catalan</source>
+        <target>カタルーニャ語</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
@@ -17955,6 +17975,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.pt" xml:space="preserve">
         <source>Portuguese</source>
+        <target>ポルトガル語</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
@@ -18470,6 +18491,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.summary1" xml:space="preserve">
         <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt; でホストされる新しい仮想システムを作成するため、下記のフォームに入力を行なってください</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -18504,6 +18526,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.virt_bridge.example" xml:space="preserve">
         <source>Example: xenbr0</source>
+        <target>例: xenbr0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -18524,30 +18547,35 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.memory_allocation.header" xml:space="preserve">
         <source>Memory Allocation</source>
+        <target>メモリ割り当て</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.memory_allocation.message" xml:space="preserve">
         <source>Size in megabytes out of {0} total megabytes available on {1}</source>
+        <target>メガバイト単位でのサイズ ({1} では合計 {0} MB が利用可能)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.virtual_cpus.header" xml:space="preserve">
         <source>Virtual CPUs</source>
+        <target>仮想 CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.virtual_cpus.message" xml:space="preserve">
         <source>Number of virtual CPUs, up to {0}.</source>
+        <target>仮想 CPU の数 (最大: {0}) 。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.storage" xml:space="preserve">
         <source>Storage</source>
+        <target>ストレージ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -18561,6 +18589,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.storage.local.message" xml:space="preserve">
         <source>Size in gigabytes from the virtual host's disk space.</source>
+        <target>仮想ホストのディスク領域から割り当てるサイズ (ギガバイト単位) 。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -18708,6 +18737,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="view-log.jsp.header" xml:space="preserve">
         <source>System Set Manager Task Log</source>
+        <target>システムセットマネージャのタスクログ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager header</context>
         </context-group>
@@ -18868,6 +18898,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.overview.minionId" xml:space="preserve">
         <source>Minion Id:</source>
+        <target>minion ID:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -19809,60 +19840,70 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.connection.header" xml:space="preserve">
         <source>Connection Path</source>
+        <target>接続パス</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.connection.summary1" xml:space="preserve">
         <source>Below is a list of the Proxy servers this system connects through to reach the primary server. The Proxy the system connects directly to, if any, is listed first on this list.</source>
+        <target>下記はプロキシサーバの一覧で、このシステムがプライマリサーバに接続する際に使用しているものです。一覧内では、システムが直接接続しているものが先に示されています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.connection.summary2" xml:space="preserve">
         <source>This data is refreshed each time the system connects to @@PRODUCT_NAME@@.</source>
+        <target>このデータはシステムが @@PRODUCT_NAME@@ に接続すると、毎回更新されます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.connection.empty" xml:space="preserve">
         <source>This system connects directly and not through a Proxy.</source>
+        <target>このシステムは直接接続していて、プロキシを介していません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.connection.proxyorder" xml:space="preserve">
         <source>Proxy Order</source>
+        <target>プロキシ順序</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.proxy.unlicensed" xml:space="preserve">
         <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
+        <target>WebUI での @@PRODUCT_NAME@@ プロキシのインストールは廃止予定となっております。 spacewalk-proxy-installer パッケージで提供されるコマンドライン型のインストーラをお使いください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve">
         <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
+        <target>このマシンは現在、ライセンス済みの @@PRODUCT_NAME@@ プロキシ (v{0}) です。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.proxyclients.header" xml:space="preserve">
         <source>Proxy Clients</source>
+        <target>プロキシクライアント</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.proxyclients.empty" xml:space="preserve">
         <source>No clients currently connect through this Proxy.</source>
+        <target>このプロキシを介して接続しているクライアントはありません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.header" xml:space="preserve">
         <source>System Activation Key</source>
+        <target>システムのアクティベーションキー</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -19872,22 +19913,25 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">システムプロファイル固有のアクティベーションキーを使用することで、このシステムを 'rhnreg_ks' コマンドラインユーティリティで再登録できるようになります。  このシステムは同じ ID とグループ、そしてチャンネルで再登録を行ないます (ただし、システムのベースチャンネルが変更された場合を除きます) 。</target>
       </trans-unit>
       <trans-unit id="sdc.details.activation.key" xml:space="preserve">
         <source>Key:</source>
+        <target>キー:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.deletekey" xml:space="preserve">
         <source>Delete Key</source>
+        <target>キーの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.generatekey" xml:space="preserve">
         <source>Generate New Key</source>
+        <target>新しいキーの生成</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -20027,18 +20071,21 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
         <source>FQDNs:</source>
+        <target>FQDN:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id" xml:space="preserve">
         <source>Machine ID:</source>
+        <target>マシン ID:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id_empty_warning" xml:space="preserve">
         <source>This system does not have a machine id. This is needed in the event of re-registering it as a Salt minion. Make sure the system has the latest version of the client tools installed and use the Schedule Hardware Refresh button bellow to fill the machine id.</source>
+        <target>このシステムにはマシン ID がありません。これは Salt minion として再登録を行なう場合に必要となります。システムに対して最新のクライアントツールがインストールされているかどうか、およびマシン ID の更新を行なうためのハードウェア更新スケジュールボタンを使用しているかどうかをご確認ください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
@@ -20115,6 +20162,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="toolbar.delete.note" xml:space="preserve">
         <source>Delete Note</source>
+        <target>メモの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Note.do</context>
         </context-group>
@@ -20954,7 +21002,7 @@ As a Channel Administrator, you may change the base channels your systems are su
           <target>修正用に選択されたベースチャンネルはありません。</target>
         </trans-unit>
         <trans-unit id="basesub.jsp.dataHasChanged">
-          <source>A previous queued action has modified base channels assignments for some systems in SSM. Please, consider to set assignments again based on refreshed data.</source> <context-group name="ctx">
+          <source>A previous queued action has modified base channels assignments for some systems in SSM. Please, consider to set assignments again based on refreshed data.</source> <target>SSM 内のシステムに対してベースチャンネルの変更が行なわれたため、以前のキュー済み動作が変更されました。更新されたデータをもとに、割り当てを再設定することをお考えください。</target><context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
         </trans-unit>
@@ -20965,12 +21013,12 @@ As a Channel Administrator, you may change the base channels your systems are su
           <target>システムのデフォルトのベースチャンネルを検索することはできません。</target>
         </trans-unit>
         <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannelWithParams">
-          <source>Unable to lookup 'system default base channel' for [{0}] with the current base channel '{1}'.</source> <context-group name="ctx">
+          <source>Unable to lookup 'system default base channel' for [{0}] with the current base channel '{1}'.</source> <target>現在のベースチャンネル '{1}' での [{0}] に対する 'システムの既定のベースチャンネル' を検索できませんでした。</target><context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
         </trans-unit>
         <trans-unit id="basesub.jsp.noBaseChannel">
-          <source>no base channel</source> <context-group name="ctx">
+          <source>no base channel</source> <target>ベースチャンネル無し</target><context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
         </trans-unit>
@@ -21185,12 +21233,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.about.title" xml:space="preserve">
         <source>About @@PRODUCT_NAME@@</source>
+        <target>@@PRODUCT_NAME@@ について</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
       <trans-unit id="help.jsp.about.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network. Through a simple user interface, administrators can perform patch management, updates and maintenance. And because @@PRODUCT_NAME@@ is Web-based, it can be accessed from anywhere. @@PRODUCT_NAME@@ or Proxy server options provide advanced capabilities and the ability to get updates directly from SUSE with even greater levels of security and reduced network bandwidth.</source>
+        <target>@@PRODUCT_NAME@@ では管理者に対して、効率的なネットワーク内のシステム管理機能を提供します。管理者はシンプルなユーザインターフェイスを介して、パッチの管理や更新、メンテナンスなどを行なうことができます。 @@PRODUCT_NAME@@ は Web ベースの仕組みであることから、どこからでもアクセスすることができます。 @@PRODUCT_NAME@@ ではプロキシサーバのオプションも用意されていることから、より高度なネットワークにも対応し、帯域を削減しながら SUSE からの更新を直接受け取ることができるようになり、セキュリティレベルを大幅に高めることができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
@@ -21215,7 +21265,16 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+        全ての @@PRODUCT_NAME@@ の機能 (システムプロファイル、レポートデータ、アプリケーションサーバなど)
+        はご利用のネットワーク環境のローカルに保存されます。これにより、必要であればインターネット経由で
+        @@PRODUCT_NAME@@ のソリューションを得ることができるほか、システムに対する最適化や制御も
+        自由に行なうことができます。
+        また、 @@PRODUCT_NAME@@ サーバと組み合わせて @@PRODUCT_NAME@@ プロキシサーバを使用することで、
+        ご利用の各システムをローカルに存在するプロキシ経由で接続させることもできます。
+        プロキシはデータを集約するだけでなく、いくつかの処理をローカルで行ない、中央に存在する
+        @@PRODUCT_NAME@@ サーバとの通信を行ないます。
+        これにより、 @@PRODUCT_NAME@@ データベース内に保存されている全ての情報が @@PRODUCT_NAME@@ サーバ内に保管されることになります。</target>
       </trans-unit>
       <trans-unit id="help.jsp.helpdesk" xml:space="preserve">
         <source>Welcome to the Help Desk</source>
@@ -21279,9 +21338,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.copyright.title" xml:space="preserve">
         <source>Copyright Notice</source>
+        <target>著作権通知</target>
       </trans-unit>
       <trans-unit id="help.jsp.eula.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ License Agreement</source>
+        <target>@@PRODUCT_NAME@@ ライセンス同意</target>
       </trans-unit>
       <trans-unit id="iprange.emptylist" xml:space="preserve">
         <source>No Ip Ranges Found</source>
@@ -24061,18 +24122,22 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions" xml:space="preserve">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
+        <target>&lt;strong&gt;待機中の minion&lt;/strong&gt; ({0}) の管理</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.states" xml:space="preserve">
         <source>Manage Package States</source>
+        <target>パッケージ状態の管理</target>
       </trans-unit>
       <trans-unit id="container_build_host" xml:space="preserve">
         <source>Container Build Host</source>
+        <target>コンテナビルドホスト</target>
       </trans-unit>
       <trans-unit id="osimage_build_host" xml:space="preserve">
         <source>OS Image Build Host</source>
+        <target>OS イメージビルドホスト</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
         <source>Monitoring</source>
