@@ -643,7 +643,9 @@ class UyuniActivationKeys:
     def _compute_changes(ak_paramters: Dict[str, Any],
                          current_ak: Dict[str, Any],
                          configure_after_registration: bool,
-                         current_configure_after_registration: bool) -> Dict[str, Any]:
+                         current_configure_after_registration: bool,
+                         current_config_channels: List[str],
+                         configuration_channels: List[str]) -> Dict[str, Any]:
         _current_ak = current_ak or {}
         changes = {}
         for field in ["description", 'base_channel_label', 'usage_limit', 'universal_default', 'contact_method']:
@@ -670,6 +672,12 @@ class UyuniActivationKeys:
             changes['configure_after_registration'] = {"new": configure_after_registration}
             if current_configure_after_registration is not None:
                 changes['configure_after_registration']["old"] = current_configure_after_registration
+
+        if sorted(current_config_channels or []) != sorted(configuration_channels or []):
+            changes['configuration_channels'] = {"new": configuration_channels}
+            if current_config_channels:
+                changes['configuration_channels']['old'] = current_config_channels
+
         return changes
 
     @staticmethod
@@ -726,7 +734,6 @@ class UyuniActivationKeys:
     @staticmethod
     def _update_packages(current_packages, new_packages, key, org_admin_user, org_admin_password):
 
-        pdb.set_trace()
         new_packages_normalized = UyuniActivationKeys._normalize_list_packages(new_packages)
         current_packages_normalized = UyuniActivationKeys._normalize_list_packages(current_packages)
         add_packages = [t for t in new_packages_normalized if t not in current_packages_normalized]
@@ -752,6 +759,7 @@ class UyuniActivationKeys:
                system_types: List[int] = [],
                universal_default: bool = False,
                child_channels: List[str] = [],
+               configuration_channels: List[str] = [],
                packages: List[str] = [],
                server_groups: List[str] = [],
                configure_after_registration: bool = False,
@@ -766,6 +774,7 @@ class UyuniActivationKeys:
         :param system_types:
         :param universal_default:
         :param child_channels:
+        :param configuration_channels:
         :param packages:
         :param server_groups:
         :param configure_after_registration:
@@ -777,11 +786,13 @@ class UyuniActivationKeys:
         key = None
         current_configure_after_registration = None
         system_groups_keys = {}
+        current_config_channels = []
         try:
-            pdb.set_trace()
             all_groups = __salt__['uyuni.systemgroup_list_all_groups'](org_admin_user, org_admin_password)
             system_groups_keys = {g.get('name'): g.get('id') for g in all_groups}
+
             current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
+
             key = "{}-{}".format(current_org_user['org_id'], name)
             current_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
                                                                       org_admin_password=org_admin_password)
@@ -792,6 +803,12 @@ class UyuniActivationKeys:
             current_configure_after_registration = __salt__['uyuni.activation_key_check_config_deployment'](key,
                                                                                                             org_admin_user,
                                                                                                             org_admin_password)
+
+            config_channels_output = __salt__['uyuni.activation_key_list_config_channels'](key,
+                                                                                            org_admin_user,
+                                                                                            org_admin_password)
+            current_config_channels = [cc['label'] for cc in (config_channels_output or [])]
+
         except Exception as exc:
             if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.state_error(key, "Error retrieving information about Activation Key '{}': {}".format(key, exc))
@@ -809,7 +826,9 @@ class UyuniActivationKeys:
 
         changes = self._compute_changes(ak_paramters, current_ak,
                                         configure_after_registration,
-                                        current_configure_after_registration)
+                                        current_configure_after_registration,
+                                        current_config_channels,
+                                        configuration_channels)
 
         if not current_ak:
             changes["key"] = {"new": key}
@@ -874,6 +893,11 @@ class UyuniActivationKeys:
                                            packages or [],
                                             key, org_admin_user, org_admin_password)
 
+            if changes.get('configuration_channels', False):
+                __salt__['uyuni.activation_key_set_config_channels']([key],
+                                                                     config_channel_label=configuration_channels,
+                                                                     org_admin_user=org_admin_user,
+                                                                     org_admin_password=org_admin_password)
 
         except Exception as exc:
             return StateResult.state_error(key, "Error updating activation key '{}': {}".format(key, exc))
@@ -1084,6 +1108,7 @@ def activation_key_present(name,
                            system_types=[],
                            universal_default=False,
                            child_channels=[],
+                           configuration_channels=[],
                            packages=[],
                            server_groups=[],
                            configure_after_registration = False,
@@ -1099,6 +1124,7 @@ def activation_key_present(name,
     :param system_types:
     :param universal_default:
     :param child_channels:
+    :param configuration_channels:
     :param packages:
     :param server_groups:
     :param configure_after_registration:
@@ -1114,6 +1140,7 @@ def activation_key_present(name,
                                         system_types=system_types,
                                         universal_default=universal_default,
                                         child_channels=child_channels,
+                                        configuration_channels=configuration_channels,
                                         packages=packages,
                                         server_groups=server_groups,
                                         configure_after_registration=configure_after_registration,
