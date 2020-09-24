@@ -636,6 +636,10 @@ class UyuniOrgsTrust:
 class UyuniActivationKeys:
 
     @staticmethod
+    def _normalize_list_packages(list_packages: [Any]):
+        return [(f['name'], f.get('arch', None)) for f in (list_packages or [])]
+
+    @staticmethod
     def _compute_changes(ak_paramters: Dict[str, Any],
                          current_ak: Dict[str, Any],
                          configure_after_registration: bool,
@@ -648,18 +652,19 @@ class UyuniActivationKeys:
                 if current_ak:
                     changes[field]["old"] = _current_ak.get(field)
 
-        # if ak_paramters.get('contact_method') != _current_ak.get('contact_method'):
-        #     if not (_current_ak.get('contact_method') == 'default' and ak_paramters.get('contact_method') is None):
-        #         changes['contact_method'] = {"new": ak_paramters['contact_method']}
-        #         if current_ak:
-        #             changes['contact_method']["old"] = _current_ak.get('contact_method')
-
         # list fields
         for field in ['entitlements', 'child_channel_labels', 'server_group_ids']:
-            if Counter((ak_paramters or {}).get(field) or []) != Counter(_current_ak.get(field) or []):
+            if sorted((ak_paramters or {}).get(field) or []) != sorted(_current_ak.get(field) or []):
                 changes[field] = {"new": ak_paramters[field]}
                 if current_ak:
                     changes[field]["old"] = _current_ak.get(field)
+
+        new_packages = UyuniActivationKeys._normalize_list_packages((ak_paramters or {}).get('packages', []))
+        old_packages = UyuniActivationKeys._normalize_list_packages((_current_ak or {}).get('packages', []))
+        if sorted(new_packages) != sorted(old_packages):
+            changes['packages'] = {"new": ak_paramters['packages']}
+            if current_ak:
+                changes['packages']["old"] = _current_ak.get('packages')
 
         if configure_after_registration != current_configure_after_registration:
             changes['configure_after_registration'] = {"new": configure_after_registration}
@@ -697,6 +702,32 @@ class UyuniActivationKeys:
                                                                    org_admin_user=org_admin_user,
                                                                    org_admin_password=org_admin_password)
 
+    @staticmethod
+    def _format_packages_data(packages):
+        return [{'name': f[0], **(({'arch': f[1]}) if f[1] else {})} for f in packages]
+
+    @staticmethod
+    def _update_packages(current_packages, new_packages, key, org_admin_user, org_admin_password):
+
+        pdb.set_trace()
+        new_packages_normalized = UyuniActivationKeys._normalize_list_packages(new_packages)
+        current_packages_normalized = UyuniActivationKeys._normalize_list_packages(current_packages)
+        add_packages = [t for t in new_packages_normalized if t not in current_packages_normalized]
+        if add_packages:
+            pass
+            __salt__['uyuni.activation_key_add_packages'](key,
+                                                          UyuniActivationKeys._format_packages_data(add_packages),
+                                                          org_admin_user=org_admin_user,
+                                                          org_admin_password=org_admin_password)
+
+        remove_packages = [t for t in current_packages_normalized if t not in new_packages_normalized]
+        if remove_packages:
+            pass
+            __salt__['uyuni.activation_key_remove_packages'](key,
+                                                             UyuniActivationKeys._format_packages_data(remove_packages),
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
+
     def manage(self, name: str, description: str,
                base_channel: str = '',
                usage_limit: int = 0,
@@ -704,6 +735,7 @@ class UyuniActivationKeys:
                system_types: List[int] = [],
                universal_default: bool = False,
                child_channels: List[str] = [],
+               packages: List[str] = [],
                server_groups: List[str] = [],
                configure_after_registration: bool = False,
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
@@ -717,6 +749,7 @@ class UyuniActivationKeys:
         :param system_types:
         :param universal_default:
         :param child_channels:
+        :param packages:
         :param server_groups:
         :param configure_after_registration:
         :param org_admin_user:
@@ -741,7 +774,7 @@ class UyuniActivationKeys:
         except Exception as exc:
             if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.state_error(key, "Error retrieving information about Activation Key '{}': {}".format(key, exc))
-
+        ## FIXME some keys on changes are different from the input, but equal to AK get details return
         ak_paramters = {'description': description,
                         'base_channel_label': base_channel,
                         'usage_limit': usage_limit,
@@ -749,7 +782,8 @@ class UyuniActivationKeys:
                         'entitlements': system_types,
                         'universal_default': universal_default,
                         'child_channel_labels': child_channels,
-                        'server_group_ids': server_groups}
+                        'server_group_ids': server_groups,
+                        'packages': packages}
 
         changes = self._compute_changes(ak_paramters, current_ak,
                                         configure_after_registration,
@@ -793,7 +827,6 @@ class UyuniActivationKeys:
                                                              org_admin_user=org_admin_user,
                                                              org_admin_password=org_admin_password)
 
-            # TODO we have some mandatory channels, we need more tests/review on how they behave
             if changes.get('child_channel_labels', False):
                 self._update_child_channels((current_ak or {}).get('child_channel_labels', []),
                                             child_channels or [],
@@ -812,6 +845,12 @@ class UyuniActivationKeys:
                     __salt__['uyuni.activation_key_disable_config_deployment'](key,
                                                                                org_admin_user=org_admin_user,
                                                                                org_admin_password=org_admin_password)
+
+            if changes.get('packages', False):
+                self._update_packages((current_ak or {}).get('packages', []),
+                                           packages or [],
+                                            key, org_admin_user, org_admin_password)
+
 
         except Exception as exc:
             return StateResult.state_error(key, "Error updating activation key '{}': {}".format(key, exc))
@@ -1022,6 +1061,7 @@ def activation_key_present(name,
                            system_types=[],
                            universal_default=False,
                            child_channels=[],
+                           packages=[],
                            server_groups=[],
                            configure_after_registration = False,
                            org_admin_user=None, org_admin_password=None):
@@ -1036,6 +1076,7 @@ def activation_key_present(name,
     :param system_types:
     :param universal_default:
     :param child_channels:
+    :param packages:
     :param server_groups:
     :param configure_after_registration:
     :param org_admin_user: organization administrator username
@@ -1050,6 +1091,7 @@ def activation_key_present(name,
                                         system_types=system_types,
                                         universal_default=universal_default,
                                         child_channels=child_channels,
+                                        packages=packages,
                                         server_groups=server_groups,
                                         configure_after_registration=configure_after_registration,
                                         org_admin_user=org_admin_user,
