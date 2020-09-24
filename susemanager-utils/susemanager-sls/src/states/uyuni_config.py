@@ -703,6 +703,23 @@ class UyuniActivationKeys:
                                                                    org_admin_password=org_admin_password)
 
     @staticmethod
+    def _update_server_groups(current_server_groups, new_server_groups,
+                               key, org_admin_user, org_admin_password):
+        add_server_groups = [t for t in new_server_groups if t not in current_server_groups]
+        if add_server_groups:
+            __salt__['uyuni.activation_key_add_server_groups'](key, add_server_groups,
+                                                                org_admin_user=org_admin_user,
+                                                                org_admin_password=org_admin_password)
+
+        remove_server_groups = [t for t in current_server_groups if t not in new_server_groups]
+        if remove_server_groups:
+            __salt__['uyuni.activation_key_remove_server_groups'](key, remove_server_groups,
+                                                                   org_admin_user=org_admin_user,
+                                                                   org_admin_password=org_admin_password)
+
+
+
+    @staticmethod
     def _format_packages_data(packages):
         return [{'name': f[0], **(({'arch': f[1]}) if f[1] else {})} for f in packages]
 
@@ -759,7 +776,11 @@ class UyuniActivationKeys:
         current_ak = None
         key = None
         current_configure_after_registration = None
+        system_groups_keys = {}
         try:
+            pdb.set_trace()
+            all_groups = __salt__['uyuni.systemgroup_list_all_groups'](org_admin_user, org_admin_password)
+            system_groups_keys = {g.get('name'): g.get('id') for g in all_groups}
             current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
             key = "{}-{}".format(current_org_user['org_id'], name)
             current_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
@@ -775,6 +796,7 @@ class UyuniActivationKeys:
             if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.state_error(key, "Error retrieving information about Activation Key '{}': {}".format(key, exc))
         ## FIXME some keys on changes are different from the input, but equal to AK get details return
+        server_groups_normalized = [system_groups_keys[gr] for gr in (server_groups or [])]
         ak_paramters = {'description': description,
                         'base_channel_label': base_channel,
                         'usage_limit': usage_limit,
@@ -782,7 +804,7 @@ class UyuniActivationKeys:
                         'entitlements': system_types,
                         'universal_default': universal_default,
                         'child_channel_labels': child_channels,
-                        'server_group_ids': server_groups,
+                        'server_group_ids': server_groups_normalized,
                         'packages': packages}
 
         changes = self._compute_changes(ak_paramters, current_ak,
@@ -833,9 +855,10 @@ class UyuniActivationKeys:
                                             key, org_admin_user, org_admin_password)
 
             # TODO groups will be a more tricky since we need to get the system group id
-            # if changes.get('child_channel_labels', False):
-            #     self._update_server_groups(current_ak['server_group_ids'] or [], child_channels or [],
-            #                                 key, org_admin_user, org_admin_password)
+            if changes.get('server_group_ids', False):
+                self._update_server_groups(current_ak['server_group_ids'] or [], server_groups_normalized,
+                                            key, org_admin_user, org_admin_password)
+
             if changes.get('configure_after_registration', False):
                 if configure_after_registration:
                     __salt__['uyuni.activation_key_enable_config_deployment'](key,
