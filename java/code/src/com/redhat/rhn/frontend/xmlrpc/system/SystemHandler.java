@@ -6720,13 +6720,14 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
-     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-            List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+            List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliest) {
         return scheduleSPMigration(loggedInUser, sid, null, baseChannelLabel,
-                optionalChildChannels, dryRun, earliest);
+                optionalChildChannels, dryRun, allowVendorChange, earliest);
     }
 
     /**
@@ -6757,12 +6758,13 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
             String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-            Date earliest) {
+            boolean allowVendorChange, Date earliest) {
         // Perform checks on the server
         Server server = null;
         try {
@@ -6848,7 +6850,7 @@ public class SystemHandler extends BaseHandler {
                         channelIDs.add(channel.getId());
                     }
                     return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                            targetProducts, channelIDs, dryRun, earliest);
+                            targetProducts, channelIDs, dryRun, allowVendorChange, earliest);
                 }
 
                 // Consider alternatives (cloned channel trees)
@@ -6858,7 +6860,7 @@ public class SystemHandler extends BaseHandler {
                     if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
                         channelIDs.addAll(alternatives.get(clonedBaseChannel));
                         return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                                targetProducts, channelIDs, dryRun, earliest);
+                                targetProducts, channelIDs, dryRun, allowVendorChange, earliest);
                     }
                 }
             }
@@ -6896,11 +6898,12 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("string", "channels")
      * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
-            boolean dryRun, Date earliest) {
+            boolean dryRun, boolean allowVendorChange, Date earliest) {
         // Lookup the server and perform some checks
         Server server = null;
         try {
@@ -6915,7 +6918,7 @@ public class SystemHandler extends BaseHandler {
         try {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
             return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
-                    channelIDs, dryRun, earliest);
+                    channelIDs, dryRun, allowVendorChange, earliest);
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
