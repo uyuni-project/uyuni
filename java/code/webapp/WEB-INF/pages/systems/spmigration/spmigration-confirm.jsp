@@ -91,6 +91,8 @@
     <c:forEach items="${childChannels}" var="current">
       <html:hidden property="childChannels" value="${current.id}" />
     </c:forEach>
+    <html:hidden property="allowVendorChange" value="${allowVendorChange}" />
+
     <html:hidden property="targetProductSelected"
         value="${targetProducts.serializedProductIDs}" />
     <html:hidden property="step" value="confirm" />
