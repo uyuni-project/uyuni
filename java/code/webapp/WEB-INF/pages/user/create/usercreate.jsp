@@ -32,7 +32,7 @@
                       class="required-form-field">*</span>:</label>
                 <div class="col-sm-6">
                   <div id="desiredpassword-input-group" class="input-group">
-                      <html:password property="desiredpassword" styleClass="form-control" size="15" maxlength="${passwordLength}"/>
+                      <html:password property="desiredpassword" styleClass="form-control" size="15"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
                       </span>
@@ -44,7 +44,7 @@
                       class="required-form-field">*</span>:</label>
                 <div class="col-sm-6">
                   <div class="input-group">
-                      <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon()" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
+                      <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon()" size="15" styleId="confirmpass"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
                       </span>
