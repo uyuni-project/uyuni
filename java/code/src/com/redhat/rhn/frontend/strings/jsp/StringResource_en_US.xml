@@ -25069,6 +25069,9 @@ given channel.</source>
       <trans-unit id="spmigration.jsp.target.submit">
         <source>Select Channels</source>
       </trans-unit>
+      <trans-unit id="spmigration.jsp.allow.vendor.change">
+        <source>Allow Vendor Change</source>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty">
         <source>Please select one target product to migrate</source>
       </trans-unit>
