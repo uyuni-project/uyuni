@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-25 12:54+0200\n"
-"PO-Revision-Date: 2020-09-25 17:48+0000\n"
+"PO-Revision-Date: 2020-09-25 22:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/cs/>\n"
@@ -611,7 +611,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:153
 #, python-brace-format
 msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
+msgstr "Odesílání profilu na {PRODUCT_NAME}"
 
 #. Finish Window
 #: ../src/up2date_client/rhnreg_constants.py:156
@@ -619,7 +619,7 @@ msgid "Updates Configured"
 msgstr "Aktualizace konfigurovány"
 
 #: ../src/up2date_client/rhnreg_constants.py:157
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "You may now run '%s update' from this system's command line to get the "
 "latest software updates from {PRODUCT_NAME}. You will need to run this "
@@ -630,13 +630,13 @@ msgid ""
 "main {PRODUCT_NAME} web interface.)"
 msgstr ""
 "Nyní můžete spustit '%s update' z příkazového řádku tohoto systému a získat "
-"nejnovější aktualizace softwaru od Red Hat Satellite. Chcete-li udržovat "
+"nejnovější aktualizace softwaru od  {PRODUCT_NAME}. Chcete-li udržovat "
 "nejnovější aktualizace, bude třeba tento příkaz spouštět pravidelně. "
 "Alternativně můžete tento systém konfigurovat pro automatické aktualizace "
-"softwaru (známé také jako „auto errata update“) webovým rozhraním Red Hat "
-"Satellite. (Pokyny k tomu jsou v kapitole 6 Referenční příručky RHN; jsou "
-"dostupné po stisku tlačítka „Nápověda“ v hlavním webovém rozhraní sítě Red "
-"Hat Network Satellite.)"
+"softwaru (známé také jako „auto errata update“) webovým rozhraním "
+"{PRODUCT_NAME}. (Pokyny k tomu jsou v Referenční příručce {PRODUCT_NAME}; "
+"jsou dostupné po stisku tlačítka 'Nápověda' v hlavním webovém rozhraní "
+"{PRODUCT_NAME}.)"
 
 #. Review Window
 #: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
@@ -648,18 +648,17 @@ msgid "Please review the subscription details below:"
 msgstr "Zkontrolujte prosím podrobnosti o odběru níže:"
 
 #: ../src/up2date_client/rhnreg_constants.py:170
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "The installation number %s was activated during this system's initial "
 "connection to {PRODUCT_NAME}."
 msgstr ""
 "Instalační číslo %s bylo aktivováno během počátečního připojení tohoto "
-"systému k Red Hat Satellite."
+"systému k {PRODUCT_NAME}."
 
 #: ../src/up2date_client/rhnreg_constants.py:172
-#, fuzzy
 msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Byla aktivována předplatná těchto produktů/služeb Red Hat:"
+msgstr "Byla aktivována předplatná těchto produktů/služeb:"
 
 #: ../src/up2date_client/rhnreg_constants.py:174
 msgid "Software Channel Subscriptions:"
@@ -671,7 +670,7 @@ msgstr ""
 "Tento systém bude dostávat aktualizace z následujících softwarových kanálů:"
 
 #: ../src/up2date_client/rhnreg_constants.py:177
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Warning: Only installed product listed above will receive updates and "
 "support. If you would like to receive updates for additional products, "
@@ -680,9 +679,8 @@ msgid ""
 msgstr ""
 "Upozornění: Aktualizace a podporu obdrží pouze výše uvedený nainstalovaný "
 "produkt. Pokud si přejete dostávat aktualizace pro další produkty, přihlaste "
-"se prosím do svého satelitního webového rozhraní a přihlaste tento systém k "
-"příslušným softwarovým kanálům. Více informací najdete v článku Kbase. "
-"(http://kbase.redhat.com/faq/docs/DOC-11313)"
+"se prosím do svého webového rozhraní {PRODUCT_NAME} a přihlaste tento systém "
+"k odběru příslušných softwarových kanálů."
 
 #: ../src/up2date_client/rhnreg_constants.py:183
 #, python-format
@@ -718,7 +716,7 @@ msgstr ""
 "vašem účtu bylo nedostatečné předplatné:"
 
 #: ../src/up2date_client/rhnreg_constants.py:193
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This system was unable to subscribe to any software channels. Your system "
 "will not receive any software updates to keep it secure and supported. "
@@ -730,58 +728,58 @@ msgid ""
 msgstr ""
 "Tento systém se nemohl přihlásit k odběru žádných softwarových kanálů. Váš "
 "systém neobdrží žádné aktualizace softwaru, nebude zabezpečen ani "
-"podporován. S tímto problémem se obraťte na správce Satellite. Jakmile ve "
-"svém účtu zpřístupníte příslušné aktivní předplatné, budete moci procházet "
-"profil tohoto systému ve webovém rozhraní RHN a přihlásit se k odběru tohoto "
-"softwaru k softwarovým kanálům na kartě software > softwarové kanály."
+"podporován. S tímto problémem se obraťte na správce svého {PRODUCT_NAME}. "
+"Jakmile ve svém účtu zpřístupníte příslušné aktivní předplatné, budete moci "
+"procházet profil tohoto systému ve webovém rozhraní {PRODUCT_NAME} a "
+"přihlásit tento systém k odběru softwarových kanálů na kartě software > "
+"softwarové kanály."
 
 #: ../src/up2date_client/rhnreg_constants.py:199
 msgid "Service Level:"
 msgstr "Úroveň služby:"
 
 #: ../src/up2date_client/rhnreg_constants.py:200
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Depending on what {PRODUCT_NAME} system types are associated with a system, "
 "you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
 "types associated with this system:"
 msgstr ""
-"Podle toho, jaké moduly Red Hat Satellite jsou přidruženy k systému, budete "
-"mít různé výhody. Zde jsou satelitní moduly Red Hat spojené s tímto systémem:"
+"Podle toho, jaké typy systémů {PRODUCT_NAME} jsou přidruženy k systému, "
+"budete mít různé výhody. Zde jsou satelitní moduly {PRODUCT_NAME} spojené s "
+"tímto systémem:"
 
 #: ../src/up2date_client/rhnreg_constants.py:204
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This system was unable to be associated with the following {PRODUCT_NAME} "
 "system type(s) because there were insufficient subscriptions available in "
 "your account:"
 msgstr ""
-"Tento systém se nepodařilo sdružit s následujícími moduly RHN, protože ve "
-"vašem účtu nebylo k dispozici dostatečné předplatné:"
+"Tento systém se nepodařilo sdružit s následujícími typy systému "
+"{PRODUCT_NAME}, protože ve vašem účtu nebylo k dispozici dostatečné "
+"předplatné:"
 
 #: ../src/up2date_client/rhnreg_constants.py:207
-#, fuzzy
 msgid ""
 "Management type: automatic updates, systems grouping, systems permissions, "
 "system package profiling, bare-metal provisioning, existing state "
 "provisioning, rollbacks, configuration management"
 msgstr ""
-"Modul správy: automatické aktualizace, seskupení systémů, systémová "
-"oprávnění, profilování systémových balíčků, zajištění hard- a firmware popř. "
-"i BIOSu (bare-metal), zajišťování stávajícího stavu, vrácení změn, správa "
-"konfigurace"
+"Typ správy: automatické aktualizace, seskupení systémů, systémová oprávnění, "
+"profilování systémových balíčků, zajištění hard- a firmware popř. i BIOSu "
+"(bare-metal), zajišťování stávajícího stavu, vrácení změn, správa konfigurace"
 
 #: ../src/up2date_client/rhnreg_constants.py:212
-#, fuzzy
 msgid ""
 "Virtualization type: software updates for a limited number of virtual guests "
 "on this system."
 msgstr ""
-"Virtualizační modul: aktualizace softwaru pro omezený počet virtuálních "
-"hostů v tomto systému."
+"Virtualizační typ: aktualizace softwaru pro omezený počet virtuálních hostů "
+"v tomto systému."
 
 #: ../src/up2date_client/rhnreg_constants.py:216
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>Warning:</b> Any guest systems you create on this system and register to "
 "{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
@@ -790,15 +788,15 @@ msgid ""
 "{PRODUCT_NAME} web interface if you do not want virtual guests of this "
 "system to consume additional subscriptions."
 msgstr ""
-"<b>Upozornění:</b> Všechny hostující systémy, které v tomto systému "
-"vytvoříte a zaregistrujete je na RHN, budou využívat předplatná systému Red "
-"Hat Enterprise Linux mimo předplatné tohoto hostitelského systému. Budete "
-"muset: (1) zpřístupnit oprávnění virtualizačního systému a (2) uplatnit toto "
-"systémové oprávnění na tento systém ve webovém rozhraní RHN, nechcete-li, "
+"<b>Upozornění:</b> Jakékoli hostující systémy, které v tomto systému "
+"vytvoříte a zaregistrujete na {PRODUCT_NAME}, budou využívat předplatná "
+"systému mimo předplatné tohoto hostitelského systému. Budete muset: (1) "
+"zpřístupnit oprávnění virtualizačního systému a (2) uplatnit toto systémové "
+"oprávnění na tento systém ve webovém rozhraní {PRODUCT_NAME}, nechcete-li, "
 "aby virtuální hosté tohoto systému využívali další předplatné."
 
 #: ../src/up2date_client/rhnreg_constants.py:224
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This system was unable to be associated with any {PRODUCT_NAME} system "
 "types. This system will not receive any software updates to keep it secure "
@@ -807,15 +805,15 @@ msgid ""
 "account, you may browse to this system's profile in the {PRODUCT_NAME} web "
 "interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
 msgstr ""
-"Tento systém se nemohl přidružit k žádným modulům úrovně služeb RHN. Tento "
-"systém neobdrží žádné aktualizace softwaru, nebude zabezpečen a podporován. "
-"S tímto problémem se obraťte na svého správce Satellite. Jakmile v účtu "
-"zpřístupníte příslušné aktivní předplatné, budete moci najít profil tohoto "
-"systému ve webovém rozhraní RHN, odstranit jej a znovu připojit tento systém "
-"k Red Hat Satellite."
+"Tento systém se nemohl přidružit k žádným typům systému {PRODUCT_NAME}. "
+"Tento systém neobdrží žádné aktualizace softwaru, nebude zabezpečen a "
+"podporován. S tímto problémem se obraťte na svého správce {PRODUCT_NAME}. "
+"Jakmile v účtu zpřístupníte příslušné aktivní předplatné, budete moci najít "
+"profil tohoto systému ve webovém rozhraní {PRODUCT_NAME}, odstranit jej a "
+"znovu připojit tento systém k {PRODUCT_NAME}."
 
 #: ../src/up2date_client/rhnreg_constants.py:231
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "Universal default activation key detected\n"
 "A universal default activation key was detected in your account. This means "
@@ -829,11 +827,10 @@ msgstr ""
 "Byl zjištěn univerzální výchozí aktivační klíč\n"
 "Ve vašem účtu byl zjištěn univerzální výchozí aktivační klíč. To znamená, že "
 "sada vlastností (předplatné softwarových kanálů, instalace balíčků, členství "
-"ve skupinách systémů atd.) pro připojení vašeho systému k satelitu Red Hat "
-"Satellite nebo Red Hat Satellite Proxy byla určena aktivačním klíčem, nikoli "
-"vaším instalačním číslem. Další informace o aktivačních klíčích najdete v "
-"referenční příručce RHN, oddíl 6.4.6 (http://access.redhat.com/knowledge/"
-"docs/Red_Hat_Network/)\n"
+"ve skupinách systémů atd.) pro připojení vašeho systému k serveru "
+"{PRODUCT_NAME} nebo {PRODUCT_NAME} Proxy byla určena aktivačním klíčem, "
+"nikoli vaším instalačním číslem. Další informace o aktivačních klíčích "
+"najdete v referenční příručce {PRODUCT_NAME}.\n"
 "Univerzální výchozí aktivační klíč: %s"
 
 #. Error Messages.
@@ -848,7 +845,7 @@ msgid "Warning"
 msgstr "Varování"
 
 #: ../src/up2date_client/rhnreg_constants.py:245
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "We can't contact {PRODUCT_NAME}.\n"
 "\n"
@@ -860,15 +857,15 @@ msgid ""
 "This system will not be able to successfully receive software updates "
 "without connecting to an {PRODUCT_NAME} server/proxy"
 msgstr ""
-"Nemůžeme kontaktovat Red Hat Satellite.\n"
+"Nemůžeme kontaktovat {PRODUCT_NAME}.\n"
 "\n"
 "Znovu zkontrolujte zadané umístění - je '%s' správné?\n"
 "Pokud ne, můžete to opravit a zkusit to znovu.\n"
 "\n"
 "Zkontrolujte, zda je síťové připojení v tomto systému funkční.\n"
 "\n"
-"Tento systém nebude schopen úspěšně přijímat aktualizace softwaru od "
-"společnosti Red Hat, dokud se nepřipojí k serveru Red Hat Satellite"
+"Tento systém nebude schopen úspěšně přijímat aktualizace softwaru, dokud se "
+"nepřipojí k serveru/proxy {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:252
 #, python-format
@@ -884,7 +881,7 @@ msgstr ""
 "to znovu až s novějším serverem."
 
 #: ../src/up2date_client/rhnreg_constants.py:260
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
 "\n"
@@ -897,8 +894,8 @@ msgid ""
 msgstr ""
 "<b> <span size=\"16000\">Nekompatibilní soubor certifikátů</span> </b>\n"
 "\n"
-"Certifikát, který jste zadali, <b>%s</b>, není kompatibilní se serverem Red "
-"Hat Satellite na <b>%s</b>. Znovu zkontrolujte, zda jste zadali platný "
+"Certifikát, který jste zadali, <b>%s</b>, není kompatibilní se serverem "
+"{PRODUCT_NAME} na <b>%s</b>. Znovu zkontrolujte, zda jste zadali platný "
 "soubor certifikátu. Jste si jisti, že jste zadali správný certifikát a že "
 "soubor certifikátu nebyl poškozen?\n"
 "\n"
@@ -917,7 +914,7 @@ msgstr ""
 "váš systémový čas je správný."
 
 #: ../src/up2date_client/rhnreg_constants.py:272
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
 "up2date. You can either make the serverURL use http instead of https, or you "
@@ -926,11 +923,11 @@ msgid ""
 msgstr ""
 "Ověřte hodnoty sslCACert a serverURL v /etc/sysconfig/rhn/up2date. Můžete "
 "buď v serverURL použít http místo https, nebo si můžete stáhnout certifikát "
-"SSL ze svého Satellite, umístit jej do /usr/share/rhn a zajistit, aby na něj "
+"SSL ze svého {PRODUCT_NAME}, umístit jej do /usr/share/rhn a zajistit, aby "
 "sslCACert směřoval na něj."
 
 #: ../src/up2date_client/rhnreg_constants.py:278
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Problem registering system.\n"
 "\n"
@@ -943,12 +940,10 @@ msgstr ""
 "Problém registrace systému.\n"
 "\n"
 "Univerzální výchozí aktivační klíč omezuje počet systémů, které se mohou "
-"připojit k organizaci RHN spojené s vaším přihlášením. Chcete-li povolit "
-"připojení tohoto systému, obraťte se na administrátora organizace RHN a "
-"zvyšte počet systémů, které se mohou připojit, nebo deaktivujte tento "
-"univerzální výchozí aktivační klíč. Další podrobnosti najdete v článku č. "
-"7924 znalostní báze Red Hat na adrese http://kbase.redhat.com/faq/"
-"FAQ_61_7924.shtm. "
+"připojit k organizaci {PRODUCT_NAME} spojené s vaším přihlášením. Chcete-li "
+"povolit připojení tohoto systému, obraťte se na správce {PRODUCT_NAME} své "
+"organizace a zvyšte počet systémů, které se mohou připojit, nebo deaktivujte "
+"tento univerzální výchozí aktivační klíč."
 
 #: ../src/up2date_client/rhnreg_constants.py:288
 msgid ""
@@ -1293,9 +1288,9 @@ msgid "Error: Server Unavailable. Please try later."
 msgstr "Chyba: Server je nedostupný. Prosím zkuste to později."
 
 #: ../src/up2date_client/rpcServer.py:183
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "ERROR: can not find {PRODUCT_NAME} CA file"
-msgstr "CHYBA: nemohu najít soubor RHNS CA"
+msgstr "CHYBA: nemohu najít soubor {PRODUCT_NAME} CA"
 
 #: ../src/up2date_client/rpcServer.py:221
 msgid "Connection aborted by the user"
@@ -1386,9 +1381,9 @@ msgstr ""
 "obrazovka"
 
 #: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "Registrační program RHN musíte spustit jako root."
+msgstr "Registrační program {PRODUCT_NAME} musíte spustit jako root."
 
 #: ../src/up2date_client/up2dateErrors.py:50
 #: ../src/up2date_client/up2dateErrors.py:83
@@ -1431,6 +1426,9 @@ msgid ""
 "Red Hat Network Classic is not supported in {PRODUCT_NAME} .\n"
 "    "
 msgstr ""
+"\n"
+"Red Hat Network Classic není v {PRODUCT_NAME} podporován.\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:200
 msgid "The installation number is invalid"
@@ -1445,7 +1443,7 @@ msgid "Network error: "
 msgstr "Chyba sítě: "
 
 #: ../src/up2date_client/up2dateErrors.py:298
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1468,14 +1466,13 @@ msgstr ""
 "\n"
 "    Vaše organizace nemá dostatečná oprávnění pro správu, aby mohla "
 "zaregistrovat tento\n"
-"    systém u Red Hat Satellite. O této chybě informujte správce vaší "
-"organizace. Měli byste\n"
-"    být schopni zaregistrovat tento systém poté, co vaše organizace uvolní "
-"stávající nebo\n"
-"    koupí další oprávnění. Další oprávnění může zakoupit správce organizace "
-"přihlášením do\n"
-"    Red Hat Network Classic a použitím stránky „Správa předplatného“ v RHN - "
-"„Vaše RHN“.\n"
+"    systém u {PRODUCT_NAME}. O této chybě informujte správce vaší organizace."
+"\n"
+"    Měli byste být schopni zaregistrovat tento systém poté, co vaše "
+"organizace\n"
+"    uvolní stávající nebo koupí další oprávnění. Další oprávnění může "
+"objednat správce\n"
+"    Vaší organizace na SUSE Customer Center.\n"
 "\n"
 "    Společnou příčinou tohoto chybového kódu je nesprávné nastavení systému "
 "Aktivační\n"
@@ -1483,12 +1480,11 @@ msgstr ""
 "aktivační klíč u účtu jako\n"
 "    výchozí univerzální nastavení, můžete tento klíč deaktivovat a zkusit to "
 "znovu, a tím se\n"
-"    vyhnout tomu, abyste požadovali koupi oprávnění po managementu."
+"    vyhnout tomu, abyste požadovali koupi oprávnění Management."
 
 #: ../src/bin/rhn_check.py:428
-#, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "Pokus o spuštění více než jedné instance rhn_check. Ukončení.\n"
+msgstr "Pokus o spuštění více než jedné instance mgr_check. Ukončení.\n"
 
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
@@ -1686,7 +1682,7 @@ msgstr "Chyba při přidávání kanálů %s"
 #: ../src/bin/spacewalk-channel.py:185
 #, python-format
 msgid "Channel(s): %s successfully removed"
-msgstr "Kanál(y): %s - úspěšně odstraněn(y)."
+msgstr "Kanál(y): %s - úspěšně odstraněn(y)"
 
 #: ../src/bin/spacewalk-channel.py:187
 #, python-format
