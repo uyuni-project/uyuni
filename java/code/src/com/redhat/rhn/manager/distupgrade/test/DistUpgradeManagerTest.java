@@ -606,7 +606,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
         Long actionID = DistUpgradeManager.scheduleDistUpgrade(
-                user, server, targetSet, channelIDs, true, scheduleDate);
+                user, server, targetSet, channelIDs, true, false, scheduleDate);
 
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
@@ -617,6 +617,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(server, serverActions.iterator().next().getServer());
         DistUpgradeActionDetails details = action.getDetails();
         assertTrue(details.isDryRun());
+        assertFalse(details.isAllowVendorChange());
 
         // Check product upgrade
         Set<SUSEProductUpgrade> upgrades = details.getProductUpgrades();
