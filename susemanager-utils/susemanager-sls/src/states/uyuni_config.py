@@ -640,33 +640,32 @@ class UyuniActivationKeys:
         return [(f['name'], f.get('arch', None)) for f in (list_packages or [])]
 
     @staticmethod
-    def _compute_changes(ak_paramters: Dict[str, Any],
+    def _compute_changes(ak_parameters: Dict[str, Any],
                          current_ak: Dict[str, Any],
                          configure_after_registration: bool,
                          current_configure_after_registration: bool,
                          current_config_channels: List[str],
                          configuration_channels: List[str]) -> Dict[str, Any]:
-        _current_ak = current_ak or {}
         changes = {}
-        for field in ["description", 'base_channel_label', 'usage_limit', 'universal_default', 'contact_method']:
-            if _current_ak.get(field) != ak_paramters.get(field):
-                changes[field] = {"new": ak_paramters[field]}
+        for field in ["description", 'base_channel', 'usage_limit', 'universal_default', 'contact_method']:
+            if current_ak.get(field) != ak_parameters.get(field):
+                changes[field] = {"new": ak_parameters[field]}
                 if current_ak:
-                    changes[field]["old"] = _current_ak.get(field)
+                    changes[field]["old"] = current_ak.get(field)
 
         # list fields
-        for field in ['entitlements', 'child_channel_labels', 'server_group_ids']:
-            if sorted((ak_paramters or {}).get(field) or []) != sorted(_current_ak.get(field) or []):
-                changes[field] = {"new": ak_paramters[field]}
+        for field in ['system_types', 'child_channels', 'server_groups']:
+            if sorted((ak_parameters or {}).get(field) or []) != sorted(current_ak.get(field) or []):
+                changes[field] = {"new": ak_parameters[field]}
                 if current_ak:
-                    changes[field]["old"] = _current_ak.get(field)
+                    changes[field]["old"] = current_ak.get(field)
 
-        new_packages = UyuniActivationKeys._normalize_list_packages((ak_paramters or {}).get('packages', []))
-        old_packages = UyuniActivationKeys._normalize_list_packages((_current_ak or {}).get('packages', []))
+        new_packages = UyuniActivationKeys._normalize_list_packages((ak_parameters or {}).get('packages', []))
+        old_packages = UyuniActivationKeys._normalize_list_packages((current_ak or {}).get('packages', []))
         if sorted(new_packages) != sorted(old_packages):
-            changes['packages'] = {"new": ak_paramters['packages']}
+            changes['packages'] = {"new": ak_parameters['packages']}
             if current_ak:
-                changes['packages']["old"] = _current_ak.get('packages')
+                changes['packages']["old"] = current_ak.get('packages')
 
         if configure_after_registration != current_configure_after_registration:
             changes['configure_after_registration'] = {"new": configure_after_registration}
@@ -782,11 +781,22 @@ class UyuniActivationKeys:
         :param org_admin_password:
         :return:
         """
-        current_ak = None
+        current_ak = {}
         key = None
         current_configure_after_registration = None
         system_groups_keys = {}
         current_config_channels = []
+        output_field_names = {
+            'description': 'description',
+            'base_channel_label': 'base_channel',
+            'usage_limit': 'usage_limit',
+            'universal_default': 'universal_default',
+            'contact_method': 'contact_method',
+            'entitlements': 'system_types',
+            'child_channel_labels': 'child_channels',
+            'server_group_ids': 'server_groups',
+            'packages': 'packages'
+        }
         try:
             all_groups = __salt__['uyuni.systemgroup_list_all_groups'](org_admin_user, org_admin_password)
             system_groups_keys = {g.get('name'): g.get('id') for g in all_groups}
@@ -794,8 +804,12 @@ class UyuniActivationKeys:
             current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
 
             key = "{}-{}".format(current_org_user['org_id'], name)
-            current_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
+            returned_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
                                                                       org_admin_password=org_admin_password)
+
+            for returned_name, output_name in output_field_names.items():
+                current_ak[output_name] = returned_ak[returned_name]
+
             ## FIXME big hack over here
             if current_ak and current_ak.get('base_channel_label', None) == 'none':
                 current_ak['base_channel_label'] = ''
@@ -815,13 +829,13 @@ class UyuniActivationKeys:
         ## FIXME some keys on changes are different from the input, but equal to AK get details return
         server_groups_normalized = [system_groups_keys[gr] for gr in (server_groups or [])]
         ak_paramters = {'description': description,
-                        'base_channel_label': base_channel,
+                        'base_channel': base_channel,
                         'usage_limit': usage_limit,
                         'contact_method': contact_method,
-                        'entitlements': system_types,
+                        'system_types': system_types,
                         'universal_default': universal_default,
-                        'child_channel_labels': child_channels,
-                        'server_group_ids': server_groups_normalized,
+                        'child_channels': child_channels,
+                        'server_groups': server_groups_normalized,
                         'packages': packages}
 
         changes = self._compute_changes(ak_paramters, current_ak,
@@ -849,8 +863,8 @@ class UyuniActivationKeys:
                                                              org_admin_user=org_admin_user,
                                                              org_admin_password=org_admin_password)
 
-                if changes.get('entitlements', False):
-                    self._update_system_type(current_ak['entitlements'] or [], system_types or [],
+                if changes.get('system_types', False):
+                    self._update_system_type(current_ak.get('entitlements', []), system_types or [],
                                              key, org_admin_user, org_admin_password)
 
             else:
@@ -868,14 +882,14 @@ class UyuniActivationKeys:
                                                              org_admin_user=org_admin_user,
                                                              org_admin_password=org_admin_password)
 
-            if changes.get('child_channel_labels', False):
-                self._update_child_channels((current_ak or {}).get('child_channel_labels', []),
+            if changes.get('child_channels', False):
+                self._update_child_channels(current_ak.get('child_channel_labels', []),
                                             child_channels or [],
                                             key, org_admin_user, org_admin_password)
 
             # TODO groups will be a more tricky since we need to get the system group id
-            if changes.get('server_group_ids', False):
-                self._update_server_groups(current_ak['server_group_ids'] or [], server_groups_normalized,
+            if changes.get('server_groups', False):
+                self._update_server_groups(current_ak.get('server_group_ids', []), server_groups_normalized,
                                             key, org_admin_user, org_admin_password)
 
             if changes.get('configure_after_registration', False):
@@ -889,7 +903,7 @@ class UyuniActivationKeys:
                                                                                org_admin_password=org_admin_password)
 
             if changes.get('packages', False):
-                self._update_packages((current_ak or {}).get('packages', []),
+                self._update_packages(current_ak.get('packages', []),
                                            packages or [],
                                             key, org_admin_user, org_admin_password)
 
