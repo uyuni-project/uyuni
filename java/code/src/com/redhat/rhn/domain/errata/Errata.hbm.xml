@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.errata.impl.PublishedErrata"
+    <class name="com.redhat.rhn.domain.errata.Errata"
         table="rhnErrata" >
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
@@ -79,91 +79,94 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 column="channel_id"/>
         </set>
         <joined-subclass
-                name="com.redhat.rhn.domain.errata.impl.PublishedClonedErrata"
+                name="com.redhat.rhn.domain.errata.impl.ClonedErrata"
                 table="rhnErrataCloned">
                 <key column="id"/>
                 <many-to-one name="original" column="original_id"
-                class="com.redhat.rhn.domain.errata.impl.PublishedErrata" />
+                class="com.redhat.rhn.domain.errata.Errata" />
         </joined-subclass>
     </class>
-    <query name="PublishedErrata.findByAdvisoryType">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+    <query name="Errata.findByAdvisoryType">
+        <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                 where e.advisoryType = :type]]>
     </query>
-    <query name="PublishedErrata.findById">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+    <query name="Errata.findById">
+        <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                 where e.id = :id]]>
     </query>
-    <query name="PublishedErrata.listByIds">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+    <query name="Errata.listByIds">
+        <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                 where e.id in (:list)]]>
     </query>
 
-    <query name="PublishedErrata.findByAdvisoryNameAndOrg">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+    <query name="Errata.findByAdvisoryNameAndOrg">
+        <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                  where e.advisoryName = :advisory and ((:org is not null and e.org = :org) or (:org is null and e.org is null))]]>
     </query>
     
-    <query name="PublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+    <query name="Errata.findVendorAnUserErrataByAdvisoryNameAndOrg">
+        <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                  where e.advisoryName = :advisory and (e.org = :org or e.org is null)]]>
     </query>
     
-    <query name="PublishedErrata.findSameInChannels">
+    <query name="Errata.findSameInChannels">
         <![CDATA[
-        from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+        from com.redhat.rhn.domain.errata.Errata as e
         where :channel_from in elements(e.channels)
         and :channel_to in elements(e.channels)]]>
     </query>
-    <query name="PublishedClonedErrata.findBrothersInChannel">
+
+    <query name="ClonedErrata.findBrothersInChannel">
         <![CDATA[
         select e_from
-        from com.redhat.rhn.domain.errata.impl.PublishedClonedErrata as e_from,
-        com.redhat.rhn.domain.errata.impl.PublishedClonedErrata as e_to
+        from com.redhat.rhn.domain.errata.impl.ClonedErrata as e_from,
+        com.redhat.rhn.domain.errata.impl.ClonedErrata as e_to
         where :channel_from in elements(e_from.channels)
         and e_from.original = e_to.original
         and :channel_to in elements(e_to.channels)]]>
     </query>
-    <query name="PublishedErrata.findClonesInChannel">
+
+    <query name="Errata.findClonesInChannel">
         <![CDATA[
         select e
-        from com.redhat.rhn.domain.errata.impl.PublishedErrata as e,
-        com.redhat.rhn.domain.errata.impl.PublishedClonedErrata as c
+        from com.redhat.rhn.domain.errata.Errata as e,
+        com.redhat.rhn.domain.errata.impl.ClonedErrata as c
         where :channel_from in elements(e.channels)
         and c.original = e
         and :channel_to in elements(c.channels)
     ]]>
     </query>
-    <query name="PublishedClonedErrata.findByOriginal">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedClonedErrata as c
+
+    <query name="ClonedErrata.findByOriginal">
+        <![CDATA[from com.redhat.rhn.domain.errata.impl.ClonedErrata as c
                  where c.original = :original
                  and c.org = :org]]>
     </query>
-    <query name="PublishedErrata.findByAdvisory">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+    <query name="Errata.findByAdvisory">
+        <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                  where e.advisory = :advisory and (e.org = :org or e.org is null)]]>
     </query>
 
-    <query name="PublishedErrata.listByChannel">
+    <query name="Errata.listByChannel">
         <![CDATA[
         select e
-         from PublishedErrata e
+         from com.redhat.rhn.domain.errata.Errata e
          where
           :channel member of e.channels
           and (e.org = :org or e.org is null)]]>
     </query>
 
-    <query name="PublishedErrata.lookupSortedByChannel">
+    <query name="Errata.lookupSortedByChannel">
         <![CDATA[select e
-                        from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+                        from com.redhat.rhn.domain.errata.Errata as e
                 where :channel in elements(e.channels)  and
                        ( e.org = :org or e.org is null )
                         order by e.issueDate
                 ]]>
     </query>
-    <query name="PublishedErrata.lookupByChannelBetweenDates">
+    <query name="Errata.lookupByChannelBetweenDates">
         <![CDATA[select e
-                   from com.redhat.rhn.domain.errata.impl.PublishedErrata as e
+                   from com.redhat.rhn.domain.errata.Errata as e
                   where :channel in elements(e.channels) and
                         (e.org = :org or e.org is null) and
                         (e.lastModified > to_timestamp(:start_date, 'YYYY-MM-DD HH24:MI:SS')) and
@@ -171,7 +174,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                   order by e.issueDate
                 ]]>
     </query>
-    <sql-query name="PublishedErrata.searchById">
+    <sql-query name="Errata.searchById">
         <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName,
                     e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
                     e.update_date as updateDate, e.issue_date as issueDate,
@@ -200,7 +203,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="severityId" type="integer" />
     </sql-query>
 
-    <sql-query name="PublishedErrata.searchByPackageIds">
+    <sql-query name="Errata.searchByPackageIds">
         <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName, e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
                         e.update_date as updateDate, e.issue_date as issueDate, pn.name,
                         case when rb.keyword is not null then 1 else 0 end as reboot_suggested,
@@ -228,7 +231,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="restart_suggested" type="boolean" />
     </sql-query>
 
-    <sql-query name="PublishedErrata.searchByPackageIdsWithOrg">
+    <sql-query name="Errata.searchByPackageIdsWithOrg">
         <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName, e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
                         e.update_date as updateDate, e.issue_date as issueDate, pn.name,
                         case when rb.keyword is not null then 1 else 0 end as reboot_suggested,
@@ -261,7 +264,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="restart_suggested" type="boolean" />
     </sql-query>
 
-    <sql-query name="PublishedErrata.listAvailableToOrgByIds">
+    <sql-query name="Errata.listAvailableToOrgByIds">
         <![CDATA[SELECT E.*, 0 as clazz_
                  FROM rhnErrata as E
                  WHERE E.id in (:eids)
@@ -278,6 +281,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                          AND CE.channel_id = AC.channel_id
                                          AND AC.org_id = :orgId))
                           ]]>
-        <return alias="E" class="com.redhat.rhn.domain.errata.impl.PublishedErrata" />
+        <return alias="E" class="com.redhat.rhn.domain.errata.Errata" />
     </sql-query>
 </hibernate-mapping>

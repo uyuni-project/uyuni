@@ -82,7 +82,7 @@ public class MenuTreeTest extends TestCase {
                 .addChild(new MenuItem("Manage Errata")
                         .withDir("/rhn/errata/manage")
                         .addChild(new MenuItem("Published")
-                            .withPrimaryUrl("/rhn/errata/manage/PublishedErrata.do")))
+                            .withPrimaryUrl("/rhn/errata/manage/Errata.do")))
                 .addChild(new MenuItem("Clone Errata")
                     .withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone")));

@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.impl.ClonedErrata;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -139,7 +139,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
         for (Long eid : eids) {
             Errata e = ErrataManager.lookupErrata(eid, user);
             if (e.isCloned()) {
-                ErrataFactory.syncErrataDetails((PublishedClonedErrata) e);
+                ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
                 log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");

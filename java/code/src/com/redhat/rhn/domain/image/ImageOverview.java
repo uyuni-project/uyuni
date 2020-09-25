@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -70,7 +70,7 @@ public class ImageOverview {
     private Set<Channel> channels;
     private Set<InstalledProduct> installedProducts;
     private Set<ImagePackage> packages;
-    private Set<PublishedErrata> patches;
+    private Set<Errata> patches;
     private Org org;
     private Integer securityErrata;
     private Integer bugErrata;
@@ -247,7 +247,7 @@ public class ImageOverview {
             joinColumns = {@JoinColumn(name = "image_id")},
             inverseJoinColumns = {@JoinColumn(name = "errata_id")}
     )
-    public Set<PublishedErrata> getPatches() {
+    public Set<Errata> getPatches() {
         return patches;
     }
 
@@ -451,7 +451,7 @@ public class ImageOverview {
     /**
      * @param patchesIn the patches
      */
-    public void setPatches(Set<PublishedErrata> patchesIn) {
+    public void setPatches(Set<Errata> patchesIn) {
         this.patches = patchesIn;
     }
 

@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.action.errata.test;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.impl.ClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
@@ -89,7 +89,7 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
             List clones = ErrataManager.lookupByOriginal(user, e);
 
             assertEquals(1, clones.size());
-            var clone = (PublishedClonedErrata) clones.get(0);
+            var clone = (ClonedErrata) clones.get(0);
             assertTrue(clone.getOriginal().equals(e));
         }
     }

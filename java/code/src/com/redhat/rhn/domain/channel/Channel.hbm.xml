@@ -93,7 +93,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             cascade="save-update">
             <key column="channel_id"/>
             <many-to-many
-                class="com.redhat.rhn.domain.errata.impl.PublishedErrata"
+                class="com.redhat.rhn.domain.errata.Errata"
                 column="errata_id"/>
         </set>
 

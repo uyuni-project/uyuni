@@ -35,7 +35,6 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.impl.Bug;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.Keyword;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -119,7 +118,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     public void testCreate() {
         Errata e = ErrataFactory.createPublishedErrata();
-        assertTrue(e instanceof PublishedErrata);
+        assertTrue(e instanceof Errata);
 
         Bug b = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
         assertTrue(b instanceof Bug);
@@ -211,7 +210,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Errata> publishedList = ErrataFactory.publishToChannel(errataList,
                 baseChannel, user, false);
         Errata publish = publishedList.get(0);
-        assertTrue(publish instanceof PublishedErrata);
+        assertTrue(publish instanceof Errata);
 
         List eids = new ArrayList();
         eids.add(publish.getId());

@@ -19,7 +19,7 @@ import static com.redhat.rhn.frontend.struts.RequestContext.ERRATA_ID;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.impl.ClonedErrata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
@@ -89,7 +89,7 @@ public class ChannelSetupAction extends RhnListAction {
             }
             //Else we check and see if the original channel was listed in
             //      the original errata
-            else if (e != null && (e.isCloned() && errataInChannel(((PublishedClonedErrata)e).getOriginal(),
+            else if (e != null && (e.isCloned() && errataInChannel(((ClonedErrata)e).getOriginal(),
                     channel.getOriginalId()))) {
                 pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             } //if it wasn't then no packages are listed

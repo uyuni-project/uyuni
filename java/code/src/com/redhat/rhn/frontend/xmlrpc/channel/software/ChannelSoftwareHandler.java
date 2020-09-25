@@ -35,7 +35,7 @@ import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.impl.ClonedErrata;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.org.Org;
@@ -232,7 +232,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         for (Long eid : eids) {
             Errata e = ErrataManager.lookupErrata(eid, loggedInUser);
             if (e.isCloned()) {
-                ErrataFactory.syncErrataDetails((PublishedClonedErrata) e);
+                ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
                 log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");

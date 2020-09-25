@@ -17,10 +17,10 @@ package com.redhat.rhn.domain.errata.impl;
 import com.redhat.rhn.domain.errata.Errata;
 
 /**
- * PublishedClonedErrata
+ * ClonedErrata
  * @version $Rev$
  */
-public class PublishedClonedErrata extends PublishedErrata {
+public class ClonedErrata extends Errata {
 
     private Errata original;
 

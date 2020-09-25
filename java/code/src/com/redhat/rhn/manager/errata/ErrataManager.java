@@ -46,7 +46,7 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.errata.impl.Bug;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.impl.ClonedErrata;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -307,9 +307,9 @@ public class ErrataManager extends BaseManager {
                 .forEach(e -> removeErratumAndPackagesFromChannel(e, tgtChannel, user));
     }
 
-    private static Optional<PublishedClonedErrata> asCloned(Errata e) {
-        if (e instanceof PublishedClonedErrata) {
-            return Optional.of((PublishedClonedErrata) e);
+    private static Optional<ClonedErrata> asCloned(Errata e) {
+        if (e instanceof ClonedErrata) {
+            return Optional.of((ClonedErrata) e);
         }
         return Optional.empty();
     }

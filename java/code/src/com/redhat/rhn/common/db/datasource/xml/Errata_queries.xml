@@ -289,7 +289,7 @@ SELECT COUNT(DISTINCT E.ID) AS COUNT
   </query>
 </mode>
 
-<mode name="unscheduled_relevant_to_system" class="com.redhat.rhn.domain.errata.impl.PublishedErrata">
+<mode name="unscheduled_relevant_to_system" class="com.redhat.rhn.domain.errata.Errata">
   <query params="user_id, sid">
 SELECT DISTINCT E.id, E.update_date
   FROM rhnErrata E,

@@ -7,7 +7,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         table="rhnErrataBuglist" >
         <composite-id unsaved-value="any">
             <key-many-to-one name="errata"
-                class="com.redhat.rhn.domain.errata.impl.PublishedErrata"
+                class="com.redhat.rhn.domain.errata.Errata"
                 column="errata_id"/>
             <key-property name="id" column="bug_id" type="long"/>
         </composite-id>

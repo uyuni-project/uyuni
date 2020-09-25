@@ -29,8 +29,8 @@ import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.impl.Bug;
+import com.redhat.rhn.domain.errata.impl.ClonedErrata;
 import com.redhat.rhn.domain.errata.impl.Keyword;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -92,7 +92,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertNotNull(cloned);
         assertEquals(1, cloned.length);
 
-        PublishedClonedErrata publishClonedErrata = (PublishedClonedErrata) cloned[0];
+        ClonedErrata publishClonedErrata = (ClonedErrata) cloned[0];
         assertEquals(publishClonedErrata.getAdvisoryName(),
                 "CL-" + errata.getAdvisoryName());
         assertEquals(publishClonedErrata.getPackages().size(), errata.getPackages().size());
@@ -124,7 +124,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertNotNull(clonedForEmptyErrata);
         assertEquals(1, clonedForEmptyErrata.length);
 
-        PublishedClonedErrata publishClonedEmptyErrata = (PublishedClonedErrata) clonedForEmptyErrata[0];
+        ClonedErrata publishClonedEmptyErrata = (ClonedErrata) clonedForEmptyErrata[0];
         assertEquals(publishClonedEmptyErrata.getAdvisoryName(),
                 "CL-" + emptyErrata.getAdvisoryName());
         assertEquals(publishClonedEmptyErrata.getPackages().size(), emptyErrata.getPackages().size());

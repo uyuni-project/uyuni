@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.impl.Bug;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -98,7 +97,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      */
     public void testKeywords() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        assertTrue(errata instanceof PublishedErrata);
+        assertTrue(errata instanceof Errata);
         errata.addKeyword("yankee");
         errata.addKeyword("hotel");
         errata.addKeyword("foxtrot");
@@ -114,7 +113,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      */
     public void testPackages() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        assertTrue(errata instanceof PublishedErrata);
+        assertTrue(errata instanceof Errata);
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         errata.addPackage(pkg);
 
@@ -172,7 +171,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      */
     public void testBeanMethodsPublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        assertTrue(err instanceof PublishedErrata);
+        assertTrue(err instanceof Errata);
         runBeanMethodsTest(err, 1);
     }
 

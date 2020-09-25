@@ -49,11 +49,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 column="channel_id"/>
         </set>
 
-       <set name="publishedErrata" lazy="true" table="rhnErrataPackage"
+       <set name="errata" lazy="true" table="rhnErrataPackage"
             cascade="save-update" >
             <key column="package_id"/>
             <many-to-many
-                class="com.redhat.rhn.domain.errata.impl.PublishedErrata"
+                class="com.redhat.rhn.domain.errata.Errata"
                 column="errata_id"/>
         </set>
 

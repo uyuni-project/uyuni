@@ -18,7 +18,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.frontend.xmlrpc.packages.PackageHelper;
@@ -58,7 +58,7 @@ public class Package extends BaseDomainHelper {
     private String cookie;
     private Date lastModified;
     private Boolean lockPending = Boolean.FALSE;
-    private Set<PublishedErrata> publishedErrata = new HashSet<PublishedErrata>();
+    private Set<Errata> errata = new HashSet<Errata>();
     private Set<Channel> channels = new HashSet<Channel>();
     private Set<PackageFile> packageFiles = new HashSet<PackageFile>();
 
@@ -579,17 +579,17 @@ public class Package extends BaseDomainHelper {
     }
 
     /**
-     * @return Returns the publishedErrata.
+     * @return Returns the errata.
      */
-    public Set<PublishedErrata> getPublishedErrata() {
-        return publishedErrata;
+    public Set<Errata> getErrata() {
+        return errata;
     }
 
     /**
-     * @param publishedErrataIn The publishedErrata to set.
+     * @param errataIn The errata to set.
      */
-    public void setPublishedErrata(Set<PublishedErrata> publishedErrataIn) {
-        this.publishedErrata = publishedErrataIn;
+    public void setErrata(Set<Errata> errataIn) {
+        this.errata = errataIn;
     }
 
     /**

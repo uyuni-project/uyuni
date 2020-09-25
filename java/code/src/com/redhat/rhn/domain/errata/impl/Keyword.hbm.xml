@@ -8,7 +8,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <composite-id unsaved-value="any">
             <key-many-to-one name="errata"
-                class="com.redhat.rhn.domain.errata.impl.PublishedErrata"
+                class="com.redhat.rhn.domain.errata.Errata"
                 column="errata_id"/>
             <key-property name="keyword" column="keyword"
                 type="string" length="64"/>

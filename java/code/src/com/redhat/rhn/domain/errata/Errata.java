@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2018 Red Hat, Inc.
+ * Copyright (c) 2009--2020 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,422 +12,763 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-/*
- * Copyright (c) 2010 SUSE LLC
- */
 package com.redhat.rhn.domain.errata;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.Keyword;
+import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.frontend.struts.Selectable;
+import com.redhat.rhn.manager.errata.ErrataManager;
+
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Errata - Class representation of the table rhnErrata.
  */
-public interface Errata {
+public class Errata extends BaseDomainHelper implements Selectable {
+
+    private static Logger log = Logger.getLogger(Errata.class);
+    protected Set<Package> packages;
+
+    private Set<Channel> channels = new HashSet();
+    private Set<Cve> cves = new HashSet<Cve>();
+    private Long id;
+    private String advisory;
+    private String advisoryType;
+    private String product;
+    private String description;
+    private String synopsis;
+    private String topic;
+    private String solution;
+    private Date issueDate;
+    private Date updateDate;
+    private String notes;
+    private String refersTo;
+    private String advisoryName;
+    private Long advisoryRel;
+    private Boolean locallyModified;
+    private Date lastModified;
+    private Org org;
+    private Set<Bug> bugs = new HashSet<Bug>();
+    private Set<ErrataFile> files;
+    private Set<Keyword> keywords;
+    private boolean selected;
+    private String errataFrom;
+    private Severity severity;
+
+    /**
+     * Getter for channels
+     * @return channels to get
+     */
+    public Set<Channel> getChannels() {
+        return channels;
+    }
+
+    /**
+     * @param channelsIn sets channels
+     */
+    public void setChannels(Set<Channel> channelsIn) {
+        this.channels = channelsIn;
+    }
+
+    /**
+     * Adds a channel.
+     * @param channelIn the channel to add
+     */
+    public void addChannel(Channel channelIn) {
+        log.debug("addChannel called: " + channelIn.getLabel());
+        if (this.channels == null) {
+            this.channels = new HashSet();
+        }
+        channels.add(channelIn);
+    }
+
+    /**
+     * Getter for cloned
+     * @return true if cloned
+     */
+    public boolean isCloned() {
+        return false;
+    }
+
+    /**
+     * @param cvesIn sets cves
+     */
+    public void setCves(Set<Cve> cvesIn) {
+        this.cves = cvesIn;
+    }
+
+    /**
+     * @return Returns cves
+     */
+    public Set<Cve> getCves() {
+        return cves;
+    }
 
     /**
      * Getter for id
      * @return Long to get
-    */
-    Long getId();
+     */
+    public Long getId() {
+        return this.id;
+    }
 
     /**
      * Setter for id
      * @param idIn to set
-    */
-    void setId(Long idIn);
+     */
+    public void setId(Long idIn) {
+        this.id = idIn;
+    }
 
     /**
      * Getter for advisory
      * @return String to get
-    */
-    String getAdvisory();
+     */
+    public String getAdvisory() {
+        return this.advisory;
+    }
 
     /**
      * Setter for advisory
      * @param advisoryIn to set
-    */
-    void setAdvisory(String advisoryIn);
+     */
+    public void setAdvisory(String advisoryIn) {
+        this.advisory = advisoryIn;
+    }
 
     /**
      * Getter for advisoryType
      * @return String to get
-    */
-    String getAdvisoryType();
+     */
+    public String getAdvisoryType() {
+        return this.advisoryType;
+    }
 
     /**
      * Setter for advisoryType
      * @param advisoryTypeIn to set
-    */
-    void setAdvisoryType(String advisoryTypeIn);
+     */
+    public void setAdvisoryType(String advisoryTypeIn) {
+        this.advisoryType = advisoryTypeIn;
+    }
 
     /**
      * Getter for product
      * @return String to get
-    */
-    String getProduct();
+     */
+    public String getProduct() {
+        return this.product;
+    }
 
     /**
      * Setter for product
      * @param productIn to set
-    */
-    void setProduct(String productIn);
+     */
+    public void setProduct(String productIn) {
+        this.product = productIn;
+    }
+
+    /**
+     * Getter for author
+     * @return String to get
+     */
+    public String getErrataFrom() {
+        return this.errataFrom;
+    }
+
+    /**
+     * Setter for author
+     * @param from to set
+     */
+    public void setErrataFrom(String from) {
+        if (StringUtils.isEmpty(from)) {
+            this.errataFrom = null;
+        }
+        else {
+            this.errataFrom = from;
+        }
+    }
 
     /**
      * Getter for description
      * @return String to get
-    */
-    String getDescription();
+     */
+    public String getDescription() {
+        return this.description;
+    }
 
     /**
      * Setter for description
      * @param descriptionIn to set
-    */
-    void setDescription(String descriptionIn);
+     */
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
+    }
 
     /**
      * Getter for synopsis
      * @return String to get
-    */
-    String getSynopsis();
+     */
+    public String getSynopsis() {
+        return this.synopsis;
+    }
+
+    /**
+     * Getter for synopsis
+     * @return String to get
+     */
+    public String getAdvisorySynopsis() {
+        return getSynopsis();
+    }
 
     /**
      * Setter for synopsis
      * @param synopsisIn to set
-    */
-    void setSynopsis(String synopsisIn);
+     */
+    public void setSynopsis(String synopsisIn) {
+        this.synopsis = synopsisIn;
+    }
 
     /**
      * Getter for topic
      * @return String to get
-    */
-    String getTopic();
+     */
+    public String getTopic() {
+        return this.topic;
+    }
 
     /**
      * Setter for topic
      * @param topicIn to set
-    */
-    void setTopic(String topicIn);
+     */
+    public void setTopic(String topicIn) {
+        this.topic = topicIn;
+    }
 
     /**
      * Getter for solution
      * @return String to get
-    */
-    String getSolution();
+     */
+    public String getSolution() {
+        return this.solution;
+    }
 
     /**
      * Setter for solution
      * @param solutionIn to set
-    */
-    void setSolution(String solutionIn);
+     */
+    public void setSolution(String solutionIn) {
+        this.solution = solutionIn;
+    }
 
     /**
      * Getter for issueDate
      * @return Date to get
-    */
-    Date getIssueDate();
+     */
+    public Date getIssueDate() {
+        return this.issueDate;
+    }
 
     /**
      * Setter for issueDate
      * @param issueDateIn to set
-    */
-    void setIssueDate(Date issueDateIn);
+     */
+    public void setIssueDate(Date issueDateIn) {
+        this.issueDate = issueDateIn;
+    }
 
     /**
      * Getter for updateDate
      * @return Date to get
-    */
-    Date getUpdateDate();
+     */
+    public Date getUpdateDate() {
+        return this.updateDate;
+    }
 
     /**
      * Setter for updateDate
      * @param updateDateIn to set
-    */
-    void setUpdateDate(Date updateDateIn);
+     */
+    public void setUpdateDate(Date updateDateIn) {
+        this.updateDate = updateDateIn;
+    }
 
     /**
      * Getter for notes
      * @return String to get
-    */
-    String getNotes();
+     */
+    public String getNotes() {
+        return this.notes;
+    }
 
     /**
      * Setter for notes
      * @param notesIn to set
-    */
-    void setNotes(String notesIn);
+     */
+    public void setNotes(String notesIn) {
+        if (StringUtils.isEmpty(notesIn)) {
+            this.notes = null;
+        }
+        else {
+            this.notes = notesIn;
+        }
+    }
 
     /**
      * Getter for org
      * @return Org to get
-    */
-    Org getOrg();
+     */
+    public Org getOrg() {
+        return this.org;
+    }
 
     /**
      * Setter for org
      * @param orgIn to set
-    */
-    void setOrg(Org orgIn);
+     */
+    public void setOrg(Org orgIn) {
+        this.org = orgIn;
+    }
 
     /**
      * Getter for refersTo
      * @return String to get
-    */
-    String getRefersTo();
+     */
+    public String getRefersTo() {
+        return this.refersTo;
+    }
 
     /**
      * Setter for refersTo
      * @param refersToIn to set
-    */
-    void setRefersTo(String refersToIn);
+     */
+    public void setRefersTo(String refersToIn) {
+        if (StringUtils.isEmpty(refersToIn)) {
+            this.refersTo = null;
+        }
+        else {
+            this.refersTo = refersToIn;
+        }
+    }
 
     /**
      * Getter for advisoryName
      * @return String to get
-    */
-    String getAdvisoryName();
+     */
+    public String getAdvisoryName() {
+        return this.advisoryName;
+    }
 
     /**
      * Setter for advisoryName
      * @param advisoryNameIn to set
-    */
-    void setAdvisoryName(String advisoryNameIn);
+     */
+    public void setAdvisoryName(String advisoryNameIn) {
+        this.advisoryName = advisoryNameIn;
+    }
 
     /**
      * Getter for advisoryRel
      * @return Long to get
-    */
-    Long getAdvisoryRel();
+     */
+    public Long getAdvisoryRel() {
+        return this.advisoryRel;
+    }
 
     /**
      * Setter for advisoryRel
      * @param advisoryRelIn to set
-    */
-    void setAdvisoryRel(Long advisoryRelIn);
+     */
+    public void setAdvisoryRel(Long advisoryRelIn) {
+        this.advisoryRel = advisoryRelIn;
+    }
 
     /**
      * Getter for severity
      * @return Severity to get
      */
-    Severity getSeverity();
+    public Severity getSeverity() {
+        return this.severity;
+    }
 
     /**
      * Setter for severity
-     * @param severity to set
+     * @param s Severity to set
      */
-    void setSeverity(Severity severity);
+    public void setSeverity(Severity s) {
+        this.severity = s;
+    }
 
     /**
      * Getter for locallyModified
-     * @return boolean to get
-    */
-    Boolean getLocallyModified();
+     * @return Boolean to get
+     */
+    public Boolean getLocallyModified() {
+        return this.locallyModified;
+    }
 
     /**
      * Setter for locallyModified
      * @param locallyModifiedIn to set
-    */
-    void setLocallyModified(Boolean locallyModifiedIn);
+     */
+    public void setLocallyModified(Boolean locallyModifiedIn) {
+        this.locallyModified = locallyModifiedIn;
+    }
 
     /**
      * Getter for lastModified
      * @return Date to get
-    */
-    Date getLastModified();
+     */
+    public Date getLastModified() {
+        return this.lastModified;
+    }
 
     /**
      * Setter for lastModified
      * @param lastModifiedIn to set
-    */
-    void setLastModified(Date lastModifiedIn);
+     */
+    public void setLastModified(Date lastModifiedIn) {
+        this.lastModified = lastModifiedIn;
+    }
 
     /**
      * Returns true if the advisory is a Product Enhancement.
      * @return true if the advisory is a Product Enhancement.
      */
-    boolean isProductEnhancement();
+    public boolean isProductEnhancement() {
+        return "Product Enhancement Advisory".equals(getAdvisoryType());
+    }
 
     /**
      * Returns true if the advisory is a Security Advisory.
      * @return true if the advisory is a Security Advisory.
      */
-    boolean isSecurityAdvisory();
+    public boolean isSecurityAdvisory() {
+        return "Security Advisory".equals(getAdvisoryType());
+    }
 
     /**
      * Returns true if the advisory is a Bug Fix.
      * @return true if the advisory is a Bug Fix.
      */
-    boolean isBugFix();
+    public boolean isBugFix() {
+        return "Bug Fix Advisory".equals(getAdvisoryType());
+    }
+
+    /**
+     * Removes a bug from the bugs set
+     * @param bugId id of the bug to remove
+     */
+    public void removeBug(Long bugId) {
+        Bug deleteme = null; // the bug to delete
+        for (Bug bug : getBugs()) {
+            if (bug.getId().equals(bugId)) {
+                deleteme = bug; // we found it!!!
+                break;
+            }
+        }
+        getBugs().remove(deleteme);
+        ErrataFactory.removeBug(deleteme);
+    }
 
     /**
      * Adds a bug to the bugs set
      * @param bugIn The bug to add
      */
-    void addBug(Bug bugIn);
-
-    /**
-     * Removes a bug from the bugs set
-     * @param bugId The id of the bug to remove
-     */
-    void removeBug(Long bugId);
+    public void addBug(Bug bugIn) {
+        // add bug to bugs
+        this.getBugs().add(bugIn);
+        // set errata for bugIn
+        bugIn.setErrata(this);
+    }
 
     /**
      * @return Returns the bugs.
      */
-    Set getBugs();
+    public Set<Bug> getBugs() {
+        return bugs;
+    }
 
     /**
      * @param b The bugs to set.
      */
-    void setBugs(Set b);
+    public void setBugs(Set b) {
+        this.bugs = b;
+    }
 
     /**
      * Adds a file to the file set
      * @param fileIn The file to add
      */
-    void addFile(ErrataFile fileIn);
+    public void addFile(ErrataFile fileIn) {
+        if (this.files == null) {
+            this.files = new HashSet<ErrataFile>();
+        }
+
+        this.files.add(fileIn);
+        fileIn.setErrata(this);
+    }
 
     /**
      * Removes a file from the files set
      * @param fileId The id of the file to remove
      */
-    void removeFile(Long fileId);
+    public void removeFile(Long fileId) {
+        ErrataFile deleteme = null; // the bug to delete
+        for (ErrataFile file : this.files) {
+            if (file.getId().equals(fileId)) {
+                deleteme = file; // we found it!!!
+                break;
+            }
+        }
+        this.files.remove(deleteme);
+        ErrataFactory.removeFile(deleteme);
+    }
 
     /**
      * @return Returns the files.
      */
-    Set<ErrataFile> getFiles();
+    public Set<ErrataFile> getFiles() {
+        return this.files;
+    }
 
     /**
      * @param f The files to set.
      */
-    void setFiles(Set<ErrataFile> f);
+    public void setFiles(Set<ErrataFile> f) {
+        this.files = f;
+    }
 
     /**
-     * Convienience method so we can add keywords logically
-     * Adds a keyword to the keywords set
+     * Convienience method so we can add keywords logically Adds a keyword to
+     * the keywords set
      * @param keywordIn The keyword to add.
      */
-    void addKeyword(String keywordIn);
+    public void addKeyword(String keywordIn) {
+        if (this.keywords == null) {
+            this.keywords = new HashSet<Keyword>();
+        }
+        for (Keyword k : getKeywords()) {
+            if (k.getKeyword().equals(keywordIn)) {
+                return;
+            }
+        }
+
+
+        /*
+         * Bah... this stinks since a keyword is just a string, but we have to
+         * set the created/modified fields in the db.
+         */
+        Keyword k = new Keyword();
+        k.setKeyword(keywordIn);
+        addKeyword(k);
+        k.setErrata(this);
+    }
 
     /**
      * Adds a keyword to the keywords set.
      * @param keywordIn The keyword to add.
      */
-    void addKeyword(Keyword keywordIn);
+    public void addKeyword(Keyword keywordIn) {
+        if (this.keywords == null) {
+            this.keywords = new HashSet<Keyword>();
+        }
+        // add keyword to set
+        keywords.add(keywordIn);
+        // set errata for keywordIn
+
+    }
+
+    /**
+     * Checks whether a keyword is already associated with an erratum.
+     * @param keywordIn The keyword to check.
+     * @return returns whether keyword is already associated with given erratum
+     */
+    public boolean containsKeyword(String keywordIn) {
+        if (this.keywords == null) {
+            return false;
+        }
+        for (Keyword k : this.keywords) {
+            if (k.getKeyword().equals(keywordIn)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * @return Returns the keywords.
      */
-    Set<Keyword> getKeywords();
+    public Set<Keyword> getKeywords() {
+        return keywords;
+    }
 
     /**
      * @param k The keywords to set.
      */
-    void setKeywords(Set<Keyword> k);
+    public void setKeywords(Set<Keyword> k) {
+        this.keywords = k;
+    }
 
     /**
      * Search for the given keyword in the set
      * @param s The keyword to search for
      * @return true if keyword was found
      */
-    boolean hasKeyword(String s);
+    public boolean hasKeyword(String s) {
+        return containsKeyword(s);
+    }
 
     /**
-     * Adds a package to the packages set.
+     * Adds a package to the packages set
      * @param packageIn The package to add.
      */
-    void addPackage(Package packageIn);
+    public void addPackage(Package packageIn) {
+        if (this.packages == null) {
+            this.packages = new HashSet<Package>();
+        }
+        packages.add(packageIn);
+    }
 
     /**
      * Removes a package from the packages set.
      * @param packageIn The package to remove.
      */
-    void removePackage(Package packageIn);
+    public void removePackage(Package packageIn) {
+        packages.remove(packageIn);
+    }
 
     /**
      * @return Returns the packages.
      */
-    Set<Package> getPackages();
+    public Set<Package> getPackages() {
+        return packages;
+    }
 
     /**
      * @param p The packages to set.
      */
-    void setPackages(Set<Package> p);
+    public void setPackages(Set<Package> p) {
+        this.packages = p;
+    }
 
     /**
-     * @return Returns the Set of channels associated with this errata
+     * Adds an Errata Notification
+     * @param dateIn the date of the notification
      */
-    Set<Channel> getChannels();
+    public void addNotification(Date dateIn) {
+        ErrataManager.clearErrataNotifications(this);
+        for (Channel chan : getChannels()) {
+            ErrataManager.addErrataNotification(id, chan.getId(), dateIn);
+        }
+    }
 
     /**
-     * @param channelsIn The set of channels to set for this errata
+     * @return all errata notifications
      */
-    void setChannels(Set<Channel> channelsIn);
-
-    /**
-     * Getter for author
-     * @return String to get
-     */
-    String getErrataFrom();
-
-    /**
-     * Setter for author
-     * @param from to set
-     */
-    void   setErrataFrom(String from);
-
-    /**
-     * Adds a single channel to this errata
-     * @param channelIn The channel to add
-     */
-    void addChannel(Channel channelIn);
-
-    /**
-     * Add a new notification for this errata
-     * @param dateIn The notify date
-     */
-    void addNotification(Date dateIn);
-
-    /**
-     * List errata notifications that are queued
-     * @return list of maps with channel_id and time
-     */
-    List getNotificationQueue();
-
-    /**
-     * Tells whether or not the errata is cloned.
-     * @return Returns true if this errata is cloned
-     */
-    boolean isCloned();
-
+    public List getNotificationQueue() {
+        return ErrataManager.listErrataNotifications(this);
+    }
 
     /**
      * {@inheritDoc}
      */
-    String toString();
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append(this.getClass().getName());
+        result.append(" : ");
+        result.append(id);
+        result.append(" : ");
+        result.append(advisory);
+        result.append(" desc: " + description);
+        result.append(" syn: " + synopsis);
+        return result.toString();
+    }
 
     /**
      * Clears out the Channels associated with this errata.
-     *
      */
-    void clearChannels();
-    /**
-     * Sets cves
-     * @param cvesIn cve input
-     */
-    void setCves(Set<Cve> cvesIn);
-    /**
-     *
-     * @return Returns Cves
-     */
-    Set<Cve> getCves();
+    public void clearChannels() {
+        if (this.getChannels() != null) {
+            this.getChannels().clear();
+        }
+        Iterator<ErrataFile> i = IteratorUtils.getIterator(this.getFiles());
+        while (i.hasNext()) {
+            PublishedErrataFile pf = (PublishedErrataFile) i.next();
+            pf.getChannels().clear();
+        }
+    }
 
+    /**
+     * @return whether this object is selectable for RhnSet
+     */
+    public boolean isSelectable() {
+        return true;
+    }
+
+    /**
+     * @return the selected
+     */
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * @param isSelected the selected to set
+     */
+    public void setSelected(boolean isSelected) {
+        this.selected = isSelected;
+    }
+
+    /**
+     * @return the selection key
+     */
+    public String getSelectionKey() {
+        return String.valueOf(getId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Errata)) {
+            return false;
+        }
+        Errata e = (Errata) obj;
+        EqualsBuilder eb = new EqualsBuilder();
+        eb.append(this.getAdvisory(), e.getAdvisory());
+        eb.append(this.getAdvisoryName(), e.getAdvisoryName());
+        eb.append(this.getAdvisoryRel(), e.getAdvisoryRel());
+        eb.append(this.getAdvisorySynopsis(), e.getAdvisorySynopsis());
+        eb.append(this.getOrg(), e.getOrg());
+        return eb.isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode() {
+        HashCodeBuilder eb = new HashCodeBuilder();
+        eb.append(this.getAdvisory());
+        eb.append(this.getAdvisoryName());
+        eb.append(this.getAdvisoryRel());
+        eb.append(this.getAdvisorySynopsis());
+        eb.append(this.getOrg());
+        return eb.toHashCode();
+    }
 }

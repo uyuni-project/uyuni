@@ -24,7 +24,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.Keyword;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.impl.ClonedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -92,7 +92,7 @@ public class PublishErrataHelper {
     @Deprecated
     public static Errata cloneErrataFast(Errata original, Org  org) {
 
-        Errata clone = new PublishedClonedErrata();
+        Errata clone = new ClonedErrata();
 
         setUniqueAdvisoryCloneName(original, clone);
         clone.setAdvisoryType(original.getAdvisoryType());
@@ -128,7 +128,7 @@ public class PublishErrataHelper {
            clone.addBug(bClone);
         }
 
-        ((PublishedClonedErrata) clone).setOriginal(original);
+        ((ClonedErrata) clone).setOriginal(original);
         clone.setOrg(org);
         ErrataFactory.save(clone);
 
