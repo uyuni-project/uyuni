@@ -6797,11 +6797,11 @@ organization. You may grant or remove the organization administrator role in the
         <target>일반 모니터링 설정</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
-        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
+        <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>아래에서 설정 옵션을 업데이트 후에는 이 새틀라이트(satellite)의 모니터링 서비스와 모든 모니터링이 활성화된 @@PRODUCT_NAME@@ Proxy 서버를 재시작해야 합니다. 이 페이지를 업데이트하시면 이러한 작업이 자동으로 스케줄될 것입니다.  </target>
+        <target state="needs-adaptation">아래에서 설정 옵션을 업데이트 후에는 이 새틀라이트(satellite)의 모니터링 서비스와 모든 모니터링이 활성화된 @@PRODUCT_NAME@@ Proxy 서버를 재시작해야 합니다. 이 페이지를 업데이트하시면 이러한 작업이 자동으로 스케줄될 것입니다.  </target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
@@ -12342,9 +12342,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source>
           <target>정말로 이 키를 삭제하시겠습니까? 활성키가 삭제되면 이를 다시 복구할 수 없게 됩니다. (알림: 키는 &lt;a href="{0}"&gt;키 목록 페이지&lt;/a&gt;에서 비활성화시켜 사용하지 못하게 하고 나중 사용을 위해 보존할 수 있습니다.)  </target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.delete.warning">
-          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
-          <target>&lt;STRONG&gt;알림&lt;/STRONG&gt;: Satellite에 알려진 시스템 및 프로파일만 업데이트됩니다. 키가 삭제되는 경우 이 키를 사용하는 다른 엔티티 (예: cobbler 명령행 도구를 사용하여 생성된 시스템 프로파일)는 &lt;STRONG&gt;실패&lt;/STRONG&gt;하게 됩니다.</target>
+        <trans-unit id="activation-key.jsp.delete.warning" xml:space="preserve">
+          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to @@PRODUCT_NAME@@ server will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
+          <target state="needs-adaptation">&lt;STRONG&gt;알림&lt;/STRONG&gt;: Satellite에 알려진 시스템 및 프로파일만 업데이트됩니다. 키가 삭제되는 경우 이 키를 사용하는 다른 엔티티 (예: cobbler 명령행 도구를 사용하여 생성된 시스템 프로파일)는 &lt;STRONG&gt;실패&lt;/STRONG&gt;하게 됩니다.</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source>
@@ -13697,9 +13697,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Target Systems</source>
           <target>대상 시스템</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-          <target>아래의 목록에 있는 시스템에서는 @@PRODUCT_NAME@@ 설정 관리를 통해 파일이 관리되지 않습니다. @@PRODUCT_NAME@@ 설정 관리로 시스템을 관리받으려면, 프로비저닝 (Provisioning) 인타이틀먼트와 함께 특정 rhncfg-* 패키지가 설치되어 있어야 합니다. 아래의 '@@PRODUCT_NAME@@ 설정 관리 활성화' 버튼을 사용하여 선택한 시스템에서 설정 관리를 받으실 수 있습니다. </target>
+        <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+          <target state="needs-adaptation">아래의 목록에 있는 시스템에서는 @@PRODUCT_NAME@@ 설정 관리를 통해 파일이 관리되지 않습니다. @@PRODUCT_NAME@@ 설정 관리로 시스템을 관리받으려면, 프로비저닝 (Provisioning) 인타이틀먼트와 함께 특정 rhncfg-* 패키지가 설치되어 있어야 합니다. 아래의 '@@PRODUCT_NAME@@ 설정 관리 활성화' 버튼을 사용하여 선택한 시스템에서 설정 관리를 받으실 수 있습니다. </target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source>
@@ -13732,17 +13732,17 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="targetsystems.jsp.subscribeappstream">
           <source>Subscribe to AppStream channel</source>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfg">
-          <source>Schedule rhncfg package install</source>
-          <target>rhncfg 패키지 설치 스케줄하기</target>
+        <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
+          <source>Schedule mgr-cfg package install</source>
+          <target state="needs-adaptation">rhncfg 패키지 설치 스케줄하기</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
           <source>Schedule mgr-cfg-actions package install</source>
           <target>mgr-cfg-actions 패키지 설치 스케줄하기</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfgclient">
-          <source>Schedule rhncfg-client package install</source>
-          <target>rhncfg-client 패키지 설치 스케줄하기</target>
+        <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
+          <source>Schedule mgr-cfg-client package install</source>
+          <target state="needs-adaptation">rhncfg-client 패키지 설치 스케줄하기</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.pending">
           <source>Package installations currently pending.</source>
@@ -13756,9 +13756,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Schedule package installs as soon as possible.</source>
           <target>최대한 빨리 패키지 설치 작업을 스케줄하기</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.widgetsummary">
-          <source>You may schedule &lt;code&gt;rhncfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-          <target>아래의 시간으로 &lt;code&gt;rhncfg*&lt;/code&gt; 패키지 설치를 스케줄하실 수 있습니다. &lt;strong&gt;알림: 다른 모든 작업은 즉시 실행됩니다.&lt;/strong&gt;</target>
+        <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
+          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+          <target state="needs-adaptation">아래의 시간으로 &lt;code&gt;rhncfg*&lt;/code&gt; 패키지 설치를 스케줄하실 수 있습니다. &lt;strong&gt;알림: 다른 모든 작업은 즉시 실행됩니다.&lt;/strong&gt;</target>
         </trans-unit>
       </group>
       <!-- configuration/overview/summary.jsp  -->
@@ -13774,13 +13774,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Configuration Management Enablement has been attempted on the following systems. To complete enablement on successful systems (indicated by the Status column below), perform the following two actions:</source>
           <target>다음의 시스템에서 설정 관리가 활성화되었습니다. 시스템 (아래에서 시스템 상태가 나타남)에서 활성화 작업을 마치시려면, 다음의 두가지 작업을 실행하시기 바랍니다:</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.stepone">
-          <source>Run &lt;code&gt;rhn_check&lt;/code&gt; to complete pending rhncfg-* package installs.</source>
-          <target>&lt;code&gt;rhn_check&lt;/code&gt;를 실행하여 보류 상태인 rhncfg-* 패키지 설치를 완료합니다.</target>
+        <trans-unit id="summary.jsp.stepone" xml:space="preserve">
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
+          <target state="needs-adaptation">&lt;code&gt;rhn_check&lt;/code&gt;를 실행하여 보류 상태인 rhncfg-* 패키지 설치를 완료합니다.</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.steptwo">
-          <source>Run the following command: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</source>
-          <target>다음과 같은 명령을 실행합니다: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
+        <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
+          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
+          <target state="needs-adaptation">다음과 같은 명령을 실행합니다: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
         </trans-unit>
         <trans-unit id="summary.jsp.noActions">
           <source>No actions taken.</source>
@@ -13798,16 +13798,16 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>No Error.</source>
           <target>오류 없음</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.rhntools">
-          <source>Could not subscribe to the RHN Tools channel.</source>
-          <target>RHN 도구 채널에 등록할 수 없습니다.</target>
+        <trans-unit id="summary.jsp.rhntools" xml:space="preserve">
+          <source>Could not subscribe to the Tools channel.</source>
+          <target state="needs-adaptation">RHN 도구 채널에 등록할 수 없습니다.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.appstream">
           <source>Could not subscribe to the AppStream channel.</source>
         </trans-unit>
-        <trans-unit id="summary.jsp.packages">
-          <source>Could not schedule rhncfg* package installations.</source>
-          <target>rhncfg* 패키지 설치를 스케줄할 수 없음.</target>
+        <trans-unit id="summary.jsp.packages" xml:space="preserve">
+          <source>Could not schedule mgr-cfg* package installations.</source>
+          <target state="needs-adaptation">rhncfg* 패키지 설치를 스케줄할 수 없음.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.okAlt">
           <source>okay</source>
@@ -16579,16 +16579,16 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Confirm Configuration File Comparison</source>
           <target>설정 파일 비교 작업 확인</target>
         </trans-unit>
-        <trans-unit id="diffconfirm.jsp.summary">
-          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source>
+        <trans-unit id="diffconfirm.jsp.summary" xml:space="preserve">
+          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source>
           <context-group name="ctx">
             <context context-type="paramnotes">The 3 configuration files you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once rhn_check has run on that system.</context>
           </context-group>
-          <target>선택하신 &lt;strong&gt;{0} 설정 파일&lt;/strong&gt;은 아래의 시스템 목록에 있는 배포된 버전과 비교 작업하게 됩니다. 이는 현재 시스템이 등록된 채널에 있는 설정 파일만을 비교 작업합니다. 비교 작업 결과는 각 시스템의 이벤트 페이지에서 &lt;code&gt;rhn_check&lt;/code&gt;를 실행하여 확인하실 수 있습니다.</target>
+          <target state="needs-adaptation">선택하신 &lt;strong&gt;{0} 설정 파일&lt;/strong&gt;은 아래의 시스템 목록에 있는 배포된 버전과 비교 작업하게 됩니다. 이는 현재 시스템이 등록된 채널에 있는 설정 파일만을 비교 작업합니다. 비교 작업 결과는 각 시스템의 이벤트 페이지에서 &lt;code&gt;rhn_check&lt;/code&gt;를 실행하여 확인하실 수 있습니다.</target>
         </trans-unit>
-        <trans-unit id="diffconfirm.jsp.summary.one">
-          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source>
-          <target>선택하신 설정 파일은 아래의 시스템 목록에 있는 배포된 버전과 비교 작업하게 됩니다. 이는 현재 시스템에 등록된 채널에 있는 설정 파일만을 비교 작업합니다. 비교 작업 결과는 각 시스템의 이벤트 페이지에서 &lt;code&gt;rhn_check&lt;/code&gt;를 실행하여 확인하실 수 있습니다.</target>
+        <trans-unit id="diffconfirm.jsp.summary.one" xml:space="preserve">
+          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source>
+          <target state="needs-adaptation">선택하신 설정 파일은 아래의 시스템 목록에 있는 배포된 버전과 비교 작업하게 됩니다. 이는 현재 시스템에 등록된 채널에 있는 설정 파일만을 비교 작업합니다. 비교 작업 결과는 각 시스템의 이벤트 페이지에서 &lt;code&gt;rhn_check&lt;/code&gt;를 실행하여 확인하실 수 있습니다.</target>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.noSystems">
           <source>No systems.</source>
@@ -16970,9 +16970,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Enable Configuration Management</source>
           <target>설정 관리 활성화</target>
         </trans-unit>
-        <trans-unit id="ssmenable.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular rhncfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-          <target>아래의 시스템에는 @@PRODUCT_NAME@@ 설정 관리를 통해 관리되는 파일이 없습니다. @@PRODUCT_NAME@@ 설정 관리에 의해 시스템을 관리할 수 있도록 하기 위해 시스템에는 프로비저닝 (Provisioning) 인타이틀먼트와 특정 rhncfg-* 패키지가 설치되어 있어야 합니다. 아래의 시스템 목록에서 설정 관리를 활성화하실 수 있습니다. &lt;strong&gt;알림:&lt;/strong&gt; 이미 활성화된 시스템에는 아무런 영향을 미치지 않습니다. </target>
+        <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+          <target state="needs-adaptation">아래의 시스템에는 @@PRODUCT_NAME@@ 설정 관리를 통해 관리되는 파일이 없습니다. @@PRODUCT_NAME@@ 설정 관리에 의해 시스템을 관리할 수 있도록 하기 위해 시스템에는 프로비저닝 (Provisioning) 인타이틀먼트와 특정 rhncfg-* 패키지가 설치되어 있어야 합니다. 아래의 시스템 목록에서 설정 관리를 활성화하실 수 있습니다. &lt;strong&gt;알림:&lt;/strong&gt; 이미 활성화된 시스템에는 아무런 영향을 미치지 않습니다. </target>
         </trans-unit>
       </group>
       <!-- configuration/ssm/channelsystems.jsp  -->
@@ -17277,12 +17277,12 @@ any of these revisions.  Are you sure you want to do this?</source>
           </context-group>
           <target>{0}에서 설정 파일 가져오기</target>
         </trans-unit>
-        <trans-unit id="sdcimportfile.jsp.summary">
-          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;rhn_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source>
+        <trans-unit id="sdcimportfile.jsp.summary" xml:space="preserve">
+          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;mgr_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source>
           <context-group name="ctx">
             <context context-type="paramnotes">All files added through this interface will be imported from terry.pratchett.bn.com into this system's sandbox channel. Files will be imported the next time rhn_check runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</context>
           </context-group>
-          <target>인터페이스를 통해 추가된 모든 파일은 {0}에서 시스템의 모래 상자 채널로 가져오게 됩니다. 다음번에 파일을 가져오려면 시스템에서 &lt;code&gt;rhn_check&lt;/code&gt;을 실행합니다. 이 파일을 배치하거나 글로벌 채널에서 설정 파일을 덮어쓰고자 할 경우, 파일을 가져오기 한 후 이를 로컬 오버라이드 채널에 복사합니다. 아래의 파일 선택 방식을 사용하실 수 있습니다.</target>
+          <target state="needs-adaptation">인터페이스를 통해 추가된 모든 파일은 {0}에서 시스템의 모래 상자 채널로 가져오게 됩니다. 다음번에 파일을 가져오려면 시스템에서 &lt;code&gt;rhn_check&lt;/code&gt;을 실행합니다. 이 파일을 배치하거나 글로벌 채널에서 설정 파일을 덮어쓰고자 할 경우, 파일을 가져오기 한 후 이를 로컬 오버라이드 채널에 복사합니다. 아래의 파일 선택 방식을 사용하실 수 있습니다.</target>
         </trans-unit>
         <trans-unit id="sdcimportfile.jsp.new">
           <source>Import New Files</source>
