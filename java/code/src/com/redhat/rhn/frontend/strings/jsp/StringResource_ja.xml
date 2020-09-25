@@ -3373,7 +3373,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target>シノプシス</target>
+        <target>概要</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.relevanterrata" xml:space="preserve">
         <source>Patches Relevant to Your Systems</source>
@@ -3419,7 +3419,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target>更新済</target>
+        <target>更新済み</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.securityadvisory" xml:space="preserve">
         <source>Security Advisory</source>
@@ -4493,7 +4493,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>シノプシス</target>
+        <target>概要</target>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory" xml:space="preserve">
         <source>Patch Advisory (ex: slessp1-glibc)</source>
@@ -6599,7 +6599,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="needs-adaptation">以下で設定オプションを更新した後は、 Satelite の Monitoring サービスと、Monitoring が有効になっているすべての @@PRODUCT_NAME@@ プロキシサーバーを再起動する必要があります。  このページを更新すると、これらの動作は自動的にスケジュールされます。</target>
+        <target state="translated">以下で設定オプションを更新した後は、この @@PRODUCT_NAME@@ の Monitoring サービスと、Monitoring が有効になっているすべての @@PRODUCT_NAME@@ プロキシサーバーを再起動する必要があります。  このページを更新すると、これらの動作は自動的にスケジュールされます。</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
@@ -8032,7 +8032,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>シノプシス</target>
+        <target>概要</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.updated" xml:space="preserve">
         <source>Updated</source>
@@ -8053,7 +8053,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.doT</context>
         </context-group>
-        <target>すでにクローン作成されていますか?</target>
+        <target>すでに複製されていますか?</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.no" xml:space="preserve">
         <source>No</source>
@@ -11714,7 +11714,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="toolbar.clone.channel" xml:space="preserve">
         <source>Clone Channel</source>
-        <target>チャンネルのクローンを作成</target>
+        <target>チャンネルの複製</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.header1" xml:space="preserve">
         <source>Troubleshooting</source>
@@ -11972,7 +11972,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Create Key</source> <target>キーの作成</target>
         </trans-unit>
         <trans-unit id="toolbar.clone.activationkeys">
-          <source>Clone Key</source> <target>キーのクローンを作成</target> </trans-unit>
+          <source>Clone Key</source> <target>キーの複製</target> </trans-unit>
         <trans-unit id="toolbar.delete.activationkeys">
           <source>Delete Key</source> <target>キーの削除</target></trans-unit>
         <trans-unit id="activation-keys.common.alt">
@@ -12067,9 +12067,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Clone Activation Key {0}</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Clone</context>
           </context-group>
-          <target>アクティベーションキー {0} のクローンを作成</target> </trans-unit>
+          <target>アクティベーションキー {0} の複製</target> </trans-unit>
         <trans-unit id="activation-key.clone.jsp.summary">
-          <source>Please specify a new Description for the cloned Activation Key. All options and settings from the source ativation key will be copied to the cloned one without the Universal default option. In case no description is specified, the cloned activation key will be created with the same description as the source one preceded by "clone-".</source> <target>クローン作成したアクティベーションキーの新しい詳細を記入します。クローン元となったアクティベーションキーのオプションおよび設定はすべてこのキーにコピーされます。ユニバーサルのデフォルトオプションはコピーされません。詳細を記入しないと、クローン元と同じ詳細に "clone-" を付けたキーが作成されます。</target> </trans-unit>
+          <source>Please specify a new Description for the cloned Activation Key. All options and settings from the source ativation key will be copied to the cloned one without the Universal default option. In case no description is specified, the cloned activation key will be created with the same description as the source one preceded by "clone-".</source> <target>複製したアクティベーションキーの新しい詳細を記入します。複製元となったアクティベーションキーのオプションおよび設定はすべてこのキーにコピーされます。ユニバーサルのデフォルトオプションはコピーされません。詳細を記入しないと、複製元と同じ詳細に "clone-" を付けたキーが作成されます。</target> </trans-unit>
         <trans-unit id="activation-key.jsp.delete-key">
           <source>Delete Activation Key</source> <target>アクティベーションキーの削除</target>
         </trans-unit>
@@ -12080,7 +12080,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source> <target>このキーを本当に削除したいですか？ アクティベーションキーは一度削除されると復元することができません。（注記: キーは &lt;a href="{0}"&gt;key list page&lt;/a&gt; 上で無効にすることが可能であり、この方法で使用不可にできますが、後日の使用に保存することができます。）</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.warning" xml:space="preserve">
-          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to @@PRODUCT_NAME@@ server will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target state="needs-adaptation">&lt;STRONG&gt;注記&lt;/STRONG&gt;: Satellite に既知のシステムとプロファイルのみが更新されます。  この鍵が削除されると、この鍵を使用する他のエンティティ (例: cobbler コマンドラインツールを使用して作成されたシステムプロファイル) は &lt;STRONG&gt;失敗します&lt;/STRONG&gt;。</target>
+          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to @@PRODUCT_NAME@@ server will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target state="translated">&lt;STRONG&gt;注記&lt;/STRONG&gt;: @@PRODUCT_NAME@@ に既知のシステムとプロファイルのみが更新されます。  この鍵が削除されると、この鍵を使用する他のエンティティ (例: cobbler コマンドラインツールを使用して作成されたシステムプロファイル) は &lt;STRONG&gt;失敗します&lt;/STRONG&gt;。</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source> <target>設定ファイルの配備</target>
@@ -13235,7 +13235,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Target Systems</source> <target>目的のシステム</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="needs-adaptation">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の rhncfg-* パッケージをインストールする以外に、 Provisioning エンタイトルメントも必要になります。以下の'@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="translated">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source> <target>管理されていないシステムはありません。</target>
@@ -13261,13 +13261,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="targetsystems.jsp.subscribeappstream">
           <source>Subscribe to AppStream channel</source> <target>AppStream チャンネルのサブスクライブ</target></trans-unit>
         <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source> <target state="needs-adaptation">rhncfg パッケージインストールのスケジュール</target>
+          <source>Schedule mgr-cfg package install</source> <target state="translated">mgr-cfg パッケージのインストールのスケジュール</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
           <source>Schedule mgr-cfg-actions package install</source> <target>mgr-cfg-actions パッケージインストールのスケジュール</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source> <target state="needs-adaptation">rhncfg-client パッケージインストールのスケジュール</target>
+          <source>Schedule mgr-cfg-client package install</source> <target state="translated">mgr-cfg-client パッケージのインストールのスケジュール</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.pending">
           <source>Package installations currently pending.</source> <target>パッケージのインストールは現在待機中です。</target>
@@ -13279,7 +13279,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Schedule package installs as soon as possible.</source> <target>できるだけ早くパッケージインストールをスケジュールします。</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source> <target state="needs-adaptation">以下の時間に &lt;code&gt;rhncfg*&lt;/code&gt; パッケージのインストールをスケジュールすることができます。&lt;strong&gt;注記: その他のすべての動作は直ちに行なわれます。&lt;/strong&gt;</target> </trans-unit>
+          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source> <target state="translated">以下の時間に &lt;code&gt;mgr-cfg*&lt;/code&gt; パッケージのインストールをスケジュールすることができます。&lt;strong&gt;注記: その他のすべての動作は直ちに行なわれます。&lt;/strong&gt;</target> </trans-unit>
       </group>
       <!-- configuration/overview/summary.jsp  -->
       <group>
@@ -13293,10 +13293,10 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Configuration Management Enablement has been attempted on the following systems. To complete enablement on successful systems (indicated by the Status column below), perform the following two actions:</source> <target>設定管理の有効化が次のシステムで試行されました。正常なシステムで有効化を完了するには (以下の状態列で表示)、次の 2 つの動作を実行してください。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source> <target state="needs-adaptation">&lt;code&gt;rhn_check&lt;/code&gt; を実行して待機中の rhncfg-* パッケージインストールを完了します。</target>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source> <target state="translated">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中の mgr-cfg-* パッケージインストールを完了します。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source> <target state="needs-adaptation">次のコマンドを実行します。&lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
+          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source> <target state="translated">次のコマンドを実行します: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</target>
         </trans-unit>
         <trans-unit id="summary.jsp.noActions">
           <source>No actions taken.</source> <target>いずれの動作も実行されていません。</target>
@@ -13311,12 +13311,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>No Error.</source> <target>エラーはありません。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools" xml:space="preserve">
-          <source>Could not subscribe to the Tools channel.</source> <target state="needs-adaptation">RHN ツールチャンネルにサブスクライブできませんでした。</target>
+          <source>Could not subscribe to the Tools channel.</source> <target state="translated">ツールチャンネルをサブスクライブできませんでした。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.appstream">
           <source>Could not subscribe to the AppStream channel.</source> <target>AppStream チャンネルのサブスクライブができませんでした。</target></trans-unit>
         <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source> <target state="needs-adaptation">rhncfg* パッケージのインストールをスケジュールできませんでした。</target>
+          <source>Could not schedule mgr-cfg* package installations.</source> <target state="translated">mgr-cfg* パッケージのインストールをスケジュールできませんでした。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.okAlt">
           <source>okay</source> <target>OK</target>
@@ -13774,7 +13774,7 @@ a file or files, or copy the latest version into a set of local overrides or int
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target>前回の変更</target>
+        <target>最終変更</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.currversion" xml:space="preserve">
         <source>Current Version</source>
@@ -14230,7 +14230,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/</context>
           <context context-type="paramnotes"/>
         </context-group>
-        <target>前回の変更</target>
+        <target>最終変更</target>
       </trans-unit>
       <group>
         <context-group name="ctx">
@@ -15821,7 +15821,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>File Name</source> <target>ファイル名</target>
         </trans-unit>
         <trans-unit id="comparefile.jsp.modified">
-          <source>Last Modified</source> <target>前回の変更</target> </trans-unit>
+          <source>Last Modified</source> <target>最終変更</target> </trans-unit>
         <trans-unit id="comparefile.jsp.size">
           <source>File Size</source> <target>ファイルサイズ</target>
         </trans-unit>
@@ -15980,10 +15980,10 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source> <context-group name="ctx">
             <context context-type="paramnotes">The 3 configuration files you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once rhn_check has run on that system.</context>
           </context-group>
-          <target state="needs-adaptation">選択している &lt;strong&gt;{0} 設定ファイル&lt;/strong&gt; が以下に表示されるシステムの配備バージョンと比較されます。システムが現在サブスクライブしているチャンネル内の設定ファイルのみが比較されます。そのシステムで &lt;code&gt;rhn_check&lt;/code&gt; の実行が完了すると、比較結果を各システムのイベントページで確認できます。</target>
+          <target state="translated">選択している &lt;strong&gt;{0} 設定ファイル&lt;/strong&gt; が以下に表示されるシステムの配備バージョンと比較されます。システムが現在サブスクライブしているチャンネル内の設定ファイルのみが比較されます。そのシステムで &lt;code&gt;mgr_check&lt;/code&gt; の実行が完了すると、比較結果を各システムのイベントページで確認できます。</target>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.summary.one" xml:space="preserve">
-          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source> <target state="needs-adaptation">選択している設定ファイルが以下に表示されるシステムの配備バージョンと比較されます。システムが現在サブスクライブしているチャンネル内の設定ファイルのみが比較されます。そのシステムで &lt;code&gt;rhn_check&lt;/code&gt; の実行が完了すると、比較結果を各システムのイベントページで確認できます。</target>
+          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source> <target state="translated">選択している設定ファイルが以下に表示されるシステムの配備バージョンと比較されます。システムが現在サブスクライブしているチャンネル内の設定ファイルのみが比較されます。そのシステムで &lt;code&gt;mgr_check&lt;/code&gt; の実行が完了すると、比較結果を各システムのイベントページで確認できます。</target>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.noSystems">
           <source>No systems.</source> <target>システムがありません。</target>
@@ -16281,7 +16281,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Enable Configuration Management</source> <target>設定管理を有効にする</target>
         </trans-unit>
         <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source> <target state="needs-adaptation">以下に表示されるシステムには @@PRODUCT_NAME@@ 設定管理で管理されるファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の rhncfg-* パッケージをインストールするほかに、Provisioning エンタイトルメントも必要になります。以下に表示されるシステムで設定管理を有効にすることができます。&lt;strong&gt;注記:&lt;/strong&gt;すでに有効になっているシステムはそのままの状態となります。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source> <target state="translated">以下に表示されるシステムには @@PRODUCT_NAME@@ 設定管理で管理されるファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下に表示されるシステムで設定管理を有効にすることができます。&lt;strong&gt;注記:&lt;/strong&gt;すでに有効になっているシステムはそのままの状態となります。</target>
         </trans-unit>
       </group>
       <!-- configuration/ssm/channelsystems.jsp  -->
@@ -16427,7 +16427,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>None</source> <target>なし</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.last_modified">
-          <source>Last Modified</source> <target>前回の変更</target> </trans-unit>
+          <source>Last Modified</source> <target>最終変更</target> </trans-unit>
         <trans-unit id="sdc.config.file_list.delete_files">
           <source>Delete Files</source> <target>ファイルの削除</target>
         </trans-unit>
@@ -16526,7 +16526,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;mgr_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source> <context-group name="ctx">
             <context context-type="paramnotes">All files added through this interface will be imported from terry.pratchett.bn.com into this system's sandbox channel. Files will be imported the next time rhn_check runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</context>
           </context-group>
-          <target state="needs-adaptation">このインターフェースで追加されるファイルはすべて {0} からこのシステムのサンドボックスチャンネルにインポートされます。次回システムで &lt;code&gt;rhn_check&lt;/code&gt; が実行されると、ファイルがインポートされます。これらのファイルを配備するか、またはグローバルチャンネル内の設定ファイルを上書きする場合は、インポート完了後にこのファイルをローカルのオーバーライドチャンネルにコピーします。以下のファイル選択方法のいずれかまたは両方を使用することができます。</target>
+          <target state="translated">このインターフェースで追加されるファイルはすべて {0} からこのシステムのサンドボックスチャンネルにインポートされます。次回システムで &lt;code&gt;mgr_check&lt;/code&gt; が実行されると、ファイルがインポートされます。これらのファイルを配備するか、またはグローバルチャンネル内の設定ファイルを上書きする場合は、インポート完了後にこのファイルをローカルのオーバーライドチャンネルにコピーします。以下のファイル選択方法のいずれかまたは両方を使用することができます。</target>
         </trans-unit>
         <trans-unit id="sdcimportfile.jsp.new">
           <source>Import New Files</source> <target>新しいファイルをインポート</target>
@@ -16730,7 +16730,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Started</source> <target>開始 </target>
         </trans-unit>
         <trans-unit id="ssm.operations.viewlog.modified">
-          <source>Last Modified</source> <target>前回の変更</target> </trans-unit>
+          <source>Last Modified</source> <target>最終変更</target> </trans-unit>
         <trans-unit id="ssm.operations.viewlog.servers">
           <source>Servers</source> <target>サーバー</target>
         </trans-unit>
@@ -18604,8 +18604,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <source>Systems Affected</source> <target>影響を受けるシステム</target>
         </trans-unit>
         <trans-unit id="exportcolumn.advisorySynopsis">
-          <source>Synopsis</source> <target>シノプシス</target>
-        </trans-unit>
+          <source>Synopsis</source> <target>概要</target> </trans-unit>
         <trans-unit id="exportcolumn.errataStatus">
           <source>Status</source> <target>状態</target>
         </trans-unit>
@@ -20111,7 +20110,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Note.do</context>
         </context-group>
-        <target>更新されました</target>
+        <target>更新済み</target>
       </trans-unit>
       <trans-unit id="sdc.details.notes.delete.header" xml:space="preserve">
         <source>Confirm System Note Deletion</source>
@@ -20674,8 +20673,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <source>Do Nothing</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>何も実行しない</target>
-        </trans-unit>
+          <target>何もしない</target> </trans-unit>
         <trans-unit id="ssmchildsubs.jsp.no-system">
           <source>No systems subscribed</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
@@ -21094,7 +21092,7 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="Clone" xml:space="preserve">
         <source>Clone</source>
-        <target>クローン</target>
+        <target>複製</target>
       </trans-unit>
       <trans-unit id="packagesbyname.jsp.toolbar" xml:space="preserve">
         <source>Packages by Name</source>
@@ -21435,7 +21433,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addemptylist" xml:space="preserve">
         <source>No packages found for this criteria.</source>
-        <target/>
+        <target>この条件に該当するパッケージはありません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addmessage" xml:space="preserve">
         <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
@@ -21465,7 +21463,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.comparemessage" xml:space="preserve">
         <source>Compare packages in the current channel with packages from another channel. Only the latest version of packages will be compared. Choose a channel from the list below then select 'View Packages'.</source>
-        <target/>
+        <target>現在のチャンネルと他のチャンネルとの間で、パッケージの比較を行ないます。パッケージの最新バージョンのみが比較されます。下記の一覧からチャンネルを選択して、 'パッケージの表示' を選択してください。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.compareto" xml:space="preserve">
         <source>Compare to</source>
@@ -21563,27 +21561,27 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.empty" xml:space="preserve">
         <source>No uncloned patches.</source>
-        <target/>
+        <target>未複製のパッケージはありません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.owned" xml:space="preserve">
         <source>Owned Patches</source>
-        <target/>
+        <target>所有しているパッチ</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.action" xml:space="preserve">
         <source>Action</source>
-        <target/>
+        <target>動作</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.merge" xml:space="preserve">
         <source>Merge with existing</source>
-        <target/>
+        <target>既存のものと併合</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.clone" xml:space="preserve">
         <source>Clone as new</source>
-        <target/>
+        <target>新しいものとして複製</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.nothing" xml:space="preserve">
         <source>Do Nothing</source>
-        <target/>
+        <target>何もしない</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.button" xml:space="preserve">
         <source>Clone Patches</source>
@@ -21631,7 +21629,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.modified" xml:space="preserve">
         <source>Last Modified</source>
-        <target>前回の変更</target>
+        <target>最終変更</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.last_checkin" xml:space="preserve">
         <source>Last Checkin</source>
@@ -21663,11 +21661,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.createtitle" xml:space="preserve">
         <source>Create Custom Value</source>
-        <target/>
+        <target>カスタム値の作成</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.updatetitle" xml:space="preserve">
         <source>Edit Custom Value</source>
-        <target/>
+        <target>カスタム値の編集</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.deletetitle" xml:space="preserve">
         <source>Remove Custom Value</source>
@@ -21687,7 +21685,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.lastmodified" xml:space="preserve">
         <source>Last Modified</source>
-        <target>前回の変更</target>
+        <target>最終変更</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.removemsg" xml:space="preserve">
         <source>Are you certain you wish to remove the value for this from this system?</source>
@@ -21699,7 +21697,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="lastModified" xml:space="preserve">
         <source>Last Modified</source>
-        <target>前回の変更</target>
+        <target>最終変更</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.title" xml:space="preserve">
         <source>Package Management</source>
@@ -21799,7 +21797,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.eula" xml:space="preserve">
         <source>EULA</source>
-        <target/>
+        <target>EULA</target>
       </trans-unit>
       <trans-unit id="package.jsp.vendor" xml:space="preserve">
         <source>Vendor</source>
@@ -21807,7 +21805,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.vendor.unknown" xml:space="preserve">
         <source>Not defined</source>
-        <target/>
+        <target>未定義</target>
       </trans-unit>
       <trans-unit id="package.jsp.packagesize" xml:space="preserve">
         <source>Package Size</source>
@@ -21959,105 +21957,105 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="filelist.jsp.title" xml:space="preserve">
         <source>File List</source>
-        <target/>
+        <target>ファイル一覧</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.message" xml:space="preserve">
         <source>This package contains the following files.</source>
-        <target/>
+        <target>このパッケージには下記のファイルが含まれています。</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.nofiles" xml:space="preserve">
         <source>No files.</source>
-        <target/>
+        <target>ファイルがありません。</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.filename" xml:space="preserve">
         <source>Filename</source>
-        <target/>
+        <target>ファイル名</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.checksum" xml:space="preserve">
         <source>Checksum</source>
-        <target/>
+        <target>チェックサム</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.lastmodified" xml:space="preserve">
         <source>Last Modified</source>
-        <target/>
+        <target>最終変更</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.size" xml:space="preserve">
         <source>Size</source>
-        <target/>
+        <target>サイズ</target>
       </trans-unit>
       <trans-unit id="newversions.jsp.title" xml:space="preserve">
         <source>Newer Versions</source>
-        <target/>
+        <target>より新しいバージョン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.newerversion" xml:space="preserve">
         <source>Newer Version</source>
-        <target/>
+        <target>より新しいバージョン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.providingchannel" xml:space="preserve">
         <source>Providing Channel</source>
-        <target/>
+        <target>提供しているチャンネル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.relatederrata" xml:space="preserve">
         <source>Related Errata</source>
-        <target/>
+        <target>関連するエラータ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newversions.jsp.noversions" xml:space="preserve">
         <source>No other versions.</source>
-        <target/>
+        <target>他のバージョンはありません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NewVersions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installedsystems.jsp.title" xml:space="preserve">
         <source>Systems with Package</source>
-        <target/>
+        <target>パッケージのあるシステム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/InstalledSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installedsystems.jsp.summary" xml:space="preserve">
         <source>This package is installed on the following systems.</source>
-        <target/>
+        <target>このパッケージは下記のシステムにインストールされています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/InstalledSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.title" xml:space="preserve">
         <source>Target System List</source>
-        <target/>
+        <target>ターゲットシステムリスト</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.description" xml:space="preserve">
         <source>This package may be installed on the following systems.</source>
-        <target/>
+        <target>このパッケージは下記のシステムにインストールされます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.installpackage" xml:space="preserve">
         <source>Install</source>
-        <target/>
+        <target>インストール</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystemsconfirm.jsp.title" xml:space="preserve">
         <source>Confirm Package Installation</source>
-        <target/>
+        <target>パッケージインストールの確認</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystemsConfirm.do</context>
         </context-group>
@@ -22098,7 +22096,10 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated"/>
+        <target state="translated">&lt;strong&gt; ヒント:&lt;/strong&gt;
+          sha1 は幅広いクライアントとの互換性があります。 sha256 はより高いセキュリティを提供しますが、
+          より新しいクライアントとの互換性しかありません: Fedora 11 およびそれ以降, Red Hat Enterprise Linux 6 およびそれ以降, SLES11-SP1 およびそれ以降。
+         </target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.summary" xml:space="preserve">
         <source>Channel Summary</source>
@@ -22235,84 +22236,84 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.clone.header" xml:space="preserve">
         <source>Clone Channel</source>
-        <target/>
+        <target>チャンネルの複製</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.summary" xml:space="preserve">
         <source>Select the channel you wish to clone from the list below. You can clone a channel in one of three ways:</source>
-        <target/>
+        <target>複製したいチャンネルを下記から選択してください。チャンネルの複製は下記の 3 種類のいずれかの方法で行なうことができます:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current" xml:space="preserve">
         <source>Current state of the channel (all patches)</source>
-        <target/>
+        <target>チャンネルの現在の状態 (全てのパッチ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.current.summary" xml:space="preserve">
         <source>The new channel will include all of the latest packages from the target channel, and all patches related to the channel will be cloned into your organization. If your organization already owns a clone of a patch, the new channel will be associated with that patch instead of creating another clone of the patch.</source>
-        <target/>
+        <target>新しいチャンネルには、複製元のチャンネルが提供する全ての最新パッケージが含まれるようになるほか、組織内に関連する全てのパッチが複製されます。組織内に既に同じパッチが存在する場合は、新しくパッチを複製したりすることはせず、既存のパッチへの関連づけのみを行なうようになります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original" xml:space="preserve">
         <source>Original state of the channel (no patches)</source>
-        <target/>
+        <target>チャンネルの元の状態 (パッチ無し)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.original.summary" xml:space="preserve">
         <source>The new channel will be a clone of the original state of the target channel. This is done by cloning all of the packages from the target channel which do not have a patch associated with them. No patch will be cloned into your organization.</source>
-        <target/>
+        <target>新しいチャンネルは、複製のチャンネルに対する元の状態の複製になります。これは複製元のチャンネルから対応するパッチ無しで全てのパッケージを複製することによって行なわれます。組織内に複製されるパッチはありません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.select" xml:space="preserve">
         <source>Select patches</source>
-        <target/>
+        <target>パッチの選択</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.select.summary" xml:space="preserve">
         <source>The original state of the target channel will be cloned into the new channel. You will then have the option to select the patches you wish to import into the new channel. Importing a patch will bring the packages from the target channel referred to by the patch into the new channel. Selecting all of the patches from the list of potential patches is the same as cloning the current state of the channel. Selecting none of the patches is the same as cloning the original state of the channel.</source>
-        <target/>
+        <target>複製元のチャンネルの元の状態を新しいチャンネルに複製します。その後、新しいチャンネルに取り込みたいパッチを選択できるようになります。パッチを取り込むと、パッチが参照する複製元チャンネルのパッケージもコピーすることになります。潜在的な全てのパッチを選択すると、チャンネルの現在の状態と同じになります。何もパッチを選択しないと、元の状態と同じになります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.clonefrom" xml:space="preserve">
         <source>Clone From</source>
-        <target/>
+        <target>複製元</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.clonetype" xml:space="preserve">
         <source>Clone Type</source>
-        <target/>
+        <target>複製タイプ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.clone" xml:space="preserve">
         <source>Clone</source>
-        <target/>
+        <target>複製</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.clone.button" xml:space="preserve">
         <source>Clone Channel</source>
-        <target/>
+        <target>チャンネルの複製</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
@@ -22525,7 +22526,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.manage.sync.latestonly.jsp" xml:space="preserve">
         <source>Sync only latest packages</source>
-        <target/>
+        <target>最新パッケージのみ同期する</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
@@ -22588,7 +22589,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="extauth.sg.message" xml:space="preserve">
         <source>When creating new users, a default System Group may be created for every single user, that would have the same name as the user. This is useful, when different users shall administer different groups of systems within one organization.</source>
-        <target/>
+        <target>新しいユーザを作成すると、それぞれのユーザに対して既定のシステムグループが作成されます。このシステムグループはユーザ名と同じ名前になります。これにより、同一組織内の異なるユーザが、異なるシステム内グループを管理できるようになります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemGroupConfig.do</context>
         </context-group>
@@ -22630,7 +22631,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.nullstarttime" xml:space="preserve">
         <source>Task never started</source>
-        <target/>
+        <target>タスクは起動したことがありません</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -22742,14 +22743,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.auto-errata-bunch" xml:space="preserve">
         <source>Schedule auto errata updates as necessary</source>
-        <target/>
+        <target>必要に応じて自動エラータ更新をスケジュールする</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.uuid-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated UUID records</source>
-        <target/>
+        <target>古い UUID レコードをクリーンアップする</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -22899,7 +22900,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.updateschedule" xml:space="preserve">
         <source>Update Schedule</source>
-        <target/>
+        <target>スケジュールの更新</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
@@ -22992,7 +22993,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
         <source>Delete software channel</source>
-        <target/>
+        <target>ソフトウェアチャンネルの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -23020,14 +23021,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
         <source>Delete software channel</source>
-        <target/>
+        <target>ソフトウェアチャンネルの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.misc.manage_channel" xml:space="preserve">
         <source>Manage Channel</source>
-        <target/>
+        <target>チャンネルの管理</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Managers.do</context>
         </context-group>
@@ -23111,13 +23112,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.subscribers.header" xml:space="preserve">
         <source>Subscribers</source>
-        <target/>
+        <target>サブスクライバー</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Subscribers.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.subscribers.message" xml:space="preserve">
         <source>Selected users may subscribe systems to this channel. Users with Admin Access (org admins or channel admins) may subscribe systems to any channel.</source>
+        <target>選択したユーザは、システムに対してこのチャンネルへのサブスクライブを行なうことができます。管理者権限のあるユーザ (管理者もしくはチャンネル管理者) の場合は、任意のチャンネルに対するサブスクライブを行なうことができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Subscribers.do</context>
         </context-group>
@@ -23239,9 +23241,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.auto-errata" xml:space="preserve">
         <source>Auto Patch Updates</source>
+        <target>自動パッチ更新</target>
       </trans-unit>
       <trans-unit id="task.status.uuid-cleanup" xml:space="preserve">
         <source>UUID cleanup</source>
+        <target>UUID クリーンアップ</target>
       </trans-unit>
       <trans-unit id="task.status.message" xml:space="preserve">
         <source>The following is a status report for the various tasks run by the @@PRODUCT_NAME@@ task engine:</source>
@@ -23267,7 +23271,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.note" xml:space="preserve">
         <source>Packages that were omitted as part of the original cloning process will be included here.</source>
-        <target>元のクローン作成プロセスの一部として省略されたパッケージはここに含まれます。</target>
+        <target>元の複製処理の一部として省略されたパッケージはここに含まれます。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.listempty" xml:space="preserve">
         <source>No out of date patches were found.</source>
@@ -23299,7 +23303,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">GPG チェックの有効化 </target>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild" xml:space="preserve">
         <source>Last Repo Build</source>
@@ -23339,6 +23343,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.header" xml:space="preserve">
         <source>A system is inactive if its system has not checked in for:</source>
+        <target>そのシステムは下記のとおりチェックインしていないため無効化されています:</target>
       </trans-unit>
       <trans-unit id="schedule.header" xml:space="preserve">
         <source>Select a Schedule</source>
@@ -23386,6 +23391,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debugsource.header" xml:space="preserve">
         <source>DebugSource Package</source>
+        <target>DebugSource パッケージ</target>
       </trans-unit>
       <trans-unit id="debuginfo.external" xml:space="preserve">
         <source>Note:  A local debuginfo rpm could not be found.  The above links to an external FTP server and may not be valid.</source>
@@ -23393,9 +23399,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debuginfo.unavailable" xml:space="preserve">
         <source>If available, an appropriate debuginfo package can be downloaded from the SUSE Customer Center from the respective debuginfo child channel. Note: Not all packages have published debuginfo packages.</source>
+        <target>利用可能であれば、対応する debuginfo 子チャンネルから SUSE Customer Center を介して、対応する debuginfo パッケージをダウンロードすることができます。注記: 全てのパッケージに対して debuginfo パッケージが存在するというわけではありません。</target>
       </trans-unit>
       <trans-unit id="debugsource.unavailable" xml:space="preserve">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
+        <target>利用可能であれば、対応する debugsource 子チャンネルから対応する debugsource パッケージをダウンロードすることができます。注記: 全てのパッケージに対して debugsource パッケージが存在するというわけではありません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.title" xml:space="preserve">
         <source>Change Log</source>
@@ -23439,55 +23447,72 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.dependencies.predepends.title" xml:space="preserve">
         <source>Pre-depends</source>
+        <target>事前要件</target>
       </trans-unit>
       <trans-unit id="channel.jsp.dependencies.breaks.title" xml:space="preserve">
         <source>Breaks</source>
+        <target>破壊</target>
       </trans-unit>
       <!-- Image deployment -->
       <trans-unit id="image.deploy" xml:space="preserve">
         <source>Image Deployment</source>
+        <target>イメージの配備</target>
       </trans-unit>
       <trans-unit id="images.jsp.image" xml:space="preserve">
         <source>Image</source>
+        <target>イメージ</target>
       </trans-unit>
       <trans-unit id="images.jsp.imageurl" xml:space="preserve">
         <source>Image URL&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
+        <target>イメージ URL&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="images.jsp.imageurl.placeholder" xml:space="preserve">
         <source>Specify qcow2 image by URL</source>
+        <target>URL での qcow2 イメージの指定</target>
       </trans-unit>
       <trans-unit id="images.jsp.vmsetup" xml:space="preserve">
         <source>Virtual Machine Setup</source>
+        <target>仮想マシンセットアップ</target>
       </trans-unit>
       <trans-unit id="images.jsp.vcpus" xml:space="preserve">
         <source>Number of VCPUs&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
+        <target>VCPU 数 &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="images.jsp.memory" xml:space="preserve">
         <source>Memory (MB)&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
+        <target>メモリ (MB)&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="images.jsp.bridge" xml:space="preserve">
         <source>Bridge Device:</source>
+        <target>ブリッジデバイス:</target>
       </trans-unit>
       <trans-unit id="images.jsp.proxyconfig" xml:space="preserve">
         <source>Proxy Configuration</source>
+        <target>プロキシの設定</target>
       </trans-unit>
       <trans-unit id="images.jsp.proxyserver" xml:space="preserve">
         <source>Proxy Server:</source>
+        <target>プロキシサーバ:</target>
       </trans-unit>
       <trans-unit id="images.jsp.proxyuser" xml:space="preserve">
         <source>Proxy User:</source>
+        <target>プロキシユーザ:</target>
       </trans-unit>
       <trans-unit id="images.jsp.proxypass" xml:space="preserve">
         <source>Proxy Password:</source>
+        <target>プロキシパスワード:</target>
       </trans-unit>
       <trans-unit id="images.jsp.dispatch" xml:space="preserve">
         <source>Schedule Image Deployment</source>
+        <target>イメージ配備のスケジュール</target>
       </trans-unit>
       <trans-unit id="images.jsp.error.noimage" xml:space="preserve">
         <source>The image URL is mandatory, please specify a qcow2 image by URL.</source>
+        <target>イメージ URL は必須です。 URL で qcow2 イメージを指定してください。</target>
       </trans-unit>
       <trans-unit id="iss.unmapped.org" xml:space="preserve">
         <source>MASTER ORG NOT MAPPED</source>
+        <target>マスター組織がマップされていません</target>
       </trans-unit>
       <trans-unit id="iss.slave.name" xml:space="preserve">
         <source>Slave Fully-Qualified Domain Name</source>
@@ -23690,7 +23715,7 @@ given channel.</source>
           <source>No local organizations available</source> <target>利用できるローカル組織がありません</target>
         </trans-unit>
         <trans-unit id="iss.error.slave.exists">
-          <source>Slave with domain name {0} already defined</source> </trans-unit>
+          <source>Slave with domain name {0} already defined</source> <target>ドメイン名 {0} のスレーブは既に設定済みです</target></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -23793,42 +23818,47 @@ given channel.</source>
           <source>This master did not export any of its organizations to this slave</source> <target>このマスターは、このスレーブにいずれの組織もエクスポートしませんでした</target>
         </trans-unit>
         <trans-unit id="iss.error.master.exists">
-          <source>Master with domain name {0} already defined</source> </trans-unit>
+          <source>Master with domain name {0} already defined</source> <target>ドメイン名 {0} のマスターは既に設定済みです</target></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetLink</context>
         </context-group>
         <trans-unit id="resetpassword.jsp.error.header">
-          <source>Reset Password Link Error</source> </trans-unit>
+          <source>Reset Password Link Error</source> <target>リセットパスワードリンクのエラー</target></trans-unit>
         <trans-unit id="resetpassword.jsp.error.message" xml:space="preserve">
           <source>
           The reset-password link used is invalid.
           Please contact your @@PRODUCT_NAME@@ administrator for assistance.
-          </source> <target state="needs-adaptation"/>
+          </source> <target state="translated">
+          使用しているリセットパスワードのリンクが正しくありません。
+          @@PRODUCT_NAME@@ の管理者に連絡して、支援を求めてください。
+          </target>
       </trans-unit>
         <trans-unit id="resetpassword.jsp.error.invalidtoken">
-          <source>Reset token has been invalidated.</source> </trans-unit>
+          <source>Reset token has been invalidated.</source> <target>リセットトークンを無効化しました。</target></trans-unit>
         <trans-unit id="resetpassword.jsp.error.disabled_user">
-          <source>User has been disabled.</source> </trans-unit>
+          <source>User has been disabled.</source> <target>ユーザを無効化しました。</target></trans-unit>
         <trans-unit id="resetpassword.jsp.error.notoken">
-          <source>Reset token not found.</source> </trans-unit>
+          <source>Reset token not found.</source> <target>リセットトークンが見つかりません。</target></trans-unit>
         <trans-unit id="resetpassword.jsp.error.expiredtoken">
-          <source>Reset token has expired.</source> </trans-unit>
+          <source>Reset token has expired.</source> <target>リセットトークンの期限が切れています。</target></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetPasswordSubmit</context>
         </context-group>
         <trans-unit id="passwordreset.jsp.header">
-          <source>Reset Password</source> </trans-unit>
+          <source>Reset Password</source> <target>パスワードのリセット</target></trans-unit>
         <trans-unit id="passwordreset.jsp.passwordtip" xml:space="preserve">
           <source>
           Passwords can be between {0} and {1} characters,
-          and cannot contain tabs or newlines.</source> <target state="needs-adaptation"/>
+          and cannot contain tabs or newlines.</source> <target state="translated">
+          パスワードは {0} 文字から {1} 文字までの範囲で設定することができます。
+          また、タブや改行などは指定できません。</target>
       </trans-unit>
         <trans-unit id="passwordreset.jsp.update">
-          <source>Update Password</source> </trans-unit>
+          <source>Update Password</source> <target>パスワードの更新</target></trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -23838,7 +23868,7 @@ given channel.</source>
           <source>Password Reset</source> <target>パスワードのリセット</target>
         </trans-unit>
         <trans-unit id="help.credentials.jsp.passwordreset.confirmation">
-          <source>Password Reset Confirmation</source> </trans-unit>
+          <source>Password Reset Confirmation</source> <target>パスワードリセットの確認</target></trans-unit>
         <trans-unit id="help.credentials.jsp.passwordstrength">
           <source>Password Strength</source> <target>パスワードの強度</target>
         </trans-unit>
@@ -23881,30 +23911,38 @@ given channel.</source>
       </group>
       <trans-unit id="sdc.details.overview.installedproducts" xml:space="preserve">
         <source>Installed Products:</source>
+        <target>インストール済みの製品:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="repos.jsp.create.metadataSigned" xml:space="preserve">
         <source>Has Signed Metadata?</source>
+        <target>メタデータは署名されていますか？</target>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.reboot" xml:space="preserve">
         <source>Reboot Required</source>
+        <target>要再起動</target>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.restart" xml:space="preserve">
         <source>Affects Package Management</source>
+        <target>パッケージ管理への影響があります</target>
       </trans-unit>
       <trans-unit id="systemgroup.details.states" xml:space="preserve">
         <source>States:</source>
+        <target>状態:</target>
       </trans-unit>
       <trans-unit id="systemgroup.details.states.apply" xml:space="preserve">
         <source>&lt;a href="{1}"&gt;Apply system states&lt;/a&gt; for {0} system(s)</source>
+        <target>{0} 個のシステムに対して &lt;a href="{1}"&gt;システム状態の適用&lt;/a&gt; を行なう</target>
       </trans-unit>
       <trans-unit id="errata.jsp.restart-tooltip" xml:space="preserve">
         <source>Affects package management stack</source>
+        <target>パッケージ管理スタックに影響があります</target>
       </trans-unit>
       <trans-unit id="ssm.overview.states" xml:space="preserve">
         <source>States</source>
+        <target>状態</target>
       </trans-unit>
       <trans-unit id="ssm.overview.states.apply" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/highstate"&gt;Apply&lt;/a&gt; system states</source>
@@ -23920,118 +23958,151 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>
+        <target>設定ファイルの作成</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.initsls" xml:space="preserve">
         <source>State File</source>
+        <target>状態ファイル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.viewinitsls" xml:space="preserve">
         <source>View/Edit 'init.sls' File</source>
+        <target>'init.sls' ファイルの表示／編集</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.kernel_live" xml:space="preserve">
         <source>&lt;strong&gt;Live patch:&lt;/strong&gt; {0}</source>
+        <target>&lt;strong&gt;ライブパッチ:&lt;/strong&gt; {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
         <source>Service Pack Migration - Target</source>
+        <target>サービスパック移行 - ターゲット</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
+        <target>チャンネルの選択</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty" xml:space="preserve">
         <source>Please select one target product to migrate</source>
+        <target>移行先となるターゲット製品を選択してください</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.notSyncedChannels" xml:space="preserve">
         <source>Target not available, the following channels are not synced: </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">ターゲットが利用できません。下記のチャンネルが同期されていません: </target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
         <source>Service Pack Migration - Channels</source>
+        <target>サービスパック移行 - チャンネル</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
+        <target>インストール済みの製品:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.target-products" xml:space="preserve">
         <source>Target Products:</source>
+        <target>ターゲット製品:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.base-channel" xml:space="preserve">
         <source>Target Base Channel:</source>
+        <target>ターゲットとなるベースチャンネル:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.mandatory-channels" xml:space="preserve">
         <source>Mandatory Child Channels:</source>
+        <target>必須の子チャンネル:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.optional-channels" xml:space="preserve">
         <source>Optional Child Channels:</source>
+        <target>任意指定の子チャンネル:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.none" xml:space="preserve">
         <source>None</source>
+        <target>なし</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.submit" xml:space="preserve">
         <source>Schedule Migration</source>
+        <target>移行のスケジュール</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
         <source>Service Pack Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+        <target>サービスパック移行は &lt;strong&gt;SUSE&lt;/strong&gt; システムでのみサポートされています。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
         <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+        <target>サービスパック移行はこのシステムでは現在サポートされていません。 &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt; の最新バージョンをインストールしてください。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
         <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+        <target>このシステムに対しては既にサービスパック移行が &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt; 。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
+        <target>このシステムに対する移行先はありません。既に最新のサービスパックがインストールされているか、もしくは移行先となる製品がありません。製品の識別や存在しない製品の追加を行なうには、 &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;セットアップウィザード&lt;/strong&gt;&lt;/a&gt; をお使いください。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-channels" xml:space="preserve">
         <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
+        <target>移行に対するソフトウェアチャンネルがいくつか失われています。 &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;セットアップウィザード&lt;/strong&gt;&lt;/a&gt; を利用して、上記のターゲット製品を追加して全ての必須チャンネルを同期してください。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
+        <target>このシステムには未解決のパッケージ管理スタックの更新が存在しています。サービスパック移行を行なう前に、パッケージに関連する全てのソフトウェア更新スタックを更新してください。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
+        <target>インストールされている &lt;strong&gt;Salt&lt;/strong&gt; パッケージのバージョンが古くなっています。サービスパック移行を行なう前に、パッケージを最新バージョンに更新してください。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
+        <target>このシステムに対しては移行先がありません。後継のないインストール済み拡張がみつかりました:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Service Pack Migration - Confirm</source>
+        <target>サービスパック移行 - 確認</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
+        <target>このシステムを下記の製品に移行するようスケジュールします。ご確認ください:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.channels-after-migration" xml:space="preserve">
         <source>Channel subscriptions after the migration:</source>
+        <target>移行後のチャンネルサブスクリプション:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Service Pack Migration.</source>
+        <target>実際のサービスパック移行を行なう前に、発生しうる問題点を確認しておく目的で、 &lt;strong&gt;予行演習&lt;/strong&gt; を行なっておくことをお勧めします。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
+        <target>戻る</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.submit.dry-run" xml:space="preserve">
         <source>Dry Run</source>
+        <target>予行演習</target>
       </trans-unit>
       <trans-unit id="server.contact-method.label" xml:space="preserve">
         <source>Contact Method:</source>
+        <target>連絡方法:</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.contact-method.unentitled" xml:space="preserve">
         <source>Contact method not available for this system.</source>
+        <target>このシステムに対する連絡方法がありません。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.invalid.contact.method" xml:space="preserve">
         <source>Provisioning is currently not supported for systems managed with push via SSH tunnel.</source>
+        <target>SSH トンネルで管理しているシステムに対しては、プロビジョニングは現在サポートされていません。</target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.tip.macros" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the available macros is listed in the &lt;a href="{0}"&gt;User Guide&lt;/a&gt;.</source>
+        <target>&lt;strong&gt;ヒント:&lt;/strong&gt; 利用可能なマクロの完全な一覧は、 &lt;a href="{0}"&gt;ユーザガイド&lt;/a&gt; 内に書かれています。</target>
       </trans-unit>
       <trans-unit id="setup-wizard.prev" xml:space="preserve">
         <source>Prev</source>
@@ -24043,39 +24114,51 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.password" xml:space="preserve">
         <source>Password</source>
+        <target>パスワード</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
         <source>this is the primary credentials</source>
+        <target>これは主となる資格情報です</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.make-primary" xml:space="preserve">
         <source>make primary credentials</source>
+        <target>主となる資格情報にする</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
         <source>list subscriptions</source>
+        <target>サブスクリプションの一覧</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.edit" xml:space="preserve">
         <source>edit credentials</source>
+        <target>資格情報の編集</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.delete" xml:space="preserve">
         <source>delete credentials</source>
+        <target>資格情報の削除</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.success" xml:space="preserve">
         <source>credentials verified (click to refresh)</source>
+        <target>資格情報確認済み (クリックして更新)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed" xml:space="preserve">
         <source>verification failed (click to refresh)</source>
+        <target>資格情報失敗 (クリックして更新)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title" xml:space="preserve">
         <source>Edit credentials</source>
+        <target>資格情報の編集</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-delete.title" xml:space="preserve">
         <source>Are you sure you want to delete these credentials?</source>
+        <target>これらの資格情報を削除してよろしいですか？</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-subscriptions.title" xml:space="preserve">
         <source>Subscriptions related to these credentials</source>
+        <target>これらの資格情報に関連するサブスクリプション</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. Credentials can only be managed on the ISS master.</source>
+        <target>このサーバはサーバ間同期 (ISS) スレーブとして設定されています。資格情報は ISS マスターでのみ管理することができます。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -24099,24 +24182,31 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.h1" xml:space="preserve">
         <source>What are Organization Credentials?</source>
+        <target>組織の資格情報とは何ですか？</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p1" xml:space="preserve">
         <source>Organization credentials (Mirror credentials) are your access to product downloads.</source>
+        <target>組織の資格情報 (ミラー資格情報) は、製品のダウンロードを行なうためのものです。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.h2" xml:space="preserve">
         <source>Where do I find my Organization Credentials?</source>
+        <target>組織の資格情報を確認するには？</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+        <target>&lt;a href="https://scc.suse.com/organization" target="_blank"&gt;カスタマーセンター&lt;/a&gt; をご確認ください。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
+        <target>このユーザ名の資格情報は既に存在しています</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
+        <target>Copyright (c) 2011 - 2019 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER ライセンス同意&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -24127,10 +24217,18 @@ given channel.</source>
     For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
 &lt;/p&gt;
         </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+&lt;p&gt;
+    @@PRODUCT_NAME@@ はオープンソース (GPLv2) の Linux システム管理ソリューションです。
+&lt;/p&gt;
+&lt;p&gt;
+    @@PRODUCT_NAME@@ に関する詳細は、 &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt; の Web サイトをご覧ください。
+&lt;/p&gt;
+        </target>
       </trans-unit>
       <trans-unit id="compare.jsp.noprovisioning" xml:space="preserve">
         <source>Syncing the packages to the list above is not available for this system.</source>
+        <target>上記の一覧にあるパッケージの同期は、このシステムでは利用できません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
@@ -24141,12 +24239,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.about.learnmore" xml:space="preserve">
         <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
+        <target>@@PRODUCT_NAME@@ に関する詳細は、 &lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;こちら&lt;/a&gt; をご覧ください</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
       <trans-unit id="help.jsp.about.learnmore.uyuni" xml:space="preserve">
         <source>&lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
+        <target>@@PRODUCT_NAME@@ に関する詳細は、 &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt;こちら&lt;/a&gt; をご覧ください</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
@@ -24189,24 +24289,30 @@ given channel.</source>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Salt minion に対して、 SUSE Manager は minion にインストールされた固有の設定をクリーンアップします。
+              この処理にはしばらくの時間がかかります。</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
         <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">選択したプロファイルには Salt システムが含まれています。 SUSE Manager では Salt システムからの固有の設定を削除しようとします。
+            対象のシステムが動作していて、到達可能であることをご確認ください。到達不可能な状態である場合、エラーになってしまいます。</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
+        <target>Salt minion のクリーンアップと削除の方法を選択してください:</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.no_cleanup" xml:space="preserve">
         <source>Delete systems without cleanup</source>
+        <target>クリーンアップ無しでのシステム削除</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.force_delete" xml:space="preserve">
         <source>Clean up and delete systems even in case of errors</source>
+        <target>エラーが発生してもシステムをクリーンアップして削除します</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.skip_on_err" xml:space="preserve">
         <source>Only delete systems if cleanup is successful</source>
+        <target>クリーンアップが成功した場合にのみシステムを削除</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -24214,12 +24320,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="filedetails.properties.jspf.saltpath" xml:space="preserve">
         <source>Salt Filesystem Path</source>
+        <target>Salt ファイルシステムパス</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.jsp.tip.saltpath" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; To reference any file in the channel, you can use the base &lt;strong&gt;"{0}"&lt;/strong&gt; followed by the actual file path.</source>
+        <target>&lt;strong&gt;ヒント:&lt;/strong&gt; チャンネル内で任意のファイルを参照するには、ベース &lt;strong&gt;"{0}"&lt;/strong&gt; に続いて実際のファイルパスを指定することができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -24233,23 +24341,31 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+           チャンネル状態の適用は、このチャンネルが割り当てられている任意の minion の確認を行なったのち、
+           即時にスケジュールされます。これにより、これらの minion 内のリポジトリファイルを更新して、
+           削除されたチャンネルを消去するようになります。
+        </target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; Salt で管理されているシステムに配備する場合、マクロの区切り文字は無視されます。</target>
       </trans-unit>
       <trans-unit id="SP Migration" xml:space="preserve">
         <source>SP Migration</source>
+        <target>SP 移行</target>
       </trans-unit>
       <trans-unit id="Mirror Credentials" xml:space="preserve">
         <source>Organization Credentials</source>
+        <target>組織の資格情報</target>
       </trans-unit>
       <trans-unit id="channels.subscribe" xml:space="preserve">
         <source>Subscribe Software Channels</source>
+        <target>ソフトウェアチャンネルのサブスクライブ</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.submit" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>確認</target>
       </trans-unit>
       <trans-unit id="Setup Wizard" xml:space="preserve">
         <source>Setup Wizard</source>
@@ -24257,6 +24373,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="HTTP Proxy" xml:space="preserve">
         <source>HTTP Proxy</source>
+        <target>HTTP プロキシ</target>
       </trans-unit>
       <trans-unit id="Products" xml:space="preserve">
         <source>Products</source>
@@ -24290,16 +24407,39 @@ given channel.</source>
     SUSE may charge a fee to recover its reasonable costs of distribution
 &lt;/p&gt;
         </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+&lt;p&gt;
+    このソフトウェアはモジュール型のオペレーティングシステムであり、それぞれ異なるライセンス
+    条件のもとで提供されるコンポーネントから構成されています。ソフトウェアの集約作業は
+    SUSE 社によるもので、ソフトウェアの各コンポーネントに対しては著作権を所有していない
+    ものの、これらの集約に関わる著作権は保有しています。
+&lt;/p&gt;
+&lt;p&gt;
+    この SUSE 製品には、 GNU General Public License (GPL) で SUSE 社にライセンスされた
+    各種の素材が含まれています。 GPL は SUSE 社に対して、 GPL でライセンスされた素材に
+    対応するソースコードの公開を求めています。ソースコードは
+    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt; からダウンロードすることができます。
+    なお、 SUSE 製品の SUSE 社による配布開始から 3 年間を上限に、リクエストにより
+    ソースコードのコピーをメールで提供させていただいております。リクエストは電子メール
+    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
+    宛にお送りいただくか、もしくは
+    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    で示される方法で行なわれます。なお、 SUSE 社から配布するにあたっては、適切な費用を請求させて
+    いただくことがありますので、あらかじめご了承ください。
+&lt;/p&gt;
+        </target>
       </trans-unit>
       <trans-unit id="Salt" xml:space="preserve">
         <source>Salt</source>
+        <target>Salt</target>
       </trans-unit>
       <trans-unit id="Keys" xml:space="preserve">
         <source>Keys</source>
+        <target>キー</target>
       </trans-unit>
       <trans-unit id="States" xml:space="preserve">
         <source>States</source>
+        <target>状態</target>
       </trans-unit>
       <trans-unit id="Highstate" xml:space="preserve">
         <source>Highstate</source>
@@ -24307,23 +24447,26 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Recurring States" xml:space="preserve">
         <source>Recurring States</source>
+        <target>繰り返し状態</target>
       </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
+        <target>設定チャンネル</target>
       </trans-unit>
       <trans-unit id="Formula" xml:space="preserve">
         <source>Formula</source>
+        <target>Formula</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.maintenanceschedule" xml:space="preserve">
         <source>maintenance schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">メンテナンススケジュール</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.maint-window" xml:space="preserve">
         <source>Maintenance window:</source>
-        <target state="new"/>
+        <target state="translated">メンテナンスウィンドウ:</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.multiple_maintenance_schedules" xml:space="preserve">
         <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
@@ -24331,69 +24474,69 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="schedule.jsp.no_maintenance_windows" xml:space="preserve">
         <source>No upcoming maintenance windows for selected systems.</source>
-        <target state="new"/>
+        <target state="translated">選択したシステムには、将来のメンテナンスウィンドウがありません。</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.default" xml:space="preserve">
         <source>Use configured default ({0})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">設定された既定値 ({0}) を使用する</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">メンテナンススケジュール:</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule.none" xml:space="preserve">
         <source>(none)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">(なし)</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">メンテナンススケジュール:</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.none" xml:space="preserve">
         <source>None</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">なし</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.cancelaffected" xml:space="preserve">
         <source>Cancel affected actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">影響する動作のキャンセル</target>
       </trans-unit>
       <trans-unit id="Maintenance Windows" xml:space="preserve">
         <source>Maintenance Windows</source>
-        <target state="new"/>
+        <target state="translated">メンテナンスウィンドウ</target>
       </trans-unit>
       <trans-unit id="Schedules" xml:space="preserve">
         <source>Schedules</source>
-        <target state="new"/>
+        <target state="translated">スケジュール</target>
       </trans-unit>
       <trans-unit id="Calendars" xml:space="preserve">
         <source>Calendars</source>
-        <target state="new"/>
+        <target state="translated">カレンダー</target>
       </trans-unit>
       <trans-unit id="ssm.overview.schedule.assign" xml:space="preserve">
           <source>&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Assign&lt;/a&gt; a maintenance schedule to selected systems</source>
-        <target state="new"/>
+        <target state="translated">選択したシステムに対してメンテナンススケジュールを &lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;割り当てる&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.maintenanceschedule" xml:space="preserve">
           <source>Maintenance Windows</source>
-        <target state="new"/>
+        <target state="translated">メンテナンスウィンドウ</target>
       </trans-unit>
     </body>
   </file>
