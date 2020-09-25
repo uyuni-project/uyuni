@@ -1,3 +1,6 @@
+- Add missing packages to SLE12 >= SP1 bootstrap data to fix JeOS
+  bootstrap problems (bsc#1176913)
+
 -------------------------------------------------------------------
 Tue Sep 15 10:47:45 CEST 2020 - jgonzalez@suse.com
 
