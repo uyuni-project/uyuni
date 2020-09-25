@@ -20,6 +20,7 @@ from rhn_register_firstboot_gui_window import RhnRegisterFirstbootGuiWindow
 from up2date_client import rhnreg
 from up2date_client import rhnregGui
 from up2date_client import config
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 
 import gtk
 from gtk import glade
@@ -33,7 +34,7 @@ class RhnFinishWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.FinishPage):
     runPriority=109
     moduleName = _("Finish Updates Setup")
     windowTitle = moduleName
-    shortMessage = _("Connect to Red Hat Satellite")
+    shortMessage = _("Connect to {PRODUCT_NAME} ").format(PRODUCT_NAME=PRODUCT_NAME)
     needsparent = 1
     needsnetwork = 1
     noSidebar = True

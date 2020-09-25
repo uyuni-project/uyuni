@@ -20,6 +20,7 @@
 from up2date_client import rhnreg
 from up2date_client import rhnregGui, rhnserver
 from up2date_client import messageWindow
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 
 import gtk
 
@@ -35,8 +36,8 @@ class moduleClass(Module):
     def __init__(self):
         Module.__init__(self)
         self.priority = 108.5
-        self.sidebarTitle = _("Red Hat Account")
-        self.title = _("Red Hat Account")
+        self.sidebarTitle = _("{PRODUCT_NAME} Account").format(PRODUCT_NAME=PRODUCT_NAME)
+        self.title = _("{PRODUCT_NAME} Account").format(PRODUCT_NAME=PRODUCT_NAME)
 
     def needsNetwork(self):
         return True
