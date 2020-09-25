@@ -553,6 +553,8 @@ PKGLISTUBUNTU2004 = [
     "libzmq5",
     "python3-crypto",
     "python3-dateutil",
+    "python3-jinja2",
+    "python3-markupsafe",
     "python3-msgpack",
     "python3-psutil",
     "python3-zmq",
