@@ -2220,19 +2220,19 @@
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-Is the 'rhn-tools' child software channel for this kickstart profile's base
+Is the client tools channel for this kickstart profile's base
 channel available to your organization? If it is not, you will need to request
-entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator.
+entitlements for the client tools channel from your @@PRODUCT_NAME@@ administrator.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure that the 'rhn-tools' child channel for this kickstart profile's base
+Make sure that the client tools channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the client tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
 Make sure the spacewalk-koan package corresponding to this kickstart are
-available in the kickstart's base channel's 'rhn-tools' channel. If not, you
+available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
@@ -8275,7 +8275,7 @@ Follow this url to see the full list of inactive systems:
         <target>Um arquivo chamado "{0}" já existe no canal.</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8331,11 +8331,11 @@ Follow this url to see the full list of inactive systems:
         <target>Como você adicionou o serviço de Virtualização ao sistema, nós também tomamos algumas providências para assegurar que seu sistema será capaz de gerenciar os sistemas virtuais da melhor forma.</target>
       </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the rhn-virtualization-host package from the associated RHN Tools child channel. Review Red Hat documentation for any other considerations and requirements that Red Hat Enterprise Linux has with enabling Virtualization of a Host system.</source>
+        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target>NOTA: Para habilitar e usar as capacidades de virtualização dentro do @@PRODUCT_NAME@@ para este sistema, instale o pacote do rhn-virtualization-host a partir do canal filho associado às Ferramentas do RHN. Reveja a documentação da Red Hat para qualquer consideração ou requerimento que o Red Hat Enterprise Linux tenha quanto à habilitação da Ferramenta de Virtualização de um sistema Host. </target>
+        <target state="needs-adaptation">NOTA: Para habilitar e usar as capacidades de virtualização dentro do @@PRODUCT_NAME@@ para este sistema, instale o pacote do rhn-virtualization-host a partir do canal filho associado às Ferramentas do RHN. Reveja a documentação da Red Hat para qualquer consideração ou requerimento que o Red Hat Enterprise Linux tenha quanto à habilitação da Ferramenta de Virtualização de um sistema Host. </target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to migrate this system.</source>
@@ -9662,11 +9662,11 @@ tree will not be usable for autoinstalling.
         <target>Login encontrado foi enviado para {0}.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the rhncfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target>Um sistema selecionado tem diversos canais filhos disponíveis que contêm o pacote rhncfg. Você deve se inscrever manualmente para o canal filho que você quer e então tentar novamente esta ação.</target>
+        <target state="needs-adaptation">Um sistema selecionado tem diversos canais filhos disponíveis que contêm o pacote rhncfg. Você deve se inscrever manualmente para o canal filho que você quer e então tentar novamente esta ação.</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>

@@ -2226,19 +2226,19 @@
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-Is the 'rhn-tools' child software channel for this kickstart profile's base
+Is the client tools channel for this kickstart profile's base
 channel available to your organization? If it is not, you will need to request
-entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator.
+entitlements for the client tools channel from your @@PRODUCT_NAME@@ administrator.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure that the 'rhn-tools' child channel for this kickstart profile's base
+Make sure that the client tools channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the client tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
 Make sure the spacewalk-koan package corresponding to this kickstart are
-available in the kickstart's base channel's 'rhn-tools' channel. If not, you
+available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
@@ -8361,8 +8361,8 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <target />
+        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
+        <target state="needs-adaptation" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8417,8 +8417,8 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the rhn-virtualization-host package from the associated RHN Tools child channel. Review Red Hat documentation for any other considerations and requirements that Red Hat Enterprise Linux has with enabling Virtualization of a Host system.</source>
-        <target />
+        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
+        <target state="needs-adaptation" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
@@ -9746,8 +9746,8 @@ tree will not be usable for autoinstalling.
         <target />
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the rhncfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
-        <target />
+        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <target state="needs-adaptation" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
