@@ -12,18 +12,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.errata.impl;
-
-import com.redhat.rhn.domain.errata.Errata;
+package com.redhat.rhn.domain.errata;
 
 /**
  * ClonedErrata
- * @version $Rev$
  */
 public class ClonedErrata extends Errata {
 
     private Errata original;
-
 
     /**
      * {@inheritDoc}

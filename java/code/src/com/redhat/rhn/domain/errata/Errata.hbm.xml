@@ -79,7 +79,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 column="channel_id"/>
         </set>
         <joined-subclass
-                name="com.redhat.rhn.domain.errata.impl.ClonedErrata"
+                name="com.redhat.rhn.domain.errata.ClonedErrata"
                 table="rhnErrataCloned">
                 <key column="id"/>
                 <many-to-one name="original" column="original_id"
@@ -119,8 +119,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="ClonedErrata.findBrothersInChannel">
         <![CDATA[
         select e_from
-        from com.redhat.rhn.domain.errata.impl.ClonedErrata as e_from,
-        com.redhat.rhn.domain.errata.impl.ClonedErrata as e_to
+        from com.redhat.rhn.domain.errata.ClonedErrata as e_from,
+        com.redhat.rhn.domain.errata.ClonedErrata as e_to
         where :channel_from in elements(e_from.channels)
         and e_from.original = e_to.original
         and :channel_to in elements(e_to.channels)]]>
@@ -130,7 +130,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[
         select e
         from com.redhat.rhn.domain.errata.Errata as e,
-        com.redhat.rhn.domain.errata.impl.ClonedErrata as c
+        com.redhat.rhn.domain.errata.ClonedErrata as c
         where :channel_from in elements(e.channels)
         and c.original = e
         and :channel_to in elements(c.channels)
@@ -138,7 +138,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
 
     <query name="ClonedErrata.findByOriginal">
-        <![CDATA[from com.redhat.rhn.domain.errata.impl.ClonedErrata as c
+        <![CDATA[from com.redhat.rhn.domain.errata.ClonedErrata as c
                  where c.original = :original
                  and c.org = :org]]>
     </query>
