@@ -805,14 +805,17 @@ class UyuniActivationKeys:
 
             key = "{}-{}".format(current_org_user['org_id'], name)
             returned_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
-                                                                      org_admin_password=org_admin_password)
+                                                                       org_admin_password=org_admin_password)
 
             for returned_name, output_name in output_field_names.items():
                 current_ak[output_name] = returned_ak[returned_name]
 
-            ## FIXME big hack over here
-            if current_ak and current_ak.get('base_channel_label', None) == 'none':
-                current_ak['base_channel_label'] = ''
+            # FIXME we should iterate only once over the groups output
+            group_id_to_name = {g.get('id'): g.get('name') for g in all_groups}
+            current_ak['server_groups'] = [group_id_to_name[s] for s in (current_ak['server_groups'] or [])]
+
+            if current_ak.get('base_channel', None) == 'none':
+                current_ak['base_channel'] = ''
 
             current_configure_after_registration = __salt__['uyuni.activation_key_check_config_deployment'](key,
                                                                                                             org_admin_user,
@@ -826,8 +829,7 @@ class UyuniActivationKeys:
         except Exception as exc:
             if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.state_error(key, "Error retrieving information about Activation Key '{}': {}".format(key, exc))
-        ## FIXME some keys on changes are different from the input, but equal to AK get details return
-        server_groups_normalized = [system_groups_keys[gr] for gr in (server_groups or [])]
+
         ak_paramters = {'description': description,
                         'base_channel': base_channel,
                         'usage_limit': usage_limit,
@@ -835,7 +837,7 @@ class UyuniActivationKeys:
                         'system_types': system_types,
                         'universal_default': universal_default,
                         'child_channels': child_channels,
-                        'server_groups': server_groups_normalized,
+                        'server_groups': server_groups,
                         'packages': packages}
 
         changes = self._compute_changes(ak_paramters, current_ak,
@@ -864,7 +866,7 @@ class UyuniActivationKeys:
                                                              org_admin_password=org_admin_password)
 
                 if changes.get('system_types', False):
-                    self._update_system_type(current_ak.get('entitlements', []), system_types or [],
+                    self._update_system_type(current_ak.get('system_types', []), system_types or [],
                                              key, org_admin_user, org_admin_password)
 
             else:
@@ -883,14 +885,16 @@ class UyuniActivationKeys:
                                                              org_admin_password=org_admin_password)
 
             if changes.get('child_channels', False):
-                self._update_child_channels(current_ak.get('child_channel_labels', []),
+                self._update_child_channels(current_ak.get('child_channels', []),
                                             child_channels or [],
                                             key, org_admin_user, org_admin_password)
 
-            # TODO groups will be a more tricky since we need to get the system group id
             if changes.get('server_groups', False):
-                self._update_server_groups(current_ak.get('server_group_ids', []), server_groups_normalized,
-                                            key, org_admin_user, org_admin_password)
+                old_server_groups_id = [system_groups_keys[s] for s in current_ak.get('server_groups', [])]
+                new_server_groups_id = [system_groups_keys[s] for s in (server_groups or [])]
+                self._update_server_groups(old_server_groups_id,
+                                           new_server_groups_id,
+                                           key, org_admin_user, org_admin_password)
 
             if changes.get('configure_after_registration', False):
                 if configure_after_registration:
