@@ -104,6 +104,10 @@ fi
 %endif
 
 %posttrans
+systemctl is-active --quiet uyuni-check-database.service && {
+  echo "  Running DB schema upgrade. This may take a while."
+  echo "  Call the following command to see progress: journalctl -f -u uyuni-check-database.service"
+} ||:
 systemctl try-restart uyuni-check-database.service ||:
 
 %files
