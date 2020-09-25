@@ -9,7 +9,6 @@
 # IMMUTABLE ORDER
 
 # these features sync real channels (last core features)
-- features/secondary/srv_organization_credentials.feature
 - features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
 - features/reposync/srv_enable_sync_products.feature
