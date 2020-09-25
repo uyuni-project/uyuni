@@ -29,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-25 12:54+0200\n"
-"PO-Revision-Date: 2020-09-25 13:48+0000\n"
+"PO-Revision-Date: 2020-09-26 01:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/ja/>\n"
@@ -221,7 +221,7 @@ msgstr "詳細については、/var/log/up2date を参照してください"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../src/up2date_client/rhnreg_constants.py:21
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
@@ -231,7 +231,7 @@ msgstr "Copyright Â© 2006--2014  Red Hat, Inc. All rights reserved."
 #: ../src/up2date_client/rhnreg_constants.py:24
 #, python-brace-format
 msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
+msgstr "{PRODUCT_NAME} の URL を入力してください。"
 
 #: ../src/up2date_client/rhnreg_constants.py:25
 #, python-brace-format
@@ -246,7 +246,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:29
 #, python-brace-format
 msgid "{PRODUCT_NAME} URL:"
-msgstr ""
+msgstr "{PRODUCT_NAME} URL:"
 
 #: ../src/up2date_client/rhnreg_constants.py:30
 msgid "SSL certificate:"
@@ -403,7 +403,7 @@ msgstr "後で登録します。"
 #: ../src/up2date_client/rhnreg_constants.py:87
 #, python-brace-format
 msgid "{PRODUCT_NAME} Account"
-msgstr ""
+msgstr "{PRODUCT_NAME} アカウント"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
 #, python-brace-format, python-format
@@ -417,7 +417,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:89
 #, python-brace-format
 msgid "{PRODUCT_NAME} Login:"
-msgstr ""
+msgstr "{PRODUCT_NAME} ログイン:"
 
 #: ../src/up2date_client/rhnreg_constants.py:90
 #: ../src/up2date_client/tui.py:139
@@ -597,7 +597,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:153
 #, python-brace-format
 msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
+msgstr "{PRODUCT_NAME} へプロファイルを送信しています"
 
 #. Finish Window
 #: ../src/up2date_client/rhnreg_constants.py:156
@@ -1393,6 +1393,9 @@ msgid ""
 "Red Hat Network Classic is not supported in {PRODUCT_NAME} .\n"
 "    "
 msgstr ""
+"\n"
+"Red Hat Network Classic は {PRODUCT_NAME} ではサポートされていません。\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:200
 msgid "The installation number is invalid"
@@ -2140,7 +2143,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:94
 msgid "Proxy Configuration"
-msgstr "プロキシーの設定"
+msgstr "プロキシの設定"
 
 #: ../data/rh_register.glade.h:95
 msgid "<b>HTTP Proxy</b>"
