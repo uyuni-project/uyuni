@@ -15,10 +15,9 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.domain.errata.impl;
+package com.redhat.rhn.domain.errata;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.errata.Errata;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
