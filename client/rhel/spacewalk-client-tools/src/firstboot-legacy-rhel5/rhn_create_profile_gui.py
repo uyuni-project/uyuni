@@ -30,6 +30,7 @@ from up2date_client import rhnreg
 from up2date_client import rhnregGui
 from up2date_client import up2dateErrors
 from up2date_client import messageWindow
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
@@ -42,7 +43,7 @@ class RhnCreateProfileWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.CreateProf
     runPriority = 108.7
     moduleName = _("Create Profile")
     windowTitle =  moduleName
-    shortMessage = _("Connect to Red Hat Satellite")
+    shortMessage = _("Connect to {PRODUCT_NAME}").format(PRODUCT_NAME=PRODUCT_NAME)
     needsparent = 1
     needsnetwork = 1
     noSidebar = True

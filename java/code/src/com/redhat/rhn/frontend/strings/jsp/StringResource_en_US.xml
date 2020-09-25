@@ -5955,7 +5955,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
-        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
+        <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
@@ -10730,7 +10730,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.warning">
-          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
+          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to @@PRODUCT_NAME@@ server will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source>
@@ -11918,7 +11918,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Target Systems</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source>
@@ -11945,13 +11945,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Subscribe to AppStream channel</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfg">
-          <source>Schedule rhncfg package install</source>
+          <source>Schedule mgr-cfg package install</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
           <source>Schedule mgr-cfg-actions package install</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgclient">
-          <source>Schedule rhncfg-client package install</source>
+          <source>Schedule mgr-cfg-client package install</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.pending">
           <source>Package installations currently pending.</source>
@@ -11963,7 +11963,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Schedule package installs as soon as possible.</source>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.widgetsummary">
-          <source>You may schedule &lt;code&gt;rhncfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
         </trans-unit>
       </group>
       <!-- configuration/overview/summary.jsp  -->
@@ -11978,10 +11978,10 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Configuration Management Enablement has been attempted on the following systems. To complete enablement on successful systems (indicated by the Status column below), perform the following two actions:</source>
         </trans-unit>
         <trans-unit id="summary.jsp.stepone">
-          <source>Run &lt;code&gt;rhn_check&lt;/code&gt; to complete pending rhncfg-* package installs.</source>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
         </trans-unit>
         <trans-unit id="summary.jsp.steptwo">
-          <source>Run the following command: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</source>
+          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
         </trans-unit>
         <trans-unit id="summary.jsp.noActions">
           <source>No actions taken.</source>
@@ -11996,13 +11996,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>No Error.</source>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools">
-          <source>Could not subscribe to the RHN Tools channel.</source>
+          <source>Could not subscribe to the Tools channel.</source>
         </trans-unit>
         <trans-unit id="summary.jsp.appstream">
           <source>Could not subscribe to the AppStream channel.</source>
         </trans-unit>
         <trans-unit id="summary.jsp.packages">
-          <source>Could not schedule rhncfg* package installations.</source>
+          <source>Could not schedule mgr-cfg* package installations.</source>
         </trans-unit>
         <trans-unit id="summary.jsp.okAlt">
           <source>okay</source>
@@ -14359,13 +14359,13 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Confirm Configuration File Comparison</source>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.summary">
-          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source>
+          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source>
           <context-group name="ctx">
             <context context-type="paramnotes">The 3 configuration files you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once rhn_check has run on that system.</context>
           </context-group>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.summary.one">
-          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source>
+          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.noSystems">
           <source>No systems.</source>
@@ -14676,7 +14676,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Enable Configuration Management</source>
         </trans-unit>
         <trans-unit id="ssmenable.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular rhncfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
         </trans-unit>
       </group>
       <!-- configuration/ssm/channelsystems.jsp  -->
@@ -14927,7 +14927,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           </context-group>
         </trans-unit>
         <trans-unit id="sdcimportfile.jsp.summary">
-          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;rhn_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source>
+          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;mgr_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source>
           <context-group name="ctx">
             <context context-type="paramnotes">All files added through this interface will be imported from terry.pratchett.bn.com into this system's sandbox channel. Files will be imported the next time rhn_check runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</context>
           </context-group>
