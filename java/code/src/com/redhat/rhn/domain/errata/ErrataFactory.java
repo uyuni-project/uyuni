@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.errata.impl.Keyword;
 import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.ClonedErrata;
-import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -334,7 +333,7 @@ public class ErrataFactory extends HibernateFactory {
         if (!publishedFile.hasPackage(pack)) {
             publishedFile.addPackage(pack);
         }
-        ((PublishedErrataFile) publishedFile).addChannel(chan);
+        publishedFile.addChannel(chan);
         return publishedFile;
     }
 
@@ -352,7 +351,7 @@ public class ErrataFactory extends HibernateFactory {
         publishedFile.addPackage(pack);
         publishedFile.setErrata(errata);
         publishedFile.setModified(new Date());
-        ((PublishedErrataFile) publishedFile).addChannel(chan);
+        publishedFile.addChannel(chan);
         return publishedFile;
     }
 
@@ -405,7 +404,7 @@ public class ErrataFactory extends HibernateFactory {
             String cs,
             String name,
             Set packages) {
-        ErrataFile file = new PublishedErrataFile();
+        ErrataFile file = new ErrataFile();
         file.setFileType(ft);
         file.setChecksum(ChecksumFactory.safeCreate(cs, "md5"));
         file.setFileName(name);
@@ -444,7 +443,7 @@ public class ErrataFactory extends HibernateFactory {
         List retval = null;
         try {
             session = HibernateFactory.getSession();
-            Query q = session.getNamedQuery("PublishedErrataFile.listByErrataAndFileType");
+            Query q = session.getNamedQuery("ErrataFile.listByErrataAndFileType");
             q.setLong("errata_id", errataId.longValue());
             q.setString("file_type", fileType.toUpperCase());
             retval =  q.list();
@@ -804,7 +803,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("PublishedErrataFile.lookupByErrataAndPackage")
+        return session.getNamedQuery("ErrataFile.lookupByErrataAndPackage")
                 .setParameter("errata_id", errataId)
                 .setParameter("filename", filename).uniqueResultOptional();
     }

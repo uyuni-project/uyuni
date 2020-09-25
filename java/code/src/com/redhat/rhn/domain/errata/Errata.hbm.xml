@@ -59,7 +59,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             cascade="all">
             <key column="errata_id"/>
             <one-to-many
-                class="com.redhat.rhn.domain.errata.impl.PublishedErrataFile"/>
+                class="com.redhat.rhn.domain.errata.ErrataFile"/>
         </set>
         <set name="keywords" lazy="true" inverse="true" order-by="KEYWORD asc"
             cascade="all">

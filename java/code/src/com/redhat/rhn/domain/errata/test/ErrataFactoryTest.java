@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.errata.impl.Bug;
 import com.redhat.rhn.domain.errata.impl.ClonedErrata;
-import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -95,7 +94,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                 channel, user, false);
         Errata published = publishedList.get(0);
         assertTrue(channel.getPackages().contains(errataPack));
-        List<PublishedErrataFile> errataFile =
+        List<ErrataFile> errataFile =
             ErrataFactory.lookupErrataFilesByErrataAndFileType(published.getId(), "RPM");
         assertTrue(errataFile.get(0).getPackages().contains(errataPack));
 

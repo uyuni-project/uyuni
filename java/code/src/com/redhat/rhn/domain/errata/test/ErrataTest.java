@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.impl.Bug;
-import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -36,7 +35,6 @@ import java.util.Iterator;
 
 /**
  * ErrataTest
- * @version $Rev$
  */
 public class ErrataTest extends BaseTestCaseWithUser {
 
@@ -156,7 +154,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         Iterator i = e.getFiles().iterator();
         boolean matched = false;
         while (i.hasNext()) {
-            PublishedErrataFile f1 = (PublishedErrataFile) i.next();
+            ErrataFile f1 = (ErrataFile) i.next();
             assertNotNull(f1.getChannels());
             assertTrue(f1.getChannels() == null || f1.getChannels().size() == 0);
             matched = true;
