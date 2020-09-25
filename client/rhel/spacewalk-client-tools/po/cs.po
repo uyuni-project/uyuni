@@ -19,10 +19,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-25 12:54+0200\n"
-"PO-Revision-Date: 2020-08-27 13:02+0000\n"
+"PO-Revision-Date: 2020-09-25 17:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools/cs/>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -217,7 +217,7 @@ msgstr "Více informací naleznete ve /var/log/up2date"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../src/up2date_client/rhnreg_constants.py:21
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
@@ -227,32 +227,32 @@ msgstr "Copyright © 2006--2014 Red Hat, Inc. Všechna práva vyhrazena."
 #: ../src/up2date_client/rhnreg_constants.py:24
 #, python-brace-format
 msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
+msgstr "Zadejte adresu URL svého {PRODUCT_NAME}."
 
 #: ../src/up2date_client/rhnreg_constants.py:25
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
 "certificate. The SSL certificate is only required if you will be connecting "
 "over https (recommended)."
 msgstr ""
-"Zadejte umístění serveru Red Hat Satellite a jeho certifikátu SSL. "
+"Zadejte umístění Vašeho serveru {PRODUCT_NAME} a jeho certifikátu SSL. "
 "Certifikát SSL je vyžadován pouze v případě, že se budete připojovat "
 "protokolem https (doporučeno)."
 
 #: ../src/up2date_client/rhnreg_constants.py:29
 #, python-brace-format
 msgid "{PRODUCT_NAME} URL:"
-msgstr ""
+msgstr "{PRODUCT_NAME} URL:"
 
 #: ../src/up2date_client/rhnreg_constants.py:30
 msgid "SSL certificate:"
 msgstr "SSL certifikát:"
 
 #: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Musíte zadat platné URL Satellite."
+msgstr "Musíte zadat platné URL pro {PRODUCT_NAME}."
 
 #: ../src/up2date_client/rhnreg_constants.py:32
 msgid ""
@@ -266,9 +266,9 @@ msgid "Attempting to contact the Spacewalk server."
 msgstr "Pokus kontaktovat server Spacewalk."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Navazujeme spojení se serverem Red Hat Network: %s."
+msgstr "Navazujeme spojení se serverem {PRODUCT_NAME} na %s."
 
 #: ../src/up2date_client/rhnreg_constants.py:39
 #, python-format
@@ -281,7 +281,7 @@ msgid "System Registration"
 msgstr "Registrace systému"
 
 #: ../src/up2date_client/rhnreg_constants.py:43
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This assistant will guide you through connecting your system to "
 "{PRODUCT_NAME} to receive software updates, including security updates, to "
@@ -293,34 +293,34 @@ msgid ""
 " * The location of a {PRODUCT_NAME} Server or Proxy\n"
 "\n"
 msgstr ""
-"Tento asistent vás provede připojením vašeho systému k Red Hat Satellite, "
+"Tento asistent vás provede připojením vašeho systému k {PRODUCT_NAME}, "
 "abyste mohli přijímat aktualizace softwaru, včetně aktualizací zabezpečení, "
-"aby byl váš systém podporován a na výši. Nyní budete potřebovat "
-"následující:\n"
+"aby byl váš systém podporován a na výši. Nyní budete potřebovat následující:"
+"\n"
 "\n"
 "* Síťové připojení\n"
-"* Vaše přihlašovací jméno a heslo pro Red Hat\n"
-"* Umístění Red Hat Satellite nebo Proxy\n"
+"* Vaše přihlašovací jméno a heslo pro  {PRODUCT_NAME}\n"
+"* Umístění serveru {PRODUCT_NAME} nebo proxy serveru\n"
 "\n"
 
 #. Why Register Window
 #: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Proč bych se měl k RHN připojit? ..."
+msgstr "Proč bych se měl k {PRODUCT_NAME} připojit? ..."
 
 #: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
 msgid "Why Register"
 msgstr "Proč se registrovat"
 
 #: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
 "of the benefits of a paid subscription, including:"
 msgstr ""
-"Připojení systému k Red Hat Satellite vám umožní využít plných výhod "
-"placeného předplatného, včetně:"
+"Připojení systému k {PRODUCT_NAME} vám umožní využít plných výhod placeného "
+"předplatného, včetně:"
 
 #: ../src/up2date_client/rhnreg_constants.py:60
 msgid "Security & Updates:"
@@ -339,29 +339,25 @@ msgid "Compliance:"
 msgstr "Shoda:"
 
 #: ../src/up2date_client/rhnreg_constants.py:64
-#, fuzzy
 msgid ""
 "Receive the latest software updates, including security updates, keeping "
 "this system updated and secure."
 msgstr ""
 "Přijímejte nejnovější aktualizace programů včetně bezpečnostních oprav, "
-"které budou systém Red Hat Enterprise Linux udržovat bezpečný a aktuální."
+"které budou tento systém udržovat aktuální a bezpečný."
 
 #: ../src/up2date_client/rhnreg_constants.py:66
-#, fuzzy
 msgid ""
 "Download installation images for system releases, including new releases."
-msgstr ""
-"Stáhněte si instalační obrazy Red Hat Enterprise Linuxu včetně nových verzí."
+msgstr "Stáhněte si instalační obrazy vydání systému včetně nových verzí."
 
 #: ../src/up2date_client/rhnreg_constants.py:68
-#, fuzzy
 msgid ""
 "Access to the technical support experts for help with any issues you might "
 "encounter with this system."
 msgstr ""
-"Přístup k expertům technické pomoci ve firmě Red Hat nebo jejím partnerům, "
-"kteří vám pomohou vyřešit problémy, které mohou v systému nastat."
+"Přístup k expertům technické pomoci, kteří vám pomohou vyřešit problémy, jež "
+"mohou v tomto systému nastat."
 
 #: ../src/up2date_client/rhnreg_constants.py:70
 msgid ""
@@ -372,11 +368,8 @@ msgstr ""
 "systémů připojených k Vašemu účtu."
 
 #: ../src/up2date_client/rhnreg_constants.py:73
-#, fuzzy
 msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"Tip: Red Hat si váží vašeho soukromí: http://www.redhat.com/legal/"
-"privacy_statement.html"
+msgstr "Tip: SUSE si váží vašeho soukromí: http://www.suse.com/company/legal/"
 
 #: ../src/up2date_client/rhnreg_constants.py:75
 msgid "Take me back to the registration"
@@ -388,22 +381,22 @@ msgid "Software Update Not Set Up"
 msgstr "_Přerušit nastavení aktualizace programů"
 
 #: ../src/up2date_client/rhnreg_constants.py:79
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
 "miss out on the benefits of a SLES/RHEL subscription:\n"
 msgstr ""
-"Opravdu nechcete připojit svůj systém k Red Hat Satellite? Přijdete o výhody "
-"předplatného Red Hat Enterprise Linux:\n"
+"Opravdu nechcete připojit svůj systém k {PRODUCT_NAME}? Přijdete o výhody "
+"předplatného SLES/RHEL:\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "You will not be able to take advantage of these subscription privileges "
 "without connecting your system to {PRODUCT_NAME}.\n"
 msgstr ""
-"Tato předplacená oprávnění nebudete moci využít bez připojení systému k Red "
-"Hat Satellite.\n"
+"Výhod těchto předplacených oprávnění nebudete moci využít bez připojení "
+"systému k {PRODUCT_NAME}.\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:83
 msgid "Take me back to the setup process."
@@ -417,21 +410,21 @@ msgstr "Zaregistruji se později."
 #: ../src/up2date_client/rhnreg_constants.py:87
 #, python-brace-format
 msgid "{PRODUCT_NAME} Account"
-msgstr ""
+msgstr "Účet {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
 msgstr ""
-"Zadejte své přihlašovací údaje pro %s Red Hat Network Satellite:\n"
+"Zadejte své přihlašovací údaje pro %s {PRODUCT_NAME}:\n"
 "\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:89
 #, python-brace-format
 msgid "{PRODUCT_NAME} Login:"
-msgstr ""
+msgstr "{PRODUCT_NAME} Login:"
 
 #: ../src/up2date_client/rhnreg_constants.py:90
 #: ../src/up2date_client/tui.py:139
@@ -443,13 +436,13 @@ msgid "Password:"
 msgstr "Heslo:"
 
 #: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
 "Organization Administrator."
 msgstr ""
-"Tip: Zapoměli jste svůj login nebo heslo?  Kontaktujte správce své "
-"organizace v Satellitu."
+"Tip: Zapoměli jste svůj login nebo heslo?  Kontaktujte správce {PRODUCT_NAME}"
+" své organizace."
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid "Please enter a desired login."
@@ -500,14 +493,14 @@ msgid "Create Profile - Hardware"
 msgstr "Připojit váš systém"
 
 #: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "A Profile Name is a descriptive name that you choose to identify this System "
 "Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
 "serial or identification number."
 msgstr ""
 "Název profilu je popisné jméno, kterým se rozhodnete identifikovat tento "
-"systémový profil na webových stránkách Red Hat Satellite. Volitelně připojte "
+"systémový profil na webových stránkách {PRODUCT_NAME}. Volitelně připojte "
 "sériové nebo identifikační číslo počítače."
 
 #: ../src/up2date_client/rhnreg_constants.py:114
@@ -595,12 +588,12 @@ msgstr ""
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Pošlete informace o profilu do Red Hat Satellite"
+msgstr "Pošlete informace o profilu do {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:146
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "We are finished collecting information for the System Profile.\n"
 "\n"
@@ -610,10 +603,9 @@ msgid ""
 msgstr ""
 "Dokončili jsme shromažďování informací pro systémový profil.\n"
 "\n"
-"Stisknutím \"Další\" odešlete tento systémový profil společnosti Red Hat "
-"Satellite.  Kliknete-li na „Storno“, nebudou žádné informace odeslány.  "
-"Registrační program můžete spustit později zadáním `rhn_register` do "
-"příkazového řádku."
+"Stisknutím \"Další\" odešlete tento systémový profil do {PRODUCT_NAME}.  "
+"Kliknete-li na „Storno“, nebudou žádné informace odeslány.  Registrační "
+"program můžete spustit později zadáním `rhn_register` do příkazového řádku."
 
 #. Sending Window
 #: ../src/up2date_client/rhnreg_constants.py:153
