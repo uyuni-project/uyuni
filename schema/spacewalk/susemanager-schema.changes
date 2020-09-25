@@ -1,3 +1,5 @@
+- add new column to rhnactiondup table for allowVendorChange flag
+
 -------------------------------------------------------------------
 Thu Oct 22 11:13:51 CEST 2020 - jgonzalez@suse.com
 
