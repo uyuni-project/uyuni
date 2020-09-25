@@ -1,4 +1,6 @@
+- show info message when applying schema upgrade
 - Fix: handle version comparison corner cases in Ubuntu packages
+
 -------------------------------------------------------------------
 Mon Sep 21 18:42:16 CEST 2020 - jgonzalez@suse.com
 
