@@ -443,7 +443,7 @@ fi
 %systemd_postun osad.service
 %else
 %if 0%{?suse_version} >= 1210
-%service_del_postun -n osad.service
+%service_del_postun_without_restart osad.service
 %endif
 %endif
 
