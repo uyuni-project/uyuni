@@ -2219,19 +2219,19 @@
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-Is the 'rhn-tools' child software channel for this kickstart profile's base
+Is the client tools channel for this kickstart profile's base
 channel available to your organization? If it is not, you will need to request
-entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator.
+entitlements for the client tools channel from your @@PRODUCT_NAME@@ administrator.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure that the 'rhn-tools' child channel for this kickstart profile's base
+Make sure that the client tools channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the client tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
 Make sure the spacewalk-koan package corresponding to this kickstart are
-available in the kickstart's base channel's 'rhn-tools' channel. If not, you
+available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
@@ -2244,7 +2244,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="translated">&lt;div style="text-align: left;"&gt;
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;この問題を解決するには、下記をご確認ください: &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、組織が 'rhn-tools' 子ソフトウェア
@@ -8297,11 +8297,11 @@ Follow this url to see the full list of inactive systems:
         <target>このチャンネルにはファイル名 "{0}" はすでに存在しています。</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">システムを RHN ツールチャンネルに自動的にサブスクライブできませんでした。このチャンネルには、仮想化に必要なパッケージが含まれます。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
+        <target state="needs-adaptation">システムを RHN ツールチャンネルに自動的にサブスクライブできませんでした。このチャンネルには、仮想化に必要なパッケージが含まれます。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
@@ -8353,11 +8353,11 @@ Follow this url to see the full list of inactive systems:
         <target>システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。</target>
       </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the rhn-virtualization-host package from the associated RHN Tools child channel. Review Red Hat documentation for any other considerations and requirements that Red Hat Enterprise Linux has with enabling Virtualization of a Host system.</source>
+        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target>注記: @@PRODUCT_NAME@@ 内でこのシステムの仮想化機能を有効にして使用する場合には、rhn-virtualization-host パッケージを関連する RHN ツールの子チャンネルからインストールします。ホストシステムの仮想化を有効にする際に注意すべき事項や Red Hat Enterprise Linux の要件などについては Red Hat ガイドを参照してください。</target>
+        <target state="needs-adaptation">注記: @@PRODUCT_NAME@@ 内でこのシステムの仮想化機能を有効にして使用する場合には、rhn-virtualization-host パッケージを関連する RHN ツールの子チャンネルからインストールします。ホストシステムの仮想化を有効にする際に注意すべき事項や Red Hat Enterprise Linux の要件などについては Red Hat ガイドを参照してください。</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to migrate this system.</source>
@@ -9698,11 +9698,11 @@ tree will not be usable for autoinstalling.
         <target>検出されたログインが {0} に送信されました。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the rhncfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target>選択したシステムには、rhncfg パッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
+        <target state="needs-adaptation">選択したシステムには、rhncfg パッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
