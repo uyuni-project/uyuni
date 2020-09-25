@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-25 12:54+0200\n"
-"PO-Revision-Date: 2020-09-13 01:48+0000\n"
+"PO-Revision-Date: 2020-09-26 01:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
@@ -44,9 +44,9 @@ msgstr ""
 "                   組織の管理者にお問い合わせください。"
 
 #: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "システムが RHN データベース内には見つかりませんでした"
+msgstr "システムが {PRODUCT_NAME} データベース内には見つかりませんでした"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
@@ -127,12 +127,11 @@ msgstr ""
 #: ../server/handlers/xmlrpc/registration.py:1115
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "{PRODUCT_NAME} ようこそメッセージ"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
 msgid "Privacy Statement"
-msgstr "Red Hat Satellite プライバシーステートメント"
+msgstr "プライバシーステートメント"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -1252,7 +1251,7 @@ msgid " - live synchronization"
 msgstr " - ライブ同期"
 
 #: ../satellite_tools/satsync.py:534
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
@@ -1260,11 +1259,9 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
-"エラー: RHN Classic Hosted を利用したライブコンテンツの同期は、もはやサポート"
-"されていません。\n"
-"Satellite 間同期 (ISS) を介して他の Satellite から同期を行なっている場合や、"
-"チャンネルダンプ ISO を利用してディスク内のローカルコンテンツから同期を行なっ"
-"ている場合を除き、代わりに cdn-sync コマンドを使用してください。"
+"エラー: RHN Classic Hosted を利用したライブコンテンツの同期は、もはやサポートされていません。\n"
+"サーバ間同期 (ISS) を介して他の {PRODUCT_NAME} から同期を行なっている場合や、チャンネルダンプ ISO "
+"を利用してディスク内のローカルコンテンツから同期を行なっている場合を除き、代わりに cdn-sync コマンドを使用してください。"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1800,12 +1797,10 @@ msgstr ""
 "--step 側が無視されます。"
 
 #: ../satellite_tools/satsync.py:2375
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
-msgstr ""
-"エラー: '%s' のステップが正しくありません。詳しくは 'man satellite-sync' をお"
-"読みください。"
+msgstr "エラー: '%s' のステップが正しくありません。詳しくは 'man mgr-inter-sync' をお読みください。"
 
 #: ../satellite_tools/satsync.py:2407
 msgid ""
