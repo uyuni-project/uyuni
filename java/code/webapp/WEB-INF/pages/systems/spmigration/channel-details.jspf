@@ -56,6 +56,10 @@
         </c:if>
       </ul>
     </li>
+    <li>
+      <input  name="allowVendorChange" value="true" type="checkbox" id="unchecked" />
+      <bean:message key="spmigration.jsp.allow.vendor.change" />
+    </li>
   </ul>
 
 </div>
