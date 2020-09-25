@@ -196,9 +196,12 @@ ENHANCE12 = [
 ENHANCE12SP1 = [
     "libyui-ncurses-pkg7",
     "libyui-qt-pkg7",
+    "python-asn1crypto",
     "python-enum34",
     "python-idna",
     "python-ipaddress",
+    "python-packaging",
+    "python-pyparsing",
     "python-setuptools",
 ]
 

@@ -1,6 +1,13 @@
 - add missing packages to ubuntu20.04 bootstrap data (bsc#1176629)
 
 -------------------------------------------------------------------
+Fri Sep 25 13:54:36 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.20-1
+- Add missing packages to SLE12 >= SP1 bootstrap data to fix JeOS
+  bootstrap problems (bsc#1176913)
+
+-------------------------------------------------------------------
 Tue Sep 15 10:47:45 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.19-1
