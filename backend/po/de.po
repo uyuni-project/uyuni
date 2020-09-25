@@ -15,10 +15,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-12 14:25+0200\n"
-"PO-Revision-Date: 2020-08-24 00:40+0000\n"
+"PO-Revision-Date: 2020-09-25 10:29+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/"
-">\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/>"
+"\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,9 +85,8 @@ msgid "Your system was not found in the RHN database"
 msgstr "Ihr System wurde in der RHN Datenbank nicht gefunden"
 
 #: ../server/handlers/sat/auth.py:45
-#, fuzzy
 msgid "ISS is disabled on this server."
-msgstr "ISS ist auf diesem Satellite deaktiviert."
+msgstr "ISS ist auf diesem Server deaktiviert."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -138,7 +137,6 @@ msgstr ""
 "konnten nicht gefunden werden."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
 msgid "Red Hat Satellite Welcome Message"
 msgstr "Red Hat Network Willkommensmitteilung"
 
@@ -165,9 +163,10 @@ msgid "Invalid value %s (%s)"
 msgstr "Ungültiger Wert %s (%s)"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "Spacewalk-Proxy-Dienst nicht für Server-Profil \"%s\" aktiviert"
+msgstr ""
+"SUSE Manager Proxy Dienst ist nicht für das Server-Profil \"%s\" aktiviert"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
