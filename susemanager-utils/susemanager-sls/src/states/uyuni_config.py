@@ -799,7 +799,10 @@ class UyuniActivationKeys:
         }
         try:
             all_groups = __salt__['uyuni.systemgroup_list_all_groups'](org_admin_user, org_admin_password)
-            system_groups_keys = {g.get('name'): g.get('id') for g in all_groups}
+            group_id_to_name = {}
+            for g in (all_groups or []):
+                system_groups_keys[g.get('name')] = g.get('id')
+                group_id_to_name[g.get('id')] = g.get('name')
 
             current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
 
@@ -810,8 +813,6 @@ class UyuniActivationKeys:
             for returned_name, output_name in output_field_names.items():
                 current_ak[output_name] = returned_ak[returned_name]
 
-            # FIXME we should iterate only once over the groups output
-            group_id_to_name = {g.get('id'): g.get('name') for g in all_groups}
             current_ak['server_groups'] = [group_id_to_name[s] for s in (current_ak['server_groups'] or [])]
 
             if current_ak.get('base_channel', None) == 'none':
