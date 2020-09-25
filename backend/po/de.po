@@ -2022,5 +2022,11 @@ msgid ""
 "%s"
 msgstr ""
 
+#~ msgid "Your system was not found in the RHN database"
+#~ msgstr "Ihr System wurde in der RHN Datenbank nicht gefunden"
+
 #~ msgid "Red Hat Satellite Welcome Message"
 #~ msgstr "Red Hat Network Willkommensmitteilung"
+
+#~ msgid "Red Hat Satellite Privacy Statement"
+#~ msgstr "SUSE Manager Datenschutzerklärung"
