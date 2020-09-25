@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-25 12:54+0200\n"
-"PO-Revision-Date: 2020-09-12 16:48+0000\n"
+"PO-Revision-Date: 2020-09-25 13:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,9 +37,9 @@ msgstr ""
 "organizácie."
 
 #: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Váš systém sa nenašiel v databáze RHN"
+msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
@@ -117,12 +117,11 @@ msgstr ""
 #: ../server/handlers/xmlrpc/registration.py:1115
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "Uvítacia správa {PRODUCT_NAME}"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
 msgid "Privacy Statement"
-msgstr "Vyhlásenie o ochrane súkromia Red Hat Satellite"
+msgstr "Vyhlásenie o ochrane súkromia"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -1225,7 +1224,7 @@ msgid " - live synchronization"
 msgstr " - živá synchronizácia"
 
 #: ../satellite_tools/satsync.py:534
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
@@ -1236,8 +1235,8 @@ msgstr ""
 "CHYBA: Synchronizácia živého obsahu so serverom RHN Classic Hosted už nie je "
 "podporovaná.\n"
 "Namiesto toho použite príkaz cdn-sync, pokiaľ sa nepokúšate synchronizovať s "
-"ďalším Satellite cez Inter-Satelite-Sync (ISS) alebo s lokálnym obsahom na "
-"disku cez Channel Dump ISO."
+"ďalším {PRODUCT_NAME} cez Inter-Satelite-Sync (ISS) alebo s lokálnym obsahom "
+"na disku cez Channel Dump ISO."
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1772,11 +1771,11 @@ msgstr ""
 "ignorované."
 
 #: ../satellite_tools/satsync.py:2375
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
-"CHYBA: '%s' nie je platný krok. Ďalšie informácie nájdete v 'man satellite-"
+"CHYBA: '%s' nie je platný krok. Ďalšie informácie nájdete v 'man mgr-inter-"
 "sync'."
 
 #: ../satellite_tools/satsync.py:2407
