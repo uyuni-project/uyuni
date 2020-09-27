@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-24 10:10+0200\n"
-"PO-Revision-Date: 2020-09-24 04:48+0000\n"
+"PO-Revision-Date: 2020-09-26 01:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1687,7 +1687,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:116
 msgid "(none)"
-msgstr ""
+msgstr "(なし)"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:37
 msgid "Join "
@@ -1901,7 +1901,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:339
 msgid "Package Name"
-msgstr ""
+msgstr "パッケージ名"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:146
 #: ../html/src/manager/content-management/list-filters/filter-form.js:184
@@ -1938,7 +1938,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-form.js:225
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
-msgstr ""
+msgstr "アドバイザリタイプ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:234
 msgid "Issued"
@@ -1948,11 +1948,11 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
-msgstr ""
+msgstr "概要"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:259
 msgid "Reboot Required"
-msgstr ""
+msgstr "要再起動"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:260
 msgid "Package Manager Restart Required"
@@ -2416,7 +2416,7 @@ msgstr ""
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:19
 msgid "Highstate"
-msgstr ""
+msgstr "Highstate"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:18
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:20
@@ -2494,7 +2494,7 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:220
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #: ../html/src/manager/images/image-import.js:249
 msgid "Import Image"
@@ -2840,7 +2840,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.js:587
 msgid "Last Modified"
-msgstr ""
+msgstr "最終変更"
 
 #: ../html/src/manager/images/image-view.js:620
 #: ../html/src/manager/images/image-view-overview.js:427
@@ -3007,15 +3007,15 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
-msgstr ""
+msgstr "パッケージ管理スタックに影響があります"
 
 #: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
-msgstr ""
+msgstr "アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:92
 msgid "Updated"
-msgstr ""
+msgstr "更新済み"
 
 #: ../html/src/manager/images/image-view-runtime.js:42
 msgid "Instance is consistent with SUSE Manager"
@@ -3133,9 +3133,8 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:65
 #: ../html/src/manager/maintenance/details/schedule-details.js:168
-#, fuzzy
 msgid "Assigned Systems"
-msgstr "利用可能なシステム"
+msgstr "割り当て済みのシステム"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:98
 msgid "Schedule name"
@@ -3189,17 +3188,15 @@ msgstr ""
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:143
 msgid "Cancel affected actions"
-msgstr ""
+msgstr "影響する動作のキャンセル"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:196
-#, fuzzy
 msgid "Search systems"
-msgstr "ベアメタルシステム"
+msgstr "システムの検索"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:211
-#, fuzzy
 msgid "Current Schedule"
-msgstr "スケジュールの選択:"
+msgstr "現在のスケジュール"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:108
 msgid "Url '{0}' is invalid"
@@ -3276,11 +3273,11 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
 msgid "Schedules"
-msgstr ""
+msgstr "スケジュール"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
 msgid "Calendars"
-msgstr ""
+msgstr "カレンダー"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:43
 msgid "schedule"
@@ -3496,7 +3493,7 @@ msgstr "作成日"
 
 #: ../html/src/manager/notifications/notification-messages.js:427
 msgid "Action"
-msgstr ""
+msgstr "動作"
 
 #: ../html/src/manager/notifications/notification-messages.js:433
 msgid "Read|Delete"
@@ -3650,7 +3647,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
-msgstr ""
+msgstr "Formula"
 
 #: ../html/src/manager/salt/keys/key-management.js:35
 msgid "Accept"
@@ -3687,7 +3684,7 @@ msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.js:212
 #: ../html/src/manager/shared/menu/menu.js:215
@@ -3798,7 +3795,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-list.js:58
 msgid "Recurring States"
-msgstr ""
+msgstr "繰り返し状態"
 
 #: ../html/src/manager/state/recurring-states-list.js:71
 msgid "No schedules created."
@@ -4029,7 +4026,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:459
 msgid "Unsubscribe"
-msgstr ""
+msgstr "サブスクライブの中止"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:475
 msgid "Below is a list of channels in your organization. "
@@ -4049,7 +4046,7 @@ msgstr ""
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
-msgstr ""
+msgstr "選択したシステムのチャンネルへのサブスクライブを中止するには、対象のチャンネルの 'サブスクライブの中止' を選択します。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:486
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:633
@@ -4103,6 +4100,8 @@ msgid ""
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
 msgstr ""
+"システムがサブスクライブしているベースソフトウェアチャンネルを変更することができます。すべてのソフトウェアチャンネルからサブスクライブを中止して、新しいベ"
+"ースソフトウエアチャンネルにサブスクライブさせます。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
 msgid ""
@@ -4110,6 +4109,8 @@ msgid ""
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
+"このシステムは、下記で選択されたチャンネルをサブスクライブしています。チェックボックスが無効化されている場合は、そのチャンネルが手動ではサブスクライブもし"
+"くはサブスクライブ中止できないものであることを示しています。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
@@ -4494,7 +4495,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:182
 msgid "No"
-msgstr ""
+msgstr "いいえ"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:207
 msgid "Host name"

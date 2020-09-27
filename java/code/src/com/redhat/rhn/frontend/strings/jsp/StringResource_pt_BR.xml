@@ -6596,7 +6596,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         <target>Configuração Geral de Monitoramento</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
-        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
+        <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
@@ -12053,7 +12053,7 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source> <target>Você tem certeza de que quer remover esta chave? As Chaves de Ativação não podem ser recuperadas após terem sido removidas. (Nota: Uma chave pode ser desativada na &lt;a href="{0}"&gt;página de lista de chave&lt;/a&gt;, a qual impede que seja usada, porém a preserva para mais tarde.) </target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.warning" xml:space="preserve">
-          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target state="needs-adaptation">&lt;STRONG&gt;NOTA&lt;/STRONG&gt;: Somente sistemas e perfis conhecidos do Satellite serão atualizados. As entidades Kickstarting entre outras (e.x.: perfis de sistema criados utilizando as ferramentas de linha de comando) as quais utilizam esta chave, irão &lt;STRONG&gt;FALHAR&lt;/STRONG&gt; caso a chave seja removida.</target>
+          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to @@PRODUCT_NAME@@ server will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source> <target state="needs-adaptation">&lt;STRONG&gt;NOTA&lt;/STRONG&gt;: Somente sistemas e perfis conhecidos do Satellite serão atualizados. As entidades Kickstarting entre outras (e.x.: perfis de sistema criados utilizando as ferramentas de linha de comando) as quais utilizam esta chave, irão &lt;STRONG&gt;FALHAR&lt;/STRONG&gt; caso a chave seja removida.</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source> <target>Implementação do Arquivo de Configuração </target>
@@ -13234,7 +13234,7 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
           <source>Target Systems</source> <target>Sistemas Alvo</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="needs-adaptation">Os sistemas listados abaixo não possuem arquivos gerenciados via gerenciamento de configuração @@PRODUCT_NAME@@. Os sistemas que são capazes de ser gerenciados pelo gerenciamento de configuração @@PRODUCT_NAME@@, precisarão de um serviço de provisioning, além de ter pacotes rhncfg* específicos instalados. Você pode habilitar o gerenciamento de configuração nos sistemas selecionados, usando o botão de ' Habilitar Gerenciamento de Configuração do @@PRODUCT_NAME@@' abaixo.</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="needs-adaptation">Os sistemas listados abaixo não possuem arquivos gerenciados via gerenciamento de configuração @@PRODUCT_NAME@@. Os sistemas que são capazes de ser gerenciados pelo gerenciamento de configuração @@PRODUCT_NAME@@, precisarão de um serviço de provisioning, além de ter pacotes rhncfg* específicos instalados. Você pode habilitar o gerenciamento de configuração nos sistemas selecionados, usando o botão de ' Habilitar Gerenciamento de Configuração do @@PRODUCT_NAME@@' abaixo.</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source> <target>Nenhum sistema não gerenciado.</target>
@@ -13259,14 +13259,14 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribeappstream">
           <source>Subscribe to AppStream channel</source> </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfg">
-          <source>Schedule rhncfg package install</source> <target>Agendar Instalação de Pacotes rhncfg</target>
+        <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
+          <source>Schedule mgr-cfg package install</source> <target state="needs-adaptation">Agendar Instalação de Pacotes rhncfg</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
           <source>Schedule mgr-cfg-actions package install</source> <target>Agendar Instalação de Pacotes de ações rhncfg</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfgclient">
-          <source>Schedule rhncfg-client package install</source> <target>Agendar Instalação de Pacotes de cliente rhncfg</target>
+        <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
+          <source>Schedule mgr-cfg-client package install</source> <target state="needs-adaptation">Agendar Instalação de Pacotes de cliente rhncfg</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.pending">
           <source>Package installations currently pending.</source> <target>Instalações de Pacote atualmente pendentes.</target>
@@ -13277,8 +13277,8 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         <trans-unit id="targetsystems.jsp.now">
           <source>Schedule package installs as soon as possible.</source> <target>Agendar instalações de pacotes para o quanto antes possível.</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.widgetsummary">
-          <source>You may schedule &lt;code&gt;rhncfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source> <target>Você pode agendar instalações de pacote &lt;code&gt;rhncfg*&lt;/code&gt; para o horário abaixo. &lt;strong&gt;Nota Todas as outras ações serão substituídas imediatamente.&lt;/strong&gt;</target>
+        <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
+          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source> <target state="needs-adaptation">Você pode agendar instalações de pacote &lt;code&gt;rhncfg*&lt;/code&gt; para o horário abaixo. &lt;strong&gt;Nota Todas as outras ações serão substituídas imediatamente.&lt;/strong&gt;</target>
         </trans-unit>
       </group>
       <!-- configuration/overview/summary.jsp  -->
@@ -13292,11 +13292,11 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         <trans-unit id="summary.jsp.summary">
           <source>Configuration Management Enablement has been attempted on the following systems. To complete enablement on successful systems (indicated by the Status column below), perform the following two actions:</source> <target>Tentativa de Ativação do Gerenciamento de Configuração realizada nos seguintes sistemas. Para concluir a ativação em sistemas bem sucedidos (indicado pela coluna de Status abaixo), realize as duas ações a seguir:</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.stepone">
-          <source>Run &lt;code&gt;rhn_check&lt;/code&gt; to complete pending rhncfg-* package installs.</source> <target>Execute &lt;code&gt;rhn_check&lt;/code&gt; para concluir as instalações de pacote rhncfg* pendentes.</target>
+        <trans-unit id="summary.jsp.stepone" xml:space="preserve">
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source> <target state="needs-adaptation">Execute &lt;code&gt;rhn_check&lt;/code&gt; para concluir as instalações de pacote rhncfg* pendentes.</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.steptwo">
-          <source>Run the following command: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</source> <target>Execute o seguinte comando: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
+        <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
+          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source> <target state="needs-adaptation">Execute o seguinte comando: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
         </trans-unit>
         <trans-unit id="summary.jsp.noActions">
           <source>No actions taken.</source> <target>Nenhuma ação foi realizada.</target>
@@ -13310,13 +13310,13 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         <trans-unit id="summary.jsp.noerror">
           <source>No Error.</source> <target>Nenhum Erro</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.rhntools">
-          <source>Could not subscribe to the RHN Tools channel.</source> <target>Não foi possível subscrever no canal RHN Tools.</target>
+        <trans-unit id="summary.jsp.rhntools" xml:space="preserve">
+          <source>Could not subscribe to the Tools channel.</source> <target state="needs-adaptation">Não foi possível subscrever no canal RHN Tools.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.appstream">
           <source>Could not subscribe to the AppStream channel.</source> </trans-unit>
-        <trans-unit id="summary.jsp.packages">
-          <source>Could not schedule rhncfg* package installations.</source> <target>Não foi possível agendar instalações de pacote rhncfg*</target>
+        <trans-unit id="summary.jsp.packages" xml:space="preserve">
+          <source>Could not schedule mgr-cfg* package installations.</source> <target state="needs-adaptation">Não foi possível agendar instalações de pacote rhncfg*</target>
         </trans-unit>
         <trans-unit id="summary.jsp.okAlt">
           <source>okay</source> <target>okay</target>
@@ -15970,14 +15970,14 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
         <trans-unit id="diffconfirm.jsp.header">
           <source>Confirm Configuration File Comparison</source> <target>Confirmar Comparação de Arquivo de Configuração</target>
         </trans-unit>
-        <trans-unit id="diffconfirm.jsp.summary">
-          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source> <context-group name="ctx">
+        <trans-unit id="diffconfirm.jsp.summary" xml:space="preserve">
+          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source> <context-group name="ctx">
             <context context-type="paramnotes">The 3 configuration files you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once rhn_check has run on that system.</context>
           </context-group>
-          <target>Os &lt;strong&gt;{0} arquivos de configuração&lt;/strong&gt; que você selecionou será comparado às versões implementadas nos sistemas listados abaixo. Somente serão comparados, os arquivos de configuração nos canais nos quais um sistema é geralmente inscrito. Os resultados da comparação podem ser visualizados em cada página de evento do sistema, depois que o &lt;code&gt;rhn_check&lt;/code&gt; rodar neste sistema.</target>
+          <target state="needs-adaptation">Os &lt;strong&gt;{0} arquivos de configuração&lt;/strong&gt; que você selecionou será comparado às versões implementadas nos sistemas listados abaixo. Somente serão comparados, os arquivos de configuração nos canais nos quais um sistema é geralmente inscrito. Os resultados da comparação podem ser visualizados em cada página de evento do sistema, depois que o &lt;code&gt;rhn_check&lt;/code&gt; rodar neste sistema.</target>
         </trans-unit>
-        <trans-unit id="diffconfirm.jsp.summary.one">
-          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source> <target>O arquivo de configuração que você selecionou, será comparado às versões implementadas nos sistemas listados abaixo. Somente serão comparados, os arquivos de configuração nos canais nos quais um sistema é geralmente inscrito. Os resultados da comparação podem ser visualizados na página de eventos de cada sistema, depois que o &lt;code&gt;rhn_check&lt;/code&gt; rodar neste sistema.</target>
+        <trans-unit id="diffconfirm.jsp.summary.one" xml:space="preserve">
+          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source> <target state="needs-adaptation">O arquivo de configuração que você selecionou, será comparado às versões implementadas nos sistemas listados abaixo. Somente serão comparados, os arquivos de configuração nos canais nos quais um sistema é geralmente inscrito. Os resultados da comparação podem ser visualizados na página de eventos de cada sistema, depois que o &lt;code&gt;rhn_check&lt;/code&gt; rodar neste sistema.</target>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.noSystems">
           <source>No systems.</source> <target>Nenhum sistema.  </target>
@@ -16287,8 +16287,8 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
         <trans-unit id="ssmenable.jsp.header">
           <source>Enable Configuration Management</source> <target>Ativar  Gerenciamento de Configuração</target>
         </trans-unit>
-        <trans-unit id="ssmenable.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular rhncfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source> <target>Os sistemas listados abaixo não possuem arquivos gerenciados através do gerenciamento de configuração @@PRODUCT_NAME@@. Para que seja possível gerenciar sistemas através do gerenciamento de configuração @@PRODUCT_NAME@@, eles precisarão de serviços de provisão além de terem pacotes rhncfg* específicos instalados. Você pode ativar o gerenciamento de configuração nos sistemas listados abaixo. &lt;strong&gt;Nota:&lt;/strong&gt; nada irá acontecer aos sistemas que já estiverem ativados. </target>
+        <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source> <target state="needs-adaptation">Os sistemas listados abaixo não possuem arquivos gerenciados através do gerenciamento de configuração @@PRODUCT_NAME@@. Para que seja possível gerenciar sistemas através do gerenciamento de configuração @@PRODUCT_NAME@@, eles precisarão de serviços de provisão além de terem pacotes rhncfg* específicos instalados. Você pode ativar o gerenciamento de configuração nos sistemas listados abaixo. &lt;strong&gt;Nota:&lt;/strong&gt; nada irá acontecer aos sistemas que já estiverem ativados. </target>
         </trans-unit>
       </group>
       <!-- configuration/ssm/channelsystems.jsp  -->
@@ -16533,11 +16533,11 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
           </context-group>
           <target>Importar Arquivos de Configuração a partir de {0}</target>
         </trans-unit>
-        <trans-unit id="sdcimportfile.jsp.summary">
-          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;rhn_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source> <context-group name="ctx">
+        <trans-unit id="sdcimportfile.jsp.summary" xml:space="preserve">
+          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;mgr_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source> <context-group name="ctx">
             <context context-type="paramnotes">All files added through this interface will be imported from terry.pratchett.bn.com into this system's sandbox channel. Files will be imported the next time rhn_check runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</context>
           </context-group>
-          <target>Todos os arquivos adicionados nesta interface serão importados do {0} para este canal de Quarentena do sistema. Os arquivos podem ser importados da próxima vez que o &lt;code&gt;rhn_check&lt;/code&gt; rodar em seu sistema. Se você desejar implementar estes arquivos ou sobrescrever arquivos de config em canais globais, copie este arquivo para seu canal de sobrescrição local após a importação. Você pode usar quantos métodos de seleção de arquivos desejar.</target>
+          <target state="needs-adaptation">Todos os arquivos adicionados nesta interface serão importados do {0} para este canal de Quarentena do sistema. Os arquivos podem ser importados da próxima vez que o &lt;code&gt;rhn_check&lt;/code&gt; rodar em seu sistema. Se você desejar implementar estes arquivos ou sobrescrever arquivos de config em canais globais, copie este arquivo para seu canal de sobrescrição local após a importação. Você pode usar quantos métodos de seleção de arquivos desejar.</target>
         </trans-unit>
         <trans-unit id="sdcimportfile.jsp.new">
           <source>Import New Files</source> <target>Importar Novos Arquivos</target>

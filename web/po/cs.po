@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-24 10:10+0200\n"
-"PO-Revision-Date: 2020-09-19 17:48+0000\n"
+"PO-Revision-Date: 2020-09-25 17:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -3618,7 +3618,7 @@ msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.js:212
 #: ../html/src/manager/shared/menu/menu.js:215

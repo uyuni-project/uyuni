@@ -2213,19 +2213,19 @@
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-Is the 'rhn-tools' child software channel for this kickstart profile's base
+Is the client tools channel for this kickstart profile's base
 channel available to your organization? If it is not, you will need to request
-entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator.
+entitlements for the client tools channel from your @@PRODUCT_NAME@@ administrator.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure that the 'rhn-tools' child channel for this kickstart profile's base
+Make sure that the client tools channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the client tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
 Make sure the spacewalk-koan package corresponding to this kickstart are
-available in the kickstart's base channel's 'rhn-tools' channel. If not, you
+available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
@@ -8268,11 +8268,11 @@ Follow this url to see the full list of inactive systems:
         <target>채널에 "{0}"라는 파일이 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>시스템을 RHN 도구 채널에 자동으로 등록할 수 없습니다. 이 채널에는 가상화에 필요한 패키지가 들어있습니다. 이는 채널 인타인틀먼트의 부재로 인한 것일 수 도 있습니다.</target>
+        <target state="needs-adaptation">시스템을 RHN 도구 채널에 자동으로 등록할 수 없습니다. 이 채널에는 가상화에 필요한 패키지가 들어있습니다. 이는 채널 인타인틀먼트의 부재로 인한 것일 수 도 있습니다.</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
@@ -8324,11 +8324,11 @@ Follow this url to see the full list of inactive systems:
         <target>시스템에 가상화 인타이틀먼트를 추가하신 이후, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는 지를 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다.</target>
       </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the rhn-virtualization-host package from the associated RHN Tools child channel. Review Red Hat documentation for any other considerations and requirements that Red Hat Enterprise Linux has with enabling Virtualization of a Host system.</source>
+        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target>알림: 이 시스템의 @@PRODUCT_NAME@@내에서 가상화 기능을 활성화하여 사용할 경우 해당 RHN 도구 자식 채널에서 rhn-virtualization-host 패키지를 설치합니다. 호스트 시스템의 가상화를 활성화할 때 Red Hat Enterprise Linux가 주의해야 할 사항 및 요구 사항은 Red Hat 문서에서 참조하십시오.</target>
+        <target state="needs-adaptation">알림: 이 시스템의 @@PRODUCT_NAME@@내에서 가상화 기능을 활성화하여 사용할 경우 해당 RHN 도구 자식 채널에서 rhn-virtualization-host 패키지를 설치합니다. 호스트 시스템의 가상화를 활성화할 때 Red Hat Enterprise Linux가 주의해야 할 사항 및 요구 사항은 Red Hat 문서에서 참조하십시오.</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to migrate this system.</source>
@@ -9597,10 +9597,11 @@ tree will not be usable for autoinstalling.
         <source>Found login(s) sent to {0}.</source>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the rhncfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>

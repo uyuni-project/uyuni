@@ -6631,11 +6631,11 @@ organization. You may grant or remove the organization administrator role in the
         <target>பொது பார்வையிடும் கட்டமைப்பு</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
-        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
+        <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>கீழே கட்டமைப்பு வாய்ப்புகளை புதுப்பித்த பின், இந்த சேட்டிலைட்டின் கண்காணிப்பு சேவைகள் மற்றும் உங்கள் அனைத்து கண்காணிப்பு-செயல்படுத்தும் @@PRODUCT_NAME@@ பதிலாள் சேவையகங்கள் மீண்டும் தொடங்கப்பட வேண்டும்.  இந்தப் பக்கத்தை மேம்படுத்தும் போது இந்த செயல்கள் தானாக திட்டமிடப்படும்.</target>
+        <target state="needs-adaptation">கீழே கட்டமைப்பு வாய்ப்புகளை புதுப்பித்த பின், இந்த சேட்டிலைட்டின் கண்காணிப்பு சேவைகள் மற்றும் உங்கள் அனைத்து கண்காணிப்பு-செயல்படுத்தும் @@PRODUCT_NAME@@ பதிலாள் சேவையகங்கள் மீண்டும் தொடங்கப்பட வேண்டும்.  இந்தப் பக்கத்தை மேம்படுத்தும் போது இந்த செயல்கள் தானாக திட்டமிடப்படும்.</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
@@ -12038,9 +12038,10 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source>
           <target>இந்த விசை கட்டாயம் அழிக்க வேண்டுமா? செயல்படுத்தல் விசைகளை ஒரு முறை அழித்தால் அதனை திரும்ப கொண்டு வர முடியாது. (குறிப்பு: ஒரு விசை &lt;a href="{0}"&gt;விசை பட்டியல் பக்கத்தில்&lt;/a&gt; செயல்நீக்க முடியும், இது தற்சமயம் பயன்படுத்துவதை தவிர்க்கும் ஆனால் பின்னர் அதனை பயன்படுத்தி கொள்ளலாம்.)</target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.delete.warning">
-          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
-        </trans-unit>
+        <trans-unit id="activation-key.jsp.delete.warning" xml:space="preserve">
+          <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to @@PRODUCT_NAME@@ server will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source>
           <target>கட்டமைப்பு கோப்பு வரிசைப்படுத்தல்</target>
@@ -13283,9 +13284,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Target Systems</source>
           <target>இலக்கு கணினிகள்</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-          <target>கீழே பட்டியலிடப்பட்ட கணினிகள் @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்பட்ட கோப்புகளை கொண்டிருப்பதில்லை. @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மையை மேலாண்மை செய்ய திறனுள்ள கணினிகளுக்கு, ஒரு வாய்ப்பளித்தல் உரிமம் rhncfg-* தொகுப்புகளை நிறுவ தேவைப்படும். நீங்கள் 'செயல்படுத்திய @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை' பொத்தானை பயன்படுத்தி தேர்ந்தெடுக்கப்பட்ட கணினிகளில் கட்டமைப்பு மேலாண்மையை செயல்படுத்தலாம்.</target>
+        <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+          <target state="needs-adaptation">கீழே பட்டியலிடப்பட்ட கணினிகள் @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்பட்ட கோப்புகளை கொண்டிருப்பதில்லை. @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மையை மேலாண்மை செய்ய திறனுள்ள கணினிகளுக்கு, ஒரு வாய்ப்பளித்தல் உரிமம் rhncfg-* தொகுப்புகளை நிறுவ தேவைப்படும். நீங்கள் 'செயல்படுத்திய @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை' பொத்தானை பயன்படுத்தி தேர்ந்தெடுக்கப்பட்ட கணினிகளில் கட்டமைப்பு மேலாண்மையை செயல்படுத்தலாம்.</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.noSystems">
           <source>No non-managed systems.</source>
@@ -13318,17 +13319,17 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="targetsystems.jsp.subscribeappstream">
           <source>Subscribe to AppStream channel</source>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfg">
-          <source>Schedule rhncfg package install</source>
-          <target>rhncfg தொகுப்பை நிறுவ திட்டமிடவும்</target>
+        <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
+          <source>Schedule mgr-cfg package install</source>
+          <target state="needs-adaptation">rhncfg தொகுப்பை நிறுவ திட்டமிடவும்</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfgactions">
           <source>Schedule mgr-cfg-actions package install</source>
           <target>mgr-cfg-actions தொகுப்பை நிறுவ திட்டமிடவும்</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfgclient">
-          <source>Schedule rhncfg-client package install</source>
-          <target>rhncfg-client தொகுப்பை நிறுவ திட்டமிடவும்</target>
+        <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
+          <source>Schedule mgr-cfg-client package install</source>
+          <target state="needs-adaptation">rhncfg-client தொகுப்பை நிறுவ திட்டமிடவும்</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.pending">
           <source>Package installations currently pending.</source>
@@ -13342,9 +13343,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Schedule package installs as soon as possible.</source>
           <target>திட்டமிடப்பட்ட தொகுப்பை எவ்வளவு சீக்கிரம் முடியுமோ அவ்வாறு நிறுவுகிறது.</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.widgetsummary">
-          <source>You may schedule &lt;code&gt;rhncfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-          <target>கீழே உள்ள நேரத்திற்கு &lt;code&gt;rhncfg*&lt;/code&gt; தொகுப்பை நிறுவ திட்டமிட்டிருக்கலாம். &lt;strong&gt;குறிப்பு: அனைத்து வேறு செயல்களும் உடனடியாக எடுக்கப்படும்.&lt;/strong&gt;</target>
+        <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
+          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+          <target state="needs-adaptation">கீழே உள்ள நேரத்திற்கு &lt;code&gt;rhncfg*&lt;/code&gt; தொகுப்பை நிறுவ திட்டமிட்டிருக்கலாம். &lt;strong&gt;குறிப்பு: அனைத்து வேறு செயல்களும் உடனடியாக எடுக்கப்படும்.&lt;/strong&gt;</target>
         </trans-unit>
       </group>
       <!-- configuration/overview/summary.jsp  -->
@@ -13360,13 +13361,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Configuration Management Enablement has been attempted on the following systems. To complete enablement on successful systems (indicated by the Status column below), perform the following two actions:</source>
           <target>கட்டமைப்பு மேலாண்மை செயல்படுத்தல் பின்வரும் கணினிகளில் முயற்சிக்கப்பட்டது. செயல்படுத்தலை கணினிகளில் முடிக்க (கீழே நிலை நிரலில் குறிப்பிட்டது போல), பின்வரும் செயல்களை செய்யவும்:</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.stepone">
-          <source>Run &lt;code&gt;rhn_check&lt;/code&gt; to complete pending rhncfg-* package installs.</source>
-          <target>&lt;code&gt;rhn_check&lt;/code&gt;ஐ இயக்கி மீதமுள்ள rhncfg-* தொகுப்பு நிறுவல்களை முடிக்கவும்.</target>
+        <trans-unit id="summary.jsp.stepone" xml:space="preserve">
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
+          <target state="needs-adaptation">&lt;code&gt;rhn_check&lt;/code&gt;ஐ இயக்கி மீதமுள்ள rhncfg-* தொகுப்பு நிறுவல்களை முடிக்கவும்.</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.steptwo">
-          <source>Run the following command: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</source>
-          <target>பின்வரும் கட்டளையை இயக்கவும்: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
+        <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
+          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
+          <target state="needs-adaptation">பின்வரும் கட்டளையை இயக்கவும்: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
         </trans-unit>
         <trans-unit id="summary.jsp.noActions">
           <source>No actions taken.</source>
@@ -13384,16 +13385,16 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>No Error.</source>
           <target>பிழை இல்லை.</target>
         </trans-unit>
-        <trans-unit id="summary.jsp.rhntools">
-          <source>Could not subscribe to the RHN Tools channel.</source>
-          <target>RHN கருவிகள் தடத்திற்கு சந்தாப்படுத்த முடியாது.</target>
+        <trans-unit id="summary.jsp.rhntools" xml:space="preserve">
+          <source>Could not subscribe to the Tools channel.</source>
+          <target state="needs-adaptation">RHN கருவிகள் தடத்திற்கு சந்தாப்படுத்த முடியாது.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.appstream">
           <source>Could not subscribe to the AppStream channel.</source>
         </trans-unit>
-        <trans-unit id="summary.jsp.packages">
-          <source>Could not schedule rhncfg* package installations.</source>
-          <target>rhncfg* தொகுப்பு நிறுவல்களுக்கு திட்டமிட முடியாது.</target>
+        <trans-unit id="summary.jsp.packages" xml:space="preserve">
+          <source>Could not schedule mgr-cfg* package installations.</source>
+          <target state="needs-adaptation">rhncfg* தொகுப்பு நிறுவல்களுக்கு திட்டமிட முடியாது.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.okAlt">
           <source>okay</source>
@@ -16125,16 +16126,16 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Confirm Configuration File Comparison</source>
           <target>கட்டமைப்பு கோப்பு ஒப்பீட்டை உறுதிப்படுத்தவும்</target>
         </trans-unit>
-        <trans-unit id="diffconfirm.jsp.summary">
-          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source>
+        <trans-unit id="diffconfirm.jsp.summary" xml:space="preserve">
+          <source>The &lt;strong&gt;{0} configuration files&lt;/strong&gt; you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source>
           <context-group name="ctx">
             <context context-type="paramnotes">The 3 configuration files you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once rhn_check has run on that system.</context>
           </context-group>
-          <target>நீங்கள் தேர்ந்தெடுத்த &lt;strong&gt;{0} கட்டமைப்பு கோப்புகள்&lt;/strong&gt;கீழே பட்டியலிடப்பட்ட கோப்புகளின் பதிப்புகளுக்கு ஒப்பிடப்பட்டுள்ளது. தடங்களிலுள்ள கட்டமைப்பு கோப்புகள் தற்போது சந்தாப்படுத்தப்பட்ட கணினிகளுடன் ஒப்பிடப்படும். ஒப்பீட்டின் தீர்வுகள் ஒவ்வொரு கணினியின் நிகழ்வு பக்கத்தில் &lt;code&gt;rhn_check&lt;/code&gt; கணினியில் இயக்கும் போது பார்க்கப்படும்.</target>
+          <target state="needs-adaptation">நீங்கள் தேர்ந்தெடுத்த &lt;strong&gt;{0} கட்டமைப்பு கோப்புகள்&lt;/strong&gt;கீழே பட்டியலிடப்பட்ட கோப்புகளின் பதிப்புகளுக்கு ஒப்பிடப்பட்டுள்ளது. தடங்களிலுள்ள கட்டமைப்பு கோப்புகள் தற்போது சந்தாப்படுத்தப்பட்ட கணினிகளுடன் ஒப்பிடப்படும். ஒப்பீட்டின் தீர்வுகள் ஒவ்வொரு கணினியின் நிகழ்வு பக்கத்தில் &lt;code&gt;rhn_check&lt;/code&gt; கணினியில் இயக்கும் போது பார்க்கப்படும்.</target>
         </trans-unit>
-        <trans-unit id="diffconfirm.jsp.summary.one">
-          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;rhn_check&lt;/code&gt; has run on that system.</source>
-          <target>நீங்கள் தேர்ந்தெடுத்த கட்டமைப்பு கோப்புகள் கீழே பட்டியலிடப்பட்ட கோப்புகளின் பதிப்புகளுக்கு ஒப்பிடப்பட்டுள்ளது. தடங்களிலுள்ள கட்டமைப்பு கோப்புகள் தற்போது சந்தாப்படுத்தப்பட்ட கணினிகளுடன் ஒப்பிடப்படும். ஒப்பீட்டின் தீர்வுகள் ஒவ்வொரு கணினியின் நிகழ்வு பக்கத்தில் &lt;code&gt;rhn_check&lt;/code&gt; கணினியில் இயக்கும் போது பார்க்கப்படும்.</target>
+        <trans-unit id="diffconfirm.jsp.summary.one" xml:space="preserve">
+          <source>The configuration file you have selected will be compared to deployed versions on the systems listed below. Only configuration files in channels to which a system is currently subscribed will be compared. The results of the comparison can be viewed on each system's events page once &lt;code&gt;mgr_check&lt;/code&gt; has run on that system.</source>
+          <target state="needs-adaptation">நீங்கள் தேர்ந்தெடுத்த கட்டமைப்பு கோப்புகள் கீழே பட்டியலிடப்பட்ட கோப்புகளின் பதிப்புகளுக்கு ஒப்பிடப்பட்டுள்ளது. தடங்களிலுள்ள கட்டமைப்பு கோப்புகள் தற்போது சந்தாப்படுத்தப்பட்ட கணினிகளுடன் ஒப்பிடப்படும். ஒப்பீட்டின் தீர்வுகள் ஒவ்வொரு கணினியின் நிகழ்வு பக்கத்தில் &lt;code&gt;rhn_check&lt;/code&gt; கணினியில் இயக்கும் போது பார்க்கப்படும்.</target>
         </trans-unit>
         <trans-unit id="diffconfirm.jsp.noSystems">
           <source>No systems.</source>
@@ -16515,9 +16516,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Enable Configuration Management</source>
           <target>கட்டமைப்பு மேலாண்மையை செயல்படுத்தவும்</target>
         </trans-unit>
-        <trans-unit id="ssmenable.jsp.summary">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular rhncfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-          <target>@@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்பட்ட கோப்புகள் கீழே பட்டியலில் இருக்காது.  @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்படும் கணினிகளுக்கு ஒரு வாய்ப்பளித்தல் உரிமம் ஒரு குறிப்பிட்ட rhncfg-* தொகுப்புகளை நிறுவ சேர்க்கப்படும். நீங்கள் கட்டமைப்பு மேலாண்மையை கீழே பட்டியலிடப்பட்ட கணினிகளுக்கு செயல்படுத்தலாம். &lt;strong&gt;குறிப்பு:&lt;/strong&gt; ஏற்கனவே செயல்படுத்தப்பட்ட கணினிகளுக்கு ஒன்றும் ஏற்படாது.</target>
+        <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+          <target state="needs-adaptation">@@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்பட்ட கோப்புகள் கீழே பட்டியலில் இருக்காது.  @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்படும் கணினிகளுக்கு ஒரு வாய்ப்பளித்தல் உரிமம் ஒரு குறிப்பிட்ட rhncfg-* தொகுப்புகளை நிறுவ சேர்க்கப்படும். நீங்கள் கட்டமைப்பு மேலாண்மையை கீழே பட்டியலிடப்பட்ட கணினிகளுக்கு செயல்படுத்தலாம். &lt;strong&gt;குறிப்பு:&lt;/strong&gt; ஏற்கனவே செயல்படுத்தப்பட்ட கணினிகளுக்கு ஒன்றும் ஏற்படாது.</target>
         </trans-unit>
       </group>
       <!-- configuration/ssm/channelsystems.jsp  -->
@@ -16822,12 +16823,12 @@ any of these revisions.  Are you sure you want to do this?</source>
           </context-group>
           <target>{0} இலிருந்து கட்டமைப்பு கோப்புகளை இறக்கவும்</target>
         </trans-unit>
-        <trans-unit id="sdcimportfile.jsp.summary">
-          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;rhn_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source>
+        <trans-unit id="sdcimportfile.jsp.summary" xml:space="preserve">
+          <source>All files added through this interface will be imported from {0} into this system's sandbox channel. Files will be imported the next time &lt;code&gt;mgr_check&lt;/code&gt; runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</source>
           <context-group name="ctx">
             <context context-type="paramnotes">All files added through this interface will be imported from terry.pratchett.bn.com into this system's sandbox channel. Files will be imported the next time rhn_check runs on the system. If you wish to deploy these files or override config files in global channels, copy this file into your local override channel after the import has occurred. You may use either or both file selection methods below.</context>
           </context-group>
-          <target>இந்த முகப்பு வழியாக சேர்க்கப்பட்ட அனைத்து கோப்புகளும் {0} இலிருந்து இந்த கணினியின் சான்ட்பாக்ஸ் தடத்திற்கு ஏற்றப்படும். கோப்புகள் அடுத்த முறை &lt;code&gt;rhn_check&lt;/code&gt; ஐ இயக்கும் போது ஏற்றப்படும். இந்த கோப்புகளை முழுமையான தடங்களுக்கு நீங்கள் வரிசைப்படுத்த அல்லது கட்டமைப்பு கோப்புகளுக்கு மேலாணை செய்ய விரும்பினால், இந்த கோப்பினை உங்கள் உள்ளமை மேலாணை கட்டமைப்பு தடத்திற்கு நகலெடுக்கவும். நீங்கள் கீழே இருக்கும் கோப்பு தேர்ந்தெடுக்கும் முறையை பயன்படுத்தலாம்.</target>
+          <target state="needs-adaptation">இந்த முகப்பு வழியாக சேர்க்கப்பட்ட அனைத்து கோப்புகளும் {0} இலிருந்து இந்த கணினியின் சான்ட்பாக்ஸ் தடத்திற்கு ஏற்றப்படும். கோப்புகள் அடுத்த முறை &lt;code&gt;rhn_check&lt;/code&gt; ஐ இயக்கும் போது ஏற்றப்படும். இந்த கோப்புகளை முழுமையான தடங்களுக்கு நீங்கள் வரிசைப்படுத்த அல்லது கட்டமைப்பு கோப்புகளுக்கு மேலாணை செய்ய விரும்பினால், இந்த கோப்பினை உங்கள் உள்ளமை மேலாணை கட்டமைப்பு தடத்திற்கு நகலெடுக்கவும். நீங்கள் கீழே இருக்கும் கோப்பு தேர்ந்தெடுக்கும் முறையை பயன்படுத்தலாம்.</target>
         </trans-unit>
         <trans-unit id="sdcimportfile.jsp.new">
           <source>Import New Files</source>
