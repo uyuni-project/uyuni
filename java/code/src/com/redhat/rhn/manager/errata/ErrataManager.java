@@ -533,10 +533,10 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Helper method to get the unpublished/published errata in the set
+     * Helper method to get the errata in the set
      * @param user Currently logged in user
      * @param pc PageControl
-     * @param mode Tells which mode (published/unpublished) we need to run
+     * @param mode Tells which mode we need to run
      * @param label Set label
      * @return all of the errata
      */
