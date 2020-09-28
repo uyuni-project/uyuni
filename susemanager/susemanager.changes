@@ -1,3 +1,4 @@
+- fix logrotate config
 - add missing packages to ubuntu20.04 bootstrap data (bsc#1176629)
 
 -------------------------------------------------------------------
