@@ -1129,10 +1129,77 @@ class TestUyuniActivationKeys:
                                                                                                   org_admin_password='admin')
 
     def test_ak_present_update_minimal_data(self):
-        pass
+        return_ak = {
+            'description': 'old description',
+            'base_channel_label': 'none',
+            'usage_limit': 0,
+            'universal_default': False,
+            'contact_method': 'default',
+            'entitlements': [],
+            'child_channel_labels': [],
+            'server_group_ids': [],
+            'packages': []
+        }
+        with patch.dict(uyuni_config.__salt__, {
+            'uyuni.systemgroup_list_all_groups': MagicMock(return_value=self.ALL_GROUPS),
+            'uyuni.user_get_details': MagicMock(return_value=self.ORG_USER_DETAILS),
+            'uyuni.activation_key_get_details': MagicMock(return_value=return_ak),
+            'uyuni.activation_key_check_config_deployment': MagicMock(return_value=False),
+            'uyuni.activation_key_list_config_channels': MagicMock(return_value=[]),
+            'uyuni.activation_key_set_details': MagicMock()
+        }):
+
+            result = uyuni_config.activation_key_present(**self.MINIMAL_AK_PRESENT)
+            assert result is not None
+            assert result['name'] == '1-ak'
+            assert result['result']
+            assert result['comment'] == '1-ak activation key successfully modified'
+            assert result['changes'] == {'description': {'new': 'ak description', 'old': 'old description'}}
+
+            uyuni_config.__salt__['uyuni.systemgroup_list_all_groups'].assert_called_once_with('admin', 'admin')
+            uyuni_config.__salt__['uyuni.user_get_details'].assert_called_once_with('admin', 'admin')
+            uyuni_config.__salt__['uyuni.activation_key_get_details'].assert_called_once_with('1-ak',
+                                                                                              org_admin_user='admin',
+                                                                                              org_admin_password='admin')
+            uyuni_config.__salt__['uyuni.activation_key_check_config_deployment'].assert_called_once_with('1-ak','admin','admin')
+            uyuni_config.__salt__['uyuni.activation_key_list_config_channels'].assert_called_once_with('1-ak','admin','admin')
+
+            uyuni_config.__salt__['uyuni.activation_key_set_details'].assert_called_once_with('1-ak',
+                                                                                              description=self.MINIMAL_AK_PRESENT['description'],
+                                                                                              contact_method='default',
+                                                                                              base_channel_label='',
+                                                                                              usage_limit=0,
+                                                                                              universal_default=False,
+                                                                                              org_admin_user=self.MINIMAL_AK_PRESENT['org_admin_user'],
+                                                                                              org_admin_password=self.MINIMAL_AK_PRESENT['org_admin_password'])
 
     def test_ak_present_no_changes_minimal_data(self):
-        pass
+        return_ak = {
+            'description': self.MINIMAL_AK_PRESENT['description'],
+            'base_channel_label': 'none',
+            'usage_limit': 0,
+            'universal_default': False,
+            'contact_method': 'default',
+            'entitlements': [],
+            'child_channel_labels': [],
+            'server_group_ids': [],
+            'packages': []
+        }
+        with patch.dict(uyuni_config.__salt__, {
+            'uyuni.systemgroup_list_all_groups': MagicMock(return_value=self.ALL_GROUPS),
+            'uyuni.user_get_details': MagicMock(return_value=self.ORG_USER_DETAILS),
+            'uyuni.activation_key_get_details': MagicMock(return_value=return_ak),
+            'uyuni.activation_key_check_config_deployment': MagicMock(return_value=False),
+            'uyuni.activation_key_list_config_channels': MagicMock(return_value=[]),
+            'uyuni.activation_key_set_details': MagicMock()
+        }):
+
+            result = uyuni_config.activation_key_present(**self.MINIMAL_AK_PRESENT)
+            assert result is not None
+            assert result['name'] == '1-ak'
+            assert result['result']
+            assert result['comment'] == '1-ak is already in the desired state'
+            assert result['changes'] == {}
 
     def test_ak_present_update_full_data(self):
 
