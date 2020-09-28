@@ -621,14 +621,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listSamePublishedInChannels(Org org, Channel channelFrom,
-            Channel channelTo) {
+    public static List listErrataInBothChannels(Org org, Channel channelFrom,
+                                                Channel channelTo) {
         Session session = null;
         List retval = null;
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("Errata.findSameInChannels")
+            retval = session.getNamedQuery("Errata.findErrataInBothChannels")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo).list();
         }

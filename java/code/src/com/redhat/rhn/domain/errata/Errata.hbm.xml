@@ -109,7 +109,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  where e.advisoryName = :advisory and (e.org = :org or e.org is null)]]>
     </query>
     
-    <query name="Errata.findSameInChannels">
+    <query name="Errata.findErrataInBothChannels">
         <![CDATA[
         from com.redhat.rhn.domain.errata.Errata as e
         where :channel_from in elements(e.channels)
