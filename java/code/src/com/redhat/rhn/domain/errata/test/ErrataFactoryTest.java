@@ -65,8 +65,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testPublishToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
-        e.addBug(ErrataManagerTest.createNewPublishedBug(42L, "test bug 1"));
-        e.addBug(ErrataManagerTest.createNewPublishedBug(43L, "test bug 2"));
+        e.addBug(ErrataManagerTest.createTestBug(42L, "test bug 1"));
+        e.addBug(ErrataManagerTest.createTestBug(43L, "test bug 2"));
         e.addPackage(PackageTest.createTestPackage(user.getOrg()));
         e.addKeyword("foo");
         e.addKeyword("bar");

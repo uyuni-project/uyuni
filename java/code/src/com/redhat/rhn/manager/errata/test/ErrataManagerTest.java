@@ -99,7 +99,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    public static Bug createNewPublishedBug(Long id, String summary) {
+    public static Bug createTestBug(Long id, String summary) {
         return ErrataFactory.createBug(id, summary, "https://bugzilla.redhat.com/show_bug.cgi?id=" + id);
     }
 
@@ -119,7 +119,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata e = new Errata();
         assertTrue(e instanceof Errata);
 
-        Bug b = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
+        Bug b = ErrataManagerTest.createTestBug(42L, "test bug");
         assertTrue(b instanceof Bug);
     }
 
@@ -141,7 +141,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        Bug b1 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
+        Bug b1 = ErrataManagerTest.createTestBug(42L, "test bug");
         assertTrue(b1 instanceof Bug);
         Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
