@@ -74,7 +74,7 @@ public class AutoErrataTask extends RhnJavaJob {
             Long serverId = result.get("server_id");
             Long orgId = result.get("org_id");
             try {
-                Errata errata = ErrataFactory.lookupPublishedErrataById(errataId);
+                Errata errata = ErrataFactory.lookupErrataById(errataId);
                 Org org = OrgFactory.lookupById(orgId);
                 ErrataAction errataAction = ActionManager.
                         createErrataAction(org, errata);

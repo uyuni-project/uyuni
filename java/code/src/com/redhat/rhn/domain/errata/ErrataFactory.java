@@ -65,7 +65,6 @@ import java.util.StringTokenizer;
  * ErrataFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.errata.Errata objects from the
  * database.
- * @version $Rev$
  */
 public class ErrataFactory extends HibernateFactory {
 
@@ -128,7 +127,7 @@ public class ErrataFactory extends HibernateFactory {
             eid = null;
         }
         if (eid != null) {
-            Errata errata = ErrataFactory.lookupPublishedErrataById(eid);
+            Errata errata = ErrataFactory.lookupErrataById(eid);
             if (errata != null) {
                 retval.add(errata);
             }
@@ -479,11 +478,11 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Finds published errata by id
+     * Finds errata by id
      * @param id errata id
      * @return Errata if found, otherwise null
      */
-    public static Errata lookupPublishedErrataById(Long id) {
+    public static Errata lookupErrataById(Long id) {
         Session session = null;
         Errata retval = null;
         try {
