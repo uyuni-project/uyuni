@@ -2088,8 +2088,8 @@ public class ErrataManager extends BaseManager {
                     List<Errata> clones = ErrataFactory.lookupPublishedByOriginal(user.getOrg(), errata);
                     if (clones.size() == 0) {
                         log.debug("Cloning errata");
-                        var publishedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
-                        ErrataCacheManager.addErrataRefreshing(cids, publishedId);
+                        var clonedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
+                        ErrataCacheManager.addErrataRefreshing(cids, clonedId);
                     }
                     else {
                         log.debug("Re-publishing clone");
