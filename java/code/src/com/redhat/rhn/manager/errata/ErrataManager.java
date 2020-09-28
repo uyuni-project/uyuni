@@ -256,7 +256,7 @@ public class ErrataManager extends BaseManager {
         // find errata that we do not need to merge
         List<Errata> same = ErrataFactory.listErrataInBothChannels(user.getOrg(),
                 fromChannel, toChannel);
-        List<Errata> brothers = ErrataFactory.listPublishedBrothersInChannels(user.getOrg(),
+        List<Errata> brothers = ErrataFactory.listSiblingsInChannels(user.getOrg(),
                 fromChannel, toChannel);
         List<Errata> clones = ErrataFactory.listPublishedClonesInChannels(user.getOrg(),
                 fromChannel, toChannel);

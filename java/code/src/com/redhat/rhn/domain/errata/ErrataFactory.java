@@ -647,14 +647,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listPublishedBrothersInChannels(Org org, Channel channelFrom,
-            Channel channelTo) {
+    public static List listSiblingsInChannels(Org org, Channel channelFrom,
+                                              Channel channelTo) {
         Session session = null;
         List retval = null;
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("ClonedErrata.findBrothersInChannel")
+            retval = session.getNamedQuery("ClonedErrata.findSiblingsInChannel")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo).list();
         }

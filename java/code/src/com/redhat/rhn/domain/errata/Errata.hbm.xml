@@ -116,7 +116,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         and :channel_to in elements(e.channels)]]>
     </query>
 
-    <query name="ClonedErrata.findBrothersInChannel">
+    <query name="ClonedErrata.findSiblingsInChannel">
         <![CDATA[
         select e_from
         from com.redhat.rhn.domain.errata.ClonedErrata as e_from,
