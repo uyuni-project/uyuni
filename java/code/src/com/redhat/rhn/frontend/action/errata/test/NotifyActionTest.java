@@ -52,7 +52,7 @@ public class NotifyActionTest extends RhnBaseTestCase {
         RequestContext requestContext = new RequestContext(request);
 
         User user = requestContext.getCurrentUser();
-        Errata published = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata published = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         published.addChannel(c);
 

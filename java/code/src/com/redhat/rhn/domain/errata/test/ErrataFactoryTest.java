@@ -57,7 +57,7 @@ import java.util.function.Function;
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     public void testPublishToChannel()  throws Exception {
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
         e.addBug(ErrataManagerTest.createTestBug(42L, "test bug 1"));
         e.addBug(ErrataManagerTest.createTestBug(43L, "test bug 2"));
@@ -96,7 +96,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     public void testCreateAndLookupVendorAndUserErrata() throws Exception {
         //create user published errata
-        Errata userPublishedErrata = createTestPublishedErrata(user.getOrg().getId());
+        Errata userPublishedErrata = createTestErrata(user.getOrg().getId());
         assertTrue(userPublishedErrata instanceof Errata);
         assertNotNull(userPublishedErrata.getId());
         assertNotNull(userPublishedErrata.getAdvisory());
@@ -115,9 +115,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userPublishedErrata.getAdvisoryName())));
         assertTrue(erratas.stream().allMatch(e -> e instanceof Errata));
 
-        //create vendor published errata with same name as user published errata
-        Errata vendorPublishedErrata = createTestPublishedErrata(null,
-                Optional.of(userPublishedErrata.getAdvisory()));
+        //create vendor errata with same name as user published errata
+        Errata vendorPublishedErrata = createTestErrata(null, Optional.of(userPublishedErrata.getAdvisory()));
         assertTrue(vendorPublishedErrata instanceof Errata);
         assertNotNull(vendorPublishedErrata.getId());
         assertNotNull(vendorPublishedErrata.getAdvisory());
@@ -141,7 +140,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testCreateAndLookupErrata() throws Exception {
-        Errata published = createTestPublishedErrata(user.getOrg().getId());
+        Errata published = createTestErrata(user.getOrg().getId());
         assertTrue(published instanceof Errata);
         assertNotNull(published.getId());
         Long pubid = published.getId();
@@ -158,7 +157,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     public void testCreateAndLookupErrataNullOrg() throws Exception {
         //create an errata with null Org
-        Errata published = createTestPublishedErrata(null);
+        Errata published = createTestErrata(null);
         assertTrue(published instanceof Errata);
         assertNotNull(published.getId());
         Long pubid = published.getId();
@@ -178,13 +177,13 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testLastModified() throws Exception {
-        Errata published = createTestPublishedErrata(user.getOrg().getId());
+        Errata published = createTestErrata(user.getOrg().getId());
         published = reload(published);
         assertNotNull(published.getLastModified());
     }
 
     public void testBugs() throws Exception {
-        var e = createTestPublishedErrata(user.getOrg().getId());
+        var e = createTestErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
         e.addBug(ErrataFactory.createBug(123L, "test bug",
                 "https://bugzilla.redhat.com/show_bug.cgi?id=" + (Long) 123L));
@@ -228,15 +227,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
         ErrataFactory.save(e);
         return e;
-    }
-
-    public static Errata createTestPublishedErrata(Long orgId) throws Exception {
-        return createTestPublishedErrata(orgId, empty());
-    }
-
-    public static Errata createTestPublishedErrata(Long orgId, Optional<String> advisory) throws Exception {
-        //just pass to createTestErrata since published is the default
-        return createTestErrata(orgId, advisory);
     }
 
     private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
@@ -294,7 +284,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public static void testLookupByOriginal() throws Exception {
         Long orgId = UserTestUtils.createOrg("testOrgLookupByOriginal");
         Org org = OrgFactory.lookupById(orgId);
-        Errata published = createTestPublishedErrata(orgId);
+        Errata published = createTestErrata(orgId);
 
         Long ceid = ErrataHelper.cloneErrataFaster(published.getId(), org);
 

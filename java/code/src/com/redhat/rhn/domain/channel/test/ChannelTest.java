@@ -64,7 +64,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
     public void testChannel() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         //add an errata
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
         c.addErrata(e);
         assertEquals(c.getErratas().size(), 1);
         ChannelFactory.save(c);

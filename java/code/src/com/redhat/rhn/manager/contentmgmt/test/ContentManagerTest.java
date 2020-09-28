@@ -15,6 +15,18 @@
 
 package com.redhat.rhn.manager.contentmgmt.test;
 
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
+import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -57,18 +69,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
-import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
-import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Tests for ContentManager
@@ -1617,7 +1617,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, false));
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         Package pack = PackageTest.createTestPackage(user.getOrg());
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         channel.addPackage(pack);
         channel.addErrata(errata);
         ChannelFactory.save(channel);

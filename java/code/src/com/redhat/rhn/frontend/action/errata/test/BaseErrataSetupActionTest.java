@@ -50,8 +50,7 @@ public class BaseErrataSetupActionTest extends RhnBaseTestCase {
         RequestContext requestContext = new RequestContext(request);
 
         User user = requestContext.getCurrentUser();
-        Errata published = ErrataFactoryTest
-                .createTestPublishedErrata(user.getOrg().getId());
+        Errata published = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         //test lookup exception
         request.setupAddParameter("eid", Long.valueOf(-92861).toString());

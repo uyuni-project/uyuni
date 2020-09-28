@@ -1653,8 +1653,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         List serverIds = new ArrayList();
         serverIds.add(server.getId().intValue());
 
-        Errata irrelevantErrata = ErrataFactoryTest.createTestPublishedErrata(
-                admin.getOrg().getId());
+        Errata irrelevantErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         assertEquals(0, SystemManager.relevantErrata(admin, server.getId()).size());
         List errataIds = new LinkedList();
         errataIds.add(irrelevantErrata.getId().intValue());

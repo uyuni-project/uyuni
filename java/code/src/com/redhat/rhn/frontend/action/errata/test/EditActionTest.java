@@ -62,11 +62,9 @@ public class EditActionTest extends RhnBaseTestCase {
 
         //Create a new errata
         User user = requestContext.getCurrentUser();
-        Errata errata = ErrataFactoryTest
-                .createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //Create another for checking adv name uniqueness constraint
-        Errata errata2 = ErrataFactoryTest
-                .createTestPublishedErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         request.setupAddParameter("eid", errata.getId().toString());
         request.setupAddParameter("eid", errata.getId().toString());

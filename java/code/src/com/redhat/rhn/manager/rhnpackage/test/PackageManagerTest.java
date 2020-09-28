@@ -299,7 +299,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testPossiblePackagesForPushingIntoChannel() throws Exception {
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Channel c = ChannelTestUtils.createTestChannel(user);
         DataResult dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);

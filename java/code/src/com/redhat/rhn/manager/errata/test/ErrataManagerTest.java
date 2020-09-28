@@ -378,12 +378,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     public void testCloneChannelErrata() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(user);
-        final Errata errata1 =
-                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        final Errata errata2 =
-                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        final Errata errata3 =
-                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        final Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        final Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        final Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         original.addErrata(errata1);
         original.addErrata(errata2);

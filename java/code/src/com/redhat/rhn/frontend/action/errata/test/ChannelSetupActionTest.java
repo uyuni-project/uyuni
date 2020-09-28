@@ -62,7 +62,7 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
 
         //Create a new errata
         Org org = UserTestUtils.createNewOrgFull("channelSetupActionTestbrokenTestExec");
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(org.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(org.getId());
         //make sure we have a channel for the errata
         Channel c1 = ChannelFactoryTest.createTestChannel(org);
         e.addChannel(c1);

@@ -40,7 +40,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
     public void testNotificationQueue() throws Exception {
         Channel c = ChannelFactoryTest.createBaseChannel(user);
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e.addChannel(c);
         ErrataFactory.save(e);
         Long id = e.getId(); //get id for later
@@ -61,7 +61,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public void testBugs() throws Exception {
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         Bug bug1 = new Bug();
         bug1.setId(1001L);
@@ -94,7 +94,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public void testKeywords() throws Exception {
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         assertTrue(errata instanceof Errata);
         errata.addKeyword("yankee");
         errata.addKeyword("hotel");
@@ -110,7 +110,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public void testPackages() throws Exception {
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         assertTrue(errata instanceof Errata);
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         errata.addPackage(pkg);
@@ -120,7 +120,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
     }
 
     public void testAddChannelsToErrata() throws Exception {
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(
+        Errata e = ErrataFactoryTest.createTestErrata(
                 user.getOrg().getId());
         assertTrue(e.getFiles().size() > 0);
         assertTrue(e.getPackages().size() > 0);
@@ -168,7 +168,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public void testBeanMethodsPublished() throws Exception {
-        Errata err = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata err = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         assertTrue(err instanceof Errata);
         runBeanMethodsTest(err, 1);
     }

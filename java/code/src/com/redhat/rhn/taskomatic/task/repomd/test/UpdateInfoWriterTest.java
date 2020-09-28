@@ -15,6 +15,13 @@
 package com.redhat.rhn.taskomatic.task.repomd.test;
 
 
+import static com.redhat.rhn.domain.errata.test.ErrataFactoryTest.createTestErrata;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
@@ -26,13 +33,6 @@ import com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import java.io.StringWriter;
-
-import static com.redhat.rhn.domain.errata.test.ErrataFactoryTest.createTestPublishedErrata;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProductChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
 
 /**
  * Tests for the {@link com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter} generator.
@@ -53,12 +53,12 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         baseChannel.setUpdateTag("SLE-SERVER");
         createTestSUSEProductChannel(baseChannel, product, true);
 
-        Errata errata = createTestPublishedErrata(user.getId());
+        Errata errata = createTestErrata(user.getId());
         errata.setAdvisoryName("SUSE-2016-1234");
         baseChannel.addErrata(errata);
 
         Channel clonedChannel = ChannelFactoryTest.createTestClonedChannel(baseChannel, user);
-        Errata clonedErrata = createTestPublishedErrata(user.getId());
+        Errata clonedErrata = createTestErrata(user.getId());
         ErrataHelper.setUniqueAdvisoryCloneName(errata, clonedErrata);
         clonedChannel.addErrata(clonedErrata);
 

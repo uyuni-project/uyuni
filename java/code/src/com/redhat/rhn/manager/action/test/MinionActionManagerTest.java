@@ -424,7 +424,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 createTestPackage(user, channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
@@ -482,7 +482,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 createTestPackage(user, channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
@@ -543,7 +543,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 createTestPackage(user, channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
@@ -609,7 +609,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 createTestPackage(user, channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
@@ -668,7 +668,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                 createTestPackage(user, channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(createTestPackage(user, channel1, "noarch"));

@@ -1125,7 +1125,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         zypperSystem.getPackages().add(p1v1InZ);
         zypperSystem.getPackages().add(zypperIn);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         baseChan.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(p1v2);
@@ -1218,28 +1218,28 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Channel childChan = ChannelFactoryTest.createTestChannel(user);
         childChan.setParentChannel(baseChan);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e1.getId());
         baseChan.addErrata(e1);
         e1.getPackages().add(p1v2);
         e1.getPackages().add(p2v4);
 
-        Errata e2 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e2 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e2.getId());
         baseChan.addErrata(e2);
         e2.getPackages().add(p1v3);
 
-        Errata e3 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e3 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e3.getId());
         baseChan.addErrata(e3);
         e3.getPackages().add(p1v3arch2);
 
-        Errata e4 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e4 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e4.getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v2);
 
-        Errata e5 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e5 = ErrataFactoryTest.createTestErrata(user.getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v4);
 
@@ -1268,12 +1268,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         baseChan.setUpdateTag("SLE-SERVER");
         server.addChannel(baseChan);
 
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e.getId());
         e.setAdvisoryName("SUSE-2016-1234");
         baseChan.addErrata(e);
 
-        Errata ce = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata ce = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(ce.getId());
         ce.setAdvisoryName("CL-SUSE-2016-1234");
         baseChan.addErrata(ce);
@@ -1301,12 +1301,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         baseChan.setUpdateTag("slessp4");
         server.addChannel(baseChan);
 
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e.getId());
         e.setAdvisoryName("ecryptfs-utils-12379");
         baseChan.addErrata(e);
 
-        Errata ce = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata ce = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(ce.getId());
         ce.setAdvisoryName("CL-ecryptfs-utils-12379");
         baseChan.addErrata(ce);
