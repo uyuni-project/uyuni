@@ -1335,7 +1335,7 @@ public class ErrataManager extends BaseManager {
      * @param user the user doing the push
      * @param inheritPackages inherit packages from the original bug (instaed of the
      * clone in the case of a clone of a clone)
-     * @return an array of Errata that have been published
+     * @return an array of Errata that have been added to chan
      */
     public static Object[] cloneErrataApi(Channel chan, Collection<Errata> errata,
             User user, boolean inheritPackages) {
@@ -1352,11 +1352,12 @@ public class ErrataManager extends BaseManager {
      * @param performPostActions true (default) if you want to refresh newest package
      * cache and schedule repomd regeneration. False only if you're going to do those
      * things yourself.
-     * @return an array of Errata that have been published
+     * @return an array of Errata that have been added to chan
      */
     public static Object[] cloneErrataApi(Channel chan, Collection<Errata> errata,
             User user, boolean inheritPackages, boolean performPostActions) {
         List<Errata> errataToPublish = new ArrayList<Errata>();
+
         // For each errata look up existing clones, or manually clone it
         for (Errata toClone : errata) {
             if (toClone.isCloned()) {
