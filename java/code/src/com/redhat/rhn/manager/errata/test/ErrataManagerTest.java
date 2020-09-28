@@ -206,7 +206,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
         List<Errata> errataList = new ArrayList<Errata>();
         errataList.add(e);
-        List<Errata> publishedList = ErrataFactory.publishToChannel(errataList,
+        List<Errata> publishedList = ErrataFactory.addToChannel(errataList,
                 baseChannel, user, false);
         Errata publish = publishedList.get(0);
         assertTrue(publish instanceof Errata);
@@ -1573,8 +1573,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel src = ChannelFactoryTest.createTestChannel(user);
         Channel tgt = ChannelFactoryTest.createTestChannel(user);
 
-        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
-        ErrataFactory.publishToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
 
         ErrataManager.truncateErrata(src.getErratas(), tgt, user);
 
@@ -1599,8 +1599,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel src = ChannelFactoryTest.createTestChannel(user);
         Channel tgt = ChannelFactoryTest.createTestChannel(user);
 
-        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
-        ErrataFactory.publishToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
 
         ErrataManager.truncateErrata(src.getErratas(), tgt, user);
 
@@ -1625,7 +1625,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel chan = ChannelFactoryTest.createTestChannel(user);
         Package olderPack = copyPackage(errataPackage, user, chan, "0.9.9");
 
-        ErrataFactory.publishToChannel(Arrays.asList(errata), chan, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata), chan, user, false);
 
         ErrataManager.truncateErrata(Collections.emptySet(), chan, user);
 

@@ -343,7 +343,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         List<Errata> errataList = new ArrayList<Errata>();
         errataList.add(e);
-        ErrataFactory.publishToChannel(errataList, c, user, false);
+        ErrataFactory.addToChannel(errataList, c, user, false);
 
         e = (Errata) TestUtils.saveAndReload(e);
 
@@ -867,7 +867,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<Errata> errataList = new ArrayList<Errata>();
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errataList.add(e);
-        ErrataFactory.publishToChannel(errataList, c, user, false);
+        ErrataFactory.addToChannel(errataList, c, user, false);
 
         e = (Errata) TestUtils.saveAndReload(e);
 

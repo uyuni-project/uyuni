@@ -1374,7 +1374,7 @@ public class ErrataManager extends BaseManager {
             }
         }
 
-        List<Errata> added = ErrataFactory.publishToChannel(errataToAdd, chan, user, inheritPackages,
+        List<Errata> added = ErrataFactory.addToChannel(errataToAdd, chan, user, inheritPackages,
                 performPostActions);
         for (Errata e : added) {
             ErrataFactory.save(e);

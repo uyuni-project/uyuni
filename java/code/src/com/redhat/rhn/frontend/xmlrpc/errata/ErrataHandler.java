@@ -1433,7 +1433,7 @@ public class ErrataHandler extends BaseHandler {
     private Errata publish(Errata errata, List<Channel> channels, User user,
             boolean inheritPackages) {
         for (Channel chan : channels) {
-            errata = ErrataFactory.publishToChannel(List.of(errata), chan, user, inheritPackages).get(0);
+            errata = ErrataFactory.addToChannel(List.of(errata), chan, user, inheritPackages).get(0);
         }
         return errata;
     }

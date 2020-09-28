@@ -186,35 +186,35 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Takes an errata and publishes to a channel, creating all of the correct ErrataFile* entries.
+     * Takes an errata and adds it to a channel, creating all of the correct ErrataFile* entries.
      * This method does push packages to the appropriate channel. (Appropriate as defined as the
      * channel previously having a package with the same name).
-     * @param errataList list of errata to publish
-     * @param chan channel to publish it into.
-     * @param user the user doing the pushing
+     * @param errataList list of errata to add
+     * @param chan channel to add them to
+     * @param user the user adding errata to channel
      * @param inheritPackages include only original channel packages
-     * @return the published errata
+     * @return the added errata
      */
-    public static List<Errata> publishToChannel(List<Errata> errataList, Channel chan,
-            User user, boolean inheritPackages) {
-        return publishToChannel(errataList, chan, user, inheritPackages, true);
+    public static List<Errata> addToChannel(List<Errata> errataList, Channel chan,
+                                            User user, boolean inheritPackages) {
+        return addToChannel(errataList, chan, user, inheritPackages, true);
     }
 
     /**
-     * Takes an errata and publishes it to a channel, creating all of the correct ErrataFile*
+     * Takes an errata and adds it to a channel, creating all of the correct ErrataFile* entries.
      * entries. This method does push packages to the appropriate channel.
      * (Appropriate as defined as the channel previously having a package with the same name).
-     * @param errataList list of errata to publish
-     * @param chan channel to publish it into.
+     * @param errataList list of errata to add
+     * @param chan channel to add them to
      * @param user the user doing the pushing
      * @param inheritPackages include only original channel packages
      * @param performPostActions true (default) if you want to refresh newest package
      * cache and schedule repomd regeneration. False only if you're going to do those
      * things yourself.
-     * @return the published errata
+     * @return the added errata
      */
-    public static List<Errata> publishToChannel(List<Errata> errataList, Channel chan,
-            User user, boolean inheritPackages, boolean performPostActions) {
+    public static List<Errata> addToChannel(List<Errata> errataList, Channel chan,
+                                            User user, boolean inheritPackages, boolean performPostActions) {
         List<com.redhat.rhn.domain.errata.Errata> toReturn = new ArrayList<Errata>();
         for (Errata errata : errataList) {
             errata.addChannel(chan);
@@ -268,8 +268,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param packages the packages to push
      * @return the published errata
      */
-    public static Errata publishToChannel(Errata errata, Channel chan, User user,
-            Set<Package> packages) {
+    public static Errata addToChannel(Errata errata, Channel chan, User user,
+                                      Set<Package> packages) {
         errata.addChannel(chan);
         errata = publishErrataPackagesToChannel(errata, chan, user, packages);
         postPublishActions(chan, user);
@@ -1026,7 +1026,7 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Get all advisory strings (published or unpublished) that end in the given string.
+     * Get all advisory strings that end in the given string.
      * Useful when cloning errata.
      * @param ending String ending of the advisory
      * @return Set of existing advisories
@@ -1044,7 +1044,7 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Get all advisory names (published or unpublished) that end in the given string.
+     * Get all advisory names that end in the given string.
      * Useful when cloning errata.
      * @param ending String ending of the advisory
      * @return Set of existing advisory names
