@@ -505,7 +505,6 @@ public class ErrataFactory extends HibernateFactory {
      * @return Returns the errata corresponding to the passed in advisory name.
      */
     public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
-        //look for a published errata first
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("Errata.findVendorAnUserErrataByAdvisoryNameAndOrg")
                 .setParameter("advisory", advisory)
