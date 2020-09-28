@@ -887,7 +887,7 @@ ORDER BY E.update_date, E.id
   <elaborator name="errata_flags"/>
 </mode>
 
-<mode name="published_in_set" class="com.redhat.rhn.frontend.dto.OwnedErrata">
+<mode name="all_in_set" class="com.redhat.rhn.frontend.dto.OwnedErrata">
   <query params="user_id, set_label">
 SELECT DISTINCT E.id,
        E.update_date,

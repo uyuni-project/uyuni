@@ -38,7 +38,7 @@ public class PublishedDeleteConfirmSetupAction extends RhnListAction {
      * {@inheritDoc}
      */
     protected DataResult getDataResult(User user, PageControl pc) {
-        return ErrataManager.publishedInSet(user, pc, "errata_to_delete");
+        return ErrataManager.allInSet(user, pc, "errata_to_delete");
     }
 
     /** {@inheritDoc} */
