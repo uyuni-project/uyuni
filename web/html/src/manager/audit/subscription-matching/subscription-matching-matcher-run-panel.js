@@ -9,7 +9,7 @@ class MatcherRunPanel extends React.Component {
     latestStart: this.props.initialLatestStart,
     latestEnd: this.props.initialLatestEnd,
     error: false,
-  };
+  }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.state.latestStart == null || nextProps.initialLatestStart >= this.state.latestStart) {

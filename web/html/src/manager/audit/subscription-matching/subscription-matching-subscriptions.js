@@ -2,7 +2,6 @@
 "use strict";
 
 const React = require("react");
-const createReactClass = require('create-react-class');
 const UtilComponent = require("./subscription-matching-util");
 const ToolTip = UtilComponent.ToolTip;
 const CsvLink = UtilComponent.CsvLink;
@@ -15,18 +14,16 @@ const {Highlight} = require("components/table/Highlight");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
-const Subscriptions = createReactClass({
-  displayName: 'Subscriptions',
-
-  sortByPolicy: function(aRaw, bRaw, columnKey, sortDirection) {
+class Subscriptions extends React.Component {
+  sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {
     var result = 0;
     const aValue = humanReadablePolicy(aRaw[columnKey]);
     const bValue = humanReadablePolicy(bRaw[columnKey]);
     result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  sortByQuantity: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortByQuantity = (aRaw, bRaw, columnKey, sortDirection) => {
     var result = 0;
     const aMatched = aRaw["matchedQuantity"];
     const aTotal = aRaw["totalQuantity"];
@@ -36,20 +33,20 @@ const Subscriptions = createReactClass({
     const bValue = bMatched / bTotal;
     result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
+  };
 
-  searchData: function(datum, criteria) {
+  searchData = (datum, criteria) => {
     if (criteria) {
       return datum.description.toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
-  },
+  };
 
-  buildRows: function(subscriptions) {
+  buildRows = (subscriptions) => {
     return Object.keys(subscriptions).map((id) => subscriptions[id]);
-  },
+  };
 
-  render: function() {
+  render() {
     let body = null;
     if (Object.keys(this.props.subscriptions).length > 0) {
       body = (
@@ -129,8 +126,8 @@ const Subscriptions = createReactClass({
         {body}
       </div>
     );
-  },
-});
+  }
+}
 
 const QuantityCell = (props) => {
   const matched = props.matched;

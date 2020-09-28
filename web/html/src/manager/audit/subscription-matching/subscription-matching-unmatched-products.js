@@ -2,7 +2,6 @@
 "use strict";
 
 const React = require("react");
-const createReactClass = require('create-react-class');
 const UtilComponent = require("./subscription-matching-util");
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
@@ -14,16 +13,12 @@ const {SearchField} = require("components/table/SearchField");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
-const UnmatchedProducts = createReactClass({
-  displayName: 'UnmatchedProducts',
+class UnmatchedProducts extends React.Component {
+  state = {
+      selectedProductId: null
+  }
 
-  getInitialState: function() {
-    return {
-        selectedProductId: null
-    };
-  },
-
-  buildData: function(props) {
+  buildData = (props) => {
       const products = props.products;
       return props.unmatchedProductIds.map((pid) => {
           const productName = products[pid].productName;
@@ -34,22 +29,22 @@ const UnmatchedProducts = createReactClass({
                  systemCount: systemCount
                };
        });
-  },
+  };
 
-  sortBySystemCount: function(a, b, columnKey, sortDirection) {
+  sortBySystemCount = (a, b, columnKey, sortDirection) => {
     var result = a[columnKey]- b[columnKey];
     return (result || Utils.sortById(a, b)) * sortDirection;
-  },
+  };
 
-  showPopUp: function(id) {
+  showPopUp = (id) => {
     this.setState({selectedProductId: id});
-  },
+  };
 
-  closePopUp: function() {
+  closePopUp = () => {
     this.setState({selectedProductId: null});
-  },
+  };
 
-  render: function() {
+  render() {
     var body;
     if (this.props.unmatchedProductIds.length > 0) {
       body = (
@@ -104,8 +99,8 @@ const UnmatchedProducts = createReactClass({
         {body}
       </div>
     );
-  },
-});
+  }
+}
 
 
 class UnmatchedSystemPopUp extends React.Component {
