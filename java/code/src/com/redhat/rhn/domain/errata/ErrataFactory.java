@@ -298,7 +298,7 @@ public class ErrataFactory extends HibernateFactory {
                     ErrataFactory.lookupErrataFile(errata.getId(), pack.getPath());
 
             singleton.saveObject(Opt.fold(fileOpt, () -> createErrataFile(pack, errata, chan),
-                    ef -> publishErrataFile(ef, pack, chan)));
+                    ef -> addErrataFile(ef, pack, chan)));
 
         }
         ChannelFactory.save(chan);
@@ -311,19 +311,19 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Private helper method that publish an ErrataFile to a channel.
+     * Private helper method that adds an ErrataFile to a channel.
      *
-     * @param publishedFile ErrataFile to publish
-     * @param pack the Package to push
-     * @param chan Channel to publish it into.
-     * @return the published errata
+     * @param file ErrataFile to add
+     * @param pack the Package to add
+     * @param chan Channel to add it to
+     * @return the added errata file
      */
-    private static ErrataFile publishErrataFile(ErrataFile publishedFile, Package pack, Channel chan) {
-        if (!publishedFile.hasPackage(pack)) {
-            publishedFile.addPackage(pack);
+    private static ErrataFile addErrataFile(ErrataFile file, Package pack, Channel chan) {
+        if (!file.hasPackage(pack)) {
+            file.addPackage(pack);
         }
-        publishedFile.addChannel(chan);
-        return publishedFile;
+        file.addChannel(chan);
+        return file;
     }
 
     /**
