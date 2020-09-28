@@ -904,9 +904,10 @@ class UyuniActivationKeys:
                                                                               org_admin_user=org_admin_user,
                                                                               org_admin_password=org_admin_password)
                 else:
-                    __salt__['uyuni.activation_key_disable_config_deployment'](key,
-                                                                               org_admin_user=org_admin_user,
-                                                                               org_admin_password=org_admin_password)
+                    if current_ak:
+                        __salt__['uyuni.activation_key_disable_config_deployment'](key,
+                                                                                   org_admin_user=org_admin_user,
+                                                                                   org_admin_password=org_admin_password)
 
             if changes.get('packages', False):
                 self._update_packages(current_ak.get('packages', []),
@@ -1111,7 +1112,7 @@ def activation_key_absent(name, org_admin_user=None, org_admin_password=None):
     """
     Ensure an Uyuni Activation Key is not present.
 
-    :param id: the Activation Key ID
+    :param name: the Activation Key ID
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
@@ -1131,7 +1132,7 @@ def activation_key_present(name,
                            configuration_channels=[],
                            packages=[],
                            server_groups=[],
-                           configure_after_registration = False,
+                           configure_after_registration=False,
                            org_admin_user=None, org_admin_password=None):
     """
     Ensure an Uyuni Activation Key is present.
