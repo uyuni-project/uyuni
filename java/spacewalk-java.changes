@@ -1,3 +1,4 @@
+- add new allowVendorChange flag for dist upgrades
 - Sync state modules when starting action chain execution (bsc#1177336)
 - enable redfish power management by default
 
