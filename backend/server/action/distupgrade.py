@@ -22,7 +22,7 @@ from spacewalk.server.rhnLib import InvalidAction, ShadowAction
 __rhnexport__ = ['upgrade']
 
 _query_dup_data = rhnSQL.Statement("""
-    SELECT id, dry_run, full_update
+    SELECT id, dry_run, allow_vendor_change, full_update
       FROM rhnActionDup
      WHERE action_id = :action_id
 """)
@@ -100,6 +100,7 @@ def upgrade(serverId, actionId, dry_run=0):
             "full_update"         : (row['full_update'] == 'Y'),
             "change_product"      : do_change,
             "products"            : sle10_products,
+            "allow_vendor_change" : (row['allow_vendor_change'] == 'Y'),
             "dry_run"             : (row['dry_run'] == 'Y') }
         return (params)
 
@@ -125,6 +126,7 @@ def upgrade(serverId, actionId, dry_run=0):
         "full_update"         : (row['full_update'] == 'Y'),
         "change_product"      : do_change,
         "products"            : sle10_products,
+        "allow_vendor_change" : (row['allow_vendor_change'] == 'Y'),
         "dry_run"             : (row['dry_run'] == 'Y') }
     return (params)
 
