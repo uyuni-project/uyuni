@@ -4787,11 +4787,11 @@ organization. You may grant or remove the organization administrator role in the
         <source>Patches Management</source>
         <target>ਇਰੱਟਾ ਪਰਬੰਧਨ</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target>ਕੋਈ ਇਰੱਟਾ ਪਰਾਕਸ਼ਤ ਨਹੀਂ</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target>ਪਰਕਾਸ਼ਤ ਇਰੱਟਾ</target>
       </trans-unit>

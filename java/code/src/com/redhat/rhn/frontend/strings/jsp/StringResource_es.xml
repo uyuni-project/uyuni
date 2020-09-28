@@ -4778,11 +4778,11 @@ administrador de la organización en la sección "Roles" de la pestaña
         <source>Patches Management</source>
         <target>Gestión de parches</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target>Ninguna errata publicada</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target>Erratas publicada</target>
       </trans-unit>

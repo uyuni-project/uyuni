@@ -4897,11 +4897,11 @@ organization. You may grant or remove the organization administrator role in the
         <source>Patches Management</source>
         <target>勘誤管理</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target>沒有已發佈的勘誤</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target>已發佈的勘誤</target>
       </trans-unit>

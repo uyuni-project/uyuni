@@ -4900,11 +4900,11 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         <source>Patches Management</source>
         <target>Gestione Errata</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target>Nessun Errata pubblicato</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target>Errata pubblicato</target>
       </trans-unit>
