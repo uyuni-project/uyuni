@@ -85,7 +85,6 @@ import java.util.stream.Collectors;
 
 /**
  * ErrataHandler - provides methods to access errata information.
- * @version $Rev$
  * @xmlrpc.namespace errata
  * @xmlrpc.doc Provides methods to access and modify errata.
  */
@@ -1119,7 +1118,7 @@ public class ErrataHandler extends BaseHandler {
      * @param bugs a List of maps consisting of 'id' Integers and 'summary' strings
      * @param keywords a List of keywords for the errata
      * @param packageIds a List of package Id packageId Integers
-     * @param channelLabels an array of channel labels to publish to
+     * @param channelLabels an array of channel labels to add patches to
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return The errata created
      *
@@ -1190,7 +1189,7 @@ public class ErrataHandler extends BaseHandler {
             validateMap(validKeys, bugMap);
         }
 
-        //Don't want them to publish an errata without any channels,
+        //Don't want them to add an errata without any channels,
         //so check first before creating anything
         List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
@@ -1287,7 +1286,7 @@ public class ErrataHandler extends BaseHandler {
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }
 
-        return publish(newErrata, channels, loggedInUser, false);
+        return addToChannels(newErrata, channels, loggedInUser, false);
     }
 
     /**
@@ -1312,17 +1311,17 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Publishes an existing errata to a set of channels
+     * Adds an existing errata to a set of channels
      * @param loggedInUser The current user
-     * @param advisory The advisory Name of the errata to publish
-     * @param channelLabels List of channels to publish the errata to
-     * @return the published errata
+     * @param advisory The advisory Name of the errata to add
+     * @param channelLabels List of channels to add the errata to
+     * @return the added errata
      *
-     * @xmlrpc.doc Publish an existing errata to a set of channels.
+     * @xmlrpc.doc Adds an existing errata to a set of channels.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
-     *      #array_single("string", "channelLabel - list of channel labels to publish to")
+     *      #array_single("string", "channelLabel - list of channel labels to add to")
      * @xmlrpc.returntype
      *          $ErrataSerializer
      */
@@ -1335,24 +1334,24 @@ public class ErrataHandler extends BaseHandler {
             log.warn("Errata " + toPublish.getAdvisory() + " added to vendor channels " +
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }
-        return publish(toPublish, channels, loggedInUser, false);
+        return addToChannels(toPublish, channels, loggedInUser, false);
     }
 
     /**
-     * Publishes an existing cloned errata to a set of cloned channels
+     * Adds an existing cloned errata to a set of cloned channels
      * according to its original erratum
      * @param loggedInUser The current user
-     * @param advisory The advisory Name of the errata to publish
-     * @param channelLabels List of channels to publish the errata to
+     * @param advisory The advisory Name of the errata to add
+     * @param channelLabels List of channels to add the errata to
      * @throws InvalidChannelRoleException if the user perms are incorrect
-     * @return the published errata
+     * @return the added errata
      *
-     * @xmlrpc.doc Publishes an existing cloned errata to a set of cloned
+     * @xmlrpc.doc Adds an existing cloned errata to a set of cloned
      * channels according to its original erratum
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
-     *      #array_single("string", "channelLabel - list of channel labels to publish to")
+     *      #array_single("string", "channelLabel - list of channel labels to add to")
      * @xmlrpc.returntype
      *          $ErrataSerializer
      */
@@ -1388,13 +1387,13 @@ public class ErrataHandler extends BaseHandler {
         if (!toPublish.isCloned()) {
             throw new InvalidErrataException("Cloned errata expected.");
         }
-        return publish(toPublish, channels, loggedInUser, true);
+        return addToChannels(toPublish, channels, loggedInUser, true);
     }
 
     /**
      * Verify a list of channels labels, and populate their corresponding
-     *      Channel objects into a List.  This is primarily used before publishing
-     *      to verify all channels are valid before starting the errata creation
+     * Channel objects into a List.  This is primarily used before adding errata
+     * to verify all channels are valid before starting the errata creation
      * @param channelsLabels the List of channel labels to verify
      * @param vendorChannelOverride list of vendor channel labels to allow without permission.
      * @return a List of channel objects
@@ -1425,19 +1424,17 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * private helper method to publish the errata
-     * @param errata the errata to publish
+     * private helper method to add the errata to channels
+     * @param errata the errata to add
      * @param channels A list of channel objects
-     * @return The published Errata
+     * @return The added Errata
      */
-    private Errata publish(Errata errata, List<Channel> channels, User user,
-            boolean inheritPackages) {
+    private Errata addToChannels(Errata errata, List<Channel> channels, User user, boolean inheritPackages) {
         for (Channel chan : channels) {
             errata = ErrataFactory.addToChannel(List.of(errata), chan, user, inheritPackages).get(0);
         }
         return errata;
     }
-
 
     /**
      * list errata by date
