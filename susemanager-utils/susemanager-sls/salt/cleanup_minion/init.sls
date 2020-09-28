@@ -12,6 +12,7 @@ mgrchannels_repo_clean_all:
 mgrchannels_repo_clean_channels:
   file.absent:
     - name: /etc/apt/sources.list.d/susemanager:channels.list
+    - name: /etc/apt/auth.conf.d/susemanager.conf
 mgrchannels_repo_clean_keyring:
   file.absent:
     - name: /usr/share/keyrings/mgr-archive-keyring.gpg
