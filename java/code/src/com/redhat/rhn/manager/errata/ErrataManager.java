@@ -322,7 +322,7 @@ public class ErrataManager extends BaseManager {
      * @return Returns a Bug object
      */
     public static Bug createNewPublishedBug(Long id, String summary, String url) {
-        return ErrataFactory.createPublishedBug(id, summary, url);
+        return ErrataFactory.createBug(id, summary, url);
     }
 
     /**

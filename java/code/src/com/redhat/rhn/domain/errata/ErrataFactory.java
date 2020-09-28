@@ -353,13 +353,13 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a new Published Bug object with the given id and summary.
+     * Creates a new Bug object with the given details.
      * @param id The id for the new bug
      * @param summary The summary for the new bug
      * @param url The bug URL
      * @return The new published bug.
      */
-    public static Bug createPublishedBug(Long id, String summary, String url) {
+    public static Bug createBug(Long id, String summary, String url) {
         Bug bug = new Bug();
         bug.setId(id);
         bug.setSummary(summary);

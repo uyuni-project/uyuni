@@ -58,7 +58,7 @@ import java.util.function.Function;
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     public static Bug createPublishedBug(Long longIn, String stringIn) {
-        return ErrataFactory.createPublishedBug(longIn, stringIn,
+        return ErrataFactory.createBug(longIn, stringIn,
                 "https://bugzilla.redhat.com/show_bug.cgi?id=" + longIn);
     }
 

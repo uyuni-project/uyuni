@@ -490,7 +490,7 @@ public class ErrataHandler extends BaseHandler {
                         url = (String) bugMap.get("url");
                     }
 
-                    Bug bug = ErrataFactory.createPublishedBug(
+                    Bug bug = ErrataFactory.createBug(
                             Long.valueOf((Integer) bugMap.get("id")),
                             (String) bugMap.get("summary"), url);
 
@@ -1257,7 +1257,7 @@ public class ErrataHandler extends BaseHandler {
                 url = (String) bugMap.get("url");
             }
 
-            Bug bug = ErrataFactory.createPublishedBug(
+            Bug bug = ErrataFactory.createBug(
                     ((Integer)bugMap.get("id")).longValue(),
                     (String)bugMap.get("summary"), url);
             newErrata.addBug(bug);

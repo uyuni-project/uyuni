@@ -173,7 +173,7 @@ public class CreateAction extends RhnSetAction {
             Long id = Long.valueOf(form.getString("buglistId"));
             String summary = form.getString("buglistSummary");
             String url = form.getString("buglistUrl");
-            return ErrataFactory.createPublishedBug(id, summary, url);
+            return ErrataFactory.createBug(id, summary, url);
         }
         return null;
     }
