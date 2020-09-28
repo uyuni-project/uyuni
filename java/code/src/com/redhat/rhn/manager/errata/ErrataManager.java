@@ -553,11 +553,11 @@ public class ErrataManager extends BaseManager {
 
 
     /**
-     * Delete published errata in the set named as label
+     * Delete errata in the set named as label
      * @param user User performing the operation
      * @param label name of the set that contains the id's of the errata to be deleted
      */
-    public static void deletePublishedErrata(User user, String label) {
+    public static void deleteErrataInSet(User user, String label) {
         DataResult dr = allInSet(user, null, label);
         deleteErrata(user, dr);
     }
