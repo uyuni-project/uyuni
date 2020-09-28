@@ -1407,7 +1407,7 @@ public class ErrataManager extends BaseManager {
      */
     public static Set<Long> cloneChannelErrata(List<ErrataOverview> toClone, Long toCid,
             User user) {
-        List<OwnedErrata> owned = ErrataFactory.listPublishedOwnedUnmodifiedClonedErrata(user.getOrg().getId());
+        List<OwnedErrata> owned = ErrataFactory.listOwnedUnmodifiedClonedErrata(user.getOrg().getId());
         Set<Long> eids = new HashSet<Long>();
 
         // add cloned and owned errata to mapping. we want the oldest owned

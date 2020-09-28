@@ -911,7 +911,7 @@ ORDER BY E.update_date, E.id
   <elaborator name="errata_flags" />
 </mode>
 
-<mode name="published_owned_unmodified_cloned_errata" class="com.redhat.rhn.frontend.dto.OwnedErrata">
+<mode name="owned_unmodified_cloned_errata" class="com.redhat.rhn.frontend.dto.OwnedErrata">
   <query params="org_id">
   SELECT E.id,
          EC.original_id AS from_errata_id

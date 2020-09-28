@@ -1011,15 +1011,15 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * List all owned, published, unmodified, cloned errata in an org. Useful when cloning
+     * List all owned, unmodified, cloned errata in an org. Useful when cloning
      * channels.
      * @param orgId Org id to look for
      * @return List of OwnedErrata
      */
-    public static DataResult<OwnedErrata> listPublishedOwnedUnmodifiedClonedErrata(
+    public static DataResult<OwnedErrata> listOwnedUnmodifiedClonedErrata(
             Long orgId) {
         SelectMode mode = ModeFactory.getMode("Errata_queries",
-                "published_owned_unmodified_cloned_errata");
+                "owned_unmodified_cloned_errata");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", orgId);
         return mode.execute(params);
