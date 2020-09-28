@@ -33,7 +33,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -301,7 +301,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Org org = OrgFactory.lookupById(orgId);
         Errata published = createTestPublishedErrata(orgId);
 
-        Long ceid = PublishErrataHelper.cloneErrataFaster(published.getId(), org);
+        Long ceid = ErrataHelper.cloneErrataFaster(published.getId(), org);
 
         List list = ErrataFactory.lookupByOriginal(org, published);
 

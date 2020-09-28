@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -59,7 +59,7 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
 
         Channel clonedChannel = ChannelFactoryTest.createTestClonedChannel(baseChannel, user);
         Errata clonedErrata = createTestPublishedErrata(user.getId());
-        PublishErrataHelper.setUniqueAdvisoryCloneName(errata, clonedErrata);
+        ErrataHelper.setUniqueAdvisoryCloneName(errata, clonedErrata);
         clonedChannel.addErrata(clonedErrata);
 
         StringWriter buffer = new StringWriter();

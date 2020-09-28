@@ -50,7 +50,7 @@ public class AddErrataAction extends RhnListAction {
         User user = requestContext.getCurrentUser();
 
         Long cid = Long.parseLong(request.getParameter(CID));
-        PublishErrataHelper.checkPermissions(user, cid);
+        ErrataHelper.checkPermissions(user, cid);
 
         Channel currentChan = ChannelFactory.lookupByIdAndUser(cid,
                 requestContext.getCurrentUser());

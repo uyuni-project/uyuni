@@ -43,7 +43,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -928,7 +928,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<Long> list = new ArrayList<Long>();
         list.add(cchan.getId());
 
-        Long ceid = PublishErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
         Errata ce = ErrataFactory.lookupById(ceid);
         ce = ErrataManager.addToChannels(ce, list, user);
 
@@ -954,7 +954,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<Long> list = new ArrayList<Long>();
         list.add(cchan.getId());
 
-        Long ceid = PublishErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
         Errata ce = ErrataFactory.lookupById(ceid);
         ce = ErrataManager.addToChannels(ce, list, user);
 

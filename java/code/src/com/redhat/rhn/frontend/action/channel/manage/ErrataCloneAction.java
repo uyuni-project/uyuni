@@ -68,7 +68,7 @@ public class ErrataCloneAction extends RhnListAction {
         Long cid = Long.parseLong(request.getParameter(CID));
         Channel channel = ChannelFactory.lookupByIdAndUser(cid, user);
 
-        PublishErrataHelper.checkPermissions(user, cid);
+        ErrataHelper.checkPermissions(user, cid);
 
         request.setAttribute(CID, cid);
         request.setAttribute("user", user);

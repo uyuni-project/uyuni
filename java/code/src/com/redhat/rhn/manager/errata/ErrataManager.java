@@ -55,7 +55,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -1440,7 +1440,7 @@ public class ErrataManager extends BaseManager {
                 List<Errata> clones = ErrataManager.lookupPublishedByOriginal(
                         user, toClone);
                 if (clones.isEmpty()) {
-                    errataToPublish.add(PublishErrataHelper.cloneErrataFast(
+                    errataToPublish.add(ErrataHelper.cloneErrataFast(
                             toClone, user.getOrg()));
                 }
                 else {
@@ -1504,7 +1504,7 @@ public class ErrataManager extends BaseManager {
             if (!eidToClone.containsKey(erratum.getId())) {
                 // no published owned clones yet, lets make our own
                 // hibernate was too slow, had to rewrite in mode queries
-                Long cloneId = PublishErrataHelper.cloneErrataFaster(erratum.getId(), user
+                Long cloneId = ErrataHelper.cloneErrataFaster(erratum.getId(), user
                         .getOrg());
                 eids.add(cloneId);
 
@@ -2165,7 +2165,7 @@ public class ErrataManager extends BaseManager {
                     List<Errata> clones = lookupPublishedByOriginal(user, errata);
                     if (clones.size() == 0) {
                         log.debug("Cloning errata");
-                        var publishedId = PublishErrataHelper.cloneErrataFaster(eid, user.getOrg());
+                        var publishedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
                         ErrataCacheManager.addErrataRefreshing(cids, publishedId);
                     }
                     else {

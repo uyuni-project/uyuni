@@ -1123,7 +1123,7 @@ public class ErrataFactory extends HibernateFactory {
     /**
      * Clone an erratum in the db. Will fill contents of rhnErrata, rhnErrataCloned,
      * rhnErrataBugList, rhnErrataPackage, rhnErrataKeyword, and rhnErrataCVE. Basically
-     * do everything that PublishErrataHelper.cloneErrataFast does, but much, much faster.
+     * do everything that ErrataHelper.cloneErrataFast does, but much, much faster.
      * @param originalEid erratum id to clone from
      * @param advisory unique advisory
      * @param advisoryName unique name

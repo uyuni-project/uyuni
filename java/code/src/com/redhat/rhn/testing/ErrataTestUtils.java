@@ -39,7 +39,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -264,7 +264,7 @@ public class ErrataTestUtils {
             Package aPackage) throws Exception {
         ClonedErrata clone = new ClonedErrata();
         copyErrataDetails(clone, original);
-        PublishErrataHelper.setUniqueAdvisoryCloneName(original, clone);
+        ErrataHelper.setUniqueAdvisoryCloneName(original, clone);
         clone.setOriginal(original);
         clone.setOrg(user.getOrg());
         clone.setCves(cves);

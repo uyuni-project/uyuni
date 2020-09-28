@@ -34,17 +34,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
- * PublishErrataHelper
- * @version $Rev$
+ * ErrataHelper
  */
-public class PublishErrataHelper {
+public class ErrataHelper {
 
     private static final String DEFAULT_ERRATA_CLONE_PREFIX = "CL-";
     private static final String REDHAT_ERRATA_PREFIX = "RH";
 
-    private PublishErrataHelper() {
-
+    private ErrataHelper() {
     }
 
     /**
