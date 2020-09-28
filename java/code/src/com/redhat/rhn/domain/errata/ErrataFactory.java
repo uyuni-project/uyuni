@@ -253,7 +253,7 @@ public class ErrataFactory extends HibernateFactory {
             toReturn.add(e);
         }
         if (performPostActions) {
-            postPublishActions(chan, user);
+            ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
         }
         return toReturn;
     }
@@ -272,14 +272,8 @@ public class ErrataFactory extends HibernateFactory {
                                       Set<Package> packages) {
         errata.addChannel(chan);
         errata = addErrataPackagesToChannel(errata, chan, user, packages);
-        postPublishActions(chan, user);
+        ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
         return errata;
-    }
-
-
-    private static void postPublishActions(Channel chan, User user) {
-        ChannelManager.refreshWithNewestPackages(chan,
-            "java::addErrataPackagesToChannel");
     }
 
 
