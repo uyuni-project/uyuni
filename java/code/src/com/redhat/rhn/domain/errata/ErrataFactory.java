@@ -986,9 +986,7 @@ public class ErrataFactory extends HibernateFactory {
         Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
         while (bugsItr.hasNext()) {
             Bug bugIn = (Bug) bugsItr.next();
-            Bug cloneB = ErrataManager.createNewPublishedBug(bugIn.getId(),
-                        bugIn.getSummary(),
-                        bugIn.getUrl());
+            Bug cloneB = createBug(bugIn.getId(), bugIn.getSummary(), bugIn.getUrl());
             cloned.addBug(cloneB);
         }
     }

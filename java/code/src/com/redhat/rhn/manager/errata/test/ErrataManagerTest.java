@@ -100,8 +100,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public static Bug createNewPublishedBug(Long id, String summary) {
-        return ErrataManager.createNewPublishedBug(id, summary,
-                "https://bugzilla.redhat.com/show_bug.cgi?id=" + id);
+        return ErrataFactory.createBug(id, summary, "https://bugzilla.redhat.com/show_bug.cgi?id=" + id);
     }
 
     public void testStore() throws Exception {

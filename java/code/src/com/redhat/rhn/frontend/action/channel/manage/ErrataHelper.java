@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
-import com.redhat.rhn.manager.errata.ErrataManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -117,12 +116,9 @@ public class ErrataHelper {
         }
 
 
-        for (Bug bugIn : (Set<Bug>) original.getBugs()) {
-            Bug bClone;
-                bClone = ErrataManager.createNewPublishedBug(bugIn.getId(),
-                                                             bugIn.getSummary(),
-                                                             bugIn.getUrl());
-           clone.addBug(bClone);
+        for (Bug bugIn : original.getBugs()) {
+            var bClone = ErrataFactory.createBug(bugIn.getId(), bugIn.getSummary(), bugIn.getUrl());
+            clone.addBug(bClone);
         }
 
         ((ClonedErrata) clone).setOriginal(original);

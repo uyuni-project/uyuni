@@ -41,12 +41,11 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
-import com.redhat.rhn.domain.errata.Bug;
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -312,17 +311,6 @@ public class ErrataManager extends BaseManager {
             return Optional.of((ClonedErrata) e);
         }
         return Optional.empty();
-    }
-
-    /**
-     * Creates a new Bug with the id and summary given.
-     * @param id The id for the new bug
-     * @param summary The summary for the new bug
-     * @param url The url for the new bug.
-     * @return Returns a Bug object
-     */
-    public static Bug createNewPublishedBug(Long id, String summary, String url) {
-        return ErrataFactory.createBug(id, summary, url);
     }
 
     /**

@@ -242,7 +242,7 @@ public class EditAction extends LookupDispatchAction {
             Long bugid = Long.valueOf(bug[0]);
             String summary = bug[1];
             String url = bug[2];
-            e.addBug(ErrataManager.createNewPublishedBug(bugid, summary, url));
+            e.addBug(ErrataFactory.createBug(bugid, summary, url));
         }
 
         //add keywords... split on commas and add separately to list
