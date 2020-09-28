@@ -1,3 +1,4 @@
+- Drop node-fetch to fix CVE-2020-15168
 - Notify about missing libvirt or hypervisor on virtual host
 - Redesign maintenance schedule systems table to use paginated data from server
 
