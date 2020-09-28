@@ -8878,7 +8878,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.filters" xml:space="preserve">
         <source>Filters</source>
-        <target>フィルター</target>
+        <target>フィルタ</target>
       </trans-unit>
       <trans-unit id="repos.jsp.filters.tip" xml:space="preserve">
         <source>-zsh*,kernel +zsh-html</source>
@@ -21825,7 +21825,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.buildhost" xml:space="preserve">
         <source>Build Host</source>
-        <target>ホストの構築</target>
+        <target>構築ホスト</target>
       </trans-unit>
       <trans-unit id="package.jsp.builddate" xml:space="preserve">
         <source>Build Date</source>
