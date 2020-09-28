@@ -1397,23 +1397,22 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Clone errata as necessary and link cloned errata with new channel.
+     * Clone errata as necessary and add cloned errata to new channel.
      * Warning: this does not clone packages or schedule channel repomd regeneration.
      * You must do that yourself!
      * @param toClone List of ErrataOverview to clone
      * @param toCid Channel id to clone them into
      * @param user the requesting user
-     * @return list of errata ids that were published into channel
+     * @return list of errata ids that were added to the channel
      */
     public static Set<Long> cloneChannelErrata(List<ErrataOverview> toClone, Long toCid,
             User user) {
-        List<OwnedErrata> owned = ErrataFactory
-                .listPublishedOwnedUnmodifiedClonedErrata(user.getOrg().getId());
+        List<OwnedErrata> owned = ErrataFactory.listPublishedOwnedUnmodifiedClonedErrata(user.getOrg().getId());
         Set<Long> eids = new HashSet<Long>();
 
-        // add published, cloned, owned errata to mapping. we want the oldest owned
-        // clone to reuse. listPublishedOwnedUnmodifiedClonedErrata orders by created,
-        // so we just add the first one we come across to the mapping and skip others
+        // add cloned and owned errata to mapping. we want the oldest owned
+        // clone to reuse. ErrataFactory orders by created, so we just add the
+        // first one we come across to the mapping and skip others
         Map<Long, OwnedErrata> eidToClone = new HashMap<Long, OwnedErrata>();
         for (OwnedErrata erratum : owned) {
             if (!eidToClone.containsKey(erratum.getFromErrataId())) {
@@ -1427,12 +1426,11 @@ public class ErrataManager extends BaseManager {
 
         for (ErrataOverview erratum : toClone) {
             if (!eidToClone.containsKey(erratum.getId())) {
-                // no published owned clones yet, lets make our own
+                // no owned clones yet, lets make our own
                 // hibernate was too slow, had to rewrite in mode queries
                 Long cloneId = ErrataHelper.cloneErrataFaster(erratum.getId(), user
                         .getOrg());
                 eids.add(cloneId);
-
             }
             else {
                 // we have one already, reuse it
