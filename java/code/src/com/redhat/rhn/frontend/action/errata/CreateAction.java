@@ -98,7 +98,7 @@ public class CreateAction extends RhnSetAction {
         }
 
         //Create a new errata
-        Errata e = ErrataFactory.createPublishedErrata();
+        Errata e = new Errata();
         e.setSynopsis(form.getString("synopsis"));
         e.setAdvisoryName(form.getString("advisoryName"));
         e.setAdvisoryRel(Long.valueOf(form.getString("advisoryRelease")));

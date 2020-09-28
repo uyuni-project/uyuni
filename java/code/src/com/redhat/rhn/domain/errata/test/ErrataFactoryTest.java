@@ -214,7 +214,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public static Errata createTestErrata(Long orgId, Optional<String> advisory) throws Exception {
-        Errata e = ErrataFactory.createPublishedErrata();
+        Errata e = new Errata();
         fillOutErrata(e, orgId, advisory);
         ErrataFactory.save(e);
         return e;
@@ -228,7 +228,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if the errata cannot be created
      */
     public static Errata createCriticalTestErrata(Long orgId) throws Exception {
-        Errata e = ErrataFactory.createPublishedErrata();
+        Errata e = new Errata();
         fillOutErrata(e, orgId, empty());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
         ErrataFactory.save(e);

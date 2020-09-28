@@ -117,7 +117,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testCreate() {
-        Errata e = ErrataFactory.createPublishedErrata();
+        Errata e = new Errata();
         assertTrue(e instanceof Errata);
 
         Bug b = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
@@ -144,7 +144,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // the results of the search-server searches.
         Bug b1 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
         assertTrue(b1 instanceof Bug);
-        Errata e = ErrataFactory.createPublishedErrata();
+        Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
         e.setAdvisoryRel(1L);
@@ -191,7 +191,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Package p = PackageTest.createTestPackage(user.getOrg());
-        Errata e = ErrataFactory.createPublishedErrata();
+        Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
         e.setAdvisoryRel(1L);

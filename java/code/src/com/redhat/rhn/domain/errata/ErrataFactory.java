@@ -353,14 +353,6 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new Errata from scratch
-     * @return the Errata created
-     */
-    public static Errata createPublishedErrata() {
-        return new Errata();
-    }
-
-    /**
      * Creates a new Published Bug object with the given id and summary.
      * @param id The id for the new bug
      * @param summary The summary for the new bug
@@ -374,7 +366,6 @@ public class ErrataFactory extends HibernateFactory {
         bug.setUrl(url);
         return bug;
     }
-
 
     /**
      * Creates a new Published Errata file with given ErrataFileType, checksum, and name
