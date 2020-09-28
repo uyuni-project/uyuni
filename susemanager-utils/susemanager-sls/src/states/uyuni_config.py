@@ -673,7 +673,7 @@ class UyuniActivationKeys:
                 changes['configure_after_registration']["old"] = current_configure_after_registration
 
         # we don't want to sort configuration channels since the order matters in this case
-        if current_config_channels or [] != configuration_channels or []:
+        if (current_config_channels or []) != (configuration_channels or []):
             changes['configuration_channels'] = {"new": configuration_channels}
             if current_config_channels:
                 changes['configuration_channels']['old'] = current_config_channels

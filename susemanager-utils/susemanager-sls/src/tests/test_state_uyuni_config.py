@@ -957,7 +957,8 @@ class TestUyuniActivationKeys:
     }
 
     ALL_GROUPS = [
-        {'name': 'my-group', 'id': 1}
+        {'name': 'my-group', 'id': 1},
+        {'name': 'old_group', 'id': 2}
     ]
 
     def test_ak_present_create_minimal_data(self):
@@ -1130,17 +1131,157 @@ class TestUyuniActivationKeys:
     def test_ak_present_update_minimal_data(self):
         pass
 
-    def test_ak_present_update_full_data(self):
-        pass
-
-    def test_ak_present_update_full_data_test(self):
-        pass
-
     def test_ak_present_no_changes_minimal_data(self):
         pass
 
+    def test_ak_present_update_full_data(self):
+
+        return_ak = {
+            'description': 'old description',
+            'base_channel_label': 'base_channel',
+            'usage_limit': 0,
+            'universal_default': False,
+            'contact_method': 'default',
+            'entitlements': ['container_build_host'],
+            'child_channel_labels': ['child_channel'],
+            'server_group_ids': [2],
+            'packages': [{'name': 'pkg', 'arch': 'x86_63'}]
+        }
+        with patch.dict(uyuni_config.__salt__, {
+            'uyuni.systemgroup_list_all_groups': MagicMock(return_value=self.ALL_GROUPS),
+            'uyuni.user_get_details': MagicMock(return_value=self.ORG_USER_DETAILS),
+            'uyuni.activation_key_get_details': MagicMock(return_value=return_ak),
+            'uyuni.activation_key_check_config_deployment': MagicMock(return_value=False),
+            'uyuni.activation_key_list_config_channels': MagicMock(return_value=[{'label': 'old_config'}]),
+            'uyuni.activation_key_set_details': MagicMock(),
+            'uyuni.activation_key_add_entitlements': MagicMock(),
+            'uyuni.activation_key_remove_entitlements': MagicMock(),
+            'uyuni.activation_key_add_child_channels': MagicMock(),
+            'uyuni.activation_key_remove_child_channels': MagicMock(),
+            'uyuni.activation_key_add_server_groups': MagicMock(),
+            'uyuni.activation_key_remove_server_groups': MagicMock(),
+            'uyuni.activation_key_add_packages': MagicMock(),
+            'uyuni.activation_key_remove_packages': MagicMock(),
+            'uyuni.activation_key_enable_config_deployment': MagicMock(),
+            'uyuni.activation_key_set_config_channels': MagicMock(),
+        }):
+
+            result = uyuni_config.activation_key_present(**self.FULL_AK_PRESENT)
+            assert result is not None
+            assert result['name'] == '1-ak'
+            assert result['result']
+            assert result['comment'] == '1-ak activation key successfully modified'
+            assert result['changes'] == {'description': {'new': 'ak description', 'old': 'old description'},
+                                         'base_channel': {'new': 'sles15SP2', 'old': 'base_channel'},
+                                         'usage_limit': {'new': 10, 'old': 0},
+                                         'universal_default': {'new': True, 'old': False},
+                                         'contact_method': {'new': 'ssh-push', 'old': 'default'},
+                                         'system_types': {'new': ['virtualization_host'],
+                                                          'old': ['container_build_host']},
+                                         'child_channels': {'new': ['sles15SP2-tools'], 'old': ['child_channel']},
+                                         'server_groups': {'new': ['my-group'], 'old': ['old_group']},
+                                         'packages': {'new': [{'name': 'vim'}, {'name': 'emacs', 'arch': 'x86_64'}],
+                                                      'old': [{'name': 'pkg', 'arch': 'x86_63'}]},
+                                         'configure_after_registration': {'new': True, 'old': False},
+                                         'configuration_channels': {'new': ['my-channel'], 'old': ['old_config']}}
+
+            uyuni_config.__salt__['uyuni.systemgroup_list_all_groups'].assert_called_once_with('admin', 'admin')
+            uyuni_config.__salt__['uyuni.user_get_details'].assert_called_once_with('admin', 'admin')
+            uyuni_config.__salt__['uyuni.activation_key_get_details'].assert_called_once_with('1-ak',
+                                                                                              org_admin_user='admin',
+                                                                                              org_admin_password='admin')
+            uyuni_config.__salt__['uyuni.activation_key_check_config_deployment'].assert_called_once_with('1-ak','admin','admin')
+            uyuni_config.__salt__['uyuni.activation_key_list_config_channels'].assert_called_once_with('1-ak','admin','admin')
+
+            uyuni_config.__salt__['uyuni.activation_key_set_details'].assert_called_once_with('1-ak',
+                                                                                              description=self.FULL_AK_PRESENT['description'],
+                                                                                              contact_method=self.FULL_AK_PRESENT['contact_method'],
+                                                                                              base_channel_label=self.FULL_AK_PRESENT['base_channel'],
+                                                                                              usage_limit=self.FULL_AK_PRESENT['usage_limit'],
+                                                                                              universal_default=self.FULL_AK_PRESENT['universal_default'],
+                                                                                              org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                              org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+
+            uyuni_config.__salt__['uyuni.activation_key_add_entitlements'].assert_called_once_with('1-ak',
+                                                                                                   self.FULL_AK_PRESENT['system_types'],
+                                                                                                   org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                   org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+            uyuni_config.__salt__['uyuni.activation_key_remove_entitlements'].assert_called_once_with('1-ak',
+                                                                                                      ['container_build_host'],
+                                                                                                      org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                      org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+
+            uyuni_config.__salt__['uyuni.activation_key_add_child_channels'].assert_called_once_with('1-ak',
+                                                                                                     self.FULL_AK_PRESENT['child_channels'],
+                                                                                                     org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                     org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+            uyuni_config.__salt__['uyuni.activation_key_remove_child_channels'].assert_called_once_with('1-ak',
+                                                                                                        ['child_channel'],
+                                                                                                        org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                        org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+
+            uyuni_config.__salt__['uyuni.activation_key_add_server_groups'].assert_called_once_with('1-ak',
+                                                                                                    [1],
+                                                                                                    org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                    org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+            uyuni_config.__salt__['uyuni.activation_key_remove_server_groups'].assert_called_once_with('1-ak',
+                                                                                                       [2],
+                                                                                                       org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                       org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+
+            uyuni_config.__salt__['uyuni.activation_key_add_packages'].assert_called_once_with('1-ak',
+                                                                                               self.FULL_AK_PRESENT['packages'],
+                                                                                               org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                               org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+            uyuni_config.__salt__['uyuni.activation_key_remove_packages'].assert_called_once_with('1-ak',
+                                                                                                  [{'name': 'pkg', 'arch': 'x86_63'}],
+                                                                                                  org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                  org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+
+            uyuni_config.__salt__['uyuni.activation_key_enable_config_deployment'].assert_called_once_with('1-ak',
+                                                                                                           org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                           org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+
+            uyuni_config.__salt__['uyuni.activation_key_set_config_channels'].assert_called_once_with(['1-ak'],
+                                                                                                      config_channel_label=self.FULL_AK_PRESENT['configuration_channels'],
+                                                                                                      org_admin_user=self.FULL_AK_PRESENT['org_admin_user'],
+                                                                                                      org_admin_password=self.FULL_AK_PRESENT['org_admin_password'])
+
     def test_ak_present_no_changes_full_data(self):
-        pass
+
+        return_ak = {
+            'description': self.FULL_AK_PRESENT['description'],
+            'base_channel_label': self.FULL_AK_PRESENT['base_channel'],
+            'usage_limit': self.FULL_AK_PRESENT['usage_limit'],
+            'universal_default': self.FULL_AK_PRESENT['universal_default'],
+            'contact_method': self.FULL_AK_PRESENT['contact_method'],
+            'entitlements': self.FULL_AK_PRESENT['system_types'],
+            'child_channel_labels': self.FULL_AK_PRESENT['child_channels'],
+            'server_group_ids': [1],
+            'packages': self.FULL_AK_PRESENT['packages']
+        }
+        with patch.dict(uyuni_config.__salt__, {
+            'uyuni.systemgroup_list_all_groups': MagicMock(return_value=self.ALL_GROUPS),
+            'uyuni.user_get_details': MagicMock(return_value=self.ORG_USER_DETAILS),
+            'uyuni.activation_key_get_details': MagicMock(return_value=return_ak),
+            'uyuni.activation_key_check_config_deployment': MagicMock(return_value=True),
+            'uyuni.activation_key_list_config_channels': MagicMock(return_value=[{'label': 'my-channel'}]),
+        }):
+
+            result = uyuni_config.activation_key_present(**self.FULL_AK_PRESENT)
+            assert result is not None
+            assert result['name'] == '1-ak'
+            assert result['result']
+            assert result['comment'] == '1-ak is already in the desired state'
+            assert result['changes'] == {}
+
+            uyuni_config.__salt__['uyuni.systemgroup_list_all_groups'].assert_called_once_with('admin', 'admin')
+            uyuni_config.__salt__['uyuni.user_get_details'].assert_called_once_with('admin', 'admin')
+            uyuni_config.__salt__['uyuni.activation_key_get_details'].assert_called_once_with('1-ak',
+                                                                                              org_admin_user='admin',
+                                                                                              org_admin_password='admin')
+            uyuni_config.__salt__['uyuni.activation_key_check_config_deployment'].assert_called_once_with('1-ak','admin','admin')
+            uyuni_config.__salt__['uyuni.activation_key_list_config_channels'].assert_called_once_with('1-ak','admin','admin')
 
     def test_ak_absent_not_present(self):
         exc = Exception("ak not found")
