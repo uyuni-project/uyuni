@@ -2097,7 +2097,7 @@
      </action>
 
      <!-- Beginning of errata management -->
-    <action path="/errata/manage/PublishedErrata"
+    <action path="/errata/manage/Errata"
         scope="request"
         input="/WEB-INF/pages/errata/published.jsp"
         type="com.redhat.rhn.frontend.action.errata.ErrataAction"
@@ -2147,7 +2147,7 @@
          <forward name="failure"
                   path="/errata/manage/CloneConfirm.do"/>
          <forward name="success"
-                  path="/errata/manage/PublishedErrata.do" redirect="true"/>
+                  path="/errata/manage/Errata.do" redirect="true"/>
      </action>
 
     <action path="/errata/manage/PublishedDeleteConfirm"
@@ -2168,7 +2168,7 @@
          <set-property property="postRequired" value="true" />
          <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
-                  path="/errata/manage/PublishedErrata.do" redirect="true"/>
+                  path="/errata/manage/Errata.do" redirect="true"/>
      </action>
 
      <action path="/errata/manage/Delete"
@@ -2182,7 +2182,7 @@
          <forward name="default"
                   path="/WEB-INF/pages/errata/delete.jsp" />
          <forward name="deleted"
-                  path="/errata/manage/PublishedErrata.do" redirect="true" />
+                  path="/errata/manage/Errata.do" redirect="true" />
      </action>
 
      <action path="/errata/manage/Create"
@@ -2301,7 +2301,7 @@
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
          <set-property property="acls" value="user_role(channel_admin)"/>
-         <forward name="default" path="/errata/manage/PublishedErrata.do" redirect="true"/>
+         <forward name="default" path="/errata/manage/Errata.do" redirect="true"/>
      </action>
 
      <action path="/errata/manage/Channels"
