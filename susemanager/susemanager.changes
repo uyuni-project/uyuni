@@ -1,3 +1,4 @@
+- fix logrotate config
 - Add missing packages to SLE12 >= SP1 bootstrap data to fix JeOS
   bootstrap problems (bsc#1176913)
 - add missing packages to ubuntu20.04 bootstrap data (bsc#1176629)
