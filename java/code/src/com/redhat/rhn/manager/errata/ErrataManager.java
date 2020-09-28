@@ -1356,31 +1356,30 @@ public class ErrataManager extends BaseManager {
      */
     public static Object[] cloneErrataApi(Channel chan, Collection<Errata> errata,
             User user, boolean inheritPackages, boolean performPostActions) {
-        List<Errata> errataToPublish = new ArrayList<Errata>();
+        List<Errata> errataToAdd = new ArrayList<Errata>();
 
         // For each errata look up existing clones, or manually clone it
         for (Errata toClone : errata) {
             if (toClone.isCloned()) {
-                errataToPublish.add(toClone);
+                errataToAdd.add(toClone);
             }
             else {
                 List<Errata> clones = ErrataFactory.lookupPublishedByOriginal(user.getOrg(), toClone);
                 if (clones.isEmpty()) {
-                    errataToPublish.add(ErrataHelper.cloneErrataFast(
-                            toClone, user.getOrg()));
+                    errataToAdd.add(ErrataHelper.cloneErrataFast(toClone, user.getOrg()));
                 }
                 else {
-                    errataToPublish.add(clones.get(0));
+                    errataToAdd.add(clones.get(0));
                 }
             }
         }
 
-        List<Errata> published = ErrataFactory.publishToChannel(errataToPublish, chan,
-                user, inheritPackages, performPostActions);
-        for (Errata e : published) {
+        List<Errata> added = ErrataFactory.publishToChannel(errataToAdd, chan, user, inheritPackages,
+                performPostActions);
+        for (Errata e : added) {
             ErrataFactory.save(e);
         }
-        return published.toArray();
+        return added.toArray();
     }
 
     /**
