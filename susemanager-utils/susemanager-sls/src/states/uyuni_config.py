@@ -672,7 +672,8 @@ class UyuniActivationKeys:
             if current_configure_after_registration is not None:
                 changes['configure_after_registration']["old"] = current_configure_after_registration
 
-        if sorted(current_config_channels or []) != sorted(configuration_channels or []):
+        # we don't want to sort configuration channels since the order matters in this case
+        if current_config_channels or [] != configuration_channels or []:
             changes['configuration_channels'] = {"new": configuration_channels}
             if current_config_channels:
                 changes['configuration_channels']['old'] = current_config_channels
@@ -755,7 +756,7 @@ class UyuniActivationKeys:
                base_channel: str = '',
                usage_limit: int = 0,
                contact_method: str = 'default',
-               system_types: List[int] = [],
+               system_types: List[str] = [],
                universal_default: bool = False,
                child_channels: List[str] = [],
                configuration_channels: List[str] = [],
