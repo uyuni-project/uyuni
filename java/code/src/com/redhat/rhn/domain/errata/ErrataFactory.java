@@ -259,14 +259,14 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Publish an errata to a channel but only push a small set of packages
+     * Add an errata to a channel but only push a small set of packages
      * along with it
      *
-     * @param errata   errata to publish
-     * @param chan channel to publish it into.
-     * @param user the user doing the pushing
-     * @param packages the packages to push
-     * @return the published errata
+     * @param errata errata to add
+     * @param chan channel to add it to
+     * @param user the user doing the adding
+     * @param packages the packages to add
+     * @return the added errata
      */
     public static Errata addToChannel(Errata errata, Channel chan, User user,
                                       Set<Package> packages) {
@@ -275,7 +275,6 @@ public class ErrataFactory extends HibernateFactory {
         ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
         return errata;
     }
-
 
     /**
      * Private helper method that pushes errata packages to a channel
