@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -56,11 +55,6 @@ import java.util.function.Function;
  * ErrataFactoryTest
  */
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
-
-    public static Bug createPublishedBug(Long longIn, String stringIn) {
-        return ErrataFactory.createBug(longIn, stringIn,
-                "https://bugzilla.redhat.com/show_bug.cgi?id=" + longIn);
-    }
 
     public void testPublishToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
@@ -192,7 +186,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testBugs() throws Exception {
         var e = createTestPublishedErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
-        e.addBug(ErrataFactoryTest.createPublishedBug(123L, "test bug"));
+        e.addBug(ErrataFactory.createBug(123L, "test bug",
+                "https://bugzilla.redhat.com/show_bug.cgi?id=" + (Long) 123L));
         assertEquals(1, e.getBugs().size());
     }
 
