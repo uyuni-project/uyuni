@@ -924,7 +924,7 @@ order by e.created
   </query>
 </mode>
 
-<mode name="published_owned_errata" class="com.redhat.rhn.frontend.dto.OwnedErrata">
+<mode name="owned_errata" class="com.redhat.rhn.frontend.dto.OwnedErrata">
   <query params="org_id">
   SELECT E.id, E.advisory, E.advisory_type, E.advisory_name, E.synopsis,
          E.update_date,

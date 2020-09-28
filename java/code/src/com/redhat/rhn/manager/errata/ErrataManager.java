@@ -487,8 +487,8 @@ public class ErrataManager extends BaseManager {
      * @param user Currently logged in user.
      * @return all of the errata.
      */
-    public static DataResult publishedOwnedErrata(User user) {
-        SelectMode m = ModeFactory.getMode("Errata_queries", "published_owned_errata");
+    public static DataResult ownedErrata(User user) {
+        SelectMode m = ModeFactory.getMode("Errata_queries", "owned_errata");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", user.getOrg().getId());
         return makeDataResult(params, new HashMap(), null, m);
