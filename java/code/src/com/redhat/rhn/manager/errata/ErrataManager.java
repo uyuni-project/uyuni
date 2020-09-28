@@ -258,7 +258,7 @@ public class ErrataManager extends BaseManager {
                 fromChannel, toChannel);
         List<Errata> brothers = ErrataFactory.listSiblingsInChannels(user.getOrg(),
                 fromChannel, toChannel);
-        List<Errata> clones = ErrataFactory.listPublishedClonesInChannels(user.getOrg(),
+        List<Errata> clones = ErrataFactory.listClonesInChannels(user.getOrg(),
                 fromChannel, toChannel);
         // and remove them
         errataToMerge.removeAll(same);

@@ -672,8 +672,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listPublishedClonesInChannels(Org org, Channel channelFrom,
-            Channel channelTo) {
+    public static List listClonesInChannels(Org org, Channel channelFrom,
+                                            Channel channelTo) {
         Session session = null;
         List retval = null;
 
