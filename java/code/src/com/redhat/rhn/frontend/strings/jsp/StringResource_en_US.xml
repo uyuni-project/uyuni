@@ -4292,10 +4292,10 @@ organization. You may grant or remove the organization administrator role in the
         <source>Patches Management</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Published Patches</source>
+        <source>No Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
-        <source>Published Patches</source>
+        <source>Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
