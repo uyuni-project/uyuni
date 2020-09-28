@@ -272,7 +272,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Set errataFilePackages = new HashSet();
         errataFilePackages.add(testPackage);
         e.addPackage(testPackage);
-        ef = ErrataFactory.createPublishedErrataFile(ErrataFactory.
+        ef = ErrataFactory.createErrataFile(ErrataFactory.
                 lookupErrataFileType("RPM"),
                     "SOME FAKE CHECKSUM",
                     "test errata file" + TestUtils.randomString(), errataFilePackages);

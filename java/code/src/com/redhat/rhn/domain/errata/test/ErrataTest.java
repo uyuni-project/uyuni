@@ -130,7 +130,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
         // Add the package to an errataFile
         ErrataFile ef;
-        ef = ErrataFactory.createPublishedErrataFile(ErrataFactory.
+        ef = ErrataFactory.createErrataFile(ErrataFactory.
                 lookupErrataFileType("RPM"),
                     "SOME FAKE CHECKSUM",
                     "testAddChannelsToErrata" + TestUtils.randomString(), new HashSet());

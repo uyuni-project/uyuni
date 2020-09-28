@@ -294,10 +294,10 @@ public class ErrataFactory extends HibernateFactory {
                     " has NULL path, please run spacewalk-data-fsck");
             }
 
-            Optional<ErrataFile> publishedFileOpt =
+            Optional<ErrataFile> fileOpt =
                     ErrataFactory.lookupErrataFile(errata.getId(), pack.getPath());
 
-            singleton.saveObject(Opt.fold(publishedFileOpt, () -> createPublishedErrataFile(pack, errata, chan),
+            singleton.saveObject(Opt.fold(fileOpt, () -> createErrataFile(pack, errata, chan),
                     ef -> publishErrataFile(ef, pack, chan)));
 
         }
@@ -327,21 +327,21 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Private helper method that creates an ErrataFile and publish it to a channel
+     * Private helper method that creates an ErrataFile and adds it to a channel
      *
-     * @param pack the Package to push
-     * @param errata the Errata to publish
-     * @param chan Channel to publish it into.
-     * @return the published errata
+     * @param pack the Package to add
+     * @param errata the Errata to add
+     * @param chan Channel to add the package to
+     * @return the added errata file
      */
-    private static ErrataFile createPublishedErrataFile(Package pack, Errata errata, Channel chan) {
-        ErrataFile publishedFile = ErrataFactory.createPublishedErrataFile(
+    private static ErrataFile createErrataFile(Package pack, Errata errata, Channel chan) {
+        var file = ErrataFactory.createErrataFile(
                 ErrataFactory.lookupErrataFileType("RPM"), pack.getChecksum().getChecksum(), pack.getPath());
-        publishedFile.addPackage(pack);
-        publishedFile.setErrata(errata);
-        publishedFile.setModified(new Date());
-        publishedFile.addChannel(chan);
-        return publishedFile;
+        file.addPackage(pack);
+        file.setErrata(errata);
+        file.setModified(new Date());
+        file.addChannel(chan);
+        return file;
     }
 
     /**
@@ -366,10 +366,10 @@ public class ErrataFactory extends HibernateFactory {
      * @param name name for the file
      * @return new Published Errata File
      */
-    public static ErrataFile createPublishedErrataFile(ErrataFileType ft,
-            String cs,
-            String name) {
-        return createPublishedErrataFile(ft, cs, name, new HashSet());
+    public static ErrataFile createErrataFile(ErrataFileType ft,
+                                              String cs,
+                                              String name) {
+        return createErrataFile(ft, cs, name, new HashSet());
     }
 
     /**
@@ -380,10 +380,10 @@ public class ErrataFactory extends HibernateFactory {
      * @param packages Packages associated with this errata file.
      * @return new Published Errata File
      */
-    public static ErrataFile createPublishedErrataFile(ErrataFileType ft,
-            String cs,
-            String name,
-            Set packages) {
+    public static ErrataFile createErrataFile(ErrataFileType ft,
+                                              String cs,
+                                              String name,
+                                              Set packages) {
         ErrataFile file = new ErrataFile();
         file.setFileType(ft);
         file.setChecksum(ChecksumFactory.safeCreate(cs, "md5"));
