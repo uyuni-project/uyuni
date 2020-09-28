@@ -735,15 +735,6 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Looks up published errata by errata id
-     * @param id errata id
-     * @return Errata if found, otherwise null
-     */
-    public static Errata lookupPublishedErrata(Long id) {
-        return ErrataFactory.lookupPublishedErrataById(id);
-    }
-
-    /**
      * Returns the systems affected by a given errata
      * @param user The current user
      * @param eid The errata id

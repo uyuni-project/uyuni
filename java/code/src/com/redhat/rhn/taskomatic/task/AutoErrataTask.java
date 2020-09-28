@@ -19,10 +19,10 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -74,7 +74,7 @@ public class AutoErrataTask extends RhnJavaJob {
             Long serverId = result.get("server_id");
             Long orgId = result.get("org_id");
             try {
-                Errata errata = ErrataManager.lookupPublishedErrata(errataId);
+                Errata errata = ErrataFactory.lookupPublishedErrataById(errataId);
                 Org org = OrgFactory.lookupById(orgId);
                 ErrataAction errataAction = ActionManager.
                         createErrataAction(org, errata);
