@@ -2,6 +2,7 @@
 - Force disable SPA for non-navigation links (bsc#1175512)
 - pass the log level parameter to matcher
 - Detect client organization from connected proxy (bsc#1175545)
+- fix max password length check at user creation (bsc#1176765)
 -------------------------------------------------------------------
 Wed Sep 09 12:10:33 CEST 2020 - jgonzalez@suse.com
 

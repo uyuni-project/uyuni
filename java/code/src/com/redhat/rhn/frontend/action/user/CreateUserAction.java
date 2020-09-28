@@ -64,6 +64,17 @@ public class CreateUserAction extends RhnAction {
             command.setUsePamAuthentication(false);
         }
 
+        // Check passwords
+        String passwd = (String)form.get(UserActionHelper.DESIRED_PASS);
+        String passwdConfirm = (String)form.get(UserActionHelper.DESIRED_PASS_CONFIRM);
+        if (passwd.equals(passwdConfirm)) {
+            command.setPassword(passwd);
+        }
+        else {
+            errors.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("error.password_mismatch"));
+        }
+
         // Put any validationErrors into ActionErrors object
         ValidatorError[] validationErrors = command.validate();
         for (int i = 0; i < validationErrors.length; i++) {
@@ -76,17 +87,7 @@ public class CreateUserAction extends RhnAction {
         fillOutAddress(form, addr);
         command.setAddress(addr);
 
-        // Check passwords
-        String passwd = (String)form.get(UserActionHelper.DESIRED_PASS);
-        String passwdConfirm = (String)form.get(UserActionHelper.DESIRED_PASS_CONFIRM);
 
-        if (passwd.equals(passwdConfirm)) {
-            command.setPassword(passwd);
-        }
-        else {
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                       new ActionMessage("error.password_mismatch"));
-        }
 
         return errors;
     }
