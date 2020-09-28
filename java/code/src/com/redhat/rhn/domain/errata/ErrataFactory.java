@@ -582,7 +582,7 @@ public class ErrataFactory extends HibernateFactory {
 
         try {
             session = HibernateFactory.getSession();
-            retval = lookupPublishedByOriginal(org, original);
+            retval = lookupErrataByOriginal(org, original);
         }
         catch (HibernateException e) {
             throw new
@@ -597,7 +597,7 @@ public class ErrataFactory extends HibernateFactory {
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
-    public static List lookupPublishedByOriginal(Org org, Errata original) {
+    public static List lookupErrataByOriginal(Org org, Errata original) {
         Session session = null;
         List retval = null;
 

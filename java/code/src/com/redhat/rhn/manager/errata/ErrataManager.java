@@ -1364,7 +1364,7 @@ public class ErrataManager extends BaseManager {
                 errataToAdd.add(toClone);
             }
             else {
-                List<Errata> clones = ErrataFactory.lookupPublishedByOriginal(user.getOrg(), toClone);
+                List<Errata> clones = ErrataFactory.lookupErrataByOriginal(user.getOrg(), toClone);
                 if (clones.isEmpty()) {
                     errataToAdd.add(ErrataHelper.cloneErrataFast(toClone, user.getOrg()));
                 }
@@ -2085,7 +2085,7 @@ public class ErrataManager extends BaseManager {
                     ErrataCacheManager.addErrataRefreshing(cids, eid);
                 }
                 else {
-                    List<Errata> clones = ErrataFactory.lookupPublishedByOriginal(user.getOrg(), errata);
+                    List<Errata> clones = ErrataFactory.lookupErrataByOriginal(user.getOrg(), errata);
                     if (clones.size() == 0) {
                         log.debug("Cloning errata");
                         var clonedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
