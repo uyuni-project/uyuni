@@ -965,22 +965,14 @@ public class ErrataFactory extends HibernateFactory {
         // Copy the packages
         cloned.setPackages(new HashSet(original.getPackages()));
 
-        /*
-         * Copy the keywords
-         * if we use the string version of addKeyword, we don't have to worry about
-         * whether or not the keyword is published.
-         */
+        // Copy the keywords
         Iterator keysItr = IteratorUtils.getIterator(original.getKeywords());
         while (keysItr.hasNext()) {
             Keyword k = (Keyword) keysItr.next();
             cloned.addKeyword(k.getKeyword());
         }
 
-
-        /*
-         * Copy the bugs. If copy is published, then the bugs should be published as well.
-         * If not, then we want unpublished bugs.
-         */
+        // Copy the bugs
         Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
         while (bugsItr.hasNext()) {
             Bug bugIn = (Bug) bugsItr.next();
