@@ -175,22 +175,18 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Takes an unpublished errata and returns a published errata into the
-     * channels we pass in. NOTE:  This method does NOT update the errata cache for
+     * Takes an errata and adds it into the channels we pass in.
+     * NOTE: this method does NOT update the errata cache for
      * the channels.  That is done when packages are pushed as part of the errata
      * publication process (which is not done here)
      *
-     * @param errata The errata to publish
-     * @param channelIds The Long channelIds we want to publish this Errata to.
-     * @param user who is publishing errata
-     * @return Returns a published errata.
+     * @param errata The errata
+     * @param channelIds The Long channelIds we want to add this Errata to.
+     * @param user who is adding the errata to channels
+     * @return Returns the errata
      */
-    public static Errata addToChannels(Errata errata, Collection channelIds, User user) {
-        Errata retval = errata;
-
-        retval = addChannelsToErrata(retval, channelIds, user);
-        log.debug("publish - updateErrataCacheForChannelsAsync called");
-
+    public static Errata addToChannels(Errata errata, Collection<Long> channelIds, User user) {
+        Errata retval = addChannelsToErrata(errata, channelIds, user);
         updateSearchIndex();
         return retval;
     }
