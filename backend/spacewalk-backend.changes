@@ -1,3 +1,5 @@
+- add 'allow_vendor_change' option to rhn clients for dist upgrades
+
 -------------------------------------------------------------------
 Thu Oct 22 10:43:27 CEST 2020 - jgonzalez@suse.com
 
