@@ -46,11 +46,9 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- *
- * PublishErrataAction
- * @version $Rev$
+ * AddErrataToChannelAction
  */
-public class PublishErrataAction extends RhnListAction {
+public class AddErrataToChannelAction extends RhnListAction {
 
 
     private static final String CID = "cid";

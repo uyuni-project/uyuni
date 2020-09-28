@@ -2100,7 +2100,7 @@
     <action path="/errata/manage/PublishedErrata"
         scope="request"
         input="/WEB-INF/pages/errata/published.jsp"
-        type="com.redhat.rhn.frontend.action.errata.PublishedErrataAction"
+        type="com.redhat.rhn.frontend.action.errata.ErrataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <set-property property="acls" value="user_role(channel_admin)"/>
@@ -7321,16 +7321,15 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
       <set-property property="postRequiredIfSubmitted" value="true" />
       <forward name="default" path="/WEB-INF/pages/channel/manage/confirmerrata.jsp" />
-      <forward name="clone" path="/channels/manage/errata/PublishErrata.do" redirect="true"/>
+      <forward name="clone" path="/channels/manage/errata/AddErrataToChannel.do" redirect="true"/>
       </action>
 
-     <action path="/channels/manage/errata/PublishErrata"
+     <action path="/channels/manage/errata/AddErrataToChannel"
         scope="request"
-        type="com.redhat.rhn.frontend.action.channel.manage.PublishErrataAction"
+        type="com.redhat.rhn.frontend.action.channel.manage.AddErrataToChannelAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
        <forward name="default" path="/channels/manage/errata/ListRemove.do" redirect="true"/>
       </action>
-
 
       <action path="/channels/manage/errata/SyncErrata"
         scope="request"

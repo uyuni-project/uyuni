@@ -32,8 +32,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** @version $Revision$ */
-public class PublishedErrataAction extends RhnAction implements Listable {
+/** ErrataAction */
+public class ErrataAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping actionMapping,
