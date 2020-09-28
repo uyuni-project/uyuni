@@ -1064,8 +1064,6 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Lookup all the clones of a particular errata
-     *      looks up unpublished first, and then if none of those
-     *      exist, it looks up published ones
      * @param user User that is performing the cloning operation
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
