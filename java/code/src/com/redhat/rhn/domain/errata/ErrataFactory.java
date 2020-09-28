@@ -988,22 +988,10 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        List<Errata> foundErrata = listPublishedErrata(ids, orgId);
-
-        return foundErrata;
-    }
-
-    /**
-     * List published errata objects by ID and org
-     * @param eids list of ids
-     * @param orgId the organization id
-     * @return List of Errata Objects
-     */
-    private static List<Errata> listPublishedErrata(Collection<Long> eids, Long orgId) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orgId", orgId);
-        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds",
-                params, eids, "eids");
+        return (List<Errata>) singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds",
+                params, ids, "eids");
     }
 
     /**
