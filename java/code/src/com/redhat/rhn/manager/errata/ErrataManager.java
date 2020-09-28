@@ -254,9 +254,12 @@ public class ErrataManager extends BaseManager {
         Set<Errata> errataToMerge = new HashSet<>(errataToMergeIn);
 
         // find errata that we do not need to merge
-        List<Errata> same = listSamePublishedInChannels(user, fromChannel, toChannel);
-        List<Errata> brothers = listPublishedBrothersInChannels(user, fromChannel, toChannel);
-        List<Errata> clones = listPublishedClonesInChannels(user, fromChannel, toChannel);
+        List<Errata> same = ErrataFactory.listSamePublishedInChannels(user.getOrg(),
+                fromChannel, toChannel);
+        List<Errata> brothers = ErrataFactory.listPublishedBrothersInChannels(user.getOrg(),
+                fromChannel, toChannel);
+        List<Errata> clones = ErrataFactory.listPublishedClonesInChannels(user.getOrg(),
+                fromChannel, toChannel);
         // and remove them
         errataToMerge.removeAll(same);
         errataToMerge.removeAll(brothers);
@@ -1073,56 +1076,6 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Lookup all the clones of a particular errata
-     * @param user User that is performing the cloning operation
-     * @param original Original errata that the clones are clones of
-     * @return list of clones of the errata
-     */
-    public static List lookupPublishedByOriginal(User user, Errata original) {
-        return ErrataFactory.lookupPublishedByOriginal(user.getOrg(), original);
-    }
-
-    /**
-     * Lists errata present in both channels
-     * @param user user
-     * @param channelFrom channel1
-     * @param channelTo channel2
-     * @return list of errata
-     */
-    public static List listSamePublishedInChannels(User user,
-            Channel channelFrom, Channel channelTo) {
-        return ErrataFactory.listSamePublishedInChannels(user.getOrg(),
-                channelFrom, channelTo);
-    }
-
-    /**
-     * Lists errata from channelFrom, that are cloned from the same original
-     * as errata in channelTo
-     * @param user user
-     * @param channelFrom channel1
-     * @param channelTo channel2
-     * @return list of errata
-     */
-    public static List listPublishedBrothersInChannels(User user,
-            Channel channelFrom, Channel channelTo) {
-        return ErrataFactory.listPublishedBrothersInChannels(user.getOrg(),
-                channelFrom, channelTo);
-    }
-
-    /**
-     * Lists errata from channelFrom, that have clones in channelTo
-     * @param user user
-     * @param channelFrom channel1
-     * @param channelTo channel2
-     * @return list of errata
-     */
-    public static List listPublishedClonesInChannels(User user,
-            Channel channelFrom, Channel channelTo) {
-        return ErrataFactory.listPublishedClonesInChannels(user.getOrg(),
-                channelFrom, channelTo);
-    }
-
-    /**
      * Lookup packages that are associated with errata in the RhnSet "errata_list"
      * @param srcChan the source channel to find the package associations with
      * @param destChan if srcChan is not available, we will match package associations
@@ -1410,8 +1363,7 @@ public class ErrataManager extends BaseManager {
                 errataToPublish.add(toClone);
             }
             else {
-                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(
-                        user, toClone);
+                List<Errata> clones = ErrataFactory.lookupPublishedByOriginal(user.getOrg(), toClone);
                 if (clones.isEmpty()) {
                     errataToPublish.add(ErrataHelper.cloneErrataFast(
                             toClone, user.getOrg()));
@@ -2135,7 +2087,7 @@ public class ErrataManager extends BaseManager {
                     ErrataCacheManager.addErrataRefreshing(cids, eid);
                 }
                 else {
-                    List<Errata> clones = lookupPublishedByOriginal(user, errata);
+                    List<Errata> clones = ErrataFactory.lookupPublishedByOriginal(user.getOrg(), errata);
                     if (clones.size() == 0) {
                         log.debug("Cloning errata");
                         var publishedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
