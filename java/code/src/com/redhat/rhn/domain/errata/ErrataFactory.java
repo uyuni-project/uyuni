@@ -349,7 +349,7 @@ public class ErrataFactory extends HibernateFactory {
      * @param id The id for the new bug
      * @param summary The summary for the new bug
      * @param url The bug URL
-     * @return The new published bug.
+     * @return The new bug.
      */
     public static Bug createBug(Long id, String summary, String url) {
         Bug bug = new Bug();
@@ -360,11 +360,11 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a new Published Errata file with given ErrataFileType, checksum, and name
+     * Creates a new Errata file with given ErrataFileType, checksum, and name
      * @param ft ErrataFileType for the new ErrataFile
      * @param cs MD5 Checksum for the new Errata File
      * @param name name for the file
-     * @return new Published Errata File
+     * @return new Errata File
      */
     public static ErrataFile createErrataFile(ErrataFileType ft,
                                               String cs,
@@ -373,12 +373,12 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a new Published Errata file with given ErrataFileType, checksum, and name
+     * Creates a new Errata file with given ErrataFileType, checksum, and name
      * @param ft ErrataFileType for the new ErrataFile
      * @param cs MD5 Checksum for the new Errata File
      * @param name name for the file
      * @param packages Packages associated with this errata file.
-     * @return new Published Errata File
+     * @return new Errata File
      */
     public static ErrataFile createErrataFile(ErrataFileType ft,
                                               String cs,
