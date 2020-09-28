@@ -7,8 +7,7 @@
     rotate 5
     missingok
     notifempty
-    size +4096k
-    copytruncate
+    size 4096k
     su wwwrun www
 }
 
