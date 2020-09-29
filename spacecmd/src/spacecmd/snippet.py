@@ -29,12 +29,18 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_snippet_list(self):
-    print('snippet_list: List the available Kickstart snippets')
-    print('usage: snippet_list')
+    print(_('snippet_list: List the available Kickstart snippets'))
+    print(_('usage: snippet_list'))
 
 
 def do_snippet_list(self, args, doreturn=False):
@@ -51,8 +57,8 @@ def do_snippet_list(self, args, doreturn=False):
 
 
 def help_snippet_details(self):
-    print('snippet_details: Show the contents of a snippet')
-    print('usage: snippet_details SNIPPET ...')
+    print(_('snippet_details: Show the contents of a snippet'))
+    print(_('usage: snippet_details SNIPPET ...'))
 
 
 def complete_snippet_details(self, text, line, beg, end):
@@ -81,16 +87,16 @@ def do_snippet_details(self, args):
                 break
 
         if not snippet:
-            logging.warning('%s is not a valid snippet' % name)
+            logging.warning(_('%s is not a valid snippet') % name)
             continue
 
         if add_separator:
             print(self.SEPARATOR)
         add_separator = True
 
-        print('Name:   %s' % snippet.get('name'))
-        print('Macro:  %s' % snippet.get('fragment'))
-        print('File:   %s' % snippet.get('file'))
+        print(_('Name:   %s') % snippet.get('name'))
+        print(_('Macro:  %s') % snippet.get('fragment'))
+        print(_('File:   %s') % snippet.get('file'))
 
         print('')
         print(snippet.get('contents'))
@@ -101,12 +107,12 @@ def do_snippet_details(self, args):
 
 
 def help_snippet_create(self):
-    print('snippet_create: Create a Kickstart snippet')
-    print('''usage: snippet_create [options])
+    print(_('snippet_create: Create a Kickstart snippet'))
+    print(_('''usage: snippet_create [options])
 
 options:
   -n NAME
-  -f FILE''')
+  -f FILE'''))
 
 
 def do_snippet_create(self, args, update_name=''):
@@ -132,7 +138,7 @@ def do_snippet_create(self, args, update_name=''):
         if not options.name:
             options.name = prompt_user('Name:', noblank=True)
 
-        if self.user_confirm('Read an existing file [y/N]:',
+        if self.user_confirm(_('Read an existing file [y/N]:'),
                              nospacer=True, ignore_yes=True):
             options.file = prompt_user('File:')
         else:
@@ -140,19 +146,19 @@ def do_snippet_create(self, args, update_name=''):
                                          delete=True)
     else:
         if not options.name:
-            logging.error('A name is required for the snippet')
+            logging.error(_('A name is required for the snippet'))
             return 1
 
         if not options.file:
-            logging.error('A file is required')
+            logging.error(_('A file is required'))
             return 1
 
     if options.file:
         contents = read_file(options.file)
 
     print('')
-    print('Snippet: %s' % options.name)
-    print('Contents')
+    print(_('Snippet: %s') % options.name)
+    print(_('Contents'))
     print('--------')
     print(contents)
 
@@ -167,8 +173,8 @@ def do_snippet_create(self, args, update_name=''):
 
 
 def help_snippet_update(self):
-    print('snippet_update: Update a Kickstart snippet')
-    print('usage: snippet_update NAME')
+    print(_('snippet_update: Update a Kickstart snippet'))
+    print(_('usage: snippet_update NAME'))
 
 
 def complete_snippet_update(self, text, line, beg, end):
@@ -190,8 +196,8 @@ def do_snippet_update(self, args):
 
 
 def help_snippet_delete(self):
-    print('snippet_delete: Delete a Kickstart snippet')
-    print('usage: snippet_delete NAME')
+    print(_('snippet_delete: Delete a Kickstart snippet'))
+    print(_('usage: snippet_delete NAME'))
 
 
 def complete_snippet_delete(self, text, line, beg, end):
@@ -209,7 +215,7 @@ def do_snippet_delete(self, args):
 
     snippet = args[0]
 
-    if self.user_confirm('Remove this snippet [y/N]:'):
+    if self.user_confirm(_('Remove this snippet [y/N]:')):
         self.client.kickstart.snippet.delete(self.session, snippet)
         return 0
     else:

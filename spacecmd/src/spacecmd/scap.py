@@ -30,12 +30,18 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_scap_listxccdfscans(self):
-    print('scap_listxccdfscans: Return a list of finished OpenSCAP scans for given systems')
-    print('usage: scap_listxccdfscans <SYSTEMS>')
+    print(_('scap_listxccdfscans: Return a list of finished OpenSCAP scans for given systems'))
+    print(_('usage: scap_listxccdfscans <SYSTEMS>'))
 
 
 def complete_system_scap_listxccdfscans(self, text, line, beg, end):
@@ -58,7 +64,7 @@ def do_scap_listxccdfscans(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     add_separator = False
@@ -69,7 +75,7 @@ def do_scap_listxccdfscans(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
             print('')
 
         system_id = self.get_system_id(system)
@@ -79,7 +85,7 @@ def do_scap_listxccdfscans(self, args):
         scan_list = self.client.system.scap.listXccdfScans(self.session, system_id)
 
         for s in scan_list:
-            print('XID: %d Profile: %s Path: (%s) Completed: %s' % (s['xid'], s['profile'], s['path'], s['completed']))
+            print(_('XID: %d Profile: %s Path: (%s) Completed: %s') % (s['xid'], s['profile'], s['path'], s['completed']))
 
     return 0
 
@@ -87,8 +93,8 @@ def do_scap_listxccdfscans(self, args):
 
 
 def help_scap_getxccdfscanruleresults(self):
-    print('scap_getxccdfscanruleresults: Return a full list of RuleResults for given OpenSCAP XCCDF scan')
-    print('usage: scap_getxccdfscanruleresults <XID>')
+    print(_('scap_getxccdfscanruleresults: Return a full list of RuleResults for given OpenSCAP XCCDF scan'))
+    print(_('usage: scap_getxccdfscanruleresults <XID>'))
 
 
 def do_scap_getxccdfscanruleresults(self, args):
@@ -108,14 +114,14 @@ def do_scap_getxccdfscanruleresults(self, args):
         add_separator = True
 
         if len(args) > 1:
-            print('XID: %s' % xid)
+            print(_('XID: %s') % xid)
             print('')
 
         xid = int(xid)
         scan_results = self.client.system.scap.getXccdfScanRuleResults(self.session, xid)
 
         for s in scan_results:
-            print('IDref: %s Result: %s Idents: (%s)' % (s['idref'], s['result'], s['idents']))
+            print(_('IDref: %s Result: %s Idents: (%s)') % (s['idref'], s['result'], s['idents']))
 
     return 0
 
@@ -123,8 +129,8 @@ def do_scap_getxccdfscanruleresults(self, args):
 
 
 def help_scap_getxccdfscandetails(self):
-    print('scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan')
-    print('usage: scap_getxccdfscandetails <XID>')
+    print(_('scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan'))
+    print(_('usage: scap_getxccdfscandetails <XID>'))
 
 
 def do_scap_getxccdfscandetails(self, args):
@@ -150,15 +156,15 @@ def do_scap_getxccdfscandetails(self, args):
         xid = int(xid)
         scan_details = self.client.system.scap.getXccdfScanDetails(self.session, xid)
 
-        print("XID:", scan_details['xid'], "SID:", scan_details['sid'], "Action_ID:",
-              scan_details['action_id'], "Path:", scan_details['path'], \
-              "OSCAP_Parameters:", scan_details['oscap_parameters'], \
-              "Test_Result:", scan_details['test_result'], "Benchmark:", \
-              scan_details['benchmark'], "Benchmark_Version:", \
-              scan_details['benchmark_version'], "Profile:", scan_details['profile'], \
-              "Profile_Title:", scan_details['profile_title'], "Start_Time:", \
-              scan_details['start_time'], "End_Time:", scan_details['end_time'], \
-              "Errors:", scan_details['errors'])
+        print(_("XID:"), scan_details['xid'], _("SID:"), scan_details['sid'], _("Action_ID:"),
+              scan_details['action_id'], _("Path:"), scan_details['path'], \
+              _("OSCAP_Parameters:"), scan_details['oscap_parameters'], \
+              _("Test_Result:"), scan_details['test_result'], _("Benchmark:"), \
+              scan_details['benchmark'], _("Benchmark_Version:"), \
+              scan_details['benchmark_version'], _("Profile:"), scan_details['profile'], \
+              _("Profile_Title:"), scan_details['profile_title'], _("Start_Time:"), \
+              scan_details['start_time'], _("End_Time:"), scan_details['end_time'], \
+              _("Errors:"), scan_details['errors'])
 
     return 0
 
@@ -166,14 +172,14 @@ def do_scap_getxccdfscandetails(self, args):
 
 
 def help_scap_schedulexccdfscan(self):
-    print('scap_schedulexccdfscan: Schedule Scap XCCDF scan')
-    print('usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS')
-    print('       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS')
+    print(_('scap_schedulexccdfscan: Schedule Scap XCCDF scan'))
+    print(_('usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS'))
+    print(_('       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS'))
     print('')
-    print('Example:')
+    print(_('Example:'))
     print('> scap_schedulexccdfscan \'/usr/share/openscap/scap-security-xccdf.xml\'' +
           ' \'profile Web-Default\' system-scap.example.com')
-    print('\nTo use systems in the ssm, pass the "ssm" keyword in front. Example:')
+    print(_('\nTo use systems in the ssm, pass the "ssm" keyword in front. Example:'))
     print("> scap_schedulexccdfscan ssm '/usr/share/openscap/scap-security-xccdf.xml'" +
           " 'profile Web-Default'")
 
@@ -198,7 +204,7 @@ def do_scap_schedulexccdfscan(self, args):
         systems = self.expand_systems(args[2:])
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in systems:

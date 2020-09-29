@@ -2996,14 +2996,14 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>バグ修正に関するアドバイザリー</target>
+        <target>バグ修正アドバイザリ</target>
       </trans-unit>
       <trans-unit id="errata.create.productenhancementadvisory" xml:space="preserve">
         <source>Product Enhancement Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>プロダクト機能強化に関するアドバイザリー</target>
+        <target>製品の機能拡張アドバイザリ</target>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory" xml:space="preserve">
         <source>Security Advisory</source>
@@ -3958,7 +3958,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>フィルター</target>
+        <target>フィルタ</target>
       </trans-unit>
       <trans-unit id="recurring_duration" xml:space="preserve">
         <source>Recurring Duration</source>
