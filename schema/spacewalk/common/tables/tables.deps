@@ -81,21 +81,13 @@ rhnDevice                      :: rhnServer
 rhnDistChannelMap              :: rhnChannel rhnChannelArch
 rhnErrata                      :: rhnChecksum web_customer rhnErrataSeverity
 rhnErrataBuglist               :: rhnErrata
-rhnErrataBuglistTmp            :: rhnErrataTmp
 rhnErrataCVE                   :: rhnErrata rhnCVE
 rhnErrataFile                  :: rhnChecksum rhnErrata rhnErrataFileType
 rhnErrataFileChannel           :: rhnChannel rhnErrataFile rhnChannelErrata
 rhnErrataFilePackage           :: rhnPackage rhnErrataFile rhnErrataPackage
 rhnErrataFilePackageSource     :: rhnErrataFile rhnPackageSource rhnErrataPackage
-rhnErrataFileTmp               :: rhnChecksum rhnErrataTmp rhnErrataFileType
-rhnErrataFileChannelTmp        :: rhnErrataFileTmp rhnChannel
-rhnErrataFilePackageTmp        :: rhnErrataFileTmp rhnChannel
 rhnErrataKeyword               :: rhnErrata
-rhnErrataKeywordTmp            :: rhnErrataTmp
 rhnErrataPackage               :: rhnPackage rhnErrata
-rhnErrataPackageTmp            :: rhnPackage rhnErrataTmp
-rhnErrataClonedTmp             :: rhnErrataTmp
-rhnErrataTmp                   :: web_customer
 rhnFile                        :: web_customer rhnChecksum
 rhnFileLocation                :: rhnFile
 rhnImageNeededCache            :: web_customer suseImageInfo rhnErrata rhnChannel
