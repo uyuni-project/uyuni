@@ -1,3 +1,4 @@
+- Add support for activation keys on server configuration Salt modules
 - ensure the yum/dnf plugins are enabled
 
 -------------------------------------------------------------------
