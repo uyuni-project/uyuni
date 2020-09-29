@@ -30,6 +30,7 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 import shlex
 try:
     from xmlrpc import client as xmlrpclib
@@ -39,11 +40,17 @@ from operator import itemgetter
 from xml.parsers.expat import ExpatError
 from spacecmd.utils import *
 
-__PKG_COMPARISONS = {0: 'Same',
-                     1: 'Only here',
-                     2: 'Newer here',
-                     3: 'Only there',
-                     4: 'Newer there'}
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
+
+__PKG_COMPARISONS = {0: _('Same'),
+                     1: _('Only here'),
+                     2: _('Newer here'),
+                     3: _('Only there'),
+                     4: _('Newer there')}
 
 
 def print_package_comparison(self, results):
@@ -63,10 +70,10 @@ def print_package_comparison(self, results):
 
     # print(headers)
     print('%s  %s  %s  %s' % (
-        'Package'.ljust(max_name),
-        'This System'.ljust(max_this),
-        'Other System'.ljust(max_other),
-        'Difference'.ljust(max_comparison)))
+        _('Package').ljust(max_name),
+        _('This System').ljust(max_this),
+        _('Other System').ljust(max_other),
+        _('Difference').ljust(max_comparison)))
 
     print('%s  %s  %s  %s' % (
         '-' * max_name,
@@ -108,16 +115,16 @@ def manipulate_child_channels(self, args, remove=False):
 
     new_channels = args
 
-    print('Systems')
+    print(_('Systems'))
     print('-------')
     print('\n'.join(sorted(["%s" % x for x in systems])))
     print('')
 
     if remove:
-        print('Removing Channels')
+        print(_('Removing Channels'))
         print('-----------------')
     else:
-        print('Adding Channels')
+        print(_('Adding Channels'))
         print('---------------')
 
     print('\n'.join(sorted(new_channels)))
@@ -153,8 +160,8 @@ def manipulate_child_channels(self, args, remove=False):
 
 
 def help_system_list(self):
-    print('system_list: List all system profiles')
-    print('usage: system_list')
+    print(_('system_list: List all system profiles'))
+    print(_('usage: system_list'))
 
 
 def do_system_list(self, args, doreturn=False):
@@ -170,11 +177,11 @@ def do_system_list(self, args, doreturn=False):
 
 
 def help_system_reboot(self):
-    print('system_reboot: Reboot a system')
-    print('''usage: system_reboot <SYSTEMS> [options])
+    print(_('system_reboot: Reboot a system'))
+    print(_('''usage: system_reboot <SYSTEMS> [options])
 
 options:
-  -s START_TIME''')
+  -s START_TIME'''))
 
     print('')
     print(self.HELP_SYSTEM_OPTS)
@@ -203,7 +210,7 @@ def do_system_reboot(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     # get the start time option
@@ -220,13 +227,13 @@ def do_system_reboot(self, args):
 
     print('')
 
-    print('Start Time: %s' % options.start_time)
+    print(_('Start Time: %s') % options.start_time)
     print('')
-    print('Systems')
+    print(_('Systems'))
     print('-------')
     print('\n'.join(sorted(systems)))
 
-    if not self.user_confirm('Reboot these systems [y/N]:'):
+    if not self.user_confirm(_('Reboot these systems [y/N]:')):
         return 1
 
     for system in systems:
@@ -242,15 +249,15 @@ def do_system_reboot(self, args):
 
 
 def help_system_search(self):
-    print('system_search: List systems that match the given criteria')
-    print('usage: system_search QUERY')
+    print(_('system_search: List systems that match the given criteria'))
+    print(_('usage: system_search QUERY'))
     print('')
-    print('Available Fields:')
+    print(_('Available Fields:'))
     print('\n'.join(self.SYSTEM_SEARCH_FIELDS))
     print('')
-    print('Examples:')
-    print('> system_search device:vmware')
-    print('> system_search ip:192.168.82')
+    print(_('Examples:'))
+    print(_('> system_search device:vmware'))
+    print(_('> system_search ip:192.168.82'))
 
 
 def do_system_search(self, args, doreturn=False):
@@ -268,14 +275,14 @@ def do_system_search(self, args, doreturn=False):
         try:
             (field, value) = query.split(':')
         except ValueError:
-            logging.error('Invalid query')
+            logging.error(_('Invalid query'))
             return []
     else:
         field = 'name'
         value = query
 
     if not value:
-        logging.warning('Invalid query')
+        logging.warning(_('Invalid query'))
         return []
 
     results = []
@@ -311,7 +318,7 @@ def do_system_search(self, args, doreturn=False):
         results = self.client.system.search.uuid(self.session, value)
         key = 'uuid'
     else:
-        logging.warning('Invalid search field')
+        logging.warning(_('Invalid search field'))
         return []
 
     systems = []
@@ -341,9 +348,9 @@ def do_system_search(self, args, doreturn=False):
 
 
 def help_system_runscript(self):
-    print('system_runscript: Schedule a script to run on the list of')
-    print('                  systems provided')
-    print('''usage: system_runscript <SYSTEMS> [options])
+    print(_('system_runscript: Schedule a script to run on the list of'))
+    print(_('                  systems provided'))
+    print(_('''usage: system_runscript <SYSTEMS> [options])
 
 options:
   -u USER
@@ -351,7 +358,7 @@ options:
   -t TIMEOUT
   -s START_TIME
   -l LABEL
-  -f FILE''')
+  -f FILE'''))
     print('')
     print(self.HELP_SYSTEM_OPTS)
     print('')
@@ -384,12 +391,12 @@ def do_system_runscript(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     if is_interactive(options):
-        options.user = prompt_user('User [root]:')
-        options.group = prompt_user('Group [root]:')
+        options.user = prompt_user(_('User [root]:'))
+        options.group = prompt_user(_('Group [root]:'))
 
         # defaults
         if not options.user:
@@ -398,23 +405,23 @@ def do_system_runscript(self, args):
             options.group = 'root'
 
         try:
-            options.timeout = prompt_user('Timeout (in seconds) [600]:')
+            options.timeout = prompt_user(_('Timeout (in seconds) [600]:'))
             if options.timeout:
                 options.timeout = int(options.timeout)
             else:
                 options.timeout = 600
         except ValueError:
-            logging.error('Invalid timeout')
+            logging.error(_('Invalid timeout'))
             return 1
 
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
 
-        options.label = prompt_user('Label/Short Description [default]:')
+        options.label = prompt_user(_('Label/Short Description [default]:'))
         if options.label == "":
             options.label = None
 
-        options.file = prompt_user('Script File [create]:')
+        options.file = prompt_user(_('Script File [create]:'))
 
         # read the script provided by the user
         if options.file:
@@ -427,7 +434,7 @@ def do_system_runscript(self, args):
             keep_script_file = False
 
         if not script_contents:
-            logging.error('No script provided')
+            logging.error(_('No script provided'))
             return 1
     else:
         if not options.user:
@@ -446,7 +453,7 @@ def do_system_runscript(self, args):
             options.start_time = parse_time_input(options.start_time)
 
         if not options.file:
-            logging.error('A script file is required')
+            logging.error(_('A script file is required'))
             return 1
 
         script_contents = read_file(options.file)
@@ -454,18 +461,18 @@ def do_system_runscript(self, args):
 
     # display a summary
     print('')
-    print('User:       %s' % options.user)
-    print('Group:      %s' % options.group)
-    print('Timeout:    %i seconds' % options.timeout)
-    print('Start Time: %s' % options.start_time)
+    print(_('User:       %s') % options.user)
+    print(_('Group:      %s') % options.group)
+    print(_('Timeout:    %i seconds') % options.timeout)
+    print(_('Start Time: %s') % options.start_time)
     print('')
     if options.label:
-        print('Label:      %s' % options.label)
-    print('Script Contents')
+        print(_('Label:      %s') % options.label)
+    print(_('Script Contents'))
     print('---------------')
     print(script_contents)
 
-    print('Systems')
+    print(_('Systems'))
     print('-------')
     print('\n'.join(sorted(systems)))
 
@@ -499,7 +506,7 @@ def do_system_runscript(self, args):
                                                              options.start_time)
 
 
-        logging.info('Action ID: %i' % action_id)
+        logging.info(_('Action ID: %i') % action_id)
         scheduled = len(system_ids)
     else:
         # older versions of the API require each system to be
@@ -519,21 +526,21 @@ def do_system_runscript(self, args):
                                                          script_contents,
                                                          options.start_time)
 
-                logging.info('Action ID: %i' % action_id)
+                logging.info(_('Action ID: %i') % action_id)
                 scheduled += 1
             except xmlrpclib.Fault as detail:
                 logging.debug(detail)
-                logging.error('Failed to schedule %s' % system)
+                logging.error(_('Failed to schedule %s') % system)
                 return 1
 
-    logging.info('Scheduled: %i system(s)' % scheduled)
+    logging.info(_('Scheduled: %i system(s)') % scheduled)
 
     # don't delete a pre-existing script that the user provided
     if not keep_script_file:
         try:
             os.remove(options.file)
         except OSError:
-            logging.error('Could not remove %s' % options.file)
+            logging.error(_('Could not remove %s') % options.file)
             return 1
 
     return 0
@@ -542,8 +549,8 @@ def do_system_runscript(self, args):
 
 
 def help_system_listhardware(self):
-    print('system_listhardware: List the hardware details of a system')
-    print('usage: system_listhardware <SYSTEMS>')
+    print(_('system_listhardware: List the hardware details of a system'))
+    print(_('usage: system_listhardware <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -569,7 +576,7 @@ def do_system_listhardware(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -598,11 +605,11 @@ def do_system_listhardware(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
             print('')
 
         if network:
-            print('Network')
+            print(_('Network'))
             print('-------')
 
             count = 0
@@ -611,52 +618,52 @@ def do_system_listhardware(self, args):
                     print('')
                 count += 1
 
-                print('Interface:   %s' % device.get('interface'))
-                print('MAC Address: %s' % device.get('hardware_address').upper())
-                print('IP Address:  %s' % device.get('ip'))
-                print('Netmask:     %s' % device.get('netmask'))
-                print('Broadcast:   %s' % device.get('broadcast'))
-                print('Module:      %s' % device.get('module'))
+                print(_('Interface:   %s') % device.get('interface'))
+                print(_('MAC Address: %s') % device.get('hardware_address').upper())
+                print(_('IP Address:  %s') % device.get('ip'))
+                print(_('Netmask:     %s') % device.get('netmask'))
+                print(_('Broadcast:   %s') % device.get('broadcast'))
+                print(_('Module:      %s') % device.get('module'))
 
             print('')
 
-        print('CPU')
+        print(_('CPU'))
         print('---')
-        print('Count:    %i' % cpu.get('count'))
-        print('Arch:     %s' % cpu.get('arch'))
-        print('MHz:      %s' % cpu.get('mhz'))
-        print('Cache:    %s' % cpu.get('cache'))
-        print('Vendor:   %s' % cpu.get('vendor'))
-        print('Model:    %s' % re.sub(r'\s+', ' ', cpu.get('model')))
+        print(_('Count:    %i') % cpu.get('count'))
+        print(_('Arch:     %s') % cpu.get('arch'))
+        print(_('MHz:      %s') % cpu.get('mhz'))
+        print(_('Cache:    %s') % cpu.get('cache'))
+        print(_('Vendor:   %s') % cpu.get('vendor'))
+        print(_('Model:    %s') % re.sub(r'\s+', ' ', cpu.get('model')))
 
         print('')
-        print('Memory')
+        print(_('Memory'))
         print('------')
-        print('RAM:  %i' % memory.get('ram'))
-        print('Swap: %i' % memory.get('swap'))
+        print(_('RAM:  %i') % memory.get('ram'))
+        print(_('Swap: %i') % memory.get('swap'))
 
         if dmi:
             print('')
-            print('DMI')
-            print('Vendor:       %s' % dmi.get('vendor'))
-            print('System:       %s' % dmi.get('system'))
-            print('Product:      %s' % dmi.get('product'))
-            print('Board:        %s' % dmi.get('board'))
+            print(_('DMI'))
+            print(_('Vendor:       %s') % dmi.get('vendor'))
+            print(_('System:       %s') % dmi.get('system'))
+            print(_('Product:      %s') % dmi.get('product'))
+            print(_('Board:        %s') % dmi.get('board'))
 
             print('')
-            print('Asset')
+            print(_('Asset'))
             print('-----')
             for asset in dmi.get('asset').split(') ('):
                 print(re.sub(r'\)|\(', '', asset))
 
             print('')
-            print('BIOS Release: %s' % dmi.get('bios_release'))
-            print('BIOS Vendor:  %s' % dmi.get('bios_vendor'))
-            print('BIOS Version: %s' % dmi.get('bios_version'))
+            print(_('BIOS Release: %s') % dmi.get('bios_release'))
+            print(_('BIOS Vendor:  %s') % dmi.get('bios_vendor'))
+            print(_('BIOS Version: %s') % dmi.get('bios_version'))
 
         if devices:
             print('')
-            print('Devices')
+            print(_('Devices'))
             print('-------')
 
             count = 0
@@ -666,13 +673,13 @@ def do_system_listhardware(self, args):
                 count += 1
 
                 if device.get('description') is None:
-                    print('Description: None')
+                    print(_('Description: None'))
                 else:
-                    print('Description: %s' % (
+                    print(_('Description: %s') % (
                         wrap(device.get('description'), 60)[0]))
-                print('Driver:      %s' % device.get('driver'))
-                print('Class:       %s' % device.get('device_class'))
-                print('Bus:         %s' % device.get('bus'))
+                print(_('Driver:      %s') % device.get('driver'))
+                print(_('Class:       %s') % device.get('device_class'))
+                print(_('Bus:         %s') % device.get('bus'))
 
     return 0
 
@@ -680,11 +687,11 @@ def do_system_listhardware(self, args):
 
 
 def help_system_installpackage(self):
-    print('system_installpackage: Install a package on a system')
-    print('''usage: system_installpackage <SYSTEMS> <PACKAGE ...> [options])
+    print(_('system_installpackage: Install a package on a system'))
+    print(_('''usage: system_installpackage <SYSTEMS> <PACKAGE ...> [options])
 
 options:
-    -s START_TIME''')
+    -s START_TIME'''))
 
     print('')
     print(self.HELP_SYSTEM_OPTS)
@@ -715,7 +722,7 @@ def do_system_installpackage(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -733,7 +740,7 @@ def do_system_installpackage(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     packages_to_install = args
@@ -782,7 +789,7 @@ def do_system_installpackage(self, args):
                     jobs[system_id].append(package.get('id'))
 
     if not jobs:
-        logging.warning('No packages to install')
+        logging.warning(_('No packages to install'))
         return 1
 
     add_separator = False
@@ -806,13 +813,13 @@ def do_system_installpackage(self, args):
     if warnings:
         print('')
     for system_id in warnings:
-        logging.warning('%s does not have access to all requested packages' %
+        logging.warning(_('%s does not have access to all requested packages') %
                         self.get_system_name(system_id))
 
     print('')
-    print('Start Time: %s' % options.start_time)
+    print(_('Start Time: %s') % options.start_time)
 
-    if not self.user_confirm('Install these packages [y/N]:'):
+    if not self.user_confirm(_('Install these packages [y/N]:')):
         return 1
 
     scheduled = 0
@@ -825,9 +832,9 @@ def do_system_installpackage(self, args):
 
             scheduled += 1
         except xmlrpclib.Fault:
-            logging.error('Failed to schedule %s' % self.get_system_name(system_id))
+            logging.error(_('Failed to schedule %s') % self.get_system_name(system_id))
 
-    logging.info('Scheduled %i system(s)' % scheduled)
+    logging.info(_('Scheduled %i system(s)') % scheduled)
 
     return 0
 
@@ -835,11 +842,11 @@ def do_system_installpackage(self, args):
 
 
 def help_system_removepackage(self):
-    print('system_removepackage: Remove a package from a system')
-    print('''usage: system_removepackage <SYSTEMS> <PACKAGE ...> [options])
+    print(_('system_removepackage: Remove a package from a system'))
+    print(_('''usage: system_removepackage <SYSTEMS> <PACKAGE ...> [options])
 
 options:
-    -s START_TIME''')
+    -s START_TIME'''))
 
     print('')
     print(self.HELP_SYSTEM_OPTS)
@@ -870,7 +877,7 @@ def do_system_removepackage(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -888,7 +895,7 @@ def do_system_removepackage(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     package_list = args
@@ -932,9 +939,9 @@ def do_system_removepackage(self, args):
         return 1
 
     print('')
-    print('Start Time: %s' % options.start_time)
+    print(_('Start Time: %s') % options.start_time)
 
-    if not self.user_confirm('Remove these packages [y/N]:'):
+    if not self.user_confirm(_('Remove these packages [y/N]:')):
         return 1
 
     scheduled = 0
@@ -949,12 +956,12 @@ def do_system_removepackage(self, args):
                                                                  jobs[system],
                                                                  options.start_time)
 
-            logging.info('Action ID: %i' % action_id)
+            logging.info(_('Action ID: %i') % action_id)
             scheduled += 1
         except xmlrpclib.Fault:
-            logging.error('Failed to schedule %s' % system)
+            logging.error(_('Failed to schedule %s') % system)
 
-    logging.info('Scheduled %i system(s)' % scheduled)
+    logging.info(_('Scheduled %i system(s)') % scheduled)
 
     return 0
 
@@ -962,11 +969,11 @@ def do_system_removepackage(self, args):
 
 
 def help_system_upgradepackage(self):
-    print('system_upgradepackage: Upgrade a package on a system')
-    print('''usage: system_upgradepackage <SYSTEMS> <PACKAGE ...>|* [options]')
+    print(_('system_upgradepackage: Upgrade a package on a system'))
+    print(_('''usage: system_upgradepackage <SYSTEMS> <PACKAGE ...>|* [options]')
 
 options:
-    -s START_TIME''')
+    -s START_TIME'''))
 
     print('')
     print(self.HELP_SYSTEM_OPTS)
@@ -1005,7 +1012,7 @@ def do_system_upgradepackage(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -1023,7 +1030,7 @@ def do_system_upgradepackage(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     # make a dictionary of each system and the package IDs to install
@@ -1041,7 +1048,7 @@ def do_system_upgradepackage(self, args):
             package_ids = [p.get('to_package_id') for p in packages]
             jobs[system] = package_ids
         else:
-            logging.warning('No upgrades available for %s' % system)
+            logging.warning(_('No upgrades available for %s') % system)
 
     if not jobs:
         return 1
@@ -1064,14 +1071,14 @@ def do_system_upgradepackage(self, args):
             if name:
                 package_names.append(name)
             else:
-                logging.error("Couldn't get name for package %i" % package)
+                logging.error(_("Couldn't get name for package %i") % package)
 
         print('\n'.join(sorted(package_names)))
 
     print('')
-    print('Start Time: %s' % options.start_time)
+    print(_('Start Time: %s') % options.start_time)
 
-    if not self.user_confirm('Upgrade these packages [y/N]:'):
+    if not self.user_confirm(_('Upgrade these packages [y/N]:')):
         return 1
 
     scheduled = 0
@@ -1086,9 +1093,9 @@ def do_system_upgradepackage(self, args):
 
             scheduled += 1
         except xmlrpclib.Fault:
-            logging.error('Failed to schedule %s' % system)
+            logging.error(_('Failed to schedule %s') % system)
 
-    logging.info('Scheduled %i system(s)' % scheduled)
+    logging.info(_('Scheduled %i system(s)') % scheduled)
 
     return 0
 
@@ -1096,8 +1103,8 @@ def do_system_upgradepackage(self, args):
 
 
 def help_system_listupgrades(self):
-    print('system_listupgrades: List the available upgrades for a system')
-    print('usage: system_listupgrades <SYSTEMS>')
+    print(_('system_listupgrades: List the available upgrades for a system'))
+    print(_('usage: system_listupgrades <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1124,7 +1131,7 @@ def do_system_listupgrades(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1137,7 +1144,7 @@ def do_system_listupgrades(self, args):
                                                             system_id)
 
         if not packages:
-            logging.warning('No upgrades available for %s' % system)
+            logging.warning(_('No upgrades available for %s') % system)
             continue
 
         if add_separator:
@@ -1165,9 +1172,9 @@ def do_system_listupgrades(self, args):
 
 
 def help_system_listinstalledpackages(self):
-    print('system_listinstalledpackages: List the installed packages on a')
-    print('                              system')
-    print('usage: system_listinstalledpackages <SYSTEMS>')
+    print(_('system_listinstalledpackages: List the installed packages on a'))
+    print(_('                              system'))
+    print(_('usage: system_listinstalledpackages <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1194,7 +1201,7 @@ def do_system_listinstalledpackages(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1210,7 +1217,7 @@ def do_system_listinstalledpackages(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
             print('')
 
         print('\n'.join(build_package_names(packages)))
@@ -1221,8 +1228,8 @@ def do_system_listinstalledpackages(self, args):
 
 
 def help_system_listconfigchannels(self):
-    print('system_listconfigchannels: List the config channels of a system')
-    print('usage: system_listconfigchannels <SYSTEMS>')
+    print(_('system_listconfigchannels: List the config channels of a system'))
+    print(_('usage: system_listconfigchannels <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1249,7 +1256,7 @@ def do_system_listconfigchannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1268,7 +1275,7 @@ def do_system_listconfigchannels(self, args):
             channels = self.client.system.config.listChannels(self.session,
                                                               system_id)
         except xmlrpclib.Fault:
-            logging.warning('%s does not support configuration channels' %
+            logging.warning(_('%s does not support configuration channels') %
                             system)
             continue
 
@@ -1305,13 +1312,13 @@ def print_configfiles(self, quiet, filelist):
 
 
 def help_system_listconfigfiles(self):
-    print('system_listconfigfiles: List the managed config files of a system')
-    print('''usage: system_listconfigfiles <SYSTEMS>')
+    print(_('system_listconfigfiles: List the managed config files of a system'))
+    print(_('''usage: system_listconfigfiles <SYSTEMS>')
 options:
   -s/--sandbox : list only system-sandbox files
   -l/--local   : list only locally managed files
   -c/--central : list only centrally managed files
-  -q/--quiet   : quiet mode (omits the header)''')
+  -q/--quiet   : quiet mode (omits the header)'''))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1348,7 +1355,7 @@ def do_system_listconfigfiles(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1361,7 +1368,7 @@ def do_system_listconfigfiles(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
 
         try:
             # Pass 0 for system-sandbox files
@@ -1371,7 +1378,7 @@ def do_system_listconfigfiles(self, args):
             files += self.client.system.config.listFiles(self.session,
                                                          system_id, 1)
         except xmlrpclib.Fault:
-            logging.warning('%s does not support configuration channels' %
+            logging.warning(_('%s does not support configuration channels') %
                             system)
             continue
 
@@ -1406,10 +1413,10 @@ def do_system_listconfigfiles(self, args):
 
 
 def help_system_addconfigfile(self):
-    print('system_addconfigfile: Create a configuration file')
-    print('Note this is only for system sandbox or locally-managed files')
-    print('Centrally managed files should be created via configchannel_addfile')
-    print('''usage: system_addconfigfile [SYSTEM] [options]
+    print(_('system_addconfigfile: Create a configuration file'))
+    print(_('Note this is only for system sandbox or locally-managed files'))
+    print(_('Centrally managed files should be created via configchannel_addfile'))
+    print(_('''usage: system_addconfigfile [SYSTEM] [options]
 
 options:
   -S/--sandbox : list only system-sandbox files
@@ -1430,7 +1437,7 @@ options:
   newlines, those containing ASCII escape characters (or other charaters not
   allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-
   detect files which require this, but you may need to explicitly specify.
-''')
+'''))
 
 
 def complete_system_addconfigfile(self, text, line, beg, end):
@@ -1465,7 +1472,7 @@ def do_system_addconfigfile(self, args, update_path=''):
     if interactive:
         if not options.system:
             while True:
-                print('Systems')
+                print(_('Systems'))
                 print('----------------------')
                 print('\n'.join(sorted(self.do_system_list('', True))))
                 print('')
@@ -1477,7 +1484,7 @@ def do_system_addconfigfile(self, args, update_path=''):
                     break
                 else:
                     print('')
-                    logging.warning('%s is not a valid system' %
+                    logging.warning(_('%s is not a valid system') %
                                     options.system)
                     print('')
 
@@ -1487,7 +1494,7 @@ def do_system_addconfigfile(self, args, update_path=''):
             options.path = prompt_user('Path:', noblank=True)
 
         while not options.local and not options.sandbox:
-            answer = prompt_user('System-Sandbox or Locally-Managed? [S/L]:')
+            answer = prompt_user(_('System-Sandbox or Locally-Managed? [S/L]:'))
             if re.match('L', answer, re.I):
                 options.local = True
                 localopt = 1
@@ -1503,7 +1510,7 @@ def do_system_addconfigfile(self, args, update_path=''):
     elif options.sandbox:
         logging.debug("Selected system-sandbox")
     else:
-        logging.error("Must choose system-sandbox or locally-managed option")
+        logging.error(_("Must choose system-sandbox or locally-managed option"))
         self.help_system_addconfigfile()
         return 1
 
@@ -1542,12 +1549,12 @@ def do_system_addconfigfile(self, args, update_path=''):
 
 
 def help_system_addconfigchannels(self):
-    print('system_addconfigchannels: Add config channels to a system')
-    print('''usage: system_addconfigchannels <SYSTEMS> <CHANNEL ...> [options]
+    print(_('system_addconfigchannels: Add config channels to a system'))
+    print(_('''usage: system_addconfigchannels <SYSTEMS> <CHANNEL ...> [options]
 
 options:
   -t add channels to the top of the list
-  -b add channels to the bottom of the list''')
+  -b add channels to the bottom of the list'''))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1581,13 +1588,13 @@ def do_system_addconfigchannels(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     channels = args
 
     if is_interactive(options):
-        answer = prompt_user('Add to top or bottom? [T/b]:')
+        answer = prompt_user(_('Add to top or bottom? [T/b]:'))
         if re.match('b', answer, re.I):
             options.top = False
         else:
@@ -1611,8 +1618,8 @@ def do_system_addconfigchannels(self, args):
 
 
 def help_system_removeconfigchannels(self):
-    print('system_removeconfigchannels: Remove config channels from a system')
-    print('usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>')
+    print(_('system_removeconfigchannels: Remove config channels from a system'))
+    print(_('usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1644,7 +1651,7 @@ def do_system_removeconfigchannels(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     channels = args
@@ -1661,8 +1668,8 @@ def do_system_removeconfigchannels(self, args):
 
 
 def help_system_setconfigchannelorder(self):
-    print('system_setconfigchannelorder: Set the ranked order of configuration channels')
-    print('usage: system_setconfigchannelorder <SYSTEMS>')
+    print(_('system_setconfigchannelorder: Set the ranked order of configuration channels'))
+    print(_('usage: system_setconfigchannelorder <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1687,7 +1694,7 @@ def do_system_setconfigchannelorder(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     # get the current configuration channels from the first system
@@ -1702,7 +1709,7 @@ def do_system_setconfigchannelorder(self, args):
     new_channels = config_channel_order(all_channels, new_channels)
 
     print('')
-    print('New Configuration Channels')
+    print(_('New Configuration Channels'))
     print('--------------------------')
     for i, new_channel in enumerate(new_channels, 1):
         print('[%i] %s' % (i, new_channel))
@@ -1722,11 +1729,11 @@ def do_system_setconfigchannelorder(self, args):
 
 
 def help_system_deployconfigfiles(self):
-    print('system_deployconfigfiles: Deploy all configuration files for a system')
-    print('''usage: system_deployconfigfiles <SYSTEMS> [options]
+    print(_('system_deployconfigfiles: Deploy all configuration files for a system'))
+    print(_('''usage: system_deployconfigfiles <SYSTEMS> [options]
 
 options:
-    -s START_TIME''')
+    -s START_TIME'''))
 
     print('')
     print(self.HELP_SYSTEM_OPTS)
@@ -1752,7 +1759,7 @@ def do_system_deployconfigfiles(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -1767,17 +1774,17 @@ def do_system_deployconfigfiles(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     print('')
-    print('Start Time: %s' % options.start_time)
+    print(_('Start Time: %s') % options.start_time)
     print('')
-    print('Systems')
+    print(_('Systems'))
     print('-------')
     print('\n'.join(sorted(systems)))
 
-    message = 'Deploy ALL configuration files to these systems [y/N]:'
+    message = _('Deploy ALL configuration files to these systems [y/N]:')
     if not self.user_confirm(message):
         return 1
 
@@ -1787,7 +1794,7 @@ def do_system_deployconfigfiles(self, args):
                                         system_ids,
                                         options.start_time)
 
-    logging.info('Scheduled deployment for %i system(s)' % len(system_ids))
+    logging.info(_('Scheduled deployment for %i system(s)') % len(system_ids))
 
     return 0
 
@@ -1795,15 +1802,15 @@ def do_system_deployconfigfiles(self, args):
 
 
 def help_system_delete(self):
-    print('system_delete: Delete a system profile')
-    print('''usage: system_delete [options] <SYSTEMS>
+    print(_('system_delete: Delete a system profile'))
+    print(_('''usage: system_delete [options] <SYSTEMS>
 
     options:
           -c TYPE - Possible values:
              *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,
              *  'NO_CLEANUP' - do not cleanup, just delete,
              *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error
-    ''')
+    '''))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1840,7 +1847,7 @@ def do_system_delete(self, args):
         system_ids.append(system_id)
 
     if not system_ids:
-        logging.warning('No systems to delete')
+        logging.warning(_('No systems to delete'))
         return 1
 
     # make the column the right size
@@ -1848,7 +1855,7 @@ def do_system_delete(self, args):
     if colsize < 7:
         colsize = 7
 
-    print('%s  System ID' % 'Profile'.ljust(colsize))
+    print(_('%s  System ID') % _('Profile').ljust(colsize))
     print('%s  ---------' % ('-' * colsize))
 
     # print(a summary for the user)
@@ -1856,14 +1863,14 @@ def do_system_delete(self, args):
         print('%s  %i' %
               (self.get_system_name(system_id).ljust(colsize), system_id))
 
-    if not self.user_confirm('Delete these systems [y/N]:'):
+    if not self.user_confirm(_('Delete these systems [y/N]:')):
         return 1
 
     logging.debug("System IDs to remove: %s", system_ids)
     logging.debug("System names to IDs: %s", systems)
 
     self.client.system.deleteSystems(self.session, system_ids, options.cleanuptype)
-    logging.info('%i system(s) scheduled for removal', len(system_ids))
+    logging.info(_('%i system(s) scheduled for removal'), len(system_ids))
 
     # regenerate the system name cache
     self.generate_system_cache(True, delay=1)
@@ -1883,8 +1890,8 @@ def do_system_delete(self, args):
 
 
 def help_system_lock(self):
-    print('system_lock: Lock a system')
-    print('usage: system_lock <SYSTEMS>')
+    print(_('system_lock: Lock a system'))
+    print(_('usage: system_lock <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1909,7 +1916,7 @@ def do_system_lock(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1925,8 +1932,8 @@ def do_system_lock(self, args):
 
 
 def help_system_unlock(self):
-    print('system_unlock: Unlock a system')
-    print('usage: system_unlock <SYSTEMS>')
+    print(_('system_unlock: Unlock a system'))
+    print(_('usage: system_unlock <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1951,7 +1958,7 @@ def do_system_unlock(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1967,8 +1974,8 @@ def do_system_unlock(self, args):
 
 
 def help_system_rename(self):
-    print('system_rename: Rename a system profile')
-    print('usage: system_rename OLDNAME NEWNAME')
+    print(_('system_rename: Rename a system profile'))
+    print(_('usage: system_rename OLDNAME NEWNAME'))
 
 
 def complete_system_rename(self, text, line, beg, end):
@@ -2013,8 +2020,8 @@ def do_system_rename(self, args):
 
 
 def help_system_listcustomvalues(self):
-    print('system_listcustomvalues: List the custom values for a system')
-    print('usage: system_listcustomvalues <SYSTEMS>')
+    print(_('system_listcustomvalues: List the custom values for a system'))
+    print(_('usage: system_listcustomvalues <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2039,7 +2046,7 @@ def do_system_listcustomvalues(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     add_separator = False
@@ -2050,7 +2057,7 @@ def do_system_listcustomvalues(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
             print('')
 
         system_id = self.get_system_id(system)
@@ -2069,8 +2076,8 @@ def do_system_listcustomvalues(self, args):
 
 
 def help_system_addcustomvalue(self):
-    print('system_addcustomvalue: Set a custom value for a system')
-    print('usage: system_addcustomvalue KEY VALUE <SYSTEMS>')
+    print(_('system_addcustomvalue: Set a custom value for a system'))
+    print(_('usage: system_addcustomvalue KEY VALUE <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2106,7 +2113,7 @@ def do_system_addcustomvalue(self, args):
         systems = self.expand_systems(args[2:])
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in systems:
@@ -2124,8 +2131,8 @@ def do_system_addcustomvalue(self, args):
 
 
 def help_system_updatecustomvalue(self):
-    print('system_updatecustomvalue: Update a custom value for a system')
-    print('usage: system_updatecustomvalue KEY VALUE <SYSTEMS>')
+    print(_('system_updatecustomvalue: Update a custom value for a system'))
+    print(_('usage: system_updatecustomvalue KEY VALUE <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2156,8 +2163,8 @@ def do_system_updatecustomvalue(self, args):
 
 
 def help_system_removecustomvalues(self):
-    print('system_removecustomvalues: Remove a custom value for a system')
-    print('usage: system_removecustomvalues <SYSTEMS> <KEY ...>')
+    print(_('system_removecustomvalues: Remove a custom value for a system'))
+    print(_('usage: system_removecustomvalues <SYSTEMS> <KEY ...>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2188,12 +2195,12 @@ def do_system_removecustomvalues(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     keys = args[1:]
 
-    if not self.user_confirm('Delete these values [y/N]:'):
+    if not self.user_confirm(_('Delete these values [y/N]:')):
         return 1
 
     for system in systems:
@@ -2211,12 +2218,12 @@ def do_system_removecustomvalues(self, args):
 
 
 def help_system_addnote(self):
-    print('system_addnote: Set a note for a system')
-    print('''usage: system_addnote <SYSTEM> [options]
+    print(_('system_addnote: Set a note for a system'))
+    print(_('''usage: system_addnote <SYSTEM> [options]
 
 options:
   -s SUBJECT
-  -b BODY''')
+  -b BODY'''))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2243,21 +2250,21 @@ def do_system_addnote(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     if is_interactive(options):
-        options.subject = prompt_user('Subject of the Note:', noblank=True)
+        options.subject = prompt_user(_('Subject of the Note:'), noblank=True)
 
-        message = 'Note Body (ctrl-D to finish):'
+        message = _('Note Body (ctrl-D to finish):')
         options.body = prompt_user(message, noblank=True, multiline=True)
     else:
         if not options.subject:
-            logging.error('A subject is required')
+            logging.error(_('A subject is required'))
             return 1
 
         if not options.body:
-            logging.error('A body is required')
+            logging.error(_('A body is required'))
             return 1
 
     for system in systems:
@@ -2276,8 +2283,8 @@ def do_system_addnote(self, args):
 
 
 def help_system_deletenotes(self):
-    print('system_deletenotes: Delete notes from a system')
-    print('usage: system_deletenotes <SYSTEM> <ID|*>')
+    print(_('system_deletenotes: Delete notes from a system'))
+    print(_('usage: system_deletenotes <SYSTEM> <ID|*>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2303,13 +2310,13 @@ def do_system_deletenotes(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     note_ids = args
 
     if not args:
-        logging.warning('No notes to delete')
+        logging.warning(_('No notes to delete'))
         return
 
     for system in systems:
@@ -2336,8 +2343,8 @@ def do_system_deletenotes(self, args):
 
 
 def help_system_listnotes(self):
-    print('system_listnotes: List the available notes for a system')
-    print('usage: system_listnotes <SYSTEM>')
+    print(_('system_listnotes: List the available notes for a system'))
+    print(_('usage: system_listnotes <SYSTEM>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2362,7 +2369,7 @@ def do_system_listnotes(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     add_separator = False
@@ -2373,7 +2380,7 @@ def do_system_listnotes(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
             print('')
 
         system_id = self.get_system_id(system)
@@ -2395,8 +2402,8 @@ def do_system_listnotes(self, args):
 
 
 def help_system_listfqdns(self):
-    print('system_listfqdns: List the associated FQDNs for a system')
-    print('usage: system_listfqdns <SYSTEM>')
+    print(_('system_listfqdns: List the associated FQDNs for a system'))
+    print(_('usage: system_listfqdns <SYSTEM>'))
     print(self.HELP_SYSTEM_OPTS)
 
 
@@ -2420,7 +2427,7 @@ def do_system_listfqdns(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     add_separator = False
@@ -2431,7 +2438,7 @@ def do_system_listfqdns(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
             print('')
 
         system_id = self.get_system_id(system)
@@ -2448,8 +2455,8 @@ def do_system_listfqdns(self, args):
 ####################
 
 def help_system_setbasechannel(self):
-    print("system_setbasechannel: Set a system's base software channel")
-    print('usage: system_setbasechannel <SYSTEMS> CHANNEL')
+    print(_("system_setbasechannel: Set a system's base software channel"))
+    print(_('usage: system_setbasechannel <SYSTEMS> CHANNEL'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2479,7 +2486,7 @@ def do_system_setbasechannel(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     add_separator = False
@@ -2496,9 +2503,9 @@ def do_system_setbasechannel(self, args):
             print(self.SEPARATOR)
         add_separator = True
 
-        print('System:           %s' % system)
-        print('Old Base Channel: %s' % old.get('label'))
-        print('New Base Channel: %s' % new_channel)
+        print(_('System:           %s') % system)
+        print(_('Old Base Channel: %s') % old.get('label'))
+        print(_('New Base Channel: %s') % new_channel)
 
     if not self.user_confirm():
         return 1
@@ -2517,13 +2524,13 @@ def do_system_setbasechannel(self, args):
 ####################
 
 def help_system_schedulechangechannels(self):
-    print("system_schedulechangechannels: Schedule changing a system's software channels")
-    print('''usage: system_setbasechannel <SYSTEMS> [options]
+    print(_("system_schedulechangechannels: Schedule changing a system's software channels"))
+    print(_('''usage: system_setbasechannel <SYSTEMS> [options]
 
 options:
   -b BASE_CHANNEL base channel label
   -c CHILD_CHANNEL child channel labels (allowed multiple times)
-  -s START_TIME time defaults to now''')
+  -s START_TIME time defaults to now'''))
     print(self.HELP_SYSTEM_OPTS)
 
 
@@ -2546,7 +2553,7 @@ def do_system_schedulechangechannels(self, args):
         return 1
 
     if not options.base:
-        logging.error('A base channel is required')
+        logging.error(_('A base channel is required'))
         return 1
 
     # use the systems listed in the SSM
@@ -2556,7 +2563,7 @@ def do_system_schedulechangechannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     if not options.start_time:
@@ -2583,11 +2590,11 @@ def do_system_schedulechangechannels(self, args):
             print(self.SEPARATOR)
         add_separator = True
 
-        print('System:           %s' % system)
-        print('Old Base Channel: %s' % oldBase.get('label'))
-        print('Old Child Channels: %s' % ', '.join([k.get('label') for k in oldKids]))
-        print('New Base Channel: %s' % baseChannel)
-        print('New Child channels %s' % ', '.join(childChannels))
+        print(_('System:           %s') % system)
+        print(_('Old Base Channel: %s') % oldBase.get('label'))
+        print(_('Old Child Channels: %s') % ', '.join([k.get('label') for k in oldKids]))
+        print(_('New Base Channel: %s') % baseChannel)
+        print(_('New Child channels %s') % ', '.join(childChannels))
 
     if not self.user_confirm():
         return 1
@@ -2602,15 +2609,15 @@ def do_system_schedulechangechannels(self, args):
                                           baseChannel,
                                           childChannels,
                                           options.start_time)
-        print('Scheduled action id: %s' % actionId)
+        print(_('Scheduled action id: %s') % actionId)
 
     return 0
 
 ####################
 
 def help_system_listbasechannel(self):
-    print('system_listbasechannel: List the base channel for a system')
-    print('usage: system_listbasechannel <SYSTEMS>')
+    print(_('system_listbasechannel: List the base channel for a system'))
+    print(_('usage: system_listbasechannel <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2637,7 +2644,7 @@ def do_system_listbasechannel(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -2650,7 +2657,7 @@ def do_system_listbasechannel(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
 
         channel = \
             self.client.system.getSubscribedBaseChannel(self.session,
@@ -2664,8 +2671,8 @@ def do_system_listbasechannel(self, args):
 
 
 def help_system_listchildchannels(self):
-    print('system_listchildchannels: List the child channels for a system')
-    print('usage: system_listchildchannels <SYSTEMS>')
+    print(_('system_listchildchannels: List the child channels for a system'))
+    print(_('usage: system_listchildchannels <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2692,7 +2699,7 @@ def do_system_listchildchannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -2705,7 +2712,7 @@ def do_system_listchildchannels(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
 
         channels = \
             self.client.system.listSubscribedChildChannels(self.session,
@@ -2719,8 +2726,8 @@ def do_system_listchildchannels(self, args):
 
 
 def help_system_addchildchannels(self):
-    print("system_addchildchannels: Add child channels to a system")
-    print('usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>')
+    print(_("system_addchildchannels: Add child channels to a system"))
+    print(_('usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2742,14 +2749,14 @@ def do_system_addchildchannels(self, args):
 
 
 def help_system_listcrashedsystems(self):
-    print("system_listcrashedsystems: List all systems that have experienced a crash and reported by spacewalk-abrt")
-    print('usage: system_listcrashedsystems')
+    print(_("system_listcrashedsystems: List all systems that have experienced a crash and reported by spacewalk-abrt"))
+    print(_('usage: system_listcrashedsystems'))
     print('')
 
 
 def do_system_listcrashedsystems(self, args):
     print('')
-    print('Count | System ID | Profile Name')
+    print(_('Count | System ID | Profile Name'))
     print('--------------------------------')
     res = self.client.system.listUserSystems(self.session)
     for s in res:
@@ -2763,10 +2770,10 @@ def do_system_listcrashedsystems(self, args):
 
 
 def help_system_deletecrashes(self):
-    print('system_deletecrashes: Delete crashes reported by spacewalk-abrt.')
-    print('usage: Delete all crashes for all systems    : system_deletecrashes [--verbose]')
-    print('usage: Delete all crashes for a single system: system_deletecrashes -i sys_id [--verbose]')
-    print('usage: Delete a single crash record          : system_deletecrashes -c crash_id [--verbose]')
+    print(_('system_deletecrashes: Delete crashes reported by spacewalk-abrt.'))
+    print(_('usage: Delete all crashes for all systems    : system_deletecrashes [--verbose]'))
+    print(_('usage: Delete all crashes for a single system: system_deletecrashes -i sys_id [--verbose]'))
+    print(_('usage: Delete a single crash record          : system_deletecrashes -c crash_id [--verbose]'))
     print('')
 
 
@@ -2784,16 +2791,16 @@ def do_system_deletecrashes(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if options.crashid:
-        print_msg("Deleting crash with id %s." % options.crashid, options.verbose)
+        print_msg(_("Deleting crash with id %s.") % options.crashid, options.verbose)
         self.client.system.crash.deleteCrash(self.session, int(options.crashid))
         return
 
     sys_id = []
     if options.sysid:
         sys_id.append(options.sysid)
-        prompt_string = "Deleting all crashes from system with systemid %s [y/N]:" % options.sysid
+        prompt_string = _("Deleting all crashes from system with systemid %s [y/N]:") % options.sysid
     else:  # all systems
-        prompt_string = 'Deleting all crashes from all systems [y/N]:'
+        prompt_string = _('Deleting all crashes from all systems [y/N]:')
         systems = self.client.system.listUserSystems(self.session)
         for s in systems:
             sys_id.append(s['id'])
@@ -2805,7 +2812,7 @@ def do_system_deletecrashes(self, args):
     for s_id in sys_id:
         list_crash = self.client.system.crash.listSystemCrashes(self.session, int(s_id))
         for crash in list_crash:
-            print_msg("Deleting crash with id %s from system %s." % (crash['id'], s_id), options.verbose)
+            print_msg(_("Deleting crash with id %s from system %s.") % (crash['id'], s_id), options.verbose)
             self.client.system.crash.deleteCrash(self.session, int(crash['id']))
 
     return 0
@@ -2814,8 +2821,8 @@ def do_system_deletecrashes(self, args):
 
 
 def help_system_listcrashesbysystem(self):
-    print('system_listcrashesbysystem: List all reported crashes for a system.')
-    print('usage: system_listcrashesbysystem -i sys_id')
+    print(_('system_listcrashesbysystem: List all reported crashes for a system.'))
+    print(_('usage: system_listcrashesbysystem -i sys_id'))
     print('')
 
 
@@ -2826,13 +2833,13 @@ def do_system_listcrashesbysystem(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if not options.sysid:
-        print("# System id must be provided.")
-        print("usage: system_listcrashesbysystem -i sys_id")
+        print(_("# System id must be provided."))
+        print(_("usage: system_listcrashesbysystem -i sys_id"))
         return 1
 
     l_crashes = self.client.system.crash.listSystemCrashes(self.session, int(options.sysid))
     print('')
-    print('Crash ID | Crash Name')
+    print(_('Crash ID | Crash Name'))
     print('---------------------')
 
     for cr in l_crashes:
@@ -2843,9 +2850,9 @@ def do_system_listcrashesbysystem(self, args):
 #######
 
 def help_system_getcrashfiles(self):
-    print('system_getcrashfiles: Download all files for a crash record.')
-    print('usage: system_getcrashfiles -c crash_id [--verbose]')
-    print('usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--verbose]')
+    print(_('system_getcrashfiles: Download all files for a crash record.'))
+    print(_('usage: system_getcrashfiles -c crash_id [--verbose]'))
+    print(_('usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--verbose]'))
     print('')
 
 
@@ -2858,8 +2865,8 @@ def do_system_getcrashfiles(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if not options.crashid:
-        print("# Crash id must be provided.")
-        print("usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--verbose]")
+        print(_("# Crash id must be provided."))
+        print(_("usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--verbose]"))
         return 1
 
     if not options.verbose:
@@ -2885,7 +2892,7 @@ def do_system_getcrashfiles(self, args):
             options.verbose))
 
     print('')
-    print("# All files we downloaded to %s." % options.dest_folder)
+    print(_("# All files we downloaded to %s.") % options.dest_folder)
     print('')
 
     return 0
@@ -2894,8 +2901,8 @@ def do_system_getcrashfiles(self, args):
 
 
 def help_system_removechildchannels(self):
-    print("system_removechildchannels: Remove child channels from a system")
-    print('usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>')
+    print(_("system_removechildchannels: Remove child channels from a system"))
+    print(_('usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2917,8 +2924,8 @@ def do_system_removechildchannels(self, args):
 
 
 def help_system_details(self):
-    print('system_details: Show the details of a system profile')
-    print('usage: system_details <SYSTEMS>')
+    print(_('system_details: Show the details of a system profile'))
+    print(_('usage: system_details <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2945,7 +2952,7 @@ def do_system_details(self, args, short=False):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -2971,19 +2978,19 @@ def do_system_details(self, args, short=False):
             print(self.SEPARATOR)
         add_separator = True
 
-        print('Name:          %s' % details.get('profile_name'))
-        print('System ID:     %i' % system_id)
+        print(_('Name:          %s') % details.get('profile_name'))
+        print(_('System ID:     %i') % system_id)
 
         if uuid:
-            print('UUID:          %s' % uuid)
+            print(_('UUID:          %s') % uuid)
 
-        print('Locked:        %s' % details.get('lock_status'))
-        print('Registered:    %s' % registered)
-        print('Last Checkin:  %s' % last_checkin)
-        print('OSA Status:    %s' % details.get('osa_status'))
-        print('Last Boot:     %s' % details.get('last_boot'))
+        print(_('Locked:        %s') % details.get('lock_status'))
+        print(_('Registered:    %s') % registered)
+        print(_('Last Checkin:  %s') % last_checkin)
+        print(_('OSA Status:    %s') % details.get('osa_status'))
+        print(_('Last Boot:     %s') % details.get('last_boot'))
         if 'contact_method' in details:
-            print('Contact Method:%s' % details.get('contact_method'))
+            print(_('Contact Method:%s') % details.get('contact_method'))
 
         # only print(basic information if requested)
         if short:
@@ -3027,18 +3034,18 @@ def do_system_details(self, args, short=False):
                 ranked_config_channels.append(channel.get('label'))
 
         print('')
-        print('Hostname:      %s' % network.get('hostname'))
-        print('IP Address:    %s' % network.get('ip'))
-        print('Kernel:        %s' % kernel)
+        print(_('Hostname:      %s') % network.get('hostname'))
+        print(_('IP Address:    %s') % network.get('ip'))
+        print(_('Kernel:        %s') % kernel)
 
         if keys:
             print('')
-            print('Activation Keys')
+            print(_('Activation Keys'))
             print('---------------')
             print('\n'.join(sorted(keys)))
 
         print('')
-        print('Software Channels')
+        print(_('Software Channels'))
         print('-----------------')
         print(base_channel.get('label'))
 
@@ -3047,18 +3054,18 @@ def do_system_details(self, args, short=False):
 
         if ranked_config_channels:
             print('')
-            print('Configuration Channels')
+            print(_('Configuration Channels'))
             print('----------------------')
             print('\n'.join(ranked_config_channels))
 
         print('')
-        print('Entitlements')
+        print(_('Entitlements'))
         print('------------')
         print('\n'.join(sorted(entitlements)))
 
         if groups:
             print('')
-            print('System Groups')
+            print(_('System Groups'))
             print('-------------')
             for group in groups:
                 if group.get('subscribed') == 1:
@@ -3070,8 +3077,8 @@ def do_system_details(self, args, short=False):
 
 
 def help_system_listerrata(self):
-    print('system_listerrata: List available errata for a system')
-    print('usage: system_listerrata <SYSTEMS>')
+    print(_('system_listerrata: List available errata for a system'))
+    print(_('usage: system_listerrata <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3098,7 +3105,7 @@ def do_system_listerrata(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -3111,7 +3118,7 @@ def do_system_listerrata(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
             print('')
 
         errata = self.client.system.getRelevantErrata(self.session,
@@ -3125,12 +3132,12 @@ def do_system_listerrata(self, args):
 
 
 def help_system_applyerrata(self):
-    print('system_applyerrata: Apply errata to a system')
-    print('''usage: system_applyerrata [options] <SYSTEMS>
+    print(_('system_applyerrata: Apply errata to a system'))
+    print(_('''usage: system_applyerrata [options] <SYSTEMS>
 [ERRATA|search:XXX ...]
 
 options:
-  -s START_TIME''')
+  -s START_TIME'''))
     print('')
     print(self.HELP_TIME_OPTS)
     print('')
@@ -3167,7 +3174,7 @@ def do_system_applyerrata(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     # allow globbing and searching of errata
@@ -3187,8 +3194,8 @@ def do_system_applyerrata(self, args):
 
 
 def help_system_listevents(self):
-    print('system_listevents: List the event history for a system')
-    print('usage: system_listevents <SYSTEMS>')
+    print(_('system_listevents: List the event history for a system'))
+    print(_('usage: system_listevents <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3213,7 +3220,7 @@ def do_system_listevents(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     add_separator = False
@@ -3228,15 +3235,15 @@ def do_system_listevents(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
 
         events = self.client.system.getEventHistory(self.session, system_id)
 
         for e in events:
             print('')
-            print('Summary:   %s' % e.get('summary'))
-            print('Completed: %s' % e.get('completed'))
-            print('Details:   %s' % e.get('details'))
+            print(_('Summary:   %s') % e.get('summary'))
+            print(_('Completed: %s') % e.get('completed'))
+            print(_('Details:   %s') % e.get('details'))
 
     return 0
 
@@ -3244,8 +3251,8 @@ def do_system_listevents(self, args):
 
 
 def help_system_listentitlements(self):
-    print('system_listentitlements: List the entitlements for a system')
-    print('usage: system_listentitlements <SYSTEMS>')
+    print(_('system_listentitlements: List the entitlements for a system'))
+    print(_('usage: system_listentitlements <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3272,7 +3279,7 @@ def do_system_listentitlements(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -3285,7 +3292,7 @@ def do_system_listentitlements(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
 
         entitlements = self.client.system.getEntitlements(self.session,
                                                           system_id)
@@ -3298,8 +3305,8 @@ def do_system_listentitlements(self, args):
 
 
 def help_system_addentitlements(self):
-    print('system_addentitlements: Add entitlements to a system')
-    print('usage: system_addentitlements <SYSTEMS> ENTITLEMENT')
+    print(_('system_addentitlements: Add entitlements to a system'))
+    print(_('usage: system_addentitlements <SYSTEMS> ENTITLEMENT'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3336,7 +3343,7 @@ def do_system_addentitlements(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in systems:
@@ -3354,8 +3361,8 @@ def do_system_addentitlements(self, args):
 
 
 def help_system_removeentitlement(self):
-    print('system_removeentitlement: Remove an entitlement from a system')
-    print('usage: system_removeentitlement <SYSTEMS> ENTITLEMENT')
+    print(_('system_removeentitlement: Remove an entitlement from a system'))
+    print(_('usage: system_removeentitlement <SYSTEMS> ENTITLEMENT'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3392,7 +3399,7 @@ def do_system_removeentitlement(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in systems:
@@ -3410,8 +3417,8 @@ def do_system_removeentitlement(self, args):
 
 
 def help_system_listpackageprofiles(self):
-    print('system_listpackageprofiles: List all package profiles')
-    print('usage: system_listpackageprofiles')
+    print(_('system_listpackageprofiles: List all package profiles'))
+    print(_('usage: system_listpackageprofiles'))
 
 
 def do_system_listpackageprofiles(self, args, doreturn=False):
@@ -3430,8 +3437,8 @@ def do_system_listpackageprofiles(self, args, doreturn=False):
 
 
 def help_system_deletepackageprofile(self):
-    print('system_deletepackageprofile: Delete a package profile')
-    print('usage: system_deletepackageprofile PROFILE')
+    print(_('system_deletepackageprofile: Delete a package profile'))
+    print(_('usage: system_deletepackageprofile PROFILE'))
 
 
 def complete_system_deletepackageprofile(self, text, line, beg, end):
@@ -3455,7 +3462,7 @@ def do_system_deletepackageprofile(self, args):
 
     label = args[0]
 
-    if not self.user_confirm('Delete this profile [y/N]:'):
+    if not self.user_confirm(_('Delete this profile [y/N]:')):
         return 1
 
     all_profiles = self.client.system.listPackageProfiles(self.session)
@@ -3466,7 +3473,7 @@ def do_system_deletepackageprofile(self, args):
             profile_id = profile.get('id')
 
     if not profile_id:
-        logging.warning('%s is not a valid profile' % label)
+        logging.warning(_('%s is not a valid profile') % label)
         return 1
 
     self.client.system.deletePackageProfile(self.session, profile_id)
@@ -3477,12 +3484,12 @@ def do_system_deletepackageprofile(self, args):
 
 
 def help_system_createpackageprofile(self):
-    print('system_createpackageprofile: Create a package profile')
-    print('''usage: system_createpackageprofile SYSTEM [options]
+    print(_('system_createpackageprofile: Create a package profile'))
+    print(_('''usage: system_createpackageprofile SYSTEM [options]
 
 options:
   -n NAME
-  -d DESCRIPTION''')
+  -d DESCRIPTION'''))
 
 
 def complete_system_createpackageprofile(self, text, line, beg, end):
@@ -3508,15 +3515,15 @@ def do_system_createpackageprofile(self, args):
         return 1
 
     if is_interactive(options):
-        options.name = prompt_user('Profile Label:', noblank=True)
-        options.description = prompt_user('Description:', multiline=True)
+        options.name = prompt_user(_('Profile Label:'), noblank=True)
+        options.description = prompt_user(_('Description:'), multiline=True)
     else:
         if not options.name:
-            logging.error('A profile name is required')
+            logging.error(_('A profile name is required'))
             return 1
 
         if not options.description:
-            logging.error('A profile description is required')
+            logging.error(_('A profile description is required'))
             return 1
 
     self.client.system.createPackageProfile(self.session,
@@ -3524,7 +3531,7 @@ def do_system_createpackageprofile(self, args):
                                             options.name,
                                             options.description)
 
-    logging.info("Created package profile '%s'" % options.name)
+    logging.info(_("Created package profile '%s'") % options.name)
 
     return 0
 
@@ -3532,8 +3539,8 @@ def do_system_createpackageprofile(self, args):
 
 
 def help_system_comparepackageprofile(self):
-    print('system_comparepackageprofile: Compare a system against a package profile')
-    print('usage: system_comparepackageprofile <SYSTEMS> PROFILE')
+    print(_('system_comparepackageprofile: Compare a system against a package profile'))
+    print(_('usage: system_comparepackageprofile <SYSTEMS> PROFILE'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3567,7 +3574,7 @@ def do_system_comparepackageprofile(self, args):
         systems = self.expand_systems(args[:-1])
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     profile = args[-1]
@@ -3596,8 +3603,8 @@ def do_system_comparepackageprofile(self, args):
 
 
 def help_system_comparepackages(self):
-    print('system_comparepackages: Compare the packages between two systems')
-    print('usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM')
+    print(_('system_comparepackages: Compare the packages between two systems'))
+    print(_('usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM'))
 
 
 def complete_system_comparepackages(self, text, line, beg, end):
@@ -3628,11 +3635,11 @@ def do_system_comparepackages(self, args):
 
 
 def help_system_syncpackages(self):
-    print('system_syncpackages: Sync packages between two systems')
-    print('''usage: system_syncpackages SOURCE TARGET [options]
+    print(_('system_syncpackages: Sync packages between two systems'))
+    print(_('''usage: system_syncpackages SOURCE TARGET [options]
 
 options:
-    -s START_TIME''')
+    -s START_TIME'''))
     print('')
     print(self.HELP_TIME_OPTS)
 
@@ -3663,7 +3670,7 @@ def do_system_syncpackages(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -3675,9 +3682,9 @@ def do_system_syncpackages(self, args):
     self.do_system_comparepackages('%s %s' % (source_id, target_id))
 
     print('')
-    print('Start Time: %s' % options.start_time)
+    print(_('Start Time: %s') % options.start_time)
 
-    if not self.user_confirm('Sync packages [y/N]:'):
+    if not self.user_confirm(_('Sync packages [y/N]:')):
         return 1
 
     # get package IDs
@@ -3719,8 +3726,8 @@ def filter_latest_packages(pkglist, version_key='version',
             p['arch'] = re.sub('AMD64', 'x86_64', p['arch'])
             tuplekey = p['name'], p['arch']
         else:
-            logging.error("Failed to filter package list, package %s" % p
-                          + "found with no arch or arch_label")
+            logging.error(_("Failed to filter package list, package %s") % p
+                          + _("found with no arch or arch_label"))
             return None
         if not tuplekey in latest:
             latest[tuplekey] = p
@@ -3761,10 +3768,10 @@ def print_comparison_withchannel(self, channelnewer, systemnewer,
 
     # print(headers)
     print('%s  %s  %s  %s' % (
-        'Package'.ljust(max_name),
-        'System Version'.ljust(max_system),
-        'Channel Version'.ljust(max_channel),
-        'Difference'.ljust(max_comparison)))
+        _('Package').ljust(max_name),
+        _('System Version').ljust(max_system),
+        _('Channel Version').ljust(max_channel),
+        _('Difference').ljust(max_comparison)))
 
     print('%s  %s  %s  %s' % (
         '-' * max_name,
@@ -3785,7 +3792,7 @@ def print_comparison_withchannel(self, channelnewer, systemnewer,
             name_string.ljust(max_name),
             version_string.ljust(max_system),
             channel_version.ljust(max_channel),
-            "Channel_newer_than_system".ljust(max_comparison)))
+            _("Channel_newer_than_system").ljust(max_comparison)))
     for item in systemnewer:
         name_string = "%(name)s.%(arch)s" % item
         version_string = "%(version)s-%(release)s" % item
@@ -3798,7 +3805,7 @@ def print_comparison_withchannel(self, channelnewer, systemnewer,
             name_string.ljust(max_name),
             version_string.ljust(max_system),
             channel_version.ljust(max_channel),
-            "System_newer_than_channel".ljust(max_comparison)))
+            _("System_newer_than_channel").ljust(max_comparison)))
     for item in channelmissing:
         name_string = "%(name)s.%(arch)s" % item
         version_string = "%(version)s-%(release)s" % item
@@ -3807,19 +3814,19 @@ def print_comparison_withchannel(self, channelnewer, systemnewer,
             name_string.ljust(max_name),
             version_string.ljust(max_system),
             channel_version.ljust(max_channel),
-            "Missing_in_channel".ljust(max_comparison)))
+            _("Missing_in_channel").ljust(max_comparison)))
 
 
 def help_system_comparewithchannel(self):
-    print('system_comparewithchannel: Compare the installed packages on a')
-    print('                           system with those in the channels it is')
-    print('                           registerd to, or optionally some other')
-    print('                           channel')
-    print('usage: system_comparewithchannel <SYSTEMS> [options]')
-    print('options:')
-    print('         -c/--channel : Specific channel to compare against,')
-    print('                        default is those subscribed to, including')
-    print('                        child channels')
+    print(_('system_comparewithchannel: Compare the installed packages on a'))
+    print(_('                           system with those in the channels it is'))
+    print(_('                           registerd to, or optionally some other'))
+    print(_('                           channel'))
+    print(_('usage: system_comparewithchannel <SYSTEMS> [options]'))
+    print(_('options:'))
+    print(_('         -c/--channel : Specific channel to compare against,'))
+    print(_('                        default is those subscribed to, including'))
+    print(_('                        child channels'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3845,7 +3852,7 @@ def do_system_comparewithchannel(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     channel_latest = {}
@@ -3870,7 +3877,7 @@ def do_system_comparewithchannel(self, args):
             allch = self.client.channel.listSoftwareChannels(self.session)
             allch_labels = [c['label'] for c in allch]
             if not options.channel in allch_labels:
-                logging.error("Specified channel does not exist")
+                logging.error(_("Specified channel does not exist"))
                 self.help_system_comparewithchannel()
                 return
             channels = [options.channel]
@@ -3881,10 +3888,10 @@ def do_system_comparewithchannel(self, args):
             basech = self.client.system.getSubscribedBaseChannel(self.session,
                                                                  system_id)
             if not basech:
-                logging.error("system %s is not subscribed to any channel!"
+                logging.error(_("system %s is not subscribed to any channel!")
                               % system)
-                logging.error("Please subscribe to a channel, or specify a" +
-                              "channel to compare with")
+                logging.error(_("Please subscribe to a channel, or specify a" +
+                              "channel to compare with"))
                 return 1
             logging.debug("base channel %s for %s" % (basech['name'], system))
             childch = self.client.system.listSubscribedChildChannels(
@@ -3917,7 +3924,7 @@ def do_system_comparewithchannel(self, args):
                     latestpkgs[key] = p_newest
 
         if len(systems) > 1:
-            print('\nSystem: %s' % system)
+            print(_('\nSystem: %s') % system)
 
         # Iterate over the installed packages
         channelnewer = []
@@ -3943,11 +3950,11 @@ def do_system_comparewithchannel(self, args):
 
 
 def help_system_schedulehardwarerefresh(self):
-    print('system_schedulehardwarerefresh: Schedule a hardware refresh for a system')
-    print('''usage: system_schedulehardwarerefresh <SYSTEMS> [options]
+    print(_('system_schedulehardwarerefresh: Schedule a hardware refresh for a system'))
+    print(_('''usage: system_schedulehardwarerefresh <SYSTEMS> [options]
 
 options:
-  -s START_TIME''')
+  -s START_TIME'''))
 
     print('')
     print(self.HELP_SYSTEM_OPTS)
@@ -3973,7 +3980,7 @@ def do_system_schedulehardwarerefresh(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -3988,7 +3995,7 @@ def do_system_schedulehardwarerefresh(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in systems:
@@ -4006,11 +4013,11 @@ def do_system_schedulehardwarerefresh(self, args):
 
 
 def help_system_schedulepackagerefresh(self):
-    print('system_schedulepackagerefresh: Schedule a software package refresh for a system')
-    print('''usage: system_schedulepackagerefresh <SYSTEMS> [options])
+    print(_('system_schedulepackagerefresh: Schedule a software package refresh for a system'))
+    print(_('''usage: system_schedulepackagerefresh <SYSTEMS> [options])
 
 options:
-  -s START_TIME''')
+  -s START_TIME'''))
     print('')
     print(self.HELP_SYSTEM_OPTS)
     print('')
@@ -4035,7 +4042,7 @@ def do_system_schedulepackagerefresh(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -4050,7 +4057,7 @@ def do_system_schedulepackagerefresh(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in systems:
@@ -4068,8 +4075,8 @@ def do_system_schedulepackagerefresh(self, args):
 
 
 def help_system_show_packageversion(self):
-    print('system_show_packageversion: Shows version of installed package on given system(s)')
-    print('usage: system_show_packageversion <SYSTEM> <PACKAGE>')
+    print(_('system_show_packageversion: Shows version of installed package on given system(s)'))
+    print(_('usage: system_show_packageversion <SYSTEM> <PACKAGE>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -4098,10 +4105,10 @@ def do_system_show_packageversion(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
-    print("Package\tVersion\tRelease\tEpoch\tArch\tSystem")
+    print(_("Package\tVersion\tRelease\tEpoch\tArch\tSystem"))
     print("==============================================")
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -4121,9 +4128,9 @@ def do_system_show_packageversion(self, args):
 
 
 def help_system_setcontactmethod(self):
-    print('system_setcontactmethod: Set the contact method for given system(s).')
-    print('Available contact methods: ' + str(self.CONTACT_METHODS))
-    print('usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>')
+    print(_('system_setcontactmethod: Set the contact method for given system(s).'))
+    print(_('Available contact methods: ' + str(self.CONTACT_METHODS)))
+    print(_('usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -4156,7 +4163,7 @@ def do_system_setcontactmethod(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -4172,11 +4179,11 @@ def do_system_setcontactmethod(self, args):
 
 
 def help_system_scheduleapplyconfigchannels(self):
-    print("system_scheduleapplyconfigchannels: Schedule applying the assigned config channels to the System (Minion only)")
-    print('''usage: scheduleapplyconfigchannels <SYSTEMS> [options]
+    print(_("system_scheduleapplyconfigchannels: Schedule applying the assigned config channels to the System (Minion only)"))
+    print(_('''usage: scheduleapplyconfigchannels <SYSTEMS> [options]
 
     options:
-        -s START_TIME''')
+        -s START_TIME'''))
     print('')
     print(self.HELP_SYSTEM_OPTS)
     print('')
@@ -4199,7 +4206,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
     # skip the prompt if we are running with --yes
     # use "now" if no start time was given
     if is_interactive(options) and self.options.yes != True:
-        options.start_time = prompt_user('Start Time [now]:')
+        options.start_time = prompt_user(_('Start Time [now]:'))
         options.start_time = parse_time_input(options.start_time)
     else:
         if not options.start_time:
@@ -4214,17 +4221,17 @@ def do_system_scheduleapplyconfigchannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     print('')
-    print('Start Time: %s' % options.start_time)
+    print(_('Start Time: %s') % options.start_time)
     print('')
-    print('Systems')
+    print(_('Systems'))
     print('-------')
     print('\n'.join(sorted(systems)))
 
-    message = 'Schedule applying config channels to these systems [y/N]:'
+    message = _('Schedule applying config channels to these systems [y/N]:')
     if not self.user_confirm(message):
         return 1
 
@@ -4233,7 +4240,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
     actionId = self.client.system.config.scheduleApplyConfigChannel(self.session,
                                                                     system_ids,
                                                                     options.start_time, False)
-    print('Scheduled action id: %s' % actionId)
+    print(_('Scheduled action id: %s') % actionId)
 
     return 0
 
@@ -4241,8 +4248,8 @@ def do_system_scheduleapplyconfigchannels(self, args):
 
 
 def help_system_listmigrationtargets(self):
-    print('system_listmigrationtargets: List possible migration targets for given systems.')
-    print('usage: system_listmigrationtargets <SYSTEMS>')
+    print(_('system_listmigrationtargets: List possible migration targets for given systems.'))
+    print(_('usage: system_listmigrationtargets <SYSTEMS>'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -4263,38 +4270,38 @@ def do_system_listmigrationtargets(self, args):
         systems = self.expand_systems(args[0])
 
     if not systems:
-        print('No systems found')
+        print(_('No systems found'))
         return
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         if not system_id:
-            print('WARN: Cannot find system ' + str(system))
+            print(_('WARN: Cannot find system ') + str(system))
             continue
 
         print('System ' + str(system))
         tgts = self.client.system.listMigrationTargets(self.session, system_id)
 
         if not tgts:
-            print('  No migration targets')
+            print(_('  No migration targets'))
 
         for num, tgt in enumerate(tgts, start=1):
-            print('  Target #' + str(num) + ":")
-            print('    IDs: ' + tgt['ident'])
-            print('    Friendly names: ' + tgt['friendly'])
+            print(_('  Target #') + str(num) + ":")
+            print(_('    IDs: ') + tgt['ident'])
+            print(_('    Friendly names: ') + tgt['friendly'])
 
 ####################
 
 
 def help_system_schedulespmigration(self):
-    print('system_schedulespmigration: Schedule a Service Pack migration for systems.')
-    print('usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \
+    print(_('system_schedulespmigration: Schedule a Service Pack migration for systems.'))
+    print(_('usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \
 \n    For MIGRATION_TARGET parameter see system_listmigrationtargets. \
 \n    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \
 \n    Options: \
 \n        -s START_TIME \
 \n        -d pass this flag, if you want to do a dry run \
-\n        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))')
+\n        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -4319,7 +4326,7 @@ def do_system_schedulespmigration(self, args):
         systems = self.expand_systems(args[0])
 
     if not systems:
-        print('No systems found')
+        print(_('No systems found'))
         return
 
     base_channel_label = args[1]
@@ -4338,17 +4345,16 @@ def do_system_schedulespmigration(self, args):
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         if not system_id:
-            logging.warning('Cannot find system ' + str(system) + '. Skipping it.')
+            logging.warning(_('Cannot find system ') + str(system) + _('. Skipping it.'))
             continue
 
-        print('Scheduling Service Pack migration for system ' + str(system))
+        print(_('Scheduling Service Pack migration for system ') + str(system))
         try:
             result = self.client.system.scheduleSPMigration(self.session,
                     system_id, migration_target, base_channel_label,
                     child_channels, options.dry_run, options.start_time)
-            print('Scheduled action ID: '+ str(result))
+            print(_('Scheduled action ID: ') + str(result))
         except xmlrpclib.Fault as detail:
-            logging.error('Failed to schedule %s' % detail)
+            logging.error(_('Failed to schedule %s') % detail)
 
 ####################
-

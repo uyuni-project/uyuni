@@ -30,6 +30,7 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 import logging
 import readline
 import shlex
@@ -46,16 +47,22 @@ except ImportError: # python2
     import xmlrpclib
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
+
 # list of system selection options for the help output
-HELP_SYSTEM_OPTS = '''<SYSTEMS> can be any of the following:
+HELP_SYSTEM_OPTS = _('''<SYSTEMS> can be any of the following:
 name
 ssm (see 'help ssm')
 search:QUERY (see 'help system_search')
 group:GROUP
 channel:CHANNEL
-'''
+''')
 
-HELP_TIME_OPTS = '''Dates can be any of the following:
+HELP_TIME_OPTS = _('''Dates can be any of the following:
 Explicit Dates:
 Dates can be expressed as explicit date strings in the YYYYMMDD[HHMMSS]
 format.  The year, month and day are required, while the hours and
@@ -72,7 +79,7 @@ s -> seconds
 m -> minutes
 h -> hours
 d -> days
-'''
+''')
 
 ####################
 
@@ -110,8 +117,8 @@ def help_time(self):
 
 
 def help_clear(self):
-    print('clear: clear the screen')
-    print('usage: clear')
+    print(_('clear: clear the screen'))
+    print(_('usage: clear'))
 
 
 def do_clear(self, args):
@@ -122,8 +129,8 @@ def do_clear(self, args):
 
 
 def help_clear_caches(self):
-    print('clear_caches: Clear the internal caches kept for systems and packages')
-    print('usage: clear_caches')
+    print(_('clear_caches: Clear the internal caches kept for systems and packages'))
+    print(_('usage: clear_caches'))
 
 
 def do_clear_caches(self, args):
@@ -136,8 +143,8 @@ def do_clear_caches(self, args):
 
 
 def help_get_apiversion(self):
-    print('get_apiversion: Display the API version of the server')
-    print('usage: get_apiversion')
+    print(_('get_apiversion: Display the API version of the server'))
+    print(_('usage: get_apiversion'))
 
 
 def do_get_apiversion(self, args):
@@ -148,8 +155,8 @@ def do_get_apiversion(self, args):
 
 
 def help_get_serverversion(self):
-    print('get_serverversion: Display the version of the server')
-    print('usage: get_serverversion')
+    print(_('get_serverversion: Display the version of the server'))
+    print(_('usage: get_serverversion'))
 
 
 def do_get_serverversion(self, args):
@@ -161,8 +168,8 @@ def do_get_serverversion(self, args):
 
 
 def help_list_proxies(self):
-    print('list_proxies: List the proxies within the user\'s organization ')
-    print('usage: list_proxies')
+    print(_('list_proxies: List the proxies within the user\'s organization '))
+    print(_('usage: list_proxies'))
 
 
 def do_list_proxies(self, args):
@@ -174,8 +181,8 @@ def do_list_proxies(self, args):
 
 
 def help_get_session(self):
-    print('get_session: Show the current session string')
-    print('usage: get_session')
+    print(_('get_session: Show the current session string'))
+    print(_('usage: get_session'))
 
 
 def do_get_session(self, args):
@@ -183,22 +190,22 @@ def do_get_session(self, args):
         print(self.session)
         return 0
     else:
-        logging.error('No session found')
+        logging.error(_('No session found'))
         return 1
 
 ####################
 
 
 def help_help(self):
-    print('help: Show help for the given command')
-    print('usage: help COMMAND')
+    print(_('help: Show help for the given command'))
+    print(_('usage: help COMMAND'))
 
 ####################
 
 
 def help_history(self):
-    print('history: List your command history')
-    print('usage: history')
+    print(_('history: List your command history'))
+    print(_('usage: history'))
 
 
 def do_history(self, args):
@@ -210,21 +217,21 @@ def do_history(self, args):
 
 
 def help_toggle_confirmations(self):
-    print('toggle_confirmations: Toggle confirmation messages on/off')
-    print('usage: toggle_confirmations')
+    print(_('toggle_confirmations: Toggle confirmation messages on/off'))
+    print(_('usage: toggle_confirmations'))
 
 
 def do_toggle_confirmations(self, args):
     self.options.yes = not self.options.yes
-    print('Confirmation messages are', "disabled" if self.options.yes else "enabled")
+    print(_('Confirmation messages are'), "disabled" if self.options.yes else _("enabled"))
     return 0
 
 ####################
 
 
 def help_login(self):
-    print('login: Connect to a Spacewalk server')
-    print('usage: login [USERNAME] [SERVER]')
+    print(_('login: Connect to a Spacewalk server'))
+    print(_('usage: login [USERNAME] [SERVER]'))
 
 
 def do_login(self, args):
@@ -234,7 +241,7 @@ def do_login(self, args):
 
     # logout before logging in again
     if self.session:
-        logging.warning('You are already logged in')
+        logging.warning(_('You are already logged in'))
         return True
 
     # an argument passed to the function get precedence
@@ -246,7 +253,7 @@ def do_login(self, args):
 
     # bail out if not server was given
     if not server:
-        logging.warning('No server specified')
+        logging.warning(_('No server specified'))
         return False
 
     # load the server-specific configuration
@@ -291,7 +298,7 @@ def do_login(self, args):
             e = sys.exc_info()[0]
             logging.exception(e)
 
-        logging.error('Failed to connect to %s', server_url)
+        logging.error(_('Failed to connect to %s'), server_url)
         logging.debug("Error while connecting to the server %s: %s",
                       server_url, str(exc))
         self.client = None
@@ -299,7 +306,7 @@ def do_login(self, args):
 
     # ensure the server is recent enough
     if float(self.api_version) < self.MINIMUM_API_VERSION:
-        logging.error('API (%s) is too old (>= %s required)',
+        logging.error(_('API (%s) is too old (>= %s required)'),
                       self.api_version, self.MINIMUM_API_VERSION)
 
         self.client = None
@@ -329,7 +336,7 @@ def do_login(self, args):
 
             sessionfile.close()
         except IOError:
-            logging.error('Could not read %s', session_file)
+            logging.error(_('Could not read %s'), session_file)
 
     # check the cached credentials by doing an API call
     if self.session:
@@ -338,16 +345,16 @@ def do_login(self, args):
 
             self.client.user.listAssignableRoles(self.session)
         except xmlrpclib.Fault:
-            logging.warning('Cached credentials are invalid')
+            logging.warning(_('Cached credentials are invalid'))
             self.current_user = ''
             self.session = ''
 
     # attempt to login if we don't have a valid session yet
     if not self.session:
         if username:
-            logging.info('Spacewalk Username: %s', username)
+            logging.info(_('Spacewalk Username: %s'), username)
         else:
-            username = prompt_user('Spacewalk Username:', noblank=True)
+            username = prompt_user(_('Spacewalk Username:'), noblank=True)
 
         if self.options.password:
             password = self.options.password
@@ -358,13 +365,13 @@ def do_login(self, args):
         elif 'password' in self.config:
             password = self.config['password']
         else:
-            password = getpass('Spacewalk Password: ')
+            password = getpass(_('Spacewalk Password: '))
 
         # login to the server
         try:
             self.session = self.client.auth.login(username, password)
         except xmlrpclib.Fault as exc:
-            logging.error('Invalid credentials')
+            logging.error(_('Invalid credentials'))
             logging.debug("Login error: %s (%s)", exc.faultString, exc.faultCode)
             return False
         try:
@@ -382,7 +389,7 @@ def do_login(self, args):
             sessionfile.write(line)
             sessionfile.close()
         except IOError as exc:
-            logging.error('Could not write session file: %s', str(exc))
+            logging.error(_('Could not write session file: %s'), str(exc))
 
     # load the system/package/errata caches
     self.load_caches(server, username)
@@ -391,7 +398,7 @@ def do_login(self, args):
     self.current_user = username
     self.server = server
 
-    logging.info('Connected to %s as %s', server_url, username)
+    logging.info(_('Connected to %s as %s'), server_url, username)
 
     return True
 
@@ -399,8 +406,8 @@ def do_login(self, args):
 
 
 def help_logout(self):
-    print('logout: Disconnect from the server')
-    print('usage: logout')
+    print(_('logout: Disconnect from the server'))
+    print(_('usage: logout'))
 
 
 def do_logout(self, args):
@@ -417,8 +424,8 @@ def do_logout(self, args):
 
 
 def help_whoami(self):
-    print('whoami: Print the name of the currently logged in user')
-    print('usage: whoami')
+    print(_('whoami: Print the name of the currently logged in user'))
+    print(_('usage: whoami'))
 
 
 def do_whoami(self, args):
@@ -426,15 +433,15 @@ def do_whoami(self, args):
         print(self.current_user)
         return 0
     else:
-        logging.warning("You are not logged in")
+        logging.warning(_("You are not logged in"))
         return 1
 
 ####################
 
 
 def help_whoamitalkingto(self):
-    print('whoamitalkingto: Print the name of the server')
-    print('usage: whoamitalkingto')
+    print(_('whoamitalkingto: Print the name of the server'))
+    print(_('usage: whoamitalkingto'))
 
 
 def do_whoamitalkingto(self, args):
@@ -442,7 +449,7 @@ def do_whoamitalkingto(self, args):
         print(self.server)
         return 0
     else:
-        logging.warning('Yourself')
+        logging.warning(_('Yourself'))
         return 1
 
 ####################
@@ -514,7 +521,7 @@ def generate_errata_cache(self, force=False):
 
     if not self.options.quiet:
         # tell the user what's going on
-        self.replace_line_buffer('** Generating errata cache **')
+        self.replace_line_buffer(_('** Generating errata cache **'))
 
     channels = self.client.channel.listSoftwareChannels(self.session)
     channels = [c.get('label') for c in channels]
@@ -563,7 +570,7 @@ def generate_package_cache(self, force=False):
 
     if not self.options.quiet:
         # tell the user what's going on
-        self.replace_line_buffer('** Generating package cache **')
+        self.replace_line_buffer(_('** Generating package cache **'))
 
     channels = self.client.channel.listSoftwareChannels(self.session)
     channels = [c.get('label') for c in channels]
@@ -670,7 +677,7 @@ def generate_system_cache(self, force=False, delay=0):
 
     if not self.options.quiet:
         # tell the user what's going on
-        self.replace_line_buffer('** Generating system cache **')
+        self.replace_line_buffer(_('** Generating system cache **'))
 
     # we might need to wait for some systems to delete
     if delay:
@@ -705,7 +712,7 @@ def load_caches(self, server, username):
         if not os.path.isdir(conf_dir):
             os.mkdir(conf_dir, int('0700', 8))
     except OSError:
-        logging.error('Could not create directory %s', conf_dir)
+        logging.error(_('Could not create directory %s'), conf_dir)
         return
 
     self.ssm_cache_file = os.path.join(conf_dir, 'ssm')
@@ -777,14 +784,14 @@ def get_system_id(self, name):
     if len(systems) == 1:
         return systems[0]
     elif not systems:
-        logging.warning("Can't find system ID for %s", name)
+        logging.warning(_("Can't find system ID for %s"), name)
         return 0
     else:
         if len(systems) == 2 and systems[0] == systems[1]:
             return systems[0]
-        logging.warning('Duplicate system profile names found!')
-        logging.warning("Please reference systems by ID or resolve the")
-        logging.warning("underlying issue with 'system_delete' or 'system_rename'")
+        logging.warning(_('Duplicate system profile names found!'))
+        logging.warning(_("Please reference systems by ID or resolve the"))
+        logging.warning(_("underlying issue with 'system_delete' or 'system_rename'"))
 
         id_list = '%s = ' % name
 
@@ -850,7 +857,7 @@ def expand_systems(self, args):
             if members:
                 systems.extend([re.escape(m) for m in members])
             else:
-                logging.warning('No systems in group %s', item)
+                logging.warning(_('No systems in group %s'), item)
         elif re.match('search:', item):
             query = item.split(':', 1)[1]
             results = self.do_system_search(query, True)
@@ -864,7 +871,7 @@ def expand_systems(self, args):
             if members:
                 systems.extend([re.escape(m) for m in members])
             else:
-                logging.warning('No systems subscribed to %s', item)
+                logging.warning(_('No systems subscribed to %s'), item)
         else:
             # translate system IDs that the user passes
             try:
@@ -924,7 +931,7 @@ def list_child_channels(self, system=None, parent=None, subscribed=False):
     return [c.get('label') for c in channels]
 
 
-def user_confirm(self, prompt='Is this ok [y/N]:', nospacer=False,
+def user_confirm(self, prompt=_('Is this ok [y/N]:'), nospacer=False,
                  integer=False, ignore_yes=False):
 
     if self.options.yes and not ignore_yes:

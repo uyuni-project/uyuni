@@ -26,21 +26,27 @@
 # unused argument
 # pylint: disable=W0613
 
+import gettext
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_cryptokey_create(self):
-    print('cryptokey_create: Create a cryptographic key')
-    print('''usage: cryptokey_create [options])
+    print(_('cryptokey_create: Create a cryptographic key'))
+    print(_('''usage: cryptokey_create [options])
 
 options:
   -t GPG or SSL
   -d DESCRIPTION
-  -f KEY_FILE''')
+  -f KEY_FILE'''))
 
 
 def do_cryptokey_create(self, args):
@@ -53,28 +59,28 @@ def do_cryptokey_create(self, args):
     options.contents = None
 
     if is_interactive(options):
-        options.type = prompt_user('GPG or SSL [G/S]:')
+        options.type = prompt_user(_('GPG or SSL [G/S]:'))
 
         options.description = ''
         while options.description == '':
-            options.description = prompt_user('Description:')
+            options.description = prompt_user(_('Description:'))
 
-        if self.user_confirm('Read an existing file [y/N]:',
+        if self.user_confirm(_('Read an existing file [y/N]:'),
                              nospacer=True, ignore_yes=True):
             options.file = prompt_user('File:')
         else:
             options.contents = editor(delete=True)
     else:
         if not options.type:
-            logging.error('The key type is required')
+            logging.error(_('The key type is required'))
             return 1
 
         if not options.description:
-            logging.error('A description is required')
+            logging.error(_('A description is required'))
             return 1
 
         if not options.file:
-            logging.error('A file containing the key is required')
+            logging.error(_('A file containing the key is required'))
             return 1
 
     # read the file the user specified
@@ -82,7 +88,7 @@ def do_cryptokey_create(self, args):
         options.contents = read_file(options.file)
 
     if not options.contents:
-        logging.error('No contents of the file')
+        logging.error(_('No contents of the file'))
         return 1
 
     # translate the key type to what the server expects
@@ -91,7 +97,7 @@ def do_cryptokey_create(self, args):
     elif re.match('S', options.type, re.I):
         options.type = 'SSL'
     else:
-        logging.error('Invalid key type')
+        logging.error(_('Invalid key type'))
         return 1
 
     self.client.kickstart.keys.create(self.session,
@@ -105,8 +111,8 @@ def do_cryptokey_create(self, args):
 
 
 def help_cryptokey_delete(self):
-    print('cryptokey_delete: Delete a cryptographic key')
-    print('usage: cryptokey_delete NAME')
+    print(_('cryptokey_delete: Delete a cryptographic key'))
+    print(_('usage: cryptokey_delete NAME'))
 
 
 def complete_cryptokey_delete(self, text, line, beg, end):
@@ -130,13 +136,13 @@ def do_cryptokey_delete(self, args):
                   (args, keys))
 
     if not keys:
-        logging.error("No keys matched argument %s" % args)
+        logging.error(_("No keys matched argument %s") % args)
         return 1
 
     # Print the keys prior to the confirmation
     print('\n'.join(sorted(keys)))
 
-    if self.user_confirm('Delete key(s) [y/N]:'):
+    if self.user_confirm(_('Delete key(s) [y/N]:')):
         for key in keys:
             self.client.kickstart.keys.delete(self.session, key)
         return 0
@@ -147,8 +153,8 @@ def do_cryptokey_delete(self, args):
 
 
 def help_cryptokey_list(self):
-    print('cryptokey_list: List all cryptographic keys (SSL, GPG)')
-    print('usage: cryptokey_list')
+    print(_('cryptokey_list: List all cryptographic keys (SSL, GPG)'))
+    print(_('usage: cryptokey_list'))
 
 
 def do_cryptokey_list(self, args, doreturn=False):
@@ -165,8 +171,8 @@ def do_cryptokey_list(self, args, doreturn=False):
 
 
 def help_cryptokey_details(self):
-    print('cryptokey_details: Show the contents of a cryptographic key')
-    print('usage: cryptokey_details KEY ...')
+    print(_('cryptokey_details: Show the contents of a cryptographic key'))
+    print(_('usage: cryptokey_details KEY ...'))
 
 
 def complete_cryptokey_details(self, text, line, beg, end):
@@ -188,7 +194,7 @@ def do_cryptokey_details(self, args):
                   (args, keys))
 
     if not keys:
-        logging.error("No keys matched argument %s" % args)
+        logging.error(_("No keys matched argument %s") % args)
         return 1
 
     add_separator = False
@@ -198,15 +204,15 @@ def do_cryptokey_details(self, args):
             details = self.client.kickstart.keys.getDetails(self.session,
                                                             key)
         except xmlrpclib.Fault:
-            logging.warning('%s is not a valid crypto key' % key)
+            logging.warning(_('%s is not a valid crypto key') % key)
             return 1
 
         if add_separator:
             print(self.SEPARATOR)
         add_separator = True
 
-        print('Description: %s' % details.get('description'))
-        print('Type:        %s' % details.get('type'))
+        print(_('Description: %s') % details.get('description'))
+        print(_('Type:        %s') % details.get('type'))
 
         print('')
         print(details.get('content'))
