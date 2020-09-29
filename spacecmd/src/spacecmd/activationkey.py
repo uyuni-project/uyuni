@@ -521,7 +521,7 @@ def do_activationkey_listpackages(self, args):
 
     details = self.client.activationkey.getDetails(self.session, key)
 
-    for package in sorted(details.get('packages'), key=lambda x: (x['name']), reverse=False):
+    for package in sorted(details.get('packages'), key=lambda x: (x['name']), reverse=True):
         if 'arch' in package:
             print('%s.%s' % (package['name'], package['arch']))
         else:
@@ -976,7 +976,7 @@ def do_activationkey_details(self, args):
         result.append('')
         result.append(_('Packages'))
         result.append('--------')
-        for package in sorted(details.get('packages'), key=lambda x: (x['name']), reverse=False):
+        for package in sorted(details.get('packages'), key=lambda x: (x['name']), reverse=True):
             name = package.get('name')
 
             if package.get('arch'):
