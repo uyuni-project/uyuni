@@ -50,3 +50,25 @@ user_1_channels:
       - my_local_channel
     - subscribable_channels:
       - new_local
+
+define_custom_activation_key:
+    uyuni.activation_key_present:
+        - name: my-suse
+        - description: "My Activation Key created via Salt"
+        - org_admin_user: my_org_user
+        - org_admin_password: my_org_user
+        - base_channel: sle-product-sles15-sp2-pool-x86_64
+        - child_channels:
+            - sle-module-server-applications15-sp2-pool-x86_64
+            - sle-module-server-applications15-sp2-updates-x86_64
+        - configuration_channels:
+            - firewall
+        - packages:
+            - name: emacs
+              arch: x86_64
+        - server_groups:
+            - httpd_servers
+        - usage_limit: 10
+        - system_types:
+            - virtualization_host
+        - configure_after_registration: true
