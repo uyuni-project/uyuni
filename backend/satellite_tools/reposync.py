@@ -2470,13 +2470,6 @@ class RepoSync(object):
         """)
         h.execute(errata_id=errata_id)
 
-        # delete erratatmp
-        h = rhnSQL.prepare("""
-            DELETE FROM rhnErrataTmp
-             WHERE id = :errata_id
-        """)
-        h.execute(errata_id=errata_id)
-
         # delete errata
         # removes also references from rhnErrataCloned
         # and rhnServerNeededCache
