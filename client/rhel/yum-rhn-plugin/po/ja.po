@@ -16,11 +16,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2020-09-25 13:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"yum-rhn-plugin/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
+"plugin/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,12 +92,15 @@ msgid ""
 "This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
 "could not be acquired."
 msgstr ""
-"このシステムは RHN Classic や {PRODUCT_NAME} で登録されていないかもしれません。 SystemId を取得できませんでした。"
+"このシステムは RHN Classic や {PRODUCT_NAME} で登録されていないかもしれませ"
+"ん。 SystemId を取得できませんでした。"
 
 #: ../rhnplugin.py:158
 #, python-brace-format
 msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
-msgstr "このシステムは RHN Classic もしくは {PRODUCT_NAME} から更新を受け取っています。"
+msgstr ""
+"このシステムは RHN Classic もしくは {PRODUCT_NAME} から更新を受け取っていま"
+"す。"
 
 #: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
@@ -113,6 +116,6 @@ msgstr ""
 "このクライアント上で root ユーザーになり、 rhn_register を実行してください"
 
 #: ../rhnplugin.py:356
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
 msgstr "{PRODUCT_NAME} に必要なログイン情報が見つかりません: %s"
