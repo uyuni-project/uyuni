@@ -60,3 +60,16 @@ user_2_channels:
       - test-channel-x86_64
     - subscribable_channels:
       - test_base_channel
+
+
+define_custom_activation_key:
+    uyuni.activation_key_present:
+        - name: my-suse
+        - description: "My Activation Key created via Salt"
+        - org_admin_user: admin
+        - org_admin_password: admin
+        - usage_limit: 10
+        - system_types:
+            - virtualization_host
+        - contact_method: ssh-push
+        - configure_after_registration: true
