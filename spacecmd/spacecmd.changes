@@ -1,3 +1,5 @@
+- Python3 fix for sorted usage (bsc#1167907)
+
 -------------------------------------------------------------------
 Fri Sep 18 12:11:37 CEST 2020 - jgonzalez@suse.com
 
