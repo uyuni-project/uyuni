@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Sinhala (http://www.transifex.com/projects/p/spacewalk/"
@@ -1203,20 +1203,20 @@ msgstr "අවවාදයයි: chkconfig සමඟ rhnsd සක්‍රී�
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "අවවාදයයි: chkconfig සමඟ rhnsd සක්‍රීය කිරීමට නොහැකි විය"
 
-#: ../src/up2date_client/rpcServer.py:57
+#: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:183
-#, fuzzy, python-brace-format
-msgid "ERROR: can not find {PRODUCT_NAME} CA file"
+#: ../src/up2date_client/rpcServer.py:182
+#, fuzzy
+msgid "ERROR: can not find server CA file"
 msgstr "දෝශයකි: RHNS CA ගොනුව සොයාගත නොහැකි විය:"
 
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
 msgstr "සම්බන්ධතාවය පරිශීලක විසින් නවතා දමන ලදී"
 
-#: ../src/up2date_client/rpcServer.py:269
+#: ../src/up2date_client/rpcServer.py:268
 msgid "Server has refused connection due to high load"
 msgstr "කාර්යයන් අධික හෙයින් සේවා දායකය සම්බන්ධතාවය ප්‍රතික්‍ෂේප කර ඇත"
 
@@ -1305,68 +1305,65 @@ msgstr ""
 msgid "You must run the {PRODUCT_NAME} registration program as root."
 msgstr "ඔබ විසින් RHN ලියාපදිංචි කිරීමේ වැඩසටහන root ලෙස ක්‍රියාත්මක කල යුතු වේ"
 
-#: ../src/up2date_client/up2dateErrors.py:50
-#: ../src/up2date_client/up2dateErrors.py:83
+#: ../src/up2date_client/up2dateErrors.py:49
+#: ../src/up2date_client/up2dateErrors.py:82
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:110
+#: ../src/up2date_client/up2dateErrors.py:109
 msgid "RPM error.  The message was:\n"
 msgstr "RPM දෝශයකි.  පණිවිඩය වන්නේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:117
+#: ../src/up2date_client/up2dateErrors.py:116
 msgid "Password error. The message was:\n"
 msgstr "රහස්පදයේ දෝශයකි. පණිවිඩය වන්නේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:121
+#: ../src/up2date_client/up2dateErrors.py:120
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM පරායත්ත දෝශයකි. පණිවිඩය වනුයේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:131
+#: ../src/up2date_client/up2dateErrors.py:130
 msgid "Error communicating with server. The message was:\n"
 msgstr "සේවා දායකය හා සන්නිවේදනය කිරීමේදී දෝශයක් ඇතිවිය. පණිවිඩය වන්නේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:138
+#: ../src/up2date_client/up2dateErrors.py:137
 msgid "File Not Found: \n"
 msgstr "ගොනුව සොයාගත නොහැකි විය: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:145
+#: ../src/up2date_client/up2dateErrors.py:144
 msgid "Delay error from server.  The message was:\n"
 msgstr "සේවාදායකය තුල ප්‍රමාද දෝශයක්.  පණිවිඩය වනුයේ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:181
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Error validating data at server:\n"
 msgstr "සේවා දායකය තුල දත්ත තහවුරු කර ගැනීමේදී දෝශයක් ඇතිවිය:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:194
-#, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:193
 msgid ""
 "\n"
-"Red Hat Network Classic is not supported in {PRODUCT_NAME} .\n"
+"Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:199
 msgid "The installation number is invalid"
 msgstr "ස්ථාපන අංකය සාවද්‍යයි"
 
-#: ../src/up2date_client/up2dateErrors.py:203
+#: ../src/up2date_client/up2dateErrors.py:202
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "oemInfo ගොනුව සැකසීමේදී දෝශයක් ඇතිවිය:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:230
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:298
-#, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:297
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
 "register this\n"
-"    system to {PRODUCT_NAME}. Please notify your organization administrator "
-"of this error.\n"
+"    system. Please notify your organization administrator of this error.\n"
 "    You should be able to register this system after your organization frees "
 "existing\n"
 "    or purchases additional entitlements. Additional entitlements may be "
