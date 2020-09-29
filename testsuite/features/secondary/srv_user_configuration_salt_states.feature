@@ -1,7 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Create organizations, users and groups using Salt states
+Feature: Create organizations, users, groups, and activation keys using Salt states
 
   Scenario: Apply configuration salt state to server
     When I manually install the "uyuni-config" formula on the server
@@ -51,6 +51,15 @@ Feature: Create organizations, users and groups using Salt states
     And I should see "role_channel_admin" as unchecked
     And I should see "role_system_group_admin" as unchecked
 
+  Scenario: Activation Key was correctly created
+    Given I am on the Systems page
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "My Activation Key created via Salt"
+    Then I should see "10" in field "usageLimit"
+    And I should see "virtualization_host" as checked
+    And I should see a "Push via SSH" text
+    And I should see "enable-config-auto-deploy" as checked
+
   Scenario: Cleanup: apply configuration teardown salt state to server
     When I apply "teardown_users_configuration" local salt state on "server"
     And I manually uninstall the "uyuni-config" formula from the server
@@ -63,3 +72,8 @@ Feature: Create organizations, users and groups using Salt states
   Scenario: Cleanup: user was successfully removed
     Given I am on the active Users page
     Then I should not see a "user2" text
+
+  Scenario: Cleanup: activation key was successfully removed
+    Given I am on the Systems page
+    When I follow the left menu "Systems > Activation Keys"
+    Then I should not see a "My Activation Key created via Salt" text

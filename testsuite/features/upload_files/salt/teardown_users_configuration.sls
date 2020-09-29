@@ -21,3 +21,9 @@ user2_absent:
     - name: user2
     - org_admin_user: admin
     - org_admin_password: admin
+
+delete_obsolete_activation_key:
+    uyuni.activation_key_absent:
+        - name: 1-my-suse
+        - org_admin_user: admin
+        - org_admin_password: admin
