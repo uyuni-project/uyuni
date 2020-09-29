@@ -613,17 +613,17 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def get_details(self, id: str) -> Dict[str, Any]:
         """
-        Retrieve details of an Uyuni Activation Key.
+        Get details of an Uyuni Activation Key
 
         :param id: the Activation Key ID
 
-        :return: Dictionary with Activation Key details
+        :return: Activation Key information
         """
         return self.client("activationkey.getDetails", id)
 
     def delete(self, id: str) -> bool:
         """
-        Remove an Uyuni Activation Key.
+        Deletes an Uyuni Activation Key
 
         :param id: the Activation Key ID
 
@@ -632,27 +632,26 @@ class UyuniActivationKey(UyuniRemoteObject):
         return self._convert_bool_response(self.client("activationkey.delete", id))
 
     def create(self, key: str, description: str,
-               base_channel_label: str = '', usage_limit: int = None,
+               base_channel_label: str = '',
+               usage_limit: int = 0,
                system_types: List[int] = [],
                universal_default: bool = False) -> bool:
         """
-        Create an Uyuni Activation Key.
+        Creates an Uyuni Activation Key
 
         :param key: activation key name
         :param description: activation key description
-        :param base_channel_label:
-        :param usage_limit:
-        :param system_types:
-        :param universal_default:
+        :param base_channel_label: base channel to be used
+        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+        :param system_types: system types to be assigned.
+                             Can be one of: 'virtualization_host', 'container_build_host',
+                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+        :param universal_default: sets this activation key as organization universal default
 
         :return: boolean, True indicates success
         """
-        if usage_limit:
-            return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
-                                                            usage_limit, system_types, universal_default))
-        else:
-            return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
-                                                           system_types, universal_default))
+        return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
+                                                        usage_limit, system_types, universal_default))
 
     def set_details(self, key: str,
                     description: str = None,
@@ -661,14 +660,14 @@ class UyuniActivationKey(UyuniRemoteObject):
                     usage_limit: int = None,
                     universal_default: bool = False):
         """
-        Create an Uyuni Activation Key.
+        Updates an Uyuni Activation Key
 
         :param key: activation key name
         :param description: activation key description
-        :param contact_method:
-        :param base_channel_label:
-        :param usage_limit:
-        :param universal_default:
+        :param base_channel_label: base channel to be used
+        :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+        :param universal_default: sets this activation key as organization universal default
 
         :return: boolean, True indicates success
         """
@@ -687,42 +686,143 @@ class UyuniActivationKey(UyuniRemoteObject):
         return self._convert_bool_response(self.client("activationkey.setDetails", key, data))
 
     def add_entitlements(self, key: str, system_types: List[str]) -> bool:
+        """
+        Add a list of entitlements to an activation key.
+
+        :param key: activation key name
+        :param system_types: list of system types to be added
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.addEntitlements", key, system_types))
 
     def remove_entitlements(self, key: str, system_types: List[str]) -> bool:
+        """
+        Remove a list of entitlements from an activation key.
+
+        :param key: activation key name
+        :param system_types: list of system types to be removed
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.removeEntitlements", key, system_types))
 
     def add_child_channels(self, key: str, child_channels: List[str]) -> bool:
+        """
+        Add child channels list to an activation key.
+
+        :param key: activation key name
+        :param child_channels: List of child channels to be added
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.addChildChannels", key, child_channels))
 
     def remove_child_channels(self, key: str, child_channels: List[str]) -> bool:
+        """
+        Remove child channels list from an activation key.
+
+        :param key: activation key name
+        :param child_channels: List of child channels to be removed
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.removeChildChannels", key, child_channels))
 
     def check_config_deployment(self, key: str) -> bool:
+        """
+        Return configuration status for 'configure_after_registration' flag.
+
+        :param key: activation key name
+
+        :return: boolean, true if enabled, false if disabled,
+        """
         return self._convert_bool_response(self.client("activationkey.checkConfigDeployment", key))
 
     def enable_config_deployment(self, key: str) -> bool:
+        """
+        Set configuration status for 'configure_after_registration' flag to true.
+
+        :param key: activation key name
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.enableConfigDeployment", key))
 
     def disable_config_deployment(self, key: str) -> bool:
+        """
+        Set configuration status for 'configure_after_registration' flag to false.
+
+        :param key: activation key name
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.disableConfigDeployment", key))
 
     def add_packages(self, key: str, packages: List[Any]) -> bool:
+        """
+        Add a list of packages to an activation key.
+
+        :param key: activation key name
+        :param packages: list of packages to be added
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.addPackages", key, packages))
 
     def remove_packages(self, key: str, packages: List[Any]) -> bool:
+        """
+        remove a list of packages from an activation key.
+
+        :param key: activation key name
+        :param packages: list of packages to be removed
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.removePackages", key, packages))
 
     def add_server_groups(self, key: str, server_groups: List[int]) -> bool:
+        """
+        Add a list of server groups to an activation key.
+
+        :param key: activation key name
+        :param server_groups: list of packages to be added
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.addServerGroups", key, server_groups))
 
     def remove_server_groups(self, key: str, server_groups: List[int]) -> bool:
+        """
+        Remove a list of server groups from an activation key.
+
+        :param key: activation key name
+        :param server_groups: list of packages to be removed
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.removeServerGroups", key, server_groups))
 
     def list_config_channels(self, key: str) -> List[Dict[str, Any]]:
+        """
+        List configuration channels associated to an activation key.
+    
+        :param key: activation key name
+
+        :return: List of configuration channels
+        """
         return self.client("activationkey.listConfigChannels", key)
 
     def set_config_channels(self, keys: List[str], config_channel_label: List[str]) -> bool:
+        """
+        Replace the existing set of configuration channels on the given activation keys.
+        Channels are ranked by their order in the array.
+
+        :param keys: list of activation key names
+        :param config_channel_label: list of configuration channels lables
+
+        :return: boolean, True indicates success
+        """
         return self._convert_bool_response(self.client("activationkey.setConfigChannels", keys, config_channel_label))
 
 
@@ -1366,6 +1466,7 @@ def activation_key_get_details(id, org_admin_user=None, org_admin_password=None)
     """
     return UyuniActivationKey(org_admin_user, org_admin_password).get_details(id)
 
+
 def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
     """
     Deletes an Uyuni Activation Key
@@ -1380,7 +1481,8 @@ def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
 
 
 def activation_key_create(key, description,
-                          base_channel_label='', usage_limit=None,
+                          base_channel_label='',
+                          usage_limit=0,
                           system_types=[], universal_default=False,
                           org_admin_user=None, org_admin_password=None):
     """
@@ -1388,10 +1490,12 @@ def activation_key_create(key, description,
 
     :param key: activation key name
     :param description: activation key description
-    :param base_channel_label:
-    :param usage_limit:
-    :param system_types:
-    :param universal_default:
+    :param base_channel_label: base channel to be used
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param system_types: system types to be assigned.
+                         Can be one of: 'virtualization_host', 'container_build_host',
+                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+    :param universal_default: sets this activation key as organization universal default
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
@@ -1417,10 +1521,10 @@ def activation_key_set_details(key,
 
     :param key: activation key name
     :param description: activation key description
-    :param base_channel_label:
-    :param contact_method:
-    :param usage_limit:
-    :param universal_default:
+    :param base_channel_label: base channel to be used
+    :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param universal_default: sets this activation key as organization universal default
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
@@ -1498,7 +1602,7 @@ def activation_key_check_config_deployment(key, org_admin_user=None, org_admin_p
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
-    :return: boolean, true if enabled, false if disabled,
+    :return: boolean, true if enabled, false if disabled
     """
     return UyuniActivationKey(org_admin_user, org_admin_password).check_config_deployment(key)
 
@@ -1605,7 +1709,7 @@ def activation_key_set_config_channels(keys, config_channel_label,
     Channels are ranked by their order in the array.
 
     :param keys: list of activation key names
-    :param config_channel_label: list of configuration channels lables
+    :param config_channel_label: list of configuration channels labels
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 

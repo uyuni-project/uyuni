@@ -530,3 +530,246 @@ org_admin_password: organization admin password
 ....
 
     return: boolean, True indicates success
+
+=== activation_key_get_details
+**(id, org_admin_user=None, org_admin_password=None)**
+
+Get details of an Uyuni Activation Key
+
+....
+id: the Activation Key ID
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return:Activation Key information
+
+=== activation_key_delete
+**(id, org_admin_user=None, org_admin_password=None)**
+
+Deletes an Uyuni Activation Key
+
+....
+id: the Activation Key ID
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_create
+**(key, description, base_channel_label='', usage_limit=0, system_types=[], universal_default=False, org_admin_user=None, org_admin_password=None)**
+
+Creates an Uyuni Activation Key
+
+....
+key: activation key name
+description: activation key description
+base_channel_label: base channel to be used
+usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+system_types: system types to be assigned.
+              Can be one of: 'virtualization_host', 'container_build_host',
+              'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+universal_default: sets this activation key as organization universal default
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_set_details
+**(key, description=None, contact_method=None, base_channel_label=None, usage_limit=None, universal_default=False, org_admin_user=None, org_admin_password=None)**
+
+Updates an Uyuni Activation Key
+
+....
+key: activation key name
+description: activation key description
+base_channel_label: base channel to be used
+contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+universal_default: sets this activation key as organization universal default
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_entitlements
+**(key, system_types, org_admin_user=None, org_admin_password=None)**
+
+Add a list of entitlements to an activation key.
+
+....
+key: activation key name
+system_types: list of system types to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_entitlements
+**(key, system_types, org_admin_user=None, org_admin_password=None)**
+
+Remove a list of entitlements from an activation key.
+
+....
+key: activation key name
+system_types: list of system types to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_child_channels
+**(key, child_channels, org_admin_user=None, org_admin_password=None)**
+
+Add child channels list to an activation key.
+
+....
+key: activation key name
+child_channels: List of child channels to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_child_channels
+**(key, child_channels, org_admin_user=None, org_admin_password=None)**
+
+Remove child channels list from an activation key.
+
+....
+key: activation key name
+child_channels: List of child channels to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_check_config_deployment
+**(key, org_admin_user=None, org_admin_password=None)**
+
+Return configuration status for 'configure_after_registration' flag.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, true if enabled, false if disabled
+
+=== activation_key_enable_config_deployment
+**(key, org_admin_user=None, org_admin_password=None)**
+
+Set configuration status for 'configure_after_registration' flag to true.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_disable_config_deployment
+**(key, org_admin_user=None, org_admin_password=None)**
+
+Set configuration status for 'configure_after_registration' flag to false.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_packages
+**(key, packages, org_admin_user=None, org_admin_password=None)**
+
+Add a list of packages to an activation key.
+
+....
+key: activation key name
+packages: list of packages to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_packages
+**(key, packages, org_admin_user=None, org_admin_password=None)**
+
+remove a list of packages from an activation key.
+
+....
+key: activation key name
+packages: list of packages to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_server_groups
+**(key, server_groups, org_admin_user=None, org_admin_password=None)**
+
+Add a list of server groups to an activation key.
+
+....
+key: activation key name
+server_groups: list of packages to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_server_groups
+**(key, server_groups, org_admin_user=None, org_admin_password=None)**
+
+Remove a list of server groups from an activation key.
+
+....
+key: activation key name
+server_groups: list of packages to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_list_config_channels
+**(key, org_admin_user=None, org_admin_password=None)**
+
+List configuration channels associated to an activation key.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: List of configuration channels
+
+=== activation_key_set_config_channels
+**(keys, config_channel_label, org_admin_user=None, org_admin_password=None)**
+
+Replace the existing set of configuration channels on the given activation keys.
+Channels are ranked by their order in the array.
+
+....
+keys: list of activation key names
+config_channel_label: list of configuration channels labels
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
