@@ -62,6 +62,10 @@
         </c:otherwise>
     </c:choose>
 
+    <!-- expose user preferred language to the application -->
+    <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>
+    <script>window.preferredLocale='${currentLocale}'</script>
+
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
 
@@ -69,7 +73,6 @@
     <script src="/javascript/bootstrap.js?cb=${cb_version}"></script>
     <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
-    <script src="/javascript/susemanager-translate.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
 
     <script src="/rhn/dwr/engine.js?cb=${cb_version}"></script>

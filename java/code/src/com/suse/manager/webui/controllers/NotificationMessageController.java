@@ -30,6 +30,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.NotificationMessageJson;
 import com.suse.manager.webui.websocket.Notification;
@@ -61,12 +62,15 @@ public class NotificationMessageController {
             .serializeNulls()
             .create();
 
+    private final SaltApi saltApi;
     private final SystemQuery systemQuery;
 
     /**
      * @param systemQueryIn instance for getting information from a system.
+     * @param saltApiIn instance for getting information from a system.
      */
-    public NotificationMessageController(SystemQuery systemQueryIn) {
+    public NotificationMessageController(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
     }
 
@@ -217,7 +221,7 @@ public class NotificationMessageController {
         String severity = "success";
         String resultMessage = "Onboarding restarted of the minioniId '%s'";
 
-        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(systemQuery);
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(systemQuery, saltApi);
         action.execute(new RegisterMinionEventMessage(minionId, Optional.empty()));
 
         Map<String, String> data = new HashMap<>();

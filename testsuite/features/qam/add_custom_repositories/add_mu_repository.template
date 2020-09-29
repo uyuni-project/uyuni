@@ -31,7 +31,7 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
     And I follow "Custom Channel for <client>"
     And I follow "Repositories" in the content area
     And I select the "custom_repo_<client>" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the Custom Channel for <client>

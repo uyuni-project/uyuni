@@ -1,8 +1,19 @@
+-------------------------------------------------------------------
+Mon Sep 21 11:59:42 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Updating translations from weblate
+
+-------------------------------------------------------------------
+Fri Sep 18 12:13:40 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Only regenerate bootstrap repositories when linking new packages (bsc#1174636)
 - support installer_updates flag in ISS
 - Take care of SCC auth tokens on DEB repos GPG checks (bsc#1175485)
 - Use spacewalk keyring for GPG checks on DEB repos (bsc#1175485)
 - Remove duplicate languages and update translation strings
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------

@@ -286,7 +286,7 @@ public class CreateUserCommand {
 
         else if (passwordIn.length() > UserDefaults.get().getMaxPasswordLength()) {
             passwordErrors.add(new ValidatorError("error.maxpassword",
-                                                  user.getPassword()));
+                    UserDefaults.get().getMaxPasswordLength()));
         }
     }
 

@@ -1,4 +1,16 @@
+- show info message when applying schema upgrade
+
+-------------------------------------------------------------------
+Fri Sep 18 12:33:58 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Update package version to 4.2.0
+
+-------------------------------------------------------------------
+Wed Sep 16 16:46:57 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
 
 -------------------------------------------------------------------
 Tue Jun 23 17:19:35 CEST 2020 - jgonzalez@suse.com

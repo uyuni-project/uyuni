@@ -19,6 +19,7 @@
 import os
 from up2date_client import rhnreg
 from up2date_client import rhnregGui
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 from rhn_register_firstboot_gui_window import RhnRegisterFirstbootGuiWindow
 
 import gtk
@@ -33,7 +34,7 @@ class RhnStartWindow(RhnRegisterFirstbootGuiWindow):
     runPriority=106
     moduleName = _("Set Up Software Updates")
     windowTitle = moduleName
-    shortMessage = _("Register with Red Hat Satellite")
+    shortMessage = _("Register with {PRODUCT_NAME} ").format(PRODUCT_NAME=PRODUCT_NAME)
     needsparent = 1
 
     def __init__(self):

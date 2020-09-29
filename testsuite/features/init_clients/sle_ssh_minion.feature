@@ -14,7 +14,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I navigate to "rhn/systems/Overview.do" page
+    And I am on the System Overview page
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
 

@@ -11,7 +11,7 @@ type SearchFieldProps = {
    */
   onSearch?: (string) => void,
   /** filtering function */
-  filter: (datum: any, criteria?: string) => boolean,
+  filter?: (datum: any, criteria?: string) => boolean,
   /** input field name */
   name?: string,
 }

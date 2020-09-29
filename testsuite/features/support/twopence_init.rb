@@ -189,6 +189,8 @@ $pxeboot_mac = ENV['PXEBOOT_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
+$no_auth_registry = ENV['NO_AUTH_REGISTRY'] if ENV['NO_AUTH_REGISTRY']
+$auth_registry = ENV['AUTH_REGISTRY'] if ENV['AUTH_REGISTRY']
 if ENV['SCC_CREDENTIALS']
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?

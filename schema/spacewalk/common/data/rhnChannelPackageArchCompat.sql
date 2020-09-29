@@ -345,4 +345,13 @@ values (LOOKUP_CHANNEL_ARCH('channel-x86_64'), LOOKUP_PACKAGE_ARCH('nosrc'));
 insert into rhnChannelPackageArchCompat (channel_arch_id, package_arch_id)
 values (LOOKUP_CHANNEL_ARCH('channel-ppc'), LOOKUP_PACKAGE_ARCH('nosrc'));
 
+insert into rhnChannelPackageArchCompat (channel_arch_id, package_arch_id)
+values (LOOKUP_CHANNEL_ARCH('channel-arm64-deb'), LOOKUP_PACKAGE_ARCH('arm64-deb'));
+
+insert into rhnChannelPackageArchCompat (channel_arch_id, package_arch_id)
+values (LOOKUP_CHANNEL_ARCH('channel-arm64-deb'), LOOKUP_PACKAGE_ARCH('all-deb'));
+
+insert into rhnChannelPackageArchCompat (channel_arch_id, package_arch_id)
+values (LOOKUP_CHANNEL_ARCH('channel-arm64-deb'), LOOKUP_PACKAGE_ARCH('src-deb'));
+
 commit;

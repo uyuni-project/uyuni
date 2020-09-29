@@ -22,7 +22,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: java/lib
-        key: ${{ runner.os }}-jars-${{ hashFiles('java/buildconf/ivy/*.*') }}
+        key: ${{ runner.os }}-java-lib-${{ hashFiles('java/buildconf/ivy/*.*') }}
 
     - name: Resolve dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'

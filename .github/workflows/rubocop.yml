@@ -17,7 +17,7 @@ jobs:
         ruby-version: '2.5'
 
     - name: Install RuboCop
-      run: gem install rubocop -v 0.84.0
+      run: gem install rubocop -v 0.83.0
 
     - name: Run RuboCop
       run: |

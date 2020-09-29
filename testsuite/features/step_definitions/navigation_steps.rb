@@ -176,6 +176,10 @@ When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
   end
 end
 
+When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
+  fill_in arg1, with: $no_auth_registry
+end
+
 #
 # Click on a button
 #
@@ -328,16 +332,17 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   end
 end
 
-When(/^I am on the Organizations page$/) do
+Given(/^I am on the Organizations page$/) do
   steps %(
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Organizations"
-    )
+  )
 end
 
-Given(/^I am on the SUSE Products page$/) do
+Given(/^I am on the Products page$/) do
   steps %(
-    When I navigate to "rhn/manager/admin/setup/products" page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
   )
 end
@@ -397,14 +402,14 @@ Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
     When I follow the left menu "Systems > System Groups"
-    )
+  )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Users > User List > Active"
-    )
+  )
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -530,7 +535,7 @@ Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
     And I should see a "About" text
-    )
+  )
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -831,20 +836,20 @@ Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
   has_css?("##{arg1}[disabled]")
 end
 
-Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |arg1, arg2|
-  raise "Field #{arg2} with #{arg1} value not found" unless has_field?(arg2, with: arg1)
+Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |text, field|
+  raise "'#{text}' not found in #{field}" unless find_field(field, with: /#{text}/).visible?
 end
 
-Then(/^I should see a "([^"]*)" element in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "Field #{arg1} not found" unless find_field(arg1, match: :first).visible?
+Then(/^I should see a "([^"]*)" field in "([^"]*)" form$/) do |field, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "Field #{field} not found" unless find_field(field, match: :first).visible?
   end
 end
 
-Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "xpath: textarea##{arg1} not found" unless find("textarea##{arg1}", visible: false)
-    raise "css: ##{arg1}-editor not found" unless has_css?("##{arg1}-editor")
+Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "xpath: textarea##{editor} not found" unless find("textarea##{editor}", visible: false)
+    raise "css: ##{editor}-editor not found" unless has_css?("##{editor}-editor")
   end
 end
 
@@ -887,12 +892,11 @@ When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field
 end
 
 When(/^I enter URI, username and password for portus$/) do
-  portus_uri = ENV['PORTUS_URI']
-  portus_username, portus_password = ENV['PORTUS_CREDENTIALS'].split('|')
+  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
-    When I enter "#{portus_uri}" as "uri"
-    And I enter "#{portus_username}" as "username"
-    And I enter "#{portus_password}" as "password"
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
   )
 end
 

@@ -35,6 +35,7 @@ from up2date_client import up2dateLog
 from up2date_client import config
 from up2date_client.config import convert_url_from_puny
 from up2date_client import up2dateAuth
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 from rhn import rpclib
 from rhn.connections import idn_puny_to_unicode
 from rhn.i18n import sstr
@@ -1341,7 +1342,7 @@ def main():
     screen = snack.SnackScreen()
 
     if geteuid() != 0 and not test:
-        FatalErrorWindow(screen, _("You must run the RHN registration program as root."))
+        FatalErrorWindow(screen, _("You must run the {PRODUCT_NAME} registration program as root.").format(PRODUCT_NAME=PRODUCT_NAME))
 
     tui = Tui(screen, test)
     tui.run()

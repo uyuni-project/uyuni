@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: openSCAP audit of Salt minion
@@ -15,7 +15,7 @@ Feature: openSCAP audit of Salt minion
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
+    And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
   Scenario: Check results of the audit job on the minion
     Given I am on the Systems overview page of this "sle_minion"

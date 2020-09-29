@@ -91,7 +91,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
     @Override

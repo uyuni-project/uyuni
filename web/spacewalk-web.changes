@@ -1,3 +1,21 @@
+- Fix link to documentation in Admin -> Manager Configuration -> Monitoring (bsc#1176172)
+- Notify about missing libvirt or hypervisor on virtual host
+- Redesign maintenance schedule systems table to use paginated data from server
+
+-------------------------------------------------------------------
+Mon Sep 21 12:01:26 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Updating translations from weblate
+
+-------------------------------------------------------------------
+Fri Sep 18 12:19:43 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
+- Fix the jQuery selector in SP Migration page (bsc#1176500)
+- Fix JavaScript error caused by SPA navigation event with empty event field (bsc#1176503)
+- Force disable SPA for non-navigation links (bsc#1175512)
+- Add translation support for react t() function
 - fix striping on react tables
 - Update translation strings
 - Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)

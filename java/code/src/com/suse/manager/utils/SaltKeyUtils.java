@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import java.util.stream.Stream;
@@ -28,13 +28,13 @@ import java.util.stream.Stream;
  */
 public class SaltKeyUtils {
 
-    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
 
     /**
-     * @param systemQueryIn
+     * @param saltApiIn
      */
-    public SaltKeyUtils(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
+    public SaltKeyUtils(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
     }
 
     /**
@@ -48,7 +48,7 @@ public class SaltKeyUtils {
             throws PermissionCheckFailureException {
 
         //Note: since salt only allows globs we have to do our own strict matching
-        Key.Names keys = systemQuery.getKeys();
+        Key.Names keys = saltApi.getKeys();
         boolean exists = Stream.concat(
                 Stream.concat(
                         keys.getDeniedMinions().stream(),
@@ -61,14 +61,14 @@ public class SaltKeyUtils {
         if (exists) {
             return MinionServerFactory.findByMinionId(minionId).map(minionServer -> {
                 if (minionServer.getOrg().equals(user.getOrg())) {
-                    systemQuery.deleteKey(minionId);
+                    saltApi.deleteKey(minionId);
                     return true;
                 }
                 else {
                     return false;
                 }
             }).orElseGet(() -> {
-                systemQuery.deleteKey(minionId);
+                saltApi.deleteKey(minionId);
                 return true;
             });
         }

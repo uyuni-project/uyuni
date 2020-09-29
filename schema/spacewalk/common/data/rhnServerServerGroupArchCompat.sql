@@ -153,6 +153,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
             lookup_sg_type('enterprise_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('arm64-debian-linux'),
+            lookup_sg_type('enterprise_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('ppc64iseries-redhat-linux'), 
             lookup_sg_type('enterprise_entitled'));
 
@@ -204,6 +208,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('amd64-debian-linux'),
+            lookup_sg_type('virtualization_host'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
+    values (lookup_server_arch('arm64-debian-linux'),
             lookup_sg_type('virtualization_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
@@ -397,6 +405,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
             lookup_sg_type('bootstrap_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('arm64-debian-linux'),
+            lookup_sg_type('bootstrap_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('ppc64iseries-redhat-linux'), 
             lookup_sg_type('bootstrap_entitled'));
 
@@ -548,6 +560,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('amd64-debian-linux'),
+            lookup_sg_type('salt_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('arm64-debian-linux'),
             lookup_sg_type('salt_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
@@ -705,6 +721,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
             lookup_sg_type('foreign_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('arm64-debian-linux'),
+            lookup_sg_type('foreign_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('ppc64iseries-redhat-linux'),
             lookup_sg_type('foreign_entitled'));
 
@@ -760,6 +780,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('amd64-debian-linux'),
+            lookup_sg_type('container_build_host'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
+    values (lookup_server_arch('arm64-debian-linux'),
             lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
@@ -861,6 +885,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('amd64-debian-linux'),
+            lookup_sg_type('monitoring_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
+    values (lookup_server_arch('arm64-debian-linux'),
             lookup_sg_type('monitoring_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)

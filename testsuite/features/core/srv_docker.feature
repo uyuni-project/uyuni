@@ -40,7 +40,7 @@ Feature: Prepare server for using Docker
     When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "galaxy-registry" as "label"
-    And I enter "registry.mgr.suse.de" as "uri"
+    And I enter the URI of the registry as "uri"
     And I click on "create-btn"
     Then I wait until table row contains a "galaxy-registry" text
     And I should see a "Items 1 - 1 of 1" text

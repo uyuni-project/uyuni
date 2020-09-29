@@ -34,6 +34,7 @@ import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.salt.netapi.datatypes.Event;
@@ -102,7 +103,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(new TestSystemQuery(), virtManager, new FormulaMonitoringManager(),
+                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
 
