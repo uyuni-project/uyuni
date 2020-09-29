@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2011-03-04 16:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
@@ -17,6 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr ""
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr ""
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr ""
 
 #: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
@@ -210,6 +224,100 @@ msgstr ""
 msgid "Stacking of re-registration tokens is not supported"
 msgstr ""
 
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr ""
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr ""
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr ""
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr ""
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr ""
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr ""
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr ""
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr ""
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr ""
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr ""
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr ""
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr ""
+
 #: ../server/rhnChannel.py:1992
 #, python-format
 msgid ""
@@ -282,114 +390,6 @@ msgid ""
 "at:\n"
 "\n"
 "  %(entitlement_url)s\n"
-msgstr ""
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr ""
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr ""
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr ""
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr ""
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr ""
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr ""
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr ""
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr ""
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr ""
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr ""
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr ""
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr ""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr ""
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
 msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
@@ -987,6 +987,197 @@ msgstr ""
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       If the master satellite is older than v5.3, it does not have ISS "
+"capability.\n"
+"       Otherwise, depending on the specific error details, please review "
+"your\n"
+"       configuration, basic network connectivity, and/or name resolution, "
+"and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr ""
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:75
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Total size: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "       success: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:81
+#, python-format
+msgid "       failed:  %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:82
+#, python-format
+msgid "       extinct: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:84
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:87
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:88
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:89
+msgid "   * WARNING: this may be a slow process."
+msgstr ""
+
+#: ../satellite_tools/messages.py:90
+msgid "Linking packages to channels"
+msgstr ""
+
+#: ../satellite_tools/messages.py:91
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:92
+msgid "   No new kickstartable tree to import"
+msgstr ""
+
+#: ../satellite_tools/messages.py:93
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:94
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
 msgstr ""
 
 #: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
@@ -1739,195 +1930,4 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2510
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       If the master satellite is older than v5.3, it does not have ISS "
-"capability.\n"
-"       Otherwise, depending on the specific error details, please review "
-"your\n"
-"       configuration, basic network connectivity, and/or name resolution, "
-"and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:75
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Total size: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "       success: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:81
-#, python-format
-msgid "       failed:  %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:82
-#, python-format
-msgid "       extinct: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:84
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:87
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:88
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:89
-msgid "   * WARNING: this may be a slow process."
-msgstr ""
-
-#: ../satellite_tools/messages.py:90
-msgid "Linking packages to channels"
-msgstr ""
-
-#: ../satellite_tools/messages.py:91
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:92
-msgid "   No new kickstartable tree to import"
-msgstr ""
-
-#: ../satellite_tools/messages.py:93
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:94
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
 msgstr ""

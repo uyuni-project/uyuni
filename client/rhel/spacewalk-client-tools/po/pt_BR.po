@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2020-09-10 13:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1328,20 +1328,20 @@ msgstr "Aviso: não é possível ativar o rhnsd com systemd"
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Aviso: impossível ativar o rhnsd com o chkconfig"
 
-#: ../src/up2date_client/rpcServer.py:57
+#: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Erro: Servidor indisponível. Por favor tente novamente mais tarde."
 
-#: ../src/up2date_client/rpcServer.py:183
-#, fuzzy, python-brace-format
-msgid "ERROR: can not find {PRODUCT_NAME} CA file"
+#: ../src/up2date_client/rpcServer.py:182
+#, fuzzy
+msgid "ERROR: can not find server CA file"
 msgstr "ERRO: não foi possível encontrar o arquivo CA da RHNS"
 
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
 msgstr "Conexão interrompida pelo usuário"
 
-#: ../src/up2date_client/rpcServer.py:269
+#: ../src/up2date_client/rpcServer.py:268
 msgid "Server has refused connection due to high load"
 msgstr "O servidor recusou a conexão devido a carga elevada"
 
@@ -1431,68 +1431,66 @@ msgstr ""
 msgid "You must run the {PRODUCT_NAME} registration program as root."
 msgstr "Você deve executar o programa de registro RHN como root."
 
-#: ../src/up2date_client/up2dateErrors.py:50
-#: ../src/up2date_client/up2dateErrors.py:83
+#: ../src/up2date_client/up2dateErrors.py:49
+#: ../src/up2date_client/up2dateErrors.py:82
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "a classe %s não possui atributo '%s'"
 
-#: ../src/up2date_client/up2dateErrors.py:110
+#: ../src/up2date_client/up2dateErrors.py:109
 msgid "RPM error.  The message was:\n"
 msgstr "Erro no RPM.  A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:117
+#: ../src/up2date_client/up2dateErrors.py:116
 msgid "Password error. The message was:\n"
 msgstr "Erro na senha. A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:121
+#: ../src/up2date_client/up2dateErrors.py:120
 msgid "RPM dependency error. The message was:\n"
 msgstr "Erro de dependência de RPM. A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:131
+#: ../src/up2date_client/up2dateErrors.py:130
 msgid "Error communicating with server. The message was:\n"
 msgstr "Erro ao comunicar com o servidor. A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:138
+#: ../src/up2date_client/up2dateErrors.py:137
 msgid "File Not Found: \n"
 msgstr "Arquivo Não Encontrado: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:145
+#: ../src/up2date_client/up2dateErrors.py:144
 msgid "Delay error from server.  The message was:\n"
 msgstr "Erro de atraso do servidor.  A mensagem foi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:181
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Error validating data at server:\n"
 msgstr "Erro ao validar os dados no servidor:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:194
-#, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:193
 msgid ""
 "\n"
-"Red Hat Network Classic is not supported in {PRODUCT_NAME} .\n"
+"Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:199
 msgid "The installation number is invalid"
 msgstr "O número de instalação é inválido"
 
-#: ../src/up2date_client/up2dateErrors.py:203
+#: ../src/up2date_client/up2dateErrors.py:202
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Erro ao analisar a informação oem (oemInfo) no campo:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:230
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Network error: "
 msgstr "Erro de rede: "
 
-#: ../src/up2date_client/up2dateErrors.py:298
-#, fuzzy, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:297
+#, fuzzy
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
 "register this\n"
-"    system to {PRODUCT_NAME}. Please notify your organization administrator "
-"of this error.\n"
+"    system. Please notify your organization administrator of this error.\n"
 "    You should be able to register this system after your organization frees "
 "existing\n"
 "    or purchases additional entitlements. Additional entitlements may be "

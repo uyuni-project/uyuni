@@ -18,11 +18,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2020-09-25 22:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-client-tools/cs/>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -266,7 +266,7 @@ msgid "Attempting to contact the Spacewalk server."
 msgstr "Pokus kontaktovat server Spacewalk."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
 msgstr "Navazujeme spojení se serverem {PRODUCT_NAME} na %s."
 
@@ -295,8 +295,8 @@ msgid ""
 msgstr ""
 "Tento asistent vás provede připojením vašeho systému k {PRODUCT_NAME}, "
 "abyste mohli přijímat aktualizace softwaru, včetně aktualizací zabezpečení, "
-"aby byl váš systém podporován a na výši. Nyní budete potřebovat následující:"
-"\n"
+"aby byl váš systém podporován a na výši. Nyní budete potřebovat "
+"následující:\n"
 "\n"
 "* Síťové připojení\n"
 "* Vaše přihlašovací jméno a heslo pro  {PRODUCT_NAME}\n"
@@ -413,7 +413,7 @@ msgid "{PRODUCT_NAME} Account"
 msgstr "Účet {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
@@ -441,8 +441,8 @@ msgid ""
 "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
 "Organization Administrator."
 msgstr ""
-"Tip: Zapoměli jste svůj login nebo heslo?  Kontaktujte správce {PRODUCT_NAME}"
-" své organizace."
+"Tip: Zapoměli jste svůj login nebo heslo?  Kontaktujte správce "
+"{PRODUCT_NAME} své organizace."
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid "Please enter a desired login."
@@ -619,7 +619,7 @@ msgid "Updates Configured"
 msgstr "Aktualizace konfigurovány"
 
 #: ../src/up2date_client/rhnreg_constants.py:157
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "You may now run '%s update' from this system's command line to get the "
 "latest software updates from {PRODUCT_NAME}. You will need to run this "
@@ -648,7 +648,7 @@ msgid "Please review the subscription details below:"
 msgstr "Zkontrolujte prosím podrobnosti o odběru níže:"
 
 #: ../src/up2date_client/rhnreg_constants.py:170
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "The installation number %s was activated during this system's initial "
 "connection to {PRODUCT_NAME}."
@@ -813,7 +813,7 @@ msgstr ""
 "znovu připojit tento systém k {PRODUCT_NAME}."
 
 #: ../src/up2date_client/rhnreg_constants.py:231
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Universal default activation key detected\n"
 "A universal default activation key was detected in your account. This means "
@@ -845,7 +845,7 @@ msgid "Warning"
 msgstr "Varování"
 
 #: ../src/up2date_client/rhnreg_constants.py:245
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "We can't contact {PRODUCT_NAME}.\n"
 "\n"
@@ -881,7 +881,7 @@ msgstr ""
 "to znovu až s novějším serverem."
 
 #: ../src/up2date_client/rhnreg_constants.py:260
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
 "\n"
@@ -1283,20 +1283,20 @@ msgstr "Výstraha: nelze povolit rhnsd pomocí systemd"
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Varování: nemohu povolit rhnsd pomocí chkconfig"
 
-#: ../src/up2date_client/rpcServer.py:57
+#: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Chyba: Server je nedostupný. Prosím zkuste to později."
 
-#: ../src/up2date_client/rpcServer.py:183
-#, python-brace-format
-msgid "ERROR: can not find {PRODUCT_NAME} CA file"
+#: ../src/up2date_client/rpcServer.py:182
+#, fuzzy
+msgid "ERROR: can not find server CA file"
 msgstr "CHYBA: nemohu najít soubor {PRODUCT_NAME} CA"
 
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
 msgstr "Spojení přerušeno uživatelem"
 
-#: ../src/up2date_client/rpcServer.py:269
+#: ../src/up2date_client/rpcServer.py:268
 msgid "Server has refused connection due to high load"
 msgstr "Server odmítl připojení kvůli vysoké zátěži"
 
@@ -1385,71 +1385,70 @@ msgstr ""
 msgid "You must run the {PRODUCT_NAME} registration program as root."
 msgstr "Registrační program {PRODUCT_NAME} musíte spustit jako root."
 
-#: ../src/up2date_client/up2dateErrors.py:50
-#: ../src/up2date_client/up2dateErrors.py:83
+#: ../src/up2date_client/up2dateErrors.py:49
+#: ../src/up2date_client/up2dateErrors.py:82
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "třída %s nemá atribut '%s'"
 
-#: ../src/up2date_client/up2dateErrors.py:110
+#: ../src/up2date_client/up2dateErrors.py:109
 msgid "RPM error.  The message was:\n"
 msgstr "Chyba RPM:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:117
+#: ../src/up2date_client/up2dateErrors.py:116
 msgid "Password error. The message was:\n"
 msgstr "Chyba v heslu:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:121
+#: ../src/up2date_client/up2dateErrors.py:120
 msgid "RPM dependency error. The message was:\n"
 msgstr "Chyba  závislostí RPM. Zpráva byla:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:131
+#: ../src/up2date_client/up2dateErrors.py:130
 msgid "Error communicating with server. The message was:\n"
 msgstr "Chyba při komunikaci se serverem. Zpráva byla:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:138
+#: ../src/up2date_client/up2dateErrors.py:137
 msgid "File Not Found: \n"
 msgstr "Soubor nenalezen: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:145
+#: ../src/up2date_client/up2dateErrors.py:144
 msgid "Delay error from server.  The message was:\n"
 msgstr "Překročen maximální čas odezvy serveru:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:181
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Error validating data at server:\n"
 msgstr "Chyba při ověřování správnosti dat na serveru:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:194
-#, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:193
+#, fuzzy
 msgid ""
 "\n"
-"Red Hat Network Classic is not supported in {PRODUCT_NAME} .\n"
+"Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 "\n"
 "Red Hat Network Classic není v {PRODUCT_NAME} podporován.\n"
 "    "
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:199
 msgid "The installation number is invalid"
 msgstr "Instalační číslo je neplatné"
 
-#: ../src/up2date_client/up2dateErrors.py:203
+#: ../src/up2date_client/up2dateErrors.py:202
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Chyba při zpracovávání souboru oemInfo v poli:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:230
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Network error: "
 msgstr "Chyba sítě: "
 
-#: ../src/up2date_client/up2dateErrors.py:298
-#, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:297
+#, fuzzy
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
 "register this\n"
-"    system to {PRODUCT_NAME}. Please notify your organization administrator "
-"of this error.\n"
+"    system. Please notify your organization administrator of this error.\n"
 "    You should be able to register this system after your organization frees "
 "existing\n"
 "    or purchases additional entitlements. Additional entitlements may be "
@@ -1466,8 +1465,8 @@ msgstr ""
 "\n"
 "    Vaše organizace nemá dostatečná oprávnění pro správu, aby mohla "
 "zaregistrovat tento\n"
-"    systém u {PRODUCT_NAME}. O této chybě informujte správce vaší organizace."
-"\n"
+"    systém u {PRODUCT_NAME}. O této chybě informujte správce vaší "
+"organizace.\n"
 "    Měli byste být schopni zaregistrovat tento systém poté, co vaše "
 "organizace\n"
 "    uvolní stávající nebo koupí další oprávnění. Další oprávnění může "

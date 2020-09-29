@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2020-09-25 17:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
-"yum-rhn-plugin/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
+"plugin/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -103,6 +103,6 @@ msgid "Please run rhn_register as root on this client"
 msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
 
 #: ../rhnplugin.py:356
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
 msgstr "Chýbajú požadované prihlasovacie informácie pre {PRODUCT_NAME}: %s"

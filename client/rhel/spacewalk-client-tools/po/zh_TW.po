@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2018-03-16 11:05+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/"
@@ -1198,20 +1198,20 @@ msgstr "警告： 無法使用 chkconfig 來啟用 rhnsd"
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "警告： 無法使用 chkconfig 來啟用 rhnsd"
 
-#: ../src/up2date_client/rpcServer.py:57
+#: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "錯誤：伺服器無法使用。請稍後再嘗試。"
 
-#: ../src/up2date_client/rpcServer.py:183
-#, fuzzy, python-brace-format
-msgid "ERROR: can not find {PRODUCT_NAME} CA file"
+#: ../src/up2date_client/rpcServer.py:182
+#, fuzzy
+msgid "ERROR: can not find server CA file"
 msgstr "錯誤：無法找到 RHNS CA 檔"
 
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
 msgstr "連線被使用者中斷"
 
-#: ../src/up2date_client/rpcServer.py:269
+#: ../src/up2date_client/rpcServer.py:268
 msgid "Server has refused connection due to high load"
 msgstr "由於負載太大，伺服器拒絕連線"
 
@@ -1300,68 +1300,66 @@ msgstr "  <Tab>/<Alt-Tab> 移動游標  |  <Space> 選取  |  <F12> 下一個畫
 msgid "You must run the {PRODUCT_NAME} registration program as root."
 msgstr "必須是 root 才能執行 RHN 註冊程式。"
 
-#: ../src/up2date_client/up2dateErrors.py:50
-#: ../src/up2date_client/up2dateErrors.py:83
+#: ../src/up2date_client/up2dateErrors.py:49
+#: ../src/up2date_client/up2dateErrors.py:82
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "class %s 沒有「%s」屬性"
 
-#: ../src/up2date_client/up2dateErrors.py:110
+#: ../src/up2date_client/up2dateErrors.py:109
 msgid "RPM error.  The message was:\n"
 msgstr "RPM 錯誤。 錯誤訊息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:117
+#: ../src/up2date_client/up2dateErrors.py:116
 msgid "Password error. The message was:\n"
 msgstr "密碼錯誤。 錯誤訊息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:121
+#: ../src/up2date_client/up2dateErrors.py:120
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM 相依性發生錯誤，錯誤訊息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:131
+#: ../src/up2date_client/up2dateErrors.py:130
 msgid "Error communicating with server. The message was:\n"
 msgstr "連接伺服器時發生錯誤，錯誤訊息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:138
+#: ../src/up2date_client/up2dateErrors.py:137
 msgid "File Not Found: \n"
 msgstr "找不到檔案： \n"
 
-#: ../src/up2date_client/up2dateErrors.py:145
+#: ../src/up2date_client/up2dateErrors.py:144
 msgid "Delay error from server.  The message was:\n"
 msgstr "從伺服器傳來的延遲錯誤。 錯誤訊息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:181
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Error validating data at server:\n"
 msgstr "伺服器驗證資料時發生錯誤：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:194
-#, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:193
 msgid ""
 "\n"
-"Red Hat Network Classic is not supported in {PRODUCT_NAME} .\n"
+"Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:199
 msgid "The installation number is invalid"
 msgstr "安裝號碼不符"
 
-#: ../src/up2date_client/up2dateErrors.py:203
+#: ../src/up2date_client/up2dateErrors.py:202
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "解析 oeminfo 檔案中的欄位時發生錯誤：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:230
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Network error: "
 msgstr "網路錯誤："
 
-#: ../src/up2date_client/up2dateErrors.py:298
-#, fuzzy, python-brace-format
+#: ../src/up2date_client/up2dateErrors.py:297
+#, fuzzy
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
 "register this\n"
-"    system to {PRODUCT_NAME}. Please notify your organization administrator "
-"of this error.\n"
+"    system. Please notify your organization administrator of this error.\n"
 "    You should be able to register this system after your organization frees "
 "existing\n"
 "    or purchases additional entitlements. Additional entitlements may be "
