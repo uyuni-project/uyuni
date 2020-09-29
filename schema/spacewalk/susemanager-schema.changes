@@ -1,3 +1,4 @@
+- internal code cleanup (dropping unused table rhnErrataTmp)
 - Fix Debian package version comparison
 - Use versioned Python2 for RHEL8 and Fedora.
 - Move dist upgrade SQL file to the correct directory so it gets picked up in schema upgrades (bsc#1179759)
@@ -21,7 +22,6 @@ Wed Nov 25 12:30:54 CET 2020 - jgonzalez@suse.com
 - Add cobbler-related fields in VM Creation action table
 - Execute Salt SSH actions in parallel (bsc#1173199)
 - Hotfix the modular RPMs release comparison
-- show info message when applying schema upgrade
 - Fix: handle version comparison corner cases in Ubuntu packages
 
 -------------------------------------------------------------------
