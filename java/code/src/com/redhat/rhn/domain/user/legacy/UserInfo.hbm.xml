@@ -20,6 +20,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="created" type="timestamp" insert="false" update="false" />
         <property name="modified" type="timestamp" insert="false" update="false" />
         <property name="preferredLocale" column="preferred_locale" type="string" />
+        <property name="preferredDocsLocale" column="preferred_docs_locale" type="string" />
         <property name="csvSeparator" column="csv_separator" type="char" />
         <property name="webTheme" column="web_theme" type="string" />
 
