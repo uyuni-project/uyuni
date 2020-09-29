@@ -29,6 +29,7 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 import logging
 from getpass import getpass
 from operator import itemgetter
@@ -36,10 +37,15 @@ from spacecmd.utils import *
 
 _PREFIXES = ['Dr.', 'Mr.', 'Miss', 'Mrs.', 'Ms.']
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_org_create(self):
-    print('org_create: Create an organization')
-    print('''usage: org_create [options])
+    print(_('org_create: Create an organization'))
+    print(_('''usage: org_create [options])
 
 options:
   -n ORG_NAME
@@ -49,7 +55,7 @@ options:
   -l LAST_NAME
   -e EMAIL
   -p PASSWORD
-  --pam enable PAM authentication''' % ', '.join(_PREFIXES))
+  --pam enable PAM authentication''' % ', '.join(_PREFIXES)))
 
 
 def do_org_create(self, args):
@@ -66,61 +72,61 @@ def do_org_create(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
-        options.org_name = prompt_user('Organization Name:', noblank=True)
-        options.username = prompt_user('Username:', noblank=True)
-        options.prefix = prompt_user('Prefix (%s):' % ', '.join(_PREFIXES),
+        options.org_name = prompt_user(_('Organization Name:'), noblank=True)
+        options.username = prompt_user(_('Username:'), noblank=True)
+        options.prefix = prompt_user(_('Prefix (%s):') % ', '.join(_PREFIXES),
                                      noblank=True)
-        options.first_name = prompt_user('First Name:', noblank=True)
-        options.last_name = prompt_user('Last Name:', noblank=True)
-        options.email = prompt_user('Email:', noblank=True)
-        options.pam = self.user_confirm('PAM Authentication [y/N]:',
+        options.first_name = prompt_user(_('First Name:'), noblank=True)
+        options.last_name = prompt_user(_('Last Name:'), noblank=True)
+        options.email = prompt_user(_('Email:'), noblank=True)
+        options.pam = self.user_confirm(_('PAM Authentication [y/N]:'),
                                         nospacer=True,
                                         integer=False,
                                         ignore_yes=True)
 
         options.password = ''
         while options.password == '':
-            password1 = getpass('Password: ')
-            password2 = getpass('Repeat Password: ')
+            password1 = getpass(_('Password: '))
+            password2 = getpass(_('Repeat Password: '))
 
             if password1 == password2:
                 options.password = password1
             elif len(password1) < 5:
-                logging.warning('Password must be at least 5 characters')
+                logging.warning(_('Password must be at least 5 characters'))
             else:
-                logging.warning("Passwords don't match")
+                logging.warning(_("Passwords don't match"))
     else:
         if not options.org_name:
-            logging.error('An organization name is required')
+            logging.error(_('An organization name is required'))
             return 1
 
         if not options.username:
-            logging.error('A username is required')
+            logging.error(_('A username is required'))
             return 1
 
         if not options.first_name:
-            logging.error('A first name is required')
+            logging.error(_('A first name is required'))
             return 1
 
         if not options.last_name:
-            logging.error('A last name is required')
+            logging.error(_('A last name is required'))
             return 1
 
         if not options.email:
-            logging.error('An email address is required')
+            logging.error(_('An email address is required'))
             return 1
 
         if not options.password:
-            logging.error('A password is required')
+            logging.error(_('A password is required'))
             return 1
 
         if not options.pam:
             options.pam = False
 
         if not options.prefix:
-            options.prefix = 'Dr.'
+            options.prefix = _('Dr.')
 
-    if options.prefix[-1] != '.' and options.prefix != 'Miss':
+    if options.prefix[-1] != '.' and options.prefix != _('Miss'):
         options.prefix = options.prefix + '.'
 
     self.client.org.create(self.session,
@@ -139,8 +145,8 @@ def do_org_create(self, args):
 
 
 def help_org_delete(self):
-    print('org_delete: Delete an organization')
-    print('usage: org_delete NAME')
+    print(_('org_delete: Delete an organization'))
+    print(_('usage: org_delete NAME'))
 
 
 def complete_org_delete(self, text, line, beg, end):
@@ -159,10 +165,10 @@ def do_org_delete(self, args):
     name = args[0]
     org_id = self.get_org_id(name)
     if not org_id:
-        logging.warning("No organisation found for the name %s", name)
-        print("Organisation '{}' was not found".format(name))
+        logging.warning(_("No organisation found for the name %s"), name)
+        print(_("Organisation '{}' was not found").format(name))
         return 1
-    elif self.user_confirm('Delete this organization [y/N]:'):
+    elif self.user_confirm(_('Delete this organization [y/N]:')):
         self.client.org.delete(self.session, org_id)
         return 0
 
@@ -170,8 +176,8 @@ def do_org_delete(self, args):
 
 
 def help_org_rename(self):
-    print('org_rename: Rename an organization')
-    print('usage: org_rename OLDNAME NEWNAME')
+    print(_('org_rename: Rename an organization'))
+    print(_('usage: org_rename OLDNAME NEWNAME'))
 
 
 def complete_org_rename(self, text, line, beg, end):
@@ -190,8 +196,8 @@ def do_org_rename(self, args):
     name, new_name = args
     org_id = self.get_org_id(name)
     if not org_id:
-        logging.warning("No organisation found for the name %s", name)
-        print("Organisation '{}' was not found".format(name))
+        logging.warning(_("No organisation found for the name %s"), name)
+        print(_("Organisation '{}' was not found").format(name))
         return 1
     else:
         new_name = args[1]
@@ -202,8 +208,8 @@ def do_org_rename(self, args):
 
 
 def help_org_addtrust(self):
-    print('org_addtrust: Add a trust between two organizations')
-    print('usage: org_addtrust YOUR_ORG ORG_TO_TRUST')
+    print(_('org_addtrust: Add a trust between two organizations'))
+    print(_('usage: org_addtrust YOUR_ORG ORG_TO_TRUST'))
 
 
 def complete_org_addtrust(self, text, line, beg, end):
@@ -224,12 +230,12 @@ def do_org_addtrust(self, args):
     org_to_trust_id = self.get_org_id(trust_org)
 
     if your_org_id is None:
-        logging.warning("No organisation found for the name %s", your_org)
-        print("Organisation '{}' was not found".format(your_org))
+        logging.warning(_("No organisation found for the name %s"), your_org)
+        print(_("Organisation '{}' was not found").format(your_org))
         return 1
     elif org_to_trust_id is None:
-        logging.warning("No trust organisation found for the name %s", trust_org)
-        print("Organisation '{}' to trust for, was not found".format(trust_org))
+        logging.warning(_("No trust organisation found for the name %s"), trust_org)
+        print(_("Organisation '{}' to trust for, was not found").format(trust_org))
         return 1
     else:
         self.client.org.trusts.addTrust(self.session, your_org_id, org_to_trust_id)
@@ -239,8 +245,8 @@ def do_org_addtrust(self, args):
 
 
 def help_org_removetrust(self):
-    print('org_removetrust: Remove a trust between two organizations')
-    print('usage: org_removetrust YOUR_ORG TRUSTED_ORG')
+    print(_('org_removetrust: Remove a trust between two organizations'))
+    print(_('usage: org_removetrust YOUR_ORG TRUSTED_ORG'))
 
 
 def complete_org_removetrust(self, text, line, beg, end):
@@ -260,31 +266,31 @@ def do_org_removetrust(self, args):
     your_org_id = self.get_org_id(your_org)
     trusted_org_id = self.get_org_id(trust_org)
     if your_org_id is None:
-        logging.warning("No organisation found for the name %s", your_org)
-        print("Organisation '{}' was not found".format(your_org))
+        logging.warning(_("No organisation found for the name %s"), your_org)
+        print(_("Organisation '{}' was not found").format(your_org))
         return 1
     elif trusted_org_id is None:
-        logging.warning("No trust organisation found for the name %s", trust_org)
-        print("Organisation '{}' to trust for, was not found".format(trust_org))
+        logging.warning(_("No trust organisation found for the name %s"), trust_org)
+        print(_("Organisation '{}' to trust for, was not found").format(trust_org))
         return 1
     else:
         systems = self.client.org.trusts.listSystemsAffected(self.session, your_org_id, trusted_org_id)
-        print('Affected Systems')
+        print(_('Affected Systems'))
         print('----------------')
 
         if systems:
             print('\n'.join(sorted([s.get('systemName') for s in systems])))
         else:
-            print('None')
+            print(_('None'))
 
-        if self.user_confirm('Remove this trust [y/N]:'):
+        if self.user_confirm(_('Remove this trust [y/N]:')):
             self.client.org.trusts.removeTrust(self.session, your_org_id, trusted_org_id)
         return 0
 
 
 def help_org_trustdetails(self):
-    print('org_trustdetails: Show the details of an organizational trust')
-    print('usage: org_trustdetails TRUSTED_ORG')
+    print(_('org_trustdetails: Show the details of an organizational trust'))
+    print(_('usage: org_trustdetails TRUSTED_ORG'))
 
 
 def complete_org_trustdetails(self, text, line, beg, end):
@@ -303,27 +309,27 @@ def do_org_trustdetails(self, args):
     trusted_org = args[0]
     org_id = self.get_org_id(trusted_org)
     if org_id is None:
-        logging.warning("No trusted organisation found for the name %s", trusted_org)
-        print("Trusted organisation '{}' was not found".format(trusted_org))
+        logging.warning(_("No trusted organisation found for the name %s"), trusted_org)
+        print(_("Trusted organisation '{}' was not found").format(trusted_org))
         return 1
     else:
         details = self.client.org.trusts.getDetails(self.session, org_id)
         consumed = self.client.org.trusts.listChannelsConsumed(self.session, org_id)
         provided = self.client.org.trusts.listChannelsProvided(self.session, org_id)
 
-        print('Trusted Organization:   %s' % trusted_org)
-        print('Trusted Since:          %s' % details.get('trusted_since'))
-        print('Systems Migrated From:  %i' % details.get('systems_migrated_from'))
-        print('Systems Migrated To:    %i' % details.get('systems_migrated_to'))
+        print(_('Trusted Organization:   %s') % trusted_org)
+        print(_('Trusted Since:          %s') % details.get('trusted_since'))
+        print(_('Systems Migrated From:  %i') % details.get('systems_migrated_from'))
+        print(_('Systems Migrated To:    %i') % details.get('systems_migrated_to'))
         print('')
-        print('Channels Consumed')
+        print(_('Channels Consumed'))
         print('-----------------')
         if consumed:
             print('\n'.join(sorted([c.get('name') for c in consumed])))
 
         print('')
 
-        print('Channels Provided')
+        print(_('Channels Provided'))
         print('-----------------')
         if provided:
             print('\n'.join(sorted([c.get('name') for c in provided])))
@@ -331,8 +337,8 @@ def do_org_trustdetails(self, args):
 
 
 def help_org_list(self):
-    print('org_list: List all organizations')
-    print('usage: org_list')
+    print(_('org_list: List all organizations'))
+    print(_('usage: org_list'))
 
 
 def do_org_list(self, args, doreturn=False):
@@ -349,8 +355,8 @@ def do_org_list(self, args, doreturn=False):
 
 
 def help_org_listtrusts(self):
-    print("org_listtrusts: List an organization's trusts")
-    print('usage: org_listtrusts NAME')
+    print(_("org_listtrusts: List an organization's trusts"))
+    print(_('usage: org_listtrusts NAME'))
 
 
 def complete_org_listtrusts(self, text, line, beg, end):
@@ -368,14 +374,14 @@ def do_org_listtrusts(self, args):
 
     org_id = self.get_org_id(args[0])
     if org_id is None:
-        logging.warning("No organisation found for the name %s", args[0])
-        print("Organisation '{}' was not found".format(args[0]))
+        logging.warning(_("No organisation found for the name %s"), args[0])
+        print(_("Organisation '{}' was not found").format(args[0]))
         return 1
     else:
         trusts = self.client.org.trusts.listTrusts(self.session, org_id)
         if not trusts:
-            print("No trust organisation has been found")
-            logging.warning("No trust organisation has been found")
+            print(_("No trust organisation has been found"))
+            logging.warning(_("No trust organisation has been found"))
             return 1
         else:
             for trust in sorted(trusts, key=itemgetter('orgName')):
@@ -385,8 +391,8 @@ def do_org_listtrusts(self, args):
 
 
 def help_org_listusers(self):
-    print("org_listusers: List an organization's users")
-    print('usage: org_listusers NAME')
+    print(_("org_listusers: List an organization's users"))
+    print(_('usage: org_listusers NAME'))
 
 
 def complete_org_listusers(self, text, line, beg, end):
@@ -404,8 +410,8 @@ def do_org_listusers(self, args):
 
     org_id = self.get_org_id(args[0])
     if org_id is None:
-        logging.warning("No organisation found for the name %s", args[0])
-        print("Organisation '{}' was not found".format(args[0]))
+        logging.warning(_("No organisation found for the name %s"), args[0])
+        print(_("Organisation '{}' was not found").format(args[0]))
         return 1
     else:
         users = self.client.org.listUsers(self.session, org_id)
@@ -416,8 +422,8 @@ def do_org_listusers(self, args):
 
 
 def help_org_details(self):
-    print('org_details: Show the details of an organization')
-    print('usage: org_details NAME')
+    print(_('org_details: Show the details of an organization'))
+    print(_('usage: org_details NAME'))
 
 
 def complete_org_details(self, text, line, beg, end):
@@ -437,19 +443,19 @@ def do_org_details(self, args):
 
     details = self.client.org.getDetails(self.session, name)
 
-    print('Name:                   %s' % details.get('name'))
-    print('Active Users:           %i' % details.get('active_users'))
-    print('Systems:                %i' % details.get('systems'))
+    print(_('Name:                   %s') % details.get('name'))
+    print(_('Active Users:           %i') % details.get('active_users'))
+    print(_('Systems:                %i') % details.get('systems'))
 
     # trusts is optional, which is annoying...
     if 'trusts' in details:
-        print('Trusts:                 %i' % details.get('trusts'))
+        print(_('Trusts:                 %i') % details.get('trusts'))
     else:
-        print('Trusts:                 %i' % 0)
+        print(_('Trusts:                 %i') % 0)
 
-    print('System Groups:          %i' % details.get('system_groups'))
-    print('Activation Keys:        %i' % details.get('activation_keys'))
-    print('Kickstart Profiles:     %i' % details.get('kickstart_profiles'))
-    print('Configuration Channels: %i' % details.get('configuration_channels'))
+    print(_('System Groups:          %i') % details.get('system_groups'))
+    print(_('Activation Keys:        %i') % details.get('activation_keys'))
+    print(_('Kickstart Profiles:     %i') % details.get('kickstart_profiles'))
+    print(_('Configuration Channels: %i') % details.get('configuration_channels'))
 
     return 0

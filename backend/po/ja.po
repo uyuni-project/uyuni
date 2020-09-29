@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2020-09-26 01:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -26,6 +26,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "不完全なプロキシ認証トークンです: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "プロキシ認証が拒否されました"
 
 #: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
@@ -235,6 +249,104 @@ msgstr "キックスタートセッションの不一致です"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "再登録トークンの積み重ねには対応していません"
 
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "無効なユーザー名とパスワードの組み合わせです"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "ユーザー名 `%s' は予約されていません"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Email アドレスが指定されていません"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "ユーザー名は少なくとも %d 文字以上にしてください"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "ユーザー名は %d 文字未満にしてください"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "ユーザー名 = `%s'、 無効な文字 `%s'"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Email アドレスは %s 文字以内にしてください"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "パスワードは少なくとも %d 文字に以上にしてください"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "パスワードは %d 文字以内にしてください"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "パスワードに `%s' 文字が含まれています"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてください"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "%s で終わるユーザー名は登録できません"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "無効な RPM パッケージ %s を要求しています"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "パッケージが見つかりません"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "無効な要求を受け取りました (%s)。"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要なメッセージです:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"「%s」の実行中: 次をキャッチしました\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "無効な URI %s"
+
 #: ../server/rhnChannel.py:1992
 #, python-format
 msgid ""
@@ -345,118 +457,6 @@ msgstr ""
 "さい。\n"
 "\n"
 "  %(entitlement_url)s\n"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "不完全なプロキシ認証トークンです: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "プロキシ認証が拒否されました"
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "無効なユーザー名とパスワードの組み合わせです"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "ユーザー名 `%s' は予約されていません"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "Email アドレスが指定されていません"
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "ユーザー名は少なくとも %d 文字以上にしてください"
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "ユーザー名は %d 文字未満にしてください"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "ユーザー名 = `%s'、 無効な文字 `%s'"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Email アドレスは %s 文字以内にしてください"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "パスワードは少なくとも %d 文字に以上にしてください"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "パスワードは %d 文字以内にしてください"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "パスワードに `%s' 文字が含まれています"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてください"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "%s で終わるユーザー名は登録できません"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "無効な要求を受け取りました (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要なメッセージです:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"「%s」の実行中: 次をキャッチしました\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "無効な URI %s"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "無効な RPM パッケージ %s を要求しています"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "パッケージが見つかりません"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1160,6 +1160,244 @@ msgstr "トレースバック: %s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s の書式は少なくとも YYYYMMDD であるべきです。\n"
 
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"エラー: ステップ %s の実行時にエラー:\n"
+"%s\n"
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"エラー: 一時リポジトリーからチャンネルデータにアクセスする際に問題がありまし"
+"た。\n"
+"       このディレクトリに対して、チャンネル ISO からの全てのデータを移行して"
+"ありますか？\n"
+"       チャンネル ISO の内容が全て移行されていることを確認して再度マウントを"
+"行ない、\n"
+"       一時リポジトリー (%s) 内に再投入してください。\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"エラー: 情報を同期する際に問題がありました。\n"
+"       エラーメッセージ: %s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"エラー: ISS Master と通信する際に問題がありました。\n"
+"       エラーの詳細にもよりますが、設定やネットワークの接続、名前解決などが正"
+"しく動作\n"
+"       することをご確認のうえ、やり直してください。\n"
+"       エラーメッセージ: %s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       If the master satellite is older than v5.3, it does not have ISS "
+"capability.\n"
+"       Otherwise, depending on the specific error details, please review "
+"your\n"
+"       configuration, basic network connectivity, and/or name resolution, "
+"and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"エラー: ISS Master との通信する際にエラーがありました。\n"
+"       マスター Satellite がバージョン 5.3 よりも古い場合、 ISS の機能は提供"
+"されていません。\n"
+"       マスター Satellite がバージョン 5.3 もしくはそれ以降の場合は、エラーの"
+"詳細にもよりますが、\n"
+"       設定やネットワークの接続、名前解決などが正しく動作することをご確認のう"
+"え、やり直してください。\n"
+"       エラーメッセージ: %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があり"
+"ます。\n"
+"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同"
+"期させる\n"
+"       必要があります。このトランザクションに対する親が見つかりません:\n"
+"       %s\n"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"エラー: このチャンネルセット内でチャンネルを同期するためのエンタイトルメント"
+"がありません。\n"
+"SUSE Manager に連絡を行なってください\n"
+"%s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  エラー: デバイスに十分な空き容量 (%s KB) がありません。"
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s フェッチ成功: %s (%s バイト)"
+
+#: ../satellite_tools/messages.py:75
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    廃止されたパッケージ:  %s"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Total size: %s"
+msgstr "   合計サイズ: %s"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      %s / %s をダウンロード済みです。予測される残り時間: %s"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    フェッチ未成功: %s"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   RPM フェッチ概要: %s"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "       success: %d"
+msgstr "       成功: %d"
+
+#: ../satellite_tools/messages.py:81
+#, python-format
+msgid "       failed:  %d"
+msgstr "       失敗:  %d"
+
+#: ../satellite_tools/messages.py:82
+#, python-format
+msgid "       extinct: %d"
+msgstr "       消滅: %d"
+
+#: ../satellite_tools/messages.py:84
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   *関連する* パッケージのメタデータを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   エラータのデータを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   キックスタートのデータを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:87
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   キックスタートのツリーファイルを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:88
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   *関連する* パッケージのメタデータを取り込んでいます: %s (%s)"
+
+#: ../satellite_tools/messages.py:89
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * 警告: この処理には時間がかかるかもしれません。"
+
+#: ../satellite_tools/messages.py:90
+msgid "Linking packages to channels"
+msgstr "チャンネルに対してパッケージのリンクを作成しています"
+
+#: ../satellite_tools/messages.py:91
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   *関連する* エラータを取り込んでいます: %s (%s)"
+
+#: ../satellite_tools/messages.py:92
+msgid "   No new kickstartable tree to import"
+msgstr "   取り込むべき新しいキックスタート可能なツリーはありません"
+
+#: ../satellite_tools/messages.py:93
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
+
+#: ../satellite_tools/messages.py:94
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "キックスタート可能なツリーを取り込みました (%d)"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (コマンドライン内で指定されています)\n"
+"を開いて読み込むことができません:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" を開いたり書き込んだりする\n"
+"ことができません:\n"
+"%s"
+
 #: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ 電子メールでログを送信 +++"
@@ -1259,9 +1497,11 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
-"エラー: RHN Classic Hosted を利用したライブコンテンツの同期は、もはやサポートされていません。\n"
-"サーバ間同期 (ISS) を介して他の {PRODUCT_NAME} から同期を行なっている場合や、チャンネルダンプ ISO "
-"を利用してディスク内のローカルコンテンツから同期を行なっている場合を除き、代わりに cdn-sync コマンドを使用してください。"
+"エラー: RHN Classic Hosted を利用したライブコンテンツの同期は、もはやサポート"
+"されていません。\n"
+"サーバ間同期 (ISS) を介して他の {PRODUCT_NAME} から同期を行なっている場合や、"
+"チャンネルダンプ ISO を利用してディスク内のローカルコンテンツから同期を行なっ"
+"ている場合を除き、代わりに cdn-sync コマンドを使用してください。"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1800,7 +2040,9 @@ msgstr ""
 #, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
-msgstr "エラー: '%s' のステップが正しくありません。詳しくは 'man mgr-inter-sync' をお読みください。"
+msgstr ""
+"エラー: '%s' のステップが正しくありません。詳しくは 'man mgr-inter-sync' をお"
+"読みください。"
 
 #: ../satellite_tools/satsync.py:2407
 msgid ""
@@ -1953,244 +2195,6 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"エラー: ステップ %s の実行時にエラー:\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"エラー: 一時リポジトリーからチャンネルデータにアクセスする際に問題がありまし"
-"た。\n"
-"       このディレクトリに対して、チャンネル ISO からの全てのデータを移行して"
-"ありますか？\n"
-"       チャンネル ISO の内容が全て移行されていることを確認して再度マウントを"
-"行ない、\n"
-"       一時リポジトリー (%s) 内に再投入してください。\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"エラー: 情報を同期する際に問題がありました。\n"
-"       エラーメッセージ: %s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"エラー: ISS Master と通信する際に問題がありました。\n"
-"       エラーの詳細にもよりますが、設定やネットワークの接続、名前解決などが正"
-"しく動作\n"
-"       することをご確認のうえ、やり直してください。\n"
-"       エラーメッセージ: %s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       If the master satellite is older than v5.3, it does not have ISS "
-"capability.\n"
-"       Otherwise, depending on the specific error details, please review "
-"your\n"
-"       configuration, basic network connectivity, and/or name resolution, "
-"and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"エラー: ISS Master との通信する際にエラーがありました。\n"
-"       マスター Satellite がバージョン 5.3 よりも古い場合、 ISS の機能は提供"
-"されていません。\n"
-"       マスター Satellite がバージョン 5.3 もしくはそれ以降の場合は、エラーの"
-"詳細にもよりますが、\n"
-"       設定やネットワークの接続、名前解決などが正しく動作することをご確認のう"
-"え、やり直してください。\n"
-"       エラーメッセージ: %s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があり"
-"ます。\n"
-"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同"
-"期させる\n"
-"       必要があります。このトランザクションに対する親が見つかりません:\n"
-"       %s\n"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"エラー: このチャンネルセット内でチャンネルを同期するためのエンタイトルメント"
-"がありません。\n"
-"SUSE Manager に連絡を行なってください\n"
-"%s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  エラー: デバイスに十分な空き容量 (%s KB) がありません。"
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s フェッチ成功: %s (%s バイト)"
-
-#: ../satellite_tools/messages.py:75
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    廃止されたパッケージ:  %s"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Total size: %s"
-msgstr "   合計サイズ: %s"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      %s / %s をダウンロード済みです。予測される残り時間: %s"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    フェッチ未成功: %s"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   RPM フェッチ概要: %s"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "       success: %d"
-msgstr "       成功: %d"
-
-#: ../satellite_tools/messages.py:81
-#, python-format
-msgid "       failed:  %d"
-msgstr "       失敗:  %d"
-
-#: ../satellite_tools/messages.py:82
-#, python-format
-msgid "       extinct: %d"
-msgstr "       消滅: %d"
-
-#: ../satellite_tools/messages.py:84
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   *関連する* パッケージのメタデータを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   エラータのデータを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   キックスタートのデータを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:87
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   キックスタートのツリーファイルを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:88
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   *関連する* パッケージのメタデータを取り込んでいます: %s (%s)"
-
-#: ../satellite_tools/messages.py:89
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * 警告: この処理には時間がかかるかもしれません。"
-
-#: ../satellite_tools/messages.py:90
-msgid "Linking packages to channels"
-msgstr "チャンネルに対してパッケージのリンクを作成しています"
-
-#: ../satellite_tools/messages.py:91
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   *関連する* エラータを取り込んでいます: %s (%s)"
-
-#: ../satellite_tools/messages.py:92
-msgid "   No new kickstartable tree to import"
-msgstr "   取り込むべき新しいキックスタート可能なツリーはありません"
-
-#: ../satellite_tools/messages.py:93
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
-
-#: ../satellite_tools/messages.py:94
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "キックスタート可能なツリーを取り込みました (%d)"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (コマンドライン内で指定されています)\n"
-"を開いて読み込むことができません:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" を開いたり書き込んだりする\n"
-"ことができません:\n"
-"%s"
 
 #~ msgid "Red Hat Satellite Welcome Message"
 #~ msgstr "Red Hat Satellite のようこそメッセージ"

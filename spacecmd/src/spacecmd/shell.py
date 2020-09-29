@@ -33,6 +33,7 @@
 # pylint: disable=W0122
 
 import atexit
+import gettext
 import logging
 import os
 import readline
@@ -42,6 +43,11 @@ import sys
 from cmd import Cmd
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 class UnknownCallException(Exception):
 
     def __init__(self):
@@ -111,11 +117,11 @@ class SpacewalkShell(Cmd):
                     atexit.register(readline.write_history_file,
                                     self.history_file)
                 except IOError:
-                    logging.error('Could not read history file')
+                    logging.error(_('Could not read history file'))
         # pylint: disable=W0702
         except Exception as exc:
             # pylint: disable=W0702
-            logging.error("Exception occurred: {}".format(exc))
+            logging.error(_("Exception occurred: {}").format(exc))
             sys.exit(1)
 
     # handle shell exits and history substitution
@@ -179,7 +185,7 @@ class SpacewalkShell(Cmd):
             if line:
                 history_match = True
             else:
-                logging.warning('%s: event not found', command)
+                logging.warning(_('%s: event not found'), command)
                 return ''
 
         # attempt to find a numbered history item
@@ -218,7 +224,7 @@ class SpacewalkShell(Cmd):
             print(line)
             return line
         else:
-            logging.warning('%s: event not found', command)
+            logging.warning(_('%s: event not found'), command)
             return ''
 
     @staticmethod
