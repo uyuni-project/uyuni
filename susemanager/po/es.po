@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-21 13:15+0200\n"
+"POT-Creation-Date: 2020-09-16 15:23+0200\n"
 "PO-Revision-Date: 2020-09-02 07:44+0000\n"
 "Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/susemanager/"
@@ -72,10 +72,11 @@ msgid "R&epeat Password"
 msgstr "R&epetir contraseña"
 
 #: ../yast/susemanager_cert.rb:132
+#, fuzzy
 msgid ""
 "<p>Here, enter data needed for the creation of an SSL certificate. The "
-"certificate is used for a number of purposes like connections to a proxy, "
-"HTTPS protocol in browsers, and more.</p>"
+"certificate is used for a number of purposes like connections to a SUSE "
+"Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
 "<p>Introduzca aquí los datos necesarios para crear un certificado SSL. El "
 "certificado se usará para varios propósitos: conexión a un servidor SUSE "
@@ -131,7 +132,8 @@ msgstr "Contraseña base de da&tos"
 #: ../yast/susemanager_db.rb:115
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
-msgstr "<p>Por defecto, SUSE Manager usa una base de datos PostgreSQL llamada '"
+msgstr ""
+"<p>Por defecto, SUSE Manager usa una base de datos PostgreSQL llamada '"
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
@@ -150,7 +152,8 @@ msgid "&IP Address of the #{@product_name} Server"
 msgstr "Dirección &IP del #{@product_name} Server"
 
 #: ../yast/susemanager_manager.rb:94
-msgid "#{@product_name} &Administrator E-mail Address"
+#, fuzzy
+msgid "#{@product_name} &Administrator e-mail address"
 msgstr "Correo electrónico del &administrador de #{@product_name}"
 
 #: ../yast/susemanager_manager.rb:101
@@ -158,15 +161,17 @@ msgid "Advertise #{@product_name} via SLP"
 msgstr "Anunciar #{@product_name} con SLP"
 
 #: ../yast/susemanager_manager.rb:112
+#, fuzzy
 msgid ""
-"<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications "
+"<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
 msgstr ""
 "<p>Complete <b>la dirección de correo electrónico del administrador</b>. Se "
 "usa para notificaciones de #{@product_name}.</p>"
 
 #: ../yast/susemanager_manager.rb:152
-msgid "The Administrator E-mail Address is not valid."
+#, fuzzy
+msgid "The Administrator e-mail address is not valid."
 msgstr "La dirección de correo electrónico del administrador es inválida."
 
 #: ../yast/susemanager_migration.rb:73
@@ -266,12 +271,14 @@ msgstr ""
 "instalarse. Si continúa, el producto no funcionará correctamente."
 
 #: ../yast/susemanager_reqs.rb:158
-msgid "hostname command failed"
+#, fuzzy
+msgid "Hostname command failed"
 msgstr "El comando hostname ha fallado"
 
 #: ../yast/susemanager_reqs.rb:160
+#, fuzzy
 msgid ""
-"the execution of 'hostname -f' failed. The product will not install "
+"The execution of 'hostname -f' failed. The product will not install "
 "correctly."
 msgstr ""
 "La ejecución de 'hostname -f' falló. El producto no se instalará "
@@ -279,28 +286,32 @@ msgstr ""
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
-msgid "illegal FQHN"
+#, fuzzy
+msgid "Illegal FQHN"
 msgstr "FQHN ilegal"
 
 #: ../yast/susemanager_reqs.rb:180
+#, fuzzy
 msgid ""
-"the FQHN must contain at least 2 dots. The product will not function "
+"The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
 msgstr ""
 "El FQHN debe contener al menos 2 puntos. El producto no funcionará "
 "correctamente."
 
 #: ../yast/susemanager_reqs.rb:200
+#, fuzzy
 msgid ""
-"the FQHN must not contain the '_' (undersorce) character. The product will "
+"The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
 msgstr ""
 "El FQHN no puede contener el carćter '_' (subrayado). El producto no "
 "funcionará correctamente."
 
 #: ../yast/susemanager_reqs.rb:240
+#, fuzzy
 msgid ""
-"the output of 'hostname -f' does not match the real hostname. The product "
+"The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
 msgstr ""
 "La salida de 'hostname -f' no coincide con el nombre de máquin real. El "

@@ -116,6 +116,7 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
@@ -180,13 +181,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
-        SystemQuery systemQuery = new TestSystemQuery();
+        SaltApi saltApi = new TestSaltApi();
         VirtManager virtManager = new TestVirtManager();
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
-                new SystemEntitler(systemQuery, virtManager, new FormulaMonitoringManager(),
+                new SystemEntitler(saltApi, virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);

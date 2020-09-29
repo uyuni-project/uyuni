@@ -108,7 +108,7 @@ public class RebootActionCleanup extends RhnJavaJob {
             s.asMinionServer()
                     .filter(MinionServerUtils::isSshPushMinion)
                     .ifPresent(minion ->
-                        GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService().cleanPendingActionChainAsync(minion));
+                        GlobalInstanceHolder.SALT_API.getSaltSSHService().cleanPendingActionChainAsync(minion));
         }
 
         return aIds;

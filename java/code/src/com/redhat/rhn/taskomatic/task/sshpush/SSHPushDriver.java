@@ -180,8 +180,8 @@ public class SSHPushDriver implements QueueDriver {
         // Create a Salt worker if the system has a minion id
         if (system.getMinionId() != null) {
             return new SSHPushWorkerSalt(getLogger(), system,
-                    GlobalInstanceHolder.SYSTEM_QUERY,
-                    GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService(),
+                    GlobalInstanceHolder.SALT_API,
+                    GlobalInstanceHolder.SALT_API.getSaltSSHService(),
                     GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
                     GlobalInstanceHolder.SALT_UTILS);
         }

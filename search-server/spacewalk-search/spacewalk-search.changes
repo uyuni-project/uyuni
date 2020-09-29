@@ -1,3 +1,9 @@
+- change default maximum memory to 512 MB, preventing OutOfMemoryError
+
+-------------------------------------------------------------------
+Fri Sep 18 11:43:02 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------

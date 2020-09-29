@@ -27,7 +27,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I navigate to "rhn/systems/Overview.do" page
+    And I am on the System Overview page
     And I wait until I see the name of "ceos_ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_ssh_minion"
 
@@ -107,7 +107,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I navigate to "rhn/systems/Overview.do" page
+    And I am on the System Overview page
     And I wait until I see the name of "ceos_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_minion"
 

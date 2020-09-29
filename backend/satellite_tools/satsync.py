@@ -276,8 +276,8 @@ class Runner:
                 e = sys.exc_info()[1]
                 msg = _("ERROR: Encountered IntegrityError: \n"
                         + str(e)
-                        + "\nconsider removing satellite-sync cache at /var/cache/rhn/satsync/*"
-                        + " and re-run satellite-sync with same options.\n"
+                        + "\nconsider removing mgr-inter-sync cache at /var/cache/rhn/satsync/*"
+                        + " and re-run mgr-inter-sync with same options.\n"
                         + "If this error persits after removing cache, please contact SUSE support.")
                 log2stderr(-1, msg, cleanYN=1)
                 return 1
@@ -532,9 +532,9 @@ class Syncer:
             else:
                 log(1, _(PRODUCT_NAME + ' - live synchronization'))
                 log(-1, _("ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\nPlease "
-                          "use the cdn-sync command instead unless you are attempting to sync from another Satellite "
-                          "via Inter-Satelite-Sync (ISS), or from local content on disk via Channel Dump ISOs."),
-                    stream=sys.stderr)
+                          "use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} "
+                          "via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."),
+                    stream=sys.stderr).format(PRODUCT_NAME=PRODUCT_NAME)
                 sys.exit(1)
 
             url = self.xmlDataServer.schemeAndUrl(sync_parent)
@@ -2372,7 +2372,7 @@ def processCommandline():
         OPTIONS.step = stepHierarchy[-1]
 
     if OPTIONS.step not in stepHierarchy:
-        log2stderr(-1, _("ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail.")
+        log2stderr(-1, _("ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail.")
                    % OPTIONS.step, 1, 1)
         sys.exit(22)
 

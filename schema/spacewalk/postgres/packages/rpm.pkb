@@ -58,8 +58,6 @@ $$ language 'plpgsql';
         debupstreamv2 VARCHAR;
         debrevisionv1 VARCHAR;
         debrevisionv2 VARCHAR;
-        post1 VARCHAR;
-        post2 VARCHAR;
         isnum BOOLEAN;
     BEGIN
         if str1 is NULL or str2 is NULL
@@ -71,16 +69,10 @@ $$ language 'plpgsql';
         then
             return 0;
         end if;
-        if POSITION('+' in str1) <> 0 AND POSITION('+' in str2) <> 0
+        if POSITION('+' in str1) <> 0 AND POSITION('+' in str2) <> 0 AND POSITION('~' in str1) = 0 AND POSITION('~' in str2) = 0
         then
-            post1 := SUBSTR(str1, POSITION('+' in str1));
-            post2 := SUBSTR(str2, POSITION('+' in str2));
-
-            if post1 = post2
-            then
-                str1 := SUBSTR(str1, 0, POSITION('+' in str1));
-                str2 := SUBSTR(str2, 0, POSITION('+' in str2));
-            end if;
+            str1 := SUBSTR(str1, 0, POSITION('+' in str1));
+            str2 := SUBSTR(str2, 0, POSITION('+' in str2));
         end if;
         debupstreamv1 := str1;
         debupstreamv2 := str2;

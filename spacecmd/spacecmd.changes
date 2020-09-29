@@ -1,4 +1,9 @@
 - Python3 fix for sorted usage (bsc#1167907)
+
+-------------------------------------------------------------------
+Fri Sep 18 12:11:37 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Fix softwarechannel_listlatestpackages throwing error on
   empty channels (bsc#1175889)
 - Add Service Pack migration operations (bsc#1173557)

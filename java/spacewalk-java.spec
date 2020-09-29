@@ -60,11 +60,17 @@
 %define java_version    1:11
 %endif
 
+%if 0%{?is_opensuse}
+%define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
+%else
+%define supported_locales en_US,zh_CN
+%endif
+
 Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.0
+Version:        4.2.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -524,6 +530,9 @@ sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' $RPM_BU
 %else
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
+# Adjust languages
+sed -i -e '/# NOTE: for the RPMs this is defined at the SPEC!/d' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+sed -i -e 's/^java.supported_locales=.*$/java.supported_locales=%{supported_locales}/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/gatherer
 # LOGROTATE >= 3.8 requires extra permission config

@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 14:48+0200\n"
-"PO-Revision-Date: 2020-09-01 09:07+0000\n"
+"POT-Creation-Date: 2020-09-25 12:54+0200\n"
+"PO-Revision-Date: 2020-09-25 17:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
 "Language: cs\n"
@@ -39,30 +39,18 @@ msgstr ""
 "                   Pro další pomoc kontaktujte správce své organizace."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
-msgstr "Váš systém nebyl v databázi RHN nalezen"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Váš systém nebyl v databázi {PRODUCT_NAME} nalezen"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
-msgstr "ISS je na tomto satelitu deaktivována."
+msgid "ISS is disabled on this server."
+msgstr "ISS je na tomto serveru deaktivováno."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nemá povolen ISS."
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Profil \"%s\" nemá aktivovánu službu Spacewalk Proxy"
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Neplatný session key"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Toto ID serveru již neexistuje"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
@@ -88,6 +76,24 @@ msgstr "Neplatná hodnota operace typu %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Operace %s nenáleží k serveru %s"
 
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Neplatná hodnota %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "Serverový profil \"%s\" nemá aktivovánu službu SUSE Manager Proxy"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Neplatný session key"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Toto ID serveru již neexistuje"
+
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "Chybí požadovaná data"
@@ -112,12 +118,13 @@ msgstr ""
 "nalezeny."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Uvítací zpráva Red Hat Satellite"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "Uvítací zpráva {PRODUCT_NAME}"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Red Hat Satellite Privacy Statement"
-msgstr "Red Hat Satellite prohlášení o soukromí"
+msgid "Privacy Statement"
+msgstr "Prohlášení o ochraně soukromí"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -127,11 +134,6 @@ msgstr "Jako argument u produktu je očekáván slovník"
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pro %s (%s)"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -1120,7 +1122,7 @@ msgstr "CHYBA: %s %s: %s"
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s"
+msgstr "TRACE-BACK: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
@@ -1140,220 +1142,6 @@ msgstr "%s synchronizační zpráva od %s"
 #: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ vyžadován e-mail, ale není nic k odeslání +++"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"CHYBA: při provedení kroku %s. Chyba je:\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"CHYBA: došlo k problému s přístupem k datům kanálu z vašeho dočasného\n"
-"       úložiště. Přenesli jste všechna data z ISO kanálů do tohoto "
-"adresáře?\n"
-"       Když ano, znovu zkontrolujte kanály ISO, zajistěte, aby byly "
-"všechny,\n"
-"       a pak iterativně znovu připojte a znovu naplňte dočasné úložiště "
-"(%s).\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"CHYBA: Při synchronizaci informací došlo k potížím.\n"
-"       Chybová zpráva: %s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"CHYBA: Při komunikaci s ISS Master došlo k potížím.\n"
-"       V závislosti na konkrétních podrobnostech o chybě ověřte "
-"konfiguraci,\n"
-"       základní síťové připojení a/nebo překlad názvů (DNS) a akci "
-"opakujte.\n"
-"       Chybová zpráva: %s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       If the master satellite is older than v5.3, it does not have ISS "
-"capability.\n"
-"       Otherwise, depending on the specific error details, please review "
-"your\n"
-"       configuration, basic network connectivity, and/or name resolution, "
-"and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"CHYBA: Při komunikaci s ISS Master došlo k potížím.\n"
-"       Pokud je Master Satellite starší než v5.3, nemá schopnost ISS.\n"
-"       V opačném případě zkontrolujte konkrétní podrobnosti o chybě,\n"
-"       ověřte správnost své konfigurace, základní připojení k síti nebo\n"
-"       překlad názvů (DNS) a akci opakujte.\n"
-"       Chybová zpráva: %s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"CHYBA: podřízený kanál nelze synchronizovat, aniž je jeho rodič také "
-"synchronizován.\n"
-"       Rodič musí být (a) synchronizován předem nebo (b) synchronizován\n"
-"       společně s požadovaným podřízeným kanálem. Chybějící rodiče pro tuto\n"
-"       transakci:\n"
-"       %s\n"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"CHYBA: nemáte právo synchronizovat kanál v této sadě kanálů.\n"
-"Obraťte se prosím na svůj kontakt u SUSE Manager\n"
-"%s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  CHYBA: na zařízení není dostatek volného místa (%s KB)."
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s úspěšné načtení: %s (%s bajtů)"
-
-#: ../satellite_tools/messages.py:75
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    Zaniklý balíček:  %s"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Total size: %s"
-msgstr "   Celková velikost: %s"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      Staženo %s z %s. Odhadovaný zbývající čas: %s"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    Načtení neúspěšné: %s"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   Souhrn načtení RPM: %s"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "       success: %d"
-msgstr "       úspěch: %d"
-
-#: ../satellite_tools/messages.py:81
-#, python-format
-msgid "       failed:  %d"
-msgstr "       neúspěch:  %d"
-
-#: ../satellite_tools/messages.py:82
-#, python-format
-msgid "       extinct: %d"
-msgstr "       zaniklo: %d"
-
-#: ../satellite_tools/messages.py:84
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   Načítání / analýza *relevantních* metadat balíčku: %s (%s)"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   Načítání / analýza dat chyb (errata): %s (%s)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   Načítání / analýza dat kickstartu: %s (%s)"
-
-#: ../satellite_tools/messages.py:87
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   Načítání / analýza souborů stromu kickstartu: %s (%s)"
-
-#: ../satellite_tools/messages.py:88
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   Import *relevantních* metadat balíčků: %s (%s)"
-
-#: ../satellite_tools/messages.py:89
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * VÝSTRAHA: Toto může být pomalý proces."
-
-#: ../satellite_tools/messages.py:90
-msgid "Linking packages to channels"
-msgstr "Propojení balíčků ke kanálům"
-
-#: ../satellite_tools/messages.py:91
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   Import *relevantních* errat: %s (%s)"
-
-#: ../satellite_tools/messages.py:92
-msgid "   No new kickstartable tree to import"
-msgstr "   Žádný nový spustitelný strom k importu"
-
-#: ../satellite_tools/messages.py:93
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "Import spustitelných stromů (%d)"
-
-#: ../satellite_tools/messages.py:94
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "Importované startovatelné stromy (%d)"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1433,17 +1221,18 @@ msgid " - live synchronization"
 msgstr " - živá synchronizace"
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
-"CHYBA: Synchronizace živého obsahu s RHN Classic Hosted již není "
-"podporována.\n"
+"CHYBA: Synchronizace živého obsahu s RHN Classic Hosted již není podporována."
+"\n"
 "Použijte příkaz cdn-sync, nepokoušíte-li se synchronizovat z jiného "
-"Satellite přes Inter-Satellite-Sync (ISS) nebo z místního obsahu na disku "
+"{PRODUCT_NAME} přes Inter-Server-Sync (ISS), nebo z místního obsahu na disku "
 "pomocí obrazů ISO z výpisu kanálu (Channel Dump)."
 
 #: ../satellite_tools/satsync.py:542
@@ -1776,8 +1565,8 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "satellite-sync\" for more information."
 msgstr ""
-"POUZE DEBUG: max. velikost dávky pro zpracování importu XML/databáze (1 ..%s)"
-". Další informace: \"man satellite-sync\"."
+"POUZE DEBUG: max. velikost dávky pro zpracování importu XML/databáze (1 .."
+"%s). Další informace: \"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1916,8 +1705,8 @@ msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
-"plně kvalifikovaný doménový název serveru Master Satellite. Platí pouze s "
-"--mount-point. Vyžadován, chcete-li importovat data organizace a oprávnění "
+"plně kvalifikovaný doménový název serveru Master Satellite. Platí pouze s --"
+"mount-point. Vyžadován, chcete-li importovat data organizace a oprávnění "
 "kanálu."
 
 #: ../satellite_tools/satsync.py:2274
@@ -1981,17 +1770,17 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
-"CHYBA: '%s' není platný krok. Další podrobnosti viz 'man satellite-sync'."
+"CHYBA: '%s' není platný krok. Další podrobnosti viz 'man mgr-inter-sync'."
 
 #: ../satellite_tools/satsync.py:2407
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"CHYBA: Momentálně nejsou importovány žádné kanály; zkuste mgr-inter-sync "
-"--list-kanály; pak mgr-inter-sync -c chn0 -c chn1 ..."
+"CHYBA: Momentálně nejsou importovány žádné kanály; zkuste mgr-inter-sync --"
+"list-kanály; pak mgr-inter-sync -c chn0 -c chn1 ..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
@@ -2133,6 +1922,220 @@ msgstr "  28 - chyba: --master je platný pouze s --mount-point"
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznámá verze výpisu, zkuste jeden z %s"
 
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"CHYBA: při provedení kroku %s. Chyba je:\n"
+"%s\n"
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"CHYBA: došlo k problému s přístupem k datům kanálu z vašeho dočasného\n"
+"       úložiště. Přenesli jste všechna data z ISO kanálů do tohoto "
+"adresáře?\n"
+"       Když ano, znovu zkontrolujte kanály ISO, zajistěte, aby byly "
+"všechny,\n"
+"       a pak iterativně znovu připojte a znovu naplňte dočasné úložiště "
+"(%s).\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"CHYBA: Při synchronizaci informací došlo k potížím.\n"
+"       Chybová zpráva: %s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"CHYBA: Při komunikaci s ISS Master došlo k potížím.\n"
+"       V závislosti na konkrétních podrobnostech o chybě ověřte "
+"konfiguraci,\n"
+"       základní síťové připojení a/nebo překlad názvů (DNS) a akci "
+"opakujte.\n"
+"       Chybová zpráva: %s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       If the master satellite is older than v5.3, it does not have ISS "
+"capability.\n"
+"       Otherwise, depending on the specific error details, please review "
+"your\n"
+"       configuration, basic network connectivity, and/or name resolution, "
+"and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"CHYBA: Při komunikaci s ISS Master došlo k potížím.\n"
+"       Pokud je Master Satellite starší než v5.3, nemá schopnost ISS.\n"
+"       V opačném případě zkontrolujte konkrétní podrobnosti o chybě,\n"
+"       ověřte správnost své konfigurace, základní připojení k síti nebo\n"
+"       překlad názvů (DNS) a akci opakujte.\n"
+"       Chybová zpráva: %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"CHYBA: podřízený kanál nelze synchronizovat, aniž je jeho rodič také "
+"synchronizován.\n"
+"       Rodič musí být (a) synchronizován předem nebo (b) synchronizován\n"
+"       společně s požadovaným podřízeným kanálem. Chybějící rodiče pro tuto\n"
+"       transakci:\n"
+"       %s\n"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"CHYBA: nemáte právo synchronizovat kanál v této sadě kanálů.\n"
+"Obraťte se prosím na svůj kontakt u SUSE Manager\n"
+"%s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  CHYBA: na zařízení není dostatek volného místa (%s KB)."
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s úspěšné načtení: %s (%s bajtů)"
+
+#: ../satellite_tools/messages.py:75
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    Zaniklý balíček:  %s"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Total size: %s"
+msgstr "   Celková velikost: %s"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      Staženo %s z %s. Odhadovaný zbývající čas: %s"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    Načtení neúspěšné: %s"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   Souhrn načtení RPM: %s"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "       success: %d"
+msgstr "       úspěch: %d"
+
+#: ../satellite_tools/messages.py:81
+#, python-format
+msgid "       failed:  %d"
+msgstr "       neúspěch:  %d"
+
+#: ../satellite_tools/messages.py:82
+#, python-format
+msgid "       extinct: %d"
+msgstr "       zaniklo: %d"
+
+#: ../satellite_tools/messages.py:84
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   Načítání / analýza *relevantních* metadat balíčku: %s (%s)"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   Načítání / analýza dat chyb (errata): %s (%s)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   Načítání / analýza dat kickstartu: %s (%s)"
+
+#: ../satellite_tools/messages.py:87
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   Načítání / analýza souborů stromu kickstartu: %s (%s)"
+
+#: ../satellite_tools/messages.py:88
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   Import *relevantních* metadat balíčků: %s (%s)"
+
+#: ../satellite_tools/messages.py:89
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * VÝSTRAHA: Toto může být pomalý proces."
+
+#: ../satellite_tools/messages.py:90
+msgid "Linking packages to channels"
+msgstr "Propojení balíčků ke kanálům"
+
+#: ../satellite_tools/messages.py:91
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   Import *relevantních* errat: %s (%s)"
+
+#: ../satellite_tools/messages.py:92
+msgid "   No new kickstartable tree to import"
+msgstr "   Žádný nový spustitelný strom k importu"
+
+#: ../satellite_tools/messages.py:93
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "Import spustitelných stromů (%d)"
+
+#: ../satellite_tools/messages.py:94
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "Importované startovatelné stromy (%d)"
+
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -2154,3 +2157,6 @@ msgstr ""
 "\"%s“ nelze otevřít a/nebo\n"
 "do něj zapisovat:\n"
 "%s"
+
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Uvítací zpráva Red Hat Satellite"

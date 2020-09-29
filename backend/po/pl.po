@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 14:48+0200\n"
+"POT-Creation-Date: 2020-09-25 12:54+0200\n"
 "PO-Revision-Date: 2018-03-16 04:50+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -33,30 +33,19 @@ msgstr ""
 "więcej pomocy."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr "Nie odnaleziono systemu w bazie danych usługi RHN"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+#, fuzzy
+msgid "ISS is disabled on this server."
 msgstr "W tej usłudze Satellite wyłączono ISS."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Nie włączono serwera „%s” dla ISS."
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Usługa Spacewalk Proxy nie jest włączona dla profilu serwera: „%s”"
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Nieprawidłowy klucz sesji"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Ten identyfikator serwera już nie istnieje"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
@@ -82,6 +71,24 @@ msgstr "Nieprawidłowy typ wartości działania %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Działanie %s nie należy do serwera %s"
 
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Nieprawidłowa wartość %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "Usługa Spacewalk Proxy nie jest włączona dla profilu serwera: „%s”"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Nieprawidłowy klucz sesji"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Ten identyfikator serwera już nie istnieje"
+
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "Brak wymaganych danych"
@@ -104,11 +111,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Komunikat powitalny usługi Red Hat Satellite"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Red Hat Satellite Privacy Statement"
+#, fuzzy
+msgid "Privacy Statement"
 msgstr "Oświadczenie o prywatności usługi Red Hat Satellite"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
@@ -119,11 +128,6 @@ msgstr "Oczekiwano słownika jako parametr produktu"
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nieprawidłowa wartość „%s” dla %s (%s)"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Nieprawidłowa wartość %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -1147,182 +1151,6 @@ msgstr ""
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       If the master satellite is older than v5.3, it does not have ISS "
-"capability.\n"
-"       Otherwise, depending on the specific error details, please review "
-"your\n"
-"       configuration, basic network connectivity, and/or name resolution, "
-"and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:75
-#, fuzzy, python-format
-msgid "    Extinct package:  %s"
-msgstr "Oczekiwano pakietu, nie: %s"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Total size: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "       success: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:81
-#, python-format
-msgid "       failed:  %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:82
-#, python-format
-msgid "       extinct: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:84
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:87
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:88
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:89
-msgid "   * WARNING: this may be a slow process."
-msgstr ""
-
-#: ../satellite_tools/messages.py:90
-#, fuzzy
-msgid "Linking packages to channels"
-msgstr "Sprzeczne kanały podstawowe"
-
-#: ../satellite_tools/messages.py:91
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:92
-msgid "   No new kickstartable tree to import"
-msgstr ""
-
-#: ../satellite_tools/messages.py:93
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:94
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr ""
-
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1394,12 +1222,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -1916,7 +1745,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2064,6 +1893,182 @@ msgstr ""
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
 
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       If the master satellite is older than v5.3, it does not have ISS "
+"capability.\n"
+"       Otherwise, depending on the specific error details, please review "
+"your\n"
+"       configuration, basic network connectivity, and/or name resolution, "
+"and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr ""
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:75
+#, fuzzy, python-format
+msgid "    Extinct package:  %s"
+msgstr "Oczekiwano pakietu, nie: %s"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Total size: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "       success: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:81
+#, python-format
+msgid "       failed:  %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:82
+#, python-format
+msgid "       extinct: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:84
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:87
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:88
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:89
+msgid "   * WARNING: this may be a slow process."
+msgstr ""
+
+#: ../satellite_tools/messages.py:90
+#, fuzzy
+msgid "Linking packages to channels"
+msgstr "Sprzeczne kanały podstawowe"
+
+#: ../satellite_tools/messages.py:91
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:92
+msgid "   No new kickstartable tree to import"
+msgstr ""
+
+#: ../satellite_tools/messages.py:93
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:94
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr ""
+
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -2079,3 +2084,6 @@ msgid ""
 "and/or written to:\n"
 "%s"
 msgstr ""
+
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Komunikat powitalny usługi Red Hat Satellite"

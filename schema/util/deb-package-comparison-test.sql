@@ -225,4 +225,44 @@ then
 	raise notice 'rpm.rpmstrcmp('1.27+1.3.9', '1.27.1+1.3.9') should be -1';
 end if;
 end;
+select * into result from rpm.rpmstrcmp('1.27+1.3.9', '1.27.1ubuntu2+1.3.11');
+if result <> -1
+then
+	raise notice 'rpm.rpmstrcmp('1.27+1.3.9', '1.27.1ubuntu2+1.3.11') should be -1';
+end if;
+end;
+select * into result from rpm.rpmstrcmp('1.27+1.3.9', '1.3.11');
+if result <> 1
+then
+	raise notice 'rpm.rpmstrcmp('1.27+1.3.9', '1.3.11') should be 1';
+end if;
+end;
+select * into result from rpm.rpmstrcmp('1.27', '1.3.11');
+if result <> 1
+then
+	raise notice 'rpm.rpmstrcmp('1.27', '1.3.11') should be 1';
+end if;
+select * into result from rpm.rpmstrcmp('1.27+1.3.9', '1.3.9');
+if result <> 1
+then
+	raise notice 'rpm.rpmstrcmp('1.27+1.3.9', '1.3.9') should be 1';
+end if;
+select * into result from rpm.rpmstrcmp('1.27+1.3.9', '5.18.4.1');
+if result <> -1
+then
+	raise notice 'rpm.rpmstrcmp('1.27+1.3.9', '5.18.4.1') should be -1';
+end if;
+if result <> -1
+then
+	raise notice 'rpm.rpmstrcmp('2.27+1.3.9', '1.10~ubuntu18.04.4+1.2.10') should be -1';
+end if;
+if result <> -1
+then
+	raise notice 'rpm.rpmstrcmp('3.27', '1.10~ubuntu18.04.4+1.2.10') should be -1';
+end if;
+if result <> -1
+then
+	raise notice 'rpm.rpmstrcmp('4.27~test', '1.10~ubuntu18.04.4+1.2.10') should be -1';
+end if;
+end;
 $$

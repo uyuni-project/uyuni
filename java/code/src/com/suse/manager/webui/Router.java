@@ -108,12 +108,13 @@ public class Router implements SparkApplication {
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
-        SystemsController systemsController = new SystemsController(systemQuery);
-        SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
-        NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
-        MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper,
+        SystemsController systemsController = new SystemsController(saltApi);
+        SaltSSHController saltSSHController = new SaltSSHController(saltApi);
+        NotificationMessageController notificationMessageController =
+                new NotificationMessageController(systemQuery, saltApi);
+        MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
                 saltKeyUtils);
-        StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi, serverGroupManager);
+        StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(systemQuery, saltApi);
         ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
 

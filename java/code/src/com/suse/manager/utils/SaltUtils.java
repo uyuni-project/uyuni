@@ -678,7 +678,7 @@ public class SaltUtils {
                 // Make sure grains are updated after dist upgrade
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     MinionList minionTarget = new MinionList(minionServer.getMinionId());
-                    systemQuery.syncGrains(minionTarget);
+                    saltApi.syncGrains(minionTarget);
                 });
             }
 
@@ -1049,7 +1049,7 @@ public class SaltUtils {
             serverAction.getServer().asMinionServer().ifPresent(
                     minion -> {
                         try {
-                            Map<Boolean, String> moveRes = systemQuery.storeMinionScapFiles(
+                            Map<Boolean, String> moveRes = saltApi.storeMinionScapFiles(
                                     minion, openscapResult.getUploadDir(), action.getId());
                             moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
                                 if (moved.getKey()) {

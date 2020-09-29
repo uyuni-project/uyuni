@@ -199,7 +199,7 @@ public class CSVTag extends BodyTagSupport {
         page.append("?" + makeCSVRequestParams());
         IconTag i = new IconTag("item-download-csv");
         String exportLink = new String("<div class=\"spacewalk-csv-download\">" +
-                "<a class=\"btn btn-link\" href=\"" + page + "\">" + i.render() +
+                "<a class=\"btn btn-link\" data-senna-off=\"true\" href=\"" + page + "\">" + i.render() +
                 LocalizationService.getInstance().getMessage(
                 "listdisplay.csv") + "</a></div>");
         ListTagUtil.write(pageContext, exportLink);

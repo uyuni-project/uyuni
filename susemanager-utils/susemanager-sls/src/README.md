@@ -18,3 +18,8 @@ Don't mind `.cache` and `__pycache__` directories,
 they are ignored in an explicit `.gitignore`.
 
 Have fun. :)
+
+## Run Unit tests 
+
+Use the following command to run unit test 
+`make -f Makefile.python docker_pytest`

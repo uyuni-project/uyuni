@@ -54,5 +54,5 @@ zypper --non-interactive in ant \
              sudo \
              tar \
              system-user-wwwrun \
-             system-user-mail \
+             system-user-mail
 
