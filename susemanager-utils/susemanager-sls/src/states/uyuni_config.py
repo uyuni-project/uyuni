@@ -765,22 +765,26 @@ class UyuniActivationKeys:
                configure_after_registration: bool = False,
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
+        Ensure an Uyuni Activation Key is present.
 
-        :param name:
-        :param description:
-        :param base_channel:
-        :param usage_limit:
-        :param contact_method:
-        :param system_types:
-        :param universal_default:
-        :param child_channels:
-        :param configuration_channels:
-        :param packages:
-        :param server_groups:
-        :param configure_after_registration:
-        :param org_admin_user:
-        :param org_admin_password:
-        :return:
+        :param name: the Activation Key name
+        :param description: the Activation description
+        :param base_channel: base channel to be used
+        :param usage_limit: activation key usage limit
+        :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+        :param system_types: system types to be assigned.
+                             Can be one of: 'virtualization_host', 'container_build_host',
+                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+        :param universal_default: sets this activation key as organization universal default
+        :param child_channels: list of child channels to be assigned
+        :param configuration_channels: list of configuration channels to be assigned
+        :param packages: list of packages which will be installed
+        :param server_groups: list of server groups to assign the activation key with
+        :param configure_after_registration: deploy configuration files to systems on registration
+        :param org_admin_user: organization administrator username
+        :param org_admin_password: organization administrator password
+
+        :return:  dict for Salt communication
         """
         current_ak = {}
         key = None
@@ -937,7 +941,7 @@ class UyuniActivationKeys:
         """
         try:
             ak = __salt__['uyuni.activation_key_get_details'](id, org_admin_user=org_admin_user,
-                                                      org_admin_password=org_admin_password)
+                                                              org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode == ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(id, True, "{0} is already absent".format(id))
@@ -1137,18 +1141,20 @@ def activation_key_present(name,
     """
     Ensure an Uyuni Activation Key is present.
 
-    :param name: the Activation Key ID
-    :param description: the Activation Key ID
-    :param base_channel:
-    :param usage_limit:
-    :param contact_method:
-    :param system_types:
-    :param universal_default:
-    :param child_channels:
-    :param configuration_channels:
-    :param packages:
-    :param server_groups:
-    :param configure_after_registration:
+    :param name: the Activation Key name
+    :param description: the Activation description
+    :param base_channel: base channel to be used
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+    :param system_types: system types to be assigned.
+                         Can be one of: 'virtualization_host', 'container_build_host',
+                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+    :param universal_default: sets this activation key as organization universal default
+    :param child_channels: list of child channels to be assigned
+    :param configuration_channels: list of configuration channels to be assigned
+    :param packages: list of packages which will be installed
+    :param server_groups: list of server groups to assign the activation key with
+    :param configure_after_registration: deploy configuration files to systems on registration
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
