@@ -7,6 +7,7 @@ export const renderer = (id, {
   timezone,
   localTime,
   actionChains,
+  cobblerProfiles,
 }) => {
   SpaRenderer.renderNavigationReact(
     <GuestsCreate
@@ -14,6 +15,7 @@ export const renderer = (id, {
       localTime={localTime}
       timezone={timezone}
       actionChains={actionChains}
+      cobblerProfiles={cobblerProfiles}
     />,
     document.getElementById(id),
   );

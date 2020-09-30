@@ -39,7 +39,10 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartHelper;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
+import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -339,6 +342,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         MinionController.addActionChains(user, data);
         data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
+
         return renderPage(request, response, user, "edit", () -> data);
     }
 
@@ -361,6 +365,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         /* For the rest of the template */
         MinionController.addActionChains(user, data);
         data.put("isSalt", true);
+
+        KickstartScheduleCommand cmd = new ProvisionVirtualInstanceCommand(host.getId(), user);
+        DataResult<KickstartDto> profiles = cmd.getKickstartProfiles();
+        data.put("cobblerProfiles",
+                GSON.toJson(profiles.stream().collect(
+                        Collectors.toMap(KickstartDto::getCobblerId, KickstartDto::getLabel))));
 
         return renderPage(request, response, user, "create", () -> data);
     }
