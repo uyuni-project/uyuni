@@ -19,8 +19,8 @@ import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SaltMinionTestJson extends MockObjectTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     public void testFromFingerprints() {

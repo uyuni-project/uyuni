@@ -14,7 +14,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -33,7 +33,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     public void testXccdfEvalTransform_xccdf11() throws Exception {

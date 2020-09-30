@@ -28,9 +28,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     private static final String CRON_EXPR = "0 * * * * ?";
 
     static {
-        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
     }

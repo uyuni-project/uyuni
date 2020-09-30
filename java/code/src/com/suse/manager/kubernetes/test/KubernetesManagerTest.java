@@ -31,7 +31,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.salt.netapi.parser.JsonParser;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -51,7 +51,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         saltServiceMock = mock(SaltService.class);
         manager = new KubernetesManager(saltServiceMock);

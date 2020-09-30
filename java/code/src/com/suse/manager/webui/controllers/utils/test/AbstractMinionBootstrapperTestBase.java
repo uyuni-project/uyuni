@@ -31,7 +31,7 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.utils.Xor;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
     }
 

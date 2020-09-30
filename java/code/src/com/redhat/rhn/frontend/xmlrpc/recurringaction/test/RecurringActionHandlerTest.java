@@ -32,7 +32,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
     private TaskomaticApi taskomaticMock;
 
     {
-        context().setImposteriser(ClassImposteriser.INSTANCE);
+        context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Override

@@ -27,7 +27,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.model.clusters.Cluster;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Date;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public class ClusterActionCommandTest extends JMockBaseTestCaseWithUser {
 
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         ClusterActionCommand.setTaskomaticApi(taskomaticMock);

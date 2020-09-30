@@ -35,7 +35,7 @@ import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.parser.JsonParser;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         saltMock = mock(SaltService.class);
         taskomaticMock = mock(TaskomaticApi.class);

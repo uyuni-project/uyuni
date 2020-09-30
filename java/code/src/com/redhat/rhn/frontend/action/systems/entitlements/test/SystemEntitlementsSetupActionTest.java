@@ -46,7 +46,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
-        context.setImposteriser(ClassImposteriser.INSTANCE);
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(

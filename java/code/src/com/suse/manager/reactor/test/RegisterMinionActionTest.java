@@ -99,7 +99,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
@@ -245,7 +245,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
         FormulaFactory.setDataDir(tmpSaltRoot.resolve("formulas/").toString() + "/");
 
