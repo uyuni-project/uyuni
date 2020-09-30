@@ -120,7 +120,7 @@ import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -163,7 +163,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
         MockConnection.clear();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);

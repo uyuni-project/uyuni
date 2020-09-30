@@ -41,7 +41,7 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.time.Instant;
@@ -76,7 +76,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         sshPushSystemMock = mock(SystemSummary.class);
         saltSSHServiceMock = mock(SaltSSHService.class);
         minion = MinionServerFactoryTest.createTestMinionServer(user);

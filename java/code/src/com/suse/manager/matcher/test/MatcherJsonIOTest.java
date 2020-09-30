@@ -42,7 +42,7 @@ import com.suse.matcher.json.VirtualizationGroupJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -78,7 +78,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         VirtManager virtManager = new TestVirtManager() {
             @Override

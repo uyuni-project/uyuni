@@ -34,8 +34,8 @@ import com.redhat.rhn.testing.TestUtils;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 /**
  * AffectedSystemsActionTest
@@ -46,7 +46,7 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     public void testApply() throws Exception {

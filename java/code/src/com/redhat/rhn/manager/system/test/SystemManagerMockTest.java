@@ -34,7 +34,7 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         MockConnection.clear();
     }
 

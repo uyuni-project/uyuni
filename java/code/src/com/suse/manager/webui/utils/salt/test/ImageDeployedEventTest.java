@@ -19,7 +19,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.datatypes.Event;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Map;
 import java.util.Optional;
@@ -37,7 +37,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     /**
