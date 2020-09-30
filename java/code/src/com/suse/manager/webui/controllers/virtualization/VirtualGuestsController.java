@@ -30,13 +30,18 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
+import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.kickstart.KickstartHelper;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -65,6 +70,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.cobbler.Profile;
 import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
@@ -76,6 +82,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -266,7 +274,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         HashMap<String, String> actionResults = new HashMap<>();
         if (data.getUuids() == null || data.getUuids().isEmpty()) {
-            String result = triggerGuestUpdateSaltAction(host, null, user, (VirtualGuestsUpdateActionJson)data);
+            String result = triggerGuestUpdateSaltAction(host, null, user, (VirtualGuestsUpdateActionJson)data,
+                    request.raw());
             actionResults.put("create-guest", result != null ? result : "Failed");
         }
         else {
@@ -275,7 +284,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 if (data.getUuids().contains(guest.getUuid())) {
                     String result = null;
                     if (data instanceof VirtualGuestsUpdateActionJson) {
-                        result = triggerGuestUpdateAction(host, guest, user, (VirtualGuestsUpdateActionJson)data);
+                        result = triggerGuestUpdateAction(host, guest, user, (VirtualGuestsUpdateActionJson)data,
+                                request.raw());
                     }
                     else if (type != null) {
                         if (data instanceof VirtualGuestSetterActionJson) {
@@ -405,9 +415,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     private String triggerGuestUpdateAction(Server host,
                                                    VirtualSystemOverview guest,
                                                    User user,
-                                                   VirtualGuestsUpdateActionJson data) {
+                                                   VirtualGuestsUpdateActionJson data,
+                                                   HttpServletRequest request) {
         if (host.asMinionServer().isPresent()) {
-            return triggerGuestUpdateSaltAction(host, guest, user, data);
+            return triggerGuestUpdateSaltAction(host, guest, user, data, request);
         }
 
         if (data.getUuids().isEmpty()) {
@@ -430,9 +441,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     }
 
     private String triggerGuestUpdateSaltAction(Server host,
-                                                       VirtualSystemOverview guest,
-                                                       User user,
-                                                       VirtualGuestsUpdateActionJson data) {
+                                                VirtualSystemOverview guest,
+                                                User user,
+                                                VirtualGuestsUpdateActionJson data,
+                                                HttpServletRequest request) {
         String status = null;
         Map<String, Object> context = new HashMap<String, Object>();
 
@@ -447,6 +459,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         context.put(VirtualizationCreateGuestAction.VCPUS, data.getVcpu());
         context.put(VirtualizationCreateGuestAction.ARCH, data.getArch());
         context.put(VirtualizationCreateGuestAction.GRAPHICS, data.getGraphicsType());
+        context.put(VirtualizationCreateGuestAction.COBBLER_SYSTEM, data.getCobblerId());
+        context.put(VirtualizationCreateGuestAction.KERNEL_OPTIONS, data.getKernelOptions());
 
         if (data.getDisks() != null) {
             context.put(VirtualizationCreateGuestAction.DISKS, data.getDisks().stream().map(disk -> {
@@ -475,6 +489,23 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         Optional<ActionChain> actionChain = data.getActionChain()
                 .filter(StringUtils::isNotEmpty)
                 .map(label -> ActionChainFactory.getOrCreateActionChain(label, user));
+
+        if (guest == null && data.getCobblerId() != null && !data.getCobblerId().isEmpty()) {
+            // Create cobbler profile
+            KickstartHelper helper = new KickstartHelper(request);
+            Profile cobblerProfile = Profile.lookupById(
+                    CobblerXMLRPCHelper.getConnection(user), data.getCobblerId());
+            KickstartData ksData = KickstartFactory.
+                    lookupKickstartDataByCobblerIdAndOrg(user.getOrg(), cobblerProfile.getId());
+            CobblerVirtualSystemCommand cobblerCmd = new CobblerVirtualSystemCommand(host, cobblerProfile.getName(),
+                    data.getName(), ksData);
+            String ksHost = helper.getKickstartHost();
+            cobblerCmd.setKickstartHost(ksHost);
+            cobblerCmd.store();
+
+            context.put(VirtualizationCreateGuestAction.COBBLER_SYSTEM, cobblerCmd.getCobblerSystemRecordName());
+            context.put(VirtualizationCreateGuestAction.KICKSTART_HOST, ksHost);
+        }
 
         VirtualizationActionCommand cmd
             = new VirtualizationActionCommand(user,
