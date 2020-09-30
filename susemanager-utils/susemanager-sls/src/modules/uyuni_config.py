@@ -153,7 +153,6 @@ class UyuniRemoteObject:
     def _convert_bool_response(response: int):
         return response == 1
 
-
 class UyuniUser(UyuniRemoteObject):
     """
     CRUD operation on users.
@@ -518,6 +517,13 @@ class UyuniSystemgroup(UyuniRemoteObject):
     Provides methods to access and modify system groups.
     """
 
+    def list_all_groups(self) -> List[Dict[str, Union[int, str]]]:
+        """
+        Retrieve a list of system groups that are accessible by the user
+        :return: list with group information
+        """
+        return self.client("systemgroup.listAllGroups")
+
     def get_details(self, name: str) -> Dict[str, Union[int, str]]:
         """
         Retrieve details of a system group.
@@ -600,6 +606,226 @@ class UyuniSystems(UyuniRemoteObject):
         return __context__[minions_token_key]
 
 
+class UyuniActivationKey(UyuniRemoteObject):
+    """
+    CRUD operations on Activation Keys.
+    """
+
+    def get_details(self, id: str) -> Dict[str, Any]:
+        """
+        Get details of an Uyuni Activation Key
+
+        :param id: the Activation Key ID
+
+        :return: Activation Key information
+        """
+        return self.client("activationkey.getDetails", id)
+
+    def delete(self, id: str) -> bool:
+        """
+        Deletes an Uyuni Activation Key
+
+        :param id: the Activation Key ID
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.delete", id))
+
+    def create(self, key: str, description: str,
+               base_channel_label: str = '',
+               usage_limit: int = 0,
+               system_types: List[int] = [],
+               universal_default: bool = False) -> bool:
+        """
+        Creates an Uyuni Activation Key
+
+        :param key: activation key name
+        :param description: activation key description
+        :param base_channel_label: base channel to be used
+        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+        :param system_types: system types to be assigned.
+                             Can be one of: 'virtualization_host', 'container_build_host',
+                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+        :param universal_default: sets this activation key as organization universal default
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
+                                                        usage_limit, system_types, universal_default))
+
+    def set_details(self, key: str,
+                    description: str = None,
+                    contact_method: str = None,
+                    base_channel_label: str = None,
+                    usage_limit: int = None,
+                    universal_default: bool = False):
+        """
+        Updates an Uyuni Activation Key
+
+        :param key: activation key name
+        :param description: activation key description
+        :param base_channel_label: base channel to be used
+        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+        :param universal_default: sets this activation key as organization universal default
+
+        :return: boolean, True indicates success
+        """
+        data = {'universal_default': universal_default}
+        if description:
+            data['description'] = description
+        if base_channel_label is not None:
+            data['base_channel_label'] = base_channel_label
+        if contact_method:
+            data['contact_method'] = contact_method
+
+        if usage_limit:
+            data['usage_limit'] = usage_limit
+        else:
+            data['unlimited_usage_limit'] = True
+        return self._convert_bool_response(self.client("activationkey.setDetails", key, data))
+
+    def add_entitlements(self, key: str, system_types: List[str]) -> bool:
+        """
+        Add a list of entitlements to an activation key.
+
+        :param key: activation key name
+        :param system_types: list of system types to be added
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.addEntitlements", key, system_types))
+
+    def remove_entitlements(self, key: str, system_types: List[str]) -> bool:
+        """
+        Remove a list of entitlements from an activation key.
+
+        :param key: activation key name
+        :param system_types: list of system types to be removed
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.removeEntitlements", key, system_types))
+
+    def add_child_channels(self, key: str, child_channels: List[str]) -> bool:
+        """
+        Add child channels to an activation key.
+
+        :param key: activation key name
+        :param child_channels: List of child channels to be added
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.addChildChannels", key, child_channels))
+
+    def remove_child_channels(self, key: str, child_channels: List[str]) -> bool:
+        """
+        Remove child channels from an activation key.
+
+        :param key: activation key name
+        :param child_channels: List of child channels to be removed
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.removeChildChannels", key, child_channels))
+
+    def check_config_deployment(self, key: str) -> bool:
+        """
+        Return the status of the 'configure_after_registration' flag for an Activation Key.
+
+        :param key: activation key name
+
+        :return: boolean, true if enabled, false if disabled,
+        """
+        return self._convert_bool_response(self.client("activationkey.checkConfigDeployment", key))
+
+    def enable_config_deployment(self, key: str) -> bool:
+        """
+        Enables the 'configure_after_registration' flag for an Activation Key.
+
+        :param key: activation key name
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.enableConfigDeployment", key))
+
+    def disable_config_deployment(self, key: str) -> bool:
+        """
+        Disables the 'configure_after_registration' flag for an Activation Key.
+
+        :param key: activation key name
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.disableConfigDeployment", key))
+
+    def add_packages(self, key: str, packages: List[Any]) -> bool:
+        """
+        Add a list of packages to an activation key.
+
+        :param key: activation key name
+        :param packages: list of packages to be added
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.addPackages", key, packages))
+
+    def remove_packages(self, key: str, packages: List[Any]) -> bool:
+        """
+        Remove a list of packages from an activation key.
+
+        :param key: activation key name
+        :param packages: list of packages to be removed
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.removePackages", key, packages))
+
+    def add_server_groups(self, key: str, server_groups: List[int]) -> bool:
+        """
+        Add a list of server groups to an activation key.
+
+        :param key: activation key name
+        :param server_groups: list of server groups to be added
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.addServerGroups", key, server_groups))
+
+    def remove_server_groups(self, key: str, server_groups: List[int]) -> bool:
+        """
+        Remove a list of server groups from an activation key.
+
+        :param key: activation key name
+        :param server_groups: list of server groups to be removed
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.removeServerGroups", key, server_groups))
+
+    def list_config_channels(self, key: str) -> List[Dict[str, Any]]:
+        """
+        List configuration channels associated to an activation key.
+    
+        :param key: activation key name
+
+        :return: List of configuration channels
+        """
+        return self.client("activationkey.listConfigChannels", key)
+
+    def set_config_channels(self, keys: List[str], config_channel_label: List[str]) -> bool:
+        """
+        Replace the existing set of configuration channels on the given activation keys.
+        Channels are ranked by their order in the array.
+
+        :param keys: list of activation key names
+        :param config_channel_label: list of configuration channels lables
+
+        :return: boolean, True indicates success
+        """
+        return self._convert_bool_response(self.client("activationkey.setConfigChannels", keys, config_channel_label))
+
+
 class UyuniChildMasterIntegration:
     """
     Integration with the Salt Master which is running
@@ -646,6 +872,8 @@ def __virtual__():
 
     return __virtualname__
 
+
+# Users
 
 def user_get_details(login, password=None, org_admin_user=None, org_admin_password=None):
     """
@@ -828,7 +1056,8 @@ def user_remove_assigned_system_groups(login, server_group_names, set_default=Fa
                                                                        set_default=set_default)
 
 
-## channel.software
+# Software channels
+
 def channel_list_manageable_channels(login, password):
     """
     List all of manageable channels for the authenticated user
@@ -1097,10 +1326,7 @@ def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_passwo
     return UyuniOrgTrust(admin_user, admin_password).remove_trust(org_id, org_untrust_id)
 
 
-"""
-System group management
-"""
-
+# System Groups
 
 def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None):
     """
@@ -1114,6 +1340,17 @@ def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None
     :return: details of the system group
     """
     return UyuniSystemgroup(org_admin_user, org_admin_password).create(name=name, description=descr)
+
+
+def systemgroup_list_all_groups(username, password):
+    """
+    Retrieve a list of system groups that are accessible by the user
+
+    :param username: username to authenticate with
+    :param password: password to authenticate with
+    :return:
+    """
+    return UyuniSystemgroup(username, password).list_all_groups()
 
 
 def systemgroup_get_details(name, org_admin_user=None, org_admin_password=None):
@@ -1213,3 +1450,269 @@ def systems_get_minion_id_map(username=None, password=None, refresh=False):
     :return: Map between minion ID and system ID of all system accessible by authenticated user
     """
     return UyuniSystems(username, password).get_minion_id_map(refresh)
+
+
+# Activation Keys
+
+def activation_key_get_details(id, org_admin_user=None, org_admin_password=None):
+    """
+    Get details of an Uyuni Activation Key
+
+    :param id: the Activation Key ID
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: Activation Key information
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).get_details(id)
+
+
+def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
+    """
+    Deletes an Uyuni Activation Key
+
+    :param id: the Activation Key ID
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).delete(id)
+
+
+def activation_key_create(key, description,
+                          base_channel_label='',
+                          usage_limit=0,
+                          system_types=[], universal_default=False,
+                          org_admin_user=None, org_admin_password=None):
+    """
+    Creates an Uyuni Activation Key
+
+    :param key: activation key name
+    :param description: activation key description
+    :param base_channel_label: base channel to be used
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param system_types: system types to be assigned.
+                         Can be one of: 'virtualization_host', 'container_build_host',
+                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+    :param universal_default: sets this activation key as organization universal default
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).create(key,
+                                                                         description,
+                                                                         base_channel_label,
+                                                                         usage_limit,
+                                                                         system_types,
+                                                                         universal_default)
+
+
+def activation_key_set_details(key,
+                               description=None,
+                               contact_method=None,
+                               base_channel_label=None,
+                               usage_limit=None,
+                               universal_default=False,
+                               org_admin_user=None, org_admin_password=None):
+    """
+    Updates an Uyuni Activation Key
+
+    :param key: activation key name
+    :param description: activation key description
+    :param base_channel_label: base channel to be used
+    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param universal_default: sets this activation key as organization universal default
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).set_details(key,
+                                                                              description=description,
+                                                                              contact_method=contact_method,
+                                                                              base_channel_label=base_channel_label,
+                                                                              usage_limit=usage_limit,
+                                                                              universal_default=universal_default)
+
+
+def activation_key_add_entitlements(key, system_types, org_admin_user=None, org_admin_password=None):
+    """
+    Add a list of entitlements to an activation key.
+
+    :param key: activation key name
+    :param system_types: list of system types to be added
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_entitlements(key, system_types)
+
+
+def activation_key_remove_entitlements(key, system_types, org_admin_user=None, org_admin_password=None):
+    """
+    Remove a list of entitlements from an activation key.
+
+    :param key: activation key name
+    :param system_types: list of system types to be removed
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_entitlements(key, system_types)
+
+
+def activation_key_add_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
+    """
+    Add child channels to an activation key.
+
+    :param key: activation key name
+    :param child_channels: List of child channels to be added
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_child_channels(key, child_channels)
+
+
+def activation_key_remove_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
+    """
+    Remove child channels from an activation key.
+
+    :param key: activation key name
+    :param child_channels: List of child channels to be removed
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_child_channels(key, child_channels)
+
+
+def activation_key_check_config_deployment(key, org_admin_user=None, org_admin_password=None):
+    """
+    Return the status of the 'configure_after_registration' flag for an Activation Key.
+
+    :param key: activation key name
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, true if enabled, false if disabled
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).check_config_deployment(key)
+
+
+def activation_key_enable_config_deployment(key, org_admin_user=None, org_admin_password=None):
+    """
+    Enables the 'configure_after_registration' flag for an Activation Key.
+
+    :param key: activation key name
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).enable_config_deployment(key)
+
+
+def activation_key_disable_config_deployment(key, org_admin_user=None, org_admin_password=None):
+    """
+    Disables the 'configure_after_registration' flag for an Activation Key.
+
+    :param key: activation key name
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).disable_config_deployment(key)
+
+
+def activation_key_add_packages(key, packages, org_admin_user=None, org_admin_password=None):
+    """
+    Add a list of packages to an activation key.
+
+    :param key: activation key name
+    :param packages: list of packages to be added
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_packages(key, packages)
+
+
+def activation_key_remove_packages(key, packages, org_admin_user=None, org_admin_password=None):
+    """
+    Remove a list of packages from an activation key.
+
+    :param key: activation key name
+    :param packages: list of packages to be removed
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_packages(key, packages)
+
+
+def activation_key_add_server_groups(key, server_groups, org_admin_user=None, org_admin_password=None):
+    """
+    Add a list of server groups to an activation key.
+
+    :param key: activation key name
+    :param server_groups: list of server groups to be added
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_server_groups(key, server_groups)
+
+
+def activation_key_remove_server_groups(key, server_groups, org_admin_user=None, org_admin_password=None):
+    """
+    Remove a list of server groups from an activation key.
+
+    :param key: activation key name
+    :param server_groups: list of server groups to be removed
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_server_groups(key, server_groups)
+
+
+def activation_key_list_config_channels(key, org_admin_user=None, org_admin_password=None):
+    """
+    List configuration channels associated to an activation key.
+
+    :param key: activation key name
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: List of configuration channels
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).list_config_channels(key)
+
+
+def activation_key_set_config_channels(keys, config_channel_label,
+                                       org_admin_user=None, org_admin_password=None):
+    """
+    Replace the existing set of configuration channels on the given activation keys.
+    Channels are ranked by their order in the array.
+
+    :param keys: list of activation key names
+    :param config_channel_label: list of configuration channels labels
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
+    """
+    return UyuniActivationKey(org_admin_user, org_admin_password).set_config_channels(keys, config_channel_label)

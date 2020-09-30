@@ -5,6 +5,7 @@ from collections import Counter
 SERVER_GROUP_NOT_FOUND_ERROR = 2201
 NO_SUCH_USER_ERROR = -213
 ORG_NOT_FOUND_ERROR = 2850
+ACTIVATION_KEY_NOT_FOUND_ERROR = -212
 AUTHENTICATION_ERROR = 2950
 
 log = logging.getLogger(__name__)
@@ -632,6 +633,339 @@ class UyuniOrgsTrust:
                                           processed_changes)
 
 
+class UyuniActivationKeys:
+
+    @staticmethod
+    def _normalize_list_packages(list_packages: [Any]):
+        return [(f['name'], f.get('arch', None)) for f in (list_packages or [])]
+
+    @staticmethod
+    def _compute_changes(ak_parameters: Dict[str, Any],
+                         current_ak: Dict[str, Any],
+                         configure_after_registration: bool,
+                         current_configure_after_registration: bool,
+                         current_config_channels: List[str],
+                         configuration_channels: List[str]) -> Dict[str, Any]:
+        changes = {}
+        for field in ["description", 'base_channel', 'usage_limit', 'universal_default', 'contact_method']:
+            if current_ak.get(field) != ak_parameters.get(field):
+                changes[field] = {"new": ak_parameters[field]}
+                if current_ak:
+                    changes[field]["old"] = current_ak.get(field)
+
+        # list fields
+        for field in ['system_types', 'child_channels', 'server_groups']:
+            if sorted((ak_parameters or {}).get(field) or []) != sorted(current_ak.get(field) or []):
+                changes[field] = {"new": ak_parameters[field]}
+                if current_ak:
+                    changes[field]["old"] = current_ak.get(field)
+
+        new_packages = UyuniActivationKeys._normalize_list_packages((ak_parameters or {}).get('packages', []))
+        old_packages = UyuniActivationKeys._normalize_list_packages((current_ak or {}).get('packages', []))
+        if sorted(new_packages) != sorted(old_packages):
+            changes['packages'] = {"new": ak_parameters['packages']}
+            if current_ak:
+                changes['packages']["old"] = current_ak.get('packages')
+
+        if configure_after_registration != current_configure_after_registration:
+            changes['configure_after_registration'] = {"new": configure_after_registration}
+            if current_configure_after_registration is not None:
+                changes['configure_after_registration']["old"] = current_configure_after_registration
+
+        # we don't want to sort configuration channels since the order matters in this case
+        if (current_config_channels or []) != (configuration_channels or []):
+            changes['configuration_channels'] = {"new": configuration_channels}
+            if current_config_channels:
+                changes['configuration_channels']['old'] = current_config_channels
+
+        return changes
+
+    @staticmethod
+    def _update_system_type(current_system_types, new_system_types,
+                            key, org_admin_user, org_admin_password):
+        add_system_types = [t for t in new_system_types if t not in current_system_types]
+        if add_system_types:
+            __salt__['uyuni.activation_key_add_entitlements'](key, add_system_types,
+                                                              org_admin_user=org_admin_user,
+                                                              org_admin_password=org_admin_password)
+
+        remove_system_types = [t for t in current_system_types if t not in new_system_types]
+        if remove_system_types:
+            __salt__['uyuni.activation_key_remove_entitlements'](key, remove_system_types,
+                                                                 org_admin_user=org_admin_user,
+                                                                 org_admin_password=org_admin_password)
+
+    @staticmethod
+    def _update_child_channels(current_child_channels, new_child_channels,
+                               key, org_admin_user, org_admin_password):
+        add_child_channels = [t for t in new_child_channels if t not in current_child_channels]
+        if add_child_channels:
+            __salt__['uyuni.activation_key_add_child_channels'](key, add_child_channels,
+                                                                org_admin_user=org_admin_user,
+                                                                org_admin_password=org_admin_password)
+
+        remove_child_channels = [t for t in current_child_channels if t not in new_child_channels]
+        if remove_child_channels:
+            __salt__['uyuni.activation_key_remove_child_channels'](key, remove_child_channels,
+                                                                   org_admin_user=org_admin_user,
+                                                                   org_admin_password=org_admin_password)
+
+    @staticmethod
+    def _update_server_groups(current_server_groups, new_server_groups,
+                               key, org_admin_user, org_admin_password):
+        add_server_groups = [t for t in new_server_groups if t not in current_server_groups]
+        if add_server_groups:
+            __salt__['uyuni.activation_key_add_server_groups'](key, add_server_groups,
+                                                                org_admin_user=org_admin_user,
+                                                                org_admin_password=org_admin_password)
+
+        remove_server_groups = [t for t in current_server_groups if t not in new_server_groups]
+        if remove_server_groups:
+            __salt__['uyuni.activation_key_remove_server_groups'](key, remove_server_groups,
+                                                                   org_admin_user=org_admin_user,
+                                                                   org_admin_password=org_admin_password)
+
+
+
+    @staticmethod
+    def _format_packages_data(packages):
+        return [{'name': f[0], **(({'arch': f[1]}) if f[1] else {})} for f in packages]
+
+    @staticmethod
+    def _update_packages(current_packages, new_packages, key, org_admin_user, org_admin_password):
+
+        new_packages_normalized = UyuniActivationKeys._normalize_list_packages(new_packages)
+        current_packages_normalized = UyuniActivationKeys._normalize_list_packages(current_packages)
+        add_packages = [t for t in new_packages_normalized if t not in current_packages_normalized]
+        if add_packages:
+            pass
+            __salt__['uyuni.activation_key_add_packages'](key,
+                                                          UyuniActivationKeys._format_packages_data(add_packages),
+                                                          org_admin_user=org_admin_user,
+                                                          org_admin_password=org_admin_password)
+
+        remove_packages = [t for t in current_packages_normalized if t not in new_packages_normalized]
+        if remove_packages:
+            pass
+            __salt__['uyuni.activation_key_remove_packages'](key,
+                                                             UyuniActivationKeys._format_packages_data(remove_packages),
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
+
+    def manage(self, name: str, description: str,
+               base_channel: str = '',
+               usage_limit: int = 0,
+               contact_method: str = 'default',
+               system_types: List[str] = [],
+               universal_default: bool = False,
+               child_channels: List[str] = [],
+               configuration_channels: List[str] = [],
+               packages: List[str] = [],
+               server_groups: List[str] = [],
+               configure_after_registration: bool = False,
+               org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
+        """
+        Ensure an Uyuni Activation Key is present.
+
+        :param name: the Activation Key name
+        :param description: the Activation description
+        :param base_channel: base channel to be used
+        :param usage_limit: activation key usage limit
+        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+        :param system_types: system types to be assigned.
+                             Can be one of: 'virtualization_host', 'container_build_host',
+                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+        :param universal_default: sets this activation key as organization universal default
+        :param child_channels: list of child channels to be assigned
+        :param configuration_channels: list of configuration channels to be assigned
+        :param packages: list of packages which will be installed
+        :param server_groups: list of server groups to assign the activation key with
+        :param configure_after_registration: deploy configuration files to systems on registration
+        :param org_admin_user: organization administrator username
+        :param org_admin_password: organization administrator password
+
+        :return:  dict for Salt communication
+        """
+        current_ak = {}
+        key = None
+        current_configure_after_registration = None
+        system_groups_keys = {}
+        current_config_channels = []
+        output_field_names = {
+            'description': 'description',
+            'base_channel_label': 'base_channel',
+            'usage_limit': 'usage_limit',
+            'universal_default': 'universal_default',
+            'contact_method': 'contact_method',
+            'entitlements': 'system_types',
+            'child_channel_labels': 'child_channels',
+            'server_group_ids': 'server_groups',
+            'packages': 'packages'
+        }
+        try:
+            all_groups = __salt__['uyuni.systemgroup_list_all_groups'](org_admin_user, org_admin_password)
+            group_id_to_name = {}
+            for g in (all_groups or []):
+                system_groups_keys[g.get('name')] = g.get('id')
+                group_id_to_name[g.get('id')] = g.get('name')
+
+            current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
+
+            key = "{}-{}".format(current_org_user['org_id'], name)
+            returned_ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
+                                                                       org_admin_password=org_admin_password)
+
+            for returned_name, output_name in output_field_names.items():
+                current_ak[output_name] = returned_ak[returned_name]
+
+            current_ak['server_groups'] = [group_id_to_name[s] for s in (current_ak['server_groups'] or [])]
+
+            if current_ak.get('base_channel', None) == 'none':
+                current_ak['base_channel'] = ''
+
+            current_configure_after_registration = __salt__['uyuni.activation_key_check_config_deployment'](key,
+                                                                                                            org_admin_user,
+                                                                                                            org_admin_password)
+
+            config_channels_output = __salt__['uyuni.activation_key_list_config_channels'](key,
+                                                                                            org_admin_user,
+                                                                                            org_admin_password)
+            current_config_channels = [cc['label'] for cc in (config_channels_output or [])]
+
+        except Exception as exc:
+            if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
+                return StateResult.state_error(key, "Error retrieving information about Activation Key '{}': {}".format(key, exc))
+
+        ak_paramters = {'description': description,
+                        'base_channel': base_channel,
+                        'usage_limit': usage_limit,
+                        'contact_method': contact_method,
+                        'system_types': system_types,
+                        'universal_default': universal_default,
+                        'child_channels': child_channels,
+                        'server_groups': server_groups,
+                        'packages': packages}
+
+        changes = self._compute_changes(ak_paramters, current_ak,
+                                        configure_after_registration,
+                                        current_configure_after_registration,
+                                        current_config_channels,
+                                        configuration_channels)
+
+        if not current_ak:
+            changes["key"] = {"new": key}
+
+        if not changes:
+            return StateResult.prepare_result(key, True, "{0} is already in the desired state".format(key))
+        if __opts__['test']:
+            return StateResult.prepare_result(key, None, "{0} would be updated".format(key), changes)
+
+        try:
+            if current_ak:
+                __salt__['uyuni.activation_key_set_details'](key,
+                                                             description=description,
+                                                             contact_method=contact_method,
+                                                             base_channel_label=base_channel,
+                                                             usage_limit=usage_limit,
+                                                             universal_default=universal_default,
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
+
+                if changes.get('system_types', False):
+                    self._update_system_type(current_ak.get('system_types', []), system_types or [],
+                                             key, org_admin_user, org_admin_password)
+
+            else:
+                __salt__['uyuni.activation_key_create'](key=name,
+                                                        description=description,
+                                                        base_channel_label=base_channel,
+                                                        usage_limit=usage_limit,
+                                                        system_types=system_types,
+                                                        universal_default=universal_default,
+                                                        org_admin_user=org_admin_user,
+                                                        org_admin_password=org_admin_password)
+
+                __salt__['uyuni.activation_key_set_details'](key, contact_method=contact_method,
+                                                             usage_limit=usage_limit,
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
+
+            if changes.get('child_channels', False):
+                self._update_child_channels(current_ak.get('child_channels', []),
+                                            child_channels or [],
+                                            key, org_admin_user, org_admin_password)
+
+            if changes.get('server_groups', False):
+                old_server_groups_id = [system_groups_keys[s] for s in current_ak.get('server_groups', [])]
+                new_server_groups_id = [system_groups_keys[s] for s in (server_groups or [])]
+                self._update_server_groups(old_server_groups_id,
+                                           new_server_groups_id,
+                                           key, org_admin_user, org_admin_password)
+
+            if changes.get('configure_after_registration', False):
+                if configure_after_registration:
+                    __salt__['uyuni.activation_key_enable_config_deployment'](key,
+                                                                              org_admin_user=org_admin_user,
+                                                                              org_admin_password=org_admin_password)
+                else:
+                    if current_ak:
+                        __salt__['uyuni.activation_key_disable_config_deployment'](key,
+                                                                                   org_admin_user=org_admin_user,
+                                                                                   org_admin_password=org_admin_password)
+
+            if changes.get('packages', False):
+                self._update_packages(current_ak.get('packages', []),
+                                           packages or [],
+                                            key, org_admin_user, org_admin_password)
+
+            if changes.get('configuration_channels', False):
+                __salt__['uyuni.activation_key_set_config_channels']([key],
+                                                                     config_channel_label=configuration_channels,
+                                                                     org_admin_user=org_admin_user,
+                                                                     org_admin_password=org_admin_password)
+
+        except Exception as exc:
+            return StateResult.state_error(key, "Error updating activation key '{}': {}".format(key, exc))
+        else:
+            return StateResult.prepare_result(key, True, "{0} activation key successfully modified".format(key), changes)
+
+    def delete(self, id: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
+        """
+        Remove an Uyuni Activation Key.
+
+        :param id: the Activation Key ID
+        :param org_admin_user: organization administrator username
+        :param org_admin_password: organization administrator password
+
+        :return: dict for Salt communication
+        """
+        try:
+            ak = __salt__['uyuni.activation_key_get_details'](id, org_admin_user=org_admin_user,
+                                                              org_admin_password=org_admin_password)
+        except Exception as exc:
+            if exc.faultCode == ACTIVATION_KEY_NOT_FOUND_ERROR:
+                return StateResult.prepare_result(id, True, "{0} is already absent".format(id))
+            if exc.faultCode == AUTHENTICATION_ERROR:
+                return StateResult.state_error(id,
+                                               "Error deleting Activation Key (organization credentials error) '{}': {}".format(
+                                                   id, exc))
+            raise exc
+        else:
+            changes = {
+                'id': {'old': id},
+            }
+            if __opts__['test']:
+                return StateResult.prepare_result(id, None, "{0} would be deleted".format(id), changes)
+
+            try:
+                __salt__['uyuni.activation_key_delete'](id,
+                                              org_admin_user=org_admin_user,
+                                              org_admin_password=org_admin_password)
+                return StateResult.prepare_result(id, True, "Activation Key {} has been deleted".format(id), changes)
+            except Exception as exc:
+                return StateResult.state_error(id, "Error deleting Activation Key '{}': {}".format(id, exc))
+
+
 def __virtual__():
     return __virtualname__
 
@@ -776,3 +1110,66 @@ def group_absent(name, org_admin_user=None, org_admin_password=None):
     :return: dict for Salt communication
     """
     return UyuniGroups().delete(name, org_admin_user, org_admin_password)
+
+
+def activation_key_absent(name, org_admin_user=None, org_admin_password=None):
+    """
+    Ensure an Uyuni Activation Key is not present.
+
+    :param name: the Activation Key ID
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return:  dict for Salt communication
+    """
+    return UyuniActivationKeys().delete(name, org_admin_user, org_admin_password)
+
+
+def activation_key_present(name,
+                           description,
+                           base_channel='',
+                           usage_limit=0,
+                           contact_method='default',
+                           system_types=[],
+                           universal_default=False,
+                           child_channels=[],
+                           configuration_channels=[],
+                           packages=[],
+                           server_groups=[],
+                           configure_after_registration=False,
+                           org_admin_user=None, org_admin_password=None):
+    """
+    Ensure an Uyuni Activation Key is present.
+
+    :param name: the Activation Key name
+    :param description: the Activation description
+    :param base_channel: base channel to be used
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+    :param system_types: system types to be assigned.
+                         Can be one of: 'virtualization_host', 'container_build_host',
+                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+    :param universal_default: sets this activation key as organization universal default
+    :param child_channels: list of child channels to be assigned
+    :param configuration_channels: list of configuration channels to be assigned
+    :param packages: list of packages which will be installed
+    :param server_groups: list of server groups to assign the activation key with
+    :param configure_after_registration: deploy configuration files to systems on registration
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return:  dict for Salt communication
+    """
+    return UyuniActivationKeys().manage(name, description,
+                                        base_channel=base_channel,
+                                        usage_limit=usage_limit,
+                                        contact_method=contact_method,
+                                        system_types=system_types,
+                                        universal_default=universal_default,
+                                        child_channels=child_channels,
+                                        configuration_channels=configuration_channels,
+                                        packages=packages,
+                                        server_groups=server_groups,
+                                        configure_after_registration=configure_after_registration,
+                                        org_admin_user=org_admin_user,
+                                        org_admin_password=org_admin_password)

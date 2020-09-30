@@ -125,3 +125,44 @@ org_admin_password: organization administrator password
 ....
 
     return: dict for Salt communication
+
+=== activation_key_present
+**(name, description, base_channel='', usage_limit=0, contact_method='default', system_types=[],
+   universal_default=False, child_channels=[], configuration_channels=[], packages=[],
+   server_groups=[], configure_after_registration=False, org_admin_user=None, org_admin_password=None)**
+
+Ensure an Uyuni Activation Key is present.
+
+....
+name: the Activation Key name
+description: the Activation description
+base_channel: base channel to be used
+usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+system_types: system types to be assigned.
+              Can be one of: 'virtualization_host', 'container_build_host',
+              'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+universal_default: sets this activation key as organization universal default
+child_channels: list of child channels to be assigned
+configuration_channels: list of configuration channels to be assigned
+packages: list of packages which will be installed
+server_groups: list of server groups to assign the activation key with
+configure_after_registration: deploy configuration files to systems on registration
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication
+
+=== activation_key_absent
+**(nname, org_admin_user=None, org_admin_password=None)**
+
+Ensure an Uyuni Activation Key is not present.
+
+....
+name: the Activation Key ID
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication
