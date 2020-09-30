@@ -929,41 +929,43 @@ class UyuniActivationKeys:
         else:
             return StateResult.prepare_result(key, True, "{0} activation key successfully modified".format(key), changes)
 
-    def delete(self, id: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
+    def delete(self, name: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
         Remove an Uyuni Activation Key.
 
-        :param id: the Activation Key ID
+        :param name: the Activation Key Name
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
 
         :return: dict for Salt communication
         """
         try:
-            ak = __salt__['uyuni.activation_key_get_details'](id, org_admin_user=org_admin_user,
-                                                              org_admin_password=org_admin_password)
+            current_org_user = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_password)
+            key = "{}-{}".format(current_org_user['org_id'], name)
+            ak = __salt__['uyuni.activation_key_get_details'](key, org_admin_user=org_admin_user,
+                                                                       org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode == ACTIVATION_KEY_NOT_FOUND_ERROR:
-                return StateResult.prepare_result(id, True, "{0} is already absent".format(id))
+                return StateResult.prepare_result(name, True, "{0} is already absent".format(key))
             if exc.faultCode == AUTHENTICATION_ERROR:
-                return StateResult.state_error(id,
-                                               "Error deleting Activation Key (organization credentials error) '{}': {}".format(
-                                                   id, exc))
+                return StateResult.state_error(name,
+                                               "Error deleting Activation Key (organization credentials error) '{}': {}"
+                                               .format(key, exc))
             raise exc
         else:
             changes = {
-                'id': {'old': id},
+                'id': {'old': key},
             }
             if __opts__['test']:
-                return StateResult.prepare_result(id, None, "{0} would be deleted".format(id), changes)
+                return StateResult.prepare_result(name, None, "{0} would be deleted".format(key), changes)
 
             try:
-                __salt__['uyuni.activation_key_delete'](id,
-                                              org_admin_user=org_admin_user,
-                                              org_admin_password=org_admin_password)
-                return StateResult.prepare_result(id, True, "Activation Key {} has been deleted".format(id), changes)
+                __salt__['uyuni.activation_key_delete'](key,
+                                                        org_admin_user=org_admin_user,
+                                                        org_admin_password=org_admin_password)
+                return StateResult.prepare_result(name, True, "Activation Key {} has been deleted".format(key), changes)
             except Exception as exc:
-                return StateResult.state_error(id, "Error deleting Activation Key '{}': {}".format(id, exc))
+                return StateResult.state_error(name, "Error deleting Activation Key '{}': {}".format(key, exc))
 
 
 def __virtual__():
@@ -1116,7 +1118,7 @@ def activation_key_absent(name, org_admin_user=None, org_admin_password=None):
     """
     Ensure an Uyuni Activation Key is not present.
 
-    :param name: the Activation Key ID
+    :param name: the Activation Key name
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
