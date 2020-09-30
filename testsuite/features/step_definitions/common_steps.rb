@@ -93,7 +93,13 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
     break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -808,9 +814,9 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
     node.run('yum install wget', true, 600, 'root')
   end
   command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  node.run(command1, true, 500, 'root')
+  puts node.run(command1, true, 500, 'root')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
-  node.run(command2, true, 500, 'root')
+  puts node.run(command2, true, 500, 'root')
 end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
@@ -823,8 +829,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     get_target(host).run('rhn_check -vvv')
   else
     # Ubuntu minion clients need more time to finish all onboarding events
-    onboarding_timeout = DEFAULT_TIMEOUT
-    onboarding_timeout = DEFAULT_TIMEOUT * 2 if %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
+    node = get_target(host)
+    _os_version, os_family = get_os_version(node)
+    onboarding_timeout = os_family.include?('ubuntu') ? DEFAULT_TIMEOUT * 2 : DEFAULT_TIMEOUT
     steps %(
       And I wait at most #{onboarding_timeout} seconds until event "Hardware List Refresh" is completed
       And I wait at most #{onboarding_timeout} seconds until event "Apply states" is completed
@@ -1039,9 +1046,17 @@ And(/^the notification badge and the table should count the same amount of messa
 end
 
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
-  repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
-    break if has_checked_field?(arg1)
-    evaluate_script 'window.location.reload()'
+  unless has_checked_field?(arg1)
+    repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
+      break if has_checked_field?(arg1)
+      begin
+        accept_prompt do
+          execute_script 'window.location.reload()'
+        end
+      rescue Capybara::ModalNotFound
+        # ignored
+      end
+    end
   end
 end
 
@@ -1076,7 +1091,8 @@ end
 
 And(/^I remove package "([^"]*)" from highstate$/) do |package|
   steps %(
-    When I follow "States" in the content area
+    When I wait until I see "States" text
+    And I follow "States" in the content area
     And I follow "Packages" in the content area
     Then I should see a "Package States" text
   )
@@ -1117,9 +1133,30 @@ Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warni
   find(:xpath, item_xpath)
 end
 
-When(/^I enter the MU repository for (salt|traditional) "([^"]*)" as URL$/) do |client_type, client|
+When(/^I create the MU repository for (salt|traditional) "([^"]*)" if necessary$/) do |client_type, client|
   client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  fill_in 'url', with: $mu_repositories[client][client_type]
+  url = $mu_repositories[client][client_type].strip
+  repo_name = url.delete_prefix "http://download.suse.de/ibs/SUSE:/Maintenance:/"
+  if repository_exist? repo_name
+    puts "The MU repository #{repo_name} was already created, we will reuse it."
+  else
+    steps %(
+      When I follow "Create Repository"
+      And I enter "#{repo_name}" as "label"
+      And I enter "#{url}" as "url"
+      And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
+      And I click on "Create Repository"
+      Then I should see a "Repository created successfully" text
+      And I should see "metadataSigned" as checked
+    )
+  end
+end
+
+When(/^I select the MU repository name for (salt|traditional) "([^"]*)" from the list$/) do |client_type, client|
+  client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
+  url = $mu_repositories[client][client_type].strip
+  repo_name = url.delete_prefix "http://download.suse.de/ibs/SUSE:/Maintenance:/"
+  step %(I check "#{repo_name}" in the list)
 end
 
 # content lifecycle steps

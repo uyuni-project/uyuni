@@ -255,9 +255,13 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
 end
 
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
-  repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-    break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
-    sleep 10
+  begin
+    repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+      break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+      sleep 10
+    end
+  rescue StandardError => e
+    puts e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
@@ -567,6 +571,13 @@ end
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node = get_target(host)
   node.run(cmd)
+end
+
+When(/^I force picking pending events on "([^"]*)" if necessary$/) do |host|
+  if get_client_type(host) == 'traditional'
+    node = get_target(host)
+    node.run('rhn_check -vvv')
+  end
 end
 
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|

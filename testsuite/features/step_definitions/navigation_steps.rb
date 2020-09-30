@@ -52,14 +52,22 @@ end
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   text.gsub! '$PRODUCT', $product
   # TODO: get rid of this substitution, using another step
+  next if has_content?(text)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
+  next if has_content?("This action's status is: Completed.")
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?("This action's status is: Completed.")
     raise 'Event failed' if has_content?("This action's status is: Failed.")
@@ -68,7 +76,13 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
       STDOUT.puts "#{current} Still waiting for action to complete..."
       last = current
     end
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -78,9 +92,16 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
+  next unless has_content?(text)
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless has_content?(text)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -153,7 +174,7 @@ end
 
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']"
-  if page.has_xpath?(toggle, wait: 60)
+  if page.has_xpath?(toggle, wait: 5)
     find(:xpath, toggle).click
   end
 end
@@ -494,7 +515,7 @@ When(/^I check test channel$/) do
 end
 
 When(/^I check the child channel "([^"]*)"$/) do |channel|
-  raise 'Timeout: Waiting loading child channels' unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
+  find(:xpath, "//i[@class='fa fa-angle-right']").click unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
   checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
   checkbox.set(true)
 end

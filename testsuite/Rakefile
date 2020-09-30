@@ -29,7 +29,7 @@ namespace :parallel do
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
       cucumber_opts = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
-      sh "bundle exec parallel_cucumber -n 7 -o '#{cucumber_opts}' #{features}"
+      sh "bundle exec parallel_cucumber -n 4 -o '#{cucumber_opts}' #{features}"
     end
   end
 end
@@ -53,7 +53,7 @@ namespace :utils do
   desc 'Generate smoke tests for all the clients'
   task :generate_smoke_tests do
     clients = Rake::FileList['features/qam/init_clients/*.feature']
-    clients.reject! { |client| client.include? 'proxy'}
+    clients.reject! { |client| client.include? 'proxy' }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke('features/qam/smoke_tests/smoke_tests.template',
                                            File.basename(client,'.feature'),

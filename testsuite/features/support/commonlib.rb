@@ -216,3 +216,10 @@ def get_client_type(name)
     'salt'
   end
 end
+
+def repository_exist?(repo)
+  repo_xmlrpc = XMLRPCRepositoryTest.new(ENV['SERVER'])
+  repo_xmlrpc.login('admin', 'admin')
+  repo_list = repo_xmlrpc.repo_list
+  repo_list.include? repo
+end

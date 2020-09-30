@@ -204,6 +204,7 @@ Then(/^I click on the filter button until page does not contain "([^"]*)" text$/
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless has_content?(text)
     find("button.spacewalk-button-filter").click
+    has_text?('is filtered', wait: 10)
   end
 end
 
@@ -211,11 +212,13 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if has_content?(text)
     find("button.spacewalk-button-filter").click
+    has_text?('is filtered', wait: 10)
   end
 end
 
 When(/^I click on the filter button$/) do
   find_and_wait_click("button.spacewalk-button-filter").click
+  has_text?('is filtered', wait: 10)
 end
 
 When(/^I click on the red confirmation button$/) do
