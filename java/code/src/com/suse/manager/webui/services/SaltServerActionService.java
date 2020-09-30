@@ -1693,6 +1693,10 @@ public class SaltServerActionService {
                     graphicsData.put("type", action.getGraphicsType());
                     pillar.put("graphics", graphicsData);
 
+                    if (bootParams != null) {
+                        pillar.put("boot", bootParams);
+                    }
+
                     return State.apply(
                             Collections.singletonList(state),
                             Optional.of(pillar));
@@ -1705,13 +1709,8 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> autoinstallInitAction(List<MinionSummary> minions,
-            KickstartInitiateAction autoInitAction) {
-
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
-        String cobblerSystem = ksActionDetails.getCobblerSystemName();
-        String host = ksActionDetails.getKickstartHost();
+    private Map<String, String> prepareCobblerBoot(String kickstartHost,
+                                                   String cobblerSystem) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         SystemRecord system = SystemRecord.lookupByName(con, cobblerSystem);
         Profile profile = system.getProfile();
@@ -1725,12 +1724,26 @@ public class SaltServerActionService {
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
                 OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
         tree.createOrUpdateSaltFS();
-        String kOpts = buildKernelOptions(system, profile, dist, host);
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("uyuni-reinstall-kernel", saltFSKernel);
-        pillar.put("uyuni-reinstall-initrd", saltFSInitrd);
-        pillar.put("uyuni-reinstall-kopts", kOpts);
+        String kOpts = buildKernelOptions(system, profile, dist, kickstartHost);
+        Map<String, String> pillar = new HashMap<>();
+        pillar.put("kernel", saltFSKernel);
+        pillar.put("initrd", saltFSInitrd);
+        pillar.put("kopts", kOpts);
+
+        return pillar;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> autoinstallInitAction(List<MinionSummary> minions,
+            KickstartInitiateAction autoInitAction) {
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
+        String cobblerSystem = ksActionDetails.getCobblerSystemName();
+        String host = ksActionDetails.getKickstartHost();
+        Map<String, String> bootParams = prepareCobblerBoot(host, cobblerSystem);
+        Map<String, Object> pillar = new HashMap<>(bootParams);
         pillar.put("uyuni-reinstall-name", "reinstall-system");
+        String kOpts = bootParams.get("kopts");
 
         if (kOpts.contains("autoupgrade=1") || kOpts.contains("uyuni_keep_saltkey=1")) {
             ksActionDetails.setUpgrade(true);
