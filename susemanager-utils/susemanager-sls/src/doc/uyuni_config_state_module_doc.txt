@@ -155,12 +155,12 @@ org_admin_password: organization administrator password
     return: dict for Salt communication
 
 === activation_key_absent
-**(nname, org_admin_user=None, org_admin_password=None)**
+**(name, org_admin_user=None, org_admin_password=None)**
 
 Ensure an Uyuni Activation Key is not present.
 
 ....
-name: the Activation Key ID
+name: the Activation Key name
 org_admin_user: organization administrator username
 org_admin_password: organization administrator password
 ....
