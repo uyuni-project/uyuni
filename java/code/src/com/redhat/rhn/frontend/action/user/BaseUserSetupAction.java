@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * User locale override stuff
@@ -38,13 +39,13 @@ public class BaseUserSetupAction extends RhnAction {
 
     /**
      * Builds LangDisplayBean for none locale
+     * @param locale the default locale
      * @return LangDisplayBean
      */
-    public LangDisplayBean buildDefaultLocale() {
+    public LangDisplayBean buildDefaultLocale(String locale) {
         LocalizationService ls =
             LocalizationService.getInstance();
         LangDisplayBean ldb = new LangDisplayBean();
-        String locale = ConfigDefaults.get().getDefaultLocale();
         ldb.setLanguageCode("default");
         ldb.setLocalizedName(ls.getMessage("preferences.jsp.lang.default",
                 ls.getMessage("preferences.jsp.lang." + locale)));
@@ -58,24 +59,27 @@ public class BaseUserSetupAction extends RhnAction {
      */
     public void setCurrentLocale(RequestContext ctx, User user) {
         String userLocale = user.getPreferredLocale();
+        ctx.getRequest().setAttribute("currentLocale", Objects.requireNonNullElse(userLocale, "default"));
+    }
 
-        // If user has locale set, then just use that
-        if (userLocale != null) {
-            ctx.getRequest().setAttribute("currentLocale", userLocale);
-        }
-        else {
-            ctx.getRequest().setAttribute("currentLocale", "default");
-        }
+    /**
+     * Sets the locale to be used for the documentation to the provided request context
+     * @param ctx RequestContext
+     * @param user User
+     */
+    public void setDocsLocale(RequestContext ctx, User user) {
+        String docsLocale = user.getPreferredDocsLocale();
+        ctx.getRequest().setAttribute("currentDocsLocale", Objects.requireNonNullElse(docsLocale, "default"));
     }
 
     /**
      * Builds Map of configured locales and locale image uris
+     * @param locales list of locales
      * @return Map of configured locales and locale image uris
      */
-    public Map buildImageMap() {
-        Map retval = new LinkedHashMap();
+    public Map<String, LangDisplayBean> buildImageMap(List<String> locales) {
+        Map<String, LangDisplayBean> retval = new LinkedHashMap();
         LocalizationService ls = LocalizationService.getInstance();
-        List locales = ls.getConfiguredLocales();
         for (Iterator iter = locales.iterator(); iter.hasNext();) {
             String locale = (String) iter.next();
             LangDisplayBean ldb = new LangDisplayBean();
