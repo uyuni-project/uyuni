@@ -1354,34 +1354,39 @@ class TestUyuniActivationKeys:
         exc = Exception("ak not found")
         exc.faultCode = -212
 
-        with patch.dict(uyuni_config.__salt__, {'uyuni.activation_key_get_details': MagicMock(side_effect=exc)}):
-            result = uyuni_config.activation_key_absent('1-ak',
+        with patch.dict(uyuni_config.__salt__, {'uyuni.user_get_details': MagicMock(return_value=self.ORG_USER_DETAILS),
+                                                'uyuni.activation_key_get_details': MagicMock(side_effect=exc)}):
+            result = uyuni_config.activation_key_absent('ak',
                                                         org_admin_user='org_admin_user',
                                                         org_admin_password='org_admin_password')
 
             assert result is not None
-            assert result['name'] == '1-ak'
+            assert result['name'] == 'ak'
             assert result['result']
             assert result['comment'] == '1-ak is already absent'
             assert result['changes'] == {}
+            uyuni_config.__salt__['uyuni.user_get_details'].assert_called_once_with('org_admin_user', 'org_admin_password')
             uyuni_config.__salt__['uyuni.activation_key_get_details'].assert_called_once_with('1-ak',
                                                                                               org_admin_user='org_admin_user',
                                                                                               org_admin_password='org_admin_password')
 
     def test_ak_absent_present(self):
 
-        with patch.dict(uyuni_config.__salt__, {'uyuni.activation_key_get_details': MagicMock(return_value={}),
-                                                'uyuni.activation_key_delete': MagicMock()}):
+        with patch.dict(uyuni_config.__salt__, {
+            'uyuni.user_get_details': MagicMock(return_value=self.ORG_USER_DETAILS),
+            'uyuni.activation_key_get_details': MagicMock(return_value={}),
+            'uyuni.activation_key_delete': MagicMock()}):
 
-            result = uyuni_config.activation_key_absent('1-ak',
+            result = uyuni_config.activation_key_absent('ak',
                                                         org_admin_user='org_admin_user',
                                                         org_admin_password='org_admin_password')
 
             assert result is not None
-            assert result['name'] == '1-ak'
+            assert result['name'] == 'ak'
             assert result['result']
             assert result['comment'] == 'Activation Key 1-ak has been deleted'
             assert result['changes'] == {'id': {'old': '1-ak'}}
+            uyuni_config.__salt__['uyuni.user_get_details'].assert_called_once_with('org_admin_user', 'org_admin_password')
             uyuni_config.__salt__['uyuni.activation_key_get_details'].assert_called_once_with('1-ak',
                                                                                               org_admin_user='org_admin_user',
                                                                                               org_admin_password='org_admin_password')
