@@ -82,18 +82,18 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
 
-#  Scenario: Add RHEL Expanded Support 6
-#    Given I am on the Products page
-#    And I enter "RHEL Expanded Support 6" as the filtered product description
-#    And I select "RHEL Expanded Support 6" as a product
-#    Then I should see the "RHEL Expanded Support 6" selected
-#    When I click the Add Product button
-#    And I wait until I see "RHEL Expanded Support 6" product has been added
-#
-#  Scenario: Add RHEL Expanded Support 7
-#    Given I am on the Products page
-#    And I enter "RHEL Expanded Support 7" as the filtered product description
-#    And I select "RHEL Expanded Support 7" as a product
-#    Then I should see the "RHEL Expanded Support 7" selected
-#    When I click the Add Product button
-#    And I wait until I see "RHEL Expanded Support 7" product has been added
+  Scenario: Add RHEL6 Base x86_64
+    Given I am on the Products page
+    And I enter "RHEL6 Base x86_64" as the filtered product description
+    And I select "RHEL6 Base x86_64" as a product
+    Then I should see the "RHEL6 Base x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL6 Base x86_64" product has been added
+
+  Scenario: Add RHEL7 Base x86_64
+    Given I am on the Products page
+    And I enter "RHEL7 Base x86_64" as the filtered product description
+    And I select "RHEL7 Base x86_64" as a product
+    Then I should see the "RHEL7 Base x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL7 Base x86_64" product has been added
