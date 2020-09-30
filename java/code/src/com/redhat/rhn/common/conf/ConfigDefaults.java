@@ -344,6 +344,12 @@ public class ConfigDefaults {
      */
     public static final String DEFAULT_LOCALE = "web.locale";
 
+    /**
+     * Specify the default language to use for documentation if user
+     * preferences are not available such as on the login page
+     */
+    public static final String DEFAULT_DOCS_LOCALE = "web.docs_locale";
+
     private ConfigDefaults() {
     }
 
@@ -1031,6 +1037,15 @@ public class ConfigDefaults {
      */
     public String getDefaultLocale() {
         return Config.get().getString(DEFAULT_LOCALE, "en_US");
+    }
+
+    /**
+     * Return the default documentation locale. If not supported return en_US as default language.
+     *
+     * @return the preferred documentation locale
+     */
+    public String getDefaultDocsLocale() {
+        return Config.get().getString(DEFAULT_DOCS_LOCALE, "en_US");
     }
 
     /**
