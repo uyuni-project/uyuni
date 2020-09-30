@@ -1637,6 +1637,12 @@ public class SaltServerActionService {
             VirtualizationCreateGuestAction action) {
         String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
 
+        // Prepare the salt FS with kernel / initrd and pass params to kernel
+        String cobblerSystemName = action.getCobblerSystem();
+        Map<String, String> bootParams = cobblerSystemName != null ?
+                prepareCobblerBoot(action.getKickstartHost(), cobblerSystemName) :
+                null;
+
         Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
                 Collectors.toMap(minion -> {
                     // Some of these pillar data will be useless for update-vm, but they will just be ignored.

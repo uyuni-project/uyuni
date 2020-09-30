@@ -33,6 +33,9 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     public static final String GRAPHICS = "graphics";
     public static final String DISKS = "disks";
     public static final String INTERFACES = "interfaces";
+    public static final String COBBLER_SYSTEM = "cobblerSystem";
+    public static final String KICKSTART_HOST = "kickstartHost";
+    public static final String KERNEL_OPTIONS = "kernelOptions";
 
     private Long id;
     private String type;
@@ -46,6 +49,9 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     private List<VirtualizationCreateActionInterfaceDetails> interfaces;
     private boolean removeInterfaces;
     private String graphicsType;
+    private String cobblerSystem;
+    private String kickstartHost;
+    private String kernelOptions;
 
     /**
      * @return the ID in the DB
@@ -225,6 +231,48 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     }
 
     /**
+     * @return the ID of the cobbler profile to use to create the VM
+     */
+    public String getCobblerSystem() {
+        return cobblerSystem;
+    }
+
+    /**
+     * @param cobblerSystemIn the ID of the cobbler profile to use to create the VM
+     */
+    public void setCobblerSystem(String cobblerSystemIn) {
+        cobblerSystem = cobblerSystemIn;
+    }
+
+    /**
+     * @return the kickstart host URL
+     */
+    public String getKickstartHost() {
+        return kickstartHost;
+    }
+
+    /**
+     * @param kickstartHostIn the kickstart host URL
+     */
+    public void setKickstartHost(String kickstartHostIn) {
+        kickstartHost = kickstartHostIn;
+    }
+
+    /**
+     * @return the kernel options to use with cobbler profile
+     */
+    public String getKernelOptions() {
+        return kernelOptions;
+    }
+
+    /**
+     * @param kernelOptionsIn the kernel options to use with cobbler profile
+     */
+    public void setKernelOptions(String kernelOptionsIn) {
+        kernelOptions = kernelOptionsIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -239,6 +287,9 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
         setVcpus((Long) context.get(VCPUS));
         setArch((String) context.get(ARCH));
         setGraphicsType((String) context.get(GRAPHICS));
+        setCobblerSystem((String) context.get(COBBLER_SYSTEM));
+        setKickstartHost((String) context.get(KICKSTART_HOST));
+        setKernelOptions((String) context.get(KERNEL_OPTIONS));
 
         List<VirtualizationCreateActionDiskDetails> disksParam =
                 (List<VirtualizationCreateActionDiskDetails>) context.get(DISKS);
@@ -268,6 +319,9 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
                     getMemory().longValue() == otherAction.getMemory().longValue() &&
                     getVcpus().longValue() == otherAction.getVcpus().longValue() &&
                     Objects.equals(getArch(), otherAction.getArch()) &&
+                    Objects.equals(getCobblerSystem(), otherAction.getCobblerSystem()) &&
+                    Objects.equals(getKickstartHost(), otherAction.getKickstartHost()) &&
+                    Objects.equals(getKernelOptions(), otherAction.getKernelOptions()) &&
                     isRemoveDisks() == otherAction.isRemoveDisks() &&
                     Objects.equals(getDisks(), otherAction.getDisks()) &&
                     isRemoveInterfaces() == otherAction.isRemoveInterfaces() &&
@@ -279,6 +333,6 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     @Override
     public int hashCode() {
         return Objects.hash(type, guestName, osType, memory, vcpus, arch, removeDisks, disks, removeInterfaces,
-                interfaces);
+                interfaces, cobblerSystem, kickstartHost, kernelOptions);
     }
 }
