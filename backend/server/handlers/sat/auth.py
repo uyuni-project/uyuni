@@ -42,7 +42,7 @@ class Authentication(rhnHandler):
 
     def auth_system(self):
         if CFG.DISABLE_ISS:
-            raise rhnFault(2005, _('ISS is disabled on this satellite.'))
+            raise rhnFault(2005, _('ISS is disabled on this server.'))
 
         if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
                                     hostname=idn_puny_to_unicode(self.remote_hostname)):

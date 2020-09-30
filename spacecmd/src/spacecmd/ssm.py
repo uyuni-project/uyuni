@@ -29,20 +29,26 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_ssm(self):
-    print('The System Set Manager (SSM) is a group of systems that you ')
-    print('can perform tasks on as a whole.')
+    print(_('The System Set Manager (SSM) is a group of systems that you '))
+    print(_('can perform tasks on as a whole.'))
     print('')
-    print('Adding Systems:')
+    print(_('Adding Systems:'))
     print('> ssm_add group:rhel5-x86_64')
     print('> ssm_add channel:rhel-x86_64-server-5')
     print('> ssm_add search:device:vmware')
     print('> ssm_add host.example.com')
     print('')
-    print('Intersections:')
+    print(_('Intersections:'))
     print('> ssm_add group:rhel5-x86_64')
     print('> ssm_intersect group:web-servers')
     print('')
@@ -54,10 +60,10 @@ def help_ssm(self):
 
 
 def help_ssm_add(self):
-    print('ssm_add: Add systems to the SSM')
-    print('usage: ssm_add <SYSTEMS>')
+    print(_('ssm_add: Add systems to the SSM'))
+    print(_('usage: ssm_add <SYSTEMS>'))
     print('')
-    print("see 'help ssm' for more details")
+    print(_("see 'help ssm' for more details"))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -78,12 +84,12 @@ def do_ssm_add(self, args):
     systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems found')
+        logging.warning(_('No systems found'))
         return 1
 
     for system in systems:
         if system in self.ssm:
-            logging.warning('%s is already in the list' % system)
+            logging.warning(_('%s is already in the list') % system)
             continue
         else:
             self.ssm[system] = self.get_system_id(system)
@@ -101,12 +107,12 @@ def do_ssm_add(self, args):
 
 
 def help_ssm_intersect(self):
-    print('ssm_intersect: Replace the current SSM with the intersection')
-    print('               of the current list of systems and the list of')
-    print('               systems passed as arguments')
-    print('usage: ssm_intersect <SYSTEMS>')
+    print(_('ssm_intersect: Replace the current SSM with the intersection'))
+    print(_('               of the current list of systems and the list of'))
+    print(_('               systems passed as arguments'))
+    print(_('usage: ssm_intersect <SYSTEMS>'))
     print('')
-    print("see 'help ssm' for more details")
+    print(_("see 'help ssm' for more details"))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -127,7 +133,7 @@ def do_ssm_intersect(self, args):
     systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems found')
+        logging.warning(_('No systems found'))
         return 1
 
     # tmp_ssm placeholder to gather systems that are both in original ssm
@@ -153,10 +159,10 @@ def do_ssm_intersect(self, args):
 
 
 def help_ssm_remove(self):
-    print('ssm_remove: Remove systems from the SSM')
-    print('usage: ssm_remove <SYSTEMS>')
+    print(_('ssm_remove: Remove systems from the SSM'))
+    print(_('usage: ssm_remove <SYSTEMS>'))
     print('')
-    print("see 'help ssm' for more details")
+    print(_("see 'help ssm' for more details"))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -177,7 +183,7 @@ def do_ssm_remove(self, args):
     systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning('No systems found')
+        logging.warning(_('No systems found'))
         return 1
 
     for system in systems:
@@ -197,10 +203,10 @@ def do_ssm_remove(self, args):
 
 
 def help_ssm_list(self):
-    print('ssm_list: List the systems currently in the SSM')
-    print('usage: ssm_list')
+    print(_('ssm_list: List the systems currently in the SSM'))
+    print(_('usage: ssm_list'))
     print('')
-    print("see 'help ssm' for more details")
+    print(_("see 'help ssm' for more details"))
 
 
 def do_ssm_list(self, args):
@@ -217,8 +223,8 @@ def do_ssm_list(self, args):
 
 
 def help_ssm_clear(self):
-    print('ssm_clear: Remove all systems from the SSM')
-    print('usage: ssm_clear')
+    print(_('ssm_clear: Remove all systems from the SSM'))
+    print(_('usage: ssm_clear'))
 
 
 def do_ssm_clear(self, args):

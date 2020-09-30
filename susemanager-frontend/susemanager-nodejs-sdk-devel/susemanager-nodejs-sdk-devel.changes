@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep 15 10:34:54 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.7-1
+- Add gettext-parser and node-gettext
+
+-------------------------------------------------------------------
 Thu Jul 23 13:35:36 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.6-1

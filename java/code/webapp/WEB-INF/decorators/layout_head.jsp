@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ page import="com.suse.manager.webui.menu.MenuTree" %>
+<%@ page import="com.suse.manager.webui.utils.UserPreferenceUtils" %>
 <%@ page import="com.redhat.rhn.common.conf.ConfigDefaults"%>
 
 <!-- enclosing head tags in layout_c.jsp -->
@@ -62,6 +63,10 @@
         </c:otherwise>
     </c:choose>
 
+    <!-- expose user preferred language to the application -->
+    <c:set var="currentLocale" value="${UserPreferenceUtils.getCurrentLocale(pageContext)}"/>
+    <script>window.preferredLocale='${currentLocale}'</script>
+
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
 
@@ -69,7 +74,6 @@
     <script src="/javascript/bootstrap.js?cb=${cb_version}"></script>
     <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
-    <script src="/javascript/susemanager-translate.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
 
     <script src="/rhn/dwr/engine.js?cb=${cb_version}"></script>

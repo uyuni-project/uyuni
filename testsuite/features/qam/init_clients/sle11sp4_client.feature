@@ -33,7 +33,7 @@ Feature: Bootstrap a SLES 11 SP4 traditional client
     Given I am on the Systems overview page of this "sle11sp4_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
 
 @proxy
   Scenario: Check registration on proxy of SLES 11 SP4 traditional

@@ -192,11 +192,6 @@ class RegistrationDeniedError(RhnServerException):
     def changeExplanation(self):
         return _("""
 Red Hat Network Classic is not supported.
-To register with Red Hat Subscription Management please run:
-
-    subscription-manager register --auto-attach
-
-Get more information at access.redhat.com/knowledge
     """)
 
 class InvalidProductRegistrationError(NoLogError):
@@ -301,16 +296,16 @@ class InsuffMgmntEntsError(RhnServerException):
     def changeExplanation(self, msg):
         newExpln = _("""
     Your organization does not have enough Management entitlements to register this
-    system to Red Hat Satellite. Please notify your organization administrator of this error.
+    system. Please notify your organization administrator of this error.
     You should be able to register this system after your organization frees existing
     or purchases additional entitlements. Additional entitlements may be purchased by your
-    organization administrator by logging into Red Hat Network Classic and visiting
-    the 'Subscription Management' page in the 'Your RHN' section of RHN.
+    organization administrator in the SUSE Customer Center.
 
     A common cause of this error code is due to having mistakenly setup an
     Activation Key which is set as the universal default.  If an activation key is set
     on the account as a universal default, you can disable this key and retry to avoid
     requiring a Management entitlement.""")
+
         term = "Explanation:"
         loc = msg.rindex(term) + len(term)
         return msg[:loc] + newExpln

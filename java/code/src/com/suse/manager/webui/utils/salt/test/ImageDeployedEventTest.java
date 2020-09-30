@@ -16,7 +16,7 @@
 package com.suse.manager.webui.utils.salt.test;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
+import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.datatypes.Event;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -30,7 +30,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 /**
- * Tests for the {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent}.
+ * Tests for the {@link ImageDeployedEvent}.
  */
 public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
 
@@ -41,7 +41,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Tests parsing {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent}.
+     * Tests parsing {@link ImageDeployedEvent}.
      * "Happy path" scenario.
      */
     public void testParse() {

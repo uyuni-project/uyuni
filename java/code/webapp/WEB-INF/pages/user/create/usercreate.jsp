@@ -32,7 +32,7 @@
                       class="required-form-field">*</span>:</label>
                 <div class="col-sm-6">
                   <div id="desiredpassword-input-group" class="input-group">
-                      <html:password property="desiredpassword" styleClass="form-control" size="15" maxlength="${passwordLength}"/>
+                      <html:password property="desiredpassword" styleClass="form-control" size="15"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
                       </span>
@@ -44,7 +44,7 @@
                       class="required-form-field">*</span>:</label>
                 <div class="col-sm-6">
                   <div class="input-group">
-                      <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon()" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
+                      <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon()" size="15" styleId="confirmpass"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
                       </span>
@@ -147,7 +147,7 @@ function toggleAsterisk() {
       </div>
     </div>
   </div>
-  <div class="panel panel-default" id="new-user-language">
+  <div class="panel panel-default" id="user-language">
     <div class="panel-heading">
       <h4><bean:message key="preferences.jsp.lang" /></h4>
     </div>
@@ -157,11 +157,11 @@ function toggleAsterisk() {
         <c:set var="counter" value="0" />
           <div class="form-group">
             <div class="col-sm-6">
-              <input type="radio" name="preferredLocale" value="<c:out value="${noLocale.languageCode}" />"
-              <c:if test="${noLocale.languageCode == currentLocale}">
+              <input type="radio" name="preferredLocale" value="<c:out value="${defaultLocale.languageCode}" />"
+              <c:if test="${defaultLocale.languageCode == currentLocale}">
                 checked="checked"
               </c:if>/>
-              <c:out value="${noLocale.localizedName}" />
+              <c:out value="${defaultLocale.localizedName}" />
               <br />
               <br />
             </div>

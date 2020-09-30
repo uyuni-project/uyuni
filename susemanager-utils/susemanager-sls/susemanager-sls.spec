@@ -21,7 +21,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.1.14
+Version:        4.1.15
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        GPL-2.0-only
@@ -46,6 +46,14 @@ BuildArch:      noarch
 %description
 Static Salt state files for SUSE Manager, where generic operations are
 provided for the integration between infrastructure components.
+
+%package -n uyuni-config-modules
+Summary:        Salt modules to configure a Server
+Group:          Applications/Internet
+
+%description -n uyuni-config-modules
+This package contains Salt execution and state modules that can be used
+to configure a SUSE Manager or Uyuni Server.
 
 %prep
 %setup -q
@@ -92,8 +100,16 @@ cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
+cp src/states/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_states
+
+# Install doc, examples
+mkdir -p %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
+cp src/doc/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/
+cp src/examples/uyuni_config_hardcode.sls %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples
+cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
 
 %check
 cd test
@@ -140,6 +156,18 @@ fi
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap
 /srv/formula_metadata
+%exclude /usr/share/susemanager/salt/_modules/uyuni_config.py
+%exclude /usr/share/susemanager/salt/_states/uyuni_config.py
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+
+%files -n uyuni-config-modules
+%defattr(-,root,root)
+%dir /usr/share/susemanager
+/usr/share/susemanager/salt/_modules/uyuni_config.py
+/usr/share/susemanager/salt/_states/uyuni_config.py
+%dir /usr/share/doc/packages/uyuni-config-modules
+%doc /usr/share/doc/packages/uyuni-config-modules/*
+%doc /usr/share/doc/packages/uyuni-config-modules/examples/*
+%doc /usr/share/doc/packages/uyuni-config-modules/examples/ldap/*
 
 %changelog

@@ -23,15 +23,19 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.EssentialServerDto;
+import com.redhat.rhn.frontend.dto.SystemScheduleDto;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.maintenance.IcalUtils;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.suse.manager.maintenance.MaintenanceManager;
@@ -42,12 +46,15 @@ import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.MaintenanceScheduleJson;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -92,6 +99,10 @@ public class MaintenanceScheduleController {
                 jade);
         get("/manager/api/maintenance/schedule/list", withUser(MaintenanceScheduleController::list));
         get("/manager/api/maintenance/schedule/:id/details", withUser(MaintenanceScheduleController::details));
+        get("/manager/api/maintenance/schedule/:id/systems", withUser(MaintenanceScheduleController::assignedSystems));
+        get("/manager/api/maintenance/schedule/systems", withUser(MaintenanceScheduleController::systemSchedules));
+        post("/manager/api/maintenance/schedule/:id/setsystems",
+                withUser(MaintenanceScheduleController::setAssignedSystems));
         post("/manager/api/maintenance/schedule/:id/assign", withUser(MaintenanceScheduleController::assign));
         post("/manager/api/maintenance/schedule/unassign", withUser(MaintenanceScheduleController::unassign));
         post("/manager/api/maintenance/schedule/save", withUser(MaintenanceScheduleController::save));
@@ -255,9 +266,109 @@ public class MaintenanceScheduleController {
         return json(response, ResultJson.success());
     }
 
+    /**
+     * Returns a list of system IDs assigned to a specified maintenance schedule
+     *
+     * @param request the Spark request
+     * @param response the Spark response
+     * @param user the authorized user
+     * @return the JSON list of system IDs
+     */
+    public static String assignedSystems(Request request, Response response, User user) {
+        response.type("application/json");
+        Long scheduleId = Long.parseLong(request.params("id"));
+        List<Long> systemIds = new ArrayList<>();
+        MM.lookupScheduleByUserAndId(user, scheduleId).ifPresentOrElse(
+                schedule -> {
+                    List<EssentialServerDto> systems = SystemManager.systemsInSchedule(user, schedule, null);
+                    systemIds.addAll(systems.stream().map(EssentialServerDto::getId).collect(Collectors.toList()));
+                },
+                () -> Spark.halt(HttpStatus.SC_NOT_FOUND)
+        );
+        return json(response, systemIds);
+    }
+
+    /**
+     * Returns a paged list of systems visible to a user and their assigned schedules
+     *
+     * @param request the Spark request
+     * @param response the Spark response
+     * @param user the authorized user
+     * @return the JSON response
+     */
+    public static String systemSchedules(Request request, Response response, User user) {
+        response.type("application/json");
+        PageControlHelper pageHelper = new PageControlHelper(request, "name");
+
+        DataResult<SystemScheduleDto> systems = SystemManager.systemListWithSchedules(user, null);
+
+        if ("id".equals(pageHelper.getFunction())) {
+            // Return only IDs for "select all" function
+            return json(response, systems.stream().map(SystemScheduleDto::getId).collect(Collectors.toList()));
+        }
+
+        systems = pageHelper.processPageControl(systems, new HashMap<>());
+        return json(response, new PagedDataResultJson<>(systems));
+    }
+
     private class SystemAssignmentRequest {
         private List<Long> systemIds;
         private boolean cancelActions;
+    }
+
+    /**
+     * Update a schedule's assigned system list, assigning/retracting individual systems as required
+     *
+     * The update is performed as follows:
+     *  - Sets the schedule for the systems which are not assigned to the specified schedule
+     *  - Clears the schedule for the systems that are already assigned to the specified schedule, but are not listed
+     *    in the requested system list
+     *  - The requested systems that are already assigned to the specified schedule remain untouched
+     *
+     * @param request the Spark request
+     * @param response the Spark response
+     * @param user the authorized user
+     * @return the JSON response
+     */
+    public static String setAssignedSystems(Request request, Response response, User user) {
+        response.type("application/json");
+        SystemAssignmentRequest reqData = GSON.fromJson(request.body(), SystemAssignmentRequest.class);
+        List<Long> requestedSysIds = reqData.systemIds;
+
+        Long scheduleId = Long.parseLong(request.params("id"));
+        MM.lookupScheduleByUserAndId(user, scheduleId).ifPresentOrElse(
+                schedule -> {
+                    // Get previously assigned system IDs
+                    List<Long> systemsInSchedule = SystemManager.systemsInSchedule(user, schedule, null).stream()
+                            .map(EssentialServerDto::getId).collect(Collectors.toList());
+                    try {
+                        // New systems to assign
+                        MM.assignScheduleToSystems(user, schedule,
+                                requestedSysIds.stream()
+                                        .filter(s -> !systemsInSchedule.contains(s))
+                                        .collect(Collectors.toSet()),
+                                reqData.cancelActions);
+
+                        // Systems to unassign
+                        MM.retractScheduleFromSystems(user,
+                                systemsInSchedule.stream()
+                                        .filter(s -> !requestedSysIds.contains(s))
+                                        .collect(Collectors.toSet()));
+                    }
+                    catch (IllegalArgumentException e) {
+                        log.info(e);
+                        Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                                "maintenance.action.assign.error.fail"))));
+                    }
+                    catch (LookupException e) {
+                        log.info(e);
+                        Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                                "maintenance.action.assign.error.systemnotfound"))));
+                    }
+                },
+                () -> Spark.halt(HttpStatus.SC_NOT_FOUND)
+        );
+        return json(response, ResultJson.success());
     }
 
     /**

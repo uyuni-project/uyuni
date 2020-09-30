@@ -49,7 +49,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
 
   Scenario: Check if onboarding for the minion with the new module.run syntax was successful
     Given I am authorized as "admin" with password "admin"
-    When I navigate to "rhn/systems/Overview.do" page
+    When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 

@@ -1,4 +1,21 @@
-- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175876)
+- Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
+- Log exception trace on fatal Taskomatic startup error
+- fix max password length check at user creation (bsc#1176765)
+- Notify about missing libvirt or hypervisor on virtual host
+- Redesign maintenance schedule systems table to use paginated data from server
+- Fix SP migration after dry run for cloned channels (bsc#1176307)
+- filter not available optional channels out
+
+-------------------------------------------------------------------
+Tue Sep 15 10:44:37 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.20-1
+- Force disable SPA for non-navigation links (bsc#1175512)
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
+- pass the log level parameter to matcher
+- Add language picker to user preferences and user creation
+- Detect client organization from connected proxy (bsc#1175545)
+- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175556)
 - Fix: use quiet API method when using spacewalk-common-channels (bsc#1175529)
 - add java.allow_adding_patches_via_api to allow adding errata to vendor channels
 - fix alignment on icon on entitlement page
@@ -6,6 +23,12 @@
 - filter machines not in maintenance mode for remote commands
 - Reset the server path on minion registration (bsc#1174254)
 - Data null means the sync never ran yet (bsc#1174357)
+
+-------------------------------------------------------------------
+Wed Sep 09 12:17:46 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.19-1
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
 
 -------------------------------------------------------------------
 Wed Aug 26 12:30:46 CEST 2020 - jgonzalez@suse.com

@@ -1,3 +1,5 @@
+- change default maximum memory to 512 MB, preventing OutOfMemoryError
+
 -------------------------------------------------------------------
 Wed Jan 22 12:13:23 CET 2020 - jgonzalez@suse.com
 

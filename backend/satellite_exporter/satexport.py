@@ -220,7 +220,7 @@ class ApacheServer(BaseApacheServer):
 
     def auth_system(self, req):
         if CFG.DISABLE_ISS:
-            raise rhnFault(2005, _('ISS is disabled on this satellite.'))
+            raise rhnFault(2005, _('ISS is disabled on this server.'))
 
         remote_hostname = req.get_remote_host(apache.REMOTE_DOUBLE_REV)
         row = rhnSQL.fetchone_dict("""

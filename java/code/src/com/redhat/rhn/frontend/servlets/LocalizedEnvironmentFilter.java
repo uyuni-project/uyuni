@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -140,23 +139,7 @@ public class LocalizedEnvironmentFilter implements Filter {
             ctx.setLocale(userLocale);
         }
         else {
-            Enumeration e = rhnRequest.getBrowserLocales();
-            LocalizationService ls = LocalizationService.getInstance();
-            boolean foundLocale = false;
-            while (e.hasMoreElements()) {
-                Locale l = (Locale) e.nextElement();
-                if (l == null) {
-                    continue;
-                }
-                if (ls.isLocaleSupported(l)) {
-                    foundLocale = true;
-                    ctx.setLocale(l);
-                    break;
-                }
-            }
-            if (!foundLocale) {
-                ctx.setLocale(LocalizationService.DEFAULT_LOCALE);
-            }
+            ctx.setLocale(LocalizationService.DEFAULT_LOCALE);
         }
         rhnRequest.configureLocale();
     }

@@ -35,7 +35,6 @@ html
         script(src='/javascript/frontend-log.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/bootstrap.js?cb=#{webBuildtimestamp}')
-        script(src='/javascript/susemanager-translate.js?cb=#{webBuildtimestamp}')
         script(src='/vendors/vendors.bundle.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/manager/core.bundle.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/manager/main.bundle.js?cb=#{webBuildtimestamp}')
@@ -58,6 +57,7 @@ html
             | #{request_method}
 
         script(type='text/javascript').
+            window.preferredLocale = "#{preferredLocale}";
             spaImportReactPage('login/login')
                 .then(function (module) {
                     module.renderer(

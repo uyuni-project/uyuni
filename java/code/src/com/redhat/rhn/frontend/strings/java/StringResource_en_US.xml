@@ -1085,13 +1085,13 @@
         </context-group>
       </trans-unit>
       <trans-unit id="user.satadmin.remove">
-        <source>Removed SUSE Manager Administrator role from {0}</source>
+        <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
       </trans-unit>
       <trans-unit id="user.satadmin.add">
-        <source>Added SUSE Manager Administrator role to {0}</source>
+        <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
@@ -1103,7 +1103,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="user.cannot.delete.last.sat.admin">
-        <source>Cannot delete the last remaining SUSE Manager administrator.</source>
+        <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
@@ -1140,7 +1140,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic notif subject">
-        <source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
+        <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
@@ -1921,19 +1921,19 @@
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-Is the 'rhn-tools' child software channel for this kickstart profile's base
+Is the client tools channel for this kickstart profile's base
 channel available to your organization? If it is not, you will need to request
-entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator.
+entitlements for the client tools channel from your @@PRODUCT_NAME@@ administrator.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure that the 'rhn-tools' child channel for this kickstart profile's base
+Make sure that the client tools channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-SUSE Manager administrator and request a satellite-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the client tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
 Make sure the spacewalk-koan package corresponding to this kickstart are
-available in the kickstart's base channel's 'rhn-tools' channel. If not, you
+available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
@@ -1959,7 +1959,7 @@ entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'appstream' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-satellite administrator and request a cdn-sync for the appstream channel
+@@PRODUCT_NAME@@ administrator and request a cdn-sync for the appstream channel
 and try again.
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -7240,7 +7240,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel">
-        <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -7288,7 +7288,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="system.virtualization.help">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the rhn-virtualization-host package from the associated RHN Tools child channel. Review Red Hat documentation for any other considerations and requirements that Red Hat Enterprise Linux has with enabling Virtualization of a Host system.</source>
+        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
@@ -7363,7 +7363,7 @@ Follow this url to see the full list of inactive systems:
         <source>User in organization {0} is not allowed to retrieve or modify {1} properties in organization {2}.</source>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg">
-        <source>Cannot perform this operation on the satellite organization. (Org ID 1)</source>
+        <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
@@ -7393,7 +7393,7 @@ Follow this url to see the full list of inactive systems:
         <source>Unable to locate or access server group: "{0}"</source>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied">
-        <source>Changing administrator access is not allowed for Satellite and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+        <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel">
         <source>Invalid profile label specified: {0}</source>
@@ -7516,10 +7516,10 @@ Follow this url to see the full list of inactive systems:
         <source>A required patch attribute ({0}) was missing.</source>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster">
-        <source>A record for Master satellite {0} already exists</source>
+        <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave">
-        <source>A record for Slave satellite {0} already exists</source>
+        <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
       </trans-unit>
       <trans-unit id="securityErrata">
         <source>Security Patches</source>
@@ -8343,7 +8343,7 @@ tree will not be usable for autoinstalling.
         <source>Found login(s) sent to {0}.</source>
       </trans-unit>
       <trans-unit id="config.multiple.channels">
-        <source>A selected system has multiple child channels available that contain the rhncfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
@@ -8490,13 +8490,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>@@PRODUCT_NAME@@ Advanced Topics Guide</source>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single base type is required for all systems registered to SUSE Manager</source>
+        <source>A single base type is required for all systems registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether SUSE Manager certificate has not expired</source>
+        <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -8517,13 +8517,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted">
-        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.graceperiod">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
       </trans-unit>
       <trans-unit id="restricted.forbidden">
-        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg">
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
@@ -8568,10 +8568,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cleanup channel tokens</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
-        <source>Registers SUSE Manager clients</source>
+        <source>Registers @@PRODUCT_NAME@@ clients</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch">
-        <source>Synchronizes SUSE Manager repositories</source>
+        <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch">
         <source>Manages clients via SSH Server Push</source>
@@ -8856,7 +8856,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices">
-        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
+        <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>

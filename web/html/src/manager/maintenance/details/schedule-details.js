@@ -2,7 +2,6 @@
 
 import React, {useState, useEffect} from "react";
 
-import {Utils} from "utils/functions";
 import * as Network from "utils/network";
 
 import {AsyncButton} from "components/buttons";
@@ -15,13 +14,12 @@ import {InnerPanel} from "components/panels/InnerPanel";
 import {TabLabel} from "components/tab-container";
 import {Table} from "components/table/Table";
 import {Column} from "components/table/Column";
+import {SearchField}  from "components/table/SearchField";
 import {Toggler} from "components/toggler";
 
 import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
 import type {MessageType} from "components/messages";
-
-declare var userPrefPageSize: number;
 
 type MaintenanceWindowType = {
     start: string,
@@ -40,6 +38,8 @@ type MaintenanceScheduleDetailsProps = {
 
 const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
     const [activeTab, setActiveTab] = useState("overview");
+
+    useEffect(() => setActiveTab("overview"), [props.id]);
     return (
         <>
             <DeleteDialog
@@ -62,7 +62,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
                     />
                     <TabLabel
                         active={activeTab === "assignment"}
-                        text={t("Assign Systems")}
+                        text={t("Assigned Systems")}
                         onClick={() => setActiveTab("assignment")}
                     />
                 </ul>
@@ -78,7 +78,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
             { activeTab === "assignment" &&
                 <SystemPicker
                     scheduleId={props.id}
-                    onAssign={() => setActiveTab("overview")}
+                    onBack={() => setActiveTab("overview")}
                     onMessage={props.onMessage}
                 />
             }
@@ -131,40 +131,41 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
 
 type SystemPickerProps = {
     scheduleId: number,
-    onAssign: () => void,
+    onBack: () => void,
     onMessage: (messages: MessageType[]) => void
 };
 
 const SystemPicker = (props: SystemPickerProps) => {
-    const [systems, setSystems] = useState([]);
+    const [hasChanges, setHasChanges] = useState(false);
     const [selectedSystems, setSelectedSystems] = useState([]);
     const [isCancelActions, setCancelActions] = useState(false);
-    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        Network.get(`/rhn/manager/api/systems/targetforschedule/${props.scheduleId}`).promise
-            .then(setSystems)
-            .catch(xhr => props.onMessage(
-                Network.responseErrorMessage(xhr)))
-            .finally(() => setLoading(false));
+        Network.get(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/systems`).promise
+            .then(setSelectedSystems)
+            .catch(xhr => props.onMessage(Network.responseErrorMessage(xhr)));
     }, [props.scheduleId]);
 
     const onAssign = () => {
-        return Network.post(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/assign`,
+        return Network.post(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/setsystems`,
                 JSON.stringify({systemIds: selectedSystems, cancelActions: isCancelActions}),
                 "application/json", false).promise
             .then(() => props.onMessage(
                 MessagesUtils.success(t("Maintenance schedule has been assigned to {0} system(s)", selectedSystems.length))))
-            .then(props.onAssign)
+            .then(props.onBack)
             .catch(xhr => props.onMessage(
                 Network.responseErrorMessage(xhr)));
     };
 
+    const onSelect = (systems) => {
+      setHasChanges(true);
+      setSelectedSystems(systems);
+    }
+
     return (
         <>
             <InnerPanel
-                title={t("Assign Systems")}
+                title={t("Assigned Systems")}
                 icon="fa-desktop"
                 buttons={[
                     <Toggler
@@ -173,36 +174,50 @@ const SystemPicker = (props: SystemPickerProps) => {
                         handler={() => setCancelActions(!isCancelActions)}
                         value={isCancelActions}
                     />,
-                    ( isCancelActions ?
+                    ( isCancelActions && selectedSystems.length > 0 ?
                         <ModalButton
                             target="cancel-confirm"
-                            text={t("Assign")}
+                            text={t("Save Changes")}
                             className="btn-success"
-                            disabled={selectedSystems.length === 0}
+                            disabled={!hasChanges}
                         /> :
                         <AsyncButton
                             action={onAssign}
                             defaultType="btn-success"
-                            text={t("Assign")}
-                            disabled={selectedSystems.length === 0}
+                            text={t("Save Changes")}
+                            disabled={!hasChanges}
                         />
                     )
                 ]}
             >
                 <Table
-                    data={systems}
+                    data="/rhn/manager/api/maintenance/schedule/systems"
                     identifier={system => system.id}
+                    searchField={<SearchField placeholder={t("Search systems")} criteria=""/>}
                     selectable
                     selectedItems={selectedSystems}
-                    onSelect={setSelectedSystems}
-                    loading={isLoading}
-                    initialItemsPerPage={userPrefPageSize}
+                    onSelect={onSelect}
+                    initialSortColumnKey="name"
                 >
                     <Column
-                        columnKey="systemName"
-                        comparator={Utils.sortByText}
+                        columnKey="name"
+                        sortable
                         header={t("System")}
                         cell={system => <SystemLink id={system.id} newWindow>{system.name}</SystemLink>}
+                    />
+                    <Column
+                        columnKey="scheduleName"
+                        sortable
+                        header={t("Current Schedule")}
+                        cell={system => system.scheduleId &&
+                          ( system.scheduleId === props.scheduleId ?
+                            <span>{system.scheduleName}</span>
+                            :
+                            <a href={`/rhn/manager/schedule/maintenance/schedules#/details/${system.scheduleId}`}>
+                                {system.scheduleName}
+                            </a>
+                          )
+                        }
                     />
                 </Table>
             </InnerPanel>

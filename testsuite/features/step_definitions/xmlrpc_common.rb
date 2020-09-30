@@ -69,7 +69,7 @@ When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)
   steps %(
       When I unsubscribe "#{host1}" from configuration channel "#{channel}"
       And I unsubscribe "#{host2}" from configuration channel "#{channel}"
-        )
+  )
 end
 
 When(/^I create a System Record$/) do

@@ -54,7 +54,7 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     And I follow "Custom Channel for ubuntu-xenial-main"
     And I follow "Repositories" in the content area
     And I select the "ubuntu-xenial-main" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Add the repository to the Custom Channel for ubuntu-xenial-main-updates
@@ -63,7 +63,7 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     And I follow "Custom Channel for ubuntu-xenial-main-updates"
     And I follow "Repositories" in the content area
     And I select the "ubuntu-xenial-main-updates" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the Custom Channel for ubuntu-xenial-main

@@ -59,22 +59,16 @@ Then(/^it should be possible to reach the test suite profiles$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
-Then(/^it should be possible to reach the portus registry$/) do
-  if $product == 'Uyuni'
-    # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://portus.mgr.suse.de:5000'
+Then(/^it should be possible to reach the authenticated registry$/) do
+  if not ($auth_registry.nil? || $auth_registry.empty?)
+    url = "https://#{$auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
 
-Then(/^it should be possible to reach the other registry$/) do
-  if $product == 'Uyuni'
-    # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://registry.mgr.suse.de:443'
+Then(/^it should be possible to reach the not authenticated registry$/) do
+  if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
+    url = "https://#{$no_auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
@@ -261,9 +255,13 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
 end
 
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
-  repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-    break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
-    sleep 10
+  begin
+    repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+      break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+      sleep 10
+    end
+  rescue StandardError => e
+    puts e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
@@ -575,6 +573,13 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node.run(cmd)
 end
 
+When(/^I force picking pending events on "([^"]*)" if necessary$/) do |host|
+  if get_client_type(host) == 'traditional'
+    node = get_target(host)
+    node.run('rhn_check -vvv')
+  end
+end
+
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   node = get_target(host)
   output, _code = node.run(cmd)
@@ -679,26 +684,30 @@ When(/^I register this client for SSH push via tunnel$/) do
 end
 
 # Repositories and packages management
-When(/^I enable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
+When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+  _os_version, os_family = get_os_version(node)
+  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
+          "zypper mr --#{action} #{repos}"
         else
-    "zypper mr --enable #{repo}"
-        end
-  node.run(cmd, error_control.empty?)
-end
-
-When(/^I disable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
-  node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
-        else
-    "zypper mr --disable #{repo}"
+          cmd_list = if action == 'enable'
+                       repos.split(' ').map do |repo|
+                         if os_family =~ /^centos/
+                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
+                         elsif os_family =~ /^ubuntu/
+                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
+                         end
+                       end
+                     else
+                       repos.split(' ').map do |repo|
+                         if os_family =~ /^centos/
+                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
+                         elsif os_family =~ /^ubuntu/
+                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
+                         end
+                       end
+                     end
+          cmd_list.reduce(:+)
         end
   node.run(cmd, error_control.empty?)
 end
@@ -1312,11 +1321,21 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   raise if code.zero?
 end
 
-# Enable/disable repository for monitoring exporters
-When(/^I "([^"]*)" Prometheus exporter repository on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  repo_name = 'tools_additional_repo'
-  if $product == 'Uyuni'
-    repo_name = 'tools_pool_repo'
+When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
+  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
+  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
+  node = get_target(host)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
   end
-  step %(I #{action} repository "#{repo_name}" on this "#{host}"#{error_control})
+end
+
+When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
+  node = get_target(host)
+  source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
+  remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
+  return_code = file_inject(node, source, remote_file)
+  raise 'File injection failed' unless return_code.zero?
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
 end

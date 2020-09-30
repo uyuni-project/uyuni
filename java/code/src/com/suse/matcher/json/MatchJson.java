@@ -15,7 +15,7 @@
 package com.suse.matcher.json;
 
 /**
- * JSON representation of a match.
+ * JSON representation of a confirmed match.
  */
 public class MatchJson {
 
@@ -31,9 +31,6 @@ public class MatchJson {
     /** The number of subscription cents used in this match. */
     private Integer cents;
 
-    /** True if this match has been confirmed, false if it is possible but not confirmed. */
-    private Boolean confirmed;
-
     /**
      * Standard constructor.
      *
@@ -41,15 +38,13 @@ public class MatchJson {
      * @param subscriptionIdIn the subscription id
      * @param productIdIn the product id
      * @param centsIn the number of subscription cents used in this match
-     * @param confirmedIn whether this match has been confirmed or not
      */
     public MatchJson(Long systemIdIn, Long subscriptionIdIn, Long productIdIn,
-                     Integer centsIn, Boolean confirmedIn) {
+                     Integer centsIn) {
         systemId = systemIdIn;
         subscriptionId = subscriptionIdIn;
         productId = productIdIn;
         cents = centsIn;
-        confirmed = confirmedIn;
     }
 
     /**
@@ -124,21 +119,4 @@ public class MatchJson {
         cents = centsIn;
     }
 
-    /**
-     * Checks if is confirmed.
-     *
-     * @return the boolean
-     */
-    public Boolean getConfirmed() {
-        return confirmed;
-    }
-
-    /**
-     * Sets this match confirmed.
-     *
-     * @param confirmedIn the new confirmed value
-     */
-    public void setConfirmed(Boolean confirmedIn) {
-        confirmed = confirmedIn;
-    }
 }

@@ -1190,6 +1190,16 @@
         "enabled": false,
         "autorefresh": true,
         "installer_updates": false
+      },
+      {
+        "autorefresh": true,
+        "description": "SLES12-Installer-Updates for sle-12-x86_64",
+        "distro_target": "sle-12-x86_64",
+        "enabled": false,
+        "id": 999999,
+        "installer_updates": true,
+        "name": "SLES12-Installer-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER-INSTALLER/12/x86_64/update/"
       }
     ]
   },

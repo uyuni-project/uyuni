@@ -1,12 +1,26 @@
 // @flow
+
 import * as React from 'react';
-import { TableDataHandler } from './TableDataHandler';
-import { SearchField } from './SearchField';
-import { Column } from './Column';
+import {Column} from './Column';
+import {SearchField} from './SearchField';
+import {TableDataHandler} from './TableDataHandler';
 
 type TableProps = {
-  /** any type of data in an array, where each element is a row data */
-  data: Array<any>,
+  /**
+   * Either an array of data items of any type where each element is a row data,
+   * or a URI string to a resource endpoint that returns a paged list of data items.
+   *
+   * The data returned from the endpoint must be in paginated form as the following:
+   * ```
+   * {
+   *    items: [..],
+   *    total: TOTAL_ITEMS
+   * }
+   * ```
+   *
+   * See: utils/data-providers/paged-data-endpoint.js for async usage
+   */
+  data: Array<any> | string,
   /** Function extracting the unique key of the row from the data object */
   identifier: Function,
   /** the column key name of the initial sorted column */
@@ -27,8 +41,6 @@ type TableProps = {
   selectedItems?: Array<any>,
   /** The message which is shown when there are no rows to display */
   emptyText?: string,
-  /** if data is loading */
-  loading?: boolean,
   /** The message which is shown when the data is loading */
   loadingText?: string,
   /** Children node in the table */
@@ -42,6 +54,7 @@ export function Table(props: TableProps): React.Node {
   const columns = React.Children.toArray(props.children)
     .filter((child) => child.type === Column || child.type.displayName === "Column")
     .map((child) => React.cloneElement(child));
+
   return (
     <TableDataHandler
       columns={columns}
