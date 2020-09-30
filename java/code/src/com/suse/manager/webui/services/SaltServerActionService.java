@@ -1703,6 +1703,13 @@ public class SaltServerActionService {
                         pillar.put("boot", bootParams);
                     }
 
+                    // If we have a DVD image and we are creating a VM, set "cdrom hd" boot devices
+                    // otherwise set "network hd"
+                    boolean hasCdromIso = action.getDisks().stream()
+                            .anyMatch(disk -> disk.getDevice().equals("cdrom") && disk.getSourceFile() != null &&
+                                    !disk.getSourceFile().isEmpty());
+                    pillar.put("boot_dev", hasCdromIso ? "cdrom hd" : "network hd");
+
                     return State.apply(
                             Collections.singletonList(state),
                             Optional.of(pillar));
