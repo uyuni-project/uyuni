@@ -200,4 +200,15 @@ public class VirtManagerSalt implements VirtManager {
 
         return saltApi.callSync(call, minionId);
     }
+
+    @Override
+    public boolean startGuest(String minionId, String domainName) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("name", domainName);
+        LocalCall<Boolean> call =
+                new LocalCall<>("virt.start", Optional.empty(), Optional.of(args),
+                        new TypeToken<Boolean>() { });
+
+        return saltApi.callSync(call, minionId).orElse(false);
+    }
 }

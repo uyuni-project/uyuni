@@ -41,6 +41,7 @@ public class GuestDefinition {
     private String uuid;
     private long memory;
     private long maxMemory;
+    private boolean requiresRestart;
 
     private GuestVcpuDef vcpu;
     private GuestOsDef os;
@@ -169,6 +170,13 @@ public class GuestDefinition {
     }
 
     /**
+     * @return whether the guest needs a manual restart. This usually means on_reboot is set to destroy
+     */
+    public boolean isRequiresRestart() {
+        return requiresRestart;
+    }
+
+    /**
      * @return OS definition
      */
     public GuestOsDef getOs() {
@@ -270,6 +278,9 @@ public class GuestDefinition {
 
             def.vcpu = GuestVcpuDef.parse(domainElement.getChild("vcpu"));
             def.os = GuestOsDef.parse(domainElement.getChild("os"));
+
+            Element onRebootNode = domainElement.getChild("on_reboot");
+            def.requiresRestart = onRebootNode != null && onRebootNode.getTextTrim().equals("destroy");
 
             Element devices = domainElement.getChild("devices");
             def.graphics = GuestGraphicsDef.parse(devices.getChild("graphics"));

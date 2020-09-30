@@ -41,6 +41,16 @@ public interface VirtManager {
     Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName);
 
     /**
+     * Start a virtual machine
+     *
+     * @param minionId the host minion ID
+     * @param domainName the name of the domain to start
+     *
+     * @return whether it worked or not
+     */
+    boolean startGuest(String minionId, String domainName);
+
+    /**
      * Query virtual host and domains capabilities.
      *
      * @param minionId the salt minion virtual host to ask about

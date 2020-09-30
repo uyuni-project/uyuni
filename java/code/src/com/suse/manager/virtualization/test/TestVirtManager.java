@@ -35,6 +35,11 @@ public class TestVirtManager implements VirtManager {
     }
 
     @Override
+    public boolean startGuest(String minionId, String domainName) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
         throw new UnsupportedOperationException();
     }

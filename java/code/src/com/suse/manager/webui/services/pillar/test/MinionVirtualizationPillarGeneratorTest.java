@@ -68,6 +68,9 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             }
 
             @Override
+            public boolean startGuest(String minionId, String domainName) { return false; }
+
+            @Override
             public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
                 return Optional.empty();
             }
