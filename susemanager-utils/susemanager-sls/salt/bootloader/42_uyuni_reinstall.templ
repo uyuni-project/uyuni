@@ -12,10 +12,10 @@ else
 fi
 echo "menuentry \"{{ pillar.get('uyuni-reinstall-name') }}\" {"
 if [ -d /sys/firmware/efi ] && [ "x${GRUB_USE_LINUXEFI}" = "xtrue" ]; then
-    echo "    linuxefi ${rel_dirname}/uyuni-reinstall-kernel {{ pillar.get('uyuni-reinstall-kopts') }}"
+    echo "    linuxefi ${rel_dirname}/uyuni-reinstall-kernel {{ pillar.get('kopts') }}"
     echo "    initrdefi ${rel_dirname}/uyuni-reinstall-initrd"
 else
-    echo "    linux ${rel_dirname}/uyuni-reinstall-kernel {{ pillar.get('uyuni-reinstall-kopts') }}"
+    echo "    linux ${rel_dirname}/uyuni-reinstall-kernel {{ pillar.get('kopts') }}"
     echo "    initrd ${rel_dirname}/uyuni-reinstall-initrd"
 fi
 echo "}"

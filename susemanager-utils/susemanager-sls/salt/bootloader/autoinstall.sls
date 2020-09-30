@@ -1,13 +1,13 @@
-{% if pillar['uyuni-reinstall-kernel'] and pillar['uyuni-reinstall-initrd'] %}
+{% if pillar['kernel'] and pillar['initrd'] %}
 mgr_copy_kernel:
   file.managed:
     - name: /boot/uyuni-reinstall-kernel
-    - source: salt://bootloader/{{ pillar.get('uyuni-reinstall-kernel') }}
+    - source: salt://bootloader/{{ pillar.get('kernel') }}
 
 mgr_copy_initrd:
   file.managed:
     - name: /boot/uyuni-reinstall-initrd
-    - source: salt://bootloader/{{ pillar.get('uyuni-reinstall-initrd') }}
+    - source: salt://bootloader/{{ pillar.get('initrd') }}
 
 mgr_create_grub2_entry:
   file.managed:
