@@ -56,6 +56,7 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
   }
 
   const volume = formContext.model[`disk${props.index}_source_file`];
+  const useCobblerProfile = !!(formContext.model['cobbler_profile']);
 
   return (
     <>
@@ -109,7 +110,7 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
             label={t('Source template image URL')}
             labelClass="col-md-3"
             divClass="col-md-6"
-            disabled={!props.onlyHandledDisks || volume}
+            disabled={!props.onlyHandledDisks || volume || useCobblerProfile}
           />
         </>
       }

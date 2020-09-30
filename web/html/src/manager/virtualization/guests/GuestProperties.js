@@ -27,6 +27,7 @@ type Props = {
   localTime: string,
   timezone: string,
   actionChains: Array<ActionChain>,
+  cobblerProfiles: {string: string},
 };
 
 /**
@@ -113,6 +114,18 @@ export function GuestProperties(props: Props) : React.Node {
                                     const arch = initialModel.arch || props.host.cpu.arch;
                                     const caps = domainsCaps.find(cap => cap.arch === arch && cap.domain === vmType);
 
+                                    const onChangeProfile = (name, value) => {
+                                      if (value) {
+                                        // remove the image template of the first disk
+                                        // set default disk image size to 20G if no image is set
+                                        const size = model['disk0_source_size'];
+                                        changeModel(Object.assign(model,
+                                          { disk0_source_template: undefined },
+                                          !size ? { disk0_source_size: 20 }: {},
+                                        ));
+                                      }
+                                    };
+
                                     return [
                                       <Panel key="general" title={t('General')} headingLevel="h2">
                                         { initialModel.name === undefined
@@ -192,6 +205,34 @@ export function GuestProperties(props: Props) : React.Node {
                                             }
                                           </Select>)
                                         }
+                                        { initialModel.vmType === undefined && props.cobblerProfiles !== {}
+                                          && (
+                                            <>
+                                              <Select
+                                                labelClass="col-md-3"
+                                                divClass="col-md-6"
+                                                label={t('Auto-installation Profile')}
+                                                name="cobbler_profile"
+                                                defaultValue=""
+                                                onChange={onChangeProfile}
+                                              >
+                                                <option key="" value=""></option>
+                                                {
+                                                  Object.keys(props.cobblerProfiles)
+                                                    .sort((k1, k2) => props.cobblerProfiles[k1].localeCompare(props.cobblerProfiles[k2]))
+                                                    .map(k => <option key={k} value={k}>{props.cobblerProfiles[k]}</option>)
+                                                }
+                                              </Select>
+                                              <Text
+                                                name="kernel_options"
+                                                label={t('Kernel options')}
+                                                labelClass="col-md-3"
+                                                divClass="col-md-6"
+                                                disabled={!model["cobbler_profile"]}
+                                              />
+                                            </>
+                                          )
+                                        }
                                       </Panel>,
                                       <GuestDisksPanel
                                         changeModel={changeModel}
@@ -240,3 +281,6 @@ export function GuestProperties(props: Props) : React.Node {
     </VirtualizationListRefreshApi>
   );
 }
+GuestProperties.defaultProps = {
+  cobblerProfiles: {},
+};

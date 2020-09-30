@@ -1,3 +1,4 @@
+- Allow creating a VM on Salt host using a cobbler profile
 - Show cluster upgrade plan in the upgrade UI
 - Enable to switch to multiple webUI theme
 - Only refresh the virtual storage list when pool events are received

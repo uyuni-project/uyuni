@@ -18,6 +18,7 @@ type Props = {
   localTime: string,
   timezone: string,
   actionChains: Array<ActionChain>,
+  cobblerProfiles: {string: string},
 };
 
 type State = {
@@ -93,6 +94,7 @@ class GuestsCreate extends React.Component<Props, State> {
                   localTime={this.props.localTime}
                   timezone={this.props.timezone}
                   actionChains={this.props.actionChains}
+                  cobblerProfiles={this.props.cobblerProfiles}
                 />
               </TopPanel>
             );
