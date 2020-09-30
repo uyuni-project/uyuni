@@ -665,7 +665,7 @@ class UyuniActivationKey(UyuniRemoteObject):
         :param key: activation key name
         :param description: activation key description
         :param base_channel_label: base channel to be used
-        :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
         :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
         :param universal_default: sets this activation key as organization universal default
 
@@ -709,7 +709,7 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def add_child_channels(self, key: str, child_channels: List[str]) -> bool:
         """
-        Add child channels list to an activation key.
+        Add child channels to an activation key.
 
         :param key: activation key name
         :param child_channels: List of child channels to be added
@@ -720,7 +720,7 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def remove_child_channels(self, key: str, child_channels: List[str]) -> bool:
         """
-        Remove child channels list from an activation key.
+        Remove child channels from an activation key.
 
         :param key: activation key name
         :param child_channels: List of child channels to be removed
@@ -731,7 +731,7 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def check_config_deployment(self, key: str) -> bool:
         """
-        Return configuration status for 'configure_after_registration' flag.
+        Return the status of the 'configure_after_registration' flag for an Activation Key.
 
         :param key: activation key name
 
@@ -741,7 +741,7 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def enable_config_deployment(self, key: str) -> bool:
         """
-        Set configuration status for 'configure_after_registration' flag to true.
+        Enables the 'configure_after_registration' flag for an Activation Key.
 
         :param key: activation key name
 
@@ -751,7 +751,7 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def disable_config_deployment(self, key: str) -> bool:
         """
-        Set configuration status for 'configure_after_registration' flag to false.
+        Disables the 'configure_after_registration' flag for an Activation Key.
 
         :param key: activation key name
 
@@ -772,7 +772,7 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def remove_packages(self, key: str, packages: List[Any]) -> bool:
         """
-        remove a list of packages from an activation key.
+        Remove a list of packages from an activation key.
 
         :param key: activation key name
         :param packages: list of packages to be removed
@@ -786,7 +786,7 @@ class UyuniActivationKey(UyuniRemoteObject):
         Add a list of server groups to an activation key.
 
         :param key: activation key name
-        :param server_groups: list of packages to be added
+        :param server_groups: list of server groups to be added
 
         :return: boolean, True indicates success
         """
@@ -797,7 +797,7 @@ class UyuniActivationKey(UyuniRemoteObject):
         Remove a list of server groups from an activation key.
 
         :param key: activation key name
-        :param server_groups: list of packages to be removed
+        :param server_groups: list of server groups to be removed
 
         :return: boolean, True indicates success
         """
@@ -1522,7 +1522,7 @@ def activation_key_set_details(key,
     :param key: activation key name
     :param description: activation key description
     :param base_channel_label: base channel to be used
-    :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
     :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
     :param universal_default: sets this activation key as organization universal default
     :param org_admin_user: organization admin username
@@ -1568,7 +1568,7 @@ def activation_key_remove_entitlements(key, system_types, org_admin_user=None, o
 
 def activation_key_add_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
     """
-    Add child channels list to an activation key.
+    Add child channels to an activation key.
 
     :param key: activation key name
     :param child_channels: List of child channels to be added
@@ -1582,7 +1582,7 @@ def activation_key_add_child_channels(key, child_channels, org_admin_user=None, 
 
 def activation_key_remove_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
     """
-    Remove child channels list from an activation key.
+    Remove child channels from an activation key.
 
     :param key: activation key name
     :param child_channels: List of child channels to be removed
@@ -1596,7 +1596,7 @@ def activation_key_remove_child_channels(key, child_channels, org_admin_user=Non
 
 def activation_key_check_config_deployment(key, org_admin_user=None, org_admin_password=None):
     """
-    Return configuration status for 'configure_after_registration' flag.
+    Return the status of the 'configure_after_registration' flag for an Activation Key.
 
     :param key: activation key name
     :param org_admin_user: organization admin username
@@ -1609,7 +1609,7 @@ def activation_key_check_config_deployment(key, org_admin_user=None, org_admin_p
 
 def activation_key_enable_config_deployment(key, org_admin_user=None, org_admin_password=None):
     """
-    Set configuration status for 'configure_after_registration' flag to true.
+    Enables the 'configure_after_registration' flag for an Activation Key.
 
     :param key: activation key name
     :param org_admin_user: organization admin username
@@ -1622,7 +1622,7 @@ def activation_key_enable_config_deployment(key, org_admin_user=None, org_admin_
 
 def activation_key_disable_config_deployment(key, org_admin_user=None, org_admin_password=None):
     """
-    Set configuration status for 'configure_after_registration' flag to false.
+    Disables the 'configure_after_registration' flag for an Activation Key.
 
     :param key: activation key name
     :param org_admin_user: organization admin username
@@ -1649,7 +1649,7 @@ def activation_key_add_packages(key, packages, org_admin_user=None, org_admin_pa
 
 def activation_key_remove_packages(key, packages, org_admin_user=None, org_admin_password=None):
     """
-    remove a list of packages from an activation key.
+    Remove a list of packages from an activation key.
 
     :param key: activation key name
     :param packages: list of packages to be removed
@@ -1666,7 +1666,7 @@ def activation_key_add_server_groups(key, server_groups, org_admin_user=None, or
     Add a list of server groups to an activation key.
 
     :param key: activation key name
-    :param server_groups: list of packages to be added
+    :param server_groups: list of server groups to be added
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
@@ -1680,7 +1680,7 @@ def activation_key_remove_server_groups(key, server_groups, org_admin_user=None,
     Remove a list of server groups from an activation key.
 
     :param key: activation key name
-    :param server_groups: list of packages to be removed
+    :param server_groups: list of server groups to be removed
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 

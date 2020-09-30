@@ -138,7 +138,7 @@ name: the Activation Key name
 description: the Activation description
 base_channel: base channel to be used
 usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
-contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
 system_types: system types to be assigned.
               Can be one of: 'virtualization_host', 'container_build_host',
               'monitoring_entitled', 'osimage_build_host', 'virtualization_host'

@@ -586,7 +586,7 @@ Updates an Uyuni Activation Key
 key: activation key name
 description: activation key description
 base_channel_label: base channel to be used
-contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
 usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
 universal_default: sets this activation key as organization universal default
 org_admin_user: organization admin username
@@ -626,7 +626,7 @@ org_admin_password: organization admin password
 === activation_key_add_child_channels
 **(key, child_channels, org_admin_user=None, org_admin_password=None)**
 
-Add child channels list to an activation key.
+Add child channels to an activation key.
 
 ....
 key: activation key name
@@ -640,7 +640,7 @@ org_admin_password: organization admin password
 === activation_key_remove_child_channels
 **(key, child_channels, org_admin_user=None, org_admin_password=None)**
 
-Remove child channels list from an activation key.
+Remove child channels from an activation key.
 
 ....
 key: activation key name
@@ -654,7 +654,7 @@ org_admin_password: organization admin password
 === activation_key_check_config_deployment
 **(key, org_admin_user=None, org_admin_password=None)**
 
-Return configuration status for 'configure_after_registration' flag.
+Return the status of the 'configure_after_registration' flag for an Activation Key.
 
 ....
 key: activation key name
@@ -667,7 +667,7 @@ org_admin_password: organization admin password
 === activation_key_enable_config_deployment
 **(key, org_admin_user=None, org_admin_password=None)**
 
-Set configuration status for 'configure_after_registration' flag to true.
+Enables the 'configure_after_registration' flag for an Activation Key.
 
 ....
 key: activation key name
@@ -680,7 +680,7 @@ org_admin_password: organization admin password
 === activation_key_disable_config_deployment
 **(key, org_admin_user=None, org_admin_password=None)**
 
-Set configuration status for 'configure_after_registration' flag to false.
+Disables the 'configure_after_registration' flag for an Activation Key.
 
 ....
 key: activation key name
@@ -707,7 +707,7 @@ org_admin_password: organization admin password
 === activation_key_remove_packages
 **(key, packages, org_admin_user=None, org_admin_password=None)**
 
-remove a list of packages from an activation key.
+Remove a list of packages from an activation key.
 
 ....
 key: activation key name
@@ -725,7 +725,7 @@ Add a list of server groups to an activation key.
 
 ....
 key: activation key name
-server_groups: list of packages to be added
+server_groups: list of server groups to be added
 org_admin_user: organization admin username
 org_admin_password: organization admin password
 ....
@@ -739,7 +739,7 @@ Remove a list of server groups from an activation key.
 
 ....
 key: activation key name
-server_groups: list of packages to be removed
+server_groups: list of server groups to be removed
 org_admin_user: organization admin username
 org_admin_password: organization admin password
 ....

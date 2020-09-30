@@ -771,7 +771,7 @@ class UyuniActivationKeys:
         :param description: the Activation description
         :param base_channel: base channel to be used
         :param usage_limit: activation key usage limit
-        :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
         :param system_types: system types to be assigned.
                              Can be one of: 'virtualization_host', 'container_build_host',
                              'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
@@ -1145,7 +1145,7 @@ def activation_key_present(name,
     :param description: the Activation description
     :param base_channel: base channel to be used
     :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
-    :param contact_method: contact method to the used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
     :param system_types: system types to be assigned.
                          Can be one of: 'virtualization_host', 'container_build_host',
                          'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
