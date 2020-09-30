@@ -82,22 +82,24 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
         powerId = powerIdIn;
     }
 
+    protected String getIdent() {
+        return server.getId().toString();
+    }
     /**
      * Clears server's power settings
      * @return any errors
      */
     public ValidatorError removeSystemProfile() {
-        Long sid = server.getId();
         SystemRecord systemRecord = getSystemRecordForSystem();
         if (systemRecord != null) {
             systemRecord.remove();
-            log.debug("Cobbler system profile removed for system " + sid);
+            log.debug("Cobbler system profile removed for system " + getIdent());
         }
 
         return null;
     }
 
-    private SystemRecord getSystemRecordForSystem() {
+    protected SystemRecord getSystemRecordForSystem() {
         CobblerConnection connection = getCobblerConnection();
         SystemRecord systemRecord = null;
 
@@ -116,11 +118,10 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
      */
     @Override
     public ValidatorError store() {
-        Long sid = server.getId();
         SystemRecord systemRecord = getSystemRecordForSystem();
 
-        if (systemRecord == null) {
-            log.debug("No Cobbler system record found for system " + sid);
+        if (systemRecord == null && server != null) {
+            log.debug("No Cobbler system record found for system " + getIdent());
             try {
                 CobblerConnection connection = getCobblerConnection();
                 Image image = createDummyImage(connection);
@@ -135,8 +136,12 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
             }
         }
 
+        if (systemRecord == null) {
+            return new ValidatorError("kickstart.powermanagement.system_not_found");
+        }
+
         try {
-            log.debug("Setting Cobbler parameters for system " + sid);
+            log.debug("Setting Cobbler parameters for system " + getIdent());
             if (powerType != null && !powerType.equals("") &&
                     !powerType.equals(systemRecord.getPowerType())) {
                 systemRecord.setPowerType(powerType);
@@ -157,7 +162,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
                 systemRecord.setPowerId(powerId);
             }
             systemRecord.save();
-            log.debug("Settings saved for system " + sid);
+            log.debug("Settings saved for system " + getIdent());
         }
         catch (XmlRpcException e) {
             Throwable cause = e.getCause();
