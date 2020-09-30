@@ -28,6 +28,7 @@ import com.suse.manager.webui.websocket.VirtNotifications;
 
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
     private static final Logger LOG = Logger.getLogger(LibvirtEngineDomainLifecycleMessageAction.class);
 
     private final VirtManager virtManager;
+    private final List<String> toRestart = new ArrayList<>();
 
     /**
      * @param virtManagerIn instance to manage virtualization
@@ -83,6 +85,11 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                         VirtualInstanceManager.addGuestVirtualInstance(def.getUuid().replaceAll("-", ""),
                                 def.getName(), def.getVirtualInstanceType(), state, minion, null,
                                 def.getVcpu().getMax(), def.getMaxMemory());
+
+                        // Check if the defined VM will require a manual restart
+                        if (def.isRequiresRestart()) {
+                            watchVirtualMachine(minionId, message.getDomainName());
+                        }
                     });
                 }
                 else {
@@ -109,11 +116,17 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                     if (Arrays.asList("undefined", "stopped", "shutdown", "crashed").contains(event) &&
                         !virtManager.getGuestDefinition(minionId, message.getDomainName()).isPresent()) {
                         vms.forEach(vm -> VirtualInstanceManager.deleteGuestVirtualInstance(vm));
+                        unwatchVirtualMachine(minionId, message.getDomainName());
                     }
                     else {
                         final Optional<GuestDefinition> updatedDef = message.getDetail().equals("updated") ?
                                 virtManager.getGuestDefinition(minionId, message.getDomainName()) :
                                 Optional.empty();
+
+                        // Check if we need to restart the VM now
+                        if (event.equals("stopped")) {
+                            checkForRestart(minionId, message.getDomainName());
+                        }
 
                         vms.forEach(vm -> {
                             String name = updatedDef.isPresent() ? updatedDef.get().getName() : vm.getName();
@@ -132,5 +145,31 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
             });
         }
         VirtNotifications.spreadRefresh("guest");
+    }
+
+    private void unwatchVirtualMachine(String minionId, String vmName) {
+        synchronized (toRestart) {
+            toRestart.remove(computeName(minionId, vmName));
+        }
+    }
+
+    private void watchVirtualMachine(String minionId, String vmName) {
+        synchronized (toRestart) {
+            toRestart.add(computeName(minionId, vmName));
+        }
+    }
+
+    private void checkForRestart(String minionId, String vmName) {
+        String name = computeName(minionId, vmName);
+        synchronized (toRestart) {
+            if (toRestart.contains(name)) {
+                virtManager.startGuest(minionId, vmName);
+                toRestart.remove(name);
+            }
+        }
+    }
+
+    private String computeName(String minionId, String vmName) {
+        return minionId + "-" + vmName;
     }
 }
