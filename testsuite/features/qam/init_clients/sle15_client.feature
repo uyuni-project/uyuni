@@ -8,7 +8,8 @@ Feature: Bootstrap a SLES 15 traditional client
   I want to call rhnreg_ks
 
   Scenario: Register a SLES 15 traditional client
-    When I register "sle15_client" as traditional client with activation key "1-sle15_client_key"
+    When I bootstrap traditional client "sle15_client" using bootstrap script with activation key "1-sle15_client_key" from the proxy
+    And I install package "spacewalk-client-setup spacewalk-oscap mgr-cfg-actions" on this "sle15_client"
     And I run "mgr-actions-control --enable-all" on "sle15_client"
     Then I should see "sle15_client" via spacecmd
 

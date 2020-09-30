@@ -5,11 +5,12 @@
 Feature: Bootstrap a CentOS 7 traditional client
 
   Scenario: Prepare a CentOS 7 traditional client
-    When I install package "hwdata m2crypto wget" on this "ceos7_client"
+    When I bootstrap traditional client "ceos7_client" using bootstrap script with activation key "1-ceos7_client_key" from the proxy
+    And I install package "hwdata m2crypto wget" on this "ceos7_client"
     And I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos7_client"
     And I install package "spacewalk-oscap scap-security-guide" on this "ceos7_client"
-    And I register "ceos7_client" as traditional client with activation key "1-ceos7_client_key"
     And I run "mgr-actions-control --enable-all" on "ceos7_client"
+    Then I should see "ceos7_client" via spacecmd
 
   Scenario: The onboarding of CentOS 7 traditional client is completed
     Given I am authorized
