@@ -1138,8 +1138,7 @@ public class SystemHandler extends BaseHandler {
      */
     private List<Map<String, Object>> packagesToCheck(Server server, String name)
             throws NoSuchPackageException {
-        DataResult<Map<String, Object>> installed =
-                SystemManager.installedPackages(server.getId(), false);
+        DataResult<Map<String, Object>> installed = SystemManager.installedPackages(server.getId());
 
         List<Map<String, Object>> toCheck = new ArrayList<Map<String, Object>>();
         // Get a list of packages with matching name
@@ -1230,8 +1229,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
-        DataResult<Map<String, Object>> packages =
-                SystemManager.installedPackages(server.getId(), false);
+        DataResult<Map<String, Object>> packages = SystemManager.installedPackages(server.getId());
 
         /*
          * Loop through the packages for this system and check each attribute. Use
@@ -1535,7 +1533,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
-        return SystemManager.installedPackages(server.getId(), false);
+        return SystemManager.installedPackages(server.getId());
     }
 
     /**
