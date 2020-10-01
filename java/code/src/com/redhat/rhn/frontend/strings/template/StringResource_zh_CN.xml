@@ -13,7 +13,7 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target>您的 @@PRODUCT_NAME@@ 帐户已经准备好</target>
+        <target state="translated">您的 @@PRODUCT_NAME@@ 帐户已经准备好</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
@@ -104,7 +104,7 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target>您好，
+        <target state="translated">您好，
 
 已经由 {0} {1} 为您创建了一个红帽登录。 您的
 红帽登录以及一个激活的红帽订阅为您在 @@PRODUCT_NAME@@ 提供
@@ -131,7 +131,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target>用户创建的 @@PRODUCT_NAME@@： {0} ({1}, {2}, &lt;{3}&gt;)</target>
+        <target state="translated">用户创建的 @@PRODUCT_NAME@@： {0} ({1}, {2}, &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body" xml:space="preserve">
         <source>Hello,
@@ -159,7 +159,7 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>您好，
+        <target state="translated">您好，
 
 已经在您的帐户中添加了一个新用户。
 
@@ -178,23 +178,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
         <trans-unit id="email.errata.notification.body.summary">
-          <source>
-@@PRODUCT_NAME@@ has determined that the following advisory is applicable to
-one or more of the systems you have registered:
-
-Complete information about this patch can be found at the following location:
-     {0}
-
-{1} - {2}
-------------------------------------------------------------------------------
-Summary:
-{3}
-
-{4} {5} {6}
-{7}
-------------------------------------------------------------------------------
-    </source>
-          <context-group name="ctx">
+          <source>@@PRODUCT_NAME@@ has determined that the following advisory is applicable to one or more of the systems you have registered: Complete information about this patch can be found at the following location: {0} {1} - {2} ------------------------------------------------------------------------------ Summary: {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -206,144 +190,35 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target>
-@@PRODUCT_NAME@@ 已经决定了下列建议可适用于
-一个或多个您注册的系统：
-
-这个错误的完整信息可以在下列位置找到：
-     {0}
-
-{1} - {2}
-------------------------------------------------------------------------------
-总结：
-{3}
-
-{4} {5} {6}
-{7}
-------------------------------------------------------------------------------
-    </target>
-        </trans-unit>
+          <target state="translated">@@PRODUCT_NAME@@ 已经决定了下列建议可适用于 一个或多个您注册的系统： 这个错误的完整信息可以在下列位置找到： {0} {1} - {2} ------------------------------------------------------------------------------ 总结： {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</target> </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader">
-          <source>
----------------------
-Affected Systems List
----------------------
-This Patch Advisory may apply to the systems listed below. If you know that
-this patch does not apply to a system listed, it might be possible that the
-package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
-as root on the system in question to refresh your software profile.
-    </source>
-          <target>
----------------------
-受影响的系统列表
----------------------
-这个勘误建议可以应用到下面列表中的系统。如果您知道
-这个勘误不适用于这些系统，这可能是因为
-用于该服务器的软件包配置已经过期。此时您应该以根用户在这些系统里运行
-'up2date -p' (RHEL 4 及更低版本) 或 'rhn-profile-sync' (RHEL 5 及更高版本) 来刷新软件配置。
-    </target>
-        </trans-unit>
+          <source>--------------------- Affected Systems List --------------------- This Patch Advisory may apply to the systems listed below. If you know that this patch does not apply to a system listed, it might be possible that the package profile for that server is out of date. In that case you should run 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) as root on the system in question to refresh your software profile.</source> <target state="translated">--------------------- 受影响的系统列表 --------------------- 这个勘误建议可以应用到下面列表中的系统。如果您知道 这个勘误不适用于这些系统，这可能是因为 用于该服务器的软件包配置已经过期。此时您应该以根用户在这些系统里运行 'up2date -p' (RHEL 4 及更低版本) 或 'rhn-profile-sync' (RHEL 5 及更高版本) 来刷新软件配置。</target> </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source>
-There is 1 affected system registered in 'Overview' (only systems for
-which you have explicitly enabled Patch Alerts are shown).
-    </source>
-          <target>
-『Overview』里有一个已注册的系统受到了影响
-（只显示已经显性启用勘误警告的系统）。
-    </target>
-        </trans-unit>
+          <source>There is 1 affected system registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target state="translated">『Overview』里有一个已注册的系统受到了影响 （只显示已经显性启用勘误警告的系统）。</target> </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
-          <source>
-There are {0} affected systems registered in 'Overview' (only systems for
-which you have explicitly enabled Patch Alerts are shown).
-    </source>
-          <context-group name="ctx">
+          <source>There are {0} affected systems registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target>
-『Overview』里有 {0} 个已注册的系统受到了影响
-（只显示已经显性启用勘误警告的系统）。
-    </target>
-        </trans-unit>
+          <target state="translated">『Overview』里有 {0} 个已注册的系统受到了影响 （只显示已经显性启用勘误警告的系统）。</target> </trans-unit>
         <trans-unit id="email.errata.notification.body.affected">
-          <source>
-Release    Arch       Profile Name
----------- ---------- ---------------------------------------------
-{0}
-
-You may address the issues outlined in this advisory in two ways:
-
-     - select your server name by clicking on its name from the list
-       available at the following location, and then schedule a
-       patch update for it:
-           {1}
-
-     - run the Update Agent on each affected server.
-    </source>
-          <context-group name="ctx">
+          <source>Release Arch Profile Name ---------- ---------- --------------------------------------------- {0} You may address the issues outlined in this advisory in two ways: - select your server name by clicking on its name from the list available at the following location, and then schedule a patch update for it: {1} - run the Update Agent on each affected server.</source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target>
-发行版本    Arch       配置名称
----------- ---------- ---------------------------------------------
-{0}
-
-你可以以两种方法解决本顾问里列出的问题：
-
-     - 通过点击下列位置下的可用列表里的名字选择您的服务器名称
-       然后为它调度
-       勘误更新：
-           {1}
-
-     - 在每个受影响的服务器上运行『更新代理』。
-    </target>
-        </trans-unit>
+          <target state="translated">发行版本 Arch 配置名称 ---------- ---------- --------------------------------------------- {0} 你可以以两种方法解决本顾问里列出的问题： - 通过点击下列位置下的可用列表里的名字选择您的服务器名称 然后为它调度 勘误更新： {1} - 在每个受影响的服务器上运行『更新代理』。</target> </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences">
-          <source>
-Changing Notification Preferences
----------------------------------
-To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
-and navigate from "Overview" / "My Account" to the "Preferences" tab.
-
-        URL: {0}
-
-You can also enable/disable notification on a per system basis by selecting an
-individual system from the "Systems List". From the individual system view
-click the "Details" tab.
-
-{1}
-{2}
-    </source>
-          <context-group name="ctx">
+          <source>Changing Notification Preferences --------------------------------- To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@ and navigate from "Overview" / "My Account" to the "Preferences" tab. URL: {0} You can also enable/disable notification on a per system basis by selecting an individual system from the "Systems List". From the individual system view click the "Details" tab. {1} {2}</source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target>
-修改通知首选项
----------------------------------
-要启用/禁用您的全局勘误警告，请登录到 @@PRODUCT_NAME@@
-并从『Overview』/『Your Account』到『Preferences』标签页。
-
-        URL: {0}
-
-你也可以通过在『Systems List』里选择单个系统对每个系统启用/禁用通知。
-在单个系统视图里
-点击『Details』。
-
-{1}
-{2}
-    </target>
-        </trans-unit>
+          <target state="translated">修改通知首选项 --------------------------------- 要启用/禁用您的全局勘误警告，请登录到 @@PRODUCT_NAME@@ 并从『Overview』/『Your Account』到『Preferences』标签页。 URL: {0} 你也可以通过在『Systems List』里选择单个系统对每个系统启用/禁用通知。 在单个系统视图里 点击『Details』。 {1} {2}</target> </trans-unit>
       </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
@@ -355,7 +230,7 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 每日状态报告 {0}</target>
+        <target state="translated">@@PRODUCT_NAME@@ 每日状态报告 {0}</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
@@ -390,7 +265,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>只是到 {1} 为止，您的帐号 {0} 的 @@PRODUCT_NAME@@ 状态报告。
+        <target state="translated">只是到 {1} 为止，您的帐号 {0} 的 @@PRODUCT_NAME@@ 状态报告。
 
 如果下列情况之一发生，这封电子邮件将被发送：
 
@@ -465,7 +340,7 @@ Thank you for using @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target>
+        <target state="translated">
 [  这是根据您的要求自动发送给 {0} 的电子邮件。 ]
 
 您要求列出所有与电子邮件 {0} 关联的
