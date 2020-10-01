@@ -35,9 +35,7 @@ Feature: Bootstrap a CentOS 7 minion and do some basic operations on it
 
   Scenario: Prepare a CentOS 7 minion
     Given I am authorized
-    And  I install package "hwdata m2crypto wget" on this "ceos7_minion"
-    And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos7_minion"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos7_minion"
+    And I install all spacewalk client utils on "ceos7_minion"
 
   Scenario: Check events history for failures on CentOS 7 minion
     Given I am on the Systems overview page of this "ceos7_minion"
