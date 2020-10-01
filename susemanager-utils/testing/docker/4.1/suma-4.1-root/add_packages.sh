@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# we will setup our own URLs and sometimes this
+# package cause errors
+zypper rm -y container-suseconnect ||:
+
 # Packages required to run the pylint
 zypper in -y  make \
               python3 \
