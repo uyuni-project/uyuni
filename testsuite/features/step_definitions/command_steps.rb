@@ -1267,6 +1267,6 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
+    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control})
   end
 end
