@@ -18,15 +18,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2015-03-17 12:23+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Chinese (China) <trans-zh_cn@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2020-10-01 15:49+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"yum-rhn-plugin/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnplugin.py:49
 #, fuzzy, python-brace-format
@@ -54,10 +55,12 @@ msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
 msgstr "解析 RHN 代理服务器设置时出错。"
 
 #: ../rhnplugin.py:99
+#, fuzzy
 msgid "Either --version, --help or no commands entered"
 msgstr "您没有添加 --version 或 --help 参数"
 
 #: ../rhnplugin.py:104
+#, fuzzy
 msgid "Cleaning"
 msgstr "清理"
 
@@ -81,6 +84,7 @@ msgid "{PRODUCT_NAME} channel support will be disabled."
 msgstr "RHN 频道支持将被禁用。"
 
 #: ../rhnplugin.py:140
+#, fuzzy
 msgid "This system is not subscribed to any channels."
 msgstr "没有在任何频道中订阅这个系统。"
 
@@ -97,14 +101,17 @@ msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
 msgstr ""
 
 #: ../rhnplugin.py:268
+#, fuzzy
 msgid "Package profile information could not be sent."
 msgstr "无法发送软件包侧写信息。"
 
 #: ../rhnplugin.py:276
+#, fuzzy
 msgid "Error Message:"
 msgstr "出错信息："
 
 #: ../rhnplugin.py:277
+#, fuzzy
 msgid "Please run rhn_register as root on this client"
 msgstr "请在这个客户端中以 root 身份运行 rhn_register"
 
