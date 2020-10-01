@@ -1500,17 +1500,26 @@ ORDER BY UPPER(X.system_name)
 
 <mode name="system_installed_packages">
   <query params="sid">
-SELECT PN.name,
+SELECT
+      (SELECT MAX(id)
+        FROM  rhnPackage P
+        WHERE p.name_id = pn.id
+        AND p.evr_id = pe.id
+        AND p.package_arch_id = pa.id
+        AND (p.org_id = s.org_id or p.org_id is null)
+       ) as id,
+       PN.name,
        PE.version,
        PE.release,
        coalesce(PE.epoch, ' ') as epoch,
        PA.name as arch,
        SP.installtime
-  FROM rhnServerPackage SP inner join
+  FROM rhnServer S,
+       rhnServerPackage SP inner join
        rhnPackageName PN on PN.id = SP.name_id inner join
        rhnPackageEVR PE on PE.id = SP.evr_id left join
        rhnPackageArch PA on SP.package_arch_id = PA.id
- WHERE SP.server_id = :sid
+ WHERE SP.server_id = :sid and S.id = :sid
 ORDER BY PN.name, PE.evr
   </query>
 </mode>

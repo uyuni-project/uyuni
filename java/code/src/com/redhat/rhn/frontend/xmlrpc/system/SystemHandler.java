@@ -1535,7 +1535,6 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
-
         return SystemManager.installedPackages(server.getId());
     }
 

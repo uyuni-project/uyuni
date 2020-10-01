@@ -429,6 +429,9 @@ public class SystemManager extends BaseManager {
             if (pkg.get("installtime") == null) {
                 pkg.remove("installtime");
             }
+            if (pkg.get("id") == null) {
+                pkg.remove("id");
+            }
         }
         return pkgs;
     }
