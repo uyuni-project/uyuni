@@ -5,6 +5,10 @@
 FROM opensuse/leap:15.2
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
+# When using SLES images better remove container-suseconnect
+# We setup our own repositories
+#RUN zypper rm -y container-suseconnect ||:
+
 # Add the repositories
 ADD add_repositories.sh /root/add_repositories.sh
 RUN /root/add_repositories.sh
