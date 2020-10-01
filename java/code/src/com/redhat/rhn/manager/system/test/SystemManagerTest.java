@@ -1646,4 +1646,52 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(systemGroupIDInfo.getGroupID(), group.getId());
         assertEquals(systemGroupIDInfo.getGroupName(), group.getName());
     }
+
+    /**
+     * Test that installedPackages method of {@link SystemManager} returns both packages known and unknown
+     * to Uyuni. For the known packages it includes the package id.
+     *
+     * @throws Exception
+     */
+    public void testInstalledPackages() throws Exception {
+        Server server = ServerTestUtils.createTestSystem(user);
+
+        // installed on server and known to Uyuni
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        InstalledPackage knownPackage = new InstalledPackage();
+        knownPackage.setArch(pack.getPackageArch());
+        knownPackage.setName(pack.getPackageName());
+        knownPackage.setEvr(pack.getPackageEvr());
+        knownPackage.setServer(server);
+        server.getPackages().add(knownPackage);
+
+        // installed on server but unknown to Uyuni (no package id)
+        InstalledPackage unknownPackage = new InstalledPackage();
+        unknownPackage.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        unknownPackage.setName(PackageFactory.lookupOrCreatePackageByName("testpak-123"));
+        unknownPackage.setEvr(PackageEvrFactoryTest.createTestPackageEvr());
+        unknownPackage.setServer(server);
+        server.getPackages().add(unknownPackage);
+
+        DataResult<Map<String, Object>> packages = SystemManager.installedPackages(server.getId());
+
+        Map<String, Object> known = packages.stream()
+                .filter(p -> p.get("name").equals(knownPackage.getName().getName())).findFirst().orElseThrow();
+        Map<String, Object> unknown = packages.stream()
+                .filter(p -> p.get("name").equals(unknownPackage.getName().getName())).findFirst().orElseThrow();
+
+        assertEquals(pack.getId(), known.get("id"));
+        assertEquals(knownPackage.getName().getName(), known.get("name"));
+        assertEquals(knownPackage.getEvr().getEpoch(), known.get("epoch"));
+        assertEquals(knownPackage.getEvr().getVersion(), known.get("version"));
+        assertEquals(knownPackage.getEvr().getRelease(), known.get("release"));
+        assertEquals(knownPackage.getArch().getLabel(), known.get("arch"));
+
+        assertFalse(unknown.containsKey("id"));
+        assertEquals(unknownPackage.getName().getName(), unknown.get("name"));
+        assertEquals(unknownPackage.getEvr().getEpoch(), unknown.get("epoch"));
+        assertEquals(unknownPackage.getEvr().getVersion(), unknown.get("version"));
+        assertEquals(unknownPackage.getEvr().getRelease(), unknown.get("release"));
+        assertEquals(unknownPackage.getArch().getLabel(), unknown.get("arch"));
+    }
 }
