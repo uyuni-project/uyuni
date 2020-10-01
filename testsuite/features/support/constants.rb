@@ -213,3 +213,6 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'ubuntu1604_minion' => 'x86_64',
                       'ubuntu1804_ssh_minion' => 'x86_64',
                       'ubuntu1804_minion' => 'x86_64' }.freeze
+
+SPACEWALK_UTILS_RPMS = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup'\
+                       'mgr-daemon mgr-osad mgr-cfg-actions spacewalk-oscap scap-security-guide'.freeze
