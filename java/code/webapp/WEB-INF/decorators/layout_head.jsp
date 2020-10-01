@@ -40,29 +40,15 @@
     <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
-    <!-- import spacewalk styles -->
-    <c:choose>
-        <c:when test='${ConfigDefaults.get().isUyuni()}'>
-            <rhn:require acl="is(development_environment)">
-                <link rel="stylesheet/less" type="text/css" href="/css/uyuni.less" />
-                <script>less = { env: 'development for Uyuni' };</script>
-                <script src="/javascript/less.js"></script>
-            </rhn:require>
-            <rhn:require acl="not is(development_environment)">
-                <link rel="stylesheet" href="/css/uyuni.css?cb=${cb_version}" />
-            </rhn:require>
-        </c:when>
-        <c:otherwise>
-            <rhn:require acl="is(development_environment)">
-                <link rel="stylesheet/less" type="text/css" href="/css/susemanager-${webTheme}.less" />
-                <script>less = { env: 'development for SUSE Manager' };</script>
-                <script src="/javascript/less.js"></script>
-            </rhn:require>
-            <rhn:require acl="not is(development_environment)">
-                <link rel="stylesheet" href="/css/susemanager-${webTheme}.css?cb=${cb_version}" />
-            </rhn:require>
-        </c:otherwise>
-    </c:choose>
+    <!-- import styles -->
+    <rhn:require acl="is(development_environment)">
+        <link rel="stylesheet/less" type="text/css" href="/css/${webTheme}.less" />
+        <script>less = { env: 'development environment' };</script>
+        <script src="/javascript/less.js"></script>
+    </rhn:require>
+    <rhn:require acl="not is(development_environment)">
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" />
+    </rhn:require>
 
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${UserPreferenceUtils.getCurrentLocale(pageContext)}"/>
