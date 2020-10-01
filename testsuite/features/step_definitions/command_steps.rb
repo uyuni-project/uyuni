@@ -748,7 +748,7 @@ When(/^I install all spacewalk client utils on "([^"]*)"$/) do |host|
   step %(I install packages "#{SPACEWALK_UTILS_RPMS}" on this "#{host}")
 end
 
-When(/^I install package(s) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y install #{package}"
@@ -763,7 +763,7 @@ When(/^I install package(s) "([^"]*)" on this "([^"]*)"((?: without error contro
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
-When(/^I install old package(s) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y downgrade #{package}"
@@ -778,7 +778,7 @@ When(/^I install old package(s) "([^"]*)" on this "([^"]*)"((?: without error co
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
-When(/^I remove package(s) "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y remove #{package}"
