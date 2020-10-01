@@ -4,19 +4,21 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: ../html/src/manager/content-management/list-filters/list-filters.js:92
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2020-10-01 15:49+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
+"zh_CN/>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -125,8 +127,9 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
+#, fuzzy
 msgid "Back"
-msgstr ""
+msgstr "上一步"
 
 #: ../html/src/components/config-channels.js:342
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:166
@@ -234,8 +237,9 @@ msgstr ""
 #: ../html/src/manager/systems/delete-system.js:76
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
+#, fuzzy
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
 #: ../html/src/components/panels/CreatorPanel.js:91
@@ -458,8 +462,9 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:969
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
+#, fuzzy
 msgid "Next"
-msgstr ""
+msgstr "下一步"
 
 #: ../html/src/components/pagination.js:54
 msgid "Page"
@@ -867,8 +872,9 @@ msgid "Architecture"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.js:540
+#, fuzzy
 msgid "Arch"
-msgstr ""
+msgstr "体系"
 
 #: ../html/src/manager/admin/setup/products/products.js:541
 msgid "Channels"
@@ -1960,8 +1966,9 @@ msgid ""
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:16
+#, fuzzy
 msgid "Package"
-msgstr ""
+msgstr "软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:20
 msgid "Patch"
@@ -3362,12 +3369,14 @@ msgid "Info"
 msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:214
+#, fuzzy
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: ../html/src/manager/notifications/notification-messages.js:217
+#, fuzzy
 msgid "Error"
-msgstr ""
+msgstr "错误"
 
 #: ../html/src/manager/notifications/notification-messages.js:272
 msgid "show details"
