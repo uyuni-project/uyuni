@@ -3,7 +3,8 @@ package com.suse.manager.webui.services.impl.test;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import org.jmock.lib.legacy.ClassImposteriser;
+
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +18,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("ssh_push_port_https", "1233");
         Config.get().setString("ssh_push_sudo_user", "mgruser");
     }

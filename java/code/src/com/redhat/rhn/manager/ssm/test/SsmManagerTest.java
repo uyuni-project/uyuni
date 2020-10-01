@@ -42,7 +42,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,7 +129,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
             createTestSUSEProductChannel(childChannel2_1, product2, true);
             createTestSUSEProductChannel(childChannel2_2, product2, true);
         }
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
     }

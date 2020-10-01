@@ -72,9 +72,9 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.HashSet;
 import java.util.List;
@@ -103,7 +103,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 

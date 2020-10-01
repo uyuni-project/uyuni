@@ -36,7 +36,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Collections;
 
@@ -51,7 +51,7 @@ public class SystemManagerMockTest extends RhnJmockBaseTestCase {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         MockConnection.clear();
     }
 

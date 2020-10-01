@@ -2,9 +2,6 @@ repositories:
   Leap:
     project: openSUSE:Leap:15.2
     repository: standard
-  Leap15.1:
-    project: openSUSE:Leap:15.1
-    repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.2
@@ -26,7 +23,7 @@ artifacts:
     repository: Uyuni_Other
   - artifact: cglib
     jar: cglib.jar
-    repository: Leap15.1
+    repository: Leap
   - artifact: classmate
     repository: Uyuni_Other
   - artifact: classpathx-mail-1.3.1-monolithic

@@ -19,8 +19,8 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ManagedServerGroupSerializer;
 
 import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -34,7 +34,7 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         serializer = new XmlRpcSerializer();
     }
 
