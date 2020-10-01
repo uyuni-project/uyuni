@@ -725,7 +725,11 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true)
 end
 
-When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install all spacewalk client utils on "([^"]*)"$/) do |host|
+  step %(I install packages "#{SPACEWALK_UTILS_RPMS}" on this "#{host}")
+end
+
+When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   cmd = if host.include? 'ceos'
     "yum -y install #{package}"
@@ -737,7 +741,7 @@ When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?
   node.run(cmd, error_control.empty?)
 end
 
-When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   cmd = if host.include? 'ceos'
     "yum -y downgrade #{package}"
@@ -749,7 +753,7 @@ When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error contr
   node.run(cmd, error_control.empty?)
 end
 
-When(/^I remove package "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   cmd = if host.include? 'ceos'
     "yum -y remove #{package}"

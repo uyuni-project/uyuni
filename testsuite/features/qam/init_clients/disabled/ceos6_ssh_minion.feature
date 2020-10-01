@@ -36,9 +36,7 @@ Feature: Bootstrap a CentOS 6 Salt SSH minion
 
   Scenario: Prepare a CentOS 6 Salt SSH minion
     Given I am authorized
-    And  I install package "hwdata m2crypto wget" on this "ceos6_ssh_minion"
-    And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos6_ssh_minion"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos6_ssh_minion"
+    And I install all spacewalk client utils on "ceos6_ssh_minion"
 
   Scenario: Check events history for failures on CentOS 6 Salt SSH minion
     Given I am on the Systems overview page of this "ceos6_ssh_minion"
