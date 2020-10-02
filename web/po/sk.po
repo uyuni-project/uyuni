@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-09-25 17:48+0000\n"
+"PO-Revision-Date: 2020-10-02 21:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3324,7 +3324,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:335
 msgid "State"
-msgstr ""
+msgstr "Štát"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
@@ -4099,7 +4099,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
 msgid "Organization"
-msgstr ""
+msgstr "Organizácia"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
