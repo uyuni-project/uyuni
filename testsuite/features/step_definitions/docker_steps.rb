@@ -24,11 +24,11 @@ end
 
 # OS image build
 When(/^I navigate to images webpage$/) do
-  visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
+  step %(I follow the left menu "Images > Image List")
 end
 
 When(/^I navigate to images build webpage$/) do
-  visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
+  step %(I follow the left menu "Images > Build")
 end
 
 Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
@@ -38,8 +38,8 @@ Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
   )
 end
 
-Then(/^I am on the image page of "([^"]*)"$/) do |image_name|
-  step %(I navigate to "#{compute_image_url(image_name)}" page)
+Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
+  step %(I navigate to "os-images/#{org}/" page)
 end
 
 Then(/^I should see the name of the image$/) do
