@@ -669,7 +669,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
   output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
-  raise 'Bootstrapp didn\'t finish properly' unless output.include? '-bootstrap complete-'
+  raise "Bootstrapp didn't finish properly: #{output}" unless output.include? '-bootstrap complete-'
 end
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
