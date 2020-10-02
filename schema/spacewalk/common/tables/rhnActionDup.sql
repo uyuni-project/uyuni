@@ -27,6 +27,10 @@ CREATE TABLE rhnActionDup
                             DEFAULT ('Y') NOT NULL
                             CONSTRAINT rhn_actiondup_fu_ck
                                 CHECK (full_update in ('Y','N')),
+    allow_vendor_change CHAR(1)
+                            DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_actiondup_avc_ck
+                                CHECK (allow_vendor_change in ('Y','N')),
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
     modified  TIMESTAMPTZ

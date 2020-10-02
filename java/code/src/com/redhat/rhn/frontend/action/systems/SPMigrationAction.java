@@ -193,7 +193,7 @@ public class SPMigrationAction extends RhnAction {
             targetAddonProducts = (Long[]) form.get(ADDON_PRODUCTS);
             targetBaseChannel = (Long) form.get(BASE_CHANNEL);
             targetChildChannels = (Long[]) form.get(CHILD_CHANNELS);
-            if(form.get(ALLOW_VENDOR_CHANGE) != null) {
+            if (form.get(ALLOW_VENDOR_CHANGE) != null) {
                 allowVendorChange = true;
             }
 
