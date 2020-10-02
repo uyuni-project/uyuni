@@ -42,11 +42,6 @@
                 <c:set var="disabledChannel" scope="page" value="alt=\"enabled\"" />
               </c:otherwise>
             </c:choose>
-
-            <li>
-              <input ${disabledChannel} name="child_channel" value="${channel.id}" type="checkbox" id="unchecked" />
-              <a href="/rhn/channels/ChannelDetail.do?cid=${channel.id}"><c:out value="${channel.name}" /></a>
-            </li>
           </c:if>
         </c:forEach>
         <c:if test="${empty optionalChannels}">

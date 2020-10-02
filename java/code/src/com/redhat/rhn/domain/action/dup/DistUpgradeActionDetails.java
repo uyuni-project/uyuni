@@ -72,12 +72,16 @@ public class DistUpgradeActionDetails extends ActionChild {
      * Set if vendor changed allowed or not.
      * @param allowVendorChangeIn boolean
      */
-    public void setAllowVendorChange(boolean allowVendorChangeIn) { this.allowVendorChange = allowVendorChangeIn; }
+    public void setAllowVendorChange(boolean allowVendorChangeIn) {
+        this.allowVendorChange = allowVendorChangeIn;
+    }
 
     /**
      * @return the allowVendorChange as boolean
      */
-    public boolean isAllowVendorChange() { return allowVendorChange; }
+    public boolean isAllowVendorChange() {
+        return allowVendorChange;
+    }
 
     /**
      * @return the fullUpdate
