@@ -14,7 +14,7 @@
  miscImg="${img}"
  miscAlt="${text}"
  imgAlt="users.jsp.imgAlt"
- helpUrl="/docs/reference/admin/users.html">
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/users.html">
  <bean:message key="org.allusers.title" />
 </rhn:toolbar>
 

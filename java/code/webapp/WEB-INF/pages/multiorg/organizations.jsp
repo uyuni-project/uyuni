@@ -11,7 +11,7 @@
 <c:set var="pageList" value="${requestScope.pageList}" />
 
 <rhn:toolbar base="h1" icon="header-organisation"
-  helpUrl="/docs/reference/home/your-organization-trusts.html">
+  helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/your-organization-trusts.html">
   <bean:message key="organizations.jsp.toolbar"/>
 </rhn:toolbar>
 

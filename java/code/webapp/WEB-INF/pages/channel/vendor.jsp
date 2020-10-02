@@ -15,7 +15,7 @@
     }
 </script>
 <rhn:toolbar base="h1" icon="header-channel" imgAlt="channels.overview.toolbar.imgAlt"
-             helpUrl="/docs/reference/software/software-channel-list-menu.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/software/software-channel-list-menu.html">
   <bean:message key="channel.nav.vendor"/>
 </rhn:toolbar>
 

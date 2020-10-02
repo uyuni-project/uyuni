@@ -7,7 +7,7 @@
 <html:html>
     <body>
         <rhn:toolbar base="h1" icon="header-activation-key"
-        helpUrl="/docs/reference/systems/system-details/sd-custom-info.html">
+        helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/system-details/sd-custom-info.html">
             <bean:message key="system.jsp.customkey.createtitle"/>
         </rhn:toolbar>
 

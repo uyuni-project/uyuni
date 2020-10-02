@@ -812,4 +812,9 @@
         <function-class>com.redhat.rhn.frontend.taglibs.RhnTagFunctions</function-class>
         <function-signature>java.lang.String escapeJS(java.lang.String)</function-signature>
     </function>
+    <function>
+        <name>getDocsLocale</name>
+        <function-class>com.redhat.rhn.frontend.taglibs.RhnTagFunctions</function-class>
+        <function-signature>java.lang.String getDocsLocale(javax.servlet.jsp.PageContext)</function-signature>
+    </function>
 </taglib>

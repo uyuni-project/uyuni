@@ -10,7 +10,7 @@
 <rhn:toolbar base="h1"
     icon="header-package"
         imgAlt="profile.list.header.alt"
-        helpUrl="/docs/reference/systems/stored-profiles.html">
+        helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/stored-profiles.html">
         <bean:message key="profile.list.header" />
 </rhn:toolbar>
 <div class="page-summary">

@@ -6,7 +6,7 @@
 <html:html >
 <body>
 <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-             helpUrl="/docs/reference/admin/manager-config-organizations.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/manager-config-organizations.html">
   <bean:message key="general.jsp.org.toolbar"/>
 </rhn:toolbar>
 
@@ -49,7 +49,7 @@
         <td colspan="3">
           <p>
             <small>
-              <bean:message key="general.jsp.org.summary4"/><a href="/docs/reference/admin/manager-config-organizations.html">
+              <bean:message key="general.jsp.org.summary4"/><a href="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/manager-config-organizations.html">
               <bean:message key="general.jsp.org.tbl.link4"/></a>.
             </small>
           </p>

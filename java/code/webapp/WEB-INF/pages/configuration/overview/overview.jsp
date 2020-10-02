@@ -11,7 +11,7 @@
 <body>
 
 <rhn:toolbar base="h1" icon="header-configuration" imgAlt="config.jsp.imgAlt"
- helpUrl="/docs/reference/configuration/config-overview.html" >
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-overview.html" >
   <bean:message key="configoverview.jsp.toolbar"/>
 </rhn:toolbar>
 

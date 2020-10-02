@@ -131,7 +131,7 @@ function toggleAsterisk() {
                             </c:when>
                                 <c:otherwise>
                                     <bean:message key="usercreate.jsp.pam.reference"
-                                                  arg0="/docs/administration/auth-methods.html"/>
+                                                  arg0="/docs/${rhn:getDocsLocale(pageContext)}/administration/auth-methods.html"/>
                                 </c:otherwise>
                         </c:choose>
                     </div>

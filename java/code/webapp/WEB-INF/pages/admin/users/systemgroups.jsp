@@ -10,7 +10,7 @@
     <rhn:toolbar base="h1" icon="header-organisation"
                  miscAcl="user_role(org_admin)"
                  imgAlt="users.jsp.imgAlt"
-                 helpUrl="/docs/reference/users/system-group-configuration.html">
+                 helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/users/system-group-configuration.html">
         <bean:message key="systemgroup.config.title" />
     </rhn:toolbar>
 

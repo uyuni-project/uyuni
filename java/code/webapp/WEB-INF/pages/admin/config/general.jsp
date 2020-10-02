@@ -6,7 +6,7 @@
 <html:html>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-                     helpUrl="/docs/reference/admin/general.html">
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/general.html">
             <bean:message key="general.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="general.jsp.summary"/></p>

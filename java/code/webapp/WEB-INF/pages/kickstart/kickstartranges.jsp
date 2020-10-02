@@ -8,7 +8,7 @@
 <html:html >
 <body>
 <rhn:toolbar base="h1" icon="header-kickstart" imgAlt="kickstarts.alt.img"
-             helpUrl="/docs/reference/systems/autoinst-unprovisioned.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/autoinst-unprovisioned.html">
   <bean:message key="kickstartranges.jsp.toolbar"/>
 </rhn:toolbar>
 

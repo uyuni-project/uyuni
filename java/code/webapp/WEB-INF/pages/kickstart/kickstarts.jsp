@@ -14,7 +14,7 @@
                uploadUrl="/rhn/kickstart/AdvancedModeCreate.do"
                uploadType="kickstart"
                uploadAcl="user_role(config_admin)"
-               helpUrl="/docs/reference/systems/autoinst-profiles.html"
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/autoinst-profiles.html"
                >
   <bean:message key="kickstarts.jsp.toolbar"/>
 </rhn:toolbar>
