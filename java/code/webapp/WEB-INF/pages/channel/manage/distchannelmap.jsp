@@ -14,7 +14,7 @@
                creationUrl="DistChannelMapEdit.do"
                creationType="distchannelmap"
                iconAlt="info.alt.img"
-               helpUrl="/docs/reference/software/software-distribution-channel-mapping.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/software/software-distribution-channel-mapping.html">
   <bean:message key="Distribution Channel Mapping"/>
 </rhn:toolbar>
 

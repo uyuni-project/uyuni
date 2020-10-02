@@ -26,7 +26,7 @@
         }
     </script>
   <rhn:toolbar base="h1" icon="header-errata"
-               helpUrl="/docs/reference/patches/patches-advanced-search.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/patches/patches-advanced-search.html">
     <bean:message key="erratasearch.jsp.toolbar"/>
   </rhn:toolbar>
 

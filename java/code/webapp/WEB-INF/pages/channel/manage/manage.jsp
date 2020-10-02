@@ -14,7 +14,7 @@
              cloneUrl="/rhn/channels/manage/Clone.do"
              cloneType="channel"
              cloneAcl="user_role(channel_admin)"
-             helpUrl="/docs/reference/software/manage-channels.html"
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/software/manage-channels.html"
         >
     <bean:message key="channels.manage.jsp.toolbar"/>
 </rhn:toolbar>

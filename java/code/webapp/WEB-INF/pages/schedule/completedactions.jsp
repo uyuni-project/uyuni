@@ -10,7 +10,7 @@
 <body>
 <rhn:toolbar base="h1" icon="header-action"
                            imgAlt="actions.jsp.imgAlt"
-               helpUrl="/docs/reference/schedule/completed-actions.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/schedule/completed-actions.html">
     <bean:message key="completedactions.jsp.completed_actions"/>
   </rhn:toolbar>
 

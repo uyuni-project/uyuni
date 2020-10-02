@@ -7,7 +7,7 @@
 <html>
     <body>
         <rhn:toolbar base="h1" icon="header-user"
-                     helpUrl="/docs/reference/home/user-account-change-email.html"
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/user-account-change-email.html"
                      imgAlt="users.jsp.imgAlt">
             <bean:message key="yourchangeemail.jsp.title"/>
         </rhn:toolbar>

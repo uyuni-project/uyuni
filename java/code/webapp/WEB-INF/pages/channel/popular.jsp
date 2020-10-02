@@ -15,7 +15,7 @@
     }
 </script>
 <rhn:toolbar base="h1" icon="header-channel" 
-             helpUrl="/docs/reference/software/software-channel-list-menu.html"
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/software/software-channel-list-menu.html"
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
              creationAcl="user_role(channel_admin)">

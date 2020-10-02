@@ -9,7 +9,7 @@
 <body>
 <rhn:toolbar base="h1" icon="header-action"
                            imgAlt="actions.jsp.imgAlt"
-               helpUrl="/docs/reference/schedule/failed-actions.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/schedule/failed-actions.html">
     <bean:message key="failedactions.jsp.failed_actions"/>
   </rhn:toolbar>
     <p>

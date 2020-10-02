@@ -7,7 +7,7 @@
 <html:html >
     <body>
         <rhn:toolbar base="h1" icon="header-activation-key"
-        helpUrl="/docs/reference/systems/system-details/sd-custom-info.html"
+        helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/system-details/sd-custom-info.html"
         deletionUrl="/rhn/systems/customdata/DeleteCustomKey.do?cikid=${cikid}"
         deletionType="customkey">
             <bean:message key="system.jsp.customkey.updatetitle"/>

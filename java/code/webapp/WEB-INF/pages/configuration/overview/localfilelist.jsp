@@ -9,7 +9,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-configuration"
- helpUrl="/docs/reference/configuration/files-locally-managed.html">
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/files-locally-managed.html">
   <bean:message key="localfilelist.jsp.toolbar"/>
 </rhn:toolbar>
 
