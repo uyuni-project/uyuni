@@ -6690,6 +6690,43 @@ public class SystemHandler extends BaseHandler {
         return returnList;
     }
 
+
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack.
+     *
+     * This call automatically select the nearest possible migration target.
+     *
+     * It will automatically find all mandatory product channels below a given
+     * target base channel and subscribe the system accordingly. Any additional
+     * optional channels can be subscribed by providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+                                    List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+        return scheduleSPMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun, false, earliest);
+    }
+
     /**
      * Schedule a Service Pack migration for a system. This call is the recommended and
      * supported way of migrating a system to the next Service Pack.
@@ -6726,6 +6763,45 @@ public class SystemHandler extends BaseHandler {
             List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliest) {
         return scheduleSPMigration(loggedInUser, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, allowVendorChange, earliest);
+    }
+
+
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+                                    String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                    Date earliest) {
+        return scheduleSPMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels, dryRun,
+                false, earliest);
     }
 
     /**
@@ -6870,6 +6946,39 @@ public class SystemHandler extends BaseHandler {
         // We didn't find target products if we are still here
         throw new FaultException(-1, "servicePackMigrationNoTarget",
                 "No target found for SP migration");
+    }
+
+    /**
+     * Schedule a dist upgrade for a system. This call takes a list of channel labels that
+     * the system will be subscribed to before performing the dist upgrade.
+     *
+     * Note: You can seriously damage your system with this call, use it only if you really
+     * know what you are doing! Make sure that the list of channel labels is complete and
+     * in any case do a dry run before scheduling an actual dist upgrade.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param channels labels of channels to subscribe to
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a dist upgrade for a system. This call takes a list of channel
+     * labels that the system will be subscribed to before performing the dist upgrade.
+     * Note: You can seriously damage your system with this call, use it only if you really
+     * know what you are doing! Make sure that the list of channel labels is complete and in
+     * any case do a dry run before scheduling an actual dist upgrade.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("string", "channels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
+                                    boolean dryRun, Date earliest) {
+        // for older calls that don't use vendor change
+        return scheduleDistUpgrade(loggedInUser, sid, channels, dryRun, false, earliest);
     }
 
     /**
