@@ -25,7 +25,7 @@ Feature: Bootstrap a SSH-managed CentOS 6 minion and do some basic operations on
     Given I am on the Systems overview page of this "ceos6_ssh_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
 
 @proxy
   Scenario: Check registration on proxy of SSH-managed CentOS 6 minion
@@ -36,9 +36,7 @@ Feature: Bootstrap a SSH-managed CentOS 6 minion and do some basic operations on
 
   Scenario: Prepare a SSH-managed CentOS 6 minion
     Given I am authorized
-    And  I install package "hwdata m2crypto wget" on this "ceos6_ssh_minion"
-    And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos6_ssh_minion"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos6_ssh_minion"
+    And I install all spacewalk client utils on "ceos6_ssh_minion"
 
   Scenario: Check events history for failures on SSH-managed CentOS 6 minion
     Given I am on the Systems overview page of this "ceos6_ssh_minion"

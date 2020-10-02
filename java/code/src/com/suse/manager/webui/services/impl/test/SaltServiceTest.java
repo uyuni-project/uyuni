@@ -11,7 +11,8 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-import org.jmock.lib.legacy.ClassImposteriser;
+
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +32,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tempDir = Files.createTempDirectory("saltservice");
     }
 

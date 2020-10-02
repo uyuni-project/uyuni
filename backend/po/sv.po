@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 14:48+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/fedora/language/"
@@ -23,6 +23,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 4.6.2\n"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "ofullständig proxy-autenticeringsnyckel: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Skickad proxy-signatur %s stämmer inte med våran %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "nekad proxy-autenticering"
 
 #: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
@@ -40,30 +54,19 @@ msgstr ""
 "                   Kontakta din organisationsadministratör för mer hjälp."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr "Ditt system fanns inte i RHN-databasen"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+#, fuzzy
+msgid "ISS is disabled on this server."
 msgstr "ISS är inaktiverat på denna satellit."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Servern \"%s\" har inte ISS aktiverat."
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "RHN-proxy-tjänst inte aktiverat för serverprofilen: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Ogiltig sessionsnyckel"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Denna server-ID finns inte längre"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 #, fuzzy
@@ -90,6 +93,24 @@ msgstr "Otiltig typ på åtgärsvärde %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Åtgärd %s hör inte till server %s"
 
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Ogiltigt värde %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "RHN-proxy-tjänst inte aktiverat för serverprofilen: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Ogiltig sessionsnyckel"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Denna server-ID finns inte längre"
+
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "Nödvändiga data saknas"
@@ -112,13 +133,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Red Hat Network välkomstmeddelande"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1125
 #, fuzzy
-msgid "Red Hat Satellite Privacy Statement"
+msgid "Privacy Statement"
 msgstr "Red Hat Network integritetspolicy"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
@@ -129,11 +150,6 @@ msgstr "Förväntade ett lexikon som ett produktargument"
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Ogiltigt värde \"%s\" på %s (%s)"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Ogiltigt värde %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -225,6 +241,104 @@ msgstr "Kickstart-sessioner stämmer inte överens"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Att lägga samman omregistreringsnycklar stöds inte"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "Ogiltigt användarnamn/lösenords-kombination"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "Användarnamnet \"%s\" har inte reserverats"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "E-postadress inte angiven"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "användarnamn skall vara åtminstone %d tecken"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "användarman skall vara mindre än %d tecken"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "användarnamn = \"%s\", otiltigt tecken \"%s\""
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Begränsa din e-postadress till %s tecken"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "lösenord måste vara åtminstone %d tecken"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "Lösenord måste vara kortare än %d tecken"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "lösenordet innehåller tecknet \"%s\""
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "användarnamn skall vara åtminstone %d tecken långa"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Det går inte att registrera användarnamn som slutar med %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Ogiltigt RPM-paket %s begärt"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Paketet finns inte"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Ogiltig begäran mottagen (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"VIKTIGT MEDDELANDE FÖLJER:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"När \"%s\" kördes: fångade\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Ogiltig URI %s"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -331,118 +445,6 @@ msgstr ""
 "  webbsajten på:\n"
 "\n"
 "  %(entitlement_url)s\n"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "ofullständig proxy-autenticeringsnyckel: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Skickad proxy-signatur %s stämmer inte med våran %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "nekad proxy-autenticering"
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "Ogiltigt användarnamn/lösenords-kombination"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Användarnamnet \"%s\" har inte reserverats"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "E-postadress inte angiven"
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "användarnamn skall vara åtminstone %d tecken"
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "användarman skall vara mindre än %d tecken"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "användarnamn = \"%s\", otiltigt tecken \"%s\""
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Begränsa din e-postadress till %s tecken"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "lösenord måste vara åtminstone %d tecken"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Lösenord måste vara kortare än %d tecken"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "lösenordet innehåller tecknet \"%s\""
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "användarnamn skall vara åtminstone %d tecken långa"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Det går inte att registrera användarnamn som slutar med %s"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Ogiltig begäran mottagen (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"VIKTIGT MEDDELANDE FÖLJER:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"När \"%s\" kördes: fångade\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Ogiltig URI %s"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Ogiltigt RPM-paket %s begärt"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Paketet finns inte"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1139,19 +1141,6 @@ msgstr ""
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
-
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1328,6 +1317,35 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr ""
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1399,12 +1417,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -1921,7 +1940,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2069,18 +2088,6 @@ msgstr ""
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
+#, fuzzy
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Red Hat Network välkomstmeddelande"

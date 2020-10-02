@@ -1,5 +1,27 @@
+- fix max password length check at user creation (bsc#1176765)
+- Fix the links for downloading the binaries in the package details UI (bsc#1176603)
+- Notify about missing libvirt or hypervisor on virtual host
+- Redesign maintenance schedule systems table to use paginated data from server
+- Fix SP migration after dry run for cloned channels (bsc#1176307)
+- filter not available optional channels out
+- Fix: handle version comparison corner cases in Ubuntu packages
+
+-------------------------------------------------------------------
+Mon Sep 21 12:04:31 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Updating translations from weblate
+- Log exception trace on fatal Taskomatic startup error
+
+-------------------------------------------------------------------
+Fri Sep 18 12:34:25 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
+- Force disable SPA for non-navigation links (bsc#1175512)
+- pass the log level parameter to matcher
+- Detect client organization from connected proxy (bsc#1175545)
 - Add language picker to user preferences and user creation
-- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175876)
+- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175556)
 - use media.1/products from media when not specified different (bsc#1175558)
 - Fix: use quiet API method when using spacewalk-common-channels (bsc#1175529)
 - add java.allow_adding_patches_via_api to allow adding errata to vendor channels
@@ -22,7 +44,14 @@
 - Add virtual network Start, Stop and Delete actions
 - Add virtual network list page
 - update default product tree tag and set Beta tag again
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - Update package version to 4.2.0
+
+-------------------------------------------------------------------
+Wed Sep 16 16:49:35 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
 
 -------------------------------------------------------------------
 Thu Jul 23 13:26:41 CEST 2020 - jgonzalez@suse.com

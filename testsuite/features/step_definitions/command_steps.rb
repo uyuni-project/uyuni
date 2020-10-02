@@ -59,22 +59,16 @@ Then(/^it should be possible to reach the test suite profiles$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
-Then(/^it should be possible to reach the portus registry$/) do
-  if $product == 'Uyuni'
-    # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://portus.mgr.suse.de:5000'
+Then(/^it should be possible to reach the authenticated registry$/) do
+  if not ($auth_registry.nil? || $auth_registry.empty?)
+    url = "https://#{$auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
 
-Then(/^it should be possible to reach the other registry$/) do
-  if $product == 'Uyuni'
-    # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://registry.mgr.suse.de:443'
+Then(/^it should be possible to reach the not authenticated registry$/) do
+  if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
+    url = "https://#{$no_auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
@@ -258,6 +252,17 @@ end
 
 Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}")
+end
+
+When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+  begin
+    repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+      break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+      sleep 10
+    end
+  rescue StandardError => e
+    puts e.message # It might be that the MU repository is wrong, but we want to continue in any case
+  end
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
@@ -568,6 +573,13 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node.run(cmd)
 end
 
+When(/^I force picking pending events on "([^"]*)" if necessary$/) do |host|
+  if get_client_type(host) == 'traditional'
+    node = get_target(host)
+    node.run('rhn_check -vvv')
+  end
+end
+
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   node = get_target(host)
   output, _code = node.run(cmd)
@@ -674,20 +686,29 @@ end
 # Repositories and packages management
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    cmd = "zypper mr --#{action} #{repos}"
-  else
-    cmd = repos.split(' ').map do |repo|
-      if os_family =~ /^centos/
-        "sed -i 's/enabled=.*/enabled=#{action == 'enable' ? '1' : '0'}/g' /etc/yum.repos.d/#{repo}.repo; "
-      elsif os_family =~ /^ubuntu/
-        "sed -i '/^#{action == 'enable' ? '#\\s*' : ''}deb.*/ s/^#{action == 'enable' ? '' : '#\\s*'}deb "\
-        "/#{action == 'enable' ? '' : '#'}deb /' /etc/apt/sources.list.d/#{repo}.list; "
-      end
-    end
-    cmd = cmd.reduce(:+)
-  end
+  _os_version, os_family = get_os_version(node)
+  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
+          "zypper mr --#{action} #{repos}"
+        else
+          cmd_list = if action == 'enable'
+                       repos.split(' ').map do |repo|
+                         if os_family =~ /^centos/
+                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
+                         elsif os_family =~ /^ubuntu/
+                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
+                         end
+                       end
+                     else
+                       repos.split(' ').map do |repo|
+                         if os_family =~ /^centos/
+                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
+                         elsif os_family =~ /^ubuntu/
+                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
+                         end
+                       end
+                     end
+          cmd_list.reduce(:+)
+        end
   node.run(cmd, error_control.empty?)
 end
 
@@ -723,7 +744,11 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
-When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install all spacewalk client utils on "([^"]*)"$/) do |host|
+  step %(I install packages "#{SPACEWALK_UTILS_RPMS}" on this "#{host}")
+end
+
+When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y install #{package}"
@@ -738,7 +763,7 @@ When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
-When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y downgrade #{package}"
@@ -753,7 +778,7 @@ When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error contr
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
-When(/^I remove package "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y remove #{package}"
@@ -1308,4 +1333,13 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
   end
+end
+
+When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
+  node = get_target(host)
+  source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
+  remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
+  return_code = file_inject(node, source, remote_file)
+  raise 'File injection failed' unless return_code.zero?
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
 end

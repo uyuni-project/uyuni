@@ -58,7 +58,7 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.manager.webui.utils.salt.MinionStartupGrains;
+import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
@@ -319,28 +319,33 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);
         Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
 
-
-        Org org = activationKey.map(ActivationKey::getOrg)
-                .orElse(creator.map(User::getOrg)
-                        .orElse(OrgFactory.getSatelliteOrg()));
-        if (minion.getOrg() == null) {
-            minion.setOrg(org);
-        }
-        else if (!minion.getOrg().equals(org)) {
-            // only log activation key ignore message when the activation key is not empty
-            String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
-            LOG.error("The existing server organization (" + minion.getOrg() + ") does not match the " +
-                    "organization selected for registration (" + org + "). Keeping the " +
-                    "existing server organization. " + ignoreAKMessage);
-            activationKey = empty();
-            org = minion.getOrg();
-            SystemManager.addHistoryEvent(minion, "Invalid Server Organization",
-                    "The existing server organization (" + minion.getOrg() + ") does not match the " +
-                            "organization selected for registration (" + org + "). Keeping the " +
-                            "existing server organization. " + ignoreAKMessage);
-        }
-
         try {
+            String master = saltApi
+                    .getMasterHostname(minionId)
+                    .orElseThrow(() -> new SaltException(
+                            "Master not found in minion configuration"));
+
+            Org org = activationKey.map(ActivationKey::getOrg)
+                            .orElseGet(() -> creator.map(User::getOrg)
+                            .orElseGet(() -> getProxyOrg(master, isSaltSSH, saltSSHProxyId)
+                            .orElseGet(() -> OrgFactory.getSatelliteOrg())));
+            if (minion.getOrg() == null) {
+                minion.setOrg(org);
+            }
+            else if (!minion.getOrg().equals(org)) {
+                // only log activation key ignore message when the activation key is not empty
+                String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
+                LOG.error("The existing server organization (" + minion.getOrg() + ") does not match the " +
+                        "organization selected for registration (" + org + "). Keeping the " +
+                        "existing server organization. " + ignoreAKMessage);
+                activationKey = empty();
+                org = minion.getOrg();
+                SystemManager.addHistoryEvent(minion, "Invalid Server Organization",
+                        "The existing server organization (" + minion.getOrg() + ") does not match the " +
+                                "organization selected for registration (" + org + "). Keeping the " +
+                                "existing server organization. " + ignoreAKMessage);
+            }
+
             // Set creator to the user who accepted the key if available
             minion.setCreator(creator.orElse(null));
 
@@ -382,11 +387,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             mapHardwareGrains(minion, grains);
 
-            String master = saltApi
-                    .getMasterHostname(minionId)
-                    .orElseThrow(() -> new SaltException(
-                            "master not found in minion configuration"));
-
             setServerPaths(minion, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(minion);
@@ -412,7 +412,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
-            throw new RegisterMinionException(minionId, org);
+            throw new RegisterMinionException(minionId, minion.getOrg());
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
@@ -445,6 +445,17 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 }
             }
         });
+    }
+
+    private Optional<Org> getProxyOrg(String master, boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
+        if (isSaltSSH) {
+            return saltSSHProxyId
+                    .map(proxyId -> ServerFactory.lookupById(proxyId))
+                    .map(Server::getOrg);
+        }
+        else {
+            return ServerFactory.lookupProxyServer(master).map(Server::getOrg);
+        }
     }
 
     /**

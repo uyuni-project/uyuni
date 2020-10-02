@@ -45,7 +45,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -75,7 +75,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         virtManager = new TestVirtManager() {
 

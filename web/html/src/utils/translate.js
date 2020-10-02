@@ -7,7 +7,7 @@ function getTranslationData() {
     if (!window.translationData) {
         window.translationData = gt;
 
-        const poData = getPoAsJson(preferredLocale);
+        const poData = getPoAsJson(window.preferredLocale);
         gt.addTranslations("", domain, poData);
         window.t = translate;
     }

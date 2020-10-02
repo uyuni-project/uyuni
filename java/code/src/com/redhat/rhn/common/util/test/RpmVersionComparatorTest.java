@@ -168,6 +168,14 @@ public class RpmVersionComparatorTest extends TestCase {
     public void testBugzilla1173201() {
         assertCompareSymm(-1, "1.27+1.3.9", "1.27.1ubuntu1+1.3.9");
         assertCompareSymm(-1, "1.27+1.3.9", "1.27.1+1.3.9");
+        assertCompareSymm(-1, "1.27+1.3.9", "1.27.1ubuntu2+1.3.11");
+        assertCompareSymm(1, "1.27+1.3.9", "1.3.11");
+        assertCompareSymm(1, "1.27", "1.3.11");
+        assertCompareSymm(1, "1.27+1.3.9", "1.3.9");
+        assertCompareSymm(-1, "1.27+1.3.9", "5.18.4.1");
+        assertCompareSymm(1, "2.27+1.3.9", "1.10~ubuntu18.04.4+1.2.10");
+        assertCompareSymm(1, "3.27", "1.10~ubuntu18.04.4+1.2.10");
+        assertCompareSymm(1, "4.27~test", "1.10~ubuntu18.04.4+1.2.10");
     }
 
     /* from official rpm tests */

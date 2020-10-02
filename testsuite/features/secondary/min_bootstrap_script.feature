@@ -26,7 +26,7 @@ Feature: Register a Salt minion via Bootstrap-script
 
   Scenario: Check if onboarding for the script-bootstrapped minion was successful
     Given I am authorized as "admin" with password "admin"
-    When I navigate to "rhn/systems/Overview.do" page
+    When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 

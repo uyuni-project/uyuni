@@ -9,9 +9,7 @@ Feature: Be able to register a CentOS 6 traditional client and do some basic ope
     When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-6-x86_64" on this "ceos6_client"
     And I enable repository "SLE-Manager-Tools-RES-6-x86_64" on this "ceos6_client"
     And I enable repository "CentOS-Base" on this "ceos6_client"
-    And I install package "hwdata m2crypto wget" on this "ceos6_client"
-    And I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos6_client"
-    And I install package "spacewalk-oscap scap-security-guide" on this "ceos6_client"
+    And I install all spacewalk client utils on "ceos6_client"
     And I register "ceos6_client" as traditional client with activation key "1-ceos6_client_key"
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
     And I wait until onboarding is completed for "ceos6_client"
@@ -21,7 +19,7 @@ Feature: Be able to register a CentOS 6 traditional client and do some basic ope
     Given I am on the Systems overview page of this "ceos6_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
 
   @proxy
   Scenario: Check registration on proxy of traditional CentOS 6

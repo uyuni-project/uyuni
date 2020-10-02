@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RHN 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 14:48+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2000-08-08 16:51-0400\n"
 "Last-Translator: Cristian Gafton <gafton@redhat.com>\n"
 "Language-Team: English <rhns-i18n@redhat.com>\n"
@@ -14,6 +14,20 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr ""
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr ""
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr ""
 
 #: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
@@ -28,29 +42,17 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr ""
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+msgid "ISS is disabled on this server."
 msgstr ""
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
 msgstr ""
 
 #: ../server/handlers/xmlrpc/scap.py:104
@@ -78,6 +80,24 @@ msgstr ""
 msgid "Action %s does not belong to server %s"
 msgstr ""
 
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr ""
+
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr ""
@@ -100,36 +120,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
-msgid "Red Hat Satellite Welcome Message"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
 msgstr ""
-"Now for the first time ever, information, updates, and services\n"
-"that enhance the security and reliability of your Red Hat Linux\n"
-"systems are available to you in one place-- Red Hat Network.\n"
-"Check out these benefits:\n"
-"\n"
-"-- Red Hat Linux information, updates, and services specific to\n"
-"   your systems\n"
-"-- Fast access and proactive delivery of updates (security errata,\n"
-"   bug fixes, enhancements)\n"
-"-- The latest news from Red Hat when new products and services\n"
-"   are available\n"
-"\n"
-"Joining is easy-- just follow this three step process:\n"
-"\n"
-"Step 1: Review the Red Hat privacy policy\n"
-"Step 2: Register a user account with Red Hat.\n"
-"        a. This registration program can take care of that for you\n"
-"        b. You can also register an account by going to\n"
-"           https://rhn.redhat.com/newlogin.pxt\n"
-"Step 3: Register a system profile on Red Hat Network\n"
-"\n"
-"Click on the \"Next\" button to register now, or click \"Cancel\"\n"
-"to banish this program forever."
 
 #: ../server/handlers/xmlrpc/registration.py:1125
 #, fuzzy
-msgid "Red Hat Satellite Privacy Statement"
+msgid "Privacy Statement"
 msgstr ""
 " We think our customers understand better than anyone else how Red\n"
 " Hat can most effectively serve their needs.  Because of this, Red\n"
@@ -352,11 +349,6 @@ msgstr ""
 msgid "Invalid value '%s' for %s (%s)"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr ""
-
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
 msgstr ""
@@ -442,6 +434,100 @@ msgstr ""
 msgid "Stacking of re-registration tokens is not supported"
 msgstr ""
 
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr ""
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr ""
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr ""
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr ""
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr ""
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr ""
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr ""
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr ""
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr ""
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, fuzzy, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Invalid system release version requested"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr ""
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr ""
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr ""
+
 #: ../server/rhnChannel.py:1992
 #, python-format
 msgid ""
@@ -514,114 +600,6 @@ msgid ""
 "at:\n"
 "\n"
 "  %(entitlement_url)s\n"
-msgstr ""
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr ""
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr ""
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr ""
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr ""
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr ""
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr ""
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr ""
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr ""
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr ""
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr ""
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr ""
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr ""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, fuzzy, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Invalid system release version requested"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
 msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
@@ -1226,19 +1204,6 @@ msgstr ""
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
-
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1414,6 +1379,35 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr ""
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1485,12 +1479,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -2005,7 +2000,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2152,18 +2147,29 @@ msgstr ""
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
+#, fuzzy
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr ""
+#~ "Now for the first time ever, information, updates, and services\n"
+#~ "that enhance the security and reliability of your Red Hat Linux\n"
+#~ "systems are available to you in one place-- Red Hat Network.\n"
+#~ "Check out these benefits:\n"
+#~ "\n"
+#~ "-- Red Hat Linux information, updates, and services specific to\n"
+#~ "   your systems\n"
+#~ "-- Fast access and proactive delivery of updates (security errata,\n"
+#~ "   bug fixes, enhancements)\n"
+#~ "-- The latest news from Red Hat when new products and services\n"
+#~ "   are available\n"
+#~ "\n"
+#~ "Joining is easy-- just follow this three step process:\n"
+#~ "\n"
+#~ "Step 1: Review the Red Hat privacy policy\n"
+#~ "Step 2: Register a user account with Red Hat.\n"
+#~ "        a. This registration program can take care of that for you\n"
+#~ "        b. You can also register an account by going to\n"
+#~ "           https://rhn.redhat.com/newlogin.pxt\n"
+#~ "Step 3: Register a system profile on Red Hat Network\n"
+#~ "\n"
+#~ "Click on the \"Next\" button to register now, or click \"Cancel\"\n"
+#~ "to banish this program forever."

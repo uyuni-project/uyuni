@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 10:26+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -85,7 +85,7 @@ msgstr "Canal de configuración: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:153
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:155
 msgid "Edit"
 msgstr "Editar"
 
@@ -142,6 +142,8 @@ msgid "Confirm"
 msgstr "Confirmar"
 
 #: ../html/src/components/config-channels.js:349
+#: ../html/src/manager/maintenance/details/schedule-details.js:180
+#: ../html/src/manager/maintenance/details/schedule-details.js:187
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
@@ -173,10 +175,10 @@ msgstr "Buscar"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:51
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:238
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:310
-#: ../html/src/manager/maintenance/details/schedule-details.js:204
+#: ../html/src/manager/maintenance/details/schedule-details.js:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:82
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:65
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
 msgid "System"
 msgstr "Sistema"
 
@@ -205,13 +207,11 @@ msgid "Channel Label"
 msgstr "Etiqueta del canal"
 
 #: ../html/src/components/config-channels.js:433
-#: ../html/src/manager/maintenance/details/schedule-details.js:179
-#: ../html/src/manager/maintenance/details/schedule-details.js:186
 msgid "Assign"
 msgstr "Asignar"
 
 #: ../html/src/components/config-channels.js:455
-#: ../html/src/components/table/TableDataHandler.js:249
+#: ../html/src/components/table/TableDataHandler.js:287
 msgid "There are no entries to show."
 msgstr "No hay ninguna entrada que mostrar."
 
@@ -265,10 +265,10 @@ msgstr "Cancelar"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:34
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:25
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:271
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:306
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:36
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:27
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -553,7 +553,7 @@ msgstr "Vaciar"
 msgid "Select All"
 msgstr "Seleccionar todo"
 
-#: ../html/src/components/table/TableDataHandler.js:250
+#: ../html/src/components/table/TableDataHandler.js:288
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
@@ -562,7 +562,7 @@ msgstr "Seleccionar todo"
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.js:277
+#: ../html/src/components/table/TableDataHandler.js:316
 msgid "items per page"
 msgstr "elementos por página"
 
@@ -772,7 +772,7 @@ msgid "Organizations"
 msgstr "Organizaciones"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
 msgid "Restart"
 msgstr "Reiniciar"
 
@@ -992,7 +992,7 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.js:113
 #: ../html/src/manager/images/image-view.js:326
 #: ../html/src/manager/notifications/notification-messages.js:356
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:238
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:240
 msgid "Refresh"
 msgstr ""
 
@@ -1162,8 +1162,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:123
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:46
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:332
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:50
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:334
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Name"
 msgstr "Nombre"
@@ -1178,7 +1178,7 @@ msgstr "Nombre"
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:255
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:339
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 msgid "Actions"
 msgstr "Acciones"
 
@@ -1641,7 +1641,7 @@ msgstr "Nombre de anfitrión del nodo"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:311
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:112
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:116
 msgid "(none)"
 msgstr "(ninguno)"
 
@@ -2744,8 +2744,8 @@ msgid "Building"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.js:424
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:227
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:296
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:229
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:298
 msgid "Unknown"
 msgstr ""
 
@@ -2792,7 +2792,7 @@ msgid "Revision"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.js:561
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:80
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
 msgid "Updates"
 msgstr "Actualizaciones"
 
@@ -3021,12 +3021,30 @@ msgstr ""
 msgid "Signing in ..."
 msgstr ""
 
+#: ../html/src/manager/login/login.js:108
+msgid ""
+"Discover a new way of managing your servers, packages, patches and more via "
+"one interface."
+msgstr ""
+
 #: ../html/src/manager/login/login.js:130
 msgid "Login"
 msgstr ""
 
 #: ../html/src/manager/login/login.js:150
 msgid "Sign In"
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:14
+msgid "Either the password or username is incorrect."
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:15
+msgid "Your account has been deactivated."
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:16
+msgid "This user has read only API access. WebUI login is denied."
 msgstr ""
 
 #: ../html/src/manager/login/use-login-api.js:28
@@ -3086,9 +3104,9 @@ msgid "Delete maintenance schedule"
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:65
-#: ../html/src/manager/maintenance/details/schedule-details.js:167
+#: ../html/src/manager/maintenance/details/schedule-details.js:168
 #, fuzzy
-msgid "Assign Systems"
+msgid "Assigned Systems"
 msgstr "Sistemas"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:98
@@ -3125,9 +3143,9 @@ msgid "Upcoming Maintenance Windows"
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:123
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:19
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:85
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:247
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:21
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:89
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
 #, fuzzy
 msgid "Start"
 msgstr "Hora de inicio"
@@ -3137,17 +3155,27 @@ msgstr "Hora de inicio"
 msgid "End"
 msgstr "Activada"
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:158
+#: ../html/src/manager/maintenance/details/schedule-details.js:154
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:171
+#: ../html/src/manager/maintenance/details/schedule-details.js:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:117
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:94
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:143
 msgid "Cancel affected actions"
 msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:196
+#, fuzzy
+msgid "Search systems"
+msgstr "Mostrar lista de sistemas"
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:211
+#, fuzzy
+msgid "Current Schedule"
+msgstr "Memoria actual"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:108
 msgid "Url '{0}' is invalid"
@@ -3240,10 +3268,6 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:32
 msgid "No schedules created. Use Create to add a schedule."
-msgstr ""
-
-#: ../html/src/manager/maintenance/list/schedule-list.js:47
-msgid "/rhn/manager/schedule/maintenance/calendars#/details/"
 msgstr ""
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:89
@@ -3352,9 +3376,9 @@ msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.js:340
 #: ../html/src/manager/salt/keys/key-management.js:173
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:51
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:333
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:94
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:55
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:335
 msgid "State"
 msgstr "Estado"
 
@@ -4254,64 +4278,64 @@ msgstr "Recuento de CPU virtuales"
 msgid "Graphics"
 msgstr "Gráficas"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:22
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:24
 msgid "Start / Resume"
 msgstr "Iniciar/reanudar"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:25
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:22
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:257
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:24
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:259
 msgid "Stop"
 msgstr "Detener"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:25
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
 msgid "Force off"
 msgstr "Forzar apagado"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
 msgid "Reset"
 msgstr "Restablecer"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:33
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:44
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Hosted Virtual Systems"
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:45
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:49
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
 "Esta es la lista de invitados virtuales que se han configurado para su "
 "ejecución en este anfitrión."
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:59
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:63
 msgid "Guest"
 msgstr "Invitado"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:68
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:72
 msgid "Unregistered System"
 msgstr "Sistema no registrado"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:97
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:101
 msgid "Current Memory"
 msgstr "Memoria actual"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:103
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:107
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:109
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:113
 msgid "Base Software Channel"
 msgstr "Canal de sóftwer de base"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:138
 msgid "paused"
 msgstr "en pausa"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:145
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:147
 msgid "Graphical Console"
 msgstr "Consola gráfica"
 
@@ -4388,6 +4412,10 @@ msgstr "Redes"
 msgid "Clear Fields"
 msgstr ""
 
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
+msgstr ""
+
 #: ../html/src/manager/virtualization/ListTab.js:142
 msgid "{0} selected"
 msgstr ""
@@ -4396,28 +4424,28 @@ msgstr ""
 msgid "Action Status"
 msgstr "Estado de acción"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:34
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:38
 #, fuzzy
 msgid "Virtual Networks"
 msgstr "Redes"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:35
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:39
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:57
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:334
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:61
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:336
 #, fuzzy
 msgid "Autostart"
 msgstr "Reiniciar"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:65
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:335
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:69
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:337
 msgid "Persistent"
 msgstr "Persistente"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:74
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:78
 msgid "Bridge"
 msgstr ""
 
@@ -4425,45 +4453,45 @@ msgstr ""
 msgid "Create Virtual Storage Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:139
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Delete the pool, including the contained volumes. "
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:139
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Cannot be undone"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:264
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 #, fuzzy
 msgid "Edit Pool"
 msgstr "Editar"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:336
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:338
 #, fuzzy
 msgid "Location"
 msgstr "Acción"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:337
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:339
 msgid "Usage"
 msgstr "Uso"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:347
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
 #, fuzzy
 msgid "Create Pool"
 msgstr "Crear proyecto"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:353
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
 msgid "Virtual Storage Pools and Volumes"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:354
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:365
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
 msgid "Filter by pool or volume name"
 msgstr ""
 

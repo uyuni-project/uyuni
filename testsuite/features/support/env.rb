@@ -12,6 +12,11 @@ require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
+require 'pp'
+
+# Print all the environment variables
+#WARNING: Comment it when we finish the development of QAM, to don't leak passwords
+#pp ENV
 
 ## code coverage analysis
 # SimpleCov.start
@@ -32,7 +37,7 @@ if File.exist?(mu_repos_path)
   mu_repos_file = File.read(mu_repos_path)
   $mu_repositories = JSON.parse(mu_repos_file)
   Capybara.default_max_wait_time = 30
-  DEFAULT_TIMEOUT = 1200
+  DEFAULT_TIMEOUT = 1800
   $qam_test = true
 end
 
@@ -47,7 +52,8 @@ MultiTest.disable_autorun
 # register chromedriver headless mode
 Capybara.register_driver(:headless_chrome) do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048] }
+    chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048] },
+    unhandledPromptBehavior: 'accept'
   )
 
   Capybara::Selenium::Driver.new(
@@ -232,6 +238,10 @@ Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.feature.location.file.include? 'minion'
 end
 
+Before('@skip_for_traditional') do |scenario|
+  skip_this_scenario if scenario.feature.location.file.include? 'client'
+end
+
 # do some tests only if we have SCC credentials
 Before('@scc_credentials') do
   skip_this_scenario unless $scc_credentials
@@ -260,6 +270,16 @@ end
 # do test only if HTTP proxy for SUSE Manager is defined
 Before('@server_http_proxy') do
   skip_this_scenario unless $server_http_proxy
+end
+
+# do test only if the registry is available
+Before('@no_auth_registry') do
+  skip_this_scenario unless $no_auth_registry
+end
+
+# do test only if the registry with authentication is available
+Before('@auth_registry') do
+  skip_this_scenario unless $auth_registry
 end
 
 # have more infos about the errors

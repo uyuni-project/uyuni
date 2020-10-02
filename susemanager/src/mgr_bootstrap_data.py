@@ -202,9 +202,12 @@ ENHANCE12 = [
 ENHANCE12SP1 = [
     "libyui-ncurses-pkg7",
     "libyui-qt-pkg7",
+    "python-asn1crypto",
     "python-enum34",
     "python-idna",
     "python-ipaddress",
+    "python-packaging",
+    "python-pyparsing",
     "python-setuptools",
 ]
 
@@ -553,6 +556,8 @@ PKGLISTUBUNTU2004 = [
     "libzmq5",
     "python3-crypto",
     "python3-dateutil",
+    "python3-jinja2",
+    "python3-markupsafe",
     "python3-msgpack",
     "python3-psutil",
     "python3-zmq",

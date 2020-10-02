@@ -34,7 +34,8 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.CmdResult;
-import org.jmock.lib.legacy.ClassImposteriser;
+
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Collections;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     public void testParseReleaseFileRedHat() {

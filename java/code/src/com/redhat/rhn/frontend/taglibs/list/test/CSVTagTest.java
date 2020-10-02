@@ -22,8 +22,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 
 import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class CSVTagTest extends MockObjectTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         RhnBaseTestCase.disableLocalizationServiceLogging();
 
         req = mock(HttpServletRequest.class);

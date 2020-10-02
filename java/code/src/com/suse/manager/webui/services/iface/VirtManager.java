@@ -14,12 +14,14 @@
  */
 package com.suse.manager.webui.services.iface;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.Map;
 import java.util.Optional;
@@ -93,4 +95,12 @@ public interface VirtManager {
      */
     void updateLibvirtEngine(MinionServer minion);
 
+    /**
+     * Get the name of the running hypervisor on a minion.
+     *
+     * @param minionId the minion to ask about
+     *
+     * @return either "kvm" or "xen"
+     */
+    Optional<String> getHypervisor(String minionId);
 }

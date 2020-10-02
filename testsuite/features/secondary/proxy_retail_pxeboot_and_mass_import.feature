@@ -232,7 +232,7 @@ Feature: PXE boot a Retail terminal
     When I reboot the PXE boot minion
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
-    And I navigate to "rhn/systems/Overview.do" page
+    And I am on the System Overview page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
     And I wait until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
@@ -416,7 +416,7 @@ Feature: PXE boot a Retail terminal
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
-    Then I navigate to "rhn/systems/Overview.do" page
+    Then I am on the System Overview page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
 @proxy

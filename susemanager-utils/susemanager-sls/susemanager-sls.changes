@@ -1,4 +1,13 @@
 - Move channel token information from sources.list to auth.conf on Debian 10 and Ubuntu 18 and newer
+- Add support for activation keys on server configuration Salt modules
+- ensure the yum/dnf plugins are enabled
+
+-------------------------------------------------------------------
+Fri Sep 18 12:29:55 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
+- Add uyuni-config-modules subpackage with Salt modules to configure
+  Servers
 - Fix the dnf plugin to add the token to the HTTP header (bsc#1175724)
 - Fix reporting of missing products in product.all_installed (bsc#1165829)
 - Fix: supply a dnf base when dealing w/repos (bsc#1172504)

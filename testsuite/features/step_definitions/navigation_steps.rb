@@ -52,14 +52,22 @@ end
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   text.gsub! '$PRODUCT', $product
   # TODO: get rid of this substitution, using another step
+  next if has_content?(text)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
+  next if has_content?("This action's status is: Completed.")
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?("This action's status is: Completed.")
     raise 'Event failed' if has_content?("This action's status is: Failed.")
@@ -68,7 +76,13 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
       STDOUT.puts "#{current} Still waiting for action to complete..."
       last = current
     end
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -78,9 +92,16 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
+  next unless has_content?(text)
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless has_content?(text)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -151,11 +172,10 @@ When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio,
   choose(label[:for])
 end
 
-When(/^I include the (mandatory|recommended) child channels$/) do |type|
-  has_no_content?('Loading')
-  checkboxes = all(:xpath, "//span[@class='#{type}-tag-base']/..//input", wait: DEFAULT_TIMEOUT)
-  checkboxes.each do |checkbox|
-    checkbox.set(true)
+When(/^I include the recommended child channels$/) do
+  toggle = "//span[@class='pointer']"
+  if page.has_xpath?(toggle, wait: 5)
+    find(:xpath, toggle).click
   end
 end
 
@@ -174,6 +194,10 @@ When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
   within(:xpath, '//section') do
     fill_in arg2, with: arg1
   end
+end
+
+When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
+  fill_in arg1, with: $no_auth_registry
 end
 
 #
@@ -328,16 +352,17 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   end
 end
 
-When(/^I am on the Organizations page$/) do
+Given(/^I am on the Organizations page$/) do
   steps %(
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Organizations"
-    )
+  )
 end
 
-Given(/^I am on the SUSE Products page$/) do
+Given(/^I am on the Products page$/) do
   steps %(
-    When I navigate to "rhn/manager/admin/setup/products" page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
   )
 end
@@ -397,14 +422,14 @@ Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
     When I follow the left menu "Systems > System Groups"
-    )
+  )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Users > User List > Active"
-    )
+  )
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -490,8 +515,8 @@ When(/^I check test channel$/) do
 end
 
 When(/^I check the child channel "([^"]*)"$/) do |channel|
-  raise 'Timeout: Waiting loading child channels' unless has_no_text?('Loading child channels', wait: 5)
-  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first)
+  find(:xpath, "//i[@class='fa fa-angle-right']").click unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
+  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
   checkbox.set(true)
 end
 
@@ -530,7 +555,7 @@ Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
     And I should see a "About" text
-    )
+  )
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -887,12 +912,11 @@ When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field
 end
 
 When(/^I enter URI, username and password for portus$/) do
-  portus_uri = ENV['PORTUS_URI']
-  portus_username, portus_password = ENV['PORTUS_CREDENTIALS'].split('|')
+  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
-    When I enter "#{portus_uri}" as "uri"
-    And I enter "#{portus_username}" as "username"
-    And I enter "#{portus_password}" as "password"
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
   )
 end
 

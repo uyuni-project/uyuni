@@ -91,7 +91,7 @@ module Yast
             Id("MANAGER_ADMIN_EMAIL"),
             Opt(:hstretch),
             # text entry label
-            _("#{@product_name} &Administrator E-mail Address"),
+            _("#{@product_name} &Administrator e-mail address"),
             Ops.get(@settings, "MANAGER_ADMIN_EMAIL", "")
           ),
           VSpacing(0.5),
@@ -109,7 +109,7 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications by #{@product_name}.</p>
+        "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications by #{@product_name}.</p>
          <p>By checking SLP (Service Location Protocol) #{@product_name} will advertise its service in the
            network so it can easily be found by client systems.</p>"
       )
@@ -149,7 +149,7 @@ module Yast
                 Builtins.find(@email, "@") == 0 ||
                 Builtins.find(@email, "@") ==
                   Ops.subtract(Builtins.size(@email), 1)
-              Popup.Error(_("The Administrator E-mail Address is not valid."))
+              Popup.Error(_("The Administrator e-mail address is not valid."))
               UI.SetFocus(Id("MANAGER_ADMIN_EMAIL"))
               next
             end

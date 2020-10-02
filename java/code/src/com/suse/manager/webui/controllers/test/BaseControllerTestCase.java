@@ -20,7 +20,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import com.suse.manager.webui.utils.SparkTestUtils;
 
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
@@ -46,7 +46,7 @@ public class BaseControllerTestCase extends JMockBaseTestCaseWithUser {
         super.setUp();
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
     }
 

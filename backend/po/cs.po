@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-26 14:48+0200\n"
-"PO-Revision-Date: 2020-09-01 09:07+0000\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
+"PO-Revision-Date: 2020-09-25 17:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
 "Language: cs\n"
@@ -22,6 +22,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 3.6.1\n"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "Neúplný autentifikační token pro proxy: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Zaslaný podpis proxy %s neodpovídá našemu %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "zamítnutá proxy autentifikace"
 
 #: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
@@ -39,30 +53,18 @@ msgstr ""
 "                   Pro další pomoc kontaktujte správce své organizace."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
-msgstr "Váš systém nebyl v databázi RHN nalezen"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Váš systém nebyl v databázi {PRODUCT_NAME} nalezen"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
-msgstr "ISS je na tomto satelitu deaktivována."
+msgid "ISS is disabled on this server."
+msgstr "ISS je na tomto serveru deaktivováno."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nemá povolen ISS."
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Profil \"%s\" nemá aktivovánu službu Spacewalk Proxy"
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Neplatný session key"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Toto ID serveru již neexistuje"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
@@ -88,6 +90,24 @@ msgstr "Neplatná hodnota operace typu %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Operace %s nenáleží k serveru %s"
 
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Neplatná hodnota %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "Serverový profil \"%s\" nemá aktivovánu službu SUSE Manager Proxy"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Neplatný session key"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Toto ID serveru již neexistuje"
+
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "Chybí požadovaná data"
@@ -112,12 +132,13 @@ msgstr ""
 "nalezeny."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Uvítací zpráva Red Hat Satellite"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "Uvítací zpráva {PRODUCT_NAME}"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Red Hat Satellite Privacy Statement"
-msgstr "Red Hat Satellite prohlášení o soukromí"
+msgid "Privacy Statement"
+msgstr "Prohlášení o ochraně soukromí"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -127,11 +148,6 @@ msgstr "Jako argument u produktu je očekáván slovník"
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pro %s (%s)"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -222,6 +238,104 @@ msgstr "Nesouhlasí session kickstartu"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Sčítání re-registračních tokenů není podporováno"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "Neplatná kombinace uživatelského jména a hesla"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "Uživatelské jméno `%s' nebylo rezerováno"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Nebyla udána e-mailová adresa"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "uživatelské jméno musí mít minimálně %d znaků"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "uživatelské jméno musí být kratší, než %d znaků"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "uživatelské jméno = `%s' obsahuje neplatný znak `%s'"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Prosím, omezte e-mail adresu na znaky %s"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "heslo musí mít nejméně %d znaků"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "Heslo musí být kratší, než %d znaků"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "heslo obsahuje znak `%s'"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "uživatelské jméno by mělo mít alespoň %d znaků"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Nelze registrovat uživatelská jména končící na %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Byl vyžádán neplatný RPM balík %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Balík nenalezen"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Neplatná žádost (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"DŮLEŽITÉ UPOZORNĚNÍ:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Při běhu '%s': zachyceno\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Neplatné URI %s"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -327,118 +441,6 @@ msgstr ""
 "na:\n"
 "\n"
 "  %(entitlement_url)s\n"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "Neúplný autentifikační token pro proxy: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Zaslaný podpis proxy %s neodpovídá našemu %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "zamítnutá proxy autentifikace"
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "Neplatná kombinace uživatelského jména a hesla"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Uživatelské jméno `%s' nebylo rezerováno"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "Nebyla udána e-mailová adresa"
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "uživatelské jméno musí mít minimálně %d znaků"
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "uživatelské jméno musí být kratší, než %d znaků"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "uživatelské jméno = `%s' obsahuje neplatný znak `%s'"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Prosím, omezte e-mail adresu na znaky %s"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "heslo musí mít nejméně %d znaků"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Heslo musí být kratší, než %d znaků"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "heslo obsahuje znak `%s'"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "uživatelské jméno by mělo mít alespoň %d znaků"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Nelze registrovat uživatelská jména končící na %s"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Neplatná žádost (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"DŮLEŽITÉ UPOZORNĚNÍ:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Při běhu '%s': zachyceno\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Neplatné URI %s"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Byl vyžádán neplatný RPM balík %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Balík nenalezen"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1120,26 +1122,13 @@ msgstr "CHYBA: %s %s: %s"
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s"
+msgstr "TRACE-BACK: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "formát %s by měl být alespoň RRRRMMDD.\n"
-
-#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ odesílání protokolu jako e-mailu +++"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s synchronizační zpráva od %s"
-
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ vyžadován e-mail, ale není nic k odeslání +++"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1355,6 +1344,41 @@ msgstr "Import spustitelných stromů (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Importované startovatelné stromy (%d)"
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (uvedeno v příkazovém řádku)\n"
+"nelze otevřít a přečíst:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s“ nelze otevřít a/nebo\n"
+"do něj zapisovat:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ odesílání protokolu jako e-mailu +++"
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s synchronizační zpráva od %s"
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ vyžadován e-mail, ale není nic k odeslání +++"
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1433,17 +1457,18 @@ msgid " - live synchronization"
 msgstr " - živá synchronizace"
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 "CHYBA: Synchronizace živého obsahu s RHN Classic Hosted již není "
 "podporována.\n"
 "Použijte příkaz cdn-sync, nepokoušíte-li se synchronizovat z jiného "
-"Satellite přes Inter-Satellite-Sync (ISS) nebo z místního obsahu na disku "
+"{PRODUCT_NAME} přes Inter-Server-Sync (ISS), nebo z místního obsahu na disku "
 "pomocí obrazů ISO z výpisu kanálu (Channel Dump)."
 
 #: ../satellite_tools/satsync.py:542
@@ -1776,8 +1801,8 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "satellite-sync\" for more information."
 msgstr ""
-"POUZE DEBUG: max. velikost dávky pro zpracování importu XML/databáze (1 ..%s)"
-". Další informace: \"man satellite-sync\"."
+"POUZE DEBUG: max. velikost dávky pro zpracování importu XML/databáze (1 .."
+"%s). Další informace: \"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1916,8 +1941,8 @@ msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
-"plně kvalifikovaný doménový název serveru Master Satellite. Platí pouze s "
-"--mount-point. Vyžadován, chcete-li importovat data organizace a oprávnění "
+"plně kvalifikovaný doménový název serveru Master Satellite. Platí pouze s --"
+"mount-point. Vyžadován, chcete-li importovat data organizace a oprávnění "
 "kanálu."
 
 #: ../satellite_tools/satsync.py:2274
@@ -1981,17 +2006,17 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
-"CHYBA: '%s' není platný krok. Další podrobnosti viz 'man satellite-sync'."
+"CHYBA: '%s' není platný krok. Další podrobnosti viz 'man mgr-inter-sync'."
 
 #: ../satellite_tools/satsync.py:2407
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"CHYBA: Momentálně nejsou importovány žádné kanály; zkuste mgr-inter-sync "
-"--list-kanály; pak mgr-inter-sync -c chn0 -c chn1 ..."
+"CHYBA: Momentálně nejsou importovány žádné kanály; zkuste mgr-inter-sync --"
+"list-kanály; pak mgr-inter-sync -c chn0 -c chn1 ..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
@@ -2133,24 +2158,5 @@ msgstr "  28 - chyba: --master je platný pouze s --mount-point"
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznámá verze výpisu, zkuste jeden z %s"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (uvedeno v příkazovém řádku)\n"
-"nelze otevřít a přečíst:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s“ nelze otevřít a/nebo\n"
-"do něj zapisovat:\n"
-"%s"
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Uvítací zpráva Red Hat Satellite"

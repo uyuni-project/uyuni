@@ -65,9 +65,9 @@ import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,7 +97,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     public final void testConvertChecksum() {

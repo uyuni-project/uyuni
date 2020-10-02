@@ -26,8 +26,8 @@ import java.io.Writer;
 
 import org.jmock.Expectations;
 import org.jmock.api.Action;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class ListTagTest extends MockObjectTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         RhnBaseTestCase.disableLocalizationServiceLogging();
         final List dataList = CSVWriterTest.getTestListOfMaps();
 

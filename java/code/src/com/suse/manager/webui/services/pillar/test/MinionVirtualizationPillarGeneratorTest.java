@@ -30,11 +30,10 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
-import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -100,6 +99,11 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
 
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
+            }
+
+            @Override
+            public Optional<String> getHypervisor(String minionId) {
+                return Optional.empty();
             }
         };
 
