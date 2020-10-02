@@ -7,7 +7,7 @@
 <html:html >
     <body>
         <rhn:toolbar base="h1" icon="header-system"
-                     helpUrl="/docs/reference/systems/advanced-search.html"
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/advanced-search.html"
                      imgAlt="search.alt.img">
             <bean:message key="systemsearch.jsp.toolbar"/>
         </rhn:toolbar>

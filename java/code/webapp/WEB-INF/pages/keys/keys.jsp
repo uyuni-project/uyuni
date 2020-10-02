@@ -11,12 +11,12 @@
                creationUrl="CryptoKeyCreate.do"
                creationType="keys"
                imgAlt="info.alt.img"
-               helpUrl="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/autoinst-gpg-and-ssl-keys.html">
   <bean:message key="keys.jsp.toolbar"/>
 </rhn:toolbar>
 
 <div>
-    <bean:message key="keys.jsp.summary" arg0="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html"/>
+    <bean:message key="keys.jsp.summary" arg0="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/autoinst-gpg-and-ssl-keys.html"/>
     <form method="post" name="rhn_list" action="/rhn/keys/CryptoKeysList.do">
     <rhn:csrf />
     <rhn:submitted />
