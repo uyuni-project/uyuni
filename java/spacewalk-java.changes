@@ -1,3 +1,4 @@
+- Localize documentation links
 - fix check for available products on ISS Slaves (bsc#1177184)
 - XMLRPC: Report architecture label in the list of installed packages (bsc#1176898)
 - get media.1/products for cloned channels (bsc#1178303)
