@@ -88,6 +88,18 @@ mgrchannels_repo:
 {%- endif %}
 {%- endif %}
 
+{%- if (grains['os'] == 'Debian' and grains['osmajorrelease']|int >= 10) or (grains['os'] == 'Ubuntu' and grains['osmajorrelease']|int >= 18) %}
+aptauth_conf:
+  file.managed:
+    - name: "/etc/apt/auth.conf.d/susemanager.conf"
+    - source:
+      - salt://channels/aptauth.conf
+    - template: jinja
+    - user: _apt
+    - group: root
+    - mode: 600
+{%- endif %}
+
 {%- if grains['os_family'] == 'RedHat' %}
 {%- if is_dnf %}
 mgrchannels_dnf_clean_all:
