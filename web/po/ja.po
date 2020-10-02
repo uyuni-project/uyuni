@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-09-28 07:48+0000\n"
+"PO-Revision-Date: 2020-10-02 13:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -2913,31 +2913,31 @@ msgstr "イベントに移動"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid " is queued"
-msgstr ""
+msgstr " はキューに入っています"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid "In progress"
-msgstr ""
+msgstr "処理中です"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid " in progress"
-msgstr ""
+msgstr " は処理中です"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid "Successful"
-msgstr ""
+msgstr "成功"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid " is successful"
-msgstr ""
+msgstr " は成功しました"
 
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid " has failed"
-msgstr ""
+msgstr " は失敗しました"
 
 #: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
-msgstr ""
+msgstr " ステータス"
 
 #: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
@@ -2945,105 +2945,105 @@ msgstr "ピックアップ済み"
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
-msgstr ""
+msgstr "プロファイルの編集"
 
 #: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
-msgstr ""
+msgstr "ストアの編集"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
-msgstr ""
+msgstr "イメージの状態"
 
 #: ../html/src/manager/images/image-view-overview.js:365
 msgid "Image Info"
-msgstr ""
+msgstr "イメージの情報"
 
 #: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
-msgstr ""
+msgstr "ビルド状態"
 
 #: ../html/src/manager/images/image-view-overview.js:381
 #: ../html/src/manager/images/image-view-overview.js:516
 msgid "Inspect"
-msgstr ""
+msgstr "検査"
 
 #: ../html/src/manager/images/image-view-overview.js:390
 msgid "Rebuild"
-msgstr ""
+msgstr "再ビルド"
 
 #: ../html/src/manager/images/image-view-overview.js:391
 msgid "Reschedule the build"
-msgstr ""
+msgstr "ビルドの再スケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:399
 msgid "Reinspect"
-msgstr ""
+msgstr "再検査"
 
 #: ../html/src/manager/images/image-view-overview.js:400
 msgid "Reschedule the inspect"
-msgstr ""
+msgstr "検査の再スケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
-msgstr ""
+msgstr "カスタムイメージの情報"
 
 #: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
-msgstr ""
+msgstr "ビルドのスケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:489
 msgid "Rebuild Image"
-msgstr ""
+msgstr "イメージの再ビルド"
 
 #: ../html/src/manager/images/image-view-overview.js:517
 msgid "Schedule inspect"
-msgstr ""
+msgstr "検査のスケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:548
 msgid "Reinspect Image"
-msgstr ""
+msgstr "インストール済み"
 
 #: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:315
 msgid "Installed"
-msgstr ""
+msgstr "インストール済み"
 
 #: ../html/src/manager/images/image-view-patches.js:12
 msgid "fa fa-shield fa-1-5x"
-msgstr ""
+msgstr "fa fa-shield fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:13
 msgid "fa fa-bug fa-1-5x"
-msgstr ""
+msgstr "fa fa-bug fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:14
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
-msgstr ""
+msgstr "fa spacewalk-icon-enhancement fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:15
 msgid "fa fa-refresh fa-1-5x"
-msgstr ""
+msgstr "fa fa-refresh fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:16
 msgid "fa fa-archive fa-1-5"
-msgstr ""
+msgstr "fa fa-archive fa-1-5"
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
-msgstr ""
+msgstr "セキュリティアドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "製品の機能拡張アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
-msgstr ""
+msgstr "要再起動"
 
 #: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
