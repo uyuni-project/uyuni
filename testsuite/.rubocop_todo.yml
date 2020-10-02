@@ -357,6 +357,7 @@ Style/DateTime:
 # Cop supports --auto-correct.
 Style/DisableCopsWithinSourceCodeDirective:
   Exclude:
+    - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
 
