@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.google.gson.GsonBuilder;
+import com.suse.manager.webui.utils.UserPreferenceUtils;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,6 +44,7 @@ public class MenuTree {
      * @return the full menu tree as a List of {@link MenuItem}
      */
     public static List<MenuItem> getMenuTree(PageContext pageContext) {
+        String docsLocale = UserPreferenceUtils.getDocsLocale(pageContext);
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         User user = new RequestContext(request).getCurrentUser();
         String url = request.getRequestURI();
@@ -389,13 +391,13 @@ public class MenuTree {
             // Help
             nodes.add(new MenuItem("Help").withIcon("fa-book").withTarget("_blank")
                 .addChild(new MenuItem("Documentation_version", ConfigDefaults.get().getProductVersion())
-                    .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
+                    .withDocsUrl("index.html", docsLocale).withTarget("_blank"))
                 .addChild(new MenuItem("Release Notes").withTarget("_blank")
                         .addChild(new MenuItem("product_server")
-                            .withPrimaryUrl("/docs/release-notes/release-notes-server.html")
+                            .withDocsUrl("release-notes/release-notes-server.html", docsLocale)
                             .withTarget("_blank"))
                         .addChild(new MenuItem("product_proxy")
-                                .withPrimaryUrl("/docs/release-notes/release-notes-proxy.html")
+                                .withDocsUrl("release-notes/release-notes-proxy.html", docsLocale)
                                 .withTarget("_blank"))
                         )
                 .addChild(new MenuItem("API")
@@ -430,14 +432,14 @@ public class MenuTree {
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
                 .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/manager/login"))
                 .addChild(new MenuItem("Documentation_version", ConfigDefaults.get().getProductVersion())
-                    .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
+                    .withDocsUrl("index.html", docsLocale).withTarget("_blank"))
                 .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))
                 .addChild(new MenuItem("Release Notes").withTarget("_blank")
                         .addChild(new MenuItem("product_server")
-                            .withPrimaryUrl("/docs/release-notes/release-notes-server.html")
+                            .withDocsUrl("release-notes/release-notes-server.html", docsLocale)
                             .withTarget("_blank"))
                         .addChild(new MenuItem("product_proxy")
-                                .withPrimaryUrl("/docs/release-notes/release-notes-proxy.html")
+                                .withDocsUrl("release-notes/release-notes-proxy.html", docsLocale)
                                 .withTarget("_blank"))
                         )
                 .addChild(new MenuItem("API")
