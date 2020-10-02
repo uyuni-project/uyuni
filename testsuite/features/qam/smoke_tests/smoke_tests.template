@@ -117,4 +117,4 @@ Feature: Smoke tests for <client>
     Then I should see a "Reboot scheduled for system" text
     When I force picking pending events on "<client>" if necessary
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
-    Then I should see a "Reboot completed." text
+    Then I should see a "This action's status is: Completed" text
