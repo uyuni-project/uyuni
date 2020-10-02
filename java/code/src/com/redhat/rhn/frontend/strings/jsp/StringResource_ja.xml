@@ -2146,11 +2146,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>注記: このボックスにチェックが付いている場合には、上記のパスワードフィールドは必要ありません。ただし、このユーザーアカウントの PAM 認証が無効になっている場合にのみ機能するパスワードを入力しても構いません。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
-        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/docs/administration/auth-methods.html"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>LDAP, kerberos やその他のネットワークベースの認証システムに対して認証を行なうよう @@PRODUCT_NAME@@ を設定する場合は、 &lt;a href="/docs/administration/auth-methods.html"&gt;ドキュメンテーション&lt;/a&gt; 内にある PAM のセットアップ方法をお読みください。</target>
+        <target>LDAP, kerberos やその他のネットワークベースの認証システムに対して認証を行なうよう @@PRODUCT_NAME@@ を設定する場合は、 &lt;a href={0}&gt;ドキュメンテーション&lt;/a&gt; 内にある PAM のセットアップ方法をお読みください。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly" xml:space="preserve">
         <source>Read-only API user:</source>
@@ -12018,14 +12018,14 @@ Please note that some manual configuration of these scripts may still be require
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
         <target state="translated">
 システムに対するキックスタートの際に鍵と証明書をインストールできるようにするため、キックスタートプロファイルから鍵と証明書を参照するように設定することができます。
 システムは署名済みのパッケージをインストールする際に正しい鍵が必要となるほか、 @@PRODUCT_NAME@@ プロキシサーバや @@PRODUCT_NAME@@ サーバでキックスタートを開始する際にも正しい証明書が必要となります。
-詳しくは &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。</target>
+詳しくは &lt;a href={0} target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。</target>
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar" xml:space="preserve">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -12178,7 +12178,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <source>
         File preservation lists are lists of files that will be restored to a system during a particular kickstart.
         You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
+        For more information refer to the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.
         The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
@@ -12186,7 +12186,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target state="translated">
         ファイル保持リストはファイルの一覧を設定するもので、特定のキックスタートの際にシステムに対して復元すべきファイルを指定します。
         ファイル保持リストはキックスタートプロファイルから参照するように設定します。
-        詳しくは &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。
+        詳しくは &lt;a href={0} target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。
         下記のファイル保持リストは、組織側で作成されているファイル保持リストです:</target>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary" xml:space="preserve">
@@ -12323,11 +12323,11 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>キックスタートファイル保持一覧の作成</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary" xml:space="preserve">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target state="translated">ここで示されているファイルやディレクトリは、下記のキックスタートの際に保持されます。ファイルやディレクトリは 1 行に 1 つずつ記述します。&lt;br/&gt;それぞれのリストは最大でも &lt;strong&gt;1 MB&lt;/strong&gt; までのサイズである必要があります。詳しくは &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。</target>
+        <target state="translated">ここで示されているファイルやディレクトリは、下記のキックスタートの際に保持されます。ファイルやディレクトリは 1 行に 1 つずつ記述します。&lt;br/&gt;それぞれのリストは最大でも &lt;strong&gt;1 MB&lt;/strong&gt; までのサイズである必要があります。詳しくは &lt;a href={0} target="_blank" &gt;リファレンスガイド&lt;/a&gt; をお読みください。</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1" xml:space="preserve">
         <source>You can modify the software this kickstart profile will deploy below.</source>
