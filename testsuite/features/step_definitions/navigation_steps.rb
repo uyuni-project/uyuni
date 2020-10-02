@@ -744,13 +744,6 @@ When(/^I check the first patch in the list$/) do
   step %(I check the first row in the list)
 end
 
-Then(/^I check (a|the) "([^"]*)" patch in the list$/) do |_article, client|
-  steps %(
-    When I select the maximum amount of items per page
-    And I check "#{PATCH_BY_CLIENT[client]}" in the list
-  )
-end
-
 Then(/^I check (a|the) "([^"]*)" package in the list$/) do |_article, client|
   steps %(
     When I enter "#{PACKAGE_BY_CLIENT[client]}" as the filtered package name
