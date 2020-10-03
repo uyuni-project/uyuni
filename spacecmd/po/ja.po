@@ -4,145 +4,147 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: ../src/bin/spacecmd:59
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-24 17:29+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2020-10-03 02:49+0000\n"
+"Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
+"ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/spacecmd/activationkey.py:49
 msgid "activationkey_addpackages: Add packages to an activation key"
-msgstr ""
+msgstr "activationkey_addpackages: アクティベーションキーにパッケージを追加"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "usage: activationkey_addpackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "使用方法: activationkey_addpackages キー <パッケージ ...>"
 
 #: ../src/spacecmd/activationkey.py:83
 msgid "activationkey_removepackages: Remove packages from an activation key"
-msgstr ""
+msgstr "activationkey_removepackages: アクティベーションキーからパッケージを削除"
 
 #: ../src/spacecmd/activationkey.py:85
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "使用方法: activationkey_removepackages キー <パッケージ ...>"
 
 #: ../src/spacecmd/activationkey.py:121
 msgid "activationkey_addgroups: Add groups to an activation key"
-msgstr ""
+msgstr "activationkey_addgroups: アクティベーションキーをグループに追加"
 
 #: ../src/spacecmd/activationkey.py:122
 msgid "usage: activationkey_addgroups KEY <GROUP ...>"
-msgstr ""
+msgstr "使用方法: activationkey_addgroups キー <グループ ...>"
 
 #: ../src/spacecmd/activationkey.py:160
 msgid "activationkey_removegroups: Remove groups from an activation key"
-msgstr ""
+msgstr "activationkey_removegroups: アクティベーションキーからグループを削除"
 
 #: ../src/spacecmd/activationkey.py:161
 msgid "usage: activationkey_removegroups KEY <GROUP ...>"
-msgstr ""
+msgstr "使用方法: activationkey_removegroups キー <グループ ...>"
 
 #: ../src/spacecmd/activationkey.py:208
 msgid "activationkey_addentitlements: Add entitlements to an activation key"
-msgstr ""
+msgstr "activationkey_addentitlements: アクティベーションキーにエンタイトルメントを追加"
 
 #: ../src/spacecmd/activationkey.py:210
 msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "使用方法: activationkey_addentitlements キー <エンタイトルメント ...>"
 
 #: ../src/spacecmd/activationkey.py:245
 msgid ""
 "activationkey_removeentitlements: Remove entitlements from an activation key"
-msgstr ""
+msgstr "activationkey_removeentitlements: アクティベーションキーからエンタイトルメントを削除"
 
 #: ../src/spacecmd/activationkey.py:247
 msgid "usage: activationkey_removeentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "使用方法: activationkey_removeentitlements キー <エンタイトルメント ...>"
 
 #: ../src/spacecmd/activationkey.py:285
 msgid "activationkey_addchildchannels: Add child channels to an activation key"
-msgstr ""
+msgstr "activationkey_addchildchannels: アクティベーションキーに子チャンネルを追加"
 
 #: ../src/spacecmd/activationkey.py:287
 msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "使用方法: activationkey_addchildchannels キー <チャンネル ...>"
 
 #: ../src/spacecmd/activationkey.py:337
 msgid ""
 "activationkey_removechildchannels: Remove child channels from an activation "
 "key"
-msgstr ""
+msgstr "activationkey_removechildchannels: アクティベーションキーから子チャンネルを削除"
 
 #: ../src/spacecmd/activationkey.py:339
 msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "使用方法: activationkey_removechildchannels キー <チャンネル ...>"
 
 #: ../src/spacecmd/activationkey.py:376
 msgid ""
 "activationkey_listchildchannels: List the child channels for an activation "
 "key"
-msgstr ""
+msgstr "activationkey_listchildchannels: アクティベーションキーに対する子チャンネルを表示"
 
 #: ../src/spacecmd/activationkey.py:378
 msgid "usage: activationkey_listchildchannels KEY"
-msgstr ""
+msgstr "使用方法: activationkey_listchildchannels キー"
 
 #: ../src/spacecmd/activationkey.py:407
 msgid ""
 "activationkey_listbasechannel: List the base channels for an activation key"
-msgstr ""
+msgstr "activationkey_listbasechannel: アクティベーションキーに対するベースチャンネルを表示"
 
 #: ../src/spacecmd/activationkey.py:409
 msgid "usage: activationkey_listbasechannel KEY"
-msgstr ""
+msgstr "使用方法: activationkey_listbasechannel キー"
 
 #: ../src/spacecmd/activationkey.py:437
 msgid "activationkey_listgroups: List the groups for an activation key"
-msgstr ""
+msgstr "activationkey_listgroups: アクティベーションキーに対するグループを表示"
 
 #: ../src/spacecmd/activationkey.py:439
 msgid "usage: activationkey_listgroups KEY"
-msgstr ""
+msgstr "使用方法: activationkey_listgroups キー"
 
 #: ../src/spacecmd/activationkey.py:470
 msgid ""
 "activationkey_listentitlements: List the entitlements for an activation key"
-msgstr ""
+msgstr "activationkey_listentitlements: アクティベーションキーに対するエンタイトルメントを表示"
 
 #: ../src/spacecmd/activationkey.py:472
 msgid "usage: activationkey_listentitlements KEY"
-msgstr ""
+msgstr "使用方法: activationkey_listentitlements キー"
 
 #: ../src/spacecmd/activationkey.py:501
 msgid "activationkey_listpackages: List the packages for an activation key"
-msgstr ""
+msgstr "activationkey_listpackages: アクティベーションキーに対するパッケージを表示"
 
 #: ../src/spacecmd/activationkey.py:503
 msgid "usage: activationkey_listpackages KEY"
-msgstr ""
+msgstr "使用方法: activationkey_listpackages キー"
 
 #: ../src/spacecmd/activationkey.py:535
 msgid ""
 "activationkey_listconfigchannels: List the configuration channels for an "
 "activation key"
-msgstr ""
+msgstr "activationkey_listconfigchannels: アクティベーションキーに対する設定チャンネルを表示"
 
 #: ../src/spacecmd/activationkey.py:537
 msgid "usage: activationkey_listconfigchannels KEY"
-msgstr ""
+msgstr "使用方法: activationkey_listconfigchannels キー"
 
 #: ../src/spacecmd/activationkey.py:570
 msgid ""
 "activationkey_addconfigchannels: Add config channels to an activation key"
-msgstr ""
+msgstr "activationkey_addconfigchannels: アクティベーションキーに設定チャンネルを追加"
 
 #: ../src/spacecmd/activationkey.py:572
 msgid ""
@@ -152,16 +154,21 @@ msgid ""
 "  -t add channels to the top of the list\n"
 "  -b add channels to the bottom of the list"
 msgstr ""
+"使用方法: activationkey_addconfigchannels キー <チャンネル ...> [options])\n"
+"\n"
+"オプション:\n"
+"  -t 一覧の先頭にチャンネルを追加する\n"
+"  -b 一覧の末尾にチャンネルを追加する"
 
 #: ../src/spacecmd/activationkey.py:625
 msgid ""
 "activationkey_removeconfigchannels: Remove config channels from an "
 "activation key"
-msgstr ""
+msgstr "activationkey_removeconfigchannels: アクティベーションキーから設定チャンネルを削除"
 
 #: ../src/spacecmd/activationkey.py:627
 msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "使用方法: activationkey_removeconfigchannels キー <チャンネル ...>"
 
 #: ../src/spacecmd/activationkey.py:666
 msgid ""
@@ -1902,7 +1909,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:1475 ../src/spacecmd/system.py:1783
 #: ../src/spacecmd/system.py:4230
 msgid "Systems"
-msgstr ""
+msgstr "システム"
 
 #: ../src/spacecmd/group.py:149
 msgid "Remove these systems [y/N]:"
@@ -2264,7 +2271,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:449
 msgid "Partitioning"
-msgstr ""
+msgstr "パーティション設定"
 
 #: ../src/spacecmd/kickstart.py:454
 msgid "Software"
@@ -5965,7 +5972,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:612
 msgid "Network"
-msgstr ""
+msgstr "ネットワーク"
 
 #: ../src/spacecmd/system.py:621
 #, python-format
@@ -6090,7 +6097,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:666
 msgid "Devices"
-msgstr ""
+msgstr "デバイス"
 
 #: ../src/spacecmd/system.py:676
 msgid "Description: None"
