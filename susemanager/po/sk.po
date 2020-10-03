@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-16 15:23+0200\n"
-"PO-Revision-Date: 2020-10-02 21:48+0000\n"
+"PO-Revision-Date: 2020-10-03 18:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "sk/>\n"
@@ -78,28 +78,31 @@ msgid ""
 "certificate is used for a number of purposes like connections to a SUSE "
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
+"<p>Tu zadajte údaje potrebné na vytvorenie certifikátu SSL. Certifikát sa "
+"používa na rôzne účely, ako napríklad pripojenia k serveru SUSE Manager "
+"Proxy, protokol HTTPS v prehľadávačoch a ďalšie.</p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
-msgstr ""
+msgstr "Nastavenie certifikátu"
 
 #: ../yast/susemanager_cert.rb:169
 msgid "The value of '%1' is empty."
-msgstr ""
+msgstr "Hodnota %1 je prázdna."
 
 #: ../yast/susemanager_cert.rb:180 ../yast/susemanager_db.rb:140
 #: ../yast/susemanager_migration.rb:146
 msgid "Password is missing."
-msgstr ""
+msgstr "Chýba heslo."
 
 #: ../yast/susemanager_cert.rb:185 ../yast/susemanager_db.rb:145
 #: ../yast/susemanager_migration.rb:163
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Heslá sa nezhodujú."
 
 #: ../yast/susemanager_cert.rb:193 ../yast/susemanager_db.rb:153
 msgid "The password should have at least %1 characters."
-msgstr ""
+msgstr "Heslo by malo mať najmenej %1 znakov."
 
 #: ../yast/susemanager_cert.rb:204 ../yast/susemanager_db.rb:164
 #: ../yast/susemanager_migration.rb:154
@@ -107,27 +110,31 @@ msgid ""
 "The password contains invalid characters.\n"
 "The invalid characters are: %1"
 msgstr ""
+"Heslo obsahuje neplatné znaky.\n"
+"Neplatné znaky sú: %1"
 
 #: ../yast/susemanager_congratulate.rb:35
 msgid "<p>#{@product_name} Setup is now complete.</p><br>\n"
-msgstr ""
+msgstr "<p>Nastavenie #{@product_name} je teraz dokončené.</p><br>\n"
 
 #: ../yast/susemanager_congratulate.rb:51
 msgid "Setup Completed"
-msgstr ""
+msgstr "Nastavenie je dokončené"
 
 #: ../yast/susemanager_db.rb:90
 msgid "Database &User"
-msgstr ""
+msgstr "Po&užívateľ databázy"
 
 #: ../yast/susemanager_db.rb:98
 msgid "Database &Password"
-msgstr ""
+msgstr "Heslo databázy"
 
 #: ../yast/susemanager_db.rb:115
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
 msgstr ""
+"<p>V predvolenom nastavení používa SUSE Manager internú databázu postgresql "
+"s názvom '"
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
