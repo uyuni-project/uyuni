@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-24 17:29+0200\n"
-"PO-Revision-Date: 2020-10-03 08:48+0000\n"
+"PO-Revision-Date: 2020-10-04 01:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -470,21 +470,21 @@ msgstr "%s から JSON データを読み込むことができませんでした
 #: ../src/spacecmd/activationkey.py:1338 ../src/spacecmd/activationkey.py:1382
 #, python-format
 msgid "Failed to import key %s"
-msgstr ""
+msgstr "キー %s のインポートに失敗しました"
 
 #: ../src/spacecmd/activationkey.py:1352
 #, python-format
 msgid "%s already exists! Skipping!"
-msgstr ""
+msgstr "%s は既に存在しています。処理を飛ばしています！"
 
 #: ../src/spacecmd/activationkey.py:1407
 #, python-format
 msgid "System group %s doesn't exist, creating"
-msgstr ""
+msgstr "システムグループ %s は存在していません。作成します"
 
 #: ../src/spacecmd/activationkey.py:1428
 msgid "activationkey_clone: Clone an activation key"
-msgstr ""
+msgstr "activationkey_clone: アクティベーションキーを複製"
 
 #: ../src/spacecmd/activationkey.py:1429
 msgid ""
@@ -503,123 +503,134 @@ msgid ""
 "                   clone description, base-channel label, child-channel\n"
 "                   labels, config-channel names "
 msgstr ""
+"使用例:\n"
+"                 activationkey_clone foo_key -c bar_key\n"
+"                 activationkey_clone foo_key1 foo_key2 -c prefix\n"
+"                 activationkey_clone foo_key -x \"s/foo/bar\"\n"
+"                 activationkey_clone foo_key1 foo_key2 -x \"s/foo/bar\"\n"
+"\n"
+"オプション:\n"
+"  -c キー名  : 複製先のキー名。複数の鍵を複製する場合はプレフィクスとして処理\n"
+"                   される\n"
+"  -x \"s/foo/bar\" : 複製の際、説明やベースチャンネルのラベル、子チャンネルの\n"
+"                   ラベルや設定チャンネル名の foo を bar に置き換える (正規表現) "
 
 #: ../src/spacecmd/activationkey.py:1457 ../src/spacecmd/kickstart.py:460
 #: ../src/spacecmd/system.py:3043
 msgid "Activation Keys"
-msgstr ""
+msgstr "アクティベーションキー"
 
 #: ../src/spacecmd/activationkey.py:1463
 #, python-format
 msgid "Key to clone: %s"
-msgstr ""
+msgstr "複製するキー: %s"
 
 #: ../src/spacecmd/activationkey.py:1467
 msgid "Original Key:"
-msgstr ""
+msgstr "元のキー:"
 
 #: ../src/spacecmd/activationkey.py:1469
 msgid "Cloned Key:"
-msgstr ""
+msgstr "複製されたキー:"
 
 #: ../src/spacecmd/activationkey.py:1472 ../src/spacecmd/configchannel.py:1376
 msgid "Error - must specify either -c or -x options!"
-msgstr ""
+msgstr "エラー - オプション -c と -x は同時に指定できません！"
 
 #: ../src/spacecmd/activationkey.py:1477
 #, python-format
 msgid "Key %s already exists"
-msgstr ""
+msgstr "キー %s は既に存在しています"
 
 #: ../src/spacecmd/activationkey.py:1481
 msgid "Error no activationkey to clone passed!"
-msgstr ""
+msgstr "複製すべきアクティベーションがありません！"
 
 #: ../src/spacecmd/activationkey.py:1535
 #, python-format
 msgid "Found child channel %s key %s, %s"
-msgstr ""
+msgstr "子チャンネル %s (キー %s) %s"
 
 #: ../src/spacecmd/activationkey.py:1537
 msgid " does not exist, skipping!"
-msgstr ""
+msgstr " が存在しません。読み飛ばしています！"
 
 #: ../src/spacecmd/activationkey.py:1544
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
-msgstr ""
+msgstr "新しいベースチャンネル %s に対する正規表現の結果がありません！"
 
 #: ../src/spacecmd/activationkey.py:1560
 #, python-format
 msgid "Found config channel %s for key %s, %s "
-msgstr ""
+msgstr "設定チャンネル %s (キー %s) %s "
 
 #: ../src/spacecmd/activationkey.py:1562
 msgid "does not exist, skipping!"
-msgstr ""
+msgstr "が存在しません。読み飛ばしています！"
 
 #: ../src/spacecmd/activationkey.py:1584 ../src/spacecmd/configchannel.py:1428
 #, python-format
 msgid "Failed to clone %s to %s"
-msgstr ""
+msgstr "%s を %s に複製する処理が失敗しました"
 
 #: ../src/spacecmd/activationkey.py:1602
 msgid "no activationkey label given"
-msgstr ""
+msgstr "アクティベーションキーのラベルを指定していません"
 
 #: ../src/spacecmd/activationkey.py:1605
 msgid "invalid activationkey label "
-msgstr ""
+msgstr "アクティベーションキーのラベルが正しくありません "
 
 #: ../src/spacecmd/activationkey.py:1622
 msgid "activationkey_diff: Diff activation keys"
-msgstr ""
+msgstr "activationkey_diff: アクティベーションキーの差分を表示"
 
 #: ../src/spacecmd/activationkey.py:1624
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
-msgstr ""
+msgstr "使用方法: activationkey_diff キー_1 キー_2"
 
 #: ../src/spacecmd/activationkey.py:1673
 msgid "activationkey_disable: Disable an activation key"
-msgstr ""
+msgstr "activationkey_disable: アクティベーションキーを無効化"
 
 #: ../src/spacecmd/activationkey.py:1675
 msgid "usage: activationkey_disable KEY [KEY ...]"
-msgstr ""
+msgstr "使用方法: activationkey_disable キー [キー ...]"
 
 #: ../src/spacecmd/activationkey.py:1707
 msgid "activationkey_enable: Enable an activation key"
-msgstr ""
+msgstr "activationkey_enable: アクティベーションキーの有効化"
 
 #: ../src/spacecmd/activationkey.py:1709
 msgid "usage: activationkey_enable KEY [KEY ...]"
-msgstr ""
+msgstr "使用方法: activationkey_enable キー [キー ...]"
 
 #: ../src/spacecmd/activationkey.py:1741
 msgid "activationkey_setdescription: Set the activation key description"
-msgstr ""
+msgstr "activationkey_setdescription: アクティベーションキーの説明を設定"
 
 #: ../src/spacecmd/activationkey.py:1743
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
-msgstr ""
+msgstr "使用方法: activationkey_setdescription キー 説明"
 
 #: ../src/spacecmd/activationkey.py:1775
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
-msgstr ""
+msgstr "activationkey_setcontactmethod: このキーで登録されたシステムに対して適用する連絡方法を設定。"
 
 #: ../src/spacecmd/activationkey.py:1777 ../src/spacecmd/system.py:4132
 msgid "Available contact methods: "
-msgstr ""
+msgstr "利用可能な連絡方法: "
 
 #: ../src/spacecmd/activationkey.py:1778
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
-msgstr ""
+msgstr "使用方法: activationkey_setcontactmethod キー 連絡方法"
 
 #: ../src/spacecmd/api.py:44
 msgid "api: call RHN API with arguments directly"
-msgstr ""
+msgstr "api: 指定したパラメータで直接 RHN API を呼び出す"
 
 #: ../src/spacecmd/api.py:45
 #, python-format
@@ -639,181 +650,196 @@ msgid ""
 "  api -A \"rhel-i386-server-5,2011-04-01,2011-05-01\" -F \"%(name)s\" \\\n"
 "      channel.software.listAllPackages\n"
 msgstr ""
+"使用方法: api [オプション (API_文字列)\n"
+"\n"
+"オプション:\n"
+"  -A, --args  カンマ区切りの文字列もしくは JSON 表記での API パラメータ\n"
+"              (ただしセッション ID を除く)\n"
+"  -F, --format   出力形式\n"
+"  -o, --output   出力先ファイル\n"
+"\n"
+"例:\n"
+"  api api.getApiCallList\n"
+"  api --args \"sysgroup_A\" systemgroup.listSystems\n"
+"  api -A \"rhel-i386-server-5,2011-04-01,2011-05-01\" -F \"%(name)s\" \\\n"
+"      channel.software.listAllPackages\n"
 
 #: ../src/spacecmd/api.py:81
 msgid "Could not open to write: "
-msgstr ""
+msgstr "書き込むために開くことができません: "
 
 #: ../src/spacecmd/api.py:82
 msgid "Fallback output to stdout"
-msgstr ""
+msgstr "標準出力に出力します"
 
 #: ../src/spacecmd/api.py:91
 msgid "No such API: "
-msgstr ""
+msgstr "そのような API はありません: "
 
 #: ../src/spacecmd/configchannel.py:50
 msgid "configchannel_list: List all configuration channels"
-msgstr ""
+msgstr "configchannel_list: 全ての設定チャンネルを表示"
 
 #: ../src/spacecmd/configchannel.py:51
 msgid "usage: configchannel_list"
-msgstr ""
+msgstr "使用方法: configchannel_list"
 
 #: ../src/spacecmd/configchannel.py:68
 msgid "configchannel_listsystems: List the systems subscribed to a"
-msgstr ""
+msgstr "configchannel_listsystems: 指定した設定チャンネルをサブスクライブ"
 
 #: ../src/spacecmd/configchannel.py:69
 msgid "                           configuration channel"
-msgstr ""
+msgstr "                           しているシステムを表示"
 
 #: ../src/spacecmd/configchannel.py:70
 msgid "usage: configchannel_listsystems CHANNEL"
-msgstr ""
+msgstr "使用方法: configchannel_listsystems チャンネル"
 
 #: ../src/spacecmd/configchannel.py:79
 msgid "This version of the API doesn't support this method"
-msgstr ""
+msgstr "このバージョンの API ではこのメソッドに対応していません"
 
 #: ../src/spacecmd/configchannel.py:103
 msgid "configchannel_listfiles: List the files in a config channel"
-msgstr ""
+msgstr "configchannel_listfiles: 設定チャンネル内のファイルを表示"
 
 #: ../src/spacecmd/configchannel.py:104
 msgid "usage: configchannel_listfiles CHANNEL ..."
-msgstr ""
+msgstr "使用方法: configchannel_listfiles チャンネル ..."
 
 #: ../src/spacecmd/configchannel.py:133
 msgid "configchannel_forcedeploy: Forces a redeployment"
-msgstr ""
+msgstr "configchannel_forcedeploy: サブスクライブしている全てのシステム"
 
 #: ../src/spacecmd/configchannel.py:134
 msgid "                           of files within this channel"
-msgstr ""
+msgstr "                           に対して、このチャンネル内にある"
 
 #: ../src/spacecmd/configchannel.py:135
 msgid "                           on all subscribed systems"
-msgstr ""
+msgstr "                           全てのファイルを強制配備する"
 
 #: ../src/spacecmd/configchannel.py:136
 msgid "usage: configchannel_forcedeploy CHANNEL"
-msgstr ""
+msgstr "使用方法: configchannel_forcedeploy チャンネル"
 
 #: ../src/spacecmd/configchannel.py:158
 msgid "No files within selected configchannel."
-msgstr ""
+msgstr "指定した設定チャンネル内にはファイルがありません。"
 
 #: ../src/spacecmd/configchannel.py:164
 msgid "Channel has no subscribed Systems"
-msgstr ""
+msgstr "指定したチャンネルをサブスクライブしているシステムはありません"
 
 #: ../src/spacecmd/configchannel.py:167
 msgid "Force deployment of the following configfiles:"
-msgstr ""
+msgstr "下記の設定ファイルを強制配備します:"
 
 #: ../src/spacecmd/configchannel.py:170
 msgid ""
 "\n"
 "On these systems:"
 msgstr ""
+"\n"
+"下記のシステムを対象とします:"
 
 #: ../src/spacecmd/configchannel.py:173
 msgid "Really force deployment [y/N]:"
-msgstr ""
+msgstr "強制配備してよろしいですか [y/N]:"
 
 #: ../src/spacecmd/configchannel.py:182
 msgid "configchannel_filedetails: Show the details of a file"
-msgstr ""
+msgstr "configchannel_filedetails: 設定チャンネル内の"
 
 #: ../src/spacecmd/configchannel.py:183
 msgid "in a configuration channel"
-msgstr ""
+msgstr "ファイルの詳細を表示"
 
 #: ../src/spacecmd/configchannel.py:184
 msgid "usage: configchannel_filedetails CHANNEL FILE [REVISION]"
-msgstr ""
+msgstr "使用方法: configchannel_filedetails チャンネル ファイル [リビジョン]"
 
 #: ../src/spacecmd/configchannel.py:216
 #, python-format
 msgid "Invalid revision: %s"
-msgstr ""
+msgstr "リビジョンが正しくありません: %s"
 
 #: ../src/spacecmd/configchannel.py:222
 #, python-format
 msgid "%s is not in this configuration channel"
-msgstr ""
+msgstr "この設定チャンネル内に %s はありません"
 
 #: ../src/spacecmd/configchannel.py:240
 #, python-format
 msgid "Path:     %s"
-msgstr ""
+msgstr "パス:     %s"
 
 #: ../src/spacecmd/configchannel.py:241
 #, python-format
 msgid "Type:     %s"
-msgstr ""
+msgstr "タイプ:     %s"
 
 #: ../src/spacecmd/configchannel.py:242
 #, python-format
 msgid "Revision: %s"
-msgstr ""
+msgstr "リビジョン: %s"
 
 #: ../src/spacecmd/configchannel.py:243
 #, python-format
 msgid "Created:  %s"
-msgstr ""
+msgstr "作成日:  %s"
 
 #: ../src/spacecmd/configchannel.py:244
 #, python-format
 msgid "Modified: %s"
-msgstr ""
+msgstr "修正日: %s"
 
 #: ../src/spacecmd/configchannel.py:248 ../src/spacecmd/configchannel.py:650
 #, python-format
 msgid "Target Path:     %s"
-msgstr ""
+msgstr "ターゲットパス:     %s"
 
 #: ../src/spacecmd/configchannel.py:251 ../src/spacecmd/configchannel.py:680
 #, python-format
 msgid "Owner:           %s"
-msgstr ""
+msgstr "所有者:           %s"
 
 #: ../src/spacecmd/configchannel.py:252 ../src/spacecmd/configchannel.py:681
 #, python-format
 msgid "Group:           %s"
-msgstr ""
+msgstr "グループ:           %s"
 
 #: ../src/spacecmd/configchannel.py:253 ../src/spacecmd/configchannel.py:682
 #, python-format
 msgid "Mode:            %s"
-msgstr ""
+msgstr "モード:            %s"
 
 #: ../src/spacecmd/configchannel.py:255 ../src/spacecmd/configchannel.py:651
 #: ../src/spacecmd/configchannel.py:684
 #, python-format
 msgid "SELinux Context: %s"
-msgstr ""
+msgstr "SELinux コンテキスト: %s"
 
 #: ../src/spacecmd/configchannel.py:258
 #, python-format
 msgid "SHA256:          %s"
-msgstr ""
+msgstr "SHA256:          %s"
 
 #: ../src/spacecmd/configchannel.py:259 ../src/spacecmd/configchannel.py:683
 #, python-format
 msgid "Binary:          %s"
-msgstr ""
+msgstr "バイナリ:          %s"
 
 #: ../src/spacecmd/configchannel.py:263 ../src/spacecmd/configchannel.py:696
 #: ../src/spacecmd/configchannel.py:933 ../src/spacecmd/kickstart.py:1903
 #: ../src/spacecmd/snippet.py:161
 msgid "Contents"
-msgstr ""
+msgstr "内容"
 
 #: ../src/spacecmd/configchannel.py:273
 msgid "configchannel_backup: backup a config channel"
-msgstr ""
+msgstr "configchannel_backup: 設定チャンネルをバックアップする"
 
 #: ../src/spacecmd/configchannel.py:274
 msgid ""
@@ -821,59 +847,62 @@ msgid ""
 "\n"
 "OUTDIR defaults to $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/CHANNEL\n"
 msgstr ""
+"使用方法: configchannel_backup チャンネル [出力先ディレクトリ])\n"
+"\n"
+"出力先ディレクトリは既定で $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/(チャンネル名) になります\n"
 
 #: ../src/spacecmd/configchannel.py:313 ../src/spacecmd/group.py:266
 #, python-format
 msgid "Could not create output directory: %s"
-msgstr ""
+msgstr "出力先ディレクトリを作成できません: %s"
 
 #: ../src/spacecmd/configchannel.py:326
 #, python-format
 msgid "Could not create \"%s\" file: %s"
-msgstr ""
+msgstr "\"%s\" ファイルを作成できません: %s"
 
 #: ../src/spacecmd/configchannel.py:332
 #, python-format
 msgid "Output Path:   %s"
-msgstr ""
+msgstr "出力先パス:   %s"
 
 #: ../src/spacecmd/configchannel.py:371
 msgid "configchannel_details: Show the details of a config channel"
-msgstr ""
+msgstr "configchannel_details: 設定チャンネルの詳細を表示"
 
 #: ../src/spacecmd/configchannel.py:372
 msgid "usage: configchannel_details CHANNEL ..."
-msgstr ""
+msgstr "使用方法: configchannel_details チャンネル ..."
 
 #: ../src/spacecmd/configchannel.py:402 ../src/spacecmd/kickstart.py:414
 #, python-format
 msgid "Label:       %s"
-msgstr ""
+msgstr "ラベル:       %s"
 
 #: ../src/spacecmd/configchannel.py:403 ../src/spacecmd/kickstart.py:413
 #, python-format
 msgid "Name:        %s"
-msgstr ""
+msgstr "名前:        %s"
 
 #: ../src/spacecmd/configchannel.py:404 ../src/spacecmd/cryptokey.py:214
 #: ../src/spacecmd/system.py:678
 #, python-format
 msgid "Description: %s"
-msgstr ""
+msgstr "説明: %s"
 
 #: ../src/spacecmd/configchannel.py:405 ../src/spacecmd/cryptokey.py:215
 #: ../src/spacecmd/kickstart.py:500 ../src/spacecmd/kickstart.py:1899
 #, python-format
 msgid "Type:        %s"
-msgstr ""
+msgstr "タイプ:        %s"
 
 #: ../src/spacecmd/configchannel.py:408
 msgid "Files"
-msgstr ""
+msgstr "ファイル"
 
 #: ../src/spacecmd/configchannel.py:418
 msgid "configchannel_create: Create a configuration channel of specific type"
-msgstr ""
+msgstr "configchannel_create: 指定したタイプの設定チャンネルを作成"
 
 #: ../src/spacecmd/configchannel.py:419
 msgid ""
