@@ -369,32 +369,32 @@
           <source>This error may have occurred in one of three ways:</source> <target state="translated">在三种情况下可能会出现这个错误：</target> </trans-unit>
         <trans-unit id="lookup.jsp.actionchain.reason1">
           <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.user">
-          <source>The user requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">请求的用户并不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
-        <trans-unit id="lookup.activationkey.reason1">
-          <source>The activation key requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需激活码不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
-        <trans-unit id="lookup.servergroup.reason1">
-          <source>The system group requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需系统组群不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.profile">
-          <source>The system profile requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需系统侧写不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.channel">
-          <source>The channel requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需频道并不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.errata">
-          <source>The patch requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需勘误不存在。这很可能是因为您使用书签（bookmark）或其它非链接的方法来访问这个页。</target> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.action">
-          <source>The action requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需动作不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.system">
-          <source>The system requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需系统不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
-        <trans-unit id="lookup.jsp.reason1.crash">
-          <source>The software crash requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">要求的软件崩溃并不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
-        <trans-unit id="lookup.default.reason1">
-          <source>The required data object does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需数据对象不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
-        <trans-unit id="lookup.configchan.reason1">
-          <source>The configuration channel requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需配置频道不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
-        <trans-unit id="lookup.configfile.reason1">
-          <source>The configuration file requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需配置文件不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
-        <trans-unit id="lookup.configrev.reason1">
-          <source>The configuration revision requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="translated">所需配置修订不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.user" xml:space="preserve">
+          <source>The user requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">请求的用户并不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
+        <trans-unit id="lookup.activationkey.reason1" xml:space="preserve">
+          <source>The activation key requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需激活码不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.servergroup.reason1" xml:space="preserve">
+          <source>The system group requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需系统组群不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.profile" xml:space="preserve">
+          <source>The system profile requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需系统侧写不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.channel" xml:space="preserve">
+          <source>The channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需频道并不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.errata" xml:space="preserve">
+          <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需勘误不存在。这很可能是因为您使用书签（bookmark）或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.action" xml:space="preserve">
+          <source>The action requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需动作不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.system" xml:space="preserve">
+          <source>The system requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需系统不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.crash" xml:space="preserve">
+          <source>The software crash requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">要求的软件崩溃并不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
+        <trans-unit id="lookup.default.reason1" xml:space="preserve">
+          <source>The required data object does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需数据对象不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
+        <trans-unit id="lookup.configchan.reason1" xml:space="preserve">
+          <source>The configuration channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需配置频道不存在。这很可能是您通过一个书签或其它非超级链接来到这一页。</target> </trans-unit>
+        <trans-unit id="lookup.configfile.reason1" xml:space="preserve">
+          <source>The configuration file requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需配置文件不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
+        <trans-unit id="lookup.configrev.reason1" xml:space="preserve">
+          <source>The configuration revision requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target state="needs-adaptation">所需配置修订不存在。这很可能是因为您使用书签或其它非链接的方法来访问这个页。</target> </trans-unit>
         <trans-unit id="lookup.jsp.reason2.user">
           <source>You do not have permission to view this user.</source> <target state="translated">您没有查看这个用户的权限。</target> </trans-unit>
         <trans-unit id="lookup.activationkey.reason2">
@@ -433,8 +433,8 @@
           <source>No master with the label {0} is identified to this slave.</source> <target state="translated">没有为这台辅服务器识别的名为 {0} 的主服务器。</target> </trans-unit>
         <trans-unit id="lookup.issmaster.local.title">
           <source>We're sorry, but the requested organization could not be found</source> <target state="translated">非常抱歉，无法找到请求的机构。</target> </trans-unit>
-        <trans-unit id="lookup.issmaster.local.reason1">
-          <source>No local organization with the ID {0} exists on this slave.</source> <target state="translated">这台辅服务器中没有 ID 为 {0} 的本地机构。</target> </trans-unit>
+        <trans-unit id="lookup.issmaster.local.reason1" xml:space="preserve">
+          <source>No local organization with the ID  {0} exists on this slave.</source> <target state="needs-adaptation">这台辅服务器中没有 ID 为 {0} 的本地机构。</target> </trans-unit>
         <trans-unit id="lookup.issmasterorg.title">
           <source>We're sorry, but the requested organization could not be found</source> <target state="translated">非常抱歉，无法找到请求的机构。</target> </trans-unit>
         <trans-unit id="lookup.issmasterorg.reason1">
@@ -5038,8 +5038,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <trans-unit id="ssm.migrate.systems.header">
           <source>Migrate Systems</source> <target state="translated">迁移系统</target> </trans-unit>
-        <trans-unit id="ssm.migrate.systems.summary">
-          <source>Migrate the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source> <target state="translated">将所选系统迁移至所选机构。如果操作成功，则不会再在这个机构中看到这些系统。</target> </trans-unit>
+        <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
+          <source>Migrate the selected systems to the selected organization.  If the operation is successful, the systems will no longer be visible in this organization.</source> <target state="needs-adaptation">将所选系统迁移至所选机构。如果操作成功，则不会再在这个机构中看到这些系统。</target> </trans-unit>
         <trans-unit id="ssm.migrate.systems.org">
           <source>Target Organization</source> <target state="translated">目标机构</target> </trans-unit>
         <trans-unit id="ssm.migrate.systems.notrust">
@@ -5125,8 +5125,8 @@ organization. You may grant or remove the organization administrator role in the
           <source>Update Software Profile</source> <target state="translated">更新软件侧写</target> </trans-unit>
         <trans-unit id="ssm.misc.index.migrate.header">
           <source>Migrate Systems</source> <target state="translated">迁移系统</target> </trans-unit>
-        <trans-unit id="ssm.misc.index.migrate.summary">
-          <source>Migrate multiple systems from the current organization to another (trusted) organization in a single action. The migrated systems will no longer be visible in the original organization.</source> <target state="translated">在一个动作中将多个系统从当前机构迁移到另一个（可信）机构中。在原始机构中就不会再看到迁移的系统。</target> </trans-unit>
+        <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve">
+          <source>Migrate multiple systems from the current organization to another (trusted) organization in a single action.  The migrated systems will no longer be visible in the original organization.</source> <target state="needs-adaptation">在一个动作中将多个系统从当前机构迁移到另一个（可信）机构中。在原始机构中就不会再看到迁移的系统。</target> </trans-unit>
         <trans-unit id="ssm.misc.index.migrate.migrate">
           <source>Migrate Systems to another organization</source> <target state="translated">将系统迁移到另一个机构中</target> </trans-unit>
         <trans-unit id="ssm.misc.index.csi.header">
@@ -5147,16 +5147,16 @@ organization. You may grant or remove the organization administrator role in the
           <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source> <target state="translated">在 Red Hat Enterprise Linux 3 或者更新的发行本中，@@PRODUCT_NAME@@ 可让您远程重启系统。</target> </trans-unit>
         <trans-unit id="ssm.misc.index.lock.header">
           <source>Lock Systems</source> <target state="translated">锁定系统</target> </trans-unit>
-        <trans-unit id="ssm.misc.index.lock.summary">
-          <source>Systems may be locked or unlocked. Locking prevents changes from the @@PRODUCT_NAME@@ website.</source> <target state="translated">可以锁定或者取消锁定系统。锁定系统可防止更改 @@PRODUCT_NAME@@ 网站。</target> </trans-unit>
+        <trans-unit id="ssm.misc.index.lock.summary" xml:space="preserve">
+          <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source> <target state="needs-adaptation">可以锁定或者取消锁定系统。锁定系统可防止更改 @@PRODUCT_NAME@@ 网站。</target> </trans-unit>
         <trans-unit id="ssm.misc.index.lock.lock">
           <source>Lock System Profiles</source> <target state="translated">锁定系统侧写</target> </trans-unit>
         <trans-unit id="ssm.misc.index.lock.unlock">
           <source>Unlock System Profiles</source> <target state="translated">取消锁定系统侧写</target> </trans-unit>
         <trans-unit id="ssm.misc.index.delete.header">
           <source>Delete Systems</source> <target state="translated">删除系统</target> </trans-unit>
-        <trans-unit id="ssm.misc.index.delete.summary">
-          <source>Deletes all selected system profiles. All information about these systems will be removed.</source> <target state="translated">删除所有所选系统侧写。将删除有关这些系统的所有信息。</target> </trans-unit>
+        <trans-unit id="ssm.misc.index.delete.summary" xml:space="preserve">
+          <source>Deletes all selected system profiles.  All information about these systems will be removed.</source> <target state="needs-adaptation">删除所有所选系统侧写。将删除有关这些系统的所有信息。</target> </trans-unit>
         <trans-unit id="ssm.misc.index.delete.delete">
           <source>Delete System Profiles</source> <target state="translated">删除系统侧写</target> </trans-unit>
         <trans-unit id="ssm.misc.index.entitle.header">
@@ -5787,8 +5787,8 @@ organization. You may grant or remove the organization administrator role in the
           <source>Inactive systems are listed below.</source> </trans-unit>
         <trans-unit id="Delete Selected">
           <source>Delete Selected</source> <target state="translated">删除所选择的</target> </trans-unit>
-        <trans-unit id="duplicate.systems.delete.confirm.message">
-          <source>There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source> <target state="translated">没有在『重复系统侧写』页面中选择下面要删除的系统侧写。请仔细检查下面的列表，防止意外删除已经在 System Set Manager 的侧写。</target> </trans-unit>
+        <trans-unit id="duplicate.systems.delete.confirm.message" xml:space="preserve">
+          <source> There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source> <target state="needs-adaptation">没有在『重复系统侧写』页面中选择下面要删除的系统侧写。请仔细检查下面的列表，防止意外删除已经在 System Set Manager 的侧写。</target> </trans-unit>
         <trans-unit id="duplicate.systems.delete.confirmmessage">
           <source>Selected systems have been queued for deletion.</source> <target state="translated">所选系统已经排队等待删除。</target> </trans-unit>
         <trans-unit id="Compare Systems">
@@ -5892,12 +5892,12 @@ organization. You may grant or remove the organization administrator role in the
           <source>Join Selected Groups</source> <target state="translated">加入选择的组群</target> </trans-unit>
         <trans-unit id="systemgroup.admins.title">
           <source>Group Administrators</source> <target state="translated">组管理员</target> </trans-unit>
-        <trans-unit id="systemgroup.admins.summary">
-          <source>Checked users may administer the systems in this group. Org Admins may always administer all systems. System Group Admins are marked with (*) and may modify all aspects of system groups assigned to them.</source> <target state="translated">选中的用户可以管理这个组中的系统。Org Admin 永远可以管理所有系统。使用（*）标记系统组管理员，他们可以修改分配给他们的系统组的各个方面。</target> </trans-unit>
+        <trans-unit id="systemgroup.admins.summary" xml:space="preserve">
+          <source>Checked users may administer the systems in this group.  Org Admins may always administer all systems. System Group Admins are marked with (*) and may modify all aspects of system groups assigned to them.</source> <target state="needs-adaptation">选中的用户可以管理这个组中的系统。Org Admin 永远可以管理所有系统。使用（*）标记系统组管理员，他们可以修改分配给他们的系统组的各个方面。</target> </trans-unit>
         <trans-unit id="systemgroup.admins.updated">
           <source>Admin list for system group &lt;strong&gt;{0}&lt;/strong&gt; updated.</source> <target state="translated">已更新系统组 &lt;strong&gt;{0}&lt;/strong&gt; 管理员列表。</target> </trans-unit>
-        <trans-unit id="systemgroup.erratalist.title">
-          <source>Relevant Patches</source> <target state="translated">相关勘误</target> </trans-unit>
+        <trans-unit id="systemgroup.erratalist.title" xml:space="preserve">
+          <source>Relevant Patches </source> <target state="needs-adaptation">相关勘误</target> </trans-unit>
         <trans-unit id="systemgroup.erratalist.summary">
           <source>The following patches apply to one or more of the systems in this group.</source> <target state="translated">以下勘误适用于这个组中的一个或者多个系统。</target> </trans-unit>
         <trans-unit id="systemgroup.errata-systems-affected.title">
@@ -6090,12 +6090,14 @@ organization. You may grant or remove the organization administrator role in the
           <source>No Systems selected. Please select a system before executing an action.</source> <target state="translated">没有选择系统。请在执行一个动作前选择一个系统。</target> </trans-unit>
         <trans-unit id="system_entitlements.setToManagementEntitled.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Management&lt;/strong&gt;.</source> <target state="translated">将 &lt;strong&gt;{0}&lt;/strong&gt; 个系统设为 &lt;strong&gt;管理&lt;/strong&gt;。</target> </trans-unit>
-        <trans-unit id="system_entitlements.setToManagementEntitled.failure">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional management entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source> </trans-unit>
-        <trans-unit id="system_entitlements.unentitle.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) &lt;strong&gt;Unentitled&lt;/strong&gt;.</source> <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 个系统 &lt;strong&gt;没有权利&lt;/strong&gt;。</target> </trans-unit>
-        <trans-unit id="system_entitlements.unentitle.failure">
-          <source>Unable to &lt;strong&gt;Unentitle {0}&lt;/strong&gt; system(s).</source> <target state="translated">无法 &lt;strong&gt;取消 {0} &lt;/strong&gt; 个系统的权利</target> </trans-unit>
+        <trans-unit id="system_entitlements.setToManagementEntitled.failure" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have  enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional management entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.
+    </source> <target state="needs-adaptation" />
+      </trans-unit>
+        <trans-unit id="system_entitlements.unentitle.success" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s)  &lt;strong&gt;Unentitled&lt;/strong&gt;.</source> <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; 个系统 &lt;strong&gt;没有权利&lt;/strong&gt;。</target> </trans-unit>
+        <trans-unit id="system_entitlements.unentitle.failure" xml:space="preserve">
+          <source>Unable to  &lt;strong&gt;Unentitle {0}&lt;/strong&gt; system(s).</source> <target state="needs-adaptation">无法 &lt;strong&gt;取消 {0} &lt;/strong&gt; 个系统的权利</target> </trans-unit>
         <trans-unit id="system_entitlements.provisioning.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Provisioning&lt;/strong&gt;.</source> <target state="translated">将 &lt;strong&gt;{0}&lt;/strong&gt; 个系统设为 &lt;strong&gt;Provisioning&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="system_entitlements.provisioning.removed.success">
@@ -6104,10 +6106,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source> <target state="translated">&lt;strong&gt;Provisioning&lt;/strong&gt; 权利对 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无效，因为它们没有 &lt;strong&gt;管理&lt;/strong&gt; 基本权利。这些系统仍然在以下被选择。如果您首先点下面的 &lt;strong&gt;设为管理权利&lt;/strong&gt; 按钮，然后选择 &lt;strong&gt;添加权利项&lt;/strong&gt; 中的下拉列表中的 &lt;strong&gt;Provisioning&lt;/strong&gt;，最后点下面的 &lt;strong&gt;添加权利&lt;/strong&gt; 按钮，您将可以为这些系统添加 &lt;strong&gt;Provisioning&lt;/strong&gt; 权利。</target> </trans-unit>
         <trans-unit id="system_entitlements.virtualization.success_note">
           <source>&lt;strong&gt;NOTE:&lt;/strong&gt; We subscribed the system(s) to the {0} and {1} channel as well as scheduled an install of the {2} package to prepare the system(s) for hosting virtual guests.</source> <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;我们在 {0} 和 {1} 频道中订阅了该系统，也调度了安装 {2} 软件包来使系统为安装虚拟机做好准备。</target> </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization.&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source> <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 个系统设置成&lt;strong&gt;虚拟化&lt;/strong&gt;。&lt;br/&gt; &lt;strong&gt;注意：&lt;/strong&gt;如果以前的系统具备虚拟化平台权利，它就已经降级为虚拟化权利了。</target> </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.removed.success">
-          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s) This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source> <target state="translated">从系统 &lt;strong&gt;{0}&lt;/strong&gt; 中删除 &lt;strong&gt;虚拟化&lt;/strong&gt;。这将导致任何和选定主机关联的虚拟机消耗物理的频道和系统权利。</target> </trans-unit>
+        <trans-unit id="system_entitlements.virtualization_host.success" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source> <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; 个系统设置成&lt;strong&gt;虚拟化&lt;/strong&gt;。&lt;br/&gt; &lt;strong&gt;注意：&lt;/strong&gt;如果以前的系统具备虚拟化平台权利，它就已经降级为虚拟化权利了。</target> </trans-unit>
+        <trans-unit id="system_entitlements.virtualization_host.removed.success" xml:space="preserve">
+          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source> <target state="needs-adaptation">从系统 &lt;strong&gt;{0}&lt;/strong&gt; 中删除 &lt;strong&gt;虚拟化&lt;/strong&gt;。这将导致任何和选定主机关联的虚拟机消耗物理的频道和系统权利。</target> </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noManagement">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source> <target state="translated">&lt;strong&gt;Provisioning&lt;/strong&gt; 权利对 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无效，因为它们没有&lt;strong&gt;管理&lt;/strong&gt;基本权利。在下面仍然选择了这些失败的系统。如果您首先点下面的&lt;strong&gt;设为赋予管理权利&lt;/strong&gt;按钮，然后选择&lt;strong&gt;附加权利项&lt;/strong&gt;中下拉列表中的 &lt;strong&gt;Provisioning&lt;/strong&gt;，最后点下面的 &lt;strong&gt;添加权利&lt;/strong&gt; 按钮，您将可以为这些系统添加 &lt;strong&gt;虚拟化&lt;/strong&gt; 权利。</target> </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noSolarisSupport">
@@ -6120,10 +6122,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source> <target state="translated">&lt;strong&gt;监测&lt;/strong&gt;权利对 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无效，因为它们没有 &lt;strong&gt;管理&lt;/strong&gt; 基本权利。在下面仍然可以选择这些失败的系统。如果您首先点下面的 &lt;strong&gt;设为赋予管理权利&lt;/strong&gt; 按钮，然后选择&lt;strong&gt;附加权利项&lt;/strong&gt;中的下拉列表中的 &lt;strong&gt;监测&lt;/strong&gt;，最后点下面的&lt;strong&gt;添加权利&lt;/strong&gt;按钮，您将可以为这些系统添加&lt;strong&gt;监测&lt;/strong&gt;权利。</target> </trans-unit>
         <trans-unit id="system_entitlements.monitoring.noSolarisSupport">
           <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Monitoring is not supported on Solaris systems.</source> <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 个系统的&lt;strong&gt;监控&lt;/strong&gt;权利失败，这是因为在 Solaris 系统中不支持 Monitoring。</target> </trans-unit>
-        <trans-unit id="system_entitlements.virtualization.setup_error">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add &lt;strong&gt;Virtualization(Platform)&lt;/strong&gt;. This was caused by errors attempting to automatically subscribe the system to the @@PRODUCT_NAME@@ Tools and RHEL Virtualization channels which are required for virtualization.</source> <target state="translated">无法在 &lt;strong&gt;{0}&lt;/strong&gt; 系统中添加&lt;strong&gt;虚拟化平台&lt;/strong&gt;。这可能是由于试图自动订阅 @@PRODUCT_NAME@@ 工具和 RHEL 虚拟化频道时的错误所造成的。</target> </trans-unit>
-        <trans-unit id="system_entitlements.unknown.error">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add an entitlement. This was caused by an unknown error. Please contact support.</source> <target state="translated">在 &lt;strong&gt;{0}&lt;/strong&gt; 个系统中添加权利时失败。这是由未知错误所引起的。请联系支持部门。</target> </trans-unit>
+        <trans-unit id="system_entitlements.virtualization.setup_error" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add &lt;strong&gt;Virtualization(Platform)&lt;/strong&gt;.  This was caused by errors attempting to automatically subscribe the system to the @@PRODUCT_NAME@@ Tools and RHEL Virtualization channels which are required for virtualization.</source> <target state="needs-adaptation">无法在 &lt;strong&gt;{0}&lt;/strong&gt; 系统中添加&lt;strong&gt;虚拟化平台&lt;/strong&gt;。这可能是由于试图自动订阅 @@PRODUCT_NAME@@ 工具和 RHEL 虚拟化频道时的错误所造成的。</target> </trans-unit>
+        <trans-unit id="system_entitlements.unknown.error" xml:space="preserve">
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add an entitlement.  This was caused by an unknown error.  Please contact support.</source> <target state="needs-adaptation">在 &lt;strong&gt;{0}&lt;/strong&gt; 个系统中添加权利时失败。这是由未知错误所引起的。请联系支持部门。</target> </trans-unit>
       </group>
       <group>
         <trans-unit id="Registered">
@@ -7806,8 +7808,8 @@ organization management tools if you choose to remove this role from your login.
         <!-- method-form.jsp.header2 -->
         <trans-unit id="method-create.jsp.header2">
           <source>Create Notification Method</source> <target state="translated">创建通知方法</target> </trans-unit>
-        <trans-unit id="method-create.jsp.summary">
-          <source>Fill out this form to create a new Notification Method. Changes to Probes that use this new Method will require a Scout Config Push.</source> <target state="translated">完成这个表格来创建一个新通知方法。对使用这个新方法的探测的改变将需要一个侦察配置 push。</target> </trans-unit>
+        <trans-unit id="method-create.jsp.summary" xml:space="preserve">
+          <source>Fill out this form to create a new Notification Method.  Changes to Probes that use this new Method will require a Scout Config Push.</source> <target state="needs-adaptation">完成这个表格来创建一个新通知方法。对使用这个新方法的探测的改变将需要一个侦察配置 push。</target> </trans-unit>
         <trans-unit id="method-form.jspf.name">
           <source>Name</source> <target state="translated">名称</target> </trans-unit>
         <trans-unit id="method-form.jspf.email">
@@ -8311,8 +8313,9 @@ Please note that some manual configuration of these scripts may still be require
           <source>Automatic bare-metal system discovery has been successfully enabled</source> </trans-unit>
         <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled">
           <source>Automatic bare-metal system discovery has been successfully disabled</source> </trans-unit>
-        <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org">
-          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first.</source> </trans-unit>
+        <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
+          <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="bootstrapsystems.kernel_not_found">
           <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source> </trans-unit>
         <trans-unit id="bootstrapsystems.initrd_not_found">
@@ -8711,18 +8714,18 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
         </context-group>
-        <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp">
-          <source>Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source> <target state="translated">为所选的系统调度 Kickstart 动作。这些动作将使用指定的 Kickstart 选项重新安装所选的系统。</target> </trans-unit>
+        <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp" xml:space="preserve">
+          <source> Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source> <target state="needs-adaptation">为所选的系统调度 Kickstart 动作。这些动作将使用指定的 Kickstart 选项重新安装所选的系统。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.heading2.text.jsp">
           <source>Please select the autoinstallation profile you'd like to use to autoinstall the selected systems.</source> <target state="translated">请选择您想使用的 Kickstart 侧写来 Kickstart 所选系统。</target> </trans-unit>
-        <trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp">
-          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration. If no match is found, the organizational default profile will be used if set.</source> <target state="translated">这个 Kickstart 侧写将根据每个系统的网络配置被自动选择。如果没有找到匹配的，将使用机构默认侧写。</target> </trans-unit>
+        <trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp" xml:space="preserve">
+          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration.  If no match is found, the organizational default profile will be used if set.</source> <target state="needs-adaptation">这个 Kickstart 侧写将根据每个系统的网络配置被自动选择。如果没有找到匹配的，将使用机构默认侧写。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.proxy.jsp.summary">
           <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source> <target state="translated">您可以选择使用 @@PRODUCT_NAME@@ 代理来访问 Kickstart 所需的文件。在 Kickstart 完成后，所选的系统将注册到 @@PRODUCT_NAME@@ 代理。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.create.records.button.jsp">
           <source>Create PXE installation configuration</source> </trans-unit>
-        <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip">
-          <source>Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source> <target state="translated">在 Kickstart 后，非 @@PRODUCT_NAME@@ 所管理的侧写将无法保证注册到 @@PRODUCT_NAME@@ 中。您可能希望复核这些 kickstart（点击侧写名）并确认所选的系统在 Kickstart 后是否将重新出现在 @@PRODUCT_NAME@@ 系统列表里。</target> </trans-unit>
+        <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip" xml:space="preserve">
+          <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source> <target state="needs-adaptation">在 Kickstart 后，非 @@PRODUCT_NAME@@ 所管理的侧写将无法保证注册到 @@PRODUCT_NAME@@ 中。您可能希望复核这些 kickstart（点击侧写名）并确认所选的系统在 Kickstart 后是否将重新出现在 @@PRODUCT_NAME@@ 系统列表里。</target> </trans-unit>
       </group>
       <!-- SSM Rollback -->
       <group>
@@ -9551,10 +9554,10 @@ Kickstart 侧写的引导装载程序和分区选项，有可能覆盖用户定�
           <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source> <target state="translated">您上传到 satellite 的每一个 kickstart 文件都将需要一个标签以便您可以以后引用 - 请为这个 kickstart 文件选择一个标签并在下面填写。有星号（*）标记的是必填项。</target> </trans-unit>
         <trans-unit id="kickstart.advanced.jsp.uploadtab">
           <source>File to Upload</source> <target state="translated">要上传的文件</target> </trans-unit>
-        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.edit">
-          <source>Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source> <target state="translated">另外，您可以在下面 '{0}' 部分中上传新的版本并选择 '{1}'。</target> </trans-unit>
-        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste">
-          <source>If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser. This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target state="translated">如果您希望重用现有的 Kickstart 侧写，我们推荐您复制-粘贴 /var/lib/rhn/kickstarts 中，而不是浏览器里的模板。这将保证会保留模板变量，且 Kickstart 后可正常运行注册进程。</target> </trans-unit>
+        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.edit" xml:space="preserve">
+          <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source> <target state="needs-adaptation">另外，您可以在下面 '{0}' 部分中上传新的版本并选择 '{1}'。</target> </trans-unit>
+        <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target state="needs-adaptation">如果您希望重用现有的 Kickstart 侧写，我们推荐您复制-粘贴 /var/lib/rhn/kickstarts 中，而不是浏览器里的模板。这将保证会保留模板变量，且 Kickstart 后可正常运行注册进程。</target> </trans-unit>
       </group>
       <trans-unit id="kickstartdatadelete.jsp.confirmdelete" xml:space="preserve">
         <source>Delete Autoinstallation</source>
@@ -10676,8 +10679,9 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
           <source>The kickstart template has syntax rules, using punctuation symbols. To avoid clashes, they need to be properly treated.</source> <target state="translated">该 kickstart 模板有语法规则，使用标点符号。要避免冲突，需正确使用这些规则。</target> </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_details">
           <source>Details</source> <target state="translated">详情</target> </trans-unit>
-        <trans-unit id="snippetcreate.jsp.kickstart_rules_1">
-          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt; &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the content will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt; &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source> </trans-unit>
+        <trans-unit id="snippetcreate.jsp.kickstart_rules_1" xml:space="preserve">
+          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_2">
           <source>An additional attention needs to be paid to the similar scenarios:</source> <target state="translated">类似情况需要格外小心：</target> </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_3">
@@ -11617,15 +11621,15 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         </trans-unit>
         <trans-unit id="activation-key.jsp.enable-config-auto-deploy">
           <source>Configuration File Deployment</source> <target state="translated">配置文件部署</target> </trans-unit>
-        <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip">
-          <source>Deploy configuration files to systems on registration</source> <target state="translated">当系统使用此激活码注册时会在该系统中部署配置文件。</target> </trans-unit>
+        <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip" xml:space="preserve">
+          <source> Deploy configuration files to systems on registration</source> <target state="needs-adaptation">当系统使用此激活码注册时会在该系统中部署配置文件。</target> </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/packages/* pages</context>
         </context-group>
-        <trans-unit id="activation-key.packages.jsp.summary">
-          <source>Any system registered with this activation key will have the packages listed below installed, if those packages are available. Package names may be listed as package name only or may include an extension to specify the desired architecture. There should only one package name included per line.</source> <target state="translated">任何使用此激活码注册的系统都安装了以下列出的软件包，如果那些软件包可用的话。软件包名称可以只是软件包的名称，也可以包括扩展名以指定需要的构架。每行应该只有一个软件包名称。</target> </trans-unit>
+        <trans-unit id="activation-key.packages.jsp.summary" xml:space="preserve">
+          <source>Any system registered with this activation key will have the packages listed below installed, if those packages are available. Package names may be listed as package name only or may include an extension to specify the desired architecture.  There should only one package name included per line.</source> <target state="needs-adaptation">任何使用此激活码注册的系统都安装了以下列出的软件包，如果那些软件包可用的话。软件包名称可以只是软件包的名称，也可以包括扩展名以指定需要的构架。每行应该只有一个软件包名称。</target> </trans-unit>
         <trans-unit id="activation-key.packages.jsp.enter-names">
           <source>Enter package names below</source> <target state="translated">在下面输入软件包名称</target> </trans-unit>
       </group>
@@ -11708,8 +11712,8 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
-        <trans-unit id="profile.details.toolbar">
-          <source>Stored Profile:</source> <target state="translated">保存的侧写：</target> </trans-unit>
+        <trans-unit id="profile.details.toolbar" xml:space="preserve">
+          <source>Stored Profile: </source> <target state="needs-adaptation">保存的侧写：</target> </trans-unit>
         <trans-unit id="profile.details.summary">
           <source>Edit the profile below.</source> <target state="translated">编辑下面的侧写。</target> </trans-unit>
       </group>
@@ -12158,8 +12162,8 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
           <source>Packages to be removed:</source> <target state="translated">要删除的软件包：</target> </trans-unit>
         <trans-unit id="system.event.runAs">
           <source>Run as: &lt;strong&gt;{0}:{1}&lt;/strong&gt;</source> <target state="translated">作为 &lt;strong&gt;{0}:{1}&lt;/strong&gt; 运行</target> </trans-unit>
-        <trans-unit id="system.event.timeout">
-          <source>Timeout: &lt;strong&gt;{0}&lt;/strong&gt; seconds</source> <target state="translated">超时：&lt;strong&gt;{0}&lt;/strong&gt; 秒</target> </trans-unit>
+        <trans-unit id="system.event.timeout" xml:space="preserve">
+          <source>Timeout:  &lt;strong&gt;{0}&lt;/strong&gt; seconds</source> <target state="needs-adaptation">超时：&lt;strong&gt;{0}&lt;/strong&gt; 秒</target> </trans-unit>
         <trans-unit id="system.event.scriptContents">
           <source>Script contents:</source> <target state="translated">脚本内容：</target> </trans-unit>
         <trans-unit id="system.event.scriptStart">
@@ -12168,16 +12172,16 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
           <source>End Date: {0}</source> <target state="translated">终止日期：{0}</target> </trans-unit>
         <trans-unit id="system.event.scriptReturnCode">
           <source>Return Code: {0}</source> <target state="translated">返回代码：{0}</target> </trans-unit>
-        <trans-unit id="system.event.scriptRawOutput">
-          <source>Raw Output:</source> <target state="translated">原始输出结果：</target> </trans-unit>
+        <trans-unit id="system.event.scriptRawOutput" xml:space="preserve">
+          <source>Raw Output: </source> <target state="needs-adaptation">原始输出结果：</target> </trans-unit>
         <trans-unit id="system.event.downloadRawOutput">
           <source>view/download raw script output</source> <target state="translated">查看/下载原始脚本输出</target> </trans-unit>
-        <trans-unit id="system.event.scriptFilteredOutput">
-          <source>Filtered Output:</source> <target state="translated">过滤的输出：</target> </trans-unit>
+        <trans-unit id="system.event.scriptFilteredOutput" xml:space="preserve">
+          <source>Filtered Output: </source> <target state="needs-adaptation">过滤的输出：</target> </trans-unit>
         <trans-unit id="system.event.affectedErrata">
           <source>Patches Affected:</source> <target state="translated">受影响的勘误：</target> </trans-unit>
-        <trans-unit id="system.event.scapPath">
-          <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt;</source> <target state="translated">&lt;strong&gt;XCCDF 文档路径：&lt;/strong&gt;</target> </trans-unit>
+        <trans-unit id="system.event.scapPath" xml:space="preserve">
+          <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt; </source> <target state="needs-adaptation">&lt;strong&gt;XCCDF 文档路径：&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="system.event.scapParams">
           <source>&lt;strong&gt;Parameters: &lt;/strong&gt;</source> <target state="translated">&lt;strong&gt;参数：&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="system.event.scapDownload">
@@ -12238,8 +12242,8 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
           <source>System Snapshots</source> <target state="translated">系统快照</target> </trans-unit>
         <trans-unit id="system.history.snapshot.summary1">
           <source>System Snapshot Rollback functionality allows you to restore a system's package profile, configuration files, and Spacewalk configuration to previously recorded values.</source> <target state="translated">系统快照返回功能可让您将系统的软件包侧写、配置文件以及 Spacewalk 配置恢复到上一个记录值。</target> </trans-unit>
-        <trans-unit id="system.history.snapshot.summary2">
-          <source>Below are a list of snapshots of your system. To rollback to a previous configuration, or to view the changes that would have if you rolled back, click the desired snapshot below.</source> <target state="translated">以下为您系统的快照列表。要返回到上一个配置，或者查看如果返回上一个配置会出现的变化，请点击以下要求的快照。</target> </trans-unit>
+        <trans-unit id="system.history.snapshot.summary2" xml:space="preserve">
+          <source>Below are a list of snapshots of your system.  To rollback to a previous configuration, or to view the changes that would have if you rolled back, click the desired snapshot below.</source> <target state="needs-adaptation">以下为您系统的快照列表。要返回到上一个配置，或者查看如果返回上一个配置会出现的变化，请点击以下要求的快照。</target> </trans-unit>
         <trans-unit id="system.history.snapshot.summary3">
           <source>Note that snapshots are recorded after each change is performed. To undo the effects of an action, please click on a snapshot before the corresponding one in the list below.</source> </trans-unit>
         <trans-unit id="system.history.snapshot.nosnapshot">
@@ -12330,16 +12334,22 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
           <source>Config Channels</source> <target state="translated">配置频道</target> </trans-unit>
         <trans-unit id="system.history.snapshot.config-files-link">
           <source>Config Files</source> <target state="translated">配置文件</target> </trans-unit>
-        <trans-unit id="system.history.snapshot.summary-rollback2">
-          <source>Are you certain you wish to rollback to the selected system snapshot? Doing so will cancel all pending scheduled actions for the system, and the following items will be changed to match the pre-snapshot values:</source> <target state="translated">您确定要返回所选系统快照吗？ 这样做会取消该系统的所有等待处理的调度动作， 同时会更改以下项目以便与之前的快照值映射：</target> </trans-unit>
-        <trans-unit id="system.history.snapshot.sg_removed">
-          <source>One or more of the system groups from the snapshot has been deleted.{0} This may have some effect upon who may manage the system upon rollback.</source> <target state="translated">已从该快照中删除一个或者多个系统组。{0} 这可能会影响那些管理这些返回系统的人员。</target> </trans-unit>
-        <trans-unit id="system.history.snapshot.channel_removed">
-          <source>One or more of the channels from the snapshot has been deleted.{0} This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="translated">已从该快照中删除一个或者多个频道。{0} 这可能会影响该系统返回该快照软件包组的能力。</target> </trans-unit>
-        <trans-unit id="system.history.snapshot.channel_modified">
-          <source>One or more of the channels from the snapshot has been modified.{0} This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="translated">已修改该快照中的一个或者多个频道。{0} 这可能会影响该系统返回该快照软件包组的能力。</target> </trans-unit>
-        <trans-unit id="system.history.snapshot.ns_removed">
-          <source>One or more of the namespaces from the snapshot has been deleted.{0} This may have an effect upon the configuration files that will be deployed upon rollback.</source> <target state="translated">已从该快照中删除一个或者多个 namespace。{0} 这可能会影响那些根据返回进行部署的配置文件。</target> </trans-unit>
+        <trans-unit id="system.history.snapshot.summary-rollback2" xml:space="preserve">
+          <source>Are you certain you wish to rollback to the selected system snapshot?
+          Doing so will cancel all pending scheduled actions for the system,
+          and the following items will be changed to match the pre-snapshot values:</source> <target state="needs-adaptation">您确定要返回所选系统快照吗？ 这样做会取消该系统的所有等待处理的调度动作， 同时会更改以下项目以便与之前的快照值映射：</target> </trans-unit>
+        <trans-unit id="system.history.snapshot.sg_removed" xml:space="preserve">
+          <source>One or more of the system groups from the snapshot has been deleted.{0}
+          This may have some effect upon who may manage the system upon rollback.</source> <target state="needs-adaptation">已从该快照中删除一个或者多个系统组。{0} 这可能会影响那些管理这些返回系统的人员。</target> </trans-unit>
+        <trans-unit id="system.history.snapshot.channel_removed" xml:space="preserve">
+          <source>One or more of the channels from the snapshot has been deleted.{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="needs-adaptation">已从该快照中删除一个或者多个频道。{0} 这可能会影响该系统返回该快照软件包组的能力。</target> </trans-unit>
+        <trans-unit id="system.history.snapshot.channel_modified" xml:space="preserve">
+          <source>One or more of the channels from the snapshot has been modified.{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source> <target state="needs-adaptation">已修改该快照中的一个或者多个频道。{0} 这可能会影响该系统返回该快照软件包组的能力。</target> </trans-unit>
+        <trans-unit id="system.history.snapshot.ns_removed" xml:space="preserve">
+          <source>One or more of the namespaces from the snapshot has been deleted.{0}
+          This may have an effect upon the configuration files that will be deployed upon rollback.</source> <target state="needs-adaptation">已从该快照中删除一个或者多个 namespace。{0} 这可能会影响那些根据返回进行部署的配置文件。</target> </trans-unit>
         <trans-unit id="system.history.snapshot.unservable_packages">
           <source>The snapshot package list has {0}unservable packages{1}; do not attempt to rollback.</source> <target state="translated">该快照软件包列表有 {0} 个无法提供的软件包 {1}；不要尝试返回。</target> </trans-unit>
         <trans-unit id="system.history.snapshot.group-membership">
@@ -12400,8 +12410,8 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
           <source>centrally-managed configuration channel</source> <target state="translated">集中管理的配置频道</target> </trans-unit>
         <trans-unit id="config.common.localAlt">
           <source>locally-managed configuration channel</source> <target state="translated">本地管理的配置频道</target> </trans-unit>
-        <trans-unit id="config.common.sandboxAlt">
-          <source>configuration sandbox</source> <target state="translated">配置沙箱（sandbox）</target> </trans-unit>
+        <trans-unit id="config.common.sandboxAlt" xml:space="preserve">
+          <source>configuration sandbox </source> <target state="needs-adaptation">配置沙箱（sandbox）</target> </trans-unit>
         <trans-unit id="config.common.fileAlt">
           <source>file</source> <target state="translated">文件</target> </trans-unit>
         <trans-unit id="config.common.symlinkAlt">
@@ -13435,7 +13445,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">当前的版本</target>
       </trans-unit>
@@ -13443,7 +13453,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">最后修改</target>
       </trans-unit>
@@ -13462,7 +13472,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">这个频道中没有可部署的系统</target>
       </trans-unit>
@@ -13470,7 +13480,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">动作</target>
       </trans-unit>
@@ -13478,7 +13488,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -13486,7 +13496,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署所有的文件</target>
       </trans-unit>
@@ -13494,7 +13504,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署选择的文件</target>
       </trans-unit>
@@ -13502,7 +13512,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署配置文件</target>
       </trans-unit>
@@ -13510,7 +13520,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">您可以从下面的列表中选择您要部署的文件。会要求您选择部署到哪个系统。</target>
       </trans-unit>
@@ -13518,7 +13528,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -13526,7 +13536,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">确认并部署到选定的系统</target>
       </trans-unit>
@@ -13534,7 +13544,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">部署配置文件：选择部署的系统</target>
       </trans-unit>
@@ -13542,7 +13552,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">请选择您要部署所选文件的系统。</target>
       </trans-unit>
@@ -13550,7 +13560,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;请注意，如果您试图从 {0} 配置频道部署的任何文件被更高级别的频道里具有相同名字的文件覆盖或级别比之要低，该文件的覆盖/高级别版本而不是 {0} 配置频道里的版本将被部署至这个系统。</target>
       </trans-unit>
@@ -14788,11 +14798,11 @@ any of these revisions.  Are you sure you want to do this?</source>
           <target state="translated">将文件复制到 {0} 频道失败。</target> </trans-unit>
         <trans-unit id="copycentral.jsp.header">
           <source>Copy File to Centrally-Managed Config Channels</source> <target state="translated">将文件复制到集中管理的配置频道</target> </trans-unit>
-        <trans-unit id="copycentral.jsp.summary">
-          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;centrally-managed config channels&lt;/strong&gt;. When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
+        <trans-unit id="copycentral.jsp.summary" xml:space="preserve">
+          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;centrally-managed config channels&lt;/strong&gt;.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into centrally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target state="translated">您可以将这个文件的&lt;a href="{0}"&gt;修订 {1}&lt;/a&gt;复制到&lt;strong&gt;集中管理的配置频道&lt;/strong&gt;。当您将这个文件复制到其他频道时，它将成为该频道中的最新修订。</target> </trans-unit>
+          <target state="needs-adaptation">您可以将这个文件的&lt;a href="{0}"&gt;修订 {1}&lt;/a&gt;复制到&lt;strong&gt;集中管理的配置频道&lt;/strong&gt;。当您将这个文件复制到其他频道时，它将成为该频道中的最新修订。</target> </trans-unit>
         <trans-unit id="copycentral.jsp.select">
           <source>Please select destination channels below.</source> <target state="translated">请选择下面的目的地频道。</target> </trans-unit>
         <trans-unit id="copycentral.jsp.noChannels">
@@ -14820,11 +14830,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="copylocal.jsp.header">
           <source>Copy File to Locally-Managed Config Channels</source> <target state="translated">将文件复制到本地管理的配置频道</target> </trans-unit>
-        <trans-unit id="copylocal.jsp.summary">
-          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;locally-managed config channels&lt;/strong&gt;. When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
+        <trans-unit id="copylocal.jsp.summary" xml:space="preserve">
+          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;locally-managed config channels&lt;/strong&gt;.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into locally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target state="translated">您可以将此文件的&lt;a href="{0}"&gt;修订 {1}&lt;/a&gt; 复制到&lt;strong&gt;本地管理的配置频道&lt;/strong&gt; 里。当您将这个文件复制到其他频道时，它将成为该频道里的最新版本。</target> </trans-unit>
+          <target state="needs-adaptation">您可以将此文件的&lt;a href="{0}"&gt;修订 {1}&lt;/a&gt; 复制到&lt;strong&gt;本地管理的配置频道&lt;/strong&gt; 里。当您将这个文件复制到其他频道时，它将成为该频道里的最新版本。</target> </trans-unit>
         <trans-unit id="copylocal.jsp.channel">
           <source>Local Config Channel Name</source> <target state="translated">本地配置频道名称</target> </trans-unit>
       </group>
@@ -14835,11 +14845,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="copysandbox.jsp.header">
           <source>Copy File to System Sandboxes</source> <target state="translated">将文件复制到系统沙箱中</target> </trans-unit>
-        <trans-unit id="copysandbox.jsp.summary">
-          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;system sandboxes&lt;/strong&gt;. When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</source> <context-group name="ctx">
+        <trans-unit id="copysandbox.jsp.summary" xml:space="preserve">
+          <source>You may copy &lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of this file into &lt;strong&gt;system sandboxes&lt;/strong&gt;.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</source> <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 7 of this file into system sandboxes.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</context>
           </context-group>
-          <target state="translated">您可以将此文件的&lt;a href="{0}"&gt;修订 {1}&lt;/a&gt;复制到 &lt;strong&gt;系统沙箱&lt;/strong&gt;中。当您将这个文件复制到沙箱时，它将成为该沙箱中的最新版本。</target> </trans-unit>
+          <target state="needs-adaptation">您可以将此文件的&lt;a href="{0}"&gt;修订 {1}&lt;/a&gt;复制到 &lt;strong&gt;系统沙箱&lt;/strong&gt;中。当您将这个文件复制到沙箱时，它将成为该沙箱中的最新版本。</target> </trans-unit>
         <trans-unit id="copysandbox.jsp.channel">
           <source>System Sandbox Name</source> <target state="translated">系统沙箱名称</target> </trans-unit>
       </group>
@@ -15861,8 +15871,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="ssm.package.remove.select.header">
           <source>Package Removal</source> <target state="translated">软件包删除</target> </trans-unit>
-        <trans-unit id="ssm.package.remove.select.summary">
-          <source>Packages listed below may be removed from one or more systems. Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.</source> <target state="translated">下面列出的软件包可以从一个或多个系统里删除。 选择一个或多个并点击 &lt;b&gt;Remove Selected Packages&lt;/b&gt; 按钮来调度软件包的删除。</target> </trans-unit>
+        <trans-unit id="ssm.package.remove.select.summary" xml:space="preserve">
+          <source>Packages listed below may be removed from one or more systems.
+
+             Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.
+          </source> <target state="needs-adaptation">下面列出的软件包可以从一个或多个系统里删除。 选择一个或多个并点击 &lt;b&gt;Remove Selected Packages&lt;/b&gt; 按钮来调度软件包的删除。</target> </trans-unit>
         <trans-unit id="ssm.package.remove.select.confirm">
           <source>Remove Selected Packages</source> <target state="translated">删除选定的软件包</target> </trans-unit>
         <trans-unit id="ssm.package.remove.select.numsystems">
@@ -15873,14 +15886,15 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
-        <trans-unit id="ssm.package.remove.schedule.summary">
-          <source>Below is a list of the packages that will be removed, on a per system basis.</source> <target state="translated">下面是每个系统将被删除的软件包列表。</target> </trans-unit>
+        <trans-unit id="ssm.package.remove.schedule.summary" xml:space="preserve">
+          <source>Below is a list of the packages that will be removed, on a per system basis.
+          </source> <target state="needs-adaptation">下面是每个系统将被删除的软件包列表。</target> </trans-unit>
         <trans-unit id="ssm.package.remove.schedule.packages">
           <source>Packages to Remove</source> <target state="translated">要删除的软件包</target> </trans-unit>
         <trans-unit id="ssm.package.remove.schedule.toomanypackages">
           <source>Package list truncated</source> <target state="translated">软件包列表截选</target> </trans-unit>
-        <trans-unit id="ssm.package.remove.message.packageremovals">
-          <source>Package removals are being scheduled, it may take several minutes for this to complete.</source> <target state="translated">软件包安装正在进行调度，这可能需要几分钟才能完成。</target> </trans-unit>
+        <trans-unit id="ssm.package.remove.message.packageremovals" xml:space="preserve">
+          <source>Package removals are being scheduled, it may take several minutes for this to complete. </source> <target state="needs-adaptation">软件包安装正在进行调度，这可能需要几分钟才能完成。</target> </trans-unit>
         <trans-unit id="ssm.package.remove.operationname">
           <source>Schedule Package Removals</source> <target state="translated">调度软件包删除</target> </trans-unit>
       </group>
@@ -15891,8 +15905,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="ssm.package.upgrade.select.header">
           <source>Select Packages to Upgrade</source> <target state="translated">选择要升级的软件包</target> </trans-unit>
-        <trans-unit id="ssm.package.upgrade.select.summary">
-          <source>Select the packages to be upgraded. Only those systems to which the package updates apply will receive the updates.</source> <target state="translated">选择要升级的软件包。只有应用了软件包的系统才会接收到更新。</target> </trans-unit>
+        <trans-unit id="ssm.package.upgrade.select.summary" xml:space="preserve">
+          <source>Select the packages to be upgraded. Only those systems to which the package updates apply will receive the updates.
+         </source> <target state="needs-adaptation">选择要升级的软件包。只有应用了软件包的系统才会接收到更新。</target> </trans-unit>
         <trans-unit id="ssm.package.upgrade.select.confirm">
           <source>Upgrade Selected Packages</source> <target state="translated">升级选择的软件包</target> </trans-unit>
         <trans-unit id="ssm.package.upgrade.select.numsystems">
@@ -15907,8 +15922,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgradeSchedule.do</context>
         </context-group>
-        <trans-unit id="ssm.package.upgrade.message.packageupgrade">
-          <source>Package upgrades are being scheduled, it may take several minutes for this to complete.</source> <target state="translated">软件包升级正在进行调度，这可能需要几分钟才能完成。</target> </trans-unit>
+        <trans-unit id="ssm.package.upgrade.message.packageupgrade" xml:space="preserve">
+          <source>Package upgrades are being scheduled, it may take several minutes for this to complete. </source> <target state="needs-adaptation">软件包升级正在进行调度，这可能需要几分钟才能完成。</target> </trans-unit>
         <trans-unit id="ssm.package.upgrade.schedule.toomanypackages">
           <source>Package list truncated</source> <target state="translated">软件包列表截选</target> </trans-unit>
         <trans-unit id="ssm.package.upgrade.schedule.packages">
@@ -15921,8 +15936,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="ssm.package.verify.select.header">
           <source>Verifiable Packages</source> <target state="translated">可验证的软件包</target> </trans-unit>
-        <trans-unit id="ssm.package.verify.select.summary">
-          <source>Packages listed below may be verified on one or more systems. Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.</source> <target state="translated">下面列出的软件包可以在一个或多个系统上进行检验。 选择一个或多个并点击 &lt;b&gt;Verify Selected Packages&lt;/b&gt; 按钮来调度软件包检验。</target> </trans-unit>
+        <trans-unit id="ssm.package.verify.select.summary" xml:space="preserve">
+          <source>Packages listed below may be verified on one or more systems.
+
+            Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.
+         </source> <target state="needs-adaptation">下面列出的软件包可以在一个或多个系统上进行检验。 选择一个或多个并点击 &lt;b&gt;Verify Selected Packages&lt;/b&gt; 按钮来调度软件包检验。</target> </trans-unit>
         <trans-unit id="ssm.package.verify.select.confirm">
           <source>Verify Selected Packages</source> <target state="translated">验证选择的软件包</target> </trans-unit>
         <trans-unit id="ssm.package.verify.select.numsystems">
@@ -15933,8 +15951,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerifySchedule.do</context>
         </context-group>
-        <trans-unit id="ssm.package.verify.schedule.summary">
-          <source>Below is a list of the packages that will be verified, on a per system basis.</source> <target state="translated">下面是每个系统将进行检验的软件包列表。</target> </trans-unit>
+        <trans-unit id="ssm.package.verify.schedule.summary" xml:space="preserve">
+          <source>Below is a list of the packages that will be verified, on a per system basis.
+         </source> <target state="needs-adaptation">下面是每个系统将进行检验的软件包列表。</target> </trans-unit>
         <trans-unit id="ssm.package.verify.schedule.packages">
           <source>Packages to Verify</source> <target state="translated">要验证的软件包</target> </trans-unit>
         <trans-unit id="ssm.package.verify.schedule.toomanypackages">
@@ -17573,8 +17592,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <source>Files &amp; Directories</source> <target state="translated">文件和目录</target> </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.continue">
           <source>Continue</source> <target state="translated">继续</target> </trans-unit>
-        <trans-unit id="sdc.config.subscriptions.jsp.noChannels">
-          <source>No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source> <target state="translated">没有可订阅的配置频道。您已经订阅了所有可用的频道（&lt;a href="{0}"&gt;查看订阅的频道&lt;/a&gt;）或者您没有权限访问任何可用的频道。</target> </trans-unit>
+        <trans-unit id="sdc.config.subscriptions.jsp.noChannels" xml:space="preserve">
+          <source> No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source> <target state="needs-adaptation">没有可订阅的配置频道。您已经订阅了所有可用的频道（&lt;a href="{0}"&gt;查看订阅的频道&lt;/a&gt;）或者您没有权限访问任何可用的频道。</target> </trans-unit>
         <trans-unit id="common.config.subscription.jsp.error.nojavascript">
           <source>Please enable Javascript before selecting your channel subscriptions.</source> <target state="translated">请在选择频道订阅前启用 Javascript。</target> </trans-unit>
       </group>
@@ -17598,8 +17617,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source> <target state="translated">要修改订阅的频道各自的排名，您可以选择一个频道并用箭头键上下移动它。在您完成了排名过程后，您将需要点击下面的 "{0}" 来确认频道订阅和顺序。</target> </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.subscribed_channels">
           <source>Subscribed Channels</source> <target state="translated">订阅的频道</target> </trans-unit>
-        <trans-unit id="common.config.rank.jsp.warning">
-          <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below.</source> <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;您已经选择这个系统订阅的新的配置频道。此系统将&lt;strong&gt;不会&lt;/strong&gt;订阅至这些频道，直到您通过决定排名并点击下面的 "{0}" 确认了这个订阅。</target> </trans-unit>
+        <trans-unit id="common.config.rank.jsp.warning" xml:space="preserve">
+          <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below. </source> <target state="needs-adaptation">&lt;strong&gt;警告：&lt;/strong&gt;您已经选择这个系统订阅的新的配置频道。此系统将&lt;strong&gt;不会&lt;/strong&gt;订阅至这些频道，直到您通过决定排名并点击下面的 "{0}" 确认了这个订阅。</target> </trans-unit>
         <trans-unit id="common.config.rank.jsp.error.nojavascript">
           <source>Please enable Javascript before ordering your channel subscriptions.</source> <target state="translated">在给您的频道订阅排序之前请启用 Javascript。</target> </trans-unit>
       </group>
@@ -18972,7 +18991,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target state="translated">目前以：{0} 登录</target>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group/>
+      <group />
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -18994,11 +19013,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
           <target state="translated">@@PRODUCT_NAME@@ 不支持 ISO 映像的下载。</target> </trans-unit>
-        <trans-unit id="isodownload.no-access">
-          <source>The channel you have attempted to access either does not exist, or you are not allowed access. Please recheck the link that brought you to this page.</source> <context-group name="ctx">
+        <trans-unit id="isodownload.no-access" xml:space="preserve">
+          <source>The channel you have attempted to access either does not exist, or you are not allowed access.  Please recheck the link that brought you to this page.</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-          <target state="translated">您试图访问的频道或者是不存在，也或者是您没有权限。请重新检查把您带入此页面的链接。</target> </trans-unit>
+          <target state="needs-adaptation">您试图访问的频道或者是不存在，也或者是您没有权限。请重新检查把您带入此页面的链接。</target> </trans-unit>
       </group>
       <trans-unit id="sdc.channels.edit.unlimited" xml:space="preserve">
         <source>unlimited</source>
@@ -19411,11 +19430,19 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
           <target state="translated">频道订阅</target> </trans-unit>
-        <trans-unit id="ssmchildsubs.jsp.summary">
-          <source>Below is a list of channels in your organization. &lt;ul&gt; &lt;li&gt;To make no changes for a channel, check Do Nothing for that channel.&lt;/li&gt; &lt;li&gt;To subscribe selected systems to a channel, check Subscribed for that channel.&lt;/li&gt; &lt;li&gt;To unsubscribe selected systems from a channel, check Unsubscribed for that channel.&lt;/li&gt; &lt;/ul&gt; &lt;strong&gt;Note:&lt;/strong&gt; attempts to assign a system to an incompatible channel will fail.</source> <context-group name="ctx">
+        <trans-unit id="ssmchildsubs.jsp.summary" xml:space="preserve">
+          <source>
+Below is a list of channels in your organization.
+&lt;ul&gt;
+&lt;li&gt;To make no changes for a channel, check Do Nothing for that channel.&lt;/li&gt;
+&lt;li&gt;To subscribe selected systems to a channel, check Subscribed for that channel.&lt;/li&gt;
+&lt;li&gt;To unsubscribe selected systems from a channel, check Unsubscribed for that channel.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;strong&gt;Note:&lt;/strong&gt; attempts to assign a system to an incompatible channel will fail.
+        </source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target state="translated">下面是您组织的一个频道列表。 &lt;ul&gt; &lt;li&gt;不进行修改，请选择『Do Nothing for that channel』。&lt;/li&gt; &lt;li&gt;要订阅频道，请选择『Subscribed for that channel』&lt;/li&gt; &lt;li&gt;要取消对频道的订阅，请选择『Unsubscribed for that channel』&lt;/li&gt; &lt;/ul&gt; &lt;strong&gt;注意：&lt;/strong&gt;试图把系统分配给不兼容的频道将会失败。</target> </trans-unit>
+          <target state="needs-adaptation">下面是您组织的一个频道列表。 &lt;ul&gt; &lt;li&gt;不进行修改，请选择『Do Nothing for that channel』。&lt;/li&gt; &lt;li&gt;要订阅频道，请选择『Subscribed for that channel』&lt;/li&gt; &lt;li&gt;要取消对频道的订阅，请选择『Unsubscribed for that channel』&lt;/li&gt; &lt;/ul&gt; &lt;strong&gt;注意：&lt;/strong&gt;试图把系统分配给不兼容的频道将会失败。</target> </trans-unit>
         <trans-unit id="ssmchildsubs.jsp.channelname">
           <source>Channel</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
@@ -19466,11 +19493,15 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
           <target state="translated">基本频道更改</target> </trans-unit>
-        <trans-unit id="basesub.jsp.summary">
-          <source>As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. &lt;p/&gt; &lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;</source> <context-group name="ctx">
+        <trans-unit id="basesub.jsp.summary" xml:space="preserve">
+          <source>
+As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
+&lt;p/&gt;
+&lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;
+          </source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target state="translated">作为频道管理员，您可以修改订阅的基础频道。有效的频道是您组织创建的频道，或者适用于您的操作系统版本和处理器型号的缺省红帽基础频道。系统将退订所有的频道并订阅到新的基础频道。 &lt;p/&gt; &lt;strong&gt;这个操作可以对系统可用的软件包和勘误产生重大影响，您应该谨慎使用。&lt;/strong&gt;</target> </trans-unit>
+          <target state="needs-adaptation">作为频道管理员，您可以修改订阅的基础频道。有效的频道是您组织创建的频道，或者适用于您的操作系统版本和处理器型号的缺省红帽基础频道。系统将退订所有的频道并订阅到新的基础频道。 &lt;p/&gt; &lt;strong&gt;这个操作可以对系统可用的软件包和勘误产生重大影响，您应该谨慎使用。&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="basesub.jsp.custom-channels">
           <source>Custom Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -22256,8 +22287,11 @@ given channel.</source>
         </context-group>
         <trans-unit id="iss.confirmslaveremove.jsp.toolbar">
           <source>ISS Configuration - Confirm Slave Removal</source> <target state="translated">ISS 配置 - 确认删除辅配置</target> </trans-unit>
-        <trans-unit id="iss.confirmslaveremove.jsp.areyousure">
-          <source>Removing the slave(s) below will remove whatever setup you have done for them, as well as preventing them from being able to synchronize from this @@PRODUCT_NAME@@ instance. This operation cannot be undone - make sure you really want to do this!</source> <target state="translated">删除这个辅实例将删除您对它的所有配置，同时也将使其无法与这个 @@PRODUCT_NAME@@ 实例同步。 这个操作是无法逆转的，您确定要继续吗？</target> </trans-unit>
+        <trans-unit id="iss.confirmslaveremove.jsp.areyousure" xml:space="preserve">
+          <source>
+          Removing the slave(s) below will remove whatever setup you have done for them, as well as preventing them from being able to synchronize from this @@PRODUCT_NAME@@ instance.
+          This operation cannot be undone - make sure you really want to do this!
+          </source> <target state="needs-adaptation">删除这个辅实例将删除您对它的所有配置，同时也将使其无法与这个 @@PRODUCT_NAME@@ 实例同步。 这个操作是无法逆转的，您确定要继续吗？</target> </trans-unit>
         <trans-unit id="iss.confirmslaveremove.jsp.header2">
           <source>Slaves To Be Removed</source> <target state="translated">要删除的辅机构</target> </trans-unit>
       </group>
@@ -22280,8 +22314,11 @@ given channel.</source>
         </context-group>
         <trans-unit id="iss.confirmmasterremove.jsp.toolbar">
           <source>ISS Configuration - Confirm Master Removal</source> <target state="translated">ISS 配置 - 删除主配置</target> </trans-unit>
-        <trans-unit id="iss.confirmmasterremove.jsp.areyousure">
-          <source>Removing the masters below will remove any master-to-slave organization mappings you have created. This operation cannot be undone - make sure you really want to do this!</source> <target state="translated">删除下面的主机构将删除您创建的所有主-辅机构映射。 这个操作是无法逆转的，您确定要继续吗？</target> </trans-unit>
+        <trans-unit id="iss.confirmmasterremove.jsp.areyousure" xml:space="preserve">
+          <source>
+          Removing the masters below will remove any master-to-slave organization mappings you have created.
+          This operation cannot be undone - make sure you really want to do this!
+          </source> <target state="needs-adaptation">删除下面的主机构将删除您创建的所有主-辅机构映射。 这个操作是无法逆转的，您确定要继续吗？</target> </trans-unit>
         <trans-unit id="iss.confirmmasterremove.jsp.header2">
           <source>Masters To Be Removed</source> <target state="translated">要删除的主机构</target> </trans-unit>
         <trans-unit id="iss.confirmslaveremove.jsp.nomasters">
@@ -22293,16 +22330,23 @@ given channel.</source>
         </context-group>
         <trans-unit id="iss.editmaster.jsp.toolbar">
           <source>ISS Configuration - Update Master</source> <target state="translated">ISS 配置 - 更新主配置</target> </trans-unit>
-        <trans-unit id="iss.editmaster.jsp.explanation">
-          <source>Update the details of the master selected below</source> <target state="translated">更新下面所选主机构</target> </trans-unit>
+        <trans-unit id="iss.editmaster.jsp.explanation" xml:space="preserve">
+          <source>
+            Update the details of the master selected below
+          </source> <target state="needs-adaptation">更新下面所选主机构</target> </trans-unit>
         <trans-unit id="iss.editmaster.jsp.details.header">
           <source>Details for {0}</source> <target state="translated">{0} 详情</target> </trans-unit>
         <trans-unit id="iss.editmaster.jsp.newmaster.details.header">
           <source>Details for new Master</source> <target state="translated">新主机构详情</target> </trans-unit>
         <trans-unit id="iss.editmaster.jsp.maporgs.header">
           <source>Configure Master-to-Slave Org Mappings for {0}</source> <target state="translated">为 {0} 配置主-辅机构映射</target> </trans-unit>
-        <trans-unit id="iss.editmaster.jsp.maporgs.explanation">
-          <source>In order to synchronize channel access-permissions from Master to Slave, each known Master organization must be mapped to a local organization in this @@PRODUCT_NAME@@ instance. On this page the administrator can accomplish this mapping. Note that if a Master organization is not mapped, channels that were restricted to that organization on the Master will be public in this @@PRODUCT_NAME@@ instance.</source> <target state="translated">要同步主-辅机构的频道访问权限， 每个已知主机构都必须与这个 @@PRODUCT_NAME@@ 实例中的本地机构映射。 在这个页面中管理员可以完成这个映射操作。 注：如果主机构没有映射， 主机构中那个机构限制的频道会在 @@PRODUCT_NAME@@ 实例中显示。</target> </trans-unit>
+        <trans-unit id="iss.editmaster.jsp.maporgs.explanation" xml:space="preserve">
+          <source>
+          In order to synchronize channel access-permissions from Master to Slave,
+          each known Master organization must be mapped to a local organization in this @@PRODUCT_NAME@@ instance.
+          On this page the administrator can accomplish this mapping.  Note that if a Master organization is not mapped,
+          channels that were restricted to that organization on the Master will be public in this @@PRODUCT_NAME@@ instance.
+          </source> <target state="needs-adaptation">要同步主-辅机构的频道访问权限， 每个已知主机构都必须与这个 @@PRODUCT_NAME@@ 实例中的本地机构映射。 在这个页面中管理员可以完成这个映射操作。 注：如果主机构没有映射， 主机构中那个机构限制的频道会在 @@PRODUCT_NAME@@ 实例中显示。</target> </trans-unit>
         <trans-unit id="iss.editmaster.jsp.nomasterorgs">
           <source>This master did not export any of its organizations to this slave</source> <target state="translated">这个主实例不会向这个辅实例导出任何它的机构。</target> </trans-unit>
         <trans-unit id="iss.error.master.exists">
@@ -22314,8 +22358,12 @@ given channel.</source>
         </context-group>
         <trans-unit id="resetpassword.jsp.error.header">
           <source>Reset Password Link Error</source> </trans-unit>
-        <trans-unit id="resetpassword.jsp.error.message">
-          <source>The reset-password link used is invalid. Please contact your @@PRODUCT_NAME@@ administrator for assistance.</source> </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.message" xml:space="preserve">
+          <source>
+          The reset-password link used is invalid.
+          Please contact your @@PRODUCT_NAME@@ administrator for assistance.
+          </source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="resetpassword.jsp.error.invalidtoken">
           <source>Reset token has been invalidated.</source> </trans-unit>
         <trans-unit id="resetpassword.jsp.error.disabled_user">
@@ -22331,8 +22379,11 @@ given channel.</source>
         </context-group>
         <trans-unit id="passwordreset.jsp.header">
           <source>Reset Password</source> </trans-unit>
-        <trans-unit id="passwordreset.jsp.passwordtip">
-          <source>Passwords can be between {0} and {1} characters, and cannot contain tabs or newlines.</source> </trans-unit>
+        <trans-unit id="passwordreset.jsp.passwordtip" xml:space="preserve">
+          <source>
+          Passwords can be between {0} and {1} characters,
+          and cannot contain tabs or newlines.</source> <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="passwordreset.jsp.update">
           <source>Update Password</source> </trans-unit>
       </group>
@@ -22780,81 +22831,81 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="schedule.jsp.maint-window" xml:space="preserve">
         <source>Maintenance window:</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="schedule.jsp.multiple_maintenance_schedules" xml:space="preserve">
         <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="schedule.jsp.no_maintenance_windows" xml:space="preserve">
         <source>No upcoming maintenance windows for selected systems.</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.default" xml:space="preserve">
         <source>Use configured default ({0})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule.none" xml:space="preserve">
         <source>(none)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.none" xml:space="preserve">
         <source>None</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.cancelaffected" xml:space="preserve">
         <source>Cancel affected actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Maintenance Windows" xml:space="preserve">
         <source>Maintenance Windows</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Schedules" xml:space="preserve">
         <source>Schedules</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Calendars" xml:space="preserve">
         <source>Calendars</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="ssm.overview.schedule.assign" xml:space="preserve">
           <source>&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Assign&lt;/a&gt; a maintenance schedule to selected systems</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.maintenanceschedule" xml:space="preserve">
           <source>Maintenance Windows</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
     </body>
   </file>
