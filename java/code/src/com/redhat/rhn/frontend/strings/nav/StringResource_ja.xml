@@ -28,7 +28,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target>アクティブ</target>
+        <target>有効</target>
       </trans-unit>
       <trans-unit id="users.nav.disabled" xml:space="preserve">
         <source>Deactivated</source>
@@ -987,7 +987,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target>パーティション作成</target>
+        <target>パーティション設定</target>
       </trans-unit>
       <trans-unit id="GPG_SSL" xml:space="preserve">
         <source>GPG &amp; SSL</source>

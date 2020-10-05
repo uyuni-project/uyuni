@@ -823,14 +823,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Email:</target>
+        <target>電子メール:</target>
       </trans-unit>
       <trans-unit id="prefix.displayname" xml:space="preserve">
         <source>Prefix:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>タイトル:</target>
+        <target>プレフィクス:</target>
       </trans-unit>
       <trans-unit id="position.displayname" xml:space="preserve">
         <source>Position:</source>
@@ -1364,7 +1364,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target>警告レベル</target>
+        <target>警告</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.locked" xml:space="preserve">
         <source>Locked</source>
@@ -1434,7 +1434,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
-        <target>警告レベル</target>
+        <target>警告</target>
       </trans-unit>
       <trans-unit id="yourrhn-legend.jsp.title" xml:space="preserve">
         <source>Overview Legend</source>
@@ -1900,7 +1900,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>アクティブ</target>
+        <target>有効</target>
       </trans-unit>
       <trans-unit id="userlist.jsp.disabled" xml:space="preserve">
         <source>Deactivated</source>
@@ -7841,7 +7841,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/FilterCreate.do</context>
         </context-group>
-        <target>警告レベル</target>
+        <target>警告</target>
       </trans-unit>
       <trans-unit id="filter-form.jspf.crit" xml:space="preserve">
         <source>Critical</source>
@@ -9436,14 +9436,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>休止中</target>
+        <target>無効</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.active" xml:space="preserve">
         <source>Active</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>アクティブ</target>
+        <target>有効</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.status" xml:space="preserve">
         <source>Status</source>

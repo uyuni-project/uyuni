@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-09-28 07:48+0000\n"
+"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"PO-Revision-Date: 2020-10-03 02:49+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -175,8 +175,8 @@ msgstr "検索"
 
 #: ../html/src/components/config-channels.js:389
 #: ../html/src/manager/admin/config/monitoring-admin.js:43
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:51
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:238
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:48
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:233
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:310
 #: ../html/src/manager/maintenance/details/schedule-details.js:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:82
@@ -1101,8 +1101,8 @@ msgstr " 秒"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:140
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:233
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
 #: ../html/src/manager/virtualization/ListTab.js:231
 msgid "Filter by name"
 msgstr "名前でフィルタ"
@@ -1129,7 +1129,7 @@ msgstr "経過時間"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:235
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:133
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:128
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:58
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
@@ -1226,7 +1226,7 @@ msgid "Subscriptions"
 msgstr "サブスクリプション"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:103
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:98
 msgid "Unmatched Products"
 msgstr "該当のない製品"
 
@@ -1287,26 +1287,26 @@ msgstr ") 。 "
 msgid "Refresh matching data"
 msgstr "マッチングデータの更新"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:21
 msgid "Unsupported part number detected"
 msgstr "サポート対象外のパーツ番号が検出されました"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:25
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
 "物理システムが仮想化ゲストであるものとして報告されました。ハードウェアデータ"
 "をご確認ください"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:29
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr "仮想化ゲストは未知のホストです。物理システムであるものとして処理します"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:33
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "システムのソケット数が未知です。 16 個あるものとして処理します"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:37
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
@@ -1314,7 +1314,7 @@ msgstr ""
 "同じパーツ番号の 2 つのサブスクリプションが設定されています - これらは 1 つに"
 "まとめられます"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:44
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:41
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1322,35 +1322,35 @@ msgstr ""
 "同じパーツ番号および同じプロパティの 2 つのサブスクリプションを 1 つにまとめ"
 "ました - 開始／終了日をご確認ください"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:48
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:45
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "サブスクリプションをまとめたことにより、ピンマッチも調整されました"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:49
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:46
 msgid "Subscription IDs"
 msgstr "サブスクリプション ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:71
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:68
 msgid "Please review warning and information messages below."
 msgstr "下記の警告および情報メッセージをご確認ください。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:81
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:78
 msgid "Message"
 msgstr "メッセージ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:87
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:84
 msgid "Additional information"
 msgstr "追加情報"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:94
 msgid "No messages from the last match run."
 msgstr "直近のマッチ実行でのメッセージはありません。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:102
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:99
 msgid "Messages"
 msgstr "メッセージ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:79
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
@@ -1358,7 +1358,7 @@ msgstr ""
 "サブスクリプションに対してピンを設定することで、マッチングアルゴリズムに特定"
 "の関連づけを提案させることができます。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:86
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:81
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
@@ -1366,14 +1366,14 @@ msgstr ""
 "次回のマッチング処理の動作でアルゴリズムは、指定したシステムにサブスクリプ"
 "ションを適用する結果を生成しようとします。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:88
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:83
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
 msgstr ""
 "なお、アルゴリズム側では特定のピンを無視するよう判断する場合があります。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:89
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:84
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
@@ -1381,64 +1381,64 @@ msgstr ""
 "これはサブスクリプションが利用できるかどうかと、適用ルールに従って決まりま"
 "す。この場合、満たされていないものとして表示されます。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:114
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:334
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:83
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:80
 msgid "Policy"
 msgstr "ポリシー"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:149
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:150
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:144
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:145
 msgid "Add a Pin"
 msgstr "ピンの追加"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:169
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:164
 msgid "pending next run"
 msgstr "次回の実行まで待機しています"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:174
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:169
 msgid "not satisfied"
 msgstr "満たされていません"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:218
 msgid "Available Systems"
 msgstr "利用可能なシステム"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:224
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:219
 msgid "Step 1/2: select the system to pin from the table below."
 msgstr "ステップ 1/2: 下記の表で、ピンを設定するシステムを選択してください。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:244
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:239
 msgid "Socket/IFL count"
 msgstr "ソケット/IFL カウント"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:249
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:244
 msgid "Products"
 msgstr "製品"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:259
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:254
 msgid "Select"
 msgstr "選択"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:271
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:266
 msgid "Available Subscriptions for the Selected System"
 msgstr "選択したシステムで利用可能なサブスクリプション"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:272
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:267
 msgid "Step 2/2: pick a subscription for system "
 msgstr "ステップ 2/2: システムに対するサブスクリプションの選択 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:280
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:275
 msgid "Back to sytem selection"
 msgstr "システム選択に戻る"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:71
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:68
 msgid "Part number"
 msgstr "パーツ番号"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:77
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:74
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:154
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:257
 #: ../html/src/manager/content-management/list-projects/list-projects.js:100
@@ -1449,16 +1449,16 @@ msgstr "パーツ番号"
 msgid "Description"
 msgstr "説明"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:339
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:104
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:334
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:101
 msgid "End date"
 msgstr "終了日"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:347
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:342
 msgid "Save Pin"
 msgstr "ピンの保存"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:353
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:348
 msgid ""
 "No subscriptions have been found to match this system, considering all "
 "products installed, either directly or in virtual guests."
@@ -1466,48 +1466,48 @@ msgstr ""
 "直接もしくは仮想化ゲストにインストールされている全ての製品を考慮しても、この"
 "システムに該当するサブスクリプションは見つかりませんでした。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:66
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:63
 msgid "Filter by description"
 msgstr "説明でフィルタ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:89
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:86
 msgid "Matched/Total"
 msgstr "該当するもの／合計"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:95
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:92
 msgid "Start date"
 msgstr "開始日"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:123
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:120
 msgid "No subscriptions found."
 msgstr "サブスクリプションが見つかりませんでした。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:128
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:125
 msgid "Your subscriptions"
 msgstr "お使いのサブスクリプション"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:66
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:61
 msgid "Product name"
 msgstr "製品名"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:72
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:67
 msgid "Unmatched system count"
 msgstr "一致しないシステム数"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:78
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:79
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:73
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:74
 msgid "Show system list"
 msgstr "システム一覧の表示"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:98
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:93
 msgid "No unmatching products are found."
 msgstr "一致しない製品は見つかりませんでした。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:148
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:143
 msgid "System name"
 msgstr "システム名"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:153
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:148
 msgid "Unmatched systems"
 msgstr "一致しないシステム"
 
@@ -2913,31 +2913,31 @@ msgstr "イベントに移動"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid " is queued"
-msgstr ""
+msgstr " はキューに入っています"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid "In progress"
-msgstr ""
+msgstr "処理中です"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid " in progress"
-msgstr ""
+msgstr " は処理中です"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid "Successful"
-msgstr ""
+msgstr "成功"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid " is successful"
-msgstr ""
+msgstr " は成功しました"
 
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid " has failed"
-msgstr ""
+msgstr " は失敗しました"
 
 #: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
-msgstr ""
+msgstr " ステータス"
 
 #: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
@@ -2945,105 +2945,105 @@ msgstr "ピックアップ済み"
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
-msgstr ""
+msgstr "プロファイルの編集"
 
 #: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
-msgstr ""
+msgstr "ストアの編集"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
-msgstr ""
+msgstr "イメージの状態"
 
 #: ../html/src/manager/images/image-view-overview.js:365
 msgid "Image Info"
-msgstr ""
+msgstr "イメージの情報"
 
 #: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
-msgstr ""
+msgstr "ビルド状態"
 
 #: ../html/src/manager/images/image-view-overview.js:381
 #: ../html/src/manager/images/image-view-overview.js:516
 msgid "Inspect"
-msgstr ""
+msgstr "検査"
 
 #: ../html/src/manager/images/image-view-overview.js:390
 msgid "Rebuild"
-msgstr ""
+msgstr "再ビルド"
 
 #: ../html/src/manager/images/image-view-overview.js:391
 msgid "Reschedule the build"
-msgstr ""
+msgstr "ビルドの再スケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:399
 msgid "Reinspect"
-msgstr ""
+msgstr "再検査"
 
 #: ../html/src/manager/images/image-view-overview.js:400
 msgid "Reschedule the inspect"
-msgstr ""
+msgstr "検査の再スケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
-msgstr ""
+msgstr "カスタムイメージの情報"
 
 #: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
-msgstr ""
+msgstr "ビルドのスケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:489
 msgid "Rebuild Image"
-msgstr ""
+msgstr "イメージの再ビルド"
 
 #: ../html/src/manager/images/image-view-overview.js:517
 msgid "Schedule inspect"
-msgstr ""
+msgstr "検査のスケジュール"
 
 #: ../html/src/manager/images/image-view-overview.js:548
 msgid "Reinspect Image"
-msgstr ""
+msgstr "インストール済み"
 
 #: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:315
 msgid "Installed"
-msgstr ""
+msgstr "インストール済み"
 
 #: ../html/src/manager/images/image-view-patches.js:12
 msgid "fa fa-shield fa-1-5x"
-msgstr ""
+msgstr "fa fa-shield fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:13
 msgid "fa fa-bug fa-1-5x"
-msgstr ""
+msgstr "fa fa-bug fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:14
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
-msgstr ""
+msgstr "fa spacewalk-icon-enhancement fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:15
 msgid "fa fa-refresh fa-1-5x"
-msgstr ""
+msgstr "fa fa-refresh fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:16
 msgid "fa fa-archive fa-1-5"
-msgstr ""
+msgstr "fa fa-archive fa-1-5"
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
-msgstr ""
+msgstr "セキュリティアドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "製品の機能拡張アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
-msgstr ""
+msgstr "要再起動"
 
 #: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
@@ -3059,72 +3059,79 @@ msgstr "更新済み"
 
 #: ../html/src/manager/images/image-view-runtime.js:42
 msgid "Instance is consistent with SUSE Manager"
-msgstr ""
+msgstr "インスタンスは SUSE Manager と同期されています"
 
 #: ../html/src/manager/images/image-view-runtime.js:46
 msgid "Instance is outdated"
-msgstr ""
+msgstr "インスタンスは古くなっています"
 
 #: ../html/src/manager/images/image-view-runtime.js:77
 msgid "Cluster is consistent with SUSE Manager"
-msgstr ""
+msgstr "クラスタは SUSE Manager と同期されています"
 
 #: ../html/src/manager/images/image-view-runtime.js:81
 msgid "Cluster is outdated"
-msgstr ""
+msgstr "クラスタは古くなっています"
 
 #: ../html/src/manager/images/image-view-runtime.js:95
 msgid "Pod"
-msgstr ""
+msgstr "ポッド"
 
 #: ../html/src/manager/images/image-view-runtime.js:96
 msgid "Namespace"
-msgstr ""
+msgstr "ネームスペース"
 
 #: ../html/src/manager/login/login.js:45
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
 msgstr ""
+"スキーマのアップグレードが必要です。最新のバグ修正を受け取ったり、潜在的なバ"
+"グの回避を行なったりできるよう、できる限り速やかにスキーマをアップグレードす"
+"ることをお勧めします。"
 
 #: ../html/src/manager/login/login.js:54
 msgid "Signing in ..."
-msgstr ""
+msgstr "サインインしています..."
 
 #: ../html/src/manager/login/login.js:108
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
 msgstr ""
+"Discover はサーバやパッケージ、パッチなどを 1 つのインターフェイスから管理で"
+"きる新しい方式です。"
 
 #: ../html/src/manager/login/login.js:130
 msgid "Login"
-msgstr ""
+msgstr "ログイン"
 
 #: ../html/src/manager/login/login.js:150
 msgid "Sign In"
-msgstr ""
+msgstr "サインイン"
 
 #: ../html/src/manager/login/use-login-api.js:14
 msgid "Either the password or username is incorrect."
-msgstr ""
+msgstr "パスワードまたはユーザー名が正しくありません。"
 
 #: ../html/src/manager/login/use-login-api.js:15
 msgid "Your account has been deactivated."
-msgstr ""
+msgstr "ご使用のアカウントは停止されています。"
 
 #: ../html/src/manager/login/use-login-api.js:16
 msgid "This user has read only API access. WebUI login is denied."
 msgstr ""
+"このユーザーには読み取り専用の API アクセスしか提供されていません。 WebUI ロ"
+"グインが拒否されました。"
 
 #: ../html/src/manager/login/use-login-api.js:28
 msgid "Are you sure you want to close this page while login is in progress?"
-msgstr ""
+msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:33
 #: ../html/src/manager/maintenance/list/calendar-list.js:99
 msgid "Delete maintenance calendar"
-msgstr ""
+msgstr "メンテナンスカレンダーの削除"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:36
 #: ../html/src/manager/maintenance/details/schedule-details.js:50
@@ -3133,43 +3140,45 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
-msgstr ""
+msgstr "選択した項目を削除してよろしいですか？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:37
 #: ../html/src/manager/maintenance/details/schedule-details.js:51
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr ""
+"この処理により、割り当てられた全てのシステムから現在のスケジュールを削除しま"
+"す。"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:162
 #: ../html/src/manager/maintenance/list/calendar-list.js:104
 msgid "Cancel affected actions?"
-msgstr ""
+msgstr "影響する処理をキャンセルしますか？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:64
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:114
 #: ../html/src/manager/maintenance/list/calendar-list.js:51
 msgid "Calendar Name"
-msgstr ""
+msgstr "カレンダー名"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:65
 #: ../html/src/manager/maintenance/list/calendar-list.js:58
 msgid "Used by Schedule"
-msgstr ""
+msgstr "スケジュールで使用済み"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:67
 msgid "Url"
-msgstr ""
+msgstr "URL"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:71
 msgid "Calendar Details"
-msgstr ""
+msgstr "カレンダーの詳細"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:47
 #: ../html/src/manager/maintenance/list/schedule-list.js:85
 msgid "Delete maintenance schedule"
-msgstr ""
+msgstr "メンテナンススケジュールの削除"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:65
 #: ../html/src/manager/maintenance/details/schedule-details.js:168
@@ -3178,49 +3187,49 @@ msgstr "割り当て済みのシステム"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:98
 msgid "Schedule name"
-msgstr ""
+msgstr "スケジュール名"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:99
 msgid "Assigned calendar"
-msgstr ""
+msgstr "割り当てられたカレンダー"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 msgid "Schedule type"
-msgstr ""
+msgstr "スケジュールタイプ"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:89
 msgid "Single"
-msgstr ""
+msgstr "シングル"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:90
 msgid "Multi"
-msgstr ""
+msgstr "マルチ"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:105
 #: ../html/src/manager/state/recurring-states-details.js:92
 msgid "Schedule Details"
-msgstr ""
+msgstr "スケジュールの詳細"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:117
 msgid "Upcoming Maintenance Windows"
-msgstr ""
+msgstr "将来のメンテナンスウィンドウ"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:123
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:249
 msgid "Start"
-msgstr ""
+msgstr "開始"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:124
 msgid "End"
-msgstr ""
+msgstr "終了"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:154
 msgid "Maintenance schedule has been assigned to {0} system(s)"
-msgstr ""
+msgstr "メンテナンススケジュールを {0} 個のシステムに割り当てました"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:117
@@ -3240,39 +3249,41 @@ msgstr "現在のスケジュール"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:108
 msgid "Url '{0}' is invalid"
-msgstr ""
+msgstr "URL '{0}' が正しくありません"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:121
 msgid "Calendar data"
-msgstr ""
+msgstr "カレンダーのデータ"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:127
 msgid "Enter Url to ical file"
-msgstr ""
+msgstr "ical ファイルの URL を入力"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:138
 msgid "Attach file"
-msgstr ""
+msgstr "ファイルの添付"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:144
 msgid "Remove file"
-msgstr ""
+msgstr "ファイルの削除"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:153
 msgid "Refresh data from url"
-msgstr ""
+msgstr "URL からデータを更新"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:157
 msgid "Confirm calendar refresh"
-msgstr ""
+msgstr "カレンダー更新の確認"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:160
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr ""
+"カレンダーを更新すると、全ての影響する動作を再スケジュールすることになりま"
+"す。"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:161
 msgid "Confirm if you want to proceed."
-msgstr ""
+msgstr "続行して問題ないかご確認ください。"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
@@ -3280,36 +3291,37 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/pools/pool-properties.js:584
 msgid "Schedule"
-msgstr ""
+msgstr "スケジュール"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:110
 #: ../html/src/manager/maintenance/list/schedule-list.js:43
 msgid "Calendar"
-msgstr ""
+msgstr "カレンダー"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
 msgid "Maintenance"
-msgstr ""
+msgstr "メンテナンス"
 
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:99
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:104
 msgid "Add Calendar"
-msgstr ""
+msgstr "カレンダーの追加"
 
 #: ../html/src/manager/maintenance/list/calendar-list.js:47
 msgid "No calendars created. Use Create to add a calendar."
 msgstr ""
+"カレンダーが作成されていません。作成を押してカレンダーを追加してください。"
 
 #: ../html/src/manager/maintenance/list/calendar-list.js:103
 msgid "This will unassign all schedules from this calendar."
-msgstr ""
+msgstr "このカレンダーから全てのスケジュールの割り当てを解除します。"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:30
 msgid "Create a new maintenance schedule"
-msgstr ""
+msgstr "新しいメンテナンススケジュールの作成"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
 msgid "Schedules"
@@ -3321,110 +3333,116 @@ msgstr "カレンダー"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:43
 msgid "schedule"
-msgstr ""
+msgstr "スケジュール"
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:32
 msgid "No schedules created. Use Create to add a schedule."
 msgstr ""
+"スケジュールが作成されていません。作成を押してスケジュールを追加してくださ"
+"い。"
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:89
 msgid "This will remove the schedule from all the systems assigned to it."
-msgstr ""
+msgstr "割り当てられている全てのシステムからスケジュールを削除します。"
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:103
 msgid "successfully"
-msgstr ""
+msgstr "成功"
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:127
 msgid "Error when deleting the "
-msgstr ""
+msgstr "下記の削除に失敗しました "
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:142
 msgid "Calendar successfully refreshed"
-msgstr ""
+msgstr "カレンダーを更新しました"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:23
 msgid ""
 "Any pending maintenance-only actions for these systems will be cancelled "
 "unless they are inside the new maintenance windows."
 msgstr ""
+"これらのシステムに対する待機中のメンテナンスのみの動作は、新しいメンテナンス"
+"ウィンドウ内に存在する場合を除き、キャンセルされます。"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
 msgid "Are you sure you want to proceed?"
-msgstr ""
+msgstr "続行してよろしいですか？"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:42
 msgid "Maintenance schedule has been cleared"
-msgstr ""
+msgstr "メンテナンススケジュールを消去しました"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:89
 msgid "Clear All"
-msgstr ""
+msgstr "全てを消去"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:90
 msgid "fa-times"
-msgstr ""
+msgstr "fa-times"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:100
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:107
 msgid "Assign All"
-msgstr ""
+msgstr "全てを割り当て"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:101
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:108
 msgid "fa-edit"
-msgstr ""
+msgstr "fa-edit"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:17
 msgid "Maintenance Schedules"
-msgstr ""
+msgstr "メンテナンススケジュール"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:21
 msgid "Assign a maintenance schedule to {0} system(s)"
-msgstr ""
+msgstr "メンテナンススケジュールを {0} 個のシステムに割り当てました"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:22
 msgid ""
 "Assigning a schedule will replace any prior assignments in all of the "
 "systems in the set."
 msgstr ""
+"スケジュールの割り当てを行なうと、このセット内の全てのシステムにある従来の割"
+"り当てを置き換えることになります。"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 msgid "Applying the config channels has been "
-msgstr ""
+msgstr "設定チャンネルの適用を "
 
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:60
 msgid "Configuration"
-msgstr ""
+msgstr "設定"
 
 #: ../html/src/manager/minion/packages/package-states.js:276
 msgid "No package states."
-msgstr ""
+msgstr "パッケージの状態がありません。"
 
 #: ../html/src/manager/minion/packages/package-states.js:295
 msgid "Latest"
-msgstr ""
+msgstr "最新"
 
 #: ../html/src/manager/minion/packages/package-states.js:296
 msgid "Any"
-msgstr ""
+msgstr "任意"
 
 #: ../html/src/manager/minion/packages/package-states.js:303
 msgid "Undo"
-msgstr ""
+msgstr "取り消し"
 
 #: ../html/src/manager/minion/packages/package-states.js:314
 msgid "Unmanaged"
-msgstr ""
+msgstr "管理対象外"
 
 #: ../html/src/manager/minion/packages/package-states.js:316
 msgid "Removed"
-msgstr ""
+msgstr "削除済み"
 
 #: ../html/src/manager/minion/packages/package-states.js:332
 msgid "Package States"
-msgstr ""
+msgstr "パッケージの状態"
 
 #: ../html/src/manager/minion/packages/package-states.js:340
 #: ../html/src/manager/salt/keys/key-management.js:173
@@ -3436,92 +3454,92 @@ msgstr "都道府県"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
-msgstr ""
+msgstr "パッケージの状態を保存しました。"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:59
 msgid "Applying the packages states has been "
-msgstr ""
+msgstr "パッケージ状態の適用を "
 
 #: ../html/src/manager/notifications/notification-messages.js:23
 msgid "Onboarding failed"
-msgstr ""
+msgstr "オンボーディングに失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.js:27
 msgid "Channel sync failed"
-msgstr ""
+msgstr "チャンネル同期に失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.js:31
 msgid "Channel sync finished"
-msgstr ""
+msgstr "チャンネル同期が完了しました"
 
 #: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
-msgstr ""
+msgstr "ブートストラップリポジトリーの作成に失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
-msgstr ""
+msgstr "状態の適用に失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.js:112
 msgid "Filter by type"
-msgstr ""
+msgstr "タイプでフィルタ"
 
 #: ../html/src/manager/notifications/notification-messages.js:211
 msgid "Info"
-msgstr ""
+msgstr "情報"
 
 #: ../html/src/manager/notifications/notification-messages.js:214
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: ../html/src/manager/notifications/notification-messages.js:217
 msgid "Error"
-msgstr ""
+msgstr "エラー"
 
 #: ../html/src/manager/notifications/notification-messages.js:272
 msgid "show details"
-msgstr ""
+msgstr "詳細の表示"
 
 #: ../html/src/manager/notifications/notification-messages.js:318
 msgid "Retry onboarding"
-msgstr ""
+msgstr "オンボーディングの再試行"
 
 #: ../html/src/manager/notifications/notification-messages.js:322
 msgid "Retry repo sync"
-msgstr ""
+msgstr "リポジトリー同期の再試行"
 
 #: ../html/src/manager/notifications/notification-messages.js:336
 msgid "Unread Messages"
-msgstr ""
+msgstr "未読メッセージ"
 
 #: ../html/src/manager/notifications/notification-messages.js:339
 msgid "All Messages"
-msgstr ""
+msgstr "全てのメッセージ"
 
 #: ../html/src/manager/notifications/notification-messages.js:358
 msgid "Delete selected messages"
-msgstr ""
+msgstr "選択したメッセージの削除"
 
 #: ../html/src/manager/notifications/notification-messages.js:362
 msgid "Mark selected as read"
-msgstr ""
+msgstr "選択したものを読み込み済みとしてマーク"
 
 #: ../html/src/manager/notifications/notification-messages.js:374
 #: ../html/src/manager/notifications/notification-messages.js:456
 msgid "Notification Messages"
-msgstr ""
+msgstr "通知メッセージ"
 
 #: ../html/src/manager/notifications/notification-messages.js:379
 msgid "The server has collected the following notification messages."
-msgstr ""
+msgstr "このサーバは下記のような通知メッセージを収集しました。"
 
 #: ../html/src/manager/notifications/notification-messages.js:398
 msgid "Filter by summary"
-msgstr ""
+msgstr "概要でフィルタ"
 
 #: ../html/src/manager/notifications/notification-messages.js:404
 msgid "Severity"
-msgstr ""
+msgstr "重大度"
 
 #: ../html/src/manager/notifications/notification-messages.js:416
 msgid "Summary"
@@ -3537,37 +3555,40 @@ msgstr "動作"
 
 #: ../html/src/manager/notifications/notification-messages.js:433
 msgid "Read|Delete"
-msgstr ""
+msgstr "読み込み|削除"
 
 #: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Unread"
-msgstr ""
+msgstr "未読として設定"
 
 #: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Read"
-msgstr ""
+msgstr "読み込み済みとして設定"
 
 #: ../html/src/manager/notifications/notification-messages.js:441
 msgid "Delete Notification"
-msgstr ""
+msgstr "通知の削除"
 
 #: ../html/src/manager/notifications/notifications.js:36
 #: ../html/src/manager/salt/cmd/remote-commands.js:284
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
-msgstr ""
+msgstr "Websocket 接続が閉じられました。ページを更新してやり直してください。"
 
 #: ../html/src/manager/notifications/notifications.js:49
 #: ../html/src/manager/salt/cmd/remote-commands.js:304
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
+"サーバへの接続時にエラーが発生しました。ページを更新してやり直してください。"
 
 #: ../html/src/manager/notifications/notifications.js:95
 msgid ""
 "Session expired, please reload the page to receive notifications in real-"
 "time."
 msgstr ""
+"セッションの有効期限が切れました。通知メッセージをリアルタイムに読み込むた"
+"め、ページを再読み込みしてください。"
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
@@ -3575,115 +3596,121 @@ msgstr ""
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
+"認証エラーが発生しました。ページを再読み込みするか、いったんログアウトしてロ"
+"グインし直してください。"
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.js:31
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
 msgstr ""
+"この組織内の各 minion サーバに対し、設定チャンネルの適用をスケジュールしまし"
+"た"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:48
 #: ../html/src/manager/salt/keys/key-management.js:57
 msgid "pending"
-msgstr ""
+msgstr "待機"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:55
 msgid "timed out"
-msgstr ""
+msgstr "タイムアウト"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- hide error -"
-msgstr ""
+msgstr "- エラーを隠す -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- show error -"
-msgstr ""
+msgstr "- エラーを表示する -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- hide response -"
-msgstr ""
+msgstr "- 応答を隠す -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- show response -"
-msgstr ""
+msgstr "- 応答を表示する -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:159
 msgid "Stop waiting"
-msgstr ""
+msgstr "待機の停止"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:161
 msgid "Stop waiting for all the minions to respond"
-msgstr ""
+msgstr "全ての minion が応答するまでの待機を停止"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:164
 msgid "Find targets"
-msgstr ""
+msgstr "ターゲットの検索"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:166
 #: ../html/src/manager/salt/cmd/remote-commands.js:172
 msgid "Check which minions match the target expression"
-msgstr ""
+msgstr "どの minion がターゲット式に一致するかの確認"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:174
 msgid "Run command"
-msgstr ""
+msgstr "コマンドの実行"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:176
 msgid "Run the command on the target minions"
-msgstr ""
+msgstr "ターゲットの minion でのコマンドの実行"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:183
 msgid "Remote Commands"
-msgstr ""
+msgstr "リモートコマンド"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:190
 msgid "Type the command here"
-msgstr ""
+msgstr "コマンドを入力してください"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:193
 msgid "Type the minion_id pattern to target here"
-msgstr ""
+msgstr "ターゲットとなる minion_id パターンを入力してください"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:205
 msgid "Target systems"
-msgstr ""
+msgstr "ターゲットシステム"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems previewed"
-msgstr ""
+msgstr "ターゲットシステムをプレビューしていません"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems found"
-msgstr ""
+msgstr "ターゲットのシステムが見つかりませんでした"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:393
 msgid "Not all minions responded on time."
-msgstr ""
+msgstr "一部の minion が時間通りに応答しませんでした。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:418
 msgid "No minions matched the target expression."
-msgstr ""
+msgstr "ターゲット式に一致する minion はありません。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:420
 msgid "Server returned an error: {0}"
-msgstr ""
+msgstr "サーバはエラーを返しました: {0}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:487
 #: ../html/src/manager/salt/cmd/remote-commands.js:491
 msgid "Matching ssh-push minions..."
-msgstr ""
+msgstr "一致する ssh-push minion..."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
 msgstr ""
+"セッションの有効期限が切れました。システムでコマンドを実行するには、ページを"
+"再読み込みしてください。"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
-msgstr ""
+msgstr "Formula カタログ"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
 msgid "Filter by formula name"
-msgstr ""
+msgstr "Formula 名でフィルタ"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
@@ -3691,36 +3718,36 @@ msgstr "Formula"
 
 #: ../html/src/manager/salt/keys/key-management.js:35
 msgid "Accept"
-msgstr ""
+msgstr "受け入れる"
 
 #: ../html/src/manager/salt/keys/key-management.js:53
 msgid "accepted"
-msgstr ""
+msgstr "受け入れ済み"
 
 #: ../html/src/manager/salt/keys/key-management.js:61
 msgid "rejected"
-msgstr ""
+msgstr "拒否済み"
 
 #: ../html/src/manager/salt/keys/key-management.js:65
 msgid "denied"
-msgstr ""
+msgstr "拒否済み"
 
 #: ../html/src/manager/salt/keys/key-management.js:161
 msgid "Fingerprint"
-msgstr ""
+msgstr "フィンガープリント"
 
 #: ../html/src/manager/shared/menu/menu.js:168
 msgid "Clear Menu"
-msgstr ""
+msgstr "メニューの消去"
 
 #: ../html/src/manager/shared/menu/menu.js:170
 msgid "Filter menu"
-msgstr ""
+msgstr "フィルタメニュー"
 
 #: ../html/src/manager/shared/menu/menu.js:205
 #: ../html/src/manager/shared/menu/menu.js:208
 msgid "Uyuni homepage"
-msgstr ""
+msgstr "Uyuni ホームページ"
 
 #: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
@@ -3729,84 +3756,84 @@ msgstr "Uyuni"
 #: ../html/src/manager/shared/menu/menu.js:212
 #: ../html/src/manager/shared/menu/menu.js:215
 msgid "SUSE Manager homepage"
-msgstr ""
+msgstr "SUSE Manager ホームページ"
 
 #: ../html/src/manager/shared/menu/menu.js:213
 msgid "SUSE"
-msgstr ""
+msgstr "SUSE"
 
 #: ../html/src/manager/shared/menu/menu.js:213
 msgid "Manager"
-msgstr ""
+msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.js:30
 msgid "Highstate for {0}"
-msgstr ""
+msgstr "{0} に対する highstate"
 
 #: ../html/src/manager/state/display-highstate.js:125
 msgid "There are no applicable systems."
-msgstr ""
+msgstr "該当するシステムはありません。"
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "Action has been successfully added to the "
-msgstr ""
+msgstr "アクションを追加しました "
 
 #: ../html/src/manager/state/highstate.js:52
 msgid "Applying the highstate has been "
-msgstr ""
+msgstr "highstate の適用を "
 
 #: ../html/src/manager/state/highstate.js:52
 msgid "scheduled."
-msgstr ""
+msgstr "スケジュールしました。"
 
 #: ../html/src/manager/state/highstate.js:96
 msgid "Apply Highstate"
-msgstr ""
+msgstr "highstate の適用"
 
 #: ../html/src/manager/state/highstate.js:108
 msgid "Create Recurring"
-msgstr ""
+msgstr "繰り返し作成"
 
 #: ../html/src/manager/state/recurring-states-details.js:43
 msgid "Execution time"
-msgstr ""
+msgstr "実行時間"
 
 #: ../html/src/manager/state/recurring-states-details.js:97
 msgid "State:"
-msgstr ""
+msgstr "状態:"
 
 #: ../html/src/manager/state/recurring-states-details.js:98
 #: ../html/src/manager/state/recurring-states-list.js:75
 msgid "Active"
-msgstr ""
+msgstr "有効"
 
 #: ../html/src/manager/state/recurring-states-details.js:98
 msgid "Inactive"
-msgstr ""
+msgstr "無効"
 
 #: ../html/src/manager/state/recurring-states-details.js:102
 msgid "Test"
-msgstr ""
+msgstr "テスト"
 
 #: ../html/src/manager/state/recurring-states-details.js:103
 msgid "True"
-msgstr ""
+msgstr "はい"
 
 #: ../html/src/manager/state/recurring-states-details.js:107
 msgid "Target type"
-msgstr ""
+msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/state/recurring-states-details.js:112
 msgid "Organization name"
-msgstr ""
+msgstr "組織名"
 
 #: ../html/src/manager/state/recurring-states-details.js:117
 msgid "Created by"
-msgstr ""
+msgstr "作成者"
 
 #: ../html/src/manager/state/recurring-states-details.js:121
 msgid "Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: ../html/src/manager/state/recurring-states-details.js:126
 msgid "Quartz format string"
@@ -3815,23 +3842,25 @@ msgstr "クォーツ書式文字列"
 #: ../html/src/manager/state/recurring-states-details.js:174
 #: ../html/src/manager/state/recurring-states-list.js:136
 msgid "Delete Recurring State Schedule"
-msgstr ""
+msgstr "繰り返し状態スケジュールの削除"
 
 #: ../html/src/manager/state/recurring-states-details.js:175
 msgid "Are you sure you want to delete this schedule?"
-msgstr ""
+msgstr "このスケジュールを削除してよろしいですか？"
 
 #: ../html/src/manager/state/recurring-states-edit.js:99
 msgid "Test mode"
-msgstr ""
+msgstr "テストモード"
 
 #: ../html/src/manager/state/recurring-states.js:115
 msgid "Schedule successfully"
-msgstr ""
+msgstr "スケジュールしました"
 
 #: ../html/src/manager/state/recurring-states.js:140
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr ""
+"動作の削除時にエラーが発生しました。 Taskomatic が動作しているかご確認くださ"
+"い"
 
 #: ../html/src/manager/state/recurring-states-list.js:58
 msgid "Recurring States"
@@ -3839,54 +3868,56 @@ msgstr "繰り返し状態"
 
 #: ../html/src/manager/state/recurring-states-list.js:71
 msgid "No schedules created."
-msgstr ""
+msgstr "スケジュールは作成されていません。"
 
 #: ../html/src/manager/state/recurring-states-list.js:95
 msgid "Frequency"
-msgstr ""
+msgstr "頻度"
 
 #: ../html/src/manager/state/recurring-states-list.js:102
 msgid "Target Type"
-msgstr ""
+msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
 msgid "SUSE Manager Default"
-msgstr ""
+msgstr "SUSE Manager の既定値"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
 msgid "Child Channels:"
-msgstr ""
+msgstr "子チャンネル:"
 
 #: ../html/src/manager/systems/activation-key/child-channels.js:140
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
 msgid "mandatory"
-msgstr ""
+msgstr "必須"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:163
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
+"リクエストが中断されたか、もしくはサーバから不正な応答を受け取りました。お使"
+"いの minion が正しくブートストラップされているかどうかをご確認ください。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr ""
+msgstr "ホストをブートストラップしました。システムは"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "systems"
-msgstr ""
+msgstr "システム"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "shortly"
-msgstr ""
+msgstr "しばらくすると現われるはずです"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:191
 msgid "Your system is bootstrapping: waiting for a response.."
-msgstr ""
+msgstr "システムをブートストラップしています: 応答を待っています.."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:195
 msgid "Loading SSH Private Key.."
-msgstr ""
+msgstr "SSH 機密鍵を読み込んでいます.."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
@@ -3894,44 +3925,48 @@ msgstr "ブートストラップ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
-msgstr ""
+msgstr "例: ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:216
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:275
 msgid "SSH Private Key"
-msgstr ""
+msgstr "SSH 機密鍵"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:220
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr ""
+"ファイルはサーバ内の一時ファイルとして保存されています。ブートストラップ処理"
+"が完了すると削除されます"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:225
 msgid "SSH Private Key Passphrase"
-msgstr ""
+msgstr "SSH 機密鍵のパスフレーズ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:227
 msgid "Leave empty for no passphrase"
-msgstr ""
+msgstr "パスフレーズが無い場合は何も入力しないでください"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
 msgid "Bootstrap Minions"
-msgstr ""
+msgstr "minion のブートストラップ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
 msgstr ""
+"SSH の資格情報のみを提供することで、管理対象のシステムを追加することができま"
+"す。 {0} はシステムを遠隔から準備し、登録処理を実施します。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
 msgid "e.g., host.domain.com"
-msgstr ""
+msgstr "例: host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:248
 msgid "Port range: 1 - 65535"
-msgstr ""
+msgstr "ポート範囲: 1 - 65535"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
 msgid "Proxy"
@@ -3942,43 +3977,49 @@ msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
+"プロキシのホスト名が完全修飾型ではありません。チャンネルへのアクセス時に問題"
+"を引き起こす可能性があります。"
 
 #: ../html/src/manager/systems/delete-system.js:17
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr ""
+"クリーンアップが時間切れになりました。マシンに到達可能かどうかご確認くださ"
+"い。"
 
 #: ../html/src/manager/systems/delete-system.js:18
 msgid "No result found in state apply response."
-msgstr ""
+msgstr "状態の適用に対する応答結果が見つかりませんでした。"
 
 #: ../html/src/manager/systems/delete-system.js:85
 msgid "An error occurred during cleanup"
-msgstr ""
+msgstr "クリーンアップ処理中にエラーが発生しました"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.js:26
 msgid "Confirm Deletion"
-msgstr ""
+msgstr "削除の確認"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:31
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
 msgid "Error scheduling job in Taskomatic. Please check the logs."
 msgstr ""
+"Taskomatic でのジョブスケジュール時にエラーが発生しました。ログをご確認くださ"
+"い。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
 msgid "Could not determine system default channel."
-msgstr ""
+msgstr "システムのデフォルトのチャンネルを判別できませんでした。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
 msgid "Channel change is invalid."
-msgstr ""
+msgstr "チャンネル変更が正しくありません。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
 msgid "Selected base is not compatible with system."
-msgstr ""
+msgstr "選択したベースはシステムとの互換性がありません。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
 msgid "No base channel change found."
-msgstr ""
+msgstr "ベースチャンネルの変更は見つかりませんでした。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:39
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:193
@@ -3992,16 +4033,16 @@ msgstr "サブスクライブする"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
 msgid "Unsubsribe"
-msgstr ""
+msgstr "サブスクライブ解除"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:140
 msgid "System Default Base Channel"
-msgstr ""
+msgstr "システムのデフォルトベースチャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:144
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
-msgstr ""
+msgstr "ベースチャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:148
 msgid ""
@@ -4011,58 +4052,66 @@ msgid ""
 "version and processor type. Systems will be unsubscribed from all channels, "
 "and subscribed to their new base channels. "
 msgstr ""
+"チャンネル管理者は、お使いのシステムがサブスクライブするベースチャンネルを変"
+"更することができます。設定可能なチャンネルは組織内で作成したチャンネルか、も"
+"しくはお使いのオペレーティングシステムのバージョンとプロセッサタイプに適合す"
+"る既定の SUSE ベースチャンネルを指定することができます。システムは全てのチャ"
+"ンネルに対するサブスクライブを解除して、新しいベースチャンネルをサブスクライ"
+"ブします。 "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:150
 msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
 msgstr ""
+"この操作を実行すると、システムに対して提供されるパッケージやパッチが劇的に変"
+"化します。注意してお使いください。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:165
 msgid "Current base Channel"
-msgstr ""
+msgstr "現在のベースチャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:172
 msgid "Systems"
-msgstr ""
+msgstr "システム"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:180
 msgid "Desired base Channel"
-msgstr ""
+msgstr "必要なベースチャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:196
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
 msgid "SUSE Channels"
-msgstr ""
+msgstr "SUSE チャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:202
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
-msgstr ""
+msgstr "カスタムチャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:214
 msgid "Systems subscribed to"
-msgstr ""
+msgstr "サブスクライブするシステム"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:388
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:565
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:578
 msgid "(Couldn't determine new base channel)"
-msgstr ""
+msgstr "(新しいベースチャンネルを判別できませんでした)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:404
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:588
 msgid "system(s) to subscribe"
-msgstr ""
+msgstr "サブスクライブするシステム"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:412
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:595
 msgid "system(s) incompatible"
-msgstr ""
+msgstr "非互換のシステム"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:445
 msgid "No change"
-msgstr ""
+msgstr "変更無し"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:459
 msgid "Unsubscribe"
@@ -4070,17 +4119,21 @@ msgstr "サブスクライブの中止"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:475
 msgid "Below is a list of channels in your organization. "
-msgstr ""
+msgstr "下記はお使いの組織におけるチャンネルの一覧です。 "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:477
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
+"チャンネルに対して何も変更したくない場合は、 そのチャンネルに対して \"何もし"
+"ない\" を選択してください。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
 msgstr ""
+"選択したシステムをチャンネルにサブスクライブさせるには、そのチャンネルに対し"
+"て \"サブスクライブする\" を選択してください。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
 msgid ""
@@ -4093,48 +4146,49 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:486
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:633
 msgid "Systems to subscribe to"
-msgstr ""
+msgstr "サブスクライブするシステム"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:573
 msgid "(None)"
-msgstr ""
+msgstr "(なし)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:580
 msgid " (system default)"
-msgstr ""
+msgstr " (システムのデフォルト)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:618
 msgid "Channel Changes Overview"
-msgstr ""
+msgstr "チャンネル変更の概要"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:661
 msgid "Channel Changes Actions"
-msgstr ""
+msgstr "チャンネル変更の動作"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:686
 msgid "Scheduled"
-msgstr ""
+msgstr "スケジュール済み"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:688
 msgid "Unknown error. Could not schedule channel change"
 msgstr ""
+"不明なエラーが発生しました。チャンネル変更をスケジュールできませんでした"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:818
 msgid "Some changes scheduled successfully."
-msgstr ""
+msgstr "いくつかの変更をスケジュールしました。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:945
 msgid "Channel changes scheduled."
-msgstr ""
+msgstr "チャンネル変更をスケジュールしました。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
 msgid "(none, disable service)"
-msgstr ""
+msgstr "(なし、サービスを無効にする)"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
 msgid "Changing the channels has been "
-msgstr ""
+msgstr "チャンネル変更を "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
 msgid ""
@@ -4161,56 +4215,56 @@ msgstr ""
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
 msgid "No child channels available."
-msgstr ""
+msgstr "利用可能な子チャンネルがありません。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
 msgid "Confirm Software Channel Change"
-msgstr ""
+msgstr "ソフトウェアチャンネルの変更確認"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:49
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
-msgstr ""
+msgstr "この仮想ホストマネージャに対するデータの更新を要求しました。"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:65
 msgid "Properties"
-msgstr ""
+msgstr "プロパティ"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:69
 msgid "Nodes"
-msgstr ""
+msgstr "ノード"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:85
 msgid "OS"
-msgstr ""
+msgstr "OS"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:91
 msgid "CPU Arch"
-msgstr ""
+msgstr "CPU アーキテクチャ"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:97
 msgid "CPU Sockets"
-msgstr ""
+msgstr "CPU ソケット"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:103
 msgid "RAM (Mb)"
-msgstr ""
+msgstr "メモリ (Mb)"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:118
 msgid "Refresh Data"
-msgstr ""
+msgstr "データの更新"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:120
 msgid "Refresh data from this Virtual Host Manager"
-msgstr ""
+msgstr "この仮想ホストマネージャからのデータを更新"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:140
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:91
 msgid "Delete Virtual Host Manager"
-msgstr ""
+msgstr "仮想ホストマネージャの削除"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
 msgid "Are you sure you want to delete this virtual host manager?"
-msgstr ""
+msgstr "この仮想ホストマネージャを削除してよろしいですか？"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
@@ -4221,230 +4275,230 @@ msgstr "組織"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:48
 msgid "Gatherer module"
-msgstr ""
+msgstr "収集モジュール"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:246
 msgid "Current Context"
-msgstr ""
+msgstr "現在のコンテキスト"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:258
 msgid "Kubeconfig file"
-msgstr ""
+msgstr "Kubeconfig ファイル"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
 msgid "File-based"
-msgstr ""
+msgstr "ファイルベース"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:20
 msgid "VMWare-based"
-msgstr ""
+msgstr "VMware ベース"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:21
 msgid "Kubernetes Cluster"
-msgstr ""
+msgstr "Kubernetes クラスタ"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:22
 msgid "Amazon EC2"
-msgstr ""
+msgstr "Amazon EC2"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:23
 msgid "Google Compute Engine"
-msgstr ""
+msgstr "Google Compute Engine"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:24
 msgid "Azure"
-msgstr ""
+msgstr "Azure"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:25
 msgid "Nutanix AHV"
-msgstr ""
+msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Virtual Host Manager"
-msgstr ""
+msgstr "仮想ホストマネージャ"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Add a {0}"
-msgstr ""
+msgstr "{0} を追加"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
 msgid "Virtual Host Managers"
-msgstr ""
+msgstr "仮想ホストマネージャ"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
 msgid "Add a virtual host manager"
-msgstr ""
+msgstr "仮想ホストマネージャの追加"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
 msgid "No Virtual Host Managers."
-msgstr ""
+msgstr "仮想ホストマネージャがありません。"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:175
 msgid "Toggle full size"
-msgstr ""
+msgstr "フルサイズの切り替え"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
 msgid "Something went wrong, connection is closed"
-msgstr ""
+msgstr "何らかの問題が発生しています。接続が閉じられました"
 
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:84
 msgid "Create Virtual Machine"
-msgstr ""
+msgstr "仮想マシンの作成"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:125
 #: ../html/src/manager/virtualization/pools/pool-properties.js:241
 msgid "Can not contain the following characters: /\\"
-msgstr ""
+msgstr "下記の文字を含めることはできません: /\\"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 msgid "Hypervisor"
-msgstr ""
+msgstr "ハイパーバイザ"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:151
 msgid "Virtual Machine Type"
-msgstr ""
+msgstr "仮想マシンのタイプ"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:163
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
-msgstr ""
+msgstr "最大メモリ (MiB)"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:165
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:174
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
-msgstr ""
+msgstr "正の整数を指定する必要があります"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:172
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
-msgstr ""
+msgstr "仮想 CPU 数"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:204
 msgid "Graphics"
-msgstr ""
+msgstr "グラフィック"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:24
 msgid "Start / Resume"
-msgstr ""
+msgstr "開始／再開"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:27
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:24
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:259
 msgid "Stop"
-msgstr ""
+msgstr "停止"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:27
 msgid "Force off"
-msgstr ""
+msgstr "強制停止"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:30
 msgid "Reset"
-msgstr ""
+msgstr "リセット"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:33
 msgid "Suspend"
-msgstr ""
+msgstr "一時停止"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Hosted Virtual Systems"
-msgstr ""
+msgstr "ホストされている仮想システム"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:49
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
-msgstr ""
+msgstr "これはこのホストで実行するよう設定されている仮想化ゲストの一覧です。"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:63
 msgid "Guest"
-msgstr ""
+msgstr "ゲスト"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:72
 msgid "Unregistered System"
-msgstr ""
+msgstr "未登録のシステム"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:101
 msgid "Current Memory"
-msgstr ""
+msgstr "現在のメモリ"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:107
 msgid "vCPUs"
-msgstr ""
+msgstr "vCPU"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:113
 msgid "Base Software Channel"
-msgstr ""
+msgstr "ベースソフトウェアチャンネル"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:138
 msgid "paused"
-msgstr ""
+msgstr "一時停止済み"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:147
 msgid "Graphical Console"
-msgstr ""
+msgstr "グラフィカルコンソール"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:56
 msgid "Device type"
-msgstr ""
+msgstr "デバイスのタイプ"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:63
 msgid "Disk"
-msgstr ""
+msgstr "ディスク"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:64
 msgid "CDROM"
-msgstr ""
+msgstr "CDROM"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:65
 msgid "Floppy"
-msgstr ""
+msgstr "フロッピィ"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:78
 msgid "Bus"
-msgstr ""
+msgstr "バス"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:28
 msgid "File"
-msgstr ""
+msgstr "ファイル"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:119
 #: ../html/src/manager/virtualization/pools/pool-properties.js:503
 msgid "Format"
-msgstr ""
+msgstr "フォーマット"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
 msgid "Disks"
-msgstr ""
+msgstr "ディスク"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:65
 msgid "Source storage pool"
-msgstr ""
+msgstr "ソースストレージプール"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:80
 msgid "Source Volume"
-msgstr ""
+msgstr "ソースボリューム"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:101
 msgid "Disk size (GiB)"
-msgstr ""
+msgstr "ディスクサイズ (GiB)"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:109
 msgid "Source template image URL"
-msgstr ""
+msgstr "ソーステンプレートのイメージ URL"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:37
 msgid "Network"
-msgstr ""
+msgstr "ネットワーク"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:53
 msgid "MAC address"
-msgstr ""
+msgstr "MAC アドレス"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:54
 msgid "Leave blank to generate a MAC address"
-msgstr ""
+msgstr "MAC アドレスを生成する場合は何も入力しないでください"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:86
 msgid "Networks"
@@ -4453,89 +4507,91 @@ msgstr "ネットワーク"
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
 #: ../html/src/manager/virtualization/pools/pool-properties.js:608
 msgid "Clear Fields"
-msgstr ""
+msgstr "項目の消去"
 
 #: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
-msgstr ""
+msgstr "libvirt python モジュールをインストールしてください。"
 
 #: ../html/src/manager/virtualization/ListTab.js:142
 msgid "{0} selected"
-msgstr ""
+msgstr "{0} 個を選択しました"
 
 #: ../html/src/manager/virtualization/ListTab.js:238
 msgid "Action Status"
-msgstr ""
+msgstr "動作の状態"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:38
 msgid "Virtual Networks"
-msgstr ""
+msgstr "仮想ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:39
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
-msgstr ""
+msgstr "これはこのホスト内に設定されている仮想ネットワークの一覧です。"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:61
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:336
 msgid "Autostart"
-msgstr ""
+msgstr "自動起動"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:69
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:337
 msgid "Persistent"
-msgstr ""
+msgstr "恒久"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:78
 msgid "Bridge"
-msgstr ""
+msgstr "ブリッジ"
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
-msgstr ""
+msgstr "仮想ストレージプールの作成"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Delete the pool, including the contained volumes. "
-msgstr ""
+msgstr "含まれているボリュームを含めてプールを削除します。 "
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Cannot be undone"
-msgstr ""
+msgstr "取り消しできません"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Edit Pool"
-msgstr ""
+msgstr "プールの編集"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:338
 msgid "Location"
-msgstr ""
+msgstr "場所"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:339
 msgid "Usage"
-msgstr ""
+msgstr "使用"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:349
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:350
 msgid "Create Pool"
-msgstr ""
+msgstr "プールの作成"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:356
 msgid "Virtual Storage Pools and Volumes"
-msgstr ""
+msgstr "仮想ストレージプールとボリューム"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:357
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr ""
+"これはこのホストにおいて仮想ゲストディスクを含んでいるストレージプールの一覧"
+"です。"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:368
 msgid "Filter by pool or volume name"
-msgstr ""
+msgstr "プールまたはボリューム名でフィルタ"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:175
 msgid "Partition separator"
-msgstr ""
+msgstr "パーティションの区切り"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:182
 msgid "No"
@@ -4543,64 +4599,64 @@ msgstr "いいえ"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:207
 msgid "Host name"
-msgstr ""
+msgstr "ホスト名"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:216
 msgid "Port"
-msgstr ""
+msgstr "ポート"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:250
 msgid "Pool Type"
-msgstr ""
+msgstr "プールタイプ"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:264
 msgid "Start during virtual host boot"
-msgstr ""
+msgstr "仮想ホストの起動時に起動"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:272
 msgid "Source"
-msgstr ""
+msgstr "ソース"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:288
 msgid "Hosts"
-msgstr ""
+msgstr "ホスト"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:320
 msgid "Devices"
-msgstr ""
+msgstr "デバイス"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:353
 msgid "Initiator IQN"
-msgstr ""
+msgstr "イニシエータの IQN"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:364
 msgid "Adapter type"
-msgstr ""
+msgstr "アダプタのタイプ"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:394
 msgid "Adapter name"
-msgstr ""
+msgstr "アダプタ名"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "Adapter parent PCI address"
-msgstr ""
+msgstr "アダプタの親 PCI アドレス"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:407
 #: ../html/src/manager/virtualization/pools/pool-properties.js:418
 msgid "PCI address formatted like 0000:00:00.0"
-msgstr ""
+msgstr "PCI アドレスは 0000:00:00.0 のような形式で指定します"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:414
 msgid "Adapter parent address unique ID"
-msgstr ""
+msgstr "アダプタの親アドレスのユニーク ID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:425
 msgid "Adapter parent name"
-msgstr ""
+msgstr "アダプタの親の名前"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:433
 msgid "Adapter parent wwnn"
-msgstr ""
+msgstr "アダプタの親 wwnn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:436
 #: ../html/src/manager/virtualization/pools/pool-properties.js:446
@@ -4608,35 +4664,35 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/pool-properties.js:467
 #: ../html/src/manager/virtualization/pools/pool-properties.js:478
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr ""
+msgstr "16 文字の長さの 16 進数です。例: 500277a4100c4e21"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:443
 msgid "Adapter parent wwpn"
-msgstr ""
+msgstr "アダプタの親 wwpn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:453
 msgid "Adapter parent fabric wwn"
-msgstr ""
+msgstr "アダプタの親ファブリック wwn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "Adapter wwnn"
-msgstr ""
+msgstr "アダプタの wwnn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:474
 msgid "Adapter wwpn"
-msgstr ""
+msgstr "アダプタの wwpn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:485
 msgid "Manage vHBA deletion"
-msgstr ""
+msgstr "管理している vHBA の削除"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:494
 msgid "Source name"
-msgstr ""
+msgstr "ソース名"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:523
 msgid "Passphrase"
-msgstr ""
+msgstr "パスフレーズ"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:535
 msgid "Target"
@@ -4661,128 +4717,129 @@ msgstr "GID は数値です"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:564
 msgid "Permission mode"
-msgstr ""
+msgstr "パーミッションモード"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:565
 msgid "target directory permissions in octal form, like 0775"
-msgstr ""
+msgstr "ターゲットディレクトリのパーミッション (8進数 (例: 0775))"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:574
 msgid "SELinux label"
-msgstr ""
+msgstr "SELinux ラベル"
 
 #: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr ""
+"サーバからストレージプールの機能を取得できませんでした。再試行してください。"
 
 #: ../html/src/manager/visualization/data-tree.js:167
 msgid "Add/remove system from SSM"
-msgstr ""
+msgstr "SSM からシステムを追加／削除"
 
 #: ../html/src/manager/visualization/data-tree.js:201
 msgid "  security advisories"
-msgstr ""
+msgstr "  セキュリティアドバイザリ"
 
 #: ../html/src/manager/visualization/data-tree.js:207
 msgid "  bug fix advisories"
-msgstr ""
+msgstr "  バグ修正アドバイザリ"
 
 #: ../html/src/manager/visualization/data-tree.js:214
 msgid "  product enhancement advisories"
-msgstr ""
+msgstr "  製品の機能拡張アドバイザリ"
 
 #: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
-msgstr ""
+msgstr "SSM に子を追加"
 
 #: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
-msgstr ""
+msgstr "フィルタリング"
 
 #: ../html/src/manager/visualization/hierarchy.js:63
 msgid "Partitioning"
-msgstr ""
+msgstr "パーティション設定"
 
 #: ../html/src/manager/visualization/hierarchy.js:84
 msgid "Show systems with:"
-msgstr ""
+msgstr "下記のシステムを表示:"
 
 #: ../html/src/manager/visualization/hierarchy.js:109
 msgid "security advisories"
-msgstr ""
+msgstr "セキュリティアドバイザリ"
 
 #: ../html/src/manager/visualization/hierarchy.js:110
 msgid "bug fix advisories"
-msgstr ""
+msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/visualization/hierarchy.js:111
 msgid "product enhancement advisories"
-msgstr ""
+msgstr "製品の機能拡張アドバイザリ"
 
 #. System name filter
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "Filter by system name"
-msgstr ""
+msgstr "システム名でフィルタ"
 
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "e.g., client.nue.sles"
-msgstr ""
+msgstr "例: client.nue.sles"
 
 #. Base channel filter
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "Filter by system base channel"
-msgstr ""
+msgstr "システムのベースチャンネルでフィルタ"
 
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
-msgstr ""
+msgstr "例: SLE12"
 
 #. Installed products filter
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "Filter by system installed products"
-msgstr ""
+msgstr "システムにインストールされている製品でフィルタ"
 
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
-msgstr ""
+msgstr "例: SLES"
 
 #: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
-msgstr ""
+msgstr "パッチがあるかどうかに基づいてシステムのパーティションを設定する:"
 
 #: ../html/src/manager/visualization/hierarchy.js:204
 msgid "There was an error fetching data from the server."
-msgstr ""
+msgstr "サーバからデータを取り出す際にエラーが発生しました。"
 
 #: ../html/src/manager/visualization/hierarchy.js:240
 msgid " filters"
-msgstr ""
+msgstr " フィルタ"
 
 #: ../html/src/manager/visualization/ui/components.js:42
 msgid "Partition systems by given check-in time:"
-msgstr ""
+msgstr "指定したチェックイン名でシステムのパーティションを設定する:"
 
 #: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
-msgstr ""
+msgstr "グループレベルの追加"
 
 #: ../html/src/manager/visualization/ui/components.js:187
 msgid "Select a system group"
-msgstr ""
+msgstr "システムグループの選択"
 
 #: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
-msgstr ""
+msgstr "グループに分割"
 
 #: ../html/src/utils/network.js:55
 msgid "Session expired, please reload the page."
-msgstr ""
+msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
 
 #: ../html/src/utils/network.js:59
 msgid "Resource not found."
-msgstr ""
+msgstr "リソースが見つかりませんでした。"
 
 #: ../html/src/utils/network.js:63
 msgid "HTTP Error code "
-msgstr ""
+msgstr "HTTP エラーコード "

@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-09-26 01:48+0000\n"
+"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"PO-Revision-Date: 2020-10-02 13:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools/ja/>\n"
@@ -1296,9 +1296,8 @@ msgid "Error: Server Unavailable. Please try later."
 msgstr "エラー: サーバーは利用できません。後で試して下さい。"
 
 #: ../src/up2date_client/rpcServer.py:182
-#, fuzzy
 msgid "ERROR: can not find server CA file"
-msgstr "エラー: {PRODUCT_NAME} CA ファイルが見つかりません"
+msgstr "エラー: サーバ CA ファイルが見つかりません"
 
 #: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
@@ -1428,14 +1427,13 @@ msgid "Error validating data at server:\n"
 msgstr "サーバでデータを確認中にエラー:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:193
-#, fuzzy
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 "\n"
-"Red Hat Network Classic は {PRODUCT_NAME} ではサポートされていません。\n"
+"Red Hat Network Classic はサポートされていません。\n"
 "    "
 
 #: ../src/up2date_client/up2dateErrors.py:199
@@ -1451,7 +1449,6 @@ msgid "Network error: "
 msgstr "ネットワークエラー: "
 
 #: ../src/up2date_client/up2dateErrors.py:297
-#, fuzzy
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1471,12 +1468,12 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 "\n"
-"    ユーザーの組織は {PRODUCT_NAME} にこのシステムを登録する為に十分な マネジ"
-"メントエンタイトルメントを\n"
+"    ご利用の組織には、このシステムを登録するのに必要な Management エンタイト"
+"ルメントを\n"
 "    所持していません。このエラーについて組織の管理者に報告して下さい。 組織が"
 "既存の\n"
-"    エンタイトルメントを開放するか、又は追加のエンタイトルメントを 購入した後"
-"に\n"
+"    エンタイトルメントを開放するか、もしくは追加のエンタイトルメントを 購入す"
+"ることで、\n"
 "    このシステムが登録可能になります。追加のエンタイトルメントは、組織管理者"
 "が\n"
 "    SUSE Customer Center にアクセスすることによって購入できます。\n"

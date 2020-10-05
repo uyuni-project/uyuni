@@ -653,14 +653,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>休止中</target>
+        <target>無効</target>
       </trans-unit>
       <trans-unit id="Active" xml:space="preserve">
         <source>Active</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>アクティブ</target>
+        <target>有効</target>
       </trans-unit>
       <trans-unit id="IP Ranges" xml:space="preserve">
         <source>IP Ranges</source>
@@ -1452,7 +1452,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
-        <target>このユーザーには読み取り専用の API アクセスがあります。WebUI ログインが拒否されました。</target>
+        <target>このユーザーには読み取り専用の API アクセスしか提供されていません。 WebUI ログインが拒否されました。</target>
       </trans-unit>
       <trans-unit id="error.org_already_taken" xml:space="preserve">
         <source>That organization name is already taken; please choose another.</source>
@@ -7925,7 +7925,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>スタート</target>
+        <target>開始</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.suspend" xml:space="preserve">
         <source>Suspend</source>
@@ -8097,7 +8097,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="virt.start" xml:space="preserve">
         <source>Start</source>
-        <target>スタート</target>
+        <target>開始</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
