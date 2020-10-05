@@ -418,7 +418,18 @@ public class SystemManager extends BaseManager {
      * @return Returns a list of packages for a system
      */
     public static DataResult<Map<String, Object>> installedPackages(Long sid) {
-        SelectMode m = ModeFactory.getMode("System_queries", "system_installed_packages", Map.class);
+        return installedPackages(sid, false);
+    }
+
+    /**
+     * Gets the installed packages on a system
+     * @param sid The system in question
+     * @return Returns a list of packages for a system
+     */
+    public static DataResult<Map<String, Object>> installedPackages(Long sid, boolean archAsLabel) {
+        String suffix = archAsLabel ? "_arch_as_label" : "";
+        String query = "system_installed_packages" + suffix;
+        SelectMode m = ModeFactory.getMode("System_queries", query, Map.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
         DataResult<Map<String, Object>> pkgs = m.execute(params);
