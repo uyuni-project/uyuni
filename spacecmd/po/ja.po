@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-24 17:29+0200\n"
-"PO-Revision-Date: 2020-10-04 08:49+0000\n"
+"PO-Revision-Date: 2020-10-05 04:49+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -2956,89 +2956,90 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:2271
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
-msgstr ""
+msgstr "全てのキックスタートプロファイルを %s にエクスポートしています"
 
 #: ../src/spacecmd/kickstart.py:2279
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
 msgstr ""
+"エラーが発生しました。正しいキックスタートプロファイルを指定していません。 spacecmd kickstart_list コマンドで名前をご確認ください"
 
 #: ../src/spacecmd/kickstart.py:2299
 #, python-format
 msgid "Exporting ks %s to %s"
-msgstr ""
+msgstr "ks %s を %s にエクスポートしています"
 
 #: ../src/spacecmd/kickstart.py:2306
 #, python-format
 msgid "File %s exists, "
-msgstr ""
+msgstr "ファイル %s は存在しています。 "
 
 #: ../src/spacecmd/kickstart.py:2307
 msgid "confirm overwrite file? (y/n)"
-msgstr ""
+msgstr "上書きしてよろしいですか？ (y/n)"
 
 #: ../src/spacecmd/kickstart.py:2310
 msgid "Error saving exported kickstart profiles to file"
-msgstr ""
+msgstr "エクスポートしたキックスタートプロファイルをファイルに保存する際にエラーが発生しました"
 
 #: ../src/spacecmd/kickstart.py:2320
 msgid "kickstart_import: import kickstart profile(s) from json file"
-msgstr ""
+msgstr "kickstart_import: JSON ファイルからキックスタートプロファイルをインポートする"
 
 #: ../src/spacecmd/kickstart.py:2321
 msgid "usage: kickstart_import <JSONFILES...>"
-msgstr ""
+msgstr "使用方法: kickstart_import <JSON_ファイル...>"
 
 #: ../src/spacecmd/kickstart.py:2342
 #, python-format
 msgid "Error importing kickstart %s"
-msgstr ""
+msgstr "キックスタート %s をインポートする際にエラーが発生しました"
 
 #: ../src/spacecmd/kickstart.py:2355
 #, python-format
 msgid "ERROR : kickstart profile %s already exists! Skipping!"
-msgstr ""
+msgstr "エラー:キックスタートプロファイル %s は既に存在しています。読み飛ばしています！"
 
 #. create the ks, we need to drop the org prefix from the ks name
 #: ../src/spacecmd/kickstart.py:2359
 #, python-format
 msgid "Found ks %s"
-msgstr ""
+msgstr "ks %s が見つかりました"
 
 #: ../src/spacecmd/kickstart.py:2415
 #, python-format
 msgid "Error adding %s script"
-msgstr ""
+msgstr "%s スクリプトの追加時にエラーが発生しました"
 
 #: ../src/spacecmd/kickstart.py:2423
 #, python-format
 msgid "failed to add ip range %s-%s, continuing"
-msgstr ""
+msgstr "IP 範囲 %s-%s を追加する処理が失敗しました。続行しています"
 
 #: ../src/spacecmd/kickstart.py:2437
 #, python-format
 msgid "failed to add file preservation %s, skipping"
-msgstr ""
+msgstr "ファイル保持 %s の追加に失敗しました。読み飛ばしています"
 
 #: ../src/spacecmd/kickstart.py:2439
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
-msgstr ""
+msgstr "ファイル保持リスト %s は存在していません。読み飛ばしています"
 
 #: ../src/spacecmd/kickstart.py:2450
 #, python-format
 msgid "Actvationkey %s does not exist on the "
-msgstr ""
+msgstr "アクティベーションキー %s が "
 
 #: ../src/spacecmd/kickstart.py:2461
 #, python-format
 msgid "GPG/SSL key %s does not exist on the "
-msgstr ""
+msgstr "GPG/SSL 鍵 %s が "
 
 #: ../src/spacecmd/kickstart.py:2462
 msgid "satellite, skipping"
-msgstr ""
+msgstr "satellite にありません。読み飛ばしています"
 
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
@@ -3048,70 +3049,71 @@ msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
 msgstr ""
+"API ではいくつかの設定が省略されているため、インポートできない設定があります。インポートされた内容をご確認のうえ、必要であれば調整してください"
 
 #: ../src/spacecmd/kickstart.py:2473
 msgid " * Details->Preserve ks.cfg"
-msgstr ""
+msgstr " * 詳細->ks.cfg を保持"
 
 #: ../src/spacecmd/kickstart.py:2474
 msgid " * Details->Comment"
-msgstr ""
+msgstr " * 詳細->コメント"
 
 #: ../src/spacecmd/kickstart.py:2478
 msgid " * Details->Organization Default Profile"
-msgstr ""
+msgstr " * 詳細->企業／組織のデフォルトプロファイル"
 
 #. No way to set the kernel options
 #: ../src/spacecmd/kickstart.py:2480
 msgid " * Details->Kernel Options"
-msgstr ""
+msgstr " * 詳細->カーネルオプション"
 
 #: ../src/spacecmd/kickstart.py:2484
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
-msgstr ""
+msgstr " * 詳細->カーネルの後のオプション : %s"
 
 #: ../src/spacecmd/kickstart.py:2500
 msgid "no kickstart label given"
-msgstr ""
+msgstr "キックスタートラベルが指定されていません"
 
 #: ../src/spacecmd/kickstart.py:2503
 msgid "invalid kickstart label "
-msgstr ""
+msgstr "キックスタートラベルが正しくありません "
 
 #: ../src/spacecmd/kickstart.py:2520
 msgid "kickstart_diff: diff kickstart files"
-msgstr ""
+msgstr "kickstart_diff: キックスタートファイルの差分を抽出"
 
 #: ../src/spacecmd/kickstart.py:2522
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "使用方法: kickstart_diff 比較元チャンネル 比較先チャンネル"
 
 #: ../src/spacecmd/kickstart.py:2571
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
-msgstr ""
+msgstr "kickstart_getupdatetype: キックスタートプロファイルの更新タイプを取得"
 
 #: ../src/spacecmd/kickstart.py:2572
 msgid "usage: kickstart_getupdatetype PROFILE"
-msgstr ""
+msgstr "使用方法: kickstart_getupdatetype プロファイル"
 
 #: ../src/spacecmd/kickstart.py:2573
 msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
-msgstr ""
+msgstr "使用方法: kickstart_getupdatetype プロファイル_1 プロファイル_2"
 
 #: ../src/spacecmd/kickstart.py:2574
 msgid "usage: kickstart_getupdatetype \"PROF*\""
-msgstr ""
+msgstr "使用方法: kickstart_getupdatetype \"PROF*\""
 
 #: ../src/spacecmd/kickstart.py:2603 ../src/spacecmd/kickstart.py:2659
 #: ../src/spacecmd/kickstart.py:2701
 #, python-format
 msgid "kickstart label %s doesn't exist!"
-msgstr ""
+msgstr "キックスタートラベル %s が存在しません！"
 
 #: ../src/spacecmd/kickstart.py:2619
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
-msgstr ""
+msgstr "kickstart_setupdatetype: キックスタートプロファイルの更新タイプを設定"
 
 #: ../src/spacecmd/kickstart.py:2620
 msgid ""
@@ -3120,74 +3122,79 @@ msgid ""
 "options:\n"
 "    -u UPDATE_TYPE ['red_hat', 'all', 'none']"
 msgstr ""
+"使用方法: kickstart_setupdatetype [オプション] キックスタートラベル)\n"
+"\n"
+"オプション:\n"
+"    -u (更新タイプ) ['red_hat', 'all', 'none']"
 
 #: ../src/spacecmd/kickstart.py:2634
 msgid "Update Types"
-msgstr ""
+msgstr "更新タイプ"
 
 #: ../src/spacecmd/kickstart.py:2639
 msgid "Update Type [none]:"
-msgstr ""
+msgstr "更新タイプ [none]:"
 
 #: ../src/spacecmd/kickstart.py:2670
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
-msgstr ""
+msgstr "kickstart_getsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を取得"
 
 #: ../src/spacecmd/kickstart.py:2671
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
-msgstr ""
+msgstr "使用方法: kickstart_getsoftwaredetails キックスタートラベル"
 
 #: ../src/spacecmd/kickstart.py:2672
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
-msgstr ""
+msgstr "使用方法: kickstart_getsoftwaredetails キックスタートラベル_1 キックスタートラベル_2 ..."
 
 #: ../src/spacecmd/kickstart.py:2707
 #, python-format
 msgid "noBase:        %s"
-msgstr ""
+msgstr "ベース無し:        %s"
 
 #: ../src/spacecmd/kickstart.py:2708
 #, python-format
 msgid "ignoreMissing: %s"
-msgstr ""
+msgstr "存在しないものを無視: %s"
 
 #: ../src/spacecmd/kickstart.py:2710
 #, python-format
 msgid "Kickstart Label: %s"
-msgstr ""
+msgstr "キックスタートラベル: %s"
 
 #: ../src/spacecmd/kickstart.py:2711
 #, python-format
 msgid "noBase:          %s"
-msgstr ""
+msgstr "ベース無し:          %s"
 
 #: ../src/spacecmd/kickstart.py:2712
 #, python-format
 msgid "ignoreMissing:   %s"
-msgstr ""
+msgstr "存在しないものを無視:   %s"
 
 #: ../src/spacecmd/kickstart.py:2721
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
-msgstr ""
+msgstr "kickstart_setsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を設定。"
 
 #: ../src/spacecmd/kickstart.py:2722
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
-msgstr ""
+msgstr "使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ情報 値"
 
 #: ../src/spacecmd/kickstart.py:2723
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
+"使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ情報 値 キックスタートパッケージ情報 値"
 
 #: ../src/spacecmd/kickstart.py:2757
 msgid "Selected profile does not exist"
-msgstr ""
+msgstr "選択したプロファイルは存在しません"
 
 #: ../src/spacecmd/kickstart.py:2760 ../src/spacecmd/kickstart.py:2765
 msgid "Enter valid input"
-msgstr ""
+msgstr "正しい入力を行なってください"
 
 #. list of system selection options for the help output
 #: ../src/spacecmd/misc.py:57
@@ -3199,6 +3206,12 @@ msgid ""
 "group:GROUP\n"
 "channel:CHANNEL\n"
 msgstr ""
+"<システム> は下記のいずれかを指定できます:\n"
+"name\n"
+"ssm ('help ssm' を参照)\n"
+"search:QUERY ('help system_search' を参照)\n"
+"group:GROUP\n"
+"channel:CHANNEL\n"
 
 #: ../src/spacecmd/misc.py:65
 msgid ""
@@ -3220,240 +3233,256 @@ msgid ""
 "h -> hours\n"
 "d -> days\n"
 msgstr ""
+"日付は下記のいずれかを指定できます:\n"
+"明示的な日付指定:\n"
+"YYYYMMDD[HHMMSS] の書式で日付を明示的に指定することができます。\n"
+"年・月・日はいずれも必須ですが、時・分・秒は任意です。時刻を指定しない場合は\n"
+"0000が指定されたものとみなされます。\n"
+"\n"
+"差分:\n"
+"日付を差分形式で指定することもできます。たとえば '2h' と指定すると、\n"
+"今から 2 時間後を表わすことになります。過去を表わす場合はマイナスの\n"
+"値を指定してください (例: \"-7d\" = 1 週間前) 。\n"
+"\n"
+"単位:\n"
+"s -> 秒\n"
+"m -> 分\n"
+"h -> 時\n"
+"d -> 日\n"
 
 #: ../src/spacecmd/misc.py:120
 msgid "clear: clear the screen"
-msgstr ""
+msgstr "clear: 画面を消去"
 
 #: ../src/spacecmd/misc.py:121
 msgid "usage: clear"
-msgstr ""
+msgstr "使用方法: clear"
 
 #: ../src/spacecmd/misc.py:132
 msgid "clear_caches: Clear the internal caches kept for systems and packages"
-msgstr ""
+msgstr "clear_caches: システムやパッケージ用に確保した内部キャッシュを消去"
 
 #: ../src/spacecmd/misc.py:133
 msgid "usage: clear_caches"
-msgstr ""
+msgstr "使用方法: clear_caches"
 
 #: ../src/spacecmd/misc.py:146
 msgid "get_apiversion: Display the API version of the server"
-msgstr ""
+msgstr "get_apiversion: サーバの API バージョンを表示"
 
 #: ../src/spacecmd/misc.py:147
 msgid "usage: get_apiversion"
-msgstr ""
+msgstr "使用方法: get_apiversion"
 
 #: ../src/spacecmd/misc.py:158
 msgid "get_serverversion: Display the version of the server"
-msgstr ""
+msgstr "get_serverversion: サーバのバージョンを表示"
 
 #: ../src/spacecmd/misc.py:159
 msgid "usage: get_serverversion"
-msgstr ""
+msgstr "使用方法: get_serverversion"
 
 #: ../src/spacecmd/misc.py:171
 msgid "list_proxies: List the proxies within the user's organization "
-msgstr ""
+msgstr "list_proxies: ユーザの組織内にあるプロキシの一覧を表示 "
 
 #: ../src/spacecmd/misc.py:172
 msgid "usage: list_proxies"
-msgstr ""
+msgstr "使用方法: list_proxies"
 
 #: ../src/spacecmd/misc.py:184
 msgid "get_session: Show the current session string"
-msgstr ""
+msgstr "get_session: 現在のセッション文字列を表示"
 
 #: ../src/spacecmd/misc.py:185
 msgid "usage: get_session"
-msgstr ""
+msgstr "使用方法: get_session"
 
 #: ../src/spacecmd/misc.py:193
 msgid "No session found"
-msgstr ""
+msgstr "セッションが見つかりませんでした"
 
 #: ../src/spacecmd/misc.py:200
 msgid "help: Show help for the given command"
-msgstr ""
+msgstr "help: 指定したコマンドに対するヘルプを表示"
 
 #: ../src/spacecmd/misc.py:201
 msgid "usage: help COMMAND"
-msgstr ""
+msgstr "使用方法: help コマンド"
 
 #: ../src/spacecmd/misc.py:207
 msgid "history: List your command history"
-msgstr ""
+msgstr "history: コマンドの履歴を表示"
 
 #: ../src/spacecmd/misc.py:208
 msgid "usage: history"
-msgstr ""
+msgstr "使用方法: history"
 
 #: ../src/spacecmd/misc.py:220
 msgid "toggle_confirmations: Toggle confirmation messages on/off"
-msgstr ""
+msgstr "toggle_confirmations: 確認メッセージの有効／無効を切り替え"
 
 #: ../src/spacecmd/misc.py:221
 msgid "usage: toggle_confirmations"
-msgstr ""
+msgstr "使用方法: toggle_confirmations"
 
 #: ../src/spacecmd/misc.py:226
 msgid "Confirmation messages are"
-msgstr ""
+msgstr "確認メッセージは"
 
 #: ../src/spacecmd/misc.py:226
 msgid "enabled"
-msgstr ""
+msgstr "有効化されています"
 
 #: ../src/spacecmd/misc.py:233
 msgid "login: Connect to a Spacewalk server"
-msgstr ""
+msgstr "login: Spacewalk サーバに接続"
 
 #: ../src/spacecmd/misc.py:234
 msgid "usage: login [USERNAME] [SERVER]"
-msgstr ""
+msgstr "使用方法: login [ユーザ名] [サーバ]"
 
 #: ../src/spacecmd/misc.py:244
 msgid "You are already logged in"
-msgstr ""
+msgstr "既にログインしています"
 
 #: ../src/spacecmd/misc.py:256
 msgid "No server specified"
-msgstr ""
+msgstr "サーバを指定していません"
 
 #: ../src/spacecmd/misc.py:301
 #, python-format
 msgid "Failed to connect to %s"
-msgstr ""
+msgstr "%s への接続に失敗しました"
 
 #: ../src/spacecmd/misc.py:309
 #, python-format
 msgid "API (%s) is too old (>= %s required)"
-msgstr ""
+msgstr "API (%s) が古すぎます (>= %s が必要です)"
 
 #: ../src/spacecmd/misc.py:339 ../src/spacecmd/utils.py:249
 #: ../src/spacecmd/utils.py:560
 #, python-format
 msgid "Could not read %s"
-msgstr ""
+msgstr "%s を読み込めませんでした"
 
 #: ../src/spacecmd/misc.py:348
 msgid "Cached credentials are invalid"
-msgstr ""
+msgstr "キャッシュされている資格情報が正しくありません"
 
 #: ../src/spacecmd/misc.py:355
 #, python-format
 msgid "Spacewalk Username: %s"
-msgstr ""
+msgstr "Spacewalk ユーザ名: %s"
 
 #: ../src/spacecmd/misc.py:357
 msgid "Spacewalk Username:"
-msgstr ""
+msgstr "Spacewalk ユーザ名:"
 
 #: ../src/spacecmd/misc.py:368
 msgid "Spacewalk Password: "
-msgstr ""
+msgstr "Spacewalk パスワード: "
 
 #: ../src/spacecmd/misc.py:374
 msgid "Invalid credentials"
-msgstr ""
+msgstr "資格情報が正しくありません"
 
 #: ../src/spacecmd/misc.py:392
 #, python-format
 msgid "Could not write session file: %s"
-msgstr ""
+msgstr "セッションファイルの書き込みができませんでした: %s"
 
 #: ../src/spacecmd/misc.py:401
 #, python-format
 msgid "Connected to %s as %s"
-msgstr ""
+msgstr "%s に %s として接続しました"
 
 #: ../src/spacecmd/misc.py:409
 msgid "logout: Disconnect from the server"
-msgstr ""
+msgstr "logout: サーバから切断"
 
 #: ../src/spacecmd/misc.py:410
 msgid "usage: logout"
-msgstr ""
+msgstr "使用方法: logout"
 
 #: ../src/spacecmd/misc.py:427
 msgid "whoami: Print the name of the currently logged in user"
-msgstr ""
+msgstr "whoami: 現在ログインしているユーザのユーザ名を表示"
 
 #: ../src/spacecmd/misc.py:428
 msgid "usage: whoami"
-msgstr ""
+msgstr "使用方法: whoami"
 
 #: ../src/spacecmd/misc.py:436
 msgid "You are not logged in"
-msgstr ""
+msgstr "ログインしていません"
 
 #: ../src/spacecmd/misc.py:443
 msgid "whoamitalkingto: Print the name of the server"
-msgstr ""
+msgstr "whoamitalkingto: サーバの名前を表示"
 
 #: ../src/spacecmd/misc.py:444
 msgid "usage: whoamitalkingto"
-msgstr ""
+msgstr "使用方法: whoamitalkingto"
 
 #: ../src/spacecmd/misc.py:452
 msgid "Yourself"
-msgstr ""
+msgstr "あなた自身です"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:524
 msgid "** Generating errata cache **"
-msgstr ""
+msgstr "** エラータキャッシュを生成しています **"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:573
 msgid "** Generating package cache **"
-msgstr ""
+msgstr "** パッケージキャッシュを生成しています **"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:680
 msgid "** Generating system cache **"
-msgstr ""
+msgstr "** システムキャッシュを生成しています **"
 
 #: ../src/spacecmd/misc.py:715
 #, python-format
 msgid "Could not create directory %s"
-msgstr ""
+msgstr "ディレクトリ %s を作成できませんでした"
 
 #: ../src/spacecmd/misc.py:787
 #, python-format
 msgid "Can't find system ID for %s"
-msgstr ""
+msgstr "%s に対するシステム ID が見つかりません"
 
 #: ../src/spacecmd/misc.py:792
 msgid "Duplicate system profile names found!"
-msgstr ""
+msgstr "重複したシステムプロファイル名が見つかりました！"
 
 #: ../src/spacecmd/misc.py:793
 msgid "Please reference systems by ID or resolve the"
-msgstr ""
+msgstr "ID でシステムを参照するか、もしくは"
 
 #: ../src/spacecmd/misc.py:794
 msgid "underlying issue with 'system_delete' or 'system_rename'"
-msgstr ""
+msgstr "'system_delete' や 'system_rename' で問題点をご確認ください"
 
 #: ../src/spacecmd/misc.py:860
 #, python-format
 msgid "No systems in group %s"
-msgstr ""
+msgstr "グループ %s 内にはシステムがありません"
 
 #: ../src/spacecmd/misc.py:874
 #, python-format
 msgid "No systems subscribed to %s"
-msgstr ""
+msgstr "%s をサブスクライブしているシステムはありません"
 
 #: ../src/spacecmd/misc.py:934
 msgid "Is this ok [y/N]:"
-msgstr ""
+msgstr "よろしいですか [y/N]:"
 
 #: ../src/spacecmd/org.py:47
 msgid "org_create: Create an organization"
-msgstr ""
+msgstr "org_create: 組織を作成"
 
 #: ../src/spacecmd/org.py:48
 #, python-format
@@ -3470,428 +3499,441 @@ msgid ""
 "  -p PASSWORD\n"
 "  --pam enable PAM authentication"
 msgstr ""
+"使用方法: org_create [オプション])\n"
+"\n"
+"オプション:\n"
+"  -n (組織名)\n"
+"  -u (ユーザ名)\n"
+"  -P (プレフィクス) (%s)\n"
+"  -f (名)\n"
+"  -l (姓)\n"
+"  -e (電子メールアドレス)\n"
+"  -p (パスワード)\n"
+"  --pam PAM 認証を有効にする"
 
 #: ../src/spacecmd/org.py:75
 msgid "Organization Name:"
-msgstr ""
+msgstr "組織名:"
 
 #: ../src/spacecmd/org.py:76 ../src/spacecmd/user.py:73
 msgid "Username:"
-msgstr ""
+msgstr "ユーザ名:"
 
 #: ../src/spacecmd/org.py:77
 #, python-format
 msgid "Prefix (%s):"
-msgstr ""
+msgstr "プレフィクス (%s):"
 
 #: ../src/spacecmd/org.py:79 ../src/spacecmd/user.py:74
 msgid "First Name:"
-msgstr ""
+msgstr "名:"
 
 #: ../src/spacecmd/org.py:80 ../src/spacecmd/user.py:75
 msgid "Last Name:"
-msgstr ""
+msgstr "姓:"
 
 #: ../src/spacecmd/org.py:81 ../src/spacecmd/user.py:76
 msgid "Email:"
-msgstr ""
+msgstr "電子メール:"
 
 #: ../src/spacecmd/org.py:82 ../src/spacecmd/user.py:77
 msgid "PAM Authentication [y/N]:"
-msgstr ""
+msgstr "PAM 認証 [y/N]:"
 
 #: ../src/spacecmd/org.py:89 ../src/spacecmd/user.py:84
 msgid "Password: "
-msgstr ""
+msgstr "パスワード: "
 
 #: ../src/spacecmd/org.py:100
 msgid "An organization name is required"
-msgstr ""
+msgstr "組織名を指定する必要があります"
 
 #: ../src/spacecmd/org.py:104 ../src/spacecmd/user.py:95
 msgid "A username is required"
-msgstr ""
+msgstr "ユーザ名を指定する必要があります"
 
 #: ../src/spacecmd/org.py:108 ../src/spacecmd/user.py:99
 msgid "A first name is required"
-msgstr ""
+msgstr "名を指定する必要があります"
 
 #: ../src/spacecmd/org.py:112 ../src/spacecmd/user.py:103
 msgid "A last name is required"
-msgstr ""
+msgstr "姓を指定する必要があります"
 
 #: ../src/spacecmd/org.py:116 ../src/spacecmd/user.py:107
 msgid "An email address is required"
-msgstr ""
+msgstr "電子メールアドレスを指定する必要があります"
 
 #: ../src/spacecmd/org.py:120 ../src/spacecmd/user.py:111
 msgid "A password is required"
-msgstr ""
+msgstr "パスワードを指定する必要があります"
 
 #: ../src/spacecmd/org.py:127
 msgid "Dr."
-msgstr ""
+msgstr "Dr."
 
 #: ../src/spacecmd/org.py:129
 msgid "Miss"
-msgstr ""
+msgstr "Miss"
 
 #: ../src/spacecmd/org.py:148
 msgid "org_delete: Delete an organization"
-msgstr ""
+msgstr "org_delete: 組織を削除"
 
 #: ../src/spacecmd/org.py:149
 msgid "usage: org_delete NAME"
-msgstr ""
+msgstr "使用方法: org_delete 名前"
 
 #: ../src/spacecmd/org.py:168 ../src/spacecmd/org.py:199
 #: ../src/spacecmd/org.py:233 ../src/spacecmd/org.py:269
 #: ../src/spacecmd/org.py:377 ../src/spacecmd/org.py:413
 #, python-format
 msgid "No organisation found for the name %s"
-msgstr ""
+msgstr "%s という名前の組織は見つかりませんでした"
 
 #: ../src/spacecmd/org.py:169 ../src/spacecmd/org.py:200
 #: ../src/spacecmd/org.py:234 ../src/spacecmd/org.py:270
 #: ../src/spacecmd/org.py:378 ../src/spacecmd/org.py:414
 msgid "Organisation '{}' was not found"
-msgstr ""
+msgstr "組織 '{}' が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:171
 msgid "Delete this organization [y/N]:"
-msgstr ""
+msgstr "この組織を削除します [y/N]:"
 
 #: ../src/spacecmd/org.py:179
 msgid "org_rename: Rename an organization"
-msgstr ""
+msgstr "org_rename: 組織の名前を変更"
 
 #: ../src/spacecmd/org.py:180
 msgid "usage: org_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "使用方法: org_rename 変更前の名前 変更後の名前"
 
 #: ../src/spacecmd/org.py:211
 msgid "org_addtrust: Add a trust between two organizations"
-msgstr ""
+msgstr "org_addtrust: 2 つの組織間に信頼を追加する"
 
 #: ../src/spacecmd/org.py:212
 msgid "usage: org_addtrust YOUR_ORG ORG_TO_TRUST"
-msgstr ""
+msgstr "使用方法: org_addtrust 信頼元の組織 信頼先の組織"
 
 #: ../src/spacecmd/org.py:237 ../src/spacecmd/org.py:273
 #, python-format
 msgid "No trust organisation found for the name %s"
-msgstr ""
+msgstr "名前 %s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:238 ../src/spacecmd/org.py:274
 msgid "Organisation '{}' to trust for, was not found"
-msgstr ""
+msgstr "信頼先の組織 '{}' が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:248
 msgid "org_removetrust: Remove a trust between two organizations"
-msgstr ""
+msgstr "org_removetrust: 2 つの組織間の信頼を削除する"
 
 #: ../src/spacecmd/org.py:249
 msgid "usage: org_removetrust YOUR_ORG TRUSTED_ORG"
-msgstr ""
+msgstr "使用方法: org_removetrust 信頼元の組織 信頼先の組織"
 
 #: ../src/spacecmd/org.py:284
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #: ../src/spacecmd/org.py:286
 msgid "Remove this trust [y/N]:"
-msgstr ""
+msgstr "この信頼を削除します [y/N]:"
 
 #: ../src/spacecmd/org.py:292
 msgid "org_trustdetails: Show the details of an organizational trust"
-msgstr ""
+msgstr "org_trustdetails: 組織間の信頼の詳細を表示"
 
 #: ../src/spacecmd/org.py:293
 msgid "usage: org_trustdetails TRUSTED_ORG"
-msgstr ""
+msgstr "使用方法: org_trustdetails 信頼する組織"
 
 #: ../src/spacecmd/org.py:312
 #, python-format
 msgid "No trusted organisation found for the name %s"
-msgstr ""
+msgstr "%s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:313
 msgid "Trusted organisation '{}' was not found"
-msgstr ""
+msgstr "信頼する組織 '{}' が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:320
 #, python-format
 msgid "Trusted Organization:   %s"
-msgstr ""
+msgstr "信頼する組織:   %s"
 
 #: ../src/spacecmd/org.py:321
 #, python-format
 msgid "Trusted Since:          %s"
-msgstr ""
+msgstr "信頼開始日時:          %s"
 
 #: ../src/spacecmd/org.py:322
 #, python-format
 msgid "Systems Migrated From:  %i"
-msgstr ""
+msgstr "システムの移行元:  %i"
 
 #: ../src/spacecmd/org.py:323
 #, python-format
 msgid "Systems Migrated To:    %i"
-msgstr ""
+msgstr "システムの移行先:    %i"
 
 #: ../src/spacecmd/org.py:325
 msgid "Channels Consumed"
-msgstr ""
+msgstr "使用済みチャンネル"
 
 #: ../src/spacecmd/org.py:332
 msgid "Channels Provided"
-msgstr ""
+msgstr "提供チャンネル"
 
 #: ../src/spacecmd/org.py:340
 msgid "org_list: List all organizations"
-msgstr ""
+msgstr "org_list: 全ての組織を表示"
 
 #: ../src/spacecmd/org.py:341
 msgid "usage: org_list"
-msgstr ""
+msgstr "使用方法: org_list"
 
 #: ../src/spacecmd/org.py:358
 msgid "org_listtrusts: List an organization's trusts"
-msgstr ""
+msgstr "org_listtrusts: 組織の信頼を表示"
 
 #: ../src/spacecmd/org.py:359
 msgid "usage: org_listtrusts NAME"
-msgstr ""
+msgstr "使用方法: org_listtrusts 名前"
 
 #: ../src/spacecmd/org.py:383 ../src/spacecmd/org.py:384
 msgid "No trust organisation has been found"
-msgstr ""
+msgstr "信頼する組織は見つかりませんでした"
 
 #: ../src/spacecmd/org.py:394
 msgid "org_listusers: List an organization's users"
-msgstr ""
+msgstr "org_listusers: 組織のユーザを表示"
 
 #: ../src/spacecmd/org.py:395
 msgid "usage: org_listusers NAME"
-msgstr ""
+msgstr "使用方法: org_listusers 名前"
 
 #: ../src/spacecmd/org.py:425
 msgid "org_details: Show the details of an organization"
-msgstr ""
+msgstr "org_details: 組織の詳細を表示"
 
 #: ../src/spacecmd/org.py:426
 msgid "usage: org_details NAME"
-msgstr ""
+msgstr "使用方法: org_details 名前"
 
 #: ../src/spacecmd/org.py:446
 #, python-format
 msgid "Name:                   %s"
-msgstr ""
+msgstr "名前:                   %s"
 
 #: ../src/spacecmd/org.py:447
 #, python-format
 msgid "Active Users:           %i"
-msgstr ""
+msgstr "有効なユーザ数:           %i"
 
 #: ../src/spacecmd/org.py:448
 #, python-format
 msgid "Systems:                %i"
-msgstr ""
+msgstr "システム数:                %i"
 
 #: ../src/spacecmd/org.py:452 ../src/spacecmd/org.py:454
 #, python-format
 msgid "Trusts:                 %i"
-msgstr ""
+msgstr "信頼数:                 %i"
 
 #: ../src/spacecmd/org.py:456
 #, python-format
 msgid "System Groups:          %i"
-msgstr ""
+msgstr "システムグループ数:          %i"
 
 #: ../src/spacecmd/org.py:457
 #, python-format
 msgid "Activation Keys:        %i"
-msgstr ""
+msgstr "アクティベーションキー数:        %i"
 
 #: ../src/spacecmd/org.py:458
 #, python-format
 msgid "Kickstart Profiles:     %i"
-msgstr ""
+msgstr "キックスタートプロファイル数:     %i"
 
 #: ../src/spacecmd/org.py:459
 #, python-format
 msgid "Configuration Channels: %i"
-msgstr ""
+msgstr "設定チャンネル数: %i"
 
 #: ../src/spacecmd/package.py:68 ../src/spacecmd/package.py:302
 #: ../src/spacecmd/package.py:351 ../src/spacecmd/package.py:395
 msgid "No packages found"
-msgstr ""
+msgstr "パッケージが見つかりませんでした"
 
 #: ../src/spacecmd/package.py:81 ../src/spacecmd/package.py:406
 #, python-format
 msgid "%s is not a valid package"
-msgstr ""
+msgstr "%s は正しいパッケージではありません"
 
 #: ../src/spacecmd/package.py:94
 #, python-format
 msgid "Version: %s"
-msgstr ""
+msgstr "バージョン: %s"
 
 #: ../src/spacecmd/package.py:95
 #, python-format
 msgid "Release: %s"
-msgstr ""
+msgstr "リリース: %s"
 
 #: ../src/spacecmd/package.py:96
 #, python-format
 msgid "Epoch:   %s"
-msgstr ""
+msgstr "エポック:   %s"
 
 #: ../src/spacecmd/package.py:97
 #, python-format
 msgid "Arch:    %s"
-msgstr ""
+msgstr "アーキテクチャ:    %s"
 
 #: ../src/spacecmd/package.py:99
 #, python-format
 msgid "File:    %s"
-msgstr ""
+msgstr "ファイル:    %s"
 
 #: ../src/spacecmd/package.py:101
 #, python-format
 msgid "Size:    %s"
-msgstr ""
+msgstr "サイズ:    %s"
 
 #: ../src/spacecmd/package.py:105
 #, python-format
 msgid "Installed Systems: %i"
-msgstr ""
+msgstr "インストール済みシステム数: %i"
 
 #: ../src/spacecmd/package.py:111
 msgid "Available From Channels"
-msgstr ""
+msgstr "提供されているチャンネル"
 
 #: ../src/spacecmd/package.py:122
 msgid "package_search: Find packages that meet the given criteria"
-msgstr ""
+msgstr "package_search: 指定した条件に合致するパッケージを検索"
 
 #: ../src/spacecmd/package.py:123
 msgid "usage: package_search NAME|QUERY"
-msgstr ""
+msgstr "使用方法: package_search 名前|検索文字列"
 
 #: ../src/spacecmd/package.py:125
 msgid "Example: package_search kernel"
-msgstr ""
+msgstr "例: package_search kernel"
 
 #: ../src/spacecmd/package.py:127
 msgid "Advanced Search:"
-msgstr ""
+msgstr "高度な検索:"
 
 #: ../src/spacecmd/package.py:128
 msgid ""
 "Available Fields: name, epoch, version, release, arch, description, summary"
 msgstr ""
+"利用可能な項目: name (名前), epoch (エポック), version (バージョン), release (リリース), arch "
+"(アーキテクチャ), description (説明), summary (概要)"
 
 #: ../src/spacecmd/package.py:129
 msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
-msgstr ""
+msgstr "例: name:kernel AND version:2.6.18 AND -description:devel"
 
 #: ../src/spacecmd/package.py:178
 msgid "package_remove: Remove a package from Satellite"
-msgstr ""
+msgstr "package_remove: Satellite からパッケージを削除"
 
 #: ../src/spacecmd/package.py:179
 msgid "usage: package_remove PACKAGE ..."
-msgstr ""
+msgstr "使用方法: package_remove パッケージ ..."
 
 #: ../src/spacecmd/package.py:199
 msgid "No packages found to remove"
-msgstr ""
+msgstr "削除すべきパッケージが見つかりませんでした"
 
 #: ../src/spacecmd/package.py:202 ../src/spacecmd/package.py:259
 #: ../src/spacecmd/softwarechannel.py:1580 ../src/spacecmd/system.py:944
 msgid "Remove these packages [y/N]:"
-msgstr ""
+msgstr "これらのパッケージを削除します [y/N]:"
 
 #: ../src/spacecmd/package.py:203
 msgid "No packages has been removed"
-msgstr ""
+msgstr "何もパッケージを削除しませんでした"
 
 #: ../src/spacecmd/package.py:215 ../src/spacecmd/package.py:271
 #, python-format
 msgid "Failed to remove package ID %i"
-msgstr ""
+msgstr "パッケージ ID %i の削除に失敗しました"
 
 #: ../src/spacecmd/package.py:226
 msgid "package_listorphans: List packages that are not in a channel"
-msgstr ""
+msgstr "package_listorphans: チャンネルに含まれていないパッケージを表示"
 
 #: ../src/spacecmd/package.py:227
 msgid "usage: package_listorphans"
-msgstr ""
+msgstr "使用方法: package_listorphans"
 
 #: ../src/spacecmd/package.py:246
 msgid "package_removeorphans: Remove packages that are not in a channel"
-msgstr ""
+msgstr "package_removeorphans: チャンネルに含まれていないパッケージを削除"
 
 #: ../src/spacecmd/package.py:247
 msgid "usage: package_removeorphans"
-msgstr ""
+msgstr "使用方法: package_removeorphans"
 
 #: ../src/spacecmd/package.py:255
 msgid "No orphaned packages has been found"
-msgstr ""
+msgstr "孤立したパッケージは見つかりませんでした"
 
 #: ../src/spacecmd/package.py:256
 msgid "No orphaned packages"
-msgstr ""
+msgstr "孤立したパッケージはありません"
 
 #: ../src/spacecmd/package.py:260
 msgid "No packages were removed"
-msgstr ""
+msgstr "何もパッケージを削除しませんでした"
 
 #: ../src/spacecmd/package.py:280
 msgid "package_listinstalledsystems: List the systems with a package installed"
-msgstr ""
+msgstr "package_listinstalledsystems: パッケージがインストールされているシステムを表示"
 
 #: ../src/spacecmd/package.py:281
 msgid "usage: package_listinstalledsystems PACKAGE ..."
-msgstr ""
+msgstr "使用方法: package_listinstalledsystems パッケージ ..."
 
 #: ../src/spacecmd/package.py:329
 msgid "package_listerrata: List the errata that provide this package"
-msgstr ""
+msgstr "package_listerrata: このパッケージを提供するエラータを表示"
 
 #: ../src/spacecmd/package.py:330
 msgid "usage: package_listerrata PACKAGE ..."
-msgstr ""
+msgstr "使用方法: package_listerrata パッケージ ..."
 
 #: ../src/spacecmd/package.py:377
 msgid "package_listdependencies: List the dependencies for a package"
-msgstr ""
+msgstr "package_listdependencies: パッケージの依存関係を表示"
 
 #: ../src/spacecmd/package.py:378
 msgid "usage: package_listdependencies PACKAGE"
-msgstr ""
+msgstr "使用方法: package_listdependencies パッケージ"
 
 #: ../src/spacecmd/package.py:411
 #, python-format
 msgid "Package Name: %s"
-msgstr ""
+msgstr "パッケージ名: %s"
 
 #: ../src/spacecmd/package.py:413
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
-msgstr ""
+msgstr "依存関係: %s タイプ: %s 修飾子: %s"
 
 #: ../src/spacecmd/repo.py:47
 msgid "repo_list: List all available user repos"
-msgstr ""
+msgstr "repo_list: 利用可能な全てのユーザリポジトリを表示"
 
 #: ../src/spacecmd/repo.py:48
 msgid "usage: repo_list"
-msgstr ""
+msgstr "使用方法: repo_list"
 
 #: ../src/spacecmd/repo.py:65
 msgid "repo_details: Show the details of a user repo"
