@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-10-04 18:48+0000\n"
+"PO-Revision-Date: 2020-10-05 19:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "sk/>\n"
@@ -202,21 +202,23 @@ msgstr "Migrácia z predchádzajúceho #{@product_name} na nový #{@product_name
 
 #: ../yast/susemanager_migration.rb:138
 msgid "Hostname is missing."
-msgstr ""
+msgstr "Chýba názov hostiteľa."
 
 #: ../yast/susemanager_reqs.rb:65
 msgid "already setup"
-msgstr ""
+msgstr "už je nastavené"
 
 #: ../yast/susemanager_reqs.rb:67
 msgid ""
 "#{@product_name} is already set up. Do you want to delete the existing setup "
 "and start all over again?"
 msgstr ""
+"#{@product_name} je už nastavený. Chcete odstrániť existujúce nastavenie a "
+"začať odznova?"
 
 #: ../yast/susemanager_reqs.rb:71
 msgid "Continue"
-msgstr ""
+msgstr "Pokračovať"
 
 #: ../yast/susemanager_reqs.rb:72 ../yast/susemanager_reqs.rb:93
 #: ../yast/susemanager_reqs.rb:120 ../yast/susemanager_reqs.rb:147
@@ -224,35 +226,39 @@ msgstr ""
 #: ../yast/susemanager_reqs.rb:205 ../yast/susemanager_reqs.rb:245
 #: ../yast/susemanager_reqs.rb:261
 msgid "Exit installation"
-msgstr ""
+msgstr "Ukončiť inštaláciu"
 
 #: ../yast/susemanager_reqs.rb:86
 msgid "Not enough memory"
-msgstr ""
+msgstr "Nedostatok pamäte"
 
 #: ../yast/susemanager_reqs.rb:88
 msgid ""
 "#{@product_name} requires 8G of memory to be installed and 16G for good "
 "perfomance. If you continue the product will not function correctly."
 msgstr ""
+"#{@product_name} vyžaduje na inštaláciu 8G pamäte a 16G pre dobrý výkon. Ak "
+"budete pokračovať, produkt nebude fungovať správne."
 
 #: ../yast/susemanager_reqs.rb:92 ../yast/susemanager_reqs.rb:119
 #: ../yast/susemanager_reqs.rb:146 ../yast/susemanager_reqs.rb:164
 #: ../yast/susemanager_reqs.rb:184 ../yast/susemanager_reqs.rb:204
 #: ../yast/susemanager_reqs.rb:244 ../yast/susemanager_reqs.rb:260
 msgid "Continue anyway"
-msgstr ""
+msgstr "Pokračovať napriek tomu"
 
 #: ../yast/susemanager_reqs.rb:109 ../yast/susemanager_reqs.rb:136
 #, c-format
 msgid "    Not enough disk space (only %1G free)"
-msgstr ""
+msgstr "    Nie je dostatok miesta na disku (voľných je iba %1G)"
 
 #: ../yast/susemanager_reqs.rb:115
 msgid ""
 "#{@product_name} requires 100G of free disk space in /var/spacewalk to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
+"#{@product_name} vyžaduje na inštaláciu 100G voľného miesta na disku v /var/"
+"spacewalk. Ak budete pokračovať, produkt nebude fungovať správne."
 
 #: ../yast/susemanager_reqs.rb:142
 msgid ""
