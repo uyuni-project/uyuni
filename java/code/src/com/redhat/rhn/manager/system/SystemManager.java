@@ -424,6 +424,7 @@ public class SystemManager extends BaseManager {
     /**
      * Gets the installed packages on a system
      * @param sid The system in question
+     * @param archAsLabel set to true to return architecture as label, otherwise architecture name is used
      * @return Returns a list of packages for a system
      */
     public static DataResult<Map<String, Object>> installedPackages(Long sid, boolean archAsLabel) {
