@@ -89,8 +89,10 @@ public enum SaltStateGeneratorService {
             String version = image.getVersion();
             String bootImageName = name + "-" + version;
             String localPath = "image/" + bundle.getBasename() + "-" + bundle.getId();
+            String bootLocalPath = bundle.getBasename() + "-" + bundle.getId();
 
-            Map<String, Object> bootImagePillar = generateBootImagePillar(bootImage, bootImageName, localPath);
+            Map<String, Object> bootImagePillar = generateBootImagePillar(bootImage, bootImageName,
+                                                                          localPath, bootLocalPath);
 
             Map<String, Object> imagePillar = generateImagePillar(image, bundle, bootImage, urlBase, name, version,
                     localPath);
@@ -148,7 +150,8 @@ public enum SaltStateGeneratorService {
     }
 
     private Map<String, Object> generateBootImagePillar(OSImageInspectSlsResult.BootImage bootImage,
-                                                            String bootImageName, String localPath) {
+                                                        String bootImageName,
+                                                        String systemLocalPath, String bootLocalPath) {
         Map<String, Object> bootImagePillar = new TreeMap<String, Object>();
         Map<String, Object> bootImagePillarBase = new TreeMap<String, Object>();
         Map<String, Object> bootImagePillarInitrd = new TreeMap<String, Object>();
@@ -173,9 +176,9 @@ public enum SaltStateGeneratorService {
         bootImagePillarKernel.put("url", "tftp://tftp/boot/" + bootImageName + '/' +
                 bootImage.getKernel().getFilename());
 
-        bootImagePillarSync.put("local_path", bootImageName);
-        bootImagePillarSync.put("kernel_link", "../../" + localPath + '/' + bootImage.getKernel().getFilename());
-        bootImagePillarSync.put("initrd_link", "../../" + localPath + '/' + bootImage.getInitrd().getFilename());
+        bootImagePillarSync.put("local_path", bootLocalPath);
+        bootImagePillarSync.put("kernel_link", "../../" + systemLocalPath + '/' + bootImage.getKernel().getFilename());
+        bootImagePillarSync.put("initrd_link", "../../" + systemLocalPath + '/' + bootImage.getInitrd().getFilename());
 
         bootImagePillarBase.put("initrd", bootImagePillarInitrd);
         bootImagePillarBase.put("kernel", bootImagePillarKernel);
