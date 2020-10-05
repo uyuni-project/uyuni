@@ -29,7 +29,7 @@ Feature: Build OS images
 
   Scenario: Login as Kiwi image administrator and build an image
     Given I am authorized as "kiwikiwi" with password "kiwikiwi"
-    When I navigate to images build webpage
+    When I follow the left menu "Images > Build"
     And I select "suse_os_image" from "profileId"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
@@ -52,7 +52,7 @@ Feature: Build OS images
 
   Scenario: Cleanup: remove the image from SUSE Manager server
     Given I am authorized as "admin" with password "admin"
-    When I navigate to images webpage
+    When I follow the left menu "Images > Image List
     And I wait until I do not see "There are no entries to show." text
     And I check the first image
     And I click on "Delete"
