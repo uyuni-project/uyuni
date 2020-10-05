@@ -1651,9 +1651,18 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * Test that installedPackages method of {@link SystemManager} returns both packages known and unknown
      * to Uyuni. For the known packages it includes the package id.
      *
+     * This tests 2 cases:
+     * - reporting architecture by its label
+     * -  reporting architecture by its name
+     *
      * @throws Exception
      */
     public void testInstalledPackages() throws Exception {
+        doTestInstalledPackages(true);
+        doTestInstalledPackages(false);
+    }
+
+    private void doTestInstalledPackages(boolean archAsLabel) throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
 
         // installed on server and known to Uyuni
@@ -1685,13 +1694,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(knownPackage.getEvr().getEpoch(), known.get("epoch"));
         assertEquals(knownPackage.getEvr().getVersion(), known.get("version"));
         assertEquals(knownPackage.getEvr().getRelease(), known.get("release"));
-        assertEquals(knownPackage.getArch().getLabel(), known.get("arch"));
+        assertEquals(archAsLabel ? knownPackage.getArch().getLabel() : knownPackage.getArch().getName(), known.get("arch"));
 
         assertFalse(unknown.containsKey("id"));
         assertEquals(unknownPackage.getName().getName(), unknown.get("name"));
         assertEquals(unknownPackage.getEvr().getEpoch(), unknown.get("epoch"));
         assertEquals(unknownPackage.getEvr().getVersion(), unknown.get("version"));
         assertEquals(unknownPackage.getEvr().getRelease(), unknown.get("release"));
-        assertEquals(unknownPackage.getArch().getLabel(), unknown.get("arch"));
+        assertEquals(archAsLabel ? unknownPackage.getArch().getLabel() : unknownPackage.getArch().getName(), unknown.get("arch"));
     }
 }
