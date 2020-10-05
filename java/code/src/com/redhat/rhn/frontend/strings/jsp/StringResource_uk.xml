@@ -20505,6 +20505,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>Англійська</target>
       </trans-unit>
+      <trans-unit id="preferences.jsp.lang.en" xml:space="preserve">
+        <source>English</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+        <target>Англійська</target>
+      </trans-unit>
       <trans-unit id="preferences.jsp.lang.es" xml:space="preserve">
         <source>Spanish</source>
         <context-group name="ctx">

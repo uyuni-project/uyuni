@@ -1045,7 +1045,7 @@ public class ConfigDefaults {
      * @return the preferred documentation locale
      */
     public String getDefaultDocsLocale() {
-        return Config.get().getString(DEFAULT_DOCS_LOCALE, "en_US");
+        return Config.get().getString(DEFAULT_DOCS_LOCALE, "en");
     }
 
     /**

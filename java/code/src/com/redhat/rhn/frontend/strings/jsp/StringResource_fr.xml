@@ -22595,6 +22595,13 @@ pour abonner des systèmes aux canaux de logiciels durant le kickstart.&lt;/span
         </context-group>
         <target>Anglais</target>
       </trans-unit>
+      <trans-unit id="preferences.jsp.lang.en" xml:space="preserve">
+        <source>English</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+        <target>Anglais</target>
+      </trans-unit>
       <trans-unit id="preferences.jsp.lang.es" xml:space="preserve">
         <source>Spanish</source>
         <context-group name="ctx">
