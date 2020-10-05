@@ -1464,6 +1464,46 @@ public class SystemHandler extends BaseHandler {
 
     /**
      * List the installed packages for a given system.
+     *
+     * @xmlrpc.doc List the installed packages for a given system. The attribute
+     * installtime is returned since API version 10.10. Usage of listInstalledPackages is preferred, as it returns
+     * architecture label (not name).
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @return Returns an array of maps representing the packages installed on a system
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     * @deprecated This is here for backwards compatibility: The method returns architecture name,
+     * whereas the other endpoints return/accept architecture label.
+     * Instead of this method, use listInstalledPackages preferably.
+     *
+     * @xmlrpc.doc List the installed packages for a given system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype
+     *      #array()
+     *          #struct("package")
+     *                 #prop("string", "name")
+     *                 #prop("string", "version")
+     *                 #prop("string", "release")
+     *                 #prop("string", "epoch")
+     *                 #prop_desc("string", "arch", "Architecture name")
+     *                 #prop_desc("date", "installtime", "returned only if known")
+     *          #struct_end()
+     *      #array_end()
+     */
+    @Deprecated
+    public List<Map<String, Object>> listPackages(User loggedInUser, Integer sid)
+            throws FaultException {
+        // Get the logged in user and server
+        Server server = lookupServer(loggedInUser, sid);
+
+        return SystemManager.installedPackages(server.getId());
+    }
+
+    /**
+     * List the installed packages for a given system.
+     *
      * @xmlrpc.doc List the installed packages for a given system. The attribute
      * installtime is returned since API version 10.10.
      * @param loggedInUser The current user
@@ -1476,23 +1516,22 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
-     *          #struct("package")
+     *      #array_begin()
+     *          #struct_begin("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
      *                 #prop("string", "epoch")
-     *                 #prop("string", "arch")
+     *                 #prop_desc("string", "arch", "architecture label")
      *                 #prop_desc("date", "installtime", "returned only if known")
      *          #struct_end()
      *      #array_end()
      */
-    public List<Map<String, Object>> listPackages(User loggedInUser, Integer sid)
+    public List<Map<String, Object>> listInstalledPackages(User loggedInUser, Integer sid)
             throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
-
-        return SystemManager.installedPackages(server.getId());
+        return SystemManager.installedPackages(server.getId(), true);
     }
 
     /**
