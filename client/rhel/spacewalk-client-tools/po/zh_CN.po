@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:21+0200\n"
+"POT-Creation-Date: 2020-10-05 16:18+0200\n"
 "PO-Revision-Date: 2020-10-01 15:49+0000\n"
 "Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -873,7 +873,9 @@ msgstr "体系结构：%s，OS 发行版本：%s, OS 版本：%s"
 msgid ""
 "This server doesn't support functionality needed by this version of the "
 "software update setup client. Please try again with a newer server."
-msgstr "这个服务器不支持客户端系统所设置的软件更新所需要的功能。请尝试使用一个较新的服务器。"
+msgstr ""
+"这个服务器不支持客户端系统所设置的软件更新所需要的功能。请尝试使用一个较新的"
+"服务器。"
 
 #: ../src/up2date_client/rhnreg_constants.py:260
 #, fuzzy, python-format, python-brace-format
@@ -949,7 +951,9 @@ msgstr ""
 msgid ""
 "Warning:You will not be able to limit this system to minor release that is "
 "older than the recent minor release if you select this option.\n"
-msgstr "警告：如果您选择该选项，您将无法将这个系统限定为比最近次要版本旧的次要版本。\n"
+msgstr ""
+"警告：如果您选择该选项，您将无法将这个系统限定为比最近次要版本旧的次要版"
+"本。\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:296
 #, fuzzy, python-format
@@ -1293,7 +1297,8 @@ msgid ""
 "program, please file a bug at bugzilla.redhat.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
-"这个错误不应该发生。如果您希望帮助我们改进这个程序，请在 bugzilla.redhat.com 上提交一个错误报告。请包括 '%s' 的相关部分。谢谢！"
+"这个错误不应该发生。如果您希望帮助我们改进这个程序，请在 bugzilla.redhat.com "
+"上提交一个错误报告。请包括 '%s' 的相关部分。谢谢！"
 
 #: ../src/up2date_client/rhnreg.py:76
 #, fuzzy
@@ -1640,7 +1645,9 @@ msgstr "该系统已经注册了。使用 --force 强制注册"
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
-msgstr "不支持在 --activationkey 中使用 --use-eus-channel 选项。请使用 username 和 password。"
+msgstr ""
+"不支持在 --activationkey 中使用 --use-eus-channel 选项。请使用 username 和 "
+"password。"
 
 #: ../src/bin/rhnreg_ks.py:128
 #, fuzzy
@@ -1652,7 +1659,9 @@ msgstr "您订阅的服务器不支持 EUS。"
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
 "server web user Interface and update your contactinfo. "
-msgstr "警告：--contactinfo 选项已经过时。请登录到服务器网页用户界面并更新您的联络信息。"
+msgstr ""
+"警告：--contactinfo 选项已经过时。请登录到服务器网页用户界面并更新您的联络信"
+"息。"
 
 #: ../src/bin/rhnreg_ks.py:175
 #, fuzzy, python-format
@@ -1911,7 +1920,8 @@ msgstr "(_L)登录："
 msgid ""
 "<small>Tip: Forgot your login or password? Contact your Satellite's "
 "<i>Organization Administrator</i>.</small>"
-msgstr "<small>忘记了您的用户名或口令？联系您的 Satellite <i>机构管理员</i>。</small>"
+msgstr ""
+"<small>忘记了您的用户名或口令？联系您的 Satellite <i>机构管理员</i>。</small>"
 
 #: ../data/rh_register.glade.h:20
 #, fuzzy
@@ -2038,7 +2048,9 @@ msgid ""
 "<b>You have no active subscriptions available in your account.</b> You will "
 "need to do one of the following to create an active subscription in your "
 "account before this system can be registered:"
-msgstr "<b>您还没有激活您帐号内的订阅。</b>您将需要注册这个系统前，使用以下的方法之一在您帐号内创建一个激活的订阅："
+msgstr ""
+"<b>您还没有激活您帐号内的订阅。</b>您将需要注册这个系统前，使用以下的方法之一"
+"在您帐号内创建一个激活的订阅："
 
 #: ../data/rh_register.glade.h:44
 #, fuzzy
@@ -2052,7 +2064,9 @@ msgstr "额外购买红帽企业级 Linux 订阅：http://www.redhat.com/store/.
 msgid ""
 "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
 "RHN > Subscription Management > System Entitlements."
-msgstr "登录到 http://rhn.redhat.com/ 并取消一个非活跃的系统（您的RHN > 订阅管理 > 系统权利）。"
+msgstr ""
+"登录到 http://rhn.redhat.com/ 并取消一个非活跃的系统（您的RHN > 订阅管理 > 系"
+"统权利）。"
 
 #: ../data/rh_register.glade.h:46
 #, fuzzy
@@ -2127,7 +2141,9 @@ msgstr "<big><b>档案数据</b></big>"
 msgid ""
 "Send us a profile of your current hardware and packages so we can determine "
 "what updates are available."
-msgstr "您需要将系统侧写发送给我们，告诉我们在您的系统中安装了什么软件包和硬件，这样我们可以确定适合您的更新。"
+msgstr ""
+"您需要将系统侧写发送给我们，告诉我们在您的系统中安装了什么软件包和硬件，这样"
+"我们可以确定适合您的更新。"
 
 #: ../data/rh_register.glade.h:61
 #, fuzzy
@@ -2196,7 +2212,9 @@ msgstr "<b>安全和更新：</b>"
 msgid ""
 "Receive the latest software updates, including security updates, keeping "
 "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr "接收最新的软件更新（包括安全更新），以便红帽企业级 Linux 系统 <b>保持最新</b> 并 <b>处于安全状态</b>。"
+msgstr ""
+"接收最新的软件更新（包括安全更新），以便红帽企业级 Linux 系统 <b>保持最新</"
+"b> 并 <b>处于安全状态</b>。"
 
 #: ../data/rh_register.glade.h:75
 #, fuzzy
@@ -2237,7 +2255,9 @@ msgstr "管理"
 msgid ""
 "Manage subscriptions and systems registered to Customer Portal via access."
 "redhat.com or through one of our other subscription management services."
-msgstr "通过 ccess.redhat.com 或者其他订阅管理服务管理在客户门户网站中注册的订阅和系统。 "
+msgstr ""
+"通过 ccess.redhat.com 或者其他订阅管理服务管理在客户门户网站中注册的订阅和系"
+"统。 "
 
 #: ../data/rh_register.glade.h:82
 #, fuzzy
@@ -2394,7 +2414,9 @@ msgid ""
 "Your system will be subscribed to the base software channel.  You will not "
 "be able to move this system to an earlier minor release channel if you "
 "continue (you will be able to move to a later release.)"
-msgstr "将在基本软件频道中订阅您的系统。如果您继续，则无法将这个系统移动到之前的次要发行本（您可以将其移动到之后的发行本）。"
+msgstr ""
+"将在基本软件频道中订阅您的系统。如果您继续，则无法将这个系统移动到之前的次要"
+"发行本（您可以将其移动到之后的发行本）。"
 
 #: ../data/rh_register.glade.h:115
 #, fuzzy
@@ -2435,7 +2457,9 @@ msgstr "以后再注册。"
 msgid ""
 "Are you sure you don't want to register your system with Red Hat? You'll "
 "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr "您确定不要将您的系统连接到红帽网络吗？您将无法获得红帽企业版 Linux 订阅所提供的帮助："
+msgstr ""
+"您确定不要将您的系统连接到红帽网络吗？您将无法获得红帽企业版 Linux 订阅所提供"
+"的帮助："
 
 #: ../data/rh_register.glade.h:123
 #, fuzzy
@@ -2496,8 +2520,9 @@ msgid ""
 "Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
 "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
 msgstr ""
-"要了解 RHN 注册和技术的更多信息，请参考知识库文章：<a href=\"https://access.redhat.com/kb/docs/DOC-"
-"45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+"要了解 RHN 注册和技术的更多信息，请参考知识库文章：<a href=\"https://access."
+"redhat.com/kb/docs/DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</"
+"a>\n"
 
 #: ../data/rh_register.glade.h:137
 #, fuzzy
@@ -2517,8 +2542,9 @@ msgid ""
 msgstr ""
 "您的系统现在就可以接收软件更新以便保证其安全和提供支持。\n"
 "\n"
-"当您的桌面通知区域（通常是在右上角，如下圆圈中所示）中出现软件包图标时，您就知道有可以使用的软件更新了。点击这个图标，如果可用，那么它将引导您完成应用可用"
-"的更新："
+"当您的桌面通知区域（通常是在右上角，如下圆圈中所示）中出现软件包图标时，您就"
+"知道有可以使用的软件更新了。点击这个图标，如果可用，那么它将引导您完成应用可"
+"用的更新："
 
 #: ../data/rh_register.glade.h:141
 #, fuzzy
@@ -2540,14 +2566,18 @@ msgstr "有限更新"
 msgid ""
 "<b>_Limited updates</b> will be provided to this system, maintaining "
 "compatibility with the selected minor release software channel:"
-msgstr "会为这个系统提供<b>有限更新（_L）</b>以便与以下可用红帽企业版 Linux 次要发行本软件频道兼容："
+msgstr ""
+"会为这个系统提供<b>有限更新（_L）</b>以便与以下可用红帽企业版 Linux 次要发行"
+"本软件频道兼容："
 
 #: ../data/rh_register.glade.h:146
 #, fuzzy
 msgid ""
 "Limited updates will be provided to this system, maintaining compatibility "
 "with the selected minor release software channel:"
-msgstr "会为这个系统提供<b>有限更新（_L）</b>以便与以下可用红帽企业版 Linux 次要发行本软件频道兼容："
+msgstr ""
+"会为这个系统提供<b>有限更新（_L）</b>以便与以下可用红帽企业版 Linux 次要发行"
+"本软件频道兼容："
 
 #: ../data/rh_register.glade.h:147
 #, fuzzy
@@ -2578,8 +2608,9 @@ msgid ""
 "updated, this system will always be equivalent to the latest minor release "
 "in the main 'Red Hat Enterprise Linux x' software channel."
 msgstr ""
-"将为这个系统提供<b>所有可用更新（_A）</b>。如果保持更新，那么这个系统将总是使用红帽企业版 Linux 6 "
-"的最新可用次要发行本。会将其注册到主要‘红帽企业版 Linux 6’软件频道。"
+"将为这个系统提供<b>所有可用更新（_A）</b>。如果保持更新，那么这个系统将总是使"
+"用红帽企业版 Linux 6 的最新可用次要发行本。会将其注册到主要‘红帽企业版 Linux "
+"6’软件频道。"
 
 #: ../data/rh_register.glade.h:153
 #, fuzzy
@@ -2588,8 +2619,8 @@ msgid ""
 "system will always be equivalent to the latest minor release in the main "
 "'Red Hat Enterprise Linux x' software channel."
 msgstr ""
-"将为这个系统提供所有可用更新。如果保持更新，那么这个系统将总是使用红帽企业版 Linux 6 的最新可用次要发行本。会将其注册到主要‘红帽企业版 "
-"Linux 6’软件频道。"
+"将为这个系统提供所有可用更新。如果保持更新，那么这个系统将总是使用红帽企业版 "
+"Linux 6 的最新可用次要发行本。会将其注册到主要‘红帽企业版 Linux 6’软件频道。"
 
 #: ../data/rh_register.glade.h:154
 #, fuzzy
@@ -2597,14 +2628,18 @@ msgid ""
 "<b>Warning:</b> Using this option, your system will always be the most "
 "recent minor release and <b>cannot</b> be limited to an older release "
 "version."
-msgstr "<b>警告：</b>使用这个选项您的系统将仅限于接收最新的次要发行本，且<b>无法</b>将其限制为接收较老的发行本。"
+msgstr ""
+"<b>警告：</b>使用这个选项您的系统将仅限于接收最新的次要发行本，且<b>无法</b>"
+"将其限制为接收较老的发行本。"
 
 #: ../data/rh_register.glade.h:155
 #, fuzzy
 msgid ""
 "Warning: Using this option, your system will always be the most recent minor "
 "release and cannot be limited to an older release version."
-msgstr "警告：使用这个选项您的系统将仅限于接收最新的次要发行本，且无法将其限制为接收较老的发行本。"
+msgstr ""
+"警告：使用这个选项您的系统将仅限于接收最新的次要发行本，且无法将其限制为接收"
+"较老的发行本。"
 
 #: ../data/rh_register.glade.h:156
 #, fuzzy
@@ -2624,8 +2659,9 @@ msgid ""
 msgstr ""
 "您的系统已可以接收软件更新以便保证其安全和提供支持。\n"
 "\n"
-"当您的桌面通知区域（通常是在右上角，如下圆圈中所示）中出现软件包图标时，您就知道有可以使用的软件更新了。点击这个图标，如果可用，那么它将引导您完成应用可用"
-"的更新："
+"当您的桌面通知区域（通常是在右上角，如下圆圈中所示）中出现软件包图标时，您就"
+"知道有可以使用的软件更新了。点击这个图标，如果可用，那么它将引导您完成应用可"
+"用的更新："
 
 #: ../data/rh_register.glade.h:160
 #, fuzzy
