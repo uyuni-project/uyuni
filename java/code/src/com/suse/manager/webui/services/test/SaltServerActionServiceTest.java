@@ -80,7 +80,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -111,7 +111,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         VirtManager virtManager = new TestVirtManager() {
             @Override

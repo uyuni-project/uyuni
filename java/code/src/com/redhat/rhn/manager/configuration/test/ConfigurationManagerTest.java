@@ -63,9 +63,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,7 +98,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         pc.setStart(1);
         pc.setPageSize(20);
         cm = ConfigurationManager.getInstance();
-        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Override

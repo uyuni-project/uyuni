@@ -40,8 +40,7 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
-
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
@@ -51,7 +50,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager()),
