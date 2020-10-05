@@ -87,9 +87,13 @@ public class CreateUserSetupAction extends BaseUserSetupAction {
             request.setAttribute("default_tz", UserManager
                     .getDefaultTimeZone().getTimeZoneId());
         }
-        request.setAttribute("defaultLocale", buildDefaultLocale());
-        request.setAttribute("supportedLocales", buildImageMap());
+        LocalizationService ls = LocalizationService.getInstance();
+        request.setAttribute("defaultLocale", buildDefaultLocale(ConfigDefaults.get().getDefaultLocale()));
+        request.setAttribute("defaultDocsLocale", buildDefaultLocale(ConfigDefaults.get().getDefaultDocsLocale()));
+        request.setAttribute("supportedLocales", buildImageMap(ls.getConfiguredLocales()));
+        request.setAttribute("supportedDocsLocales", buildImageMap(ls.getInstalledDocsLocales()));
         setCurrentLocale(ctx, currentUser);
+        setDocsLocale(ctx, currentUser);
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
