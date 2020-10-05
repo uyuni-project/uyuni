@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-24 17:29+0200\n"
-"PO-Revision-Date: 2020-10-05 04:49+0000\n"
+"PO-Revision-Date: 2020-10-05 08:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -3929,7 +3929,7 @@ msgstr "依存関係: %s タイプ: %s 修飾子: %s"
 
 #: ../src/spacecmd/repo.py:47
 msgid "repo_list: List all available user repos"
-msgstr "repo_list: 利用可能な全てのユーザリポジトリを表示"
+msgstr "repo_list: 利用可能な全てのユーザリポジトリーを表示"
 
 #: ../src/spacecmd/repo.py:48
 msgid "usage: repo_list"
@@ -3937,90 +3937,90 @@ msgstr "使用方法: repo_list"
 
 #: ../src/spacecmd/repo.py:65
 msgid "repo_details: Show the details of a user repo"
-msgstr ""
+msgstr "repo_details: ユーザリポジトリーの詳細を表示"
 
 #: ../src/spacecmd/repo.py:66
 msgid "usage: repo_details <repo ...>"
-msgstr ""
+msgstr "使用方法: repo_details <リポジトリー ...>"
 
 #: ../src/spacecmd/repo.py:94
 #, python-format
 msgid "Repository Label:                  %s"
-msgstr ""
+msgstr "リポジトリーラベル:                  %s"
 
 #: ../src/spacecmd/repo.py:95
 #, python-format
 msgid "Repository URL:                    %s"
-msgstr ""
+msgstr "リポジトリー URL:                    %s"
 
 #: ../src/spacecmd/repo.py:96
 #, python-format
 msgid "Repository Type:                   %s"
-msgstr ""
+msgstr "リポジトリータイプ:                   %s"
 
 #: ../src/spacecmd/repo.py:97
 #, python-format
 msgid "Repository SSL Ca Certificate:     %s"
-msgstr ""
+msgstr "リポジトリーの SSL CA 証明書:     %s"
 
 #: ../src/spacecmd/repo.py:98
 #, python-format
 msgid "Repository SSL Client Certificate: %s"
-msgstr ""
+msgstr "リポジトリーの SSL クライアント証明書: %s"
 
 #: ../src/spacecmd/repo.py:99
 #, python-format
 msgid "Repository SSL Client Key:         %s"
-msgstr ""
+msgstr "リポジトリーの SSL クライアント鍵:         %s"
 
 #: ../src/spacecmd/repo.py:101
 msgid "No repositories found for '{}' query"
-msgstr ""
+msgstr "'{}' の問い合わせに対してリポジトリーが見つかりませんでした"
 
 #: ../src/spacecmd/repo.py:110
 msgid "repo_listfilters: Show the filters for a user repo"
-msgstr ""
+msgstr "repo_listfilters: ユーザリポジトリーに対するフィルタを表示"
 
 #: ../src/spacecmd/repo.py:111
 msgid "usage: repo_listfilters repo"
-msgstr ""
+msgstr "使用方法: repo_listfilters リポジトリー"
 
 #: ../src/spacecmd/repo.py:132
 msgid "No filters found"
-msgstr ""
+msgstr "フィルタが見つかりませんでした"
 
 #: ../src/spacecmd/repo.py:141
 msgid "repo_addfilters: Add filters for a user repo"
-msgstr ""
+msgstr "repo_addfilters: ユーザーリポジトリーにフィルタを追加"
 
 #: ../src/spacecmd/repo.py:142
 msgid "usage: repo_addfilters repo <filter ...>"
-msgstr ""
+msgstr "使用方法: repo_addfilters リポジトリー <フィルタ ...>"
 
 #: ../src/spacecmd/repo.py:166 ../src/spacecmd/repo.py:203
 #: ../src/spacecmd/repo.py:242
 msgid "Each filter must start with + or -"
-msgstr ""
+msgstr "各フィルタは + または - で書き始めなければなりません"
 
 #: ../src/spacecmd/repo.py:180
 msgid "repo_removefilters: Remove filters from a user repo"
-msgstr ""
+msgstr "repo_removefilters: ユーザリポジトリーからフィルタを削除"
 
 #: ../src/spacecmd/repo.py:181
 msgid "usage: repo_removefilters repo <filter ...>"
-msgstr ""
+msgstr "使用方法: repo_removefilters リポジトリー <フィルタ ...>"
 
 #: ../src/spacecmd/repo.py:217
 msgid "repo_setfilters: Set the filters for a user repo"
-msgstr ""
+msgstr "repo_setfilters: ユーザリポジトリーにフィルタを設定"
 
 #: ../src/spacecmd/repo.py:218
 msgid "usage: repo_setfilters repo <filter ...>"
-msgstr ""
+msgstr "使用方法: repo_setfilters リポジトリー <フィルタ ...>"
 
 #: ../src/spacecmd/repo.py:255
 msgid "repo_clearfilters: Clears the filters for a user repo"
-msgstr ""
+msgstr "repo_clearfilters: ユーザリポジトリーに設定したフィルタを消去"
 
 #: ../src/spacecmd/repo.py:256
 msgid ""
@@ -4030,35 +4030,40 @@ msgid ""
 "  -y, --yes   Confirm without prompt\n"
 "\n"
 msgstr ""
+"使用方法: repo_clearfilters リポジトリー <オプション>\n"
+"\n"
+"オプション:\n"
+"  -y, --yes   確認プロンプトを表示しない\n"
+"\n"
 
 #: ../src/spacecmd/repo.py:278
 msgid "Remove these filters [y/N]:"
-msgstr ""
+msgstr "これらのフィルタを削除します [y/N]:"
 
 #: ../src/spacecmd/repo.py:287
 msgid "repo_delete: Delete a user repo"
-msgstr ""
+msgstr "repo_delete: ユーザリポジトリーを削除"
 
 #: ../src/spacecmd/repo.py:288
 msgid "usage: repo_delete <repo ...>"
-msgstr ""
+msgstr "使用方法: repo_delete <リポジトリー ...>"
 
 #: ../src/spacecmd/repo.py:307 ../src/spacecmd/softwarechannel.py:610
 msgid "Repos"
-msgstr ""
+msgstr "リポジトリー"
 
 #: ../src/spacecmd/repo.py:311
 msgid "Delete these repos [y/N]:"
-msgstr ""
+msgstr "これらのリポジトリーを削除します [y/N]:"
 
 #: ../src/spacecmd/repo.py:316
 #, python-format
 msgid "Failed to remove repo %s"
-msgstr ""
+msgstr "リポジトリー %s の削除に失敗しました"
 
 #: ../src/spacecmd/repo.py:324
 msgid "repo_create: Create a user repository"
-msgstr ""
+msgstr "repo_create: ユーザリポジトリーを作成"
 
 #: ../src/spacecmd/repo.py:325
 msgid ""
@@ -4073,55 +4078,65 @@ msgid ""
 "  --cert       SSL Client certificate (not required)\n"
 "  --key        SSL Client key (not required)"
 msgstr ""
+"使用方法: repo_create <オプション>)\n"
+"\n"
+"options:\n"
+"  -n, --name   リポジトリーの名前\n"
+"  -u, --url    リポジトリーの URL\n"
+"  -t, --type   リポジトリーのタイプ (既定値: yum)\n"
+"\n"
+"  --ca         SSL CA 証明書 (既定値: なし)\n"
+"  --cert       SSL クライアント証明書 (既定値: なし)\n"
+"  --key        SSL クライアント鍵 (既定値: なし)"
 
 #: ../src/spacecmd/repo.py:350
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../src/spacecmd/repo.py:351
 msgid "Type:"
-msgstr ""
+msgstr "タイプ:"
 
 #: ../src/spacecmd/repo.py:352 ../src/spacecmd/repo.py:462
 msgid "SSL CA cert:"
-msgstr ""
+msgstr "SSL CA 証明書:"
 
 #: ../src/spacecmd/repo.py:353 ../src/spacecmd/repo.py:463
 msgid "SSL Client cert:"
-msgstr ""
+msgstr "SSL クライアント証明書:"
 
 #: ../src/spacecmd/repo.py:354 ../src/spacecmd/repo.py:464
 msgid "SSL Client key:"
-msgstr ""
+msgstr "SSL クライアント鍵:"
 
 #: ../src/spacecmd/repo.py:361
 msgid "A URL is required"
-msgstr ""
+msgstr "URL を指定する必要があります"
 
 #: ../src/spacecmd/repo.py:381
 msgid "repo_rename: Rename a user repository"
-msgstr ""
+msgstr "repo_rename: ユーザリポジトリーの名前を変更"
 
 #: ../src/spacecmd/repo.py:382
 msgid "usage: repo_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "使用方法: repo_rename 変更前の名前 変更後の名前"
 
 #: ../src/spacecmd/repo.py:404
 #, python-format
 msgid "Could not find repo %s"
-msgstr ""
+msgstr "リポジトリー %s が見つかりませんでした"
 
 #: ../src/spacecmd/repo.py:417
 msgid "repo_updateurl: Change the URL of a user repository"
-msgstr ""
+msgstr "repo_updateurl: ユーザーリポジトリーの URL を変更"
 
 #: ../src/spacecmd/repo.py:418
 msgid "usage: repo_updateurl <repo> <url>"
-msgstr ""
+msgstr "使用方法: repo_updateurl <リポジトリー> <URL>"
 
 #: ../src/spacecmd/repo.py:443
 msgid "repo_updatessl: Change the SSL certificates of a user repository"
-msgstr ""
+msgstr "repo_updatessl: ユーザーリポジトリーの SSL 証明書を変更"
 
 #: ../src/spacecmd/repo.py:444
 msgid ""
@@ -4131,59 +4146,64 @@ msgid ""
 "  --cert       SSL Client certificate (not required)\n"
 "  --key        SSL Client key (not required)"
 msgstr ""
+"使用方法: repo_updatessl <options>)\n"
+"オプション:\n"
+"  --ca         SSL CA 証明書 (既定値: なし)\n"
+"  --cert       SSL クライアント証明書 (既定値: なし)\n"
+"  --key        SSL クライアント鍵 (既定値: なし)"
 
 #: ../src/spacecmd/report.py:43
 msgid "report_inactivesystems: List all inactive systems"
-msgstr ""
+msgstr "report_inactivesystems: しばらく稼働していないシステムを表示"
 
 #: ../src/spacecmd/report.py:44
 msgid "usage: report_inactivesystems [DAYS]"
-msgstr ""
+msgstr "使用方法: report_inactivesystems [日数]"
 
 #: ../src/spacecmd/report.py:84
 msgid "report_outofdatesystems: List all out-of-date systems"
-msgstr ""
+msgstr "report_outofdatesystems: 全ての古くなったシステムを表示"
 
 #: ../src/spacecmd/report.py:85
 msgid "usage: report_outofdatesystems"
-msgstr ""
+msgstr "使用方法: report_outofdatesystems"
 
 #: ../src/spacecmd/report.py:112
 msgid "report_ungroupedsystems: List all ungrouped systems"
-msgstr ""
+msgstr "report_ungroupedsystems: グループ化されていないシステムを表示"
 
 #: ../src/spacecmd/report.py:113
 msgid "usage: report_ungroupedsystems"
-msgstr ""
+msgstr "使用方法: report_ungroupedsystems"
 
 #: ../src/spacecmd/report.py:130
 msgid "report_errata: List all errata and how many systems they affect"
-msgstr ""
+msgstr "report_errata: 全てのエラータとそのエラータが影響するシステムを表示"
 
 #: ../src/spacecmd/report.py:131
 msgid "usage: report_errata [ERRATA|search:XXX ...]"
-msgstr ""
+msgstr "使用方法: report_errata [エラータ|search:XXX ...]"
 
 #: ../src/spacecmd/report.py:143
 msgid "All errata requested - this may take a few minutes, please be patient!"
-msgstr ""
+msgstr "全てのエラータを要求しました - この処理には時間がかかります。しばらくお待ちください！"
 
 #: ../src/spacecmd/report.py:166
 #, python-format
 msgid "%s  # Systems"
-msgstr ""
+msgstr "%s  # システム"
 
 #: ../src/spacecmd/report.py:173
 msgid "No errata found for '{}'"
-msgstr ""
+msgstr "'{}' に対するエラータは見つかりませんでした"
 
 #: ../src/spacecmd/report.py:180
 msgid "report_ipaddresses: List the hostname and IP of each system"
-msgstr ""
+msgstr "report_ipaddresses: それぞれのシステムのホスト名と IP アドレスを表示"
 
 #: ../src/spacecmd/report.py:181
 msgid "usage: report_ipaddresses [<SYSTEMS>]"
-msgstr ""
+msgstr "使用方法: report_ipaddresses [<システム>]"
 
 #: ../src/spacecmd/report.py:201 ../src/spacecmd/report.py:265
 #: ../src/spacecmd/scap.py:67 ../src/spacecmd/scap.py:207
@@ -4209,47 +4229,47 @@ msgstr ""
 #: ../src/spacecmd/system.py:4108 ../src/spacecmd/system.py:4166
 #: ../src/spacecmd/system.py:4224
 msgid "No systems selected"
-msgstr ""
+msgstr "システムが選択されていません"
 
 #: ../src/spacecmd/report.py:244
 msgid "report_kernels: List the running kernel of each system"
-msgstr ""
+msgstr "report_kernels: それぞれのシステムで動作しているカーネルを表示"
 
 #: ../src/spacecmd/report.py:245
 msgid "usage: report_kernels [<SYSTEMS>]"
-msgstr ""
+msgstr "使用方法: report_kernels [<システム>]"
 
 #: ../src/spacecmd/report.py:282
 #, python-format
 msgid "%s  Kernel"
-msgstr ""
+msgstr "%s  カーネル"
 
 #: ../src/spacecmd/report.py:282
 msgid "System"
-msgstr ""
+msgstr "システム"
 
 #: ../src/spacecmd/report.py:296
 msgid "report_duplicates: List duplicate system profiles"
-msgstr ""
+msgstr "report_duplicates: 重複しているシステムプロファイルを表示"
 
 #: ../src/spacecmd/report.py:297
 msgid "usage: report_duplicates"
-msgstr ""
+msgstr "使用方法: report_duplicates"
 
 #: ../src/spacecmd/report.py:319 ../src/spacecmd/report.py:341
 #: ../src/spacecmd/report.py:359 ../src/spacecmd/report.py:377
 msgid "System ID   Last Checkin"
-msgstr ""
+msgstr "システム ID   最終チェックイン"
 
 #: ../src/spacecmd/scap.py:43
 msgid ""
 "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given "
 "systems"
-msgstr ""
+msgstr "scap_listxccdfscans: 指定したシステムに対する完了した OpenSCAP スキャンの一覧を表示"
 
 #: ../src/spacecmd/scap.py:44
 msgid "usage: scap_listxccdfscans <SYSTEMS>"
-msgstr ""
+msgstr "使用方法: scap_listxccdfscans <システム>"
 
 #: ../src/spacecmd/scap.py:78 ../src/spacecmd/system.py:608
 #: ../src/spacecmd/system.py:1220 ../src/spacecmd/system.py:1371
@@ -4259,374 +4279,378 @@ msgstr ""
 #: ../src/spacecmd/system.py:3238 ../src/spacecmd/system.py:3295
 #, python-format
 msgid "System: %s"
-msgstr ""
+msgstr "システム: %s"
 
 #: ../src/spacecmd/scap.py:88
 #, python-format
 msgid "XID: %d Profile: %s Path: (%s) Completed: %s"
-msgstr ""
+msgstr "XID: %d プロファイル: %s パス: (%s) 完了済み: %s"
 
 #: ../src/spacecmd/scap.py:96
 msgid ""
 "scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
 "OpenSCAP XCCDF scan"
 msgstr ""
+"scap_getxccdfscanruleresults: 指定した OpenSCAP XCCDF スキャンに対する RuleResults "
+"の完全な一覧を表示"
 
 #: ../src/spacecmd/scap.py:97
 msgid "usage: scap_getxccdfscanruleresults <XID>"
-msgstr ""
+msgstr "使用方法: scap_getxccdfscanruleresults <XID>"
 
 #: ../src/spacecmd/scap.py:117
 #, python-format
 msgid "XID: %s"
-msgstr ""
+msgstr "XID: %s"
 
 #: ../src/spacecmd/scap.py:124
 #, python-format
 msgid "IDref: %s Result: %s Idents: (%s)"
-msgstr ""
+msgstr "IDref: %s 結果: %s 識別情報: (%s)"
 
 #: ../src/spacecmd/scap.py:132
 msgid "scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan"
-msgstr ""
+msgstr "scap_getxccdfscandetails: 指定した OpenSCAP XCCDF スキャンの詳細を取得"
 
 #: ../src/spacecmd/scap.py:133
 msgid "usage: scap_getxccdfscandetails <XID>"
-msgstr ""
+msgstr "使用方法: scap_getxccdfscandetails <XID>"
 
 #: ../src/spacecmd/scap.py:159
 msgid "XID:"
-msgstr ""
+msgstr "XID:"
 
 #: ../src/spacecmd/scap.py:159
 msgid "SID:"
-msgstr ""
+msgstr "SID:"
 
 #: ../src/spacecmd/scap.py:159
 msgid "Action_ID:"
-msgstr ""
+msgstr "アクション_ID:"
 
 #: ../src/spacecmd/scap.py:161
 msgid "OSCAP_Parameters:"
-msgstr ""
+msgstr "OSCAP_パラメータ:"
 
 #: ../src/spacecmd/scap.py:162
 msgid "Test_Result:"
-msgstr ""
+msgstr "テスト結果:"
 
 #: ../src/spacecmd/scap.py:162
 msgid "Benchmark:"
-msgstr ""
+msgstr "ベンチマーク:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Benchmark_Version:"
-msgstr ""
+msgstr "ベンチマークバージョン:"
 
 #: ../src/spacecmd/scap.py:164
 msgid "Profile:"
-msgstr ""
+msgstr "プロファイル:"
 
 #: ../src/spacecmd/scap.py:165
 msgid "Profile_Title:"
-msgstr ""
+msgstr "プロファイルタイトル:"
 
 #: ../src/spacecmd/scap.py:165
 msgid "Start_Time:"
-msgstr ""
+msgstr "開始日時:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "End_Time:"
-msgstr ""
+msgstr "終了日時:"
 
 #: ../src/spacecmd/scap.py:167
 msgid "Errors:"
-msgstr ""
+msgstr "エラー:"
 
 #: ../src/spacecmd/scap.py:175
 msgid "scap_schedulexccdfscan: Schedule Scap XCCDF scan"
-msgstr ""
+msgstr "scap_schedulexccdfscan: Scap XCCDF スキャンをスケジュール"
 
 #: ../src/spacecmd/scap.py:176
 msgid "usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
-msgstr ""
+msgstr "使用方法: scap_schedulexccdfscan XCCDF_ファイルのパス XCCDF_オプション システム"
 
 #: ../src/spacecmd/scap.py:177
 msgid "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
-msgstr ""
+msgstr "       scap_schedulexccdfscan ssm XCCDF_ファイルのパス XCCDF_オプション"
 
 #: ../src/spacecmd/scap.py:182
 msgid ""
 "\n"
 "To use systems in the ssm, pass the \"ssm\" keyword in front. Example:"
 msgstr ""
+"\n"
+"ssm 内でシステムを使用する場合は、キーワード \"ssm\" を前に付けてください。例:"
 
 #: ../src/spacecmd/schedule.py:88
 msgid "ID      Date                 C    F    P     Action"
-msgstr ""
+msgstr "ID      日時                 C    F    P     アクション"
 
 #: ../src/spacecmd/schedule.py:134
 msgid "schedule_cancel: Cancel scheduled actions"
-msgstr ""
+msgstr "schedule_cancel: スケジュールしたアクションをキャンセル"
 
 #: ../src/spacecmd/schedule.py:135
 msgid "usage: schedule_cancel ID|* ..."
-msgstr ""
+msgstr "使用方法: schedule_cancel ID|* ..."
 
 #: ../src/spacecmd/schedule.py:157
 msgid "Cancel all pending actions [y/N]:"
-msgstr ""
+msgstr "全ての待機中アクションをキャンセルします [y/N]:"
 
 #: ../src/spacecmd/schedule.py:158
 msgid "All pending actions left untouched"
-msgstr ""
+msgstr "全ての待機中アクションには何もしません"
 
 #: ../src/spacecmd/schedule.py:173 ../src/spacecmd/schedule.py:234
 #, python-format
 msgid "\"%s\" is not a valid ID"
-msgstr ""
+msgstr "\"%s\" は正しい ID ではありません"
 
 #: ../src/spacecmd/schedule.py:179
 #, python-format
 msgid "Canceled action: %i"
-msgstr ""
+msgstr "キャンセルしたアクション: %i"
 
 #: ../src/spacecmd/schedule.py:182
 #, python-format
 msgid "Failed action: %s"
-msgstr ""
+msgstr "失敗したアクション: %s"
 
 #: ../src/spacecmd/schedule.py:184
 #, python-format
 msgid "Canceled %i action(s)"
-msgstr ""
+msgstr "%i 個のアクションをキャンセルしました"
 
 #: ../src/spacecmd/schedule.py:192
 msgid "schedule_reschedule: Reschedule failed actions"
-msgstr ""
+msgstr "schedule_reschedule: 失敗したアクションを再スケジュール"
 
 #: ../src/spacecmd/schedule.py:193
 msgid "usage: schedule_reschedule ID|* ..."
-msgstr ""
+msgstr "使用方法: schedule_reschedule ID|* ..."
 
 #: ../src/spacecmd/schedule.py:220
 msgid "Reschedule all failed actions [y/N]:"
-msgstr ""
+msgstr "失敗した全てのアクションを再スケジュールします [y/N]:"
 
 #: ../src/spacecmd/schedule.py:232
 #, python-format
 msgid "\"%i\" is not a failed action"
-msgstr ""
+msgstr "\"%i\" は失敗したアクションではありません"
 
 #: ../src/spacecmd/schedule.py:238
 msgid "No failed actions to reschedule"
-msgstr ""
+msgstr "再スケジュールすべき失敗アクションはありません"
 
 #: ../src/spacecmd/schedule.py:242
 #, python-format
 msgid "Rescheduled %i action(s)"
-msgstr ""
+msgstr "%i 個のアクションを再スケジュールしました"
 
 #: ../src/spacecmd/schedule.py:250
 msgid "schedule_details: Show the details of a scheduled action"
-msgstr ""
+msgstr "schedule_details: スケジュールしたアクションの詳細を表示"
 
 #: ../src/spacecmd/schedule.py:251
 msgid "usage: schedule_details ID"
-msgstr ""
+msgstr "使用方法: schedule_details ID"
 
 #: ../src/spacecmd/schedule.py:268
 #, python-format
 msgid "The ID \"%s\" is invalid"
-msgstr ""
+msgstr "ID \"%s\" は正しくありません"
 
 #: ../src/spacecmd/schedule.py:277
 #, python-format
 msgid "ID:        %i"
-msgstr ""
+msgstr "ID:        %i"
 
 #: ../src/spacecmd/schedule.py:278
 #, python-format
 msgid "Action:    %s"
-msgstr ""
+msgstr "アクション:    %s"
 
 #: ../src/spacecmd/schedule.py:279
 #, python-format
 msgid "User:      %s"
-msgstr ""
+msgstr "ユーザ:      %s"
 
 #: ../src/spacecmd/schedule.py:280
 #, python-format
 msgid "Date:      %s"
-msgstr ""
+msgstr "日時:      %s"
 
 #: ../src/spacecmd/schedule.py:282 ../src/spacecmd/schedule.py:379
 #: ../src/spacecmd/system.py:3245
 #, python-format
 msgid "Completed: %s"
-msgstr ""
+msgstr "完了済み: %s"
 
 #: ../src/spacecmd/schedule.py:283
 #, python-format
 msgid "Failed:    %s"
-msgstr ""
+msgstr "失敗済み:    %s"
 
 #: ../src/spacecmd/schedule.py:284
 #, python-format
 msgid "Pending:   %s"
-msgstr ""
+msgstr "待機中:   %s"
 
 #: ../src/spacecmd/schedule.py:288
 msgid "Completed Systems"
-msgstr ""
+msgstr "完了したシステム"
 
 #: ../src/spacecmd/schedule.py:295
 msgid "Failed Systems"
-msgstr ""
+msgstr "失敗したシステム"
 
 #: ../src/spacecmd/schedule.py:302
 msgid "Pending Systems"
-msgstr ""
+msgstr "待機中のシステム"
 
 #: ../src/spacecmd/schedule.py:307
 #, python-format
 msgid "No action found with the ID \"%s\""
-msgstr ""
+msgstr "ID \"%s\" のアクションが見つかりません"
 
 #: ../src/spacecmd/schedule.py:316
 msgid "schedule_getoutput: Show the output from an action"
-msgstr ""
+msgstr "schedule_getoutput: アクションの出力を表示"
 
 #: ../src/spacecmd/schedule.py:317
 msgid "usage: schedule_getoutput ID"
-msgstr ""
+msgstr "使用方法: schedule_getoutput ID"
 
 #: ../src/spacecmd/schedule.py:332
 #, python-format
 msgid "\"%s\" is not a valid action ID"
-msgstr ""
+msgstr "\"%s\" は正しいアクション ID ではありません"
 
 #: ../src/spacecmd/schedule.py:354
 #, python-format
 msgid "System:      %s"
-msgstr ""
+msgstr "システム:      %s"
 
 #: ../src/spacecmd/schedule.py:355
 #, python-format
 msgid "Start Time:  %s"
-msgstr ""
+msgstr "開始時間:  %s"
 
 #: ../src/spacecmd/schedule.py:356
 #, python-format
 msgid "Stop Time:   %s"
-msgstr ""
+msgstr "停止時間:   %s"
 
 #: ../src/spacecmd/schedule.py:357
 #, python-format
 msgid "Return Code: %i"
-msgstr ""
+msgstr "返却コード: %i"
 
 #: ../src/spacecmd/schedule.py:359 ../src/spacecmd/schedule.py:381
 msgid "Output"
-msgstr ""
+msgstr "出力"
 
 #: ../src/spacecmd/schedule.py:378
 #, python-format
 msgid "System:    %s"
-msgstr ""
+msgstr "システム:    %s"
 
 #: ../src/spacecmd/schedule.py:394
 msgid "schedule_listpending: List pending actions"
-msgstr ""
+msgstr "schedule_listpending: 待機中のアクションを表示"
 
 #: ../src/spacecmd/schedule.py:395
 msgid "usage: schedule_listpending [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "使用方法: schedule_listpending [開始日] [終了日]"
 
 #: ../src/spacecmd/schedule.py:407
 msgid "schedule_listcompleted: List completed actions"
-msgstr ""
+msgstr "schedule_listcompleted: 完了済みアクションを表示"
 
 #: ../src/spacecmd/schedule.py:408
 msgid "usage: schedule_listcompleted [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "使用方法: schedule_listcompleted [開始日] [終了日]"
 
 #: ../src/spacecmd/schedule.py:420
 msgid "schedule_listfailed: List failed actions"
-msgstr ""
+msgstr "schedule_listfailed: 失敗したアクションを表示"
 
 #: ../src/spacecmd/schedule.py:421
 msgid "usage: schedule_listfailed [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "使用方法: schedule_listfailed [開始日] [終了日]"
 
 #: ../src/spacecmd/schedule.py:433
 msgid "schedule_listarchived: List archived actions"
-msgstr ""
+msgstr "schedule_listarchived: アーカイブ済みのアクションを表示"
 
 #: ../src/spacecmd/schedule.py:434
 msgid "usage: schedule_listarchived [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "使用方法: schedule_listarchived [開始日] [終了日]"
 
 #: ../src/spacecmd/schedule.py:446
 msgid "schedule_list: List all actions"
-msgstr ""
+msgstr "schedule_list: 全てのアクションを表示"
 
 #: ../src/spacecmd/schedule.py:447
 msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "使用方法: schedule_list [開始日] [終了日]"
 
 #: ../src/spacecmd/shell.py:120
 msgid "Could not read history file"
-msgstr ""
+msgstr "履歴ファイルを読み込めませんでした"
 
 #. pylint: disable=W0702
 #: ../src/spacecmd/shell.py:124
 msgid "Exception occurred: {}"
-msgstr ""
+msgstr "例外が発生しました: {}"
 
 #: ../src/spacecmd/shell.py:188 ../src/spacecmd/shell.py:227
 #, python-format
 msgid "%s: event not found"
-msgstr ""
+msgstr "%s: イベントが見つかりませんでした"
 
 #: ../src/spacecmd/snippet.py:42
 msgid "snippet_list: List the available Kickstart snippets"
-msgstr ""
+msgstr "snippet_list: 利用可能なキットスタートスニペットを表示"
 
 #: ../src/spacecmd/snippet.py:43
 msgid "usage: snippet_list"
-msgstr ""
+msgstr "使用方法: snippet_list"
 
 #: ../src/spacecmd/snippet.py:60
 msgid "snippet_details: Show the contents of a snippet"
-msgstr ""
+msgstr "snippet_details: スニペットの内容を表示"
 
 #: ../src/spacecmd/snippet.py:61
 msgid "usage: snippet_details SNIPPET ..."
-msgstr ""
+msgstr "使用方法: snippet_details スニペット ..."
 
 #: ../src/spacecmd/snippet.py:90
 #, python-format
 msgid "%s is not a valid snippet"
-msgstr ""
+msgstr "%s は正しいスニペットではありません"
 
 #: ../src/spacecmd/snippet.py:97
 #, python-format
 msgid "Name:   %s"
-msgstr ""
+msgstr "名前:   %s"
 
 #: ../src/spacecmd/snippet.py:98
 #, python-format
 msgid "Macro:  %s"
-msgstr ""
+msgstr "マクロ:  %s"
 
 #: ../src/spacecmd/snippet.py:99
 #, python-format
 msgid "File:   %s"
-msgstr ""
+msgstr "ファイル:   %s"
 
 #: ../src/spacecmd/snippet.py:110
 msgid "snippet_create: Create a Kickstart snippet"
-msgstr ""
+msgstr "snippet_create: キックスタートスニペットを作成"
 
 #: ../src/spacecmd/snippet.py:111
 msgid ""
@@ -4636,43 +4660,48 @@ msgid ""
 "  -n NAME\n"
 "  -f FILE"
 msgstr ""
+"使用方法: snippet_create [オプション])\n"
+"\n"
+"オプション:\n"
+"  -n NAME\n"
+"  -f FILE"
 
 #: ../src/spacecmd/snippet.py:149
 msgid "A name is required for the snippet"
-msgstr ""
+msgstr "スニペットに対する名前を指定する必要があります"
 
 #: ../src/spacecmd/snippet.py:153
 msgid "A file is required"
-msgstr ""
+msgstr "ファイルを指定する必要があります"
 
 #: ../src/spacecmd/snippet.py:160
 #, python-format
 msgid "Snippet: %s"
-msgstr ""
+msgstr "スニペット: %s"
 
 #: ../src/spacecmd/snippet.py:176
 msgid "snippet_update: Update a Kickstart snippet"
-msgstr ""
+msgstr "snippet_update: キックスタートスニペットを更新"
 
 #: ../src/spacecmd/snippet.py:177
 msgid "usage: snippet_update NAME"
-msgstr ""
+msgstr "使用方法: snippet_update 名前"
 
 #: ../src/spacecmd/snippet.py:199
 msgid "snippet_delete: Delete a Kickstart snippet"
-msgstr ""
+msgstr "snippet_delete: キックスタートスニペットを削除"
 
 #: ../src/spacecmd/snippet.py:200
 msgid "usage: snippet_delete NAME"
-msgstr ""
+msgstr "使用方法: snippet_delete 名前"
 
 #: ../src/spacecmd/snippet.py:218
 msgid "Remove this snippet [y/N]:"
-msgstr ""
+msgstr "このスニペットを削除します [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:57
 msgid "softwarechannel_list: List all available software channels"
-msgstr ""
+msgstr "softwarechannel_list: 利用可能な全てのソフトウェアチャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:58
 msgid ""
@@ -4681,14 +4710,18 @@ msgid ""
 "  -v verbose (display label and summary)\n"
 "  -t tree view (pretty-print(child-channels))\n"
 msgstr ""
+"使用方法: softwarechannel_list [オプション]')\n"
+"オプション:\n"
+"  -v 冗長表示 (ラベルと概要を表示)\n"
+"  -t ツリービュー (子チャンネルをわかりやすく表示)\n"
 
 #: ../src/spacecmd/softwarechannel.py:106
 msgid "softwarechannel_listmanageablechannels: List all software channels"
-msgstr ""
+msgstr "softwarechannel_listmanageablechannels: 全てのソフトウェアチャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:107
 msgid "                                        manageable by current user"
-msgstr ""
+msgstr "                                        (ただし、現在のユーザで管理可能なもの)"
 
 #: ../src/spacecmd/softwarechannel.py:108
 msgid ""
@@ -4696,10 +4729,13 @@ msgid ""
 "options:\n"
 "  -v verbose (display label and summary)"
 msgstr ""
+"使用方法: softwarechannel_listmanageablechannels [オプション]\n"
+"オプション:\n"
+"  -v 冗長表示 (ラベルと概要を表示)"
 
 #: ../src/spacecmd/softwarechannel.py:143
 msgid "softwarechannel_listbasechannels: List all base software channels"
-msgstr ""
+msgstr "softwarechannel_listbasechannels: 全てのベースソフトウェアチャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:144
 msgid ""
@@ -4707,81 +4743,86 @@ msgid ""
 "options:\n"
 "  -v verbose (display label and summary)"
 msgstr ""
+"使用方法: softwarechannel_listbasechannels [オプション])\n"
+"オプション:\n"
+"  -v 冗長表示 (ラベルと概要を表示)"
 
 #: ../src/spacecmd/softwarechannel.py:172
 msgid "softwarechannel_listchildchannels: List child software channels"
-msgstr ""
+msgstr "softwarechannel_listchildchannels: 子ソフトウェアチャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:173
 #: ../src/spacecmd/softwarechannel.py:2735
 msgid "usage:"
-msgstr ""
+msgstr "使用方法:"
 
 #: ../src/spacecmd/softwarechannel.py:174
 msgid "softwarechannel_listchildchannels [options]"
-msgstr ""
+msgstr "softwarechannel_listchildchannels [オプション]"
 
 #: ../src/spacecmd/softwarechannel.py:175
 msgid "softwarechannel_listchildchannels : List all child channels"
-msgstr ""
+msgstr "softwarechannel_listchildchannels : 全ての子チャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:176
 msgid ""
 "softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
 "channel"
-msgstr ""
+msgstr "softwarechannel_listchildchannels : 指定したベースチャンネルの子チャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:178
 msgid ""
 "options:\n"
 " -v verbose (display label and summary)"
 msgstr ""
+"オプション:\n"
+" -v 冗長表示 (ラベルと概要を表示)"
 
 #: ../src/spacecmd/softwarechannel.py:206
 msgid "softwarechannel_listsystems: List all systems subscribed to"
-msgstr ""
+msgstr "softwarechannel_listsystems: 特定のソフトウェアチャンネルをサブスクライブ"
 
 #: ../src/spacecmd/softwarechannel.py:207
 msgid "                             a software channel"
-msgstr ""
+msgstr "                             しているシステムを表示"
 
 #: ../src/spacecmd/softwarechannel.py:208
 msgid "usage: softwarechannel_listsystems CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_listsystems チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:242
 msgid "softwarechannel_listpackages: List the most recent packages"
-msgstr ""
+msgstr "softwarechannel_listpackages: 最も使用されているパッケージを表示"
 
 #: ../src/spacecmd/softwarechannel.py:243
 msgid "                              available from a software channel"
-msgstr ""
+msgstr "                              (ただしソフトウェアチャンネルで提供されているもの)"
 
 #: ../src/spacecmd/softwarechannel.py:244
 msgid "usage: softwarechannel_listpackages CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_listpackages チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:281
 msgid "softwarechannel_listallpackages: List all packages in a channel"
-msgstr ""
+msgstr "softwarechannel_listallpackages: チャンネル内に含まれている全てのパッケージを表示"
 
 #: ../src/spacecmd/softwarechannel.py:282
 msgid "usage: softwarechannel_listallpackages CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_listallpackages チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:340
 msgid ""
 "softwarechannel_listlatestpackages: List the newest version of all packages "
 "in a channel"
-msgstr ""
+msgstr "softwarechannel_listlatestpackages: チャンネル内の全てのパッケージに対する最新バージョンを表示"
 
 #: ../src/spacecmd/softwarechannel.py:341
 msgid "usage: softwarechannel_listlatestpackages CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_listlatestpackages チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:380
 msgid "softwarechannel_setdetails: Modify details of a software channel"
-msgstr ""
+msgstr "softwarechannel_setdetails: ソフトウェアチャンネルの詳細を変更"
 
 #: ../src/spacecmd/softwarechannel.py:381
 #, python-format
@@ -4800,86 +4841,99 @@ msgid ""
 "  -i GPG_ID\n"
 "  -f GPG_FINGERPRINT"
 msgstr ""
+"使用方法: softwarechannel_setdetails [オプション] <チャンネル ...>)\n"
+"\n"
+"オプション (少なくとも 1 つ以上を指定しなければなりません):\n"
+"  -n (名前)\n"
+"  -d (説明)\n"
+"  -s (概要)\n"
+"  -c (チェックサム) %s\n"
+"  -m (メンテナ名)\n"
+"  -e (メンテナの電子メールアドレス)\n"
+"  -p (メンテナの電話番号)\n"
+"  -u (GPG URL)\n"
+"  -i (GPG ID)\n"
+"  -f (GPG の指紋)"
 
 #: ../src/spacecmd/softwarechannel.py:443
 msgid "At least one attribute to set must be given"
-msgstr ""
+msgstr "少なくとも 1 つの属性を指定しなければなりません"
 
 #: ../src/spacecmd/softwarechannel.py:449
 msgid "No channels matching that label"
-msgstr ""
+msgstr "そのラベルに合致するチャンネルはありません"
 
 #: ../src/spacecmd/softwarechannel.py:461
 msgid "Setting same name for more than one channel will fail"
-msgstr ""
+msgstr "複数のチャンネルに対して同じ名前を付けることはできません"
 
 #: ../src/spacecmd/softwarechannel.py:469
 #, python-format
 msgid "Name \"%s\" already in use by channel %s"
-msgstr ""
+msgstr "名前 \"%s\" は既にチャンネル %s で使用されています"
 
 #. get confirmation
 #: ../src/spacecmd/softwarechannel.py:474
 msgid "Setting following attributes..."
-msgstr ""
+msgstr "下記の属性を設定しています..."
 
 #: ../src/spacecmd/softwarechannel.py:477
 #, python-format
 msgid "Name:             %s"
-msgstr ""
+msgstr "名前:             %s"
 
 #: ../src/spacecmd/softwarechannel.py:479
 #, python-format
 msgid "Summary:          %s"
-msgstr ""
+msgstr "概要:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:481
 #, python-format
 msgid "Description:      %s"
-msgstr ""
+msgstr "説明:      %s"
 
 #: ../src/spacecmd/softwarechannel.py:483
 #, python-format
 msgid "Checksum:         %s"
-msgstr ""
+msgstr "チェックサム:         %s"
 
 #: ../src/spacecmd/softwarechannel.py:485
 #, python-format
 msgid "Maintainer name:  %s"
-msgstr ""
+msgstr "メンテナ名:  %s"
 
 #: ../src/spacecmd/softwarechannel.py:487
 #, python-format
 msgid "Maintainer email: %s"
-msgstr ""
+msgstr "メンテナの電子メールアドレス: %s"
 
 #: ../src/spacecmd/softwarechannel.py:489
 #, python-format
 msgid "Maintainer phone: %s"
-msgstr ""
+msgstr "メンテナの電話番号: %s"
 
 #: ../src/spacecmd/softwarechannel.py:491
 #, python-format
 msgid "GPG Key:          %s"
-msgstr ""
+msgstr "GPG 鍵:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:493
 #, python-format
 msgid "GPG Fingerprint:  %s"
-msgstr ""
+msgstr "GPG 指紋:  %s"
 
 #: ../src/spacecmd/softwarechannel.py:495
 #, python-format
 msgid "GPG URL:          %s"
-msgstr ""
+msgstr "GPG URL:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:497
 msgid "... for the following channels:"
-msgstr ""
+msgstr "... 下記のチャンネルを対象とします:"
 
 #: ../src/spacecmd/softwarechannel.py:500
 msgid "Apply? [y/N]:"
-msgstr ""
+msgstr "適用しますか？ [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:512
 #, python-format
