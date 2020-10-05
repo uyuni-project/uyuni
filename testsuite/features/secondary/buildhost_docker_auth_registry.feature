@@ -28,7 +28,7 @@ Feature: Build image with authenticated registry
 @auth_registry
   Scenario: Build an image in the authenticated image store
     Given I am authorized as "docker" with password "docker"
-    When I navigate to images build webpage
+    When I follow the left menu "Images > Build"
     And I select "portus_profile" from "profileId"
     And I enter "latest" as "version"
     And I select the hostname of "build_host" from "buildHostId"

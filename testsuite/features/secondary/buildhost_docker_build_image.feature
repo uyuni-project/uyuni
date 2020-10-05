@@ -84,7 +84,7 @@ Feature: Build container images
 @no_auth_registry
   Scenario: Build an image via the GUI
     Given I am authorized as "admin" with password "admin"
-    When I navigate to images build webpage
+    When I follow the left menu "Images > Build"
     And I select "suse_real_key" from "profileId"
     And I enter "GUI_BUILT_IMAGE" as "version"
     And I select the hostname of "build_host" from "buildHostId"
@@ -94,7 +94,7 @@ Feature: Build container images
 @no_auth_registry
   Scenario: Login as Docker image administrator and build an image
     Given I am authorized as "docker" with password "docker"
-    When I navigate to images build webpage
+    When I follow the left menu "Images > Build"
     And I select "suse_real_key" from "profileId"
     And I enter "GUI_DOCKERADMIN" as "version"
     And I select the hostname of "build_host" from "buildHostId"
