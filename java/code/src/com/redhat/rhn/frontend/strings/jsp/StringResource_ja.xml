@@ -823,14 +823,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Email:</target>
+        <target>電子メール:</target>
       </trans-unit>
       <trans-unit id="prefix.displayname" xml:space="preserve">
         <source>Prefix:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>タイトル:</target>
+        <target>プレフィクス:</target>
       </trans-unit>
       <trans-unit id="position.displayname" xml:space="preserve">
         <source>Position:</source>
