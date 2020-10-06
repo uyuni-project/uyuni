@@ -23,14 +23,6 @@ def retrieve_build_host_id
 end
 
 # OS image build
-When(/^I navigate to images webpage$/) do
-  visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
-end
-
-When(/^I navigate to images build webpage$/) do
-  visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
-end
-
 Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
   steps %(
     When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by kiwikiwi" is completed
@@ -38,8 +30,8 @@ Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
   )
 end
 
-Then(/^I am on the image page of "([^"]*)"$/) do |image_name|
-  step %(I navigate to "#{compute_image_url(image_name)}" page)
+Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
+  step %(I navigate to "os-images/#{org}/" page)
 end
 
 Then(/^I should see the name of the image$/) do
@@ -70,7 +62,7 @@ end
 When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
   def ck_container_imgs(timeout, count)
     repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
-      step %(I navigate to images webpage)
+      step %(I follow the left menu "Images > Image List")
       step %(I wait until I do not see "There are no entries to show." text)
       raise 'error detected while building images' if all(:xpath, "//*[contains(@title, 'Failed')]").any?
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
