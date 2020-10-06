@@ -23,10 +23,10 @@ Feature: Adding the CentOS 6 distribution custom repositories
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "centos-6-iso" as "label"
-    And I enter "https://127.0.0.1/pub/centos-6-iso" as "url"
+    And I enter "http://127.0.0.1/centos-6-iso" as "url"
+    And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
-    And I should see "metadataSigned" as checked
 
   Scenario: Add the repository to the Custom Channel for <label>
     Given I am authorized as "admin" with password "admin"
