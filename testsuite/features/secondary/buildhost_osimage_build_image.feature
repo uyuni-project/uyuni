@@ -52,7 +52,7 @@ Feature: Build OS images
 
   Scenario: Cleanup: remove the image from SUSE Manager server
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Images > Image List
+    When I follow the left menu "Images > Image List"
     And I wait until I do not see "There are no entries to show." text
     And I check the first image
     And I click on "Delete"

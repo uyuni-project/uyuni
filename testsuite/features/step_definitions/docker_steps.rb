@@ -62,7 +62,7 @@ end
 When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
   def ck_container_imgs(timeout, count)
     repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
-      step %(I follow the left menu "Images > Image List)
+      step %(I follow the left menu "Images > Image List")
       step %(I wait until I do not see "There are no entries to show." text)
       raise 'error detected while building images' if all(:xpath, "//*[contains(@title, 'Failed')]").any?
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
