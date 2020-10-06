@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-10-05 08:48+0000\n"
+"PO-Revision-Date: 2020-10-06 09:49+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -1910,19 +1910,19 @@ msgid "Name:       %s"
 msgstr "名前:       %s"
 
 #: ../src/spacecmd/errata.py:397
-#, fuzzy, python-format
+#, python-format
 msgid "Product:    %s"
-msgstr "製品:   s"
+msgstr "製品:    %s"
 
 #: ../src/spacecmd/errata.py:398
-#, fuzzy, python-format
+#, python-format
 msgid "Type:       %s"
-msgstr "タイプ:        %s"
+msgstr "タイプ:       %s"
 
 #: ../src/spacecmd/errata.py:399
-#, fuzzy, python-format
+#, python-format
 msgid "Issue Date: %s"
-msgstr "発行日:s"
+msgstr "発行日: %s"
 
 #: ../src/spacecmd/errata.py:401
 msgid "Topic"
@@ -4846,14 +4846,11 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:106
 msgid "softwarechannel_listmanageablechannels: List all software channels"
-msgstr ""
-"softwarechannel_listmanageablechannels: 全てのソフトウェアチャンネルを表示"
+msgstr "softwarechannel_listmanageablechannels: 現在のユーザが管理できる"
 
 #: ../src/spacecmd/softwarechannel.py:107
 msgid "                                        manageable by current user"
-msgstr ""
-"                                        (ただし、現在のユーザで管理可能なも"
-"の)"
+msgstr "                                        全てのソフトウェアチャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:108
 msgid ""
@@ -4928,13 +4925,11 @@ msgstr "使用方法: softwarechannel_listsystems チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:242
 msgid "softwarechannel_listpackages: List the most recent packages"
-msgstr "softwarechannel_listpackages: 最も使用されているパッケージを表示"
+msgstr "softwarechannel_listpackages: ソフトウェアチャンネルで提供されているパッケージの"
 
 #: ../src/spacecmd/softwarechannel.py:243
 msgid "                              available from a software channel"
-msgstr ""
-"                              (ただしソフトウェアチャンネルで提供されているも"
-"の)"
+msgstr "                              うち、最も使用されているものを表示"
 
 #: ../src/spacecmd/softwarechannel.py:244
 msgid "usage: softwarechannel_listpackages CHANNEL"
@@ -5080,132 +5075,133 @@ msgstr "適用しますか？ [y/N]:"
 #: ../src/spacecmd/softwarechannel.py:512
 #, python-format
 msgid "Could not get details for %s"
-msgstr ""
+msgstr "%s に対する詳細を取得できませんでした"
 
 #: ../src/spacecmd/softwarechannel.py:524
 #, python-format
 msgid "Error while setting details for %s"
-msgstr ""
+msgstr "%s に対する詳細を設定する際にエラーが発生しました"
 
 #: ../src/spacecmd/softwarechannel.py:527
 #, python-format
 msgid "Channels changed: %d"
-msgstr ""
+msgstr "変更したチャンネル数: %d"
 
 #: ../src/spacecmd/softwarechannel.py:535
 msgid "softwarechannel_details: Show the details of a software channel"
-msgstr ""
+msgstr "softwarechannel_details: ソフトウェアチャンネルの詳細を表示"
 
 #: ../src/spacecmd/softwarechannel.py:536
 msgid "usage: softwarechannel_details <CHANNEL ...>"
-msgstr ""
+msgstr "使用方法: softwarechannel_details <チャンネル ...>"
 
 #: ../src/spacecmd/softwarechannel.py:576
 #, python-format
 msgid "Label:              %s"
-msgstr ""
+msgstr "ラベル:              %s"
 
 #: ../src/spacecmd/softwarechannel.py:577
 #, python-format
 msgid "Name:               %s"
-msgstr ""
+msgstr "名前:               %s"
 
 #: ../src/spacecmd/softwarechannel.py:578
 #, python-format
 msgid "Architecture:       %s"
-msgstr ""
+msgstr "アーキテクチャ:       %s"
 
 #: ../src/spacecmd/softwarechannel.py:579
 #, python-format
 msgid "Parent:             %s"
-msgstr ""
+msgstr "親:             %s"
 
 #: ../src/spacecmd/softwarechannel.py:580
 #, python-format
 msgid "Systems Subscribed: %s"
-msgstr ""
+msgstr "サブスクライブしているシステム: %s"
 
 #: ../src/spacecmd/softwarechannel.py:581
 #, python-format
 msgid "Number of Packages: %i"
-msgstr ""
+msgstr "パッケージ数: %i"
 
 #: ../src/spacecmd/softwarechannel.py:585
 msgid "Summary"
-msgstr ""
+msgstr "概要"
 
 #: ../src/spacecmd/softwarechannel.py:596
 #, python-format
 msgid "GPG Key:            %s"
-msgstr ""
+msgstr "GPG 鍵:            %s"
 
 #: ../src/spacecmd/softwarechannel.py:597
 #, python-format
 msgid "GPG Fingerprint:    %s"
-msgstr ""
+msgstr "GPG 指紋:    %s"
 
 #: ../src/spacecmd/softwarechannel.py:598
 #, python-format
 msgid "GPG URL:            %s"
-msgstr ""
+msgstr "GPG URL:            %s"
 
 #: ../src/spacecmd/softwarechannel.py:599
 #, python-format
 msgid "GPG CHECK:          %s"
-msgstr ""
+msgstr "GPG チェック:          %s"
 
 #: ../src/spacecmd/softwarechannel.py:603
 msgid "Kickstart Trees"
-msgstr ""
+msgstr "キックスタートツリー"
 
 #: ../src/spacecmd/softwarechannel.py:621
 msgid "softwarechannel_listerrata: List the errata associated with a"
-msgstr ""
+msgstr "softwarechannel_listerrata: 特定のソフトウェアチャンネルに関連づけられている"
 
 #: ../src/spacecmd/softwarechannel.py:622
 msgid "                            software channel"
-msgstr ""
+msgstr "                            エラータを表示"
 
 #: ../src/spacecmd/softwarechannel.py:623
 msgid ""
 "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 msgstr ""
+"使用方法: softwarechannel_listerrata <チャンネル ...> [from=yyyymmdd [to=yyyymmdd]]"
 
 #: ../src/spacecmd/softwarechannel.py:681
 msgid "softwarechannel_listarches: lists the potential software"
-msgstr ""
+msgstr "softwarechannel_listarches: 作成可能なソフトウェアチャンネルの"
 
 #: ../src/spacecmd/softwarechannel.py:682
 msgid "                            channel architectures that can be created"
-msgstr ""
+msgstr "                            アーキテクチャを表示"
 
 #: ../src/spacecmd/softwarechannel.py:683
 msgid "usage: softwarechannel_listarches"
-msgstr ""
+msgstr "使用方法: softwarechannel_listarches"
 
 #: ../src/spacecmd/softwarechannel.py:684 ../src/spacecmd/system.py:3826
 msgid "options:"
-msgstr ""
+msgstr "オプション:"
 
 #: ../src/spacecmd/softwarechannel.py:685
 msgid "    -v verbose (display label and name)"
-msgstr ""
+msgstr "    -v 冗長表示 (ラベルと名前を表示)"
 
 #: ../src/spacecmd/softwarechannel.py:706
 msgid "softwarechannel_delete: Delete a software channel"
-msgstr ""
+msgstr "softwarechannel_delete: ソフトウェアチャンネルを削除"
 
 #: ../src/spacecmd/softwarechannel.py:707
 msgid "usage: softwarechannel_delete <CHANNEL ...>"
-msgstr ""
+msgstr "使用方法: softwarechannel_delete <チャンネル ...>"
 
 #: ../src/spacecmd/softwarechannel.py:732
 msgid "Channels"
-msgstr ""
+msgstr "チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:760
 msgid "softwarechannel_update: Update a software channel"
-msgstr ""
+msgstr "softwarechannel_update: ソフトウェアチャンネルを更新"
 
 #: ../src/spacecmd/softwarechannel.py:761
 #, python-format
@@ -5222,87 +5218,98 @@ msgid ""
 "  -f GPG-FINGERPRINT\n"
 "  -g DISABLE-GPG-CHECK"
 msgstr ""
+"使用方法: softwarechannel_update ラベル(チャンネル識別用) [オプション]\n"
+"options:\n"
+"  -l (ラベル (必須))\n"
+"  -n (名前)\n"
+"  -s (概要)\n"
+"  -d (説明)\n"
+"  -c (チェックサム) %s\n"
+"  -u (GPG-URL)\n"
+"  -i (GPG-ID)\n"
+"  -f (GPG-指紋)\n"
+"  -g GPGチェックの無効化"
 
 #: ../src/spacecmd/softwarechannel.py:792
 #: ../src/spacecmd/softwarechannel.py:924
 #: ../src/spacecmd/softwarechannel.py:1094
 msgid "Channel Label:"
-msgstr ""
+msgstr "チャンネルラベル:"
 
 #: ../src/spacecmd/softwarechannel.py:797
 msgid "New Name (blank to keep unchanged)"
-msgstr ""
+msgstr "新しい名前 (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:803
 msgid "New Summary (blank to keep unchanged)"
-msgstr ""
+msgstr "新しい概要 (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:806
 msgid "Summary:"
-msgstr ""
+msgstr "概要:"
 
 #: ../src/spacecmd/softwarechannel.py:809
 msgid "New Description (blank to keep unchanged)"
-msgstr ""
+msgstr "新しい説明 (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:815
 msgid "New Checksum type (blank to keep unchanged)"
-msgstr ""
+msgstr "新しいチェックサムタイプ (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:822
 msgid "New GPG URL (blank to keep unchanged)"
-msgstr ""
+msgstr "新しい GPG URL (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:825
 #: ../src/spacecmd/softwarechannel.py:953
 #: ../src/spacecmd/softwarechannel.py:1107
 #: ../src/spacecmd/softwarechannel.py:1196
 msgid "GPG URL:"
-msgstr ""
+msgstr "GPG URL:"
 
 #: ../src/spacecmd/softwarechannel.py:828
 msgid "New GPG ID (blank to keep unchanged)"
-msgstr ""
+msgstr "新しい GPG ID (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:831
 #: ../src/spacecmd/softwarechannel.py:959
 #: ../src/spacecmd/softwarechannel.py:1108
 #: ../src/spacecmd/softwarechannel.py:1197
 msgid "GPG ID:"
-msgstr ""
+msgstr "GPG ID:"
 
 #: ../src/spacecmd/softwarechannel.py:834
 msgid "New GPG Fingerprint (blank to keep unchanged)"
-msgstr ""
+msgstr "新しい GPG 指紋 (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:837
 #: ../src/spacecmd/softwarechannel.py:965
 #: ../src/spacecmd/softwarechannel.py:1109
 #: ../src/spacecmd/softwarechannel.py:1198
 msgid "GPG Fingerprint:"
-msgstr ""
+msgstr "GPG 指紋:"
 
 #: ../src/spacecmd/softwarechannel.py:840
 msgid "Disable GPG CHECK (blank to keep unchanged)"
-msgstr ""
+msgstr "GPG チェックの無効化 (変更しない場合は何も入力しないでください)"
 
 #: ../src/spacecmd/softwarechannel.py:843
 #: ../src/spacecmd/softwarechannel.py:1110
 #: ../src/spacecmd/softwarechannel.py:1199
 msgid "Disable GPG Check [yes/no]? "
-msgstr ""
+msgstr "GPG チェックを無効化しますか [yes/no]? "
 
 #: ../src/spacecmd/softwarechannel.py:846
 msgid "A channel label is required to identify the channel"
-msgstr ""
+msgstr "チャンネルを識別するためにラベルを指定する必要があります"
 
 #: ../src/spacecmd/softwarechannel.py:849
 msgid "Only [yes/no] values are acceptable for --disable_gpg_check"
-msgstr ""
+msgstr "--disable_gpg_check に対しては yes (はい)/no (いいえ) のいずれかの値を指定する必要があります"
 
 #: ../src/spacecmd/softwarechannel.py:889
 msgid "softwarechannel_create: Create a software channel"
-msgstr ""
+msgstr "softwarechannel_create: ソフトウェアチャンネルを作成"
 
 #: ../src/spacecmd/softwarechannel.py:890
 #, python-format
@@ -5321,72 +5328,85 @@ msgid ""
 "  -f GPG_FINGERPRINT\n"
 "  -g DISABLE_GPG_CHECK"
 msgstr ""
+"使用方法: softwarechannel_create [オプション])\n"
+"\n"
+"オプション:\n"
+"  -n (名前)\n"
+"  -l (ラベル)\n"
+"  -s (概要)\n"
+"  -p (親チャンネル)\n"
+"  -a (アーキテクチャ)\n"
+"  -c (チェックサム) %s\n"
+"  -u (GPG_URL)\n"
+"  -i (GPG_ID)\n"
+"  -f (GPG_指紋)\n"
+"  -g GPG チェックの無効化"
 
 #: ../src/spacecmd/softwarechannel.py:923
 #: ../src/spacecmd/softwarechannel.py:1093
 msgid "Channel Name:"
-msgstr ""
+msgstr "チャンネル名:"
 
 #: ../src/spacecmd/softwarechannel.py:925
 msgid "Channel Summary:"
-msgstr ""
+msgstr "チャンネルの概要:"
 
 #: ../src/spacecmd/softwarechannel.py:933
 #: ../src/spacecmd/softwarechannel.py:1101
 msgid "Select Parent [blank to create a base channel]:"
-msgstr ""
+msgstr "親チャンネル [何も指定しない場合はベースチャンネルになります]:"
 
 #: ../src/spacecmd/softwarechannel.py:936
 msgid "Architecture"
-msgstr ""
+msgstr "アーキテクチャ"
 
 #: ../src/spacecmd/softwarechannel.py:943
 msgid "Checksum type"
-msgstr ""
+msgstr "チェックサムタイプ"
 
 #: ../src/spacecmd/softwarechannel.py:950
 msgid "GPG URL"
-msgstr ""
+msgstr "GPG URL"
 
 #: ../src/spacecmd/softwarechannel.py:956
 msgid "GPG ID"
-msgstr ""
+msgstr "GPG ID"
 
 #: ../src/spacecmd/softwarechannel.py:962
 msgid "GPG Fingerprint"
-msgstr ""
+msgstr "GPG 指紋"
 
 #: ../src/spacecmd/softwarechannel.py:968
 msgid "GPG CHECK"
-msgstr ""
+msgstr "GPG チェック"
 
 #: ../src/spacecmd/softwarechannel.py:971
 msgid "Disable GPG Check [y/N]? "
-msgstr ""
+msgstr "GPG チェックを無効化しますか [y/N]? "
 
 #: ../src/spacecmd/softwarechannel.py:1023
 #: ../src/spacecmd/softwarechannel.py:1121
 msgid "A channel name is required"
-msgstr ""
+msgstr "チャンネル名を指定する必要があります"
 
 #: ../src/spacecmd/softwarechannel.py:1027
 #: ../src/spacecmd/softwarechannel.py:1125
 msgid "A channel label is required"
-msgstr ""
+msgstr "チャンネルラベルを指定する必要があります"
 
 #: ../src/spacecmd/softwarechannel.py:1040
 #, python-format
 msgid "Name %s already in use by channel %s"
-msgstr ""
+msgstr "名前 %s は既にチャンネル %s で使用されています"
 
 #: ../src/spacecmd/softwarechannel.py:1044
 #, python-format
 msgid "Label %s already in use by channel %s"
-msgstr ""
+msgstr "ラベル %s は既にチャンネル %s で使用されています"
 
 #: ../src/spacecmd/softwarechannel.py:1052
 msgid "softwarechannel_clone: Clone a software channel"
-msgstr ""
+msgstr "softwarechannel_clone: ソフトウェアチャンネルを複製"
 
 #: ../src/spacecmd/softwarechannel.py:1053
 msgid ""
@@ -5406,45 +5426,60 @@ msgid ""
 "  --regex/-x \"s/foo/bar\" : Optional regex replacement,\n"
 "        replaces foo with bar in the clone name and label"
 msgstr ""
+"使用方法: softwarechannel_clone [オプション])\n"
+"\n"
+"オプション:\n"
+"  -s (複製元チャンネル)\n"
+"  -n (名前)\n"
+"  -l (ラベル)\n"
+"  -p (親チャンネル)\n"
+"  --gpg-copy/-g 複製元チャンネルの GPG 詳細をコピー\n"
+"  --gpg-url GPG_URL\n"
+"  --gpg-id GPG_ID\n"
+"  --gpg-fingerprint GPG 指紋\n"
+"  --disable-gpg-check GPG チェックの無効化\n"
+"  -o どのパッチも複製しない\n"
+"  --regex/-x \"s/foo/bar\" : 正規表現による置き換え。\n"
+"        複製先の名前とラベルに対して、 foo を bar に置き換える"
 
 #: ../src/spacecmd/softwarechannel.py:1088
 #: ../src/spacecmd/softwarechannel.py:1188
 msgid "Source Channels:"
-msgstr ""
+msgstr "元チャンネル:"
 
 #: ../src/spacecmd/softwarechannel.py:1092
 #: ../src/spacecmd/softwarechannel.py:1191
 msgid "Select source channel:"
-msgstr ""
+msgstr "複製元チャンネルを選択:"
 
 #: ../src/spacecmd/softwarechannel.py:1096
 msgid "Base Channels:"
-msgstr ""
+msgstr "ベースチャンネル:"
 
 #: ../src/spacecmd/softwarechannel.py:1104
 #: ../src/spacecmd/softwarechannel.py:1194
 msgid "Copy source channel GPG details? [y/N]:"
-msgstr ""
+msgstr "複製元チャンネルの GPG 詳細をコピーしますか？ [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1113
 #: ../src/spacecmd/softwarechannel.py:1202
 msgid "Original State (No Errata) [y/N]:"
-msgstr ""
+msgstr "元の状態 (エラータを複製しない) [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1117
 #: ../src/spacecmd/softwarechannel.py:1205
 msgid "A source channel is required"
-msgstr ""
+msgstr "複製元のチャンネルを指定する必要があります"
 
 #: ../src/spacecmd/softwarechannel.py:1138
 #: ../src/spacecmd/softwarechannel.py:1216
 msgid "Only [yes/no] values are acceptable for --disable-gpg-check"
-msgstr ""
+msgstr "--disable-gpg-check に対しては yes (はい)/no (いいえ) のいずれかの値を指定する必要があります"
 
 #: ../src/spacecmd/softwarechannel.py:1154
 msgid ""
 "softwarechannel_clonetree: Clone a software channel and its child channels"
-msgstr ""
+msgstr "softwarechannel_clonetree: ソフトウェアチャンネルとその子チャンネルを複製"
 
 #: ../src/spacecmd/softwarechannel.py:1155
 msgid ""
@@ -5466,108 +5501,125 @@ msgid ""
 "  --regex/-x \"s/foo/bar\" : Optional regex replacement,\n"
 "        replaces foo with bar in the clone name, label and description"
 msgstr ""
+"使用方法: softwarechannel_clonetree [オプション])\n"
+"             例:    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\""
+"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
+"\n"
+"オプション:\n"
+"  -s/--source-channel (複製元チャンネル)\n"
+"  -p/--prefix (プレフィクス) (全てのラベルと名前の冒頭に付与する名前を指定します)\n"
+"  --gpg-copy/-g (対応する複製元チャンネルの GPG 詳細を複製します)\n"
+"  --gpg-url (GPG_URL) (全てのチャンネルに適用されます)\n"
+"  --gpg-id (GPG_ID) (全てのチャンネルに適用されます)\n"
+"  --gpg-fingerprint (GPG_指紋) (全てのチャンネルに適用されます)\n"
+"  --disable-gpg-check (GPG チェックの無効化) (全てのチャンネルに適用されます)\n"
+"  -o エラータを全く複製しないようにします\n"
+"  --regex/-x \"s/foo/bar\" : 正規表現による置き換え。\n"
+"        複製先の名前とラベルに対して、 foo を bar に置き換える"
 
 #: ../src/spacecmd/softwarechannel.py:1192
 msgid "Prefix:"
-msgstr ""
+msgstr "プレフィクス:"
 
 #: ../src/spacecmd/softwarechannel.py:1209
 msgid "A prefix or regex is required"
-msgstr ""
+msgstr "プレフィクスもしくは正規表現を指定する必要があります"
 
 #: ../src/spacecmd/softwarechannel.py:1221
 #: ../src/spacecmd/softwarechannel.py:1994
 #: ../src/spacecmd/softwarechannel.py:2034
 msgid "Channel does not exist or is not a base channel!"
-msgstr ""
+msgstr "チャンネルが存在しないか、そのチャンネルはベースチャンネルではありません！"
 
 #. Shouldn't ever get here due to earlier checks
 #: ../src/spacecmd/softwarechannel.py:1248
 msgid "called without prefix or regex option!"
-msgstr ""
+msgstr "プレフィクスのオプションか正規表現のオプションを指定せずに実行しています！"
 
 #: ../src/spacecmd/softwarechannel.py:1348
 msgid "softwarechannel_addpackages: Add packages to a software channel"
-msgstr ""
+msgstr "softwarechannel_addpackages: ソフトウェアチャンネルにパッケージを追加"
 
 #: ../src/spacecmd/softwarechannel.py:1349
 msgid "usage: softwarechannel_addpackages CHANNEL <PACKAGE ...>"
-msgstr ""
+msgstr "使用方法: softwarechannel_addpackages チャンネル <パッケージ ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1389
 msgid "No packages to add"
-msgstr ""
+msgstr "追加すべきパッケージはありません"
 
 #: ../src/spacecmd/softwarechannel.py:1396
 msgid "Add these packages [y/N]:"
-msgstr ""
+msgstr "これらのパッケージを追加します [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1408
 msgid ""
 "softwarechannel_mergepackages: Merge packages from one software channel into "
 "another"
-msgstr ""
+msgstr "softwarechannel_mergepackages: 一方のソフトウェアチャンネルから他方のソフトウェアチャンネルにパッケージを併合"
 
 #: ../src/spacecmd/softwarechannel.py:1409
 msgid "usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_mergepackages 併合元チャンネル 併合先チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:1433
 msgid "softwarechannel_removeerrata: Remove patches from a software channel"
-msgstr ""
+msgstr "softwarechannel_removeerrata: ソフトウェアチャンネルからエラータを削除"
 
 #: ../src/spacecmd/softwarechannel.py:1435
 msgid "usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
-msgstr ""
+msgstr "使用方法: softwarechannel_removeerrata チャンネル <エラータ:search:XXX ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1488
 msgid "No patches to remove"
-msgstr ""
+msgstr "削除すべきパッチはありません"
 
 #: ../src/spacecmd/softwarechannel.py:1499
 #: ../src/spacecmd/softwarechannel.py:1828
 #, python-format
 msgid "Total Errata:   %s"
-msgstr ""
+msgstr "エラータ合計:   %s"
 
 #: ../src/spacecmd/softwarechannel.py:1500
 #: ../src/spacecmd/softwarechannel.py:1831
 #, python-format
 msgid "Total Packages: %s"
-msgstr ""
+msgstr "パッケージ合計: %s"
 
 #: ../src/spacecmd/softwarechannel.py:1502
 msgid "Remove these patches [y/N]:"
-msgstr ""
+msgstr "これらのパッチを削除します [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1517
 msgid "softwarechannel_removepackages: Remove packages from a software channel"
-msgstr ""
+msgstr "softwarechannel_removepackages: ソフトウェアチャンネルからパッケージを削除"
 
 #: ../src/spacecmd/softwarechannel.py:1519
 msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
-msgstr ""
+msgstr "使用方法: softwarechannel_removepackages チャンネル <パッケージ ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1573
 msgid "No packages to remove"
-msgstr ""
+msgstr "削除すべきパッケージはありません"
 
 #: ../src/spacecmd/softwarechannel.py:1593
 msgid ""
 "softwarechannel_adderratabydate: Add errata from one channel into another "
 "channel based on a date range"
-msgstr ""
+msgstr "softwarechannel_adderratabydate: 日付範囲を指定して一方のチャンネルから他方のチャンネルにエラータを追加"
 
 #: ../src/spacecmd/softwarechannel.py:1595
 msgid ""
 "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
 "ENDDATE"
-msgstr ""
+msgstr "使用方法: softwarechannel_adderratabydate [オプション] 追加元 追加先 開始日 終了日"
 
 #: ../src/spacecmd/softwarechannel.py:1596
 #: ../src/spacecmd/softwarechannel.py:1671
 msgid "Date format : YYYYMMDD"
-msgstr ""
+msgstr "日付の書式 : YYYYMMDD"
 
 #: ../src/spacecmd/softwarechannel.py:1597
 #: ../src/spacecmd/softwarechannel.py:1728
@@ -5575,11 +5627,11 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:2663
 #: ../src/spacecmd/softwarechannel.py:2879
 msgid "Options:"
-msgstr ""
+msgstr "オプション:"
 
 #: ../src/spacecmd/softwarechannel.py:1598
 msgid "        -p/--publish : Publish errata to the channel (don't clone)"
-msgstr ""
+msgstr "        -p/--publish : エラータをチャンネルに発行 (複製しない)"
 
 #: ../src/spacecmd/softwarechannel.py:1625
 #: ../src/spacecmd/softwarechannel.py:1630
@@ -5587,89 +5639,89 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1701
 #, python-format
 msgid "%s is an invalid date"
-msgstr ""
+msgstr "%s は正しい日付ではありません"
 
 #: ../src/spacecmd/softwarechannel.py:1643
 msgid "No patches found between the given dates"
-msgstr ""
+msgstr "その日付範囲にはパッチが見つかりませんでした"
 
 #: ../src/spacecmd/softwarechannel.py:1650
 #, python-format
 msgid "Publishing errata %s to %s"
-msgstr ""
+msgstr "%s から %s までのエラータを公開しています"
 
 #: ../src/spacecmd/softwarechannel.py:1668
 msgid ""
 "softwarechannel_listerratabydate: list errata from channelbased on a date "
 "range"
-msgstr ""
+msgstr "softwarechannel_listerratabydate: 日付範囲を指定してチャンネルのエラータを表示"
 
 #: ../src/spacecmd/softwarechannel.py:1670
 msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
-msgstr ""
+msgstr "使用方法: softwarechannel_listerratabydate チャンネル 開始日 終了日"
 
 #: ../src/spacecmd/softwarechannel.py:1714
 msgid "No errata found between the given dates"
-msgstr ""
+msgstr "その日付範囲にはエラータが見つかりませんでした"
 
 #: ../src/spacecmd/softwarechannel.py:1725
 msgid ""
 "softwarechannel_adderrata: Add patches from one channel into another channel"
-msgstr ""
+msgstr "softwarechannel_adderrata: 一方のチャンネルから他方のチャンネルにパッチを追加"
 
 #: ../src/spacecmd/softwarechannel.py:1727
 msgid "usage: softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>"
-msgstr ""
+msgstr "使用方法: softwarechannel_adderrata 追加元 追加先 <エラータ|search:XXX ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1729
 msgid "    -q/--quick : Don't display list of packages (slightly faster)"
-msgstr ""
+msgstr "    -q/--quick : パッケージの一覧を表示しない (少し高速になります)"
 
 #: ../src/spacecmd/softwarechannel.py:1730
 msgid "    -s/--skip :  Skip errata which appear to exist already in DEST"
-msgstr ""
+msgstr "    -s/--skip :  既に追加先に存在するエラータは読み飛ばす"
 
 #: ../src/spacecmd/softwarechannel.py:1756
 #, python-format
 msgid "source channel %s does not exist!"
-msgstr ""
+msgstr "元チャンネル %s が存在しません！"
 
 #: ../src/spacecmd/softwarechannel.py:1761
 #, python-format
 msgid "dest channel %s does not exist!"
-msgstr ""
+msgstr "先チャンネル %s が存在しません！"
 
 #: ../src/spacecmd/softwarechannel.py:1814
 msgid "No patch to add"
-msgstr ""
+msgstr "追加すべきパッチはありません"
 
 #: ../src/spacecmd/softwarechannel.py:1833
 msgid "Add these patches [y/N]:"
-msgstr ""
+msgstr "これらのパッチを追加します [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1847
 msgid "Using the old errata.clone function"
-msgstr ""
+msgstr "古い errata.clone 関数を使用しています"
 
 #: ../src/spacecmd/softwarechannel.py:1848
 msgid ""
 "If you have base channels for multiple OS versions, check no unexpected "
 "packages have been added"
-msgstr ""
+msgstr "複数の OS バージョンに対するベースチャンネルをお持ちの場合は、予期しないパッケージが追加されていないかどうかご確認ください"
 
 #: ../src/spacecmd/softwarechannel.py:1861
 msgid ""
 "softwarechannel_getorgaccess: Get the org-access for the software channel"
-msgstr ""
+msgstr "softwarechannel_getorgaccess: ソフトウェアチャンネルに対する組織のアクセスを取得"
 
 #: ../src/spacecmd/softwarechannel.py:1862
 msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
-msgstr ""
+msgstr "使用方法: softwarechannel_getorgaccess [チャンネル ...]"
 
 #: ../src/spacecmd/softwarechannel.py:1900
 msgid ""
 "softwarechannel_setorgaccess: Set the org-access for the software channel"
-msgstr ""
+msgstr "softwarechannel_setorgaccess: ソフトウェアチャンネルに対する組織のアクセスを設定"
 
 #: ../src/spacecmd/softwarechannel.py:1901
 msgid ""
@@ -5679,47 +5731,52 @@ msgid ""
 "-p,--protected ORG : protected org access for ORG only (multiple instances "
 "of -p ORG are allowed)"
 msgstr ""
+"使用方法 : softwarechannel_setorgaccess <チャンネル> [オプション])\n"
+"-d,--disable : 組織アクセスを無効化する (プライベートとして組織間の共有を禁止します)\n"
+"-e,--enable : 組織アクセスを有効化する (パブリックとして全ての信頼する組織からアクセスできるようにします)\n"
+"-p,--protected ORG : 指定した組織 (ORG) からのみアクセスを許可する (複数の組織を指定する場合は -p "
+"を複数回記述してください)"
 
 #: ../src/spacecmd/softwarechannel.py:1941
 #, python-format
 msgid "Making org sharing public for channel : %s "
-msgstr ""
+msgstr "下記のチャンネルをパブリックに設定し、組織間の共有を有効化します : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1946
 #, python-format
 msgid "Making org sharing private for channel : %s "
-msgstr ""
+msgstr "下記のチャンネルをプライベートに設定し、組織間の共有を無効化します : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1951
 #, python-format
 msgid "Making org sharing protected for channel : %s "
-msgstr ""
+msgstr "下記のチャンネルを保護に設定し、特定の組織にのみ共有を許可します : %s "
 
 #: ../src/spacecmd/softwarechannel.py:1957
 #, python-format
 msgid "Enabling %s access for channel : %s "
-msgstr ""
+msgstr "下記のチャンネルに対する %s のアクセスを有効化します: %s "
 
 #: ../src/spacecmd/softwarechannel.py:1962
 #, python-format
 msgid "Disabling %s access for channel : %s "
-msgstr ""
+msgstr "下記のチャンネルに対する %s のアクセスを無効化します: %s "
 
 #: ../src/spacecmd/softwarechannel.py:1975
 msgid ""
 "softwarechannel_getorgaccesstree: Get the org-access for a software base "
 "channel and its children"
-msgstr ""
+msgstr "softwarechannel_getorgaccesstree: ソフトウェアのベースチャンネルとその子チャンネルに対する組織アクセスを取得"
 
 #: ../src/spacecmd/softwarechannel.py:1976
 msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
-msgstr ""
+msgstr "使用方法: softwarechannel_getorgaccesstree [チャンネル]"
 
 #: ../src/spacecmd/softwarechannel.py:2009
 msgid ""
 "softwarechannel_setorgaccesstree: set the org-access for a software base "
 "channel and its children"
-msgstr ""
+msgstr "softwarechannel_setorgaccesstree: ソフトウェアのベースチャンネルとその子チャンネルに対する組織アクセスを設定"
 
 #: ../src/spacecmd/softwarechannel.py:2010
 msgid ""
@@ -5729,26 +5786,31 @@ msgid ""
 "-p,--protected ORG : protected org access for ORG only (multiple instances "
 "of -p ORG are allowed)"
 msgstr ""
+"使用方法: softwarechannel_setorgaccesstree <チャンネル> [オプション])\n"
+"-d,--disable : 組織アクセスを無効化する (プライベートとして組織間の共有を禁止します)\n"
+"-e,--enable : 組織アクセスを有効化する (パブリックとして全ての信頼する組織からアクセスできるようにします)\n"
+"-p,--protected ORG : 指定した組織 (ORG) からのみアクセスを許可する (複数の組織を指定する場合は -p "
+"を複数回記述してください)"
 
 #: ../src/spacecmd/softwarechannel.py:2049
 msgid "softwarechannel_regenerateneededcache: "
-msgstr ""
+msgstr "softwarechannel_regenerateneededcache: "
 
 #: ../src/spacecmd/softwarechannel.py:2050
 msgid "Regenerate the needed errata and package cache for all systems"
-msgstr ""
+msgstr "全てのシステムに対する必要なエラータとパッケージキャッシュを再生成"
 
 #: ../src/spacecmd/softwarechannel.py:2052
 msgid "usage: softwarechannel_regenerateneededcache"
-msgstr ""
+msgstr "使用方法: softwarechannel_regenerateneededcache"
 
 #: ../src/spacecmd/softwarechannel.py:2066
 msgid "softwarechannel_regenerateyumcache: "
-msgstr ""
+msgstr "softwarechannel_regenerateyumcache: "
 
 #: ../src/spacecmd/softwarechannel.py:2067
 msgid "Regenerate the YUM cache for a software channel"
-msgstr ""
+msgstr "ソフトウェアチャンネルに対する YUM キャッシュを再生成"
 
 #: ../src/spacecmd/softwarechannel.py:2069
 msgid ""
@@ -5758,38 +5820,43 @@ msgid ""
 "      -f force cache regeneration\n"
 "    "
 msgstr ""
+"使用方法: softwarechannel_regenerateyumcache [オプション] <チャンネル ...>\n"
+"\n"
+"    オプション:\n"
+"      -f キャッシュの再生成を強制する\n"
+"    "
 
 #: ../src/spacecmd/softwarechannel.py:2113
 msgid "no softwarechannel label given"
-msgstr ""
+msgstr "ソフトウェアチャンネルのラベルを指定していません"
 
 #: ../src/spacecmd/softwarechannel.py:2116
 msgid "invalid softwarechannel label "
-msgstr ""
+msgstr "ソフトウェアチャンネルのラベルが正しくありません "
 
 #: ../src/spacecmd/softwarechannel.py:2134
 msgid "softwarechannel_diff: diff softwarechannel files"
-msgstr ""
+msgstr "softwarechannel_diff: ソフトウェアチャンネルファイル同士の差分を抽出"
 
 #: ../src/spacecmd/softwarechannel.py:2136
 msgid "usage: softwarechannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_diff 比較元チャンネル 比較先チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:2197
 msgid "softwarechannel_errata_diff: diff softwarechannel files"
-msgstr ""
+msgstr "softwarechannel_errata_diff: ソフトウェアチャンネルファイル同士の差分を抽出"
 
 #: ../src/spacecmd/softwarechannel.py:2199
 msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_errata_diff 比較元チャンネル 比較先チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:2248
 msgid "softwarechannel_sync: "
-msgstr ""
+msgstr "softwarechannel_sync: "
 
 #: ../src/spacecmd/softwarechannel.py:2249
 msgid "sync the packages of two software channels"
-msgstr ""
+msgstr "2 つのソフトウェアチャンネル間でパッケージを同期"
 
 #: ../src/spacecmd/softwarechannel.py:2251
 msgid ""
@@ -5797,11 +5864,13 @@ msgid ""
 "    -q,--quiet : quiet mode (omits the output of common packages in both "
 "channels)"
 msgstr ""
+"使用方法: softwarechannel_sync 同期元チャンネル 同期先チャンネル [オプション])\n"
+"    -q,--quiet : 静寂モード (両方のチャンネルに存在するパッケージの出力を省略します)"
 
 #: ../src/spacecmd/softwarechannel.py:2293
 #, python-format
 msgid "%s packages from softwarechannel %s to %s"
-msgstr ""
+msgstr "パッケージを %s しています (ソフトウェアチャンネル %s から %s に対して)"
 
 #: ../src/spacecmd/softwarechannel.py:2312
 #: ../src/spacecmd/softwarechannel.py:2320
@@ -5810,283 +5879,284 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:2574
 #: ../src/spacecmd/softwarechannel.py:2582
 msgid "failed to read key id"
-msgstr ""
+msgstr "キー ID の読み込みに失敗しました"
 
 #: ../src/spacecmd/softwarechannel.py:2323
 msgid "packages common in both channels:"
-msgstr ""
+msgstr "両方のチャンネルに存在するパッケージ:"
 
 #: ../src/spacecmd/softwarechannel.py:2328
 msgid "Omitting common packages in both specified channels"
-msgstr ""
+msgstr "両方のチャンネルに存在するパッケージについては省略します"
 
 #: ../src/spacecmd/softwarechannel.py:2333
 msgid "packages to add to channel \""
-msgstr ""
+msgstr "下記のチャンネルに追加すべきパッケージ:"
 
 #: ../src/spacecmd/softwarechannel.py:2341
 msgid "packages to remove from channel \""
-msgstr ""
+msgstr "下記のチャンネルから削除すべきパッケージ:"
 
 #: ../src/spacecmd/softwarechannel.py:2347
 #: ../src/spacecmd/softwarechannel.py:2469
 #: ../src/spacecmd/softwarechannel.py:2599
 msgid "summary:"
-msgstr ""
+msgstr "概要:"
 
 #: ../src/spacecmd/softwarechannel.py:2348
 #: ../src/spacecmd/softwarechannel.py:2349
 msgid " packages"
-msgstr ""
+msgstr " パッケージ"
 
 #: ../src/spacecmd/softwarechannel.py:2350
 msgid "    add    "
-msgstr ""
+msgstr "    追加    "
 
 #: ../src/spacecmd/softwarechannel.py:2351
 msgid " packages to   "
-msgstr ""
+msgstr " 個のパッケージを   "
 
 #: ../src/spacecmd/softwarechannel.py:2354
 msgid "    remove "
-msgstr ""
+msgstr "    削除 "
 
 #: ../src/spacecmd/softwarechannel.py:2355
 msgid " packages from "
-msgstr ""
+msgstr " 個のパッケージを "
 
 #: ../src/spacecmd/softwarechannel.py:2357
 #: ../src/spacecmd/softwarechannel.py:2477
 msgid "Perform these changes to channel "
-msgstr ""
+msgstr "これらの変更をチャンネルに適用します "
 
 #: ../src/spacecmd/softwarechannel.py:2378
 msgid "softwarechannel_errata_sync: "
-msgstr ""
+msgstr "softwarechannel_errata_sync: "
 
 #: ../src/spacecmd/softwarechannel.py:2379
 msgid "sync errata of two software channels"
-msgstr ""
+msgstr "2 つのソフトウェアチャンネルのエラータを同期"
 
 #: ../src/spacecmd/softwarechannel.py:2381
 msgid "usage: softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_errata_sync 同期元チャンネル 同期先チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:2420
 msgid "syncing errata from softwarechannel "
-msgstr ""
+msgstr "エラータを同期しています。同期元チャンネル: "
 
 #: ../src/spacecmd/softwarechannel.py:2421
 #: ../src/spacecmd/softwarechannel.py:2553
 msgid " to "
-msgstr ""
+msgstr " , 同期先チャンネル: "
 
 #: ../src/spacecmd/softwarechannel.py:2445
 msgid "errata common in both channels:"
-msgstr ""
+msgstr "両方のチャンネルに存在するエラータ:"
 
 #: ../src/spacecmd/softwarechannel.py:2454
 msgid "errata to add to channel \""
-msgstr ""
+msgstr "下記のチャンネルに追加するエラータ:"
 
 #: ../src/spacecmd/softwarechannel.py:2463
 msgid "errata to remove from channel \""
-msgstr ""
+msgstr "下記のチャンネルから削除するエラータ:"
 
 #: ../src/spacecmd/softwarechannel.py:2472
 #: ../src/spacecmd/softwarechannel.py:2602
 msgid "    add   "
-msgstr ""
+msgstr "    追加   "
 
 #: ../src/spacecmd/softwarechannel.py:2473
 msgid "errata to  "
-msgstr ""
+msgstr "個のエラータを  "
 
 #: ../src/spacecmd/softwarechannel.py:2474
 msgid "    remove"
-msgstr ""
+msgstr "    削除"
 
 #: ../src/spacecmd/softwarechannel.py:2475
 msgid "errata from"
-msgstr ""
+msgstr "個のエラータを"
 
 #: ../src/spacecmd/softwarechannel.py:2500
 msgid "softwarechannel_errata_merge: "
-msgstr ""
+msgstr "softwarechannel_errata_merge: "
 
 #: ../src/spacecmd/softwarechannel.py:2501
 msgid "merge errata of one software channel into another"
-msgstr ""
+msgstr "一方のソフトウェアチャンネルから他方のソフトウェアチャンネルにエラータを併合"
 
 #: ../src/spacecmd/softwarechannel.py:2503
 msgid ""
 "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
 "[FROM_DATE] [TO_DATE]"
-msgstr ""
+msgstr "使用方法:   softwarechannel_errata_merge 併合元チャンネル 併合先チャンネル [開始日] [終了日]"
 
 #: ../src/spacecmd/softwarechannel.py:2504
 msgid ""
 "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
 "2018-01-01"
 msgstr ""
+"例: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
 
 #: ../src/spacecmd/softwarechannel.py:2505
 msgid ""
 "note:    Providing only FROM_DATE will merge all errata since that date."
-msgstr ""
+msgstr "注意:    開始日だけを指定すると、それ以降に公開された全てのエラータを併合します。"
 
 #: ../src/spacecmd/softwarechannel.py:2506
 msgid "note:    When no date is provided, all errata will be merged."
-msgstr ""
+msgstr "注意:    日付を指定しない場合、全てのエラータを併合します。"
 
 #: ../src/spacecmd/softwarechannel.py:2536
 #: ../src/spacecmd/softwarechannel.py:2543
 msgid "wrong dateformat: "
-msgstr ""
+msgstr "日付の書式が正しくありません: "
 
 #: ../src/spacecmd/softwarechannel.py:2536
 #: ../src/spacecmd/softwarechannel.py:2543
 msgid " please specify as: YYYY-MM-DD"
-msgstr ""
+msgstr " 下記の書式で指定してください: YYYY-MM-DD"
 
 #: ../src/spacecmd/softwarechannel.py:2552
 msgid "merging errata from softwarechannel "
-msgstr ""
+msgstr "下記のソフトウェアチャンネルからのエラータを併合します: "
 
 #: ../src/spacecmd/softwarechannel.py:2589
 msgid "{} contains no errata which is not already present in {}"
-msgstr ""
+msgstr "{} には {} に含まれていないエラータがありません"
 
 #: ../src/spacecmd/softwarechannel.py:2594
 msgid "errata to add to channel {}: "
-msgstr ""
+msgstr "チャンネル {} に追加されるエラータ: "
 
 #: ../src/spacecmd/softwarechannel.py:2600
 #: ../src/spacecmd/softwarechannel.py:2601
 msgid " errata"
-msgstr ""
+msgstr " エラータ"
 
 #: ../src/spacecmd/softwarechannel.py:2603
 msgid " errata to  "
-msgstr ""
+msgstr " 個のエラータを下記に追加:  "
 
 #: ../src/spacecmd/softwarechannel.py:2605
 msgid "Perform these changes to channel {} [y/N]:"
-msgstr ""
+msgstr "チャンネル {} に対する変更を適用します [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:2616
 msgid "softwarechannel_syncrepos: "
-msgstr ""
+msgstr "softwarechannel_syncrepos: "
 
 #: ../src/spacecmd/softwarechannel.py:2617
 msgid "Sync users repos for a software channel"
-msgstr ""
+msgstr "ソフトウェアチャンネルに対してユーザリポジトリーを同期"
 
 #: ../src/spacecmd/softwarechannel.py:2619
 msgid "usage: softwarechannel_syncrepos <CHANNEL ...>"
-msgstr ""
+msgstr "使用方法: softwarechannel_syncrepos <チャンネル ...>"
 
 #: ../src/spacecmd/softwarechannel.py:2621
 #: ../src/spacecmd/softwarechannel.py:2664
 msgid "    -e/--no-errata : Do not sync errata"
-msgstr ""
+msgstr "    -e/--no-errata : エラータを同期しない"
 
 #: ../src/spacecmd/softwarechannel.py:2622
 #: ../src/spacecmd/softwarechannel.py:2665
 msgid "    -f/--fail : Terminate upon any error"
-msgstr ""
+msgstr "    -f/--fail : 何らかのエラー発生で中止する"
 
 #: ../src/spacecmd/softwarechannel.py:2623
 #: ../src/spacecmd/softwarechannel.py:2666
 msgid "    -k/--sync-kickstart : Create kickstartable tree"
-msgstr ""
+msgstr "    -k/--sync-kickstart : キックスタート可能なツリーを作成する"
 
 #: ../src/spacecmd/softwarechannel.py:2624
 #: ../src/spacecmd/softwarechannel.py:2667
 msgid "    -l/--latest : Only download latest package versions when repo syncs"
-msgstr ""
+msgstr "    -l/--latest : リポジトリーの同期にあたっては最新バージョンのパッケージのみをダウンロードする"
 
 #: ../src/spacecmd/softwarechannel.py:2659
 msgid "softwarechannel_setsyncschedule: "
-msgstr ""
+msgstr "softwarechannel_setsyncschedule: "
 
 #: ../src/spacecmd/softwarechannel.py:2660
 msgid "Sets the repo sync schedule for a software channel"
-msgstr ""
+msgstr "ソフトウェアチャンネルに対するリポジトリー同期スケジュールを設定"
 
 #: ../src/spacecmd/softwarechannel.py:2662
 msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
-msgstr ""
+msgstr "使用方法: softwarechannel_setsyncschedule <チャンネル> <スケジュール>"
 
 #: ../src/spacecmd/softwarechannel.py:2669
 msgid ""
 "The schedule is specified in Quartz CronTrigger format without enclosing "
 "quotes."
-msgstr ""
+msgstr "スケジュールは引用符無しの Quartz CronTrigger 形式で指定します。"
 
 #: ../src/spacecmd/softwarechannel.py:2670
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
-msgstr ""
+msgstr "たとえば毎日 AM1:00 にスケジュールしたい場合、 <スケジュール> は 0 0 1 * * ? のようになります"
 
 #: ../src/spacecmd/softwarechannel.py:2671
 msgid "If <SCHEDULE> is left empty, it will be disabled."
-msgstr ""
+msgstr "<スケジュール> を指定しない場合、そのスケジュールは無効化されます。"
 
 #: ../src/spacecmd/softwarechannel.py:2734
 msgid ""
 "softwarechannel_listsyncschedule: List sync schedules for all software "
 "channels"
-msgstr ""
+msgstr "softwarechannel_listsyncschedule: 全てのソフトウェアチャンネルに対する同期スケジュールを表示"
 
 #: ../src/spacecmd/softwarechannel.py:2736
 msgid "softwarechannel_listsyncschedule : List all channels"
-msgstr ""
+msgstr "softwarechannel_listsyncschedule : 全てのチャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:2759
 msgid "key"
-msgstr ""
+msgstr "キー"
 
 #: ../src/spacecmd/softwarechannel.py:2759
 msgid "Channel Name"
-msgstr ""
+msgstr "チャンネル名"
 
 #: ../src/spacecmd/softwarechannel.py:2759
 msgid "Update Schedule"
-msgstr ""
+msgstr "更新スケジュール"
 
 #: ../src/spacecmd/softwarechannel.py:2771
 msgid "softwarechannel_addrepo: Add a repo to a software channel"
-msgstr ""
+msgstr "softwarechannel_addrepo: ソフトウェアチャンネルにリポジトリーを追加"
 
 #: ../src/spacecmd/softwarechannel.py:2772
 msgid "usage: softwarechannel_addrepo CHANNEL REPO"
-msgstr ""
+msgstr "使用方法: softwarechannel_addrepo チャンネル リポジトリー"
 
 #: ../src/spacecmd/softwarechannel.py:2805
 msgid "softwarechannel_removerepo: Remove a repo from a software channel"
-msgstr ""
+msgstr "softwarechannel_removerepo: ソフトウェアチャンネルからリポジトリーを削除"
 
 #: ../src/spacecmd/softwarechannel.py:2806
 msgid "usage: softwarechannel_removerepo CHANNEL REPO"
-msgstr ""
+msgstr "使用方法: softwarechannel_removerepo チャンネル リポジトリー"
 
 #: ../src/spacecmd/softwarechannel.py:2846
 msgid "softwarechannel_listrepos: List the repos for a software channel"
-msgstr ""
+msgstr "softwarechannel_listrepos: ソフトウェアチャンネルに対するリポジトリー一覧の表示"
 
 #: ../src/spacecmd/softwarechannel.py:2847
 msgid "usage: softwarechannel_listrepos CHANNEL"
-msgstr ""
+msgstr "使用方法: softwarechannel_listrepos チャンネル"
 
 #: ../src/spacecmd/softwarechannel.py:2870
 msgid "No repos have been found for this channel."
-msgstr ""
+msgstr "このチャンネルに対してはリポジトリーが見つかりませんでした。"
 
 #: ../src/spacecmd/softwarechannel.py:2877
 msgid "softwarechannel_mirrorpackages: Download packages of a given channel"
-msgstr ""
+msgstr "softwarechannel_mirrorpackages: 指定したチャンネルのパッケージをダウンロードする"
 
 #: ../src/spacecmd/softwarechannel.py:2878
 msgid "usage: softwarechannel_mirrorpackages CHANNEL"
