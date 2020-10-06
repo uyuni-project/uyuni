@@ -130,7 +130,6 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
   Scenario: Enable repositories for installing branch services
     When I enable repositories before installing branch server
-    And I install package "expect" on this "proxy"
 
 @proxy
 @private_net
