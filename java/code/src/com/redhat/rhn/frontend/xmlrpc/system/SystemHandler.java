@@ -6742,6 +6742,7 @@ public class SystemHandler extends BaseHandler {
      * @param baseChannelLabel label of the target base channel
      * @param optionalChildChannels labels of optional child channels to subscribe
      * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
      *
@@ -6818,6 +6819,7 @@ public class SystemHandler extends BaseHandler {
      * @param baseChannelLabel label of the target base channel
      * @param optionalChildChannels labels of optional child channels to subscribe
      * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
      *
@@ -6993,6 +6995,7 @@ public class SystemHandler extends BaseHandler {
      * @param sid ID of the server
      * @param channels labels of channels to subscribe to
      * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
      *
