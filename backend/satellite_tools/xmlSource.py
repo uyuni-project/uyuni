@@ -578,7 +578,8 @@ class BaseChecksummedItem(BaseItem):
         item['checksums'] = {}
         if 'md5sum' in item:
             # xml dumps < 3.6 (aka pre-sha256)
-            item['checksums']['md5'] = item['md5sum']
+            if item['md5sum']:
+                item['checksums']['md5'] = item['md5sum']
             del(item['md5sum'])
         if 'checksum_list' in item and item['checksum_list']:
             for csum in item['checksum_list']:
