@@ -8,7 +8,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-preferences"
- helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/home-your-preferences.html">
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/home-my-preferences.html">
 <bean:message key="My Preferences"/>
 </rhn:toolbar>
 <html:form action="/account/PrefSubmit">
