@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-10-05 19:48+0000\n"
+"PO-Revision-Date: 2020-10-06 19:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "sk/>\n"
@@ -257,7 +257,7 @@ msgid ""
 "#{@product_name} requires 100G of free disk space in /var/spacewalk to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name} vyžaduje na inštaláciu 100G voľného miesta na disku v /var/"
+"#{@product_name} vyžaduje na inštaláciu 100G voľného miesta na disku vo /var/"
 "spacewalk. Ak budete pokračovať, produkt nebude fungovať správne."
 
 #: ../yast/susemanager_reqs.rb:142
@@ -265,53 +265,60 @@ msgid ""
 "#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
+"#{@product_name} vyžaduje na inštaláciu 50G voľného miesta na disku vo /var/"
+"lib/pgsql. Ak budete pokračovať, produkt nebude fungovať správne."
 
 #: ../yast/susemanager_reqs.rb:158
 msgid "Hostname command failed"
-msgstr ""
+msgstr "Príkaz hostname zlyhal"
 
 #: ../yast/susemanager_reqs.rb:160
 msgid ""
 "The execution of 'hostname -f' failed. The product will not install "
 "correctly."
-msgstr ""
+msgstr "Vykonanie 'hostname -f' zlyhalo. Produkt sa nenainštaluje správne."
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
 msgid "Illegal FQHN"
-msgstr ""
+msgstr "Nedovolený FQHN"
 
 #: ../yast/susemanager_reqs.rb:180
 msgid ""
 "The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
-msgstr ""
+msgstr "FQHN musí obsahovať najmenej 2 bodky. Produkt nebude správne fungovať."
 
 #: ../yast/susemanager_reqs.rb:200
 msgid ""
 "The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
 msgstr ""
+"FQHN nesmie obsahovať znak '_' (podčiarkovník). Produkt nebude správne "
+"fungovať."
 
 #: ../yast/susemanager_reqs.rb:240
 msgid ""
 "The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
 msgstr ""
+"Výstup 'hostname -f' sa nezhoduje so skutočným názvom hostiteľa. Produkt sa "
+"nenainštaluje správne."
 
 #: ../yast/susemanager_reqs.rb:254
 msgid "Illegal Hostname"
-msgstr ""
+msgstr "Nedovolený názov hostiteľa"
 
 #: ../yast/susemanager_reqs.rb:256
 msgid ""
 "Your hostname contains upper case characters. The product will not function "
 "correctly."
 msgstr ""
+"Váš názov hostiteľa obsahuje veľké písmená. Produkt nebude správne fungovať."
 
 #: ../yast/susemanager_write.rb:54
 msgid "Setup is prepared."
-msgstr ""
+msgstr "Nastavenie je pripravené."
 
 #: ../yast/susemanager_write.rb:59 ../yast/susemanager_write.rb:68
 msgid "Setup script output"
