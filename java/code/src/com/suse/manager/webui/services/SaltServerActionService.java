@@ -1520,7 +1520,7 @@ public class SaltServerActionService {
         Map<String, Object> distupgrade = new HashMap<>();
         susemanager.put("distupgrade", distupgrade);
         distupgrade.put("dryrun", action.getDetails().isDryRun());
-        distupgrade.put("allowVendorChange", !action.getDetails().isAllowVendorChange());
+        distupgrade.put("allowVendorChange", action.getDetails().isAllowVendorChange());
         distupgrade.put("channels", subbed.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())

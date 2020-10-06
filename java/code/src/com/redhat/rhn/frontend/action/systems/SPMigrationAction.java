@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -193,9 +194,7 @@ public class SPMigrationAction extends RhnAction {
             targetAddonProducts = (Long[]) form.get(ADDON_PRODUCTS);
             targetBaseChannel = (Long) form.get(BASE_CHANNEL);
             targetChildChannels = (Long[]) form.get(CHILD_CHANNELS);
-            if (form.get(ALLOW_VENDOR_CHANGE) != null) {
-                allowVendorChange = true;
-            }
+            allowVendorChange = BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE));
 
             // Get additional flags
             if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
