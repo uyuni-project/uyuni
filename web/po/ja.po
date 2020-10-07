@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-10-03 02:49+0000\n"
+"PO-Revision-Date: 2020-10-07 10:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1943,7 +1943,7 @@ msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:223
 msgid "Product Enhancement Advisory"
-msgstr "製品の機能拡張アドバイザリ"
+msgstr "製品の機能強化アドバイザリ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:225
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
@@ -3039,7 +3039,7 @@ msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr "製品の機能拡張アドバイザリ"
+msgstr "製品の機能強化アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
@@ -4747,7 +4747,7 @@ msgstr "  バグ修正アドバイザリ"
 
 #: ../html/src/manager/visualization/data-tree.js:214
 msgid "  product enhancement advisories"
-msgstr "  製品の機能拡張アドバイザリ"
+msgstr "  製品の機能強化アドバイザリ"
 
 #: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
@@ -4775,7 +4775,7 @@ msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/visualization/hierarchy.js:111
 msgid "product enhancement advisories"
-msgstr "製品の機能拡張アドバイザリ"
+msgstr "製品の機能強化アドバイザリ"
 
 #. System name filter
 #: ../html/src/manager/visualization/hierarchy.js:115
