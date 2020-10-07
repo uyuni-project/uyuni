@@ -27,7 +27,6 @@ jobs:
     - name: Resolve dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
-        echo '${{ secrets.OSCRC_CONTENTS }}' > ~/.oscrc
         ant -f java/manager-build.xml ivy
 
     - name: Run checkstyle
