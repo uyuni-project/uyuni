@@ -39,7 +39,7 @@ export function GuestsList(props: Props) {
 
   return (
     <>
-      <HypervisorCheck foreignEntitled={props.foreignEntitled} hypervisor={props.hypervisor}/>
+      <HypervisorCheck saltVirtHost={!props.foreignEntitled && props.saltEntitled} hypervisor={props.hypervisor}/>
       <ListTab
         serverId={props.serverId}
         saltEntitled={props.saltEntitled}
