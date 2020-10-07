@@ -1,4 +1,5 @@
 - allow nightly ISS sync to also cover custom channels
+- Include build id in boot image local path
 - fix max password length check at user creation (bsc#1176765)
 - Fix the links for downloading the binaries in the package details UI (bsc#1176603)
 - Notify about missing libvirt or hypervisor on virtual host

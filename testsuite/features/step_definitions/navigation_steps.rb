@@ -520,7 +520,17 @@ When(/^I check the child channel "([^"]*)"$/) do |channel|
   checkbox.set(true)
 end
 
-When(/^I check the custom channel for "([^"]*)"$/) do |client|
+When(/^I check the custom channels for "([^"]*)"$/) do |client|
+  node = get_target(client)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^ubuntu/
+    steps %(
+      When I check the child channel "main"
+      And I check the child channel "main-updates"
+    )
+  elsif os_family =~ /^centos/
+    step %(I check the child channel "DVD")
+  end
   # Both minion and ssh_minion uses the same repositories, so the custom channels
   client.sub! 'ssh_minion', 'minion'
   channel = "Custom Channel for #{client}"

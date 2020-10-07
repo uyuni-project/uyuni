@@ -4,19 +4,21 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: ../src/bin/spacecmd:59
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-24 17:29+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"PO-Revision-Date: 2020-10-01 15:51+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"spacecmd/zh_CN/>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/spacecmd/activationkey.py:49
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -1630,11 +1632,11 @@ msgstr ""
 msgid "usage: errata_summary"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:82
+#: ../src/spacecmd/errata.py:81
 msgid "errata_apply: Apply an erratum to all affected systems"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:83
+#: ../src/spacecmd/errata.py:82
 msgid ""
 "usage: errata_apply [options] ERRATA|search:XXX ...)\n"
 "\n"
@@ -1642,7 +1644,7 @@ msgid ""
 "  -s START_TIME"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:110 ../src/spacecmd/system.py:417
+#: ../src/spacecmd/errata.py:109 ../src/spacecmd/system.py:417
 #: ../src/spacecmd/system.py:725 ../src/spacecmd/system.py:880
 #: ../src/spacecmd/system.py:1015 ../src/spacecmd/system.py:1762
 #: ../src/spacecmd/system.py:3673 ../src/spacecmd/system.py:3983
@@ -1650,16 +1652,16 @@ msgstr ""
 msgid "Start Time [now]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:158
+#: ../src/spacecmd/errata.py:157
 msgid "No patches to apply"
 msgstr ""
 
 #. a summary of which errata we're going to apply
-#: ../src/spacecmd/errata.py:162
+#: ../src/spacecmd/errata.py:161
 msgid "Errata             Systems"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:166 ../src/spacecmd/system.py:230
+#: ../src/spacecmd/errata.py:165 ../src/spacecmd/system.py:230
 #: ../src/spacecmd/system.py:467 ../src/spacecmd/system.py:820
 #: ../src/spacecmd/system.py:942 ../src/spacecmd/system.py:1079
 #: ../src/spacecmd/system.py:1781 ../src/spacecmd/system.py:3685
@@ -1668,165 +1670,168 @@ msgstr ""
 msgid "Start Time: %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:168
+#: ../src/spacecmd/errata.py:167
 msgid "Apply these patches [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:218
+#: ../src/spacecmd/errata.py:217
 #, python-format
 msgid "No patches to schedule for %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:227
+#: ../src/spacecmd/errata.py:226
 #, python-format
 msgid "Scheduled %i patches for %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:236
+#: ../src/spacecmd/errata.py:235
 msgid "errata_listaffectedsystems: List of systems affected by an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:237
+#: ../src/spacecmd/errata.py:236
 msgid "usage: errata_listaffectedsystems ERRATA|search:XXX ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:275
+#: ../src/spacecmd/errata.py:274
 msgid "errata_listcves: List of CVEs addressed by an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:276
+#: ../src/spacecmd/errata.py:275
 msgid "usage: errata_listcves ERRATA|search:XXX ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:312
+#: ../src/spacecmd/errata.py:311
 msgid "No errata has been found"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:319
+#: ../src/spacecmd/errata.py:318
 msgid "errata_findbycve: List errata addressing a CVE"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:320
+#: ../src/spacecmd/errata.py:319
 msgid "usage: errata_findbycve CVE-YYYY-NNNN ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:354
+#: ../src/spacecmd/errata.py:353
 msgid "errata_details: Show the details of an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:355
+#: ../src/spacecmd/errata.py:354
 msgid "usage: errata_details ERRATA|search:XXX ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:390
+#: ../src/spacecmd/errata.py:389
 #, python-format
 msgid "%s is not a valid erratum"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:397
+#: ../src/spacecmd/errata.py:396
 #, python-format
 msgid "Name:       %s"
 msgstr ""
 
+#: ../src/spacecmd/errata.py:397
+#, python-format
+msgid "Product:    %s"
+msgstr ""
+
 #: ../src/spacecmd/errata.py:398
-msgid "Product:   s"
+#, python-format
+msgid "Type:       %s"
 msgstr ""
 
 #: ../src/spacecmd/errata.py:399
-msgid "Type:      s"
+#, python-format
+msgid "Issue Date: %s"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:400
-msgid "Issue Date:s"
-msgstr ""
-
-#: ../src/spacecmd/errata.py:402
+#: ../src/spacecmd/errata.py:401
 msgid "Topic"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:406 ../src/spacecmd/package.py:107
+#: ../src/spacecmd/errata.py:405 ../src/spacecmd/package.py:107
 #: ../src/spacecmd/softwarechannel.py:591
 msgid "Description"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:412
+#: ../src/spacecmd/errata.py:411
 msgid "Notes"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:417
+#: ../src/spacecmd/errata.py:416
 msgid "CVEs"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:421
+#: ../src/spacecmd/errata.py:420
 msgid "Solution"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:425
+#: ../src/spacecmd/errata.py:424
 msgid "References"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:429
+#: ../src/spacecmd/errata.py:428
 msgid "Affected Channels"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:433 ../src/spacecmd/org.py:278
+#: ../src/spacecmd/errata.py:432 ../src/spacecmd/org.py:278
 msgid "Affected Systems"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:437
+#: ../src/spacecmd/errata.py:436
 msgid "Affected Packages"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:447
+#: ../src/spacecmd/errata.py:446
 msgid "errata_delete: Delete an patch"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:448
+#: ../src/spacecmd/errata.py:447
 msgid "usage: errata_delete ERRATA|search:XXX ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:468
+#: ../src/spacecmd/errata.py:467
 msgid "No patches to delete"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:471
+#: ../src/spacecmd/errata.py:470
 msgid "Erratum            Channels"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:479
+#: ../src/spacecmd/errata.py:478
 msgid "Delete these patches [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:485
+#: ../src/spacecmd/errata.py:484
 #, python-format
 msgid "Deleted %i patches"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:495
+#: ../src/spacecmd/errata.py:494
 msgid "errata_publish: Publish an patch to a channel"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:496
+#: ../src/spacecmd/errata.py:495
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:523
+#: ../src/spacecmd/errata.py:522
 msgid "No patches to publish"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:528
+#: ../src/spacecmd/errata.py:527
 msgid "Publish these patches [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:540
+#: ../src/spacecmd/errata.py:539
 msgid "errata_search: List patches that meet the given criteria"
 msgstr ""
 
-#: ../src/spacecmd/errata.py:541
+#: ../src/spacecmd/errata.py:540
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 msgstr ""
 
-#: ../src/spacecmd/errata.py:543 ../src/spacecmd/scap.py:179
+#: ../src/spacecmd/errata.py:542 ../src/spacecmd/scap.py:179
 msgid "Example:"
 msgstr ""
 
@@ -5782,8 +5787,9 @@ msgid "Newer there"
 msgstr ""
 
 #: ../src/spacecmd/system.py:73 ../src/spacecmd/system.py:3771
+#, fuzzy
 msgid "Package"
-msgstr ""
+msgstr "软件包"
 
 #: ../src/spacecmd/system.py:74
 msgid "This System"
