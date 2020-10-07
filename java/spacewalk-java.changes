@@ -1,3 +1,4 @@
+- add power management xmlrpc api
 - allow nightly ISS sync to also cover custom channels
 - Include build id in boot image local path
 - fix max password length check at user creation (bsc#1176765)
