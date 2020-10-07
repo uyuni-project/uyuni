@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-10-06 19:48+0000\n"
+"PO-Revision-Date: 2020-10-07 18:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "sk/>\n"
@@ -322,15 +322,15 @@ msgstr "Nastavenie je pripravené."
 
 #: ../yast/susemanager_write.rb:59 ../yast/susemanager_write.rb:68
 msgid "Setup script output"
-msgstr ""
+msgstr "Výstup skriptu nastavenia"
 
 #: ../yast/susemanager_write.rb:63 ../yast/susemanager_write.rb:72
 msgid "Error output"
-msgstr ""
+msgstr "Chybový výstup"
 
 #: ../yast/susemanager_write.rb:83
 msgid "Now you can start the migration process using the mgr-setup script.\n"
-msgstr ""
+msgstr "Teraz môžete spustiť proces migrácie pomocou skriptu mgr-setup.\n"
 
 #: ../yast/susemanager_write.rb:107
 msgid ""
@@ -339,27 +339,30 @@ msgid ""
 "<p>The script output and possible error output can be watched on the screen."
 "</p>"
 msgstr ""
+"<p>Teraz je spustený konfiguračný skript a bude to chvíľu trvať.</p>\n"
+"<p>Na obrazovke je možné sledovať výstup skriptu a možný chybový výstup.</p>"
 
 #: ../yast/susemanager_write.rb:111
 msgid "Write Settings"
-msgstr ""
+msgstr "Zapísať nastavenia"
 
 #: ../yast/susemanager_write.rb:122
 msgid "Now you can either start the setup process directly or exit the\n"
 msgstr ""
+"Teraz môžete buď priamo spustiť proces nastavenia, alebo ukončiť program\n"
 
 #: ../yast/susemanager_write.rb:134
 msgid "Setup is running. Please wait..."
-msgstr ""
+msgstr "Nastavenie je spustené. Prosím čakajte..."
 
 #: ../yast/susemanager_write.rb:166
 msgid "Setup is completed."
-msgstr ""
+msgstr "Nastavenie je dokončené."
 
 #: ../yast/susemanager_write.rb:169
 msgid "Setup failed."
-msgstr ""
+msgstr "Nastavenie zlyhalo."
 
 #: ../yast/susemanager_write.rb:185
 msgid "Setup has been aborted."
-msgstr ""
+msgstr "Nastavenie bolo prerušené."
