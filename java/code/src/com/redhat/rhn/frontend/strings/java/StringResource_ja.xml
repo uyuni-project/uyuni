@@ -1031,7 +1031,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>システム設定マネージャー</target>
+        <target>システムセットマネージャ</target>
       </trans-unit>
       <trans-unit id="Systems" xml:space="preserve">
         <source>Systems</source>
@@ -6772,11 +6772,9 @@ Follow this url to see the full list of inactive systems:
         <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source> <target state="translated">このシステムで設定配備機能が有効になるかを確認するには、&lt;a href={0}&gt;{1}&lt;/a&gt; 画面でこのシステムを選択し、"{2}" をクリックします</target> </trans-unit>
         <trans-unit id="system.sdc.addtossm">
-          <source>System added to the System Set Manager.</source> <target>システム設定マネージャーにシステムが追加されました。</target>
-        </trans-unit>
+          <source>System added to the System Set Manager.</source> <target>システムセットマネージャにシステムが追加されました。</target> </trans-unit>
         <trans-unit id="system.sdc.removefromssm">
-          <source>System removed from the System Set Manager.</source> <target>システム設定マネージャーからシステムが削除されました。</target>
-        </trans-unit>
+          <source>System removed from the System Set Manager.</source> <target>システムセットマネージャからシステムが削除されました。</target> </trans-unit>
         <trans-unit id="usageLimit">
           <source>Usage Limit</source> <target>使用限度</target>
         </trans-unit>
