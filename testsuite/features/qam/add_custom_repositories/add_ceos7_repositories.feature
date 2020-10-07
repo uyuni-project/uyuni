@@ -28,7 +28,7 @@ Feature: Adding the CentOS 7 distribution custom repositories
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-  Scenario: Add the repository to the Custom Channel for <label>
+  Scenario: Add the repository to the custom channel for <label>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 7 DVD"
@@ -37,7 +37,7 @@ Feature: Adding the CentOS 7 distribution custom repositories
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the Custom Channel for <label>
+  Scenario: Synchronize the repository in the custom channel for <label>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 7 DVD"
@@ -46,5 +46,5 @@ Feature: Adding the CentOS 7 distribution custom repositories
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
 
-  Scenario: The Custom channel for CentOS 7 has been synced
+  Scenario: The custom channel for CentOS 7 has been synced
     When I wait until the channel "centos-7-iso" has been synced
