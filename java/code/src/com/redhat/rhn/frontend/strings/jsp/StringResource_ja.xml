@@ -2094,7 +2094,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
-        <target>システム設定マネージャーで使用するために以下のシステムから選択できます。</target>
+        <target>システムセットマネージャで使用するために以下のシステムから選択できます。</target>
       </trans-unit>
       <trans-unit id="Update List" xml:space="preserve">
         <source>Update List</source>
@@ -5030,8 +5030,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Overview</source> <target>概要</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary">
-          <source>Manage multiple systems simultaneously with system set manager.</source> <target>ようこそ システム設定マネージャー へ。 このインターフェースを使用すると @@PRODUCT_NAME@@ 内にある大量のシステム群を簡単に操作することができるようになります。</target>
-        </trans-unit>
+          <source>Manage multiple systems simultaneously with system set manager.</source> <target>システムセットマネージャを使用して複数のシステムを同時に管理します。</target> </trans-unit>
         <trans-unit id="ssm.overview.summary2">
           <source>The navigation tabs above will assist you in executing the following actions.</source> <target>次の各タブで各種の作業を行ないます。</target> </trans-unit>
         <trans-unit id="ssm.overview.systems">
@@ -5206,8 +5205,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Confirm Deletion</source> <target>削除の確認</target>
         </trans-unit>
         <trans-unit id="ssm.delete.systems.confirmmessage">
-          <source>The selected systems in the System Set Manager have been queued for deletion.</source> <target>システム設定マネージャー で選択されたシステムが削除のためにキューに格納されました。</target>
-        </trans-unit>
+          <source>The selected systems in the System Set Manager have been queued for deletion.</source> <target>システムセットマネージャで選択されたシステムが削除のためにキューに格納されました。</target> </trans-unit>
       </group>
       <!-- SSM Hardware Refresh -->
       <group>
@@ -6003,7 +6001,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Delete Selected</source> <target>選択項目を削除</target>
         </trans-unit>
         <trans-unit id="duplicate.systems.delete.confirm.message" xml:space="preserve">
-          <source> There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source> <target state="translated"> "重複するシステムプロファイル" ページで選択されていないシステムプロファイルの削除が、以下で選択されている可能性があります。以下のリストをよく確認し、システム設定マネージャに存在していた可能性があるプロファイルを間違って削除しないようにしてください。</target>
+          <source> There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source> <target state="translated"> "重複するシステムプロファイル" ページで選択されていないシステムプロファイルの削除が、以下で選択されている可能性があります。以下のリストをよく確認し、システムセットマネージャに存在していた可能性があるプロファイルを間違って削除しないようにしてください。</target>
         </trans-unit>
         <trans-unit id="duplicate.systems.delete.confirmmessage">
           <source>Selected systems have been queued for deletion.</source> <target>選択されたシステムが削除のためにキューに格納されました。</target>
@@ -6479,7 +6477,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>システム設定マネージャー の検索</target>
+        <target>システムセットマネージャの検索</target>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.invertlabel" xml:space="preserve">
         <source>Invert Result</source>
@@ -7097,14 +7095,14 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target>相違点</target>
+        <target>違い</target>
       </trans-unit>
       <trans-unit id="compare.jsp.nodifferences" xml:space="preserve">
         <source>No differences.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target>相違点はありません。</target>
+        <target>違いはありません。</target>
       </trans-unit>
       <trans-unit id="compare.jsp.package" xml:space="preserve">
         <source>Package</source>
@@ -14220,7 +14218,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>現在のバージョン</target>
       </trans-unit>
@@ -14228,7 +14226,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>最終変更</target>
       </trans-unit>
@@ -14250,7 +14248,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>このチャンネルをサブスクライブしていて配備可能なシステムはありません</target>
       </trans-unit>
@@ -14258,7 +14256,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>動作</target>
       </trans-unit>
@@ -14266,7 +14264,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -14274,7 +14272,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>すべてのファイルを配備</target>
       </trans-unit>
@@ -14282,7 +14280,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備</target>
       </trans-unit>
@@ -14290,7 +14288,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備</target>
       </trans-unit>
@@ -14298,7 +14296,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">以下の一覧から配備したいファイルを選択することができます。  選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
@@ -14306,7 +14304,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -14314,7 +14312,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>確認して選択したシステムに配備</target>
       </trans-unit>
@@ -14322,7 +14320,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備: 配備するシステムを選択します</target>
       </trans-unit>
@@ -14330,7 +14328,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備するシステムを選択してください。</target>
       </trans-unit>
@@ -14338,7 +14336,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりも順位が低くなる場合、この上書きや最上位のファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
@@ -16893,10 +16891,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="ssm.patches.list.summary">
           <source>The patches below apply to one or more of your selected systems.</source> <target>以下のパッチが選択している一つまたは複数のシステムに適用されます。</target> </trans-unit>
         <trans-unit id="ssm.errata-relevant-systems.title">
-          <source>Systems in System Set Manager Affected By {0} - {1}</source> <target>システム設定マネージャー内で {0} - {1} に影響を受けるシステム</target>
-        </trans-unit>
+          <source>Systems in System Set Manager Affected By {0} - {1}</source> <target>システムセットマネージャ内で {0} - {1} に影響を受けるシステム</target> </trans-unit>
         <trans-unit id="ssm.errata-relevant-systems.summary">
-          <source>Below is a list of the systems in the system set manager which are affected by this patch.</source> <target>システム設定マネージャー内でこのパッチが適用可能なシステムの一覧です。</target> </trans-unit>
+          <source>Below is a list of the systems in the system set manager which are affected by this patch.</source> <target>システムセットマネージャ内でこのパッチが適用可能なシステムの一覧です。</target> </trans-unit>
         <trans-unit id="ssm.errata-apply-confirm.title">
           <source>Relevant Patches Confirm</source> <target>該当するパッチの確認</target> </trans-unit>
         <trans-unit id="ssm.errata-apply-confirm.summary">
@@ -18713,7 +18710,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager header</context>
         </context-group>
-        <target>システム設定マネージャー</target>
+        <target>システムセットマネージャ</target>
       </trans-unit>
       <trans-unit id="view-log.jsp.header" xml:space="preserve">
         <source>System Set Manager Task Log</source>
@@ -20249,7 +20246,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ログイン名: {0}</target>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group />
+      <group/>
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
