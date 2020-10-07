@@ -1,0 +1,4670 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: ../html/src/manager/content-management/list-filters/list-filters.js:92
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../html/javascript/spacewalk-essentials.js:487
+msgid "remaining"
+msgstr ""
+
+#: ../html/javascript/spacewalk-essentials.js:507
+msgid ""
+"The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
+"Edge"
+msgstr ""
+
+#: ../html/src/components/action-schedule.js:54
+msgid "new action chain"
+msgstr ""
+
+#: ../html/src/components/action-schedule.js:197
+msgid ""
+"There are multiple maintenance schedules for selected systems. Make sure "
+"that systems in the set use at most 1 maintenance schedule if you want to "
+"schedule by date or maintenance window."
+msgstr ""
+
+#: ../html/src/components/action-schedule.js:204
+msgid "No upcoming maintenance windows"
+msgstr ""
+
+#: ../html/src/components/action-schedule.js:249
+msgid "Earliest:"
+msgstr ""
+
+#: ../html/src/components/action-schedule.js:249
+msgid "Maintenance Window:"
+msgstr ""
+
+#: ../html/src/components/action-schedule.js:274
+msgid "Add to:"
+msgstr ""
+
+#: ../html/src/components/action-schedule.js:290
+msgid "Loading the scheduler..."
+msgstr ""
+
+#: ../html/src/components/config-channels.js:26
+msgid "State Configuration Channel"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:29
+msgid "Normal Configuration Channel"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:54
+msgid "Configuration Channel: {0}"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:58
+#: ../html/src/manager/images/image-profiles.js:161
+#: ../html/src/manager/images/image-stores.js:158
+#: ../html/src/manager/images/image-view-overview.js:207
+#: ../html/src/manager/images/image-view-overview.js:215
+#: ../html/src/manager/maintenance/list/calendar-list.js:81
+#: ../html/src/manager/maintenance/list/schedule-list.js:67
+#: ../html/src/manager/state/recurring-states-list.js:119
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:155
+msgid "Edit"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:59
+msgid "Edit Configuration Channel"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:111
+msgid "There are unsaved changes. Do you want to proceed?"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:149
+msgid "State assignments have been saved."
+msgstr ""
+
+#: ../html/src/components/config-channels.js:158
+msgid "An error occurred on save."
+msgstr ""
+
+#: ../html/src/components/config-channels.js:281
+#: ../html/src/manager/minion/packages/package-states.js:275
+msgid "No current changes."
+msgstr ""
+
+#: ../html/src/components/config-channels.js:282
+msgid "No states assigned. Use search to find and assign states."
+msgstr ""
+
+#: ../html/src/components/config-channels.js:341
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:51
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:85
+#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.js:53
+#: ../html/src/manager/images/image-view.js:683
+#: ../html/src/manager/images/image-view.js:685
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:26
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:28
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:43
+#: ../html/src/manager/state/recurring-states-details.js:140
+#: ../html/src/manager/state/recurring-states-details.js:142
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
+msgid "Back"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:342
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:166
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:18
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
+msgid "Confirm"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:349
+#: ../html/src/manager/maintenance/details/schedule-details.js:180
+#: ../html/src/manager/maintenance/details/schedule-details.js:187
+msgid "Save Changes"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:355
+msgid "Apply"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:360
+msgid "Reorder"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:372
+#: ../html/src/components/config-channels.js:376
+msgid "Changes"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:374
+msgid "1 Change"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:383
+#: ../html/src/components/config-channels.js:412
+#: ../html/src/manager/minion/packages/package-states.js:244
+msgid "Search"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:389
+#: ../html/src/manager/admin/config/monitoring-admin.js:43
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:48
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:233
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:310
+#: ../html/src/manager/maintenance/details/schedule-details.js:205
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:82
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
+msgid "System"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:399
+msgid "Configuration Channels"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:409
+msgid "Search in configuration channels"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:423
+msgid "Edit the ranking of the configuration channels by dragging them."
+msgstr ""
+
+#: ../html/src/components/config-channels.js:424
+msgid "There are no states assigned."
+msgstr ""
+
+#: ../html/src/components/config-channels.js:431
+msgid "Channel Name"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:432
+msgid "Channel Label"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:433
+msgid "Assign"
+msgstr ""
+
+#: ../html/src/components/config-channels.js:455
+#: ../html/src/components/table/TableDataHandler.js:287
+msgid "There are no entries to show."
+msgstr ""
+
+#: ../html/src/components/dialog/ActionConfirm.js:71
+msgid "Are you sure you want to {0} {1} "
+msgstr ""
+
+#: ../html/src/components/dialog/ActionConfirm.js:81
+msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
+msgstr ""
+
+#: ../html/src/components/dialog/DangerDialog.js:44
+#: ../html/src/components/dialog/DangerDialog.js:45
+#: ../html/src/components/panels/CreatorPanel.js:105
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:167
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:130
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:112
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:101
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
+#: ../html/src/manager/images/image-view-overview.js:467
+#: ../html/src/manager/images/image-view-overview.js:468
+#: ../html/src/manager/images/image-view-overview.js:526
+#: ../html/src/manager/images/image-view-overview.js:527
+#: ../html/src/manager/systems/delete-system.js:75
+#: ../html/src/manager/systems/delete-system.js:76
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:204
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:205
+msgid "Cancel"
+msgstr ""
+
+#: ../html/src/components/dialog/DeleteDialog.js:23
+#: ../html/src/components/panels/CreatorPanel.js:91
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:109
+#: ../html/src/manager/content-management/project/project.js:97
+#: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/images/image-profiles.js:107
+#: ../html/src/manager/images/image-profiles.js:167
+#: ../html/src/manager/images/image-stores.js:110
+#: ../html/src/manager/images/image-stores.js:164
+#: ../html/src/manager/images/image-view.js:316
+#: ../html/src/manager/images/image-view.js:320
+#: ../html/src/manager/images/image-view.js:607
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:41
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:44
+#: ../html/src/manager/maintenance/list/calendar-list.js:88
+#: ../html/src/manager/maintenance/list/schedule-list.js:74
+#: ../html/src/manager/salt/keys/key-management.js:37
+#: ../html/src/manager/state/recurring-states-details.js:154
+#: ../html/src/manager/state/recurring-states-details.js:156
+#: ../html/src/manager/state/recurring-states-list.js:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:36
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:27
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
+msgid "Delete"
+msgstr ""
+
+#: ../html/src/components/dialog/dialog.stories.js:19
+msgid "Delete project"
+msgstr ""
+
+#: ../html/src/components/dialog/dialog.stories.js:22
+msgid "Are you sure you want to delete project "
+msgstr ""
+
+#: ../html/src/components/FormulaForm.js:17
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+
+#: ../html/src/components/FormulaForm.js:79
+msgid ""
+"Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
+"on each system!"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.js:107
+#: ../html/src/manager/clusters/cluster/cluster-config.js:50
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:60
+msgid "Please input required fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.js:110
+#: ../html/src/manager/clusters/cluster/cluster-config.js:53
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:63
+msgid "Invalid format of fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.js:157
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+
+#: ../html/src/components/formulas/EditGroup.js:266
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr ""
+
+#: ../html/src/components/formula-selection.js:130
+msgid " No group"
+msgstr ""
+
+#: ../html/src/components/formula-selection.js:230
+msgid ""
+"On this page you can select Salt Formulas for this group/system, which can "
+"then be configured on group and system level. This allows you to "
+"automatically install and configure software."
+msgstr ""
+
+#: ../html/src/components/formula-selection.js:236
+#: ../html/src/components/panels/CreatorPanel.js:116
+#: ../html/src/manager/clusters/cluster/cluster-config.js:81
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:175
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:143
+#: ../html/src/manager/minion/packages/package-states.js:201
+msgid "Save"
+msgstr ""
+
+#: ../html/src/components/formula-selection.js:244
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:25
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:59
+msgid "Formulas"
+msgstr ""
+
+#: ../html/src/components/formulas/PasswordInput.js:52
+msgid "Generate new password"
+msgstr ""
+
+#: ../html/src/components/formulas/PasswordInput.js:55
+msgid "Show/hide password"
+msgstr ""
+
+#: ../html/src/components/formulas/SectionToggle.js:15
+msgid "Toggle section visibility"
+msgstr ""
+
+#: ../html/src/components/input/Check.stories.js:31
+#: ../html/src/components/input/DateTime.stories.js:35
+#: ../html/src/components/input/FormMultiInput.stories.js:75
+#: ../html/src/components/input/form.stories.js:36
+#: ../html/src/components/input/Password.stories.js:36
+#: ../html/src/components/input/Radio.stories.js:39
+#: ../html/src/components/input/Radio.stories.js:69
+#: ../html/src/components/input/Radio.stories.js:99
+#: ../html/src/components/input/Radio.stories.js:130
+#: ../html/src/components/input/Select.stories.js:38
+#: ../html/src/components/input/Text.stories.js:36
+msgid "Submit"
+msgstr ""
+
+#: ../html/src/components/input/Combo.stories.js:30
+msgid "Flavor"
+msgstr ""
+
+#: ../html/src/components/input/Combo.stories.js:32
+msgid "Start typing..."
+msgstr ""
+
+#: ../html/src/components/input/Combo.stories.js:33
+msgid "No flavors"
+msgstr ""
+
+#: ../html/src/components/input/DateTime.stories.js:27
+msgid "Time"
+msgstr ""
+
+#: ../html/src/components/input/FormMultiInput.js:122
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:59
+msgid "Add"
+msgstr ""
+
+#: ../html/src/components/input/FormMultiInput.js:134
+#: ../html/src/manager/clusters/remove-node/remove-node.js:81
+msgid "Remove"
+msgstr ""
+
+#: ../html/src/components/input/FormMultiInput.stories.js:26
+msgid "Users"
+msgstr ""
+
+#: ../html/src/components/input/FormMultiInput.stories.js:52
+#: ../html/src/components/input/form.stories.js:26
+#: ../html/src/components/input/Text.stories.js:26
+msgid "First Name"
+msgstr ""
+
+#: ../html/src/components/input/FormMultiInput.stories.js:54
+#: ../html/src/components/input/FormMultiInput.stories.js:63
+#: ../html/src/components/input/form.stories.js:28
+#: ../html/src/components/input/Text.stories.js:28
+msgid "Minimum 2 characters"
+msgstr ""
+
+#: ../html/src/components/input/FormMultiInput.stories.js:61
+msgid "Last Name"
+msgstr ""
+
+#: ../html/src/components/input/Password.stories.js:26
+#: ../html/src/manager/images/image-store-edit.js:152
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:154
+msgid "Password"
+msgstr ""
+
+#: ../html/src/components/input/Password.stories.js:28
+msgid "Minimum 4 characters"
+msgstr ""
+
+#: ../html/src/components/input/Radio.stories.js:26
+#: ../html/src/components/input/Radio.stories.js:55
+#: ../html/src/components/input/Radio.stories.js:86
+#: ../html/src/components/input/Radio.stories.js:116
+#: ../html/src/components/input/Select.stories.js:26
+msgid "Level"
+msgstr ""
+
+#: ../html/src/components/input/Radio.stories.js:31
+#: ../html/src/components/input/Radio.stories.js:61
+#: ../html/src/components/input/Radio.stories.js:91
+#: ../html/src/components/input/Radio.stories.js:122
+msgid "Beginner"
+msgstr ""
+
+#: ../html/src/components/input/Radio.stories.js:32
+#: ../html/src/components/input/Radio.stories.js:62
+#: ../html/src/components/input/Radio.stories.js:92
+#: ../html/src/components/input/Radio.stories.js:123
+msgid "Normal"
+msgstr ""
+
+#: ../html/src/components/input/Radio.stories.js:33
+#: ../html/src/components/input/Radio.stories.js:63
+#: ../html/src/components/input/Radio.stories.js:93
+#: ../html/src/components/input/Radio.stories.js:124
+msgid "Expert"
+msgstr ""
+
+#: ../html/src/components/pagination.js:14
+msgid "First"
+msgstr ""
+
+#: ../html/src/components/pagination.js:16
+#: ../html/src/manager/admin/setup/products/products.js:358
+#: ../html/src/manager/clusters/add-cluster/select-provider.js:26
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:133
+#: ../html/src/manager/clusters/shared/ui/select-server.js:98
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:969
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
+msgid "Next"
+msgstr ""
+
+#: ../html/src/components/pagination.js:54
+msgid "Page"
+msgstr ""
+
+#: ../html/src/components/pagination.js:63
+#: ../html/src/manager/admin/setup/products/products.js:363
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:766
+msgid "of"
+msgstr ""
+
+#: ../html/src/components/pagination.js:72
+msgid "Page {0} of {1}"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:305
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:84
+#: ../html/src/manager/maintenance/list/schedule-list.js:36
+#: ../html/src/manager/state/recurring-states-list.js:88
+msgid "Schedule Name"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:309
+msgid "Select a Schedule"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:316
+msgid "Hourly:"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:322
+msgid "The action will be executed every hour at the specified minute"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:328
+msgid "Daily:"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:337
+msgid "Weekly:"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:353
+msgid "Monthly:"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:366
+msgid ""
+"Days are limited to 28 to have a recurring schedule available for all the "
+"months"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:372
+msgid "Custom Quartz format:"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.js:375
+msgid "e.g. \"0 15 2 ? * 7\""
+msgstr ""
+
+#: ../html/src/components/systems.js:45
+#: ../html/src/manager/content-management/list-filters/filter-form.js:221
+msgid "Security Advisory"
+msgstr ""
+
+#: ../html/src/components/systems.js:58
+msgid "System Locked"
+msgstr ""
+
+#: ../html/src/components/table/SearchPanel.js:39
+msgid "Items {0} - {1} of {2}"
+msgstr ""
+
+#: ../html/src/components/table/SearchPanel.js:42
+msgid "({0} selected)"
+msgstr ""
+
+#: ../html/src/components/table/SearchPanel.js:43
+#: ../html/src/manager/admin/setup/products/products.js:288
+msgid "Clear"
+msgstr ""
+
+#: ../html/src/components/table/SearchPanel.js:48
+msgid "Select All"
+msgstr ""
+
+#: ../html/src/components/table/TableDataHandler.js:288
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:229
+#: ../html/src/manager/virtualization/pools/pool-properties.js:615
+msgid "Loading..."
+msgstr ""
+
+#: ../html/src/components/table/TableDataHandler.js:316
+msgid "items per page"
+msgstr ""
+
+#: ../html/src/components/tree/tree.js:116
+msgid "Invalid data"
+msgstr ""
+
+#: ../html/src/components/tree/tree.js:124
+msgid "No data"
+msgstr ""
+
+#: ../html/src/components/utils/HelpLink.js:20
+msgid "Help"
+msgstr ""
+
+#: ../html/src/core/channels/api/use-mandatory-channels-api.js:10
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
+msgid "Base channel not found or not authorized."
+msgstr ""
+
+#: ../html/src/core/channels/api/use-mandatory-channels-api.js:11
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
+msgid "Child channel not found or not authorized."
+msgstr ""
+
+#: ../html/src/core/channels/api/use-mandatory-channels-api.js:12
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
+msgid "Invalid channel id"
+msgstr ""
+
+#: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
+msgid "Required channels"
+msgstr ""
+
+#: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
+#: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
+msgid "none"
+msgstr ""
+
+#: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
+msgid "Require this channel"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:17
+msgid "Restart is needed for the configuration changes to take effect."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:20
+msgid "An internal error has occured. See the server logs for details."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:21
+msgid "Enabling monitoring failed. See the server logs for details."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:22
+msgid ""
+"Failed to enable all monitoring services. Some services are still disabled. "
+"See the server logs for details."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:23
+msgid "Disabling monitoring failed. See the server logs for details."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:24
+msgid ""
+"Failed to disable all monitoring services. Some services are still enabled. "
+"See the server logs for details."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:25
+msgid "Monitoring enabled successfully."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:26
+msgid "Monitoring disabled successfully."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:27
+msgid ""
+"The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+"Click the Enable button to enable the JMX configuration or click Disable to "
+"stop the Prometheus exporter."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:29
+msgid ""
+"The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+"Click the Disable button to disable the JMX configuration or click Enable to "
+"start the Prometheus exporter."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:31
+msgid ""
+"The Taskomatic Prometheus exporter is up but the JMX configuration is "
+"disabled. Click the Enable button to enable the JMX configuration of click "
+"Disable to stop the Prometheus exporter."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:33
+msgid ""
+"The Taskomatic Prometheus exporter is down but the JMX configuration is "
+"enabled. Click the Disable button to disable the JMX configuration of click "
+"Enable to start the Prometheus exporter."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:38
+msgid "Monitoring status hasn't changed."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:39
+msgid "An error occured. Monitoring status unknown. Refresh the page."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:44
+msgid "Tomcat (Java JMX)"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:45
+msgid "Taskomatic (Java JMX)"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:46
+msgid "PostgreSQL database"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:47
+msgid "Server self monitoring"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:56
+#: ../html/src/manager/admin/config/monitoring-admin.js:58
+msgid "Enabled"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:64
+#: ../html/src/manager/admin/config/monitoring-admin.js:66
+msgid "Disabled"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:109
+msgid "The server uses "
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:109
+msgid "Prometheus"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:112
+msgid "Refer to the "
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:112
+msgid "documentation"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:170
+#: ../html/src/manager/admin/config/monitoring-admin.js:179
+#: ../html/src/manager/admin/config/monitoring-admin.js:188
+#: ../html/src/manager/admin/config/monitoring-admin.js:201
+msgid "Enable"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:172
+#: ../html/src/manager/admin/config/monitoring-admin.js:181
+#: ../html/src/manager/admin/config/monitoring-admin.js:190
+#: ../html/src/manager/admin/config/monitoring-admin.js:206
+msgid "Disable"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:218
+msgid "SUSE Manager Configuration - Monitoring"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:224
+msgid "Setup your SUSE Manager server monitoring."
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:229
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:118
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
+#: ../html/src/manager/virtualization/pools/pool-properties.js:234
+msgid "General"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:230
+msgid "Bootstrap Script"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:231
+msgid "Organizations"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:232
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
+msgid "Restart"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:233
+msgid "Cobbler"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:234
+msgid "Bare-metal systems"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:235
+#: ../html/src/manager/admin/config/monitoring-admin.js:240
+#: ../html/src/manager/admin/config/monitoring-admin.js:252
+msgid "Monitoring"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.js:263
+msgid ""
+" Tomcat and Taskomatic is needed for the configuration changes to take "
+"effect."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:115
+msgid ""
+"No SUSE Manager Server Subscription available. Products requiring Client "
+"Tools Channel will not be shown."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:157
+msgid "The product catalog refresh is running..."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:227
+msgid "Setup Wizard"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:245
+msgid ""
+"A refresh of the product data is currently running in the background. Please "
+"try again later."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:252
+msgid "The product catalog is still refreshing, please wait."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:254
+msgid "Select some product first."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:263
+#: ../html/src/manager/admin/setup/products/products.js:270
+msgid "Add products"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:287
+msgid "Clear products selection"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:327
+msgid "Why aren't all products displayed in the list?"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:328
+msgid ""
+"The products displayed on this list are directly linked to "
+"your                   Organization credentials (Mirror credentials) as well "
+"as your SUSE subscriptions."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:330
+msgid ""
+"If you believe there are products missing, make sure you have added the "
+"correct                   Organization credentials in the previous wizard "
+"step."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:339
+msgid ""
+"This server is configured as an Inter-Server Synchronisation (ISS) slave. "
+"Products can only be managed on the ISS master."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:352
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
+msgid "Prev"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:402
+msgid "Filter by architecture"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:489
+msgid "Filter by product Description"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:539
+msgid "Product Description"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:540
+#: ../html/src/manager/admin/setup/products/products.js:866
+#: ../html/src/manager/content-management/list-filters/filter-form.js:165
+#: ../html/src/manager/images/image-view-packages.js:48
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:184
+msgid "Architecture"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:540
+msgid "Arch"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:541
+msgid "Channels"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:705
+msgid " channels sync failed"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:711
+msgid " channels sync in progress"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:717
+msgid " channels synced"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:735
+msgid "To enable this product, the parent product should be selected first"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:735
+msgid "Select this product"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:745
+msgid "This product is mirrored."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:771
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
+#: ../html/src/manager/systems/activation-key/child-channels.js:135
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
+msgid "recommended"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:785
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
+#: ../html/src/manager/systems/activation-key/child-channels.js:166
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
+msgid "include recommended"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:825
+msgid "SCC product catalog refresh in progress"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:829
+msgid "Scheduling channels product resync"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:833
+msgid "Channels product resync scheduled"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:837
+msgid "Schedule channels product resync"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:876
+msgid "Show product's channels"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:900
+msgid "Product Channels - "
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:905
+msgid "Mandatory Channels"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:910
+msgid "Optional Channels"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:932
+msgid "not synced"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:934
+msgid "sync in progress"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:936
+msgid "synced"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.js:938
+msgid "sync failed"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
+msgid "Refresh the product catalog from SUSE Customer Center"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:214
+#: ../html/src/manager/images/image-profiles.js:110
+#: ../html/src/manager/images/image-stores.js:113
+#: ../html/src/manager/images/image-view.js:326
+#: ../html/src/manager/notifications/notification-messages.js:356
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:240
+msgid "Refresh"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
+msgid "Please be patient, this might take several minutes."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
+#: ../html/src/manager/images/image-view-overview.js:79
+msgid "Completed"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
+msgid "Operation not successful: Empty reply from the server"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
+#: ../html/src/manager/images/image-view.js:600
+#: ../html/src/manager/images/image-view-patches.js:81
+#: ../html/src/manager/maintenance/list/calendar-list.js:74
+#: ../html/src/manager/maintenance/list/schedule-list.js:60
+#: ../html/src/manager/state/recurring-states-list.js:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
+msgid "Details"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:87
+msgid " running"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:88
+msgid " finished"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:89
+msgid " failed"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:90
+msgid " interrupted"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:91
+msgid " ready to run"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:92
+msgid " skipped"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:108
+msgid "Task Engine Status"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:116
+msgid "Last Execution Times"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:117
+msgid "Runtime Status"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:129
+msgid ""
+"The server is running or has finished executing the following tasks during "
+"the latest 5 minutes."
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:130
+msgid "Data is refreshed every "
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:130
+msgid " seconds"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:140
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:229
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
+#: ../html/src/manager/virtualization/ListTab.js:231
+msgid "Filter by name"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:145
+msgid "Task Id"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:151
+msgid "Task Name"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:157
+msgid "Start Time"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:163
+msgid "End Time"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:169
+msgid "Elapsed Time"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:175
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:235
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:128
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:58
+#: ../html/src/manager/images/image-view-runtime.js:97
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
+msgid "Status"
+msgstr ""
+
+#. comparator={this.sortByText}
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:181
+msgid "Data"
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:193
+msgid "There are no tasks running on the server at the moment."
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:211
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
+#: ../html/src/manager/notifications/notification-messages.js:466
+msgid "Session expired, please reload the page to see up-to-date data."
+msgstr ""
+
+#: ../html/src/manager/admin/task-engine-status/taskotop.js:213
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
+#: ../html/src/manager/notifications/notification-messages.js:468
+#: ../html/src/manager/notifications/notifications.js:101
+#: ../html/src/manager/salt/cmd/remote-commands.js:506
+#: ../html/src/utils/network.js:61
+msgid "Server error, please check log files."
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:165
+msgid "CVE Audit"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:171
+msgid "CVE"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:214
+msgid "Audit Servers"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:215
+msgid "Audit Images"
+msgstr ""
+
+#. ref={nameInputRef}
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:246
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:147
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:253
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:86
+#: ../html/src/manager/clusters/shared/ui/select-server.js:134
+#: ../html/src/manager/content-management/list-filters/list-filters.js:77
+#: ../html/src/manager/content-management/list-projects/list-projects.js:88
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:90
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:28
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:25
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
+#: ../html/src/manager/images/image-view.js:544
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:123
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:50
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:334
+#: ../html/src/manager/virtualization/pools/pool-properties.js:239
+msgid "Name"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.js:263
+#: ../html/src/manager/images/image-profiles.js:148
+#: ../html/src/manager/images/image-stores.js:153
+#: ../html/src/manager/images/image-view.js:595
+#: ../html/src/manager/maintenance/list/calendar-list.js:69
+#: ../html/src/manager/maintenance/list/schedule-list.js:55
+#: ../html/src/manager/salt/keys/key-management.js:180
+#: ../html/src/manager/state/recurring-states-list.js:108
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
+#: ../html/src/manager/virtualization/ListTab.js:255
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
+msgid "Actions"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
+msgid "Edit Virtual Host Managers"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
+msgid "Subscription Matching"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+msgid "Subscriptions"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:98
+msgid "Unmatched Products"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+msgid "Pins "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+msgid "Messages "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
+msgid "Match data status"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:62
+msgid ""
+"Could not start a matching run. Please contact your SUSE Manager "
+"administrator to make sure the task scheduler is running."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:68
+msgid "No match data is currently available."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:69
+msgid "You can also trigger a first run now by clicking the button below."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:75
+msgid "Matching data is currently being recomputed, it was started {0}."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:78
+msgid ""
+"Latest successful match data was computed {0}, you can trigger a new run by "
+"clicking the button below."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
+msgid ""
+"Match data is computed via a task schedule, nightly by default (you can "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
+msgid "change the task schedule from the administration page"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
+msgid "). "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
+msgid "Refresh matching data"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:21
+msgid "Unsupported part number detected"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:25
+msgid ""
+"Physical system is reported as virtual guest, please check hardware data"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:29
+msgid "Virtual guest has unknown host, assuming it is a physical system"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:33
+msgid "System has an unknown number of sockets, assuming 16"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:37
+msgid ""
+"Two subscriptions with the same part number are in a bundle - merged into a "
+"single one"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:41
+msgid ""
+"Two subscriptions with the same part number (and other properties) have been "
+"merged together - start/end dates might be indicative"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:45
+msgid "Pinned match adjusted due to merged subscriptions"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:46
+msgid "Subscription IDs"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:68
+msgid "Please review warning and information messages below."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:78
+msgid "Message"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:84
+msgid "Additional information"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:94
+msgid "No messages from the last match run."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:99
+msgid "Messages"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:79
+msgid ""
+"You can pin a subscription to a system to suggest a certain association to "
+"the matching algorithm. "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:81
+msgid ""
+"Next time a matching is attempted, the algorithm will try to produce a "
+"result that applies the subscription to the system you specified. "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:83
+msgid ""
+"Note that the algorithm might determine that a certain pin cannot be "
+"respected, "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:84
+msgid ""
+"depending on a subscription's availablility and applicability rules, in that "
+"case it will be shown as not satisfied. "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:80
+msgid "Policy"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:144
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:145
+msgid "Add a Pin"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:164
+msgid "pending next run"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:169
+msgid "not satisfied"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:218
+msgid "Available Systems"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:219
+msgid "Step 1/2: select the system to pin from the table below."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:239
+msgid "Socket/IFL count"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:244
+msgid "Products"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:254
+msgid "Select"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:266
+msgid "Available Subscriptions for the Selected System"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:267
+msgid "Step 2/2: pick a subscription for system "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:275
+msgid "Back to sytem selection"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:68
+msgid "Part number"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:74
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:154
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:257
+#: ../html/src/manager/content-management/list-projects/list-projects.js:100
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
+msgid "Description"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:334
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:101
+msgid "End date"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:342
+msgid "Save Pin"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:348
+msgid ""
+"No subscriptions have been found to match this system, considering all "
+"products installed, either directly or in virtual guests."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:63
+msgid "Filter by description"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:86
+msgid "Matched/Total"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:92
+msgid "Start date"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:120
+msgid "No subscriptions found."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:125
+msgid "Your subscriptions"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:61
+msgid "Product name"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:67
+msgid "Unmatched system count"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:73
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:74
+msgid "Show system list"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:93
+msgid "No unmatching products are found."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:143
+msgid "System name"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:148
+msgid "Unmatched systems"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:38
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:43
+msgid "Add Cluster"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:52
+msgid "Select management node"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:61
+#: ../html/src/manager/clusters/cluster/cluster.js:103
+msgid "Provider Settings"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:76
+msgid "Provider:"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:80
+msgid "Management Node:"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:45
+msgid "Add cluster"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:69
+msgid "Name:"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:75
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
+msgid "Label:"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:82
+msgid "Description:"
+msgstr ""
+
+#: ../html/src/manager/clusters/add-cluster/select-provider.js:20
+msgid "Available cluster providers"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-config.js:59
+msgid "Settings saved successfully"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:24
+msgid "Action has been "
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:24
+#: ../html/src/manager/images/image-build.js:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.js:31
+#: ../html/src/manager/minion/packages/use-package-states.api.js:60
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
+msgid "scheduled"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:25
+#: ../html/src/manager/images/image-build.js:175
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:943
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
+msgid "Action has been successfully added to the Action Chain "
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:26
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:21
+msgid "Cluster "
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:74
+#: ../html/src/manager/clusters/cluster/cluster.js:85
+msgid "Delete cluster"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:75
+msgid "Delete Cluster"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:86
+msgid "Are you sure you want to delete cluster?"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:86
+msgid "This will not destroy the cluster. It will only remove it from Uyuni"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster.js:98
+#: ../html/src/manager/images/image-view.js:669
+#: ../html/src/manager/maintenance/details/schedule-details.js:60
+msgid "Overview"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:33
+#: ../html/src/manager/virtualization/pools/pool-properties.js:181
+msgid "Yes"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:88
+msgid "System group refresh action scheduled successfully"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:113
+msgid "Cluster properties updated successfully"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:186
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:242
+msgid "Edit cluster details"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:199
+msgid "Join node"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:208
+#: ../html/src/manager/clusters/remove-node/remove-node.js:46
+msgid "Remove node"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:222
+msgid "Upgrade cluster"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:229
+msgid "Refresh system group"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:236
+msgid "Cluster Properties"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:241
+msgid "Edit properties"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:249
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
+#: ../html/src/manager/images/image-profile-edit.js:394
+#: ../html/src/manager/images/image-profiles.js:135
+#: ../html/src/manager/images/image-store-edit.js:191
+#: ../html/src/manager/images/image-stores.js:138
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:199
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:256
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
+msgid "Label"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:261
+msgid "Cluster provider"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:265
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:104
+msgid "Management node"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:269
+msgid "System group"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:286
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
+#: ../html/src/manager/clusters/shared/ui/select-server.js:113
+#: ../html/src/manager/content-management/list-filters/list-filters.js:70
+#: ../html/src/manager/content-management/list-projects/list-projects.js:81
+msgid "Filter by any value"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:304
+msgid "Node Hostname"
+msgstr ""
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:311
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:116
+msgid "(none)"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:37
+msgid "Join "
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:40
+msgid "NOTE: before joining a new node, make sure that the node has:"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:42
+msgid ""
+"Container as a Service Platform (CaaSP) channels assigned - or any children "
+"channels of CaaSP channels"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:43
+msgid ""
+"The management node can access the node as root via ssh without password"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:50
+msgid "Select system to join"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:58
+msgid "New node configuration"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:71
+msgid "Schedule join node"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:75
+#: ../html/src/manager/clusters/remove-node/remove-node.js:62
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:53
+msgid "Cluster:"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:79
+msgid "Node to join:"
+msgstr ""
+
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:87
+msgid "Join"
+msgstr ""
+
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:42
+msgid "Add an existing cluster"
+msgstr ""
+
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:69
+msgid "Clusters"
+msgstr ""
+
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:98
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
+#: ../html/src/manager/images/image-stores.js:145
+#: ../html/src/manager/images/image-view.js:538
+#: ../html/src/manager/images/image-view-patches.js:72
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:87
+#: ../html/src/manager/notifications/notification-messages.js:410
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
+msgid "Type"
+msgstr ""
+
+#: ../html/src/manager/clusters/remove-node/remove-node.js:39
+msgid "Remove nodes"
+msgstr ""
+
+#: ../html/src/manager/clusters/remove-node/remove-node.js:58
+msgid "Schedule remove node"
+msgstr ""
+
+#: ../html/src/manager/clusters/remove-node/remove-node.js:66
+msgid "Nodes to remove:"
+msgstr ""
+
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:31
+msgid "Upgrade "
+msgstr ""
+
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:38
+msgid "Configuration override"
+msgstr ""
+
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:49
+msgid "Schedule upgrade cluster"
+msgstr ""
+
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:59
+msgid "Upgrade"
+msgstr ""
+
+#: ../html/src/manager/content-management/create-project/create-project.js:28
+msgid "You do not have permissions to perform this action"
+msgstr ""
+
+#: ../html/src/manager/content-management/create-project/create-project.js:33
+msgid "Create a new Content Lifecycle Project"
+msgstr ""
+
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
+msgid "Create project"
+msgstr ""
+
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
+#: ../html/src/manager/images/image-profile-edit.js:380
+#: ../html/src/manager/images/image-profiles.js:112
+#: ../html/src/manager/images/image-store-edit.js:170
+#: ../html/src/manager/images/image-stores.js:115
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:35
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:29
+#: ../html/src/manager/state/recurring-states-list.js:49
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:89
+#: ../html/src/manager/virtualization/pools/create/pools-create.js:35
+msgid "Create"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:30
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:24
+msgid "Module"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:35
+msgid "Select a module..."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:36
+msgid "No modules available"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:42
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:148
+msgid "Stream"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:47
+msgid "Select a stream..."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:48
+msgid "No streams available"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:33
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
+msgid "Channel"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:38
+msgid "Select a channel to browse available modules"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
+msgid "Module Name"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:22
+msgid "Updating the filter..."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:71
+msgid "Filter Details"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:72
+msgid "Create a new filter"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:115
+msgid "Filter deleted successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:147
+msgid "Check the required fields below"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:156
+msgid "Filter updated successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:170
+msgid "Filter created successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:63
+msgid ""
+"Bear in mind that all the associated projects need to be rebuilt after a "
+"filter update"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:70
+msgid "Filter Name"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:80
+msgid "Filter Type"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:103
+msgid "Matcher"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:127
+#: ../html/src/manager/content-management/list-filters/filter-form.js:139
+#: ../html/src/manager/content-management/list-filters/filter-form.js:177
+#: ../html/src/manager/content-management/list-filters/filter-form.js:273
+#: ../html/src/manager/images/image-view-packages.js:42
+#: ../html/src/manager/minion/packages/package-states.js:339
+msgid "Package Name"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:146
+#: ../html/src/manager/content-management/list-filters/filter-form.js:184
+msgid "Epoch"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:151
+#: ../html/src/manager/content-management/list-filters/filter-form.js:189
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:84
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:47
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:80
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
+#: ../html/src/manager/images/image-view.js:549
+msgid "Version"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:158
+#: ../html/src/manager/content-management/list-filters/filter-form.js:196
+msgid "Release"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:208
+msgid "Advisory name"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:222
+msgid "Bug Fix Advisory"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:223
+msgid "Product Enhancement Advisory"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:225
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:108
+msgid "Advisory Type"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:234
+msgid "Issued"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:246
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:114
+#: ../html/src/manager/images/image-view-patches.js:86
+msgid "Synopsis"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:259
+msgid "Reboot Required"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:260
+msgid "Package Manager Restart Required"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:263
+msgid "Advisory Keywords"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:293
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+msgid "Deny"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:294
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+msgid "Allow"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.js:296
+msgid "Rule"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/list-filters.js:62
+msgid "Content Lifecycle Filters"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/list-filters.js:82
+msgid "Projects in use"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-projects/list-projects.js:64
+msgid "Create a new content lifecycle project"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-projects/list-projects.js:65
+msgid "Create Project"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-projects/list-projects.js:73
+msgid "Content Lifecycle Projects"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-projects/list-projects.js:105
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:40
+msgid "Environment Lifecycle"
+msgstr ""
+
+#: ../html/src/manager/content-management/project/project.js:54
+msgid "The project you are looking for does not exist or has been deleted"
+msgstr ""
+
+#: ../html/src/manager/content-management/project/project.js:89
+msgid "Content Lifecycle Project - {0}"
+msgstr ""
+
+#: ../html/src/manager/content-management/project/project.js:104
+msgid "Delete Project"
+msgstr ""
+
+#: ../html/src/manager/content-management/project/project.js:105
+msgid "Are you sure you want to delete project"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:67
+#: ../html/src/manager/login/use-login-api.js:54
+#: ../html/src/manager/virtualization/ActionApi.js:47
+#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:38
+#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.js:34
+#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.js:30
+msgid ""
+"Request interrupted or invalid response received from the server. Please try "
+"again."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:16
+msgid "Package"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:20
+msgid "Patch"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:31
+msgid "contains"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:32
+msgid "containing"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:36
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:81
+msgid "matches"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:37
+msgid "regular expression matches package name"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:41
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:71
+msgid "equals"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:42
+msgid "contains package name equals"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:46
+msgid "version lower than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:47
+msgid "contains package with epoch/version/release lower than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:51
+msgid "version lower or equal than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:52
+msgid "contains package with epoch/version/release lower or equal than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:56
+msgid "version equal"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:57
+msgid "contains package with epoch/version/release equal than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:61
+msgid "version greater or equal than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:62
+msgid "contains package with epoch/version/release greater or equal than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:67
+msgid "contains package with epoch/version/release greater than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:72
+msgid "equal"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:76
+msgid "later or equal"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:77
+msgid "later or equal than"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:82
+msgid "matches regular expression"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:96
+msgid "NEVRA"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:102
+msgid "Advisory Name"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:120
+msgid "Keyword"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:126
+msgid "Issue date"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:132
+msgid "Contains Package Name"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:138
+msgid "Contains Package"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:169
+msgid "enable module"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:55
+msgid "Build ({0})"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:118
+#: ../html/src/manager/images/image-build.js:295
+#: ../html/src/manager/images/image-profiles.js:155
+#: ../html/src/manager/images/image-view.js:581
+#: ../html/src/manager/images/image-view-overview.js:375
+#: ../html/src/manager/images/image-view-overview.js:457
+msgid "Build"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:68
+msgid "Build Project"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:76
+msgid "Building project.."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:93
+msgid "Version Message"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:98
+msgid "Version {0} history"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:127
+msgid "Version {0} successfully built into {1}"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+msgid "Insert before"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:41
+msgid "Add Environment"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:52
+msgid "Environment created successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:68
+msgid "Creating the environment..."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:85
+msgid "No environments created"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:103
+msgid "Environment updated successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:117
+msgid "Environment {0} deleted successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:25
+msgid "New"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:26
+msgid "Cloning channels"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:27
+msgid "Generating repositories data"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
+#: ../html/src/manager/images/image-view.js:420
+msgid "Built"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
+#: ../html/src/manager/images/image-view.js:422
+#: ../html/src/manager/images/image-view-overview.js:37
+msgid "Failed"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:84
+msgid "not built"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:73
+msgid "Built time"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
+msgid "Edit Filter {0}"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
+msgid "Filters"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:92
+msgid "Attach/Detach Filters"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:109
+msgid "Filter edited successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+msgid "AppStreams"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+msgid "enabled module streams"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+msgid "filter out"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+msgid ""
+"select from the full source even if you have excluded them before with deny"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:37
+msgid "Loading global filters..."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:43
+msgid "Updating project filters..."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:72
+msgid "Create New Filter"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:51
+msgid "No version to promote or colliding environment build in progress"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:58
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:109
+msgid "Promote"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:76
+msgid "Promoting project.."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:90
+msgid "Target environment"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:95
+msgid "Promote version {0} into {1}"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:110
+msgid "Promote environment"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:118
+msgid "Version {0} successfully promoted into {1}"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:17
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
+msgid "Project Properties"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:36
+msgid "(draft - not built) - Check the changes below"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:50
+msgid "Edit Properties"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:63
+msgid "Project properties updated successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:81
+msgid "Editing properties.."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
+msgid "Versions history:"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:68
+msgid "show more"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:78
+msgid "Versions history"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:78
+msgid "New Base Channel"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:95
+msgid "Choose the channel to be elected as the new base channel"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:104
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
+msgid "Child Channels"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:118
+msgid "Clear Search"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
+msgid "no child channels"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
+msgid "This channel is recommended"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
+msgid "Sources"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
+msgid "Sources edited successfully"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
+#: ../html/src/manager/images/image-build.js:221
+msgid "Software Channels"
+msgstr ""
+
+#: ../html/src/manager/errors/not-found.js:11
+msgid "Page Not Found"
+msgstr ""
+
+#: ../html/src/manager/errors/not-found.js:16
+msgid ""
+"If you typed this address into your browser, double-check the spelling and "
+"capitalization. The address you are copying may also be outdated."
+msgstr ""
+
+#: ../html/src/manager/errors/not-found.js:25
+msgid ""
+"If you used a bookmark, the page may have moved to a different location "
+"since the bookmark was created. Use the top (or left) navigation bars to "
+"find the page you are looking for, and if you find the document be sure to "
+"update your bookmark."
+msgstr ""
+
+#: ../html/src/manager/groups/config-channels/group-config-channels.js:31
+msgid ""
+"Applying the config channels has been scheduled for each minion server in "
+"this group"
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
+msgid "Formula saved. Apply the "
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:19
+msgid "Highstate"
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:20
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:21
+msgid "Invalid target type."
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:16
+msgid ""
+"Formula saved. Edit configuration options in the enabled formulas and apply "
+"the "
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:27
+msgid "An unknown error has occurred."
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:28
+msgid "The image build has been scheduled."
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:29
+#: ../html/src/manager/images/image-import.js:24
+msgid ""
+"There was an error while scheduling a task. Please make sure that the task "
+"scheduler is running."
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:177
+msgid "Building the image has been "
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:207
+msgid "No profile selected"
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:212
+#: ../html/src/manager/images/image-profile-edit.js:395
+msgid "Image Type"
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:214
+#: ../html/src/manager/virtualization/pools/pool-properties.js:540
+msgid "Path"
+msgstr ""
+
+#: ../html/src/manager/images/image-build.js:275
+#: ../html/src/manager/images/image-import.js:276
+msgid "Build Host"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:20
+msgid "Image store not found"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:22
+msgid "The image import has been scheduled."
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:231
+#: ../html/src/manager/images/image-profile-edit.js:305
+msgid "There are no channels assigned to this key."
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:235
+#: ../html/src/manager/images/image-profile-edit.js:309
+msgid "Activation Key"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:237
+#: ../html/src/manager/images/image-profile-edit.js:312
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:220
+msgid "None"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:249
+msgid "Import Image"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:254
+msgid "You can import Container images only using this feature."
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:259
+msgid "Image Store"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:264
+#: ../html/src/manager/images/image-profile-edit.js:260
+msgid "Select an image store"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:272
+msgid "Image name"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:272
+msgid "Image name is required."
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:274
+msgid "Image version"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:274
+msgid "Image version is required."
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:288
+#: ../html/src/manager/images/image-view.js:324
+msgid "Import"
+msgstr ""
+
+#: ../html/src/manager/images/image-import.js:289
+#: ../html/src/manager/images/image-profile-edit.js:375
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
+msgid "Clear fields"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:255
+msgid "Target Image Store"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:280
+msgid "Config URL"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:309
+msgid "Activation key is required for kiwi images."
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:344
+msgid "Remove entry"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:352
+msgid "Custom Info Values"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:356
+msgid "Select a custom info key"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:365
+msgid "Create additional custom info keys"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:378
+#: ../html/src/manager/images/image-store-edit.js:168
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:35
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:112
+#: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
+msgid "Update"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:388
+msgid "Edit Image Profile: '"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:388
+msgid "Create Image Profile"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.js:394
+msgid ""
+"Label is required and must be a unique string and it cannot include any "
+"colons (:)."
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:22
+msgid "Dockerfile"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:23
+msgid "Kiwi"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:27
+msgid "Image profile cannot be found."
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:28
+msgid "Image profile has been deleted."
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:29
+msgid "Image profiles have been deleted."
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:108
+#: ../html/src/manager/images/image-stores.js:111
+#: ../html/src/manager/images/image-view.js:317
+msgid "Delete selected"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:118
+msgid "Image Profiles"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:142
+msgid "Build Type"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:181
+#: ../html/src/manager/systems/delete-system-confirm.js:13
+msgid "Delete Profile"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:182
+msgid "Are you sure you want to delete profile"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:188
+msgid "Delete Selected Profile(s)"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:191
+msgid "Are you sure you want to delete the selected profile?"
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.js:191
+msgid ""
+"Are you sure you want to delete selected profiles? ({0} profiles selected)"
+msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.js:151
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
+#: ../html/src/manager/virtualization/pools/pool-properties.js:517
+msgid "Username"
+msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.js:178
+msgid "Edit Image Store: '"
+msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.js:178
+msgid "Create Image Store"
+msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.js:184
+msgid "Store Type"
+msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.js:191
+msgid "Label is required and must be unique."
+msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.js:192
+msgid "Store URI"
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:22
+msgid "Image store cannot be found."
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:23
+msgid "Image store has been deleted."
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:24
+msgid "Image stores have been deleted."
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:121
+msgid "Image Stores"
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:177
+msgid "Delete Store"
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:178
+msgid "Are you sure you want to delete store"
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:184
+msgid "Delete Selected Store(s)"
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:187
+msgid "Are you sure you want to delete the selected store?"
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.js:187
+msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:282
+msgid "Deleted successfully."
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:294
+msgid "Image inspect has been scheduled."
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:307
+msgid "Image build has been scheduled."
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:321
+#: ../html/src/manager/images/image-view.js:619
+#: ../html/src/manager/images/image-view-overview.js:426
+msgid "Delete Image"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:334
+msgid "Images"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:397
+#: ../html/src/manager/images/image-view.js:439
+#: ../html/src/manager/images/image-view-overview.js:29
+#: ../html/src/manager/images/image-view-overview.js:39
+#: ../html/src/manager/images/image-view-overview.js:158
+#: ../html/src/manager/images/image-view-overview.js:294
+#: ../html/src/manager/images/image-view-runtime.js:44
+#: ../html/src/manager/images/image-view-runtime.js:79
+msgid "No information"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:399
+#: ../html/src/manager/images/image-view-overview.js:296
+msgid "Critical updates available"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:401
+#: ../html/src/manager/images/image-view-overview.js:298
+msgid "Non-critical updates available"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:403
+#: ../html/src/manager/images/image-view-overview.js:300
+msgid "Package updates available"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:405
+#: ../html/src/manager/images/image-view-overview.js:302
+msgid "Image is up to date"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:414
+#: ../html/src/manager/images/image-view-overview.js:48
+msgid "Built externally"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:416
+#: ../html/src/manager/images/image-view-overview.js:31
+msgid "Queued"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:418
+msgid "Building"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:424
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:229
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:298
+msgid "Unknown"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:432
+#: ../html/src/manager/images/image-view.js:473
+#: ../html/src/manager/images/image-view-overview.js:120
+#: ../html/src/manager/images/image-view-overview.js:151
+msgid "Waiting for update ..."
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:437
+#: ../html/src/manager/images/image-view-overview.js:156
+msgid "All instances are consistent with SUSE Manager"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:441
+#: ../html/src/manager/images/image-view-overview.js:160
+msgid "Outdated instances found"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:460
+#: ../html/src/manager/images/image-view-overview.js:107
+msgid "Cluster"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:461
+#: ../html/src/manager/images/image-view.js:515
+#: ../html/src/manager/images/image-view-overview.js:108
+msgid "Instances"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:487
+#: ../html/src/manager/images/image-view-overview.js:134
+msgid "View cluster summary"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:508
+#: ../html/src/manager/images/image-view.js:670
+msgid "Runtime"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:555
+msgid "Revision"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:561
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
+msgid "Updates"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:566
+#: ../html/src/manager/images/image-view.js:669
+msgid "Patches"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:575
+#: ../html/src/manager/images/image-view.js:669
+msgid "Packages"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:587
+msgid "Last Modified"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:620
+#: ../html/src/manager/images/image-view-overview.js:427
+msgid "Are you sure you want to delete image"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:626
+msgid "Delete Selected Image(s)"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:629
+msgid "Are you sure you want to delete the selected image?"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:629
+msgid "Are you sure you want to delete selected images? ({0} images selected)"
+msgstr ""
+
+#: ../html/src/manager/images/image-view.js:636
+#: ../html/src/manager/images/image-view-overview.js:258
+msgid "Instance Details for '{0}'"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:31
+#: ../html/src/manager/images/image-view-overview.js:33
+#: ../html/src/manager/images/image-view-overview.js:35
+#: ../html/src/manager/images/image-view-overview.js:37
+msgid "Go to event"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:31
+msgid " is queued"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:33
+msgid "In progress"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:33
+msgid " in progress"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:35
+msgid "Successful"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:35
+msgid " is successful"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:37
+msgid " has failed"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:68
+msgid " Status"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:73
+msgid "Picked Up"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:207
+msgid "Edit profile"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:215
+msgid "Edit store"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:359
+msgid "Image Status"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:365
+msgid "Image Info"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:373
+msgid "Build Status"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:381
+#: ../html/src/manager/images/image-view-overview.js:516
+msgid "Inspect"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:390
+msgid "Rebuild"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:391
+msgid "Reschedule the build"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:399
+msgid "Reinspect"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:400
+msgid "Reschedule the inspect"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:413
+msgid "Custom Image Information"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:458
+msgid "Schedule build"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:489
+msgid "Rebuild Image"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:517
+msgid "Schedule inspect"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.js:548
+msgid "Reinspect Image"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-packages.js:54
+#: ../html/src/manager/minion/packages/package-states.js:315
+msgid "Installed"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:12
+msgid "fa fa-shield fa-1-5x"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:13
+msgid "fa fa-bug fa-1-5x"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:14
+msgid "fa spacewalk-icon-enhancement fa-1-5x"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:15
+msgid "fa fa-refresh fa-1-5x"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:16
+msgid "fa fa-archive fa-1-5"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:20
+msgid "Security advisory"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:21
+msgid "Bug fix advisory"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:22
+msgid "Product enhancement advisory"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:23
+msgid "Reboot required"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:24
+msgid "Affects package management stack"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:78
+msgid "Advisory"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-patches.js:92
+msgid "Updated"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-runtime.js:42
+msgid "Instance is consistent with SUSE Manager"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-runtime.js:46
+msgid "Instance is outdated"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-runtime.js:77
+msgid "Cluster is consistent with SUSE Manager"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-runtime.js:81
+msgid "Cluster is outdated"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-runtime.js:95
+msgid "Pod"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-runtime.js:96
+msgid "Namespace"
+msgstr ""
+
+#: ../html/src/manager/login/login.js:45
+msgid ""
+"A schema upgrade is required. Please upgrade your schema at your earliest "
+"convenience to receive latest bug fixes and avoid potential problems."
+msgstr ""
+
+#: ../html/src/manager/login/login.js:54
+msgid "Signing in ..."
+msgstr ""
+
+#: ../html/src/manager/login/login.js:108
+msgid ""
+"Discover a new way of managing your servers, packages, patches and more via "
+"one interface."
+msgstr ""
+
+#: ../html/src/manager/login/login.js:130
+msgid "Login"
+msgstr ""
+
+#: ../html/src/manager/login/login.js:150
+msgid "Sign In"
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:14
+msgid "Either the password or username is incorrect."
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:15
+msgid "Your account has been deactivated."
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:16
+msgid "This user has read only API access. WebUI login is denied."
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:28
+msgid "Are you sure you want to close this page while login is in progress?"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:33
+#: ../html/src/manager/maintenance/list/calendar-list.js:99
+msgid "Delete maintenance calendar"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:36
+#: ../html/src/manager/maintenance/details/schedule-details.js:50
+#: ../html/src/manager/maintenance/list/calendar-list.js:102
+#: ../html/src/manager/maintenance/list/schedule-list.js:88
+#: ../html/src/manager/state/recurring-states-list.js:137
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
+msgid "Are you sure you want to delete the selected item?"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:37
+#: ../html/src/manager/maintenance/details/schedule-details.js:51
+msgid ""
+"This will remove the current schedule from all the systems assigned to it."
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:38
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:162
+#: ../html/src/manager/maintenance/list/calendar-list.js:104
+msgid "Cancel affected actions?"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:64
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:114
+#: ../html/src/manager/maintenance/list/calendar-list.js:51
+msgid "Calendar Name"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:65
+#: ../html/src/manager/maintenance/list/calendar-list.js:58
+msgid "Used by Schedule"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:67
+msgid "Url"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.js:71
+msgid "Calendar Details"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:47
+#: ../html/src/manager/maintenance/list/schedule-list.js:85
+msgid "Delete maintenance schedule"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:65
+#: ../html/src/manager/maintenance/details/schedule-details.js:168
+msgid "Assigned Systems"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:98
+msgid "Schedule name"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:99
+msgid "Assigned calendar"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:100
+msgid "Schedule type"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:100
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:89
+msgid "Single"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:100
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:90
+msgid "Multi"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:105
+#: ../html/src/manager/state/recurring-states-details.js:92
+msgid "Schedule Details"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:117
+msgid "Upcoming Maintenance Windows"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:123
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:21
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:89
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
+msgid "Start"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:124
+msgid "End"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:154
+msgid "Maintenance schedule has been assigned to {0} system(s)"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:172
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:117
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:94
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:143
+msgid "Cancel affected actions"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:196
+msgid "Search systems"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/schedule-details.js:211
+msgid "Current Schedule"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:108
+msgid "Url '{0}' is invalid"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:121
+msgid "Calendar data"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:127
+msgid "Enter Url to ical file"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:138
+msgid "Attach file"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:144
+msgid "Remove file"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:153
+msgid "Refresh data from url"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:157
+msgid "Confirm calendar refresh"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:160
+msgid "Refreshing the calendar will reschedule all affected actions."
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:161
+msgid "Confirm if you want to proceed."
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:130
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
+#: ../html/src/manager/virtualization/pools/pool-properties.js:584
+msgid "Schedule"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:110
+#: ../html/src/manager/maintenance/list/schedule-list.js:43
+msgid "Calendar"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
+msgid "Maintenance"
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:99
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:104
+msgid "Add Calendar"
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/calendar-list.js:47
+msgid "No calendars created. Use Create to add a calendar."
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/calendar-list.js:103
+msgid "This will unassign all schedules from this calendar."
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:30
+msgid "Create a new maintenance schedule"
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
+msgid "Schedules"
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
+msgid "Calendars"
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:43
+msgid "schedule"
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/schedule-list.js:32
+msgid "No schedules created. Use Create to add a schedule."
+msgstr ""
+
+#: ../html/src/manager/maintenance/list/schedule-list.js:89
+msgid "This will remove the schedule from all the systems assigned to it."
+msgstr ""
+
+#: ../html/src/manager/maintenance/maintenance-windows.js:103
+msgid "successfully"
+msgstr ""
+
+#: ../html/src/manager/maintenance/maintenance-windows.js:127
+msgid "Error when deleting the "
+msgstr ""
+
+#: ../html/src/manager/maintenance/maintenance-windows.js:142
+msgid "Calendar successfully refreshed"
+msgstr ""
+
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:23
+msgid ""
+"Any pending maintenance-only actions for these systems will be cancelled "
+"unless they are inside the new maintenance windows."
+msgstr ""
+
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
+msgid "Are you sure you want to proceed?"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:42
+msgid "Maintenance schedule has been cleared"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:89
+msgid "Clear All"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:90
+msgid "fa-times"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:100
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:107
+msgid "Assign All"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:101
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:108
+msgid "fa-edit"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/system-assignment.js:17
+msgid "Maintenance Schedules"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/system-assignment.js:21
+msgid "Assign a maintenance schedule to {0} system(s)"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/system-assignment.js:22
+msgid ""
+"Assigning a schedule will replace any prior assignments in all of the "
+"systems in the set."
+msgstr ""
+
+#: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
+msgid "Applying the config channels has been "
+msgstr ""
+
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:60
+msgid "Configuration"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:276
+msgid "No package states."
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:295
+msgid "Latest"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:296
+msgid "Any"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:303
+msgid "Undo"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:314
+msgid "Unmanaged"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:316
+msgid "Removed"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:332
+msgid "Package States"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.js:340
+#: ../html/src/manager/salt/keys/key-management.js:173
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:94
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:55
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:335
+msgid "State"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/use-package-states.api.js:44
+msgid "Package states have been saved."
+msgstr ""
+
+#: ../html/src/manager/minion/packages/use-package-states.api.js:59
+msgid "Applying the packages states has been "
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:23
+msgid "Onboarding failed"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:27
+msgid "Channel sync failed"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:31
+msgid "Channel sync finished"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:35
+msgid "Creating Bootstrap Repository failed"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:39
+msgid "State apply failed"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:112
+msgid "Filter by type"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:211
+msgid "Info"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:214
+msgid "Warning"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:217
+msgid "Error"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:272
+msgid "show details"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:318
+msgid "Retry onboarding"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:322
+msgid "Retry repo sync"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:336
+msgid "Unread Messages"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:339
+msgid "All Messages"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:358
+msgid "Delete selected messages"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:362
+msgid "Mark selected as read"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:374
+#: ../html/src/manager/notifications/notification-messages.js:456
+msgid "Notification Messages"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:379
+msgid "The server has collected the following notification messages."
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:398
+msgid "Filter by summary"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:404
+msgid "Severity"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:416
+msgid "Summary"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:422
+msgid "Created"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:427
+msgid "Action"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:433
+msgid "Read|Delete"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:438
+msgid "Flag as Unread"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:438
+msgid "Flag as Read"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.js:441
+msgid "Delete Notification"
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications.js:36
+#: ../html/src/manager/salt/cmd/remote-commands.js:284
+#: ../html/src/manager/virtualization/useVirtNotification.js:48
+msgid "Websocket connection closed. Refresh the page to try again."
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications.js:49
+#: ../html/src/manager/salt/cmd/remote-commands.js:304
+#: ../html/src/manager/virtualization/useVirtNotification.js:54
+msgid "Error connecting to server. Refresh the page to try again."
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications.js:95
+msgid ""
+"Session expired, please reload the page to receive notifications in real-"
+"time."
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications.js:98
+#: ../html/src/manager/salt/cmd/remote-commands.js:503
+#: ../html/src/utils/network.js:57
+msgid ""
+"Authorization error, please reload the page or try to logout/login again."
+msgstr ""
+
+#: ../html/src/manager/organizations/config-channels/org-config-channels.js:31
+msgid ""
+"Applying the config channels has been scheduled for each minion server in "
+"this organization"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:48
+#: ../html/src/manager/salt/keys/key-management.js:57
+msgid "pending"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:55
+msgid "timed out"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:66
+msgid "- hide error -"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:66
+msgid "- show error -"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:75
+msgid "- hide response -"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:75
+msgid "- show response -"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:159
+msgid "Stop waiting"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:161
+msgid "Stop waiting for all the minions to respond"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:164
+msgid "Find targets"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:166
+#: ../html/src/manager/salt/cmd/remote-commands.js:172
+msgid "Check which minions match the target expression"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:174
+msgid "Run command"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:176
+msgid "Run the command on the target minions"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:183
+msgid "Remote Commands"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:190
+msgid "Type the command here"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:193
+msgid "Type the minion_id pattern to target here"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:205
+msgid "Target systems"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:212
+msgid "No target systems previewed"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:212
+msgid "No target systems found"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:393
+msgid "Not all minions responded on time."
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:418
+msgid "No minions matched the target expression."
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:420
+msgid "Server returned an error: {0}"
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:487
+#: ../html/src/manager/salt/cmd/remote-commands.js:491
+msgid "Matching ssh-push minions..."
+msgstr ""
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:500
+msgid "Session expired, please reload the page to run command on systems."
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
+msgid "Formula Catalog"
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
+msgid "Filter by formula name"
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
+msgid "Formula"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.js:35
+msgid "Accept"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.js:53
+msgid "accepted"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.js:61
+msgid "rejected"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.js:65
+msgid "denied"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.js:161
+msgid "Fingerprint"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.js:168
+msgid "Clear Menu"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.js:170
+msgid "Filter menu"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.js:205
+#: ../html/src/manager/shared/menu/menu.js:208
+msgid "Uyuni homepage"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.js:206
+msgid "Uyuni"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.js:212
+#: ../html/src/manager/shared/menu/menu.js:215
+msgid "SUSE Manager homepage"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.js:213
+msgid "SUSE"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.js:213
+msgid "Manager"
+msgstr ""
+
+#: ../html/src/manager/state/display-highstate.js:30
+msgid "Highstate for {0}"
+msgstr ""
+
+#: ../html/src/manager/state/display-highstate.js:125
+msgid "There are no applicable systems."
+msgstr ""
+
+#: ../html/src/manager/state/highstate.js:51
+msgid "Action has been successfully added to the "
+msgstr ""
+
+#: ../html/src/manager/state/highstate.js:52
+msgid "Applying the highstate has been "
+msgstr ""
+
+#: ../html/src/manager/state/highstate.js:52
+msgid "scheduled."
+msgstr ""
+
+#: ../html/src/manager/state/highstate.js:96
+msgid "Apply Highstate"
+msgstr ""
+
+#: ../html/src/manager/state/highstate.js:108
+msgid "Create Recurring"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:43
+msgid "Execution time"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:97
+msgid "State:"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:98
+#: ../html/src/manager/state/recurring-states-list.js:75
+msgid "Active"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:98
+msgid "Inactive"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:102
+msgid "Test"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:103
+msgid "True"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:107
+msgid "Target type"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:112
+msgid "Organization name"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:117
+msgid "Created by"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:121
+msgid "Created at"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:126
+msgid "Quartz format string"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:174
+#: ../html/src/manager/state/recurring-states-list.js:136
+msgid "Delete Recurring State Schedule"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.js:175
+msgid "Are you sure you want to delete this schedule?"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-edit.js:99
+msgid "Test mode"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states.js:115
+msgid "Schedule successfully"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states.js:140
+msgid "Error when deleting the action. Check if Taskomatic is running"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.js:58
+msgid "Recurring States"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.js:71
+msgid "No schedules created."
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.js:95
+msgid "Frequency"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.js:102
+msgid "Target Type"
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
+msgid "SUSE Manager Default"
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
+msgid "Child Channels:"
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/child-channels.js:140
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
+msgid "mandatory"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:163
+msgid ""
+"Request interrupted or invalid response received from the server. Please "
+"check if your minion was bootstrapped correctly."
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
+msgid "Successfully bootstrapped host! Your system should appear in"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
+msgid "systems"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
+msgid "shortly"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:191
+msgid "Your system is bootstrapping: waiting for a response.."
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:195
+msgid "Loading SSH Private Key.."
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
+msgid "Bootstrap"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
+msgid "e.g., ••••••••••••"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:216
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:275
+msgid "SSH Private Key"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:220
+msgid ""
+"The file will be stored in a temporary file on the server and will be "
+"deleted after the bootstrapping procedure"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:225
+msgid "SSH Private Key Passphrase"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:227
+msgid "Leave empty for no passphrase"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
+msgid "Bootstrap Minions"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
+msgid ""
+"You can add systems to be managed by providing SSH credentials only. {0} "
+"will prepare the system remotely and will perform the registration."
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
+msgid "e.g., host.domain.com"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:248
+msgid "Port range: 1 - 65535"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
+msgid "Proxy"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:311
+msgid ""
+"The hostname of the proxy is not fully qualified. This may cause problems "
+"when accessing the channels."
+msgstr ""
+
+#: ../html/src/manager/systems/delete-system.js:17
+msgid "Cleanup timed out. Please check if the machine is reachable."
+msgstr ""
+
+#: ../html/src/manager/systems/delete-system.js:18
+msgid "No result found in state apply response."
+msgstr ""
+
+#: ../html/src/manager/systems/delete-system.js:85
+msgid "An error occurred during cleanup"
+msgstr ""
+
+#: ../html/src/manager/systems/duplicate-systems-compare-delete.js:26
+msgid "Confirm Deletion"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:31
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
+msgid "Error scheduling job in Taskomatic. Please check the logs."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
+msgid "Could not determine system default channel."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
+msgid "Channel change is invalid."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
+msgid "Selected base is not compatible with system."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
+msgid "No base channel change found."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:39
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:193
+msgid "No Change"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:452
+msgid "Subscribe"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
+msgid "Unsubsribe"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:140
+msgid "System Default Base Channel"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:144
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
+msgid "Base Channel"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:148
+msgid ""
+"As a Channel Administrator, you may change the base channels your systems "
+"are subscribed to. Valid channels are either channels created by your "
+"organization, or the default SUSE base channel for your operating system "
+"version and processor type. Systems will be unsubscribed from all channels, "
+"and subscribed to their new base channels. "
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:150
+msgid ""
+"This operation can have a dramatic effect on the packages and patches "
+"available to the systems, and should be used with caution."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:165
+msgid "Current base Channel"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:172
+msgid "Systems"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:180
+msgid "Desired base Channel"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:196
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
+msgid "SUSE Channels"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:202
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
+msgid "Custom Channels"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:214
+msgid "Systems subscribed to"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:388
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:565
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:578
+msgid "(Couldn't determine new base channel)"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:404
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:588
+msgid "system(s) to subscribe"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:412
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:595
+msgid "system(s) incompatible"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:445
+msgid "No change"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:459
+msgid "Unsubscribe"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:475
+msgid "Below is a list of channels in your organization. "
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:477
+msgid "To make no changes for a channel, check Do Nothing for that channel."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
+msgid ""
+"To subscribe selected systems to a channel, check Subscribed for that "
+"channel."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
+msgid ""
+"To unsubscribe selected systems from a channel, check Unsubscribed for that "
+"channel."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:486
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:633
+msgid "Systems to subscribe to"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:573
+msgid "(None)"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:580
+msgid " (system default)"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:618
+msgid "Channel Changes Overview"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:661
+msgid "Channel Changes Actions"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:686
+msgid "Scheduled"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:688
+msgid "Unknown error. Could not schedule channel change"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:818
+msgid "Some changes scheduled successfully."
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:945
+msgid "Channel changes scheduled."
+msgstr ""
+
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
+msgid "(none, disable service)"
+msgstr ""
+
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
+msgid "Changing the channels has been "
+msgstr ""
+
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
+msgid ""
+"You can change the base software channel your system is subscribed to. The "
+"system will be unsubscribed from all software channels, and subscribed to "
+"the new base software channel."
+msgstr ""
+
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
+msgid ""
+"This system is subscribed to the checked channels beneath, if any. Disabled "
+"checkboxes indicate channels that can't be manually subscribed or "
+"unsubscribed from."
+msgstr ""
+
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
+msgid "No child channels available."
+msgstr ""
+
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
+msgid "Confirm Software Channel Change"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:49
+msgid "Refreshing the data for this Virtual Host Manager has been triggered."
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:65
+msgid "Properties"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:69
+msgid "Nodes"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:85
+msgid "OS"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:91
+msgid "CPU Arch"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:97
+msgid "CPU Sockets"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:103
+msgid "RAM (Mb)"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:118
+msgid "Refresh Data"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:120
+msgid "Refresh data from this Virtual Host Manager"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:140
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:91
+msgid "Delete Virtual Host Manager"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
+msgid "Are you sure you want to delete this virtual host manager?"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:48
+msgid "Gatherer module"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:246
+msgid "Current Context"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:258
+msgid "Kubeconfig file"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
+msgid "File-based"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:20
+msgid "VMWare-based"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:21
+msgid "Kubernetes Cluster"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:22
+msgid "Amazon EC2"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:23
+msgid "Google Compute Engine"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:24
+msgid "Azure"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:25
+msgid "Nutanix AHV"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
+msgid "Virtual Host Manager"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
+msgid "Add a {0}"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
+msgid "Virtual Host Managers"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
+msgid "Add a virtual host manager"
+msgstr ""
+
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
+msgid "No Virtual Host Managers."
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
+msgid "Toggle full size"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
+msgid "Something went wrong, connection is closed"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:84
+msgid "Create Virtual Machine"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:125
+#: ../html/src/manager/virtualization/pools/pool-properties.js:241
+msgid "Can not contain the following characters: /\\"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:136
+msgid "Hypervisor"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:151
+msgid "Virtual Machine Type"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:163
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
+msgid "Maximum Memory (MiB)"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:165
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:174
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
+msgid "A positive integer is required"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
+msgid "Virtual CPU Count"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:204
+msgid "Graphics"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:24
+msgid "Start / Resume"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:24
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:259
+msgid "Stop"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
+msgid "Force off"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
+msgid "Reset"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:33
+msgid "Suspend"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:48
+msgid "Hosted Virtual Systems"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:49
+msgid ""
+"This is a list of virtual guests which are configured to run on this host."
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:63
+msgid "Guest"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:72
+msgid "Unregistered System"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:101
+msgid "Current Memory"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:107
+msgid "vCPUs"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:113
+msgid "Base Software Channel"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:138
+msgid "paused"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:147
+msgid "Graphical Console"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:56
+msgid "Device type"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:63
+msgid "Disk"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:64
+msgid "CDROM"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:65
+msgid "Floppy"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:78
+msgid "Bus"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:28
+msgid "File"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:119
+#: ../html/src/manager/virtualization/pools/pool-properties.js:503
+msgid "Format"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+msgid "Disks"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:65
+msgid "Source storage pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:80
+msgid "Source Volume"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:101
+msgid "Disk size (GiB)"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:109
+msgid "Source template image URL"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:37
+msgid "Network"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:53
+msgid "MAC address"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:54
+msgid "Leave blank to generate a MAC address"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:86
+msgid "Networks"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
+#: ../html/src/manager/virtualization/pools/pool-properties.js:608
+msgid "Clear Fields"
+msgstr ""
+
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
+msgstr ""
+
+#: ../html/src/manager/virtualization/ListTab.js:142
+msgid "{0} selected"
+msgstr ""
+
+#: ../html/src/manager/virtualization/ListTab.js:238
+msgid "Action Status"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:38
+msgid "Virtual Networks"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:39
+msgid ""
+"This is a list of virtual networks which are configured to run on this host."
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:61
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:336
+msgid "Autostart"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:69
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:337
+msgid "Persistent"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:78
+msgid "Bridge"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/create/pools-create.js:31
+msgid "Create Virtual Storage Pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+msgid "Delete the pool, including the contained volumes. "
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+msgid "Cannot be undone"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
+msgid "Edit Pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:338
+msgid "Location"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:339
+msgid "Usage"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
+msgid "Create Pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
+msgid "Virtual Storage Pools and Volumes"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
+msgid ""
+"This is the list of storage pools defined on this host containing virtual "
+"guests disks."
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
+msgid "Filter by pool or volume name"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:175
+msgid "Partition separator"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:182
+msgid "No"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:207
+msgid "Host name"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:216
+msgid "Port"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:250
+msgid "Pool Type"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:264
+msgid "Start during virtual host boot"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:272
+msgid "Source"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:288
+msgid "Hosts"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:320
+msgid "Devices"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:353
+msgid "Initiator IQN"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:364
+msgid "Adapter type"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:394
+msgid "Adapter name"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:403
+msgid "Adapter parent PCI address"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:407
+#: ../html/src/manager/virtualization/pools/pool-properties.js:418
+msgid "PCI address formatted like 0000:00:00.0"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:414
+msgid "Adapter parent address unique ID"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:425
+msgid "Adapter parent name"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:433
+msgid "Adapter parent wwnn"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:436
+#: ../html/src/manager/virtualization/pools/pool-properties.js:446
+#: ../html/src/manager/virtualization/pools/pool-properties.js:456
+#: ../html/src/manager/virtualization/pools/pool-properties.js:467
+#: ../html/src/manager/virtualization/pools/pool-properties.js:478
+msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:443
+msgid "Adapter parent wwpn"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:453
+msgid "Adapter parent fabric wwn"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:463
+msgid "Adapter wwnn"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:474
+msgid "Adapter wwpn"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:485
+msgid "Manage vHBA deletion"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:494
+msgid "Source name"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:523
+msgid "Passphrase"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:535
+msgid "Target"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:548
+msgid "Owner UID"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:552
+msgid "UID is a numeric value"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:556
+msgid "Group ID"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:560
+#: ../html/src/manager/virtualization/pools/pool-properties.js:569
+msgid "GID is a numeric value"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:564
+msgid "Permission mode"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:565
+msgid "target directory permissions in octal form, like 0775"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:574
+msgid "SELinux label"
+msgstr ""
+
+#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
+msgid ""
+"Could not get storage pool capabilities from the server. Please try again."
+msgstr ""
+
+#: ../html/src/manager/visualization/data-tree.js:167
+msgid "Add/remove system from SSM"
+msgstr ""
+
+#: ../html/src/manager/visualization/data-tree.js:201
+msgid "  security advisories"
+msgstr ""
+
+#: ../html/src/manager/visualization/data-tree.js:207
+msgid "  bug fix advisories"
+msgstr ""
+
+#: ../html/src/manager/visualization/data-tree.js:214
+msgid "  product enhancement advisories"
+msgstr ""
+
+#: ../html/src/manager/visualization/data-tree.js:254
+msgid "Add children to SSM"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:54
+msgid "Filtering"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:63
+msgid "Partitioning"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:84
+msgid "Show systems with:"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:109
+msgid "security advisories"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:110
+msgid "bug fix advisories"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:111
+msgid "product enhancement advisories"
+msgstr ""
+
+#. System name filter
+#: ../html/src/manager/visualization/hierarchy.js:115
+msgid "Filter by system name"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:115
+msgid "e.g., client.nue.sles"
+msgstr ""
+
+#. Base channel filter
+#: ../html/src/manager/visualization/hierarchy.js:121
+msgid "Filter by system base channel"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:121
+msgid "e.g., SLE12"
+msgstr ""
+
+#. Installed products filter
+#: ../html/src/manager/visualization/hierarchy.js:127
+msgid "Filter by system installed products"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:127
+msgid "e.g., SLES"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:165
+msgid "Partition systems based on whether there are patches for them:"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:204
+msgid "There was an error fetching data from the server."
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.js:240
+msgid " filters"
+msgstr ""
+
+#: ../html/src/manager/visualization/ui/components.js:42
+msgid "Partition systems by given check-in time:"
+msgstr ""
+
+#: ../html/src/manager/visualization/ui/components.js:142
+msgid "Add a grouping level"
+msgstr ""
+
+#: ../html/src/manager/visualization/ui/components.js:187
+msgid "Select a system group"
+msgstr ""
+
+#: ../html/src/manager/visualization/ui/components.js:241
+msgid "Split into groups"
+msgstr ""
+
+#: ../html/src/utils/network.js:55
+msgid "Session expired, please reload the page."
+msgstr ""
+
+#: ../html/src/utils/network.js:59
+msgid "Resource not found."
+msgstr ""
+
+#: ../html/src/utils/network.js:63
+msgid "HTTP Error code "
+msgstr ""
