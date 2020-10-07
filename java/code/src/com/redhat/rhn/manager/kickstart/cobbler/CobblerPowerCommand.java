@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
@@ -39,6 +40,9 @@ public class CobblerPowerCommand extends CobblerCommand {
 
     /** The server to power on or off. */
     private Server server;
+
+    /** Alternative the cobbler system prefix */
+    private String name;
 
     /** Power management operation kind. */
     private Operation operation;
@@ -68,59 +72,91 @@ public class CobblerPowerCommand extends CobblerCommand {
     }
 
     /**
-     * Attempts to power on, off or reboot the server.
-     * @return any errors
+     * Instantiates a new Cobbler power management command.
+     * @param userIn the user running this command
+     * @param nameIn the cobbler system name (prefix) to power on or off
+     * @param operationIn the operation to run
      */
-    @Override
-    public ValidatorError store() {
+    public CobblerPowerCommand(User userIn, String nameIn, Operation operationIn) {
+        super(userIn);
+        operation = operationIn;
+        String sep = ConfigDefaults.get().getCobblerNameSeparator();
+        nameIn = nameIn.replace(' ', '_').replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
+        name = nameIn + sep + user.getOrg().getId();
+    }
+
+    private SystemRecord getSystemRecord() {
         CobblerConnection connection = getCobblerConnection();
 
         if (server != null) {
             String cobblerId = server.getCobblerId();
             if (!StringUtils.isEmpty(cobblerId)) {
-                SystemRecord systemRecord = SystemRecord.lookupById(connection, cobblerId);
-                if (systemRecord != null && systemRecord.getPowerType() != null) {
-                    boolean success = false;
-                    try {
-                        switch (operation) {
-                        case PowerOn:
-                            success = systemRecord.powerOn();
-                            break;
-                        case PowerOff:
-                            success = systemRecord.powerOff();
-                            break;
-                        default:
-                            success = systemRecord.reboot();
-                            break;
-                        }
-                    }
-                    catch (XmlRpcException e) {
-                        log.error(e);
-                    }
-                    if (success) {
-                        log.debug("Power management operation " + operation.toString() +
-                            " on " + server.getId() + " succeded");
-                        LocalizationService localizationService = LocalizationService
-                            .getInstance();
-                        ServerHistoryEvent event = new ServerHistoryEvent();
-                        event.setCreated(new Date());
-                        event.setServer(server);
-                        event.setSummary(localizationService
-                            .getPlainText("cobbler.powermanagement." +
-                                operation.toString().toLowerCase()));
-                        String details = "System has been powered on via " +
-                            localizationService.getPlainText("cobbler.powermanagement." +
-                                systemRecord.getPowerType());
-                        event.setDetails(details);
-                        server.getHistory().add(event);
+                return SystemRecord.lookupById(connection, cobblerId);
+            }
+        }
+        else if (name != null) {
+            return SystemRecord.lookupByName(connection, name);
+        }
+        return null;
+    }
 
-                        return null;
-                    }
-                    log.error(operation.toString() + " on " + server.getId() +
-                            " failed");
-                    return new ValidatorError("cobbler.powermanagement.command_failed");
+    /**
+     * Attempts to power on, off or reboot the server.
+     * @return any errors
+     */
+    @Override
+    public ValidatorError store() {
+        SystemRecord systemRecord = getSystemRecord();
+        if (systemRecord != null && systemRecord.getPowerType() != null) {
+            boolean success = false;
+            try {
+                switch (operation) {
+                case PowerOn:
+                    success = systemRecord.powerOn();
+                    break;
+                case PowerOff:
+                    success = systemRecord.powerOff();
+                    break;
+                default:
+                    success = systemRecord.reboot();
+                    break;
                 }
             }
+            catch (XmlRpcException e) {
+                log.error(e);
+            }
+            if (success) {
+                if (server != null) {
+                    log.debug("Power management operation " + operation.toString() +
+                            " on " + server.getId() + " succeded");
+                    LocalizationService localizationService = LocalizationService
+                            .getInstance();
+                    ServerHistoryEvent event = new ServerHistoryEvent();
+                    event.setCreated(new Date());
+                    event.setServer(server);
+                    event.setSummary(localizationService
+                            .getPlainText("cobbler.powermanagement." +
+                                    operation.toString().toLowerCase()));
+                    String details = "System has been powered on via " +
+                            localizationService.getPlainText("cobbler.powermanagement." +
+                                    systemRecord.getPowerType());
+                    event.setDetails(details);
+                    server.getHistory().add(event);
+                }
+                else {
+                    log.debug("Power management operation " + operation.toString() +
+                            " on " + name + " succeded");
+                }
+
+                return null;
+            }
+            if (server != null) {
+                log.error(operation.toString() + " on " + server.getId() + " failed");
+            }
+            else {
+                log.error(operation.toString() + " on " + name + " failed");
+            }
+            return new ValidatorError("cobbler.powermanagement.command_failed");
         }
         return new ValidatorError("cobbler.powermanagement.not_configured");
     }

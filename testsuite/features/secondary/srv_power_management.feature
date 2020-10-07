@@ -82,6 +82,17 @@ Feature: Power management
     And I should see a "Power Off" button
     And I should see a "Reboot" button
 
+  Scenario: Cleanup: reset IPMI values
+    Given I am logged in via XML-RPC powermgmt as user "admin" and password "admin"
+    And I want to operate on this "sle_client"
+    Then I set power management value "" for "powerAddress"
+    And I set power management value "" for "powerUsername"
+    And I set power management value "" for "powerPassword"
+    And the cobbler report contains "Power Management Address       :"
+    And the cobbler report contains "Power Management Username      :"
+    And the cobbler report contains "Power Management Password      :"
+    And the cobbler report contains "Power Management Type          : ipmitool"
+
   Scenario: Cleanup: don't fake an IPMI host
     Given the server stops mocking an IPMI host
 

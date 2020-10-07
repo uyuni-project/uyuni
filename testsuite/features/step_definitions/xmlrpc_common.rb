@@ -507,6 +507,44 @@ Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"
   assert(rpc_api_tester.login(luser, password))
 end
 
+# power management namespace
+
+Given(/^I am logged in via XML\-RPC powermgmt as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
+  @rpctest = XMLRPCPowermanagementTest.new(ENV['SERVER'])
+  @rpctest.login(luser, password)
+  syschaintest.login(luser, password)
+end
+
+When(/^I fetch power management values$/) do
+  @powermgmt_result = @rpctest.get_details($client_id)
+end
+
+Then(/^power management results should have "([^"]*)" for "([^"]*)"$/) do |value, hkey|
+  assert_equal(value, @powermgmt_result[hkey])
+end
+
+Then(/^I set power management value "([^"]*)" for "([^"]*)"$/) do |value, hkey|
+  @rpctest.set_details($client_id, { hkey => value })
+end
+
+Then(/^I turn power on$/) do
+  @rpctest.power_on($client_id)
+end
+
+Then(/^I turn power off$/) do
+  @rpctest.power_off($client_id)
+end
+
+Then(/^I do power management reboot$/) do
+  @rpctest.reboot($client_id)
+end
+
+Then(/^the power status is "([^"]*)"$/) do |estat|
+  stat = @rpctest.get_status($client_id)
+  assert(stat) if estat == 'on'
+  assert(!stat) if estat == 'off'
+end
+
 # cveaudit namespace
 
 Given(/^I am logged in via XML\-RPC cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
