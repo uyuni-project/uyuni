@@ -11,7 +11,7 @@ type Props = {
 
 export function HelpLink(props: Props) {
   return (
-    <a href={props.url} target="_blank" rel="noopener noreferrer">
+    <a href={"/docs/" + window.docsLocale + "/" + props.url} target="_blank" rel="noopener noreferrer">
       <HelpIcon text={props.text}/>
     </a>
   );

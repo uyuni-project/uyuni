@@ -106,7 +106,7 @@ class TaskoTop extends React.Component {
         <h1>
           <i className="fa fa-tachometer"></i>
           {t('Task Engine Status')}
-          <HelpLink url="/docs/reference/admin/task-engine-status.html"/>
+          <HelpLink url="reference/admin/task-engine-status.html"/>
         </h1>
       </div>
     ;

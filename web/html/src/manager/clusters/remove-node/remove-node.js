@@ -38,7 +38,7 @@ const RemoveNode = (props: Props) => {
 
     return (<TopPanel title={t('Remove nodes')}
                 icon="spacewalk-icon-clusters"
-                helpUrl="/docs/reference/clusters/clusters-menu.html">
+                helpUrl="reference/clusters/clusters-menu.html">
                 <HashRouter initialPath="remove-config">
                     <Switch>
                         <Route path="remove-config">

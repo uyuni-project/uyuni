@@ -32,7 +32,7 @@ const UpgradeCluster = (props: Props) => {
 
     return (<TopPanel title={t('Upgrade ') + props.cluster.name}
         icon="spacewalk-icon-clusters"
-        helpUrl="/docs/reference/clusters/clusters-menu.html">
+        helpUrl="reference/clusters/clusters-menu.html">
         <HashRouter initialPath={props.showUpgradePlan ? "upgrade-plan" : "upgrade-config"}>
             <Switch>
                 <Route path="upgrade-plan">
