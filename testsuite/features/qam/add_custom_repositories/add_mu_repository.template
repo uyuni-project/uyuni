@@ -20,7 +20,7 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
     When I follow the left menu "Software > Manage > Repositories"
     And I create the MU repository for <type> "<client>" if necessary
 
-  Scenario: Add the repository to the Custom Channel for <client>
+  Scenario: Add the repository to the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
@@ -29,7 +29,7 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the Custom Channel for <client>
+  Scenario: Synchronize the repository in the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
@@ -37,3 +37,6 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
+
+  Scenario: The custom channel for <client> has been synced
+    When I wait until the channel "custom_channel_<client>" has been synced
