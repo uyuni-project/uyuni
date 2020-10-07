@@ -180,7 +180,7 @@ class RemoteCommand extends React.Component {
     return (
       <div>
           {msgs}
-          <TopPanel title={t("Remote Commands")} icon="fa-desktop" helpUrl="/docs/reference/salt/salt-remote-commands.html" />
+          <TopPanel title={t("Remote Commands")} icon="fa-desktop" helpUrl="reference/salt/salt-remote-commands.html" />
           <div className="panel panel-default">
             <div className="panel-body">
               <div className="row">

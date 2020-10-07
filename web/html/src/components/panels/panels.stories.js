@@ -21,7 +21,7 @@ storiesOf('TopPanel', module)
     </TopPanel>
   ))
   .add('with icon and help link', () => (
-    <TopPanel title="Toppannel with icon and links" icon="fa-filter" helpUrl="/docs/index.html">
+    <TopPanel title="Toppannel with icon and links" icon="fa-filter" helpUrl="index.html">
       stuff
     </TopPanel>
   ))
