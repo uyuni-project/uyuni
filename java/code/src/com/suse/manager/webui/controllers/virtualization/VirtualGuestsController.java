@@ -144,7 +144,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
         data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
-        data.put("hypervisor", server.hasVirtualizationEntitlement() ?
+        data.put("hypervisor", server.hasVirtualizationEntitlement() && server.asMinionServer().isPresent() ?
                 virtManager.getHypervisor(server.getMinionId()).orElse("") :
                 "");
 

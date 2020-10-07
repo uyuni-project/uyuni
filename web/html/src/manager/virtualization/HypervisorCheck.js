@@ -6,11 +6,11 @@ import { Utils as MessagesUtils } from 'components/messages';
 
 type Props = {
     hypervisor: string,
-    foreignEntitled: boolean,
+    saltVirtHost: boolean,
 };
 
 export function HypervisorCheck(props: Props) {
-    if (props.foreignEntitled) {
+    if (!props.saltVirtHost) {
         return null;
     }
 
@@ -28,5 +28,5 @@ export function HypervisorCheck(props: Props) {
 };
 
 HypervisorCheck.defaultProps = {
-    foreignEntitled: false,
+    saltVirtHost: true,
 };
