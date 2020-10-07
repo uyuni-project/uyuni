@@ -3443,7 +3443,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target>製品の機能拡張アドバイザリ</target>
+        <target>製品の機能強化アドバイザリ</target>
       </trans-unit>
       <trans-unit id="errata.jsp.header" xml:space="preserve">
         <source>Relevant Patches</source>
@@ -5845,7 +5845,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
-        <target>拡張</target>
+        <target>機能強化</target>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.score" xml:space="preserve">
         <source>Score</source>
@@ -11168,7 +11168,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>拡張パッチ</target>
+        <target>機能強化パッチ</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.toolbar" xml:space="preserve">
         <source>Overview</source>
@@ -18647,7 +18647,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <trans-unit id="exportcolumn.bug">
           <source>Bug Fixes</source> <target>バグ修正</target></trans-unit>
         <trans-unit id="exportcolumn.enhancement">
-          <source>Enhancements</source> <target>拡張</target> </trans-unit>
+          <source>Enhancements</source> <target>機能強化</target> </trans-unit>
         <trans-unit id="exportcolumn.score">
           <source>Score</source> <target>スコア</target>
         </trans-unit>
