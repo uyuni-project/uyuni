@@ -3003,7 +3003,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>製品の機能拡張アドバイザリ</target>
+        <target>製品の機能強化アドバイザリ</target>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory" xml:space="preserve">
         <source>Security Advisory</source>
@@ -8664,7 +8664,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="enhancementErrata" xml:space="preserve">
         <source>Enhancement Patches</source>
-        <target>拡張パッチ</target>
+        <target>機能強化パッチ</target>
       </trans-unit>
       <trans-unit id="outdatedPackages" xml:space="preserve">
         <source>Outdated Packages</source>
