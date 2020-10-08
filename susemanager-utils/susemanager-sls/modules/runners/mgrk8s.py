@@ -47,7 +47,7 @@ def get_all_containers(kubeconfig=None, context=None):
     pods = api.list_pod_for_all_namespaces(watch=False)
     output = dict(containers=[])
     for pod in pods.items:
-        try:
+        if pod.status.container_statuses is not None:
             for container in pod.status.container_statuses:
                 res_cont = dict()
                 res_cont['container_id'] = container.container_id
@@ -56,7 +56,7 @@ def get_all_containers(kubeconfig=None, context=None):
                 res_cont['pod_name'] = pod.metadata.name
                 res_cont['pod_namespace'] = pod.metadata.namespace
                 output['containers'].append(res_cont)
-        except:
+        else:
             log.error("Failed to parse pod container statuses")
 
     return output
