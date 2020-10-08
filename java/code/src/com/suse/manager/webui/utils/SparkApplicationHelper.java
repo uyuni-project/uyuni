@@ -334,7 +334,6 @@ public class SparkApplicationHelper {
         sharedVariables.put("isDevMode",
                 Config.get().getBoolean("java.development_environment"));
         sharedVariables.put("isUyuni", ConfigDefaults.get().isUyuni());
-        sharedVariables.put("webTheme", ConfigDefaults.get().getWebTheme());
         sharedVariables.put("webVersion", ConfigDefaults.get().getProductVersion());
         sharedVariables.put("webBuildtimestamp", Config.get().getString("web.buildtimestamp"));
         JadeConfiguration config = jade.configuration();
