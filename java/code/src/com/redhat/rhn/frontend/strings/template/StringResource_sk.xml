@@ -28,7 +28,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
-        <target/>
+        <target>Dobrý deň,
+
+{0} {1} pre vás vytvoril prihlasovacie meno pre @@PRODUCT_NAME@@. Vaše prihlasovacie
+meno pre @@PRODUCT_NAME@@ v kombinácii s aktívnym predplatným pre @@VENDOR_NAME@@
+vám poskytuje prístup k správe systémov na @@PRODUCT_NAME@@.
+
+  Prihlasovacie meno pre @@PRODUCT_NAME@@: {2}
+       Heslo: {3}
+         e-mail: {4}
+
+  {5}
+
+Dôležité: Po prihlásení si, prosím, zmeňte heslo.
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -60,7 +75,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
-        <target/>
+        <target>Dobrý deň,
+
+Bolo pre vás vytvorené prihlasovacie meno pre @@PRODUCT_NAME@@. Vaše prihlasovacie
+meno pre @@PRODUCT_NAME@@ v kombinácii s aktívnym predplatným pre @@VENDOR_NAME@@
+vám poskytuje prístup k správe systémov na @@PRODUCT_NAME@@.
+
+  Prihlasovacie meno pre @@PRODUCT_NAME@@: {0}
+       Heslo: {1}
+         e-mail: {2}
+
+  {3}
+
+Dôležité: Po prihlásení si, prosím, zmeňte heslo.
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -89,7 +119,19 @@ provides you with access to manage systems on @@PRODUCT_NAME@@.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
-        <target/>
+        <target>Dobrý deň,
+
+{0} {1} pre vás vytvoril prihlasovacie meno pre @@PRODUCT_NAME@@.  Vaše prihlasovacie
+meno pre @@PRODUCT_NAME@@ v kombinácii s aktívnym predplatným pre @@VENDOR_NAME@@
+vám poskytuje prístup k správe systémov na @@PRODUCT_NAME@@.
+
+  Prihlasovacie meno pre @@PRODUCT_NAME@@: {2}
+         e-mail: {4}
+
+  {5}
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -107,7 +149,7 @@ Thank you for using @@PRODUCT_NAME@@.
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ Používateľ vytvorený: {0} ({1}, {2} &lt;{3}&gt;)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -128,7 +170,19 @@ please visit:
 
 Thank you for using @@PRODUCT_NAME@@.
 {2}</source>
-        <target/>
+        <target>Dobrý deň,
+
+Do vášho účtu bol pridaný nový používateľ.
+
+{0}
+
+Ak chcete vidieť všetkých aktívnych používateľov a prihlasovacie mená pre @@PRODUCT_NAME@@ 
+spojené s vaším účtom, prosím, navštívte:
+
+  {1}
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+{2}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
