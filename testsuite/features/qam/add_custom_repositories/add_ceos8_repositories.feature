@@ -1,7 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@ceos7_minion
+@ceos8_minion
 Feature: Adding the CentOS 8 distribution custom repositories
 
   Scenario: Download the iso of CentOS 8 DVD and mount it on the server
