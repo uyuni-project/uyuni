@@ -1,3 +1,4 @@
+- renaming autoinstall distro didn't change the name of the Cobbler distro (bsc#1175876)
 - Fix: reinspecting a container image (bsc#1177092)
 - add power management xmlrpc api
 - allow nightly ISS sync to also cover custom channels
