@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
@@ -84,11 +85,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/storage/:sid",
-                withUserPreferences(withCsrfToken(withUser(this::show))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
         get("/manager/systems/details/virtualization/storage/:sid/new",
-                withUserPreferences(withCsrfToken(withUser(this::createDialog))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::createDialog)))), jade);
         get("/manager/systems/details/virtualization/storage/:sid/edit/:name",
-                withUserPreferences(withCsrfToken(withUser(this::editDialog))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::editDialog)))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
                 withUser(this::data));
         get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",

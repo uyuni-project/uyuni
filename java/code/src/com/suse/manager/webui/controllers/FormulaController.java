@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -107,13 +108,13 @@ public class FormulaController {
                 withCsrfToken(withUser(this::serverGroupFormulas)),
                 jade);
         get("/manager/systems/details/formulas",
-                withCsrfToken(withUser(this::minionFormulas)),
+                withCsrfToken(withDocsLocale(withUser(this::minionFormulas))),
                 jade);
         get("/manager/groups/details/formula/:formula_id",
                 withCsrfToken(withUser(this::serverGroupFormula)),
                 jade);
         get("/manager/systems/details/formula/:formula_id",
-                withCsrfToken(this::minionFormula),
+                withCsrfToken(withDocsLocale(this::minionFormula)),
                 jade);
 
         // Formula API
