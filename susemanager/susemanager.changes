@@ -1,3 +1,6 @@
+- Add LTSS PIDs for SLE12SP1, SLE12SP2, SLE12SP3 and SLE12SP4 to
+  the bootstrap definitions as some packages from LTSS are
+  required (bsc#1177524)
 - fix logrotate config
 - Add missing packages to SLE12 >= SP1 bootstrap data to fix JeOS
   bootstrap problems (bsc#1176913)
