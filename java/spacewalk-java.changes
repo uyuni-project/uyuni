@@ -1,3 +1,4 @@
+- Fix: reinspecting a container image (bsc#1177092)
 - add power management xmlrpc api
 - Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
 - Log exception trace on fatal Taskomatic startup error
