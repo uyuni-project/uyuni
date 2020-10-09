@@ -888,11 +888,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLE-12-SP1-s390x' : {
-        'PDID' : 1335, 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1335, 1535], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLE-12-SP1-x86_64' : {
-        'PDID' : 1322, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1322, 1533], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLES4SAP-12-SP1-ppc64le' : {
@@ -920,15 +920,15 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-ppc64le' : {
-        'PDID' : 1355, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1355, 1737], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-s390x' : {
-        'PDID' : 1356, 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1356, 1738], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-x86_64' : {
-        'PDID' : 1357, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1357, 1739], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLES4SAP-12-SP2-x86_64' : {
@@ -940,19 +940,19 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP3-aarch64' : {
-        'PDID' : 1424, 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1424, 2002], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-ppc64le' : {
-        'PDID' : 1422, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1422, 1930], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-s390x' : {
-        'PDID' : 1423, 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1423, 1931], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-x86_64' : {
-        'PDID' : 1421, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1421, 1932], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLES4SAP-12-SP3-x86_64' : {
@@ -964,19 +964,19 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP4-aarch64' : {
-        'PDID' : [1628], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1628, 2114], 'BETAPDID' : [1744], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-ppc64le' : {
-        'PDID' : [1626], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1626, 2115], 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-s390x' : {
-        'PDID' : [1627], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1627, 2116], 'BETAPDID' : [1746], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-x86_64' : {
-        'PDID' : [1625], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1625, 2117], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLED-12-SP4-x86_64' : {
