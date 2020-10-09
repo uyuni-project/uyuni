@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Oct 09 16:43:24 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.30-1
+- Add LTSS PIDs for SLE12SP1, SLE12SP2, SLE12SP3 and SLE12SP4 to
+  the bootstrap definitions as some packages from LTSS are
+  required (bsc#1177524)
+  
+-------------------------------------------------------------------
 Tue Oct 06 11:32:52 CEST 2020 - jgonzalez@suse.com
 
 - version 4.0.29-1

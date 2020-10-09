@@ -721,11 +721,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLE-12-SP1-s390x' : {
-        'PDID' : 1335, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1335, 1535], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLE-12-SP1-x86_64' : {
-        'PDID' : 1322, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1322, 1533], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLES4SAP-12-SP1-ppc64le' : {
@@ -753,15 +753,15 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-ppc64le' : {
-        'PDID' : 1355, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1355, 1737], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-s390x' : {
-        'PDID' : 1356, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1356, 1738], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP2-x86_64' : {
-        'PDID' : 1357, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1357, 1739], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLES4SAP-12-SP2-x86_64' : {
@@ -773,19 +773,19 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
     },
     'SLE-12-SP3-aarch64' : {
-        'PDID' : 1424, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1424, 2002], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-ppc64le' : {
-        'PDID' : 1422, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1422, 1930], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-s390x' : {
-        'PDID' : 1423, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1423, 1931], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP3-x86_64' : {
-        'PDID' : 1421, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1421, 1932], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLES4SAP-12-SP3-x86_64' : {
@@ -797,19 +797,19 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
     },
     'SLE-12-SP4-aarch64' : {
-        'PDID' : 1628, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1628, 2114], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-ppc64le' : {
-        'PDID' : 1626, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1626, 2115], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-s390x' : {
-        'PDID' : 1627, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
+        'PDID' : [1627, 2116], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLE-12-SP4-x86_64' : {
-        'PDID' : 1625, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : [1625, 2117], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/4/bootstrap/'
     },
     'SLED-12-SP4-x86_64' : {
