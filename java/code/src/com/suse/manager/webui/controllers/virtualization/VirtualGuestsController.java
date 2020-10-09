@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
@@ -122,13 +123,13 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/guests/:sid",
-                withUserPreferences(withCsrfToken(withUser(this::show))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
-                withUserPreferences(withCsrfToken(withUser(this::edit))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::edit)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/new",
-                withUserPreferences(withCsrfToken(withUser(this::create))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::create)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/console/:guestuuid",
-                withUserPreferences(withCsrfToken(withUser(this::console))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(this::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
