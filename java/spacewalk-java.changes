@@ -1,3 +1,4 @@
+- Fix: reinspecting a container image (bsc#1177092)
 - add power management xmlrpc api
 - allow nightly ISS sync to also cover custom channels
 - Include build id in boot image local path
