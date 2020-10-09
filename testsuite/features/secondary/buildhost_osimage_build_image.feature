@@ -59,6 +59,8 @@ Feature: Build OS images
     And I click on "Delete" in "Delete Selected Image(s)" modal
     And I wait until I see "Deleted successfully." text
 
+@proxy
+@private_net
   Scenario: Cleanup: Disable the repositories on branch server
     When I disable repositories after installing branch server
 
