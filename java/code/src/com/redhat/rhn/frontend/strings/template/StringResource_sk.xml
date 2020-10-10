@@ -217,16 +217,16 @@ spojené s vaším účtom, prosím, navštívte:
         <trans-unit id="email.errata.notification.body.affectedheader">
           <source>--------------------- Affected Systems List --------------------- This Patch Advisory may apply to the systems listed below. If you know that this patch does not apply to a system listed, it might be possible that the package profile for that server is out of date. In that case you should run 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) as root on the system in question to refresh your software profile.</source> <target>--------------------- Zoznam ovplyvnených systémov --------------------- Toto upozornenie opravu sa môže vzťahovať na systémy uvedené nižšie. Ak viete, že táto oprava sa nevzťahuje na uvedený systém, je možné, že profil balíkov pre tento server je zastaraný. V takom prípade by ste mali spustiť 'up2date -p' (RHEL 4 a nižšie) alebo 'rhn-profile-sync' (SLES, RHEL 5 a vyššie) ako správca na príslušnom systéme, aby ste obnovili svoj softvérový profil.</target></trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source>There is 1 affected system registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target/></trans-unit>
+          <source>There is 1 affected system registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>V 'Prehľade' je zaznamenaný 1 ovplyvnený systém (zobrazené sú iba systémy, pre ktoré ste výslovne povolili Výstrahy opráv).</target></trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
-          <source>There are {0} affected systems registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target/><context-group name="ctx">
+          <source>There are {0} affected systems registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>V 'Prehľade' je zaznamenaných {0} ovplyvnených systémov (zobrazené sú iba systémy, pre ktoré ste výslovne povolili Výstrahy opráv).</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected">
-          <source>Release Arch Profile Name ---------- ---------- --------------------------------------------- {0} You may address the issues outlined in this advisory in two ways: - select your server name by clicking on its name from the list available at the following location, and then schedule a patch update for it: {1} - run the Update Agent on each affected server.</source> <target/><context-group name="ctx">
+          <source>Release Arch Profile Name ---------- ---------- --------------------------------------------- {0} You may address the issues outlined in this advisory in two ways: - select your server name by clicking on its name from the list available at the following location, and then schedule a patch update for it: {1} - run the Update Agent on each affected server.</source> <target>Vydanie Arch Profil Názov ---------- ---------- --------------------------------------------- {0} Problémy uvedené v tomto upozornení môžete riešiť dvoma spôsobmi: - vyberte názov vášho servera kliknutím na jeho názov v zozname dostupnom na nasledujúcom mieste a potom naplánujte opravnú aktualizáciu neho: {1} - spustite agenta aktualizácie na každom ovplyvnenom serveri.</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
