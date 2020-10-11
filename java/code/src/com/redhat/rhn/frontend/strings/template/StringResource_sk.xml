@@ -217,7 +217,7 @@ spojené s vaším účtom, prosím, navštívte:
         <trans-unit id="email.errata.notification.body.affectedheader">
           <source>--------------------- Affected Systems List --------------------- This Patch Advisory may apply to the systems listed below. If you know that this patch does not apply to a system listed, it might be possible that the package profile for that server is out of date. In that case you should run 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) as root on the system in question to refresh your software profile.</source> <target>--------------------- Zoznam ovplyvnených systémov --------------------- Toto upozornenie opravu sa môže vzťahovať na systémy uvedené nižšie. Ak viete, že táto oprava sa nevzťahuje na uvedený systém, je možné, že profil balíkov pre tento server je zastaraný. V takom prípade by ste mali spustiť 'up2date -p' (RHEL 4 a nižšie) alebo 'rhn-profile-sync' (SLES, RHEL 5 a vyššie) ako správca na príslušnom systéme, aby ste obnovili svoj softvérový profil.</target></trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source>There is 1 affected system registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>V 'Prehľade' je zaznamenaný 1 ovplyvnený systém (zobrazené sú iba systémy, pre ktoré ste výslovne povolili Výstrahy opráv).</target></trans-unit>
+          <source>There is 1 affected system registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>V 'Prehľade' je zaznamenaný 1 ovplyvnený systém (zobrazené sú iba systémy, pre ktoré ste výslovne povolili výstrahy opráv).</target></trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
           <source>There are {0} affected systems registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>V 'Prehľade' je zaznamenaných {0} ovplyvnených systémov (zobrazené sú iba systémy, pre ktoré ste výslovne povolili Výstrahy opráv).</target><context-group name="ctx">
             <context context-type="paramnotes">
@@ -234,7 +234,7 @@ spojené s vaším účtom, prosím, navštívte:
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences">
-          <source>Changing Notification Preferences --------------------------------- To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@ and navigate from "Overview" / "My Account" to the "Preferences" tab. URL: {0} You can also enable/disable notification on a per system basis by selecting an individual system from the "Systems List". From the individual system view click the "Details" tab. {1} {2}</source> <target/><context-group name="ctx">
+          <source>Changing Notification Preferences --------------------------------- To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@ and navigate from "Overview" / "My Account" to the "Preferences" tab. URL: {0} You can also enable/disable notification on a per system basis by selecting an individual system from the "Systems List". From the individual system view click the "Details" tab. {1} {2}</source> <target>Zmena predvolieb oznámení --------------------------------- Ak chcete globálne povoliť/zakázať svoje predvoľby výstrah opráv, prihláste sa do @@PRODUCT_NAME@@ a prejdite z "Prehľad" / "Môj účet" do karty "Predvoľby". URL: {0} Môžete tiež povoliť/zakázať oznámenia pre jednotlivé systémy výberom individuálneho systému zo "Zoznamu systémov". V zobrazení individuálneho systému kliknite na kartu "Podrobnosti". {1} {2}</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
@@ -272,7 +272,26 @@ Thank you for using @@PRODUCT_NAME@@.
 {5}
 {6}
 </source>
-        <target/>
+        <target>Toto je správa o stave @@PRODUCT_NAME@@ pre váš účet {0} od {1}.
+
+Tento email bude odoslaný, keď sa vyskytne niektorá z nasledujúcich situácií:
+
+1.  Systém sa nedokáže nahlásiť pomocou @@PRODUCT_NAME@@ v rámci 24-hodinového okna.
+2.  Systém zaznamená aktivitu naplánovanej akcie.
+
+{2}
+{3}
+Zablokovanie tohto emailu:
+----------------------
+
+Ak chcete tento email pre systémy deaktivovať, navštívte stránku Predvoľby na
+https://{4}/rhn/account/UserPreferences.do
+
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+{5}
+{6}
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">
@@ -303,7 +322,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target/>
+        <target>
+[ Toto je automatický odoslaný email na {0} na vašu žiadosť. ]
+
+Bola predložená žiadosť na obnovenie hesla @@PRODUCT_NAME@@ pre prihlasovacie meno {2}.
+
+Ak chcete pokračovať v procese obnovenia, pokračujte na:
+
+{1}
+
+Ak si neprajete heslo obnoviť, môžete tento email  ignorovať.
+
+Ak narazíte na ďalšie ťažkosti s procesom obnovenia,
+prosím, obráťte sa na svojho administrátora @@PRODUCT_NAME@@ ohľadom ďalšej pomoci.
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -333,7 +367,25 @@ If you did not request this email be sent, please disregard this message.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target/>
+        <target>
+[ Toto je automatický odoslaný email na {0} na vašu žiadosť. ]
+
+Vyžiadali ste si zoznam všetkých prihlasovacích mien pre @@PRODUCT_NAME@@ spojených
+s emailovou adresou {0}.
+
+Existujúce prihlasovacie meno(á):
+
+{1}
+Môžete obnoviť heslá pre ktorékoľvek z vyššie uvedených prihlasovacích mien pre @@PRODUCT_NAME@@ na:
+
+  https://{2}/rhn/help/ForgotCredentials.do
+
+Ak problémy s prihlásením pretrvávajú, prosím, obráťte sa na svojho
+administrátora @@PRODUCT_NAME@@ ohľadom ďalšej pomoci.
+If you did not request this email be sent, please disregard this message.
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -354,7 +406,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target/>
+        <target>
+[ Toto je automatický odoslaný email na {0}. ]
+
+Heslo @@PRODUCT_NAME@@ pre prihlasovacie meno {1} bolo obnovené v reakcii na žiadosť o obnovenie
+zo dňa {2}
+
+Ak ste nespustili proces obnovy tohto hesla, prosím, IHNEĎ kontaktujte administrátora @@PRODUCT_NAME@@
+na {2} a požiadajte o ďalšiu pomoc.
+
+Ďakujeme, že požívate @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
