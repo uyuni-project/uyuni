@@ -445,6 +445,20 @@ When(/^the server stops mocking an IPMI host$/) do
   $server.run("kill $(pidof -x fake_ipmi_host.sh)")
 end
 
+When(/^the server starts mocking a Redfish host$/) do
+  $server.run("zypper --non-interactive install git python3-greenlet python3-gevent python3-grequests python-grequests")
+  $server.run("git clone -b mock-simple-actions https://github.com/mcalmer/Redfish-Mockup-Server.git")
+  $server.run("curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip")
+  $server.run("unzip DSP2043_2019.1.zip")
+  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py -H #{$server.full_hostname} -p 8443 -S " \
+        "-D /root/DSP2043_2019.1/public-catfish/ --ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key < /dev/null > /dev/null 2>&1 &"
+  $server.run(cmd)
+end
+
+When(/^the server stops mocking a Redfish host$/) do
+  $server.run("pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py")
+end
+
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   system_name = get_system_name(host)
   # copy state file to server
@@ -474,13 +488,19 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, system|
+Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, host|
+  node = get_target(host)
+  output = sshcmd("cobbler system report --name #{node.full_hostname}:1", ignore_err: true)[:stdout]
+  raise "Not found: #{output}" unless output.include?(arg1)
+end
+
+Then(/^the cobbler report contains "([^"]*)" for cobbler system "([^"]*)"$/) do |arg1, system|
   output = sshcmd("cobbler system report --name #{system}:1", ignore_err: true)[:stdout]
   raise "Not found: #{output}" unless output.include?(arg1)
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  step %(the cobbler report contains "#{arg1}" for system "#{$client.full_hostname}")
+  step %(the cobbler report contains "#{arg1}" for system "sle_client")
 end
 
 Then(/^I clean the search index on the server$/) do
