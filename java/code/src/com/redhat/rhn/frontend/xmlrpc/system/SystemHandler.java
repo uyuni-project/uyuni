@@ -1465,9 +1465,6 @@ public class SystemHandler extends BaseHandler {
     /**
      * List the installed packages for a given system.
      *
-     * @xmlrpc.doc List the installed packages for a given system. The attribute
-     * installtime is returned since API version 10.10. Usage of listInstalledPackages is preferred, as it returns
-     * architecture label (not name).
      * @param loggedInUser The current user
      * @param sid The id of the system in question
      * @return Returns an array of maps representing the packages installed on a system
@@ -1477,7 +1474,8 @@ public class SystemHandler extends BaseHandler {
      * whereas the other endpoints return/accept architecture label.
      * Instead of this method, use listInstalledPackages preferably.
      *
-     * @xmlrpc.doc List the installed packages for a given system.
+     * @xmlrpc.doc List the installed packages for a given system. Usage of listInstalledPackages is preferred,
+     * as it returns architecture label (not name).
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
@@ -1504,8 +1502,6 @@ public class SystemHandler extends BaseHandler {
     /**
      * List the installed packages for a given system.
      *
-     * @xmlrpc.doc List the installed packages for a given system. The attribute
-     * installtime is returned since API version 10.10.
      * @param loggedInUser The current user
      * @param sid The id of the system in question
      * @return Returns an array of maps representing the packages installed on a system
