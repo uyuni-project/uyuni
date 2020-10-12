@@ -60,56 +60,56 @@
       </trans-unit>
       <trans-unit id="virtualization.entitlements" xml:space="preserve">
         <source>Virtualization Entitlements</source>
-        <target/>
+        <target>Oprávnenia virtualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Subscription Management Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="guest.limited.hosts" xml:space="preserve">
         <source>Virtualization Hosts</source>
-        <target/>
+        <target>Virtualizačný hostitelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
       </trans-unit>
       <trans-unit id="guests.without.hosts" xml:space="preserve">
         <source>Guests Without Hosts</source>
-        <target/>
+        <target>Hostia bez hostiteľov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Virtualization" xml:space="preserve">
         <source>Virtualization</source>
-        <target/>
+        <target>Virtualizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Virtual Systems" xml:space="preserve">
         <source>Virtual Systems</source>
-        <target/>
+        <target>Virtuálne systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal Systems" xml:space="preserve">
         <source>Unprovisioned Systems</source>
-        <target/>
+        <target>Nezaopatrené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Physical Systems" xml:space="preserve">
         <source>Physical Systems</source>
-        <target/>
+        <target>Fyzické systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Duplicate Systems" xml:space="preserve">
         <source>Duplicate Systems</source>
-        <target/>
+        <target>Duplicitné systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
