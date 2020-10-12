@@ -146,9 +146,9 @@ Feature: Cobbler and distribution autoinstallation
     When I am logged in via XML-RPC system as user "admin" and password "admin"
     And I create a System Record
     Then I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
-    And the cobbler report contains "testserver.example.com" for system "testserver"
-    And the cobbler report contains "1.1.1.1" for system "testserver"
-    And the cobbler report contains "00:22:22:77:ee:cc" for system "testserver"
+    And the cobbler report contains "testserver.example.com" for cobbler system "testserver"
+    And the cobbler report contains "1.1.1.1" for cobbler system "testserver"
+    And the cobbler report contains "00:22:22:77:ee:cc" for cobbler system "testserver"
 
   Scenario: Cleanup: delete test distro and profiles
     Then I remove kickstart profiles and distros

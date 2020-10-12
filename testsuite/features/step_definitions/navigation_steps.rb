@@ -950,3 +950,8 @@ end
 When(/^I select the next maintenance window$/) do
   find(:xpath, "//select[@id='maintenance-window-select']/option", match: :first).select_option
 end
+
+When(/^I enter "([^"]*)" as the redfish server address$/) do |host|
+  node = get_target(host)
+  step %(I enter "#{node.full_hostname}:8443" as "powerAddress")
+end
