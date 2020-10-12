@@ -1,11 +1,7 @@
 name: Java checkstyle
 
 on:
-  # Limit this workflow to push events on the master branch, encrypted secrets
-  # cannot currently be used from actions triggered by PRs created from a fork.
-  push:
-    branches:
-      - master
+  pull_request:
     paths:
       - 'java/**.java'
 
