@@ -48,14 +48,8 @@ public class UserPreferenceUtils {
      * @return the users locale
      */
     public String getCurrentLocale(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        User user = new RequestContext(request).getCurrentUser();
-
-        Map<String, Object> aclContext = new HashMap<>();
-        aclContext.put("user", user);
-        Acl acl = aclFactory.getAcl(Access.class.getName());
-
-        if (acl.evalAcl(aclContext, "user_authenticated()")) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
             String locale = user.getPreferredLocale();
             if (locale != null) {
                 return locale;
@@ -71,19 +65,37 @@ public class UserPreferenceUtils {
      * @return the users webUI style theme
      */
     public String getCurrentWebTheme(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        User user = new RequestContext(request).getCurrentUser();
-
-        Map<String, Object> aclContext = new HashMap<>();
-        aclContext.put("user", user);
-        Acl acl = aclFactory.getAcl(Access.class.getName());
-
-        if (acl.evalAcl(aclContext, "user_authenticated()")) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
             String webTheme = user.getWebTheme();
             if (ConfigDefaults.get().getWebThemesList().contains(webTheme) && webTheme != null) {
                 return webTheme;
             }
         }
         return ConfigDefaults.get().getDefaultWebTheme();
+    }
+
+    /**
+     * Extract the current logged-in user
+     *
+     * @param pageContext the blob where the user is in
+     * @return the current User
+     */
+    public User getAuthenticatedUser(PageContext pageContext) {
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        return new RequestContext(request).getCurrentUser();
+    }
+
+    /**
+     * Check if the current User is an authenticated one
+     *
+     * @param user the current User to evaluate
+     * @return true if the User is an authenticated one, false otherwise
+     */
+    public boolean isUserAuthenticated(User user) {
+        Map<String, Object> aclContext = new HashMap<>();
+        aclContext.put("user", user);
+        Acl acl = aclFactory.getAcl(Access.class.getName());
+        return acl.evalAcl(aclContext, "user_authenticated()");
     }
 }
