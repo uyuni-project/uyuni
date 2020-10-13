@@ -266,7 +266,7 @@ def create_repo(label, flush, additional=[]):
                 pkgname, len(pkgs)))
             if len(pkgs) == 0:
                 if optional:
-                    log("Optional package '{0}' not found".format(pkgname))
+                    logging.debug("Optional package '{0}' not found".format(pkgname))
                     continue
                 if altcount >= len(alt):
                     if len(alt) > 1:
