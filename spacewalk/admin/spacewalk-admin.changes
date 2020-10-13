@@ -1,3 +1,5 @@
+- prevent javax.net.ssl.SSLHandshakeException after upgrading from
+  SUSE Manager 3.2 (bsc#1177435)
 - show info message when applying schema upgrade
 
 -------------------------------------------------------------------
