@@ -446,8 +446,13 @@ When(/^the server stops mocking an IPMI host$/) do
 end
 
 When(/^the server starts mocking a Redfish host$/) do
-  $server.run("zypper --non-interactive install git python3-greenlet python3-gevent python3-grequests python-grequests")
-  $server.run("git clone -b mock-simple-actions https://github.com/mcalmer/Redfish-Mockup-Server.git")
+  $server.run("mkdir -p /root/Redfish-Mockup-Server/")
+  ["redfishMockupServer.py", "rfSsdpServer.py"].each do |file|
+    source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
+    dest = "/root/Redfish-Mockup-Server/" + file
+    return_code = file_inject($server, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+  end
   $server.run("curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip")
   $server.run("unzip DSP2043_2019.1.zip")
   cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py -H #{$server.full_hostname} -p 8443 -S " \
