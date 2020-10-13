@@ -12,8 +12,11 @@ import collections
 import json
 import threading
 import datetime
-
-import grequests
+try:
+    import grequests
+except:
+    # only used for EventService and TelemetryService
+    pass
 
 import os
 import ssl
