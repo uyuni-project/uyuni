@@ -40,7 +40,6 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
-import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -56,6 +55,7 @@ import com.suse.salt.netapi.calls.modules.Event;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
@@ -428,7 +428,7 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     public <T> Optional<T> getGrains(String minionId, TypeToken<T> type, String... grainNames) {
-       return callSync(com.suse.manager.webui.utils.salt.Grains.item(false, type, grainNames), minionId);
+       return callSync(Grains.item(false, type, grainNames), minionId);
     }
 
     /**
