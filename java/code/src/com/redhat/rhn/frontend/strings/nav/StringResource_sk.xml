@@ -116,70 +116,70 @@
       </trans-unit>
       <trans-unit id="Requiring Reboot" xml:space="preserve">
         <source>Requiring Reboot</source>
-        <target/>
+        <target>Vyžaduje sa reštart</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Extra Packages" xml:space="preserve">
         <source>Non Compliant</source>
-        <target/>
+        <target>Nevyhovujúci</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips" xml:space="preserve">
         <source>Duplicate IP Address</source>
-        <target/>
+        <target>Duplicitná IP adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ip6s" xml:space="preserve">
         <source>Duplicate IPv6 Address</source>
-        <target/>
+        <target>Duplicitná IPv6 adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.mac_address" xml:space="preserve">
         <source>Duplicate MAC Address</source>
-        <target/>
+        <target>Duplicitná MAC adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.hostname" xml:space="preserve">
         <source>Duplicate Hostname</source>
-        <target/>
+        <target>Duplicitný názov hostiteľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Currency" xml:space="preserve">
         <source>System Currency</source>
-        <target/>
+        <target>Systémová mena</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes" xml:space="preserve">
         <source>Software Crashes</source>
-        <target/>
+        <target>Zlyhania softvéru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes.overview" xml:space="preserve">
         <source>Software Crashes Overview</source>
-        <target/>
+        <target>Prehľad zlyhaní softvéru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes.overview.summary" xml:space="preserve">
         <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
-        <target/>
+        <target>V tabuľke nižšie sú uvedené zlyhania softvéru zoskupené podľa UUID, ku ktorým došlo na vašich systémoch. Identické UUID zrútení môže potenciálne naznačovať podobné alebo rovnaké typy zlyhania softvéru.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
