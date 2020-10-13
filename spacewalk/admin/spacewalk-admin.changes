@@ -1,3 +1,6 @@
+- prevent javax.net.ssl.SSLHandshakeException after upgrading from
+  SUSE Manager 3.2 (bsc#1177435)
+
 -------------------------------------------------------------------
 Wed Sep 09 12:09:28 CEST 2020 - jgonzalez@suse.com
 
