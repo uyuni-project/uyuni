@@ -56,4 +56,27 @@ public class UserPreferenceUtils {
         }
         return ConfigDefaults.get().getDefaultLocale();
     }
+
+    /**
+     * Get the users current webUI style theme. If no user is available return the config default
+     *
+     * @param pageContext the current PageContext
+     * @return the users webUI style theme
+     */
+    public String getCurrentWebTheme(PageContext pageContext) {
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        User user = new RequestContext(request).getCurrentUser();
+
+        Map<String, Object> aclContext = new HashMap<>();
+        aclContext.put("user", user);
+        Acl acl = aclFactory.getAcl(Access.class.getName());
+
+        if (acl.evalAcl(aclContext, "user_authenticated()")) {
+            String webTheme = user.getWebTheme();
+            if (ConfigDefaults.get().getWebThemesList().contains(webTheme) && webTheme != null) {
+                return webTheme;
+            }
+        }
+        return ConfigDefaults.get().getDefaultWebTheme();
+    }
 }
