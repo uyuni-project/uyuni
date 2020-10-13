@@ -319,6 +319,8 @@ def find_root_channel_labels(pdids):
         log("Filtered Root Labels: {}".format(filtered_root_labels), 3)
         if len(filtered_root_labels) >= 1:
             return filtered_root_labels
+        # else: if all are gone, the pids did not contain a base product.
+        #       In this case we return all root labels found by the first query
     return root_labels
 
 
