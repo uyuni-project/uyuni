@@ -1,6 +1,11 @@
 name: Java checkstyle
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'java/**.java' 
   pull_request:
     paths:
       - 'java/**.java'
