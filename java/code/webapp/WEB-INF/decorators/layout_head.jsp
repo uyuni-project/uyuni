@@ -25,8 +25,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
-    <c:set var="webTheme" value="${rhn:getConfig('web.theme_default')}" />
-
 
 <!-- import default fonts/icons styles -->
     <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css?cb=${cb_version}" />
@@ -39,6 +37,7 @@
     <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
+    <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
     <!-- import styles -->
     <rhn:require acl="is(development_environment)">
         <link rel="stylesheet/less" type="text/css" href="/css/${webTheme}.less" />
