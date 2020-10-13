@@ -1055,6 +1055,18 @@
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="preferences.jsp.title.theme">
+        <source>Style Theme</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.text.theme">
+        <source>Please select your preferred theme style.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="preferences.jsp.startpagetitle">
         <source>"Overview" Start Page</source>
         <context-group name="ctx">
