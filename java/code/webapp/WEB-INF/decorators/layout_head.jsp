@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
-    <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
+    <c:set var="webTheme" value="${UserPreferenceUtils.getCurrentWebTheme(pageContext)}"/>
     <!-- import styles -->
     <rhn:require acl="is(development_environment)">
         <link rel="stylesheet/less" type="text/css" href="/css/${webTheme}.less" />
