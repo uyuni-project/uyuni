@@ -116,6 +116,30 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
+    <h4><bean:message key="preferences.jsp.title.theme"/></h4>
+  </div>
+  <div class="panel-body">
+    <p><bean:message key="preferences.jsp.text.theme"/></p>
+    <div class="form-group">
+      <div class="col-md-6">
+        <select name="theme" value="${theme}" class="form-control">
+          <c:forEach var="item" items="${themes}">
+            <option value="${item}"
+              <c:if test="${theme == item}">
+                <c:out value="selected" />
+              </c:if>
+            />
+              <c:out value="${item}" />
+            </option>
+          </c:forEach>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
     <h4><bean:message key="preferences.jsp.csvtitle" /></h4>
   </div>
   <div class="panel-body">

@@ -1324,5 +1324,14 @@ public class UserImpl extends BaseDomainHelper implements User {
         this.userInfo.settaskoNotify(taskoNotifyIn);
     }
 
+    /** {@inheritDoc} */
+    public String getWebTheme() {
+        return this.userInfo.getWebTheme();
+    }
+
+    /** {@inheritDoc} */
+    public void  setWebTheme(String webThemeIn) {
+        this.userInfo.setWebTheme(webThemeIn);
+    }
 }
 

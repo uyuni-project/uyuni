@@ -1303,6 +1303,18 @@
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
+        <source>Style Theme</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.text.theme" xml:space="preserve">
+        <source>Please select your preferred theme style.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="preferences.jsp.startpagetitle" xml:space="preserve">
         <source>"Overview" Start Page</source>
         <context-group name="ctx">
