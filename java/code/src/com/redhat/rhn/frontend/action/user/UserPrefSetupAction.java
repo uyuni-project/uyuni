@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.Pane;
@@ -26,6 +27,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.user.UserManager;
 
+import java.util.Optional;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -88,6 +90,12 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
             form.set("timezone", UserManager.getDefaultTimeZone()
                     .getTimeZoneId());
         }
+
+        requestContext.getRequest().setAttribute("themes", getWebThemes());
+        requestContext.getRequest()
+                .setAttribute("theme",
+                        Optional.ofNullable(user.getWebTheme()).orElse(ConfigDefaults.get().getDefaultWebTheme()));
+
         form.set("uid", user.getId());
         form.set("taskoNotify", user.getTaskoNotify());
 
