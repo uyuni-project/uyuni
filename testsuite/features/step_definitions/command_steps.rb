@@ -430,7 +430,7 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
 end
 
 When(/^the server starts mocking an IPMI host$/) do
-  ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
+  ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
     dest = "/etc/ipmi/" + file
     return_code = file_inject($server, source, dest)
@@ -447,7 +447,7 @@ end
 
 When(/^the server starts mocking a Redfish host$/) do
   $server.run("mkdir -p /root/Redfish-Mockup-Server/")
-  ["redfishMockupServer.py", "rfSsdpServer.py"].each do |file|
+  ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
     dest = "/root/Redfish-Mockup-Server/" + file
     return_code = file_inject($server, source, dest)
@@ -455,8 +455,11 @@ When(/^the server starts mocking a Redfish host$/) do
   end
   $server.run("curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip")
   $server.run("unzip DSP2043_2019.1.zip")
-  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py -H #{$server.full_hostname} -p 8443 -S " \
-        "-D /root/DSP2043_2019.1/public-catfish/ --ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key < /dev/null > /dev/null 2>&1 &"
+  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
+        "-H #{$server.full_hostname} -p 8443 " \
+        "-S -D /root/DSP2043_2019.1/public-catfish/ " \
+        "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
+        "< /dev/null > /dev/null 2>&1 &"
   $server.run(cmd)
 end
 
@@ -493,19 +496,15 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, host|
+Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |arg1, host|
   node = get_target(host)
   output = sshcmd("cobbler system report --name #{node.full_hostname}:1", ignore_err: true)[:stdout]
-  raise "Not found: #{output}" unless output.include?(arg1)
+  raise "Not found:\n#{output}" unless output.include?(arg1)
 end
 
-Then(/^the cobbler report contains "([^"]*)" for cobbler system "([^"]*)"$/) do |arg1, system|
-  output = sshcmd("cobbler system report --name #{system}:1", ignore_err: true)[:stdout]
-  raise "Not found: #{output}" unless output.include?(arg1)
-end
-
-Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  step %(the cobbler report contains "#{arg1}" for system "sle_client")
+Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |arg1, name|
+  output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
+  raise "Not found:\n#{output}" unless output.include?(arg1)
 end
 
 Then(/^I clean the search index on the server$/) do
