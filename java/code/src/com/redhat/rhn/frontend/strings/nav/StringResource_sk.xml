@@ -186,70 +186,70 @@
       </trans-unit>
       <trans-unit id="software.crashes.by.uuid.summary" xml:space="preserve">
         <source>The table below lists systems where a crash with the above UUID occurred.</source>
-        <target/>
+        <target>V nasledujúcej tabuľke sú uvedené systémy, v ktorých došlo k zlyhaniu s vyššie uvedeným UUID.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes.uuid.header" xml:space="preserve">
         <source>Summary for crashes with identical UUID</source>
-        <target/>
+        <target>Súhrn pre zlyhania s identickým UUID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.config" xml:space="preserve">
         <source>Configuration</source>
-        <target/>
+        <target>Konfigurácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.config.deploy" xml:space="preserve">
         <source>Deploy Files</source>
-        <target/>
+        <target>Nasadiť súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.config.diff" xml:space="preserve">
         <source>Compare Files</source>
-        <target/>
+        <target>Porovnať súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.config.subscribe" xml:space="preserve">
         <source>Subscribe to Channels</source>
-        <target/>
+        <target>Prihlásiť sa ku kanálom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.config.unsubscribe" xml:space="preserve">
         <source>Unsubscribe from Channels</source>
-        <target/>
+        <target>Odhlásiť sa z kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.config.enable" xml:space="preserve">
         <source>Enable Configuration</source>
-        <target/>
+        <target>Povoliť konfiguráciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.status" xml:space="preserve">
         <source>Task Log</source>
-        <target/>
+        <target>Záznam úloh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.status.inprogress" xml:space="preserve">
         <source>In Progress</source>
-        <target/>
+        <target>Prebieha</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
