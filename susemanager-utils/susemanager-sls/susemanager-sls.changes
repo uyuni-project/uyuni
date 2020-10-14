@@ -1,3 +1,4 @@
+- Fix: do not break when pod status is empty (bsc#1161903)
 - Move channel token information from sources.list to auth.conf on Debian 10 and Ubuntu 18 and newer
 - Add support for activation keys on server configuration Salt modules
 - ensure the yum/dnf plugins are enabled
