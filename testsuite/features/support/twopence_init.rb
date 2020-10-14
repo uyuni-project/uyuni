@@ -56,6 +56,8 @@ if $qam_test
   $ubuntu1604_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
+  $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
+  $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
   # As we share core features for QAM and QA environments, we share also those vm twopence objects
   $minion = $sle12sp4_minion
   $ssh_minion = $sle12sp4_ssh_minion
@@ -70,6 +72,7 @@ if $qam_test
             $ceos7_minion, $ceos7_ssh_minion, $ceos7_client,
             $ubuntu1604_ssh_minion, $ubuntu1604_minion,
             $ubuntu1804_ssh_minion, $ubuntu1804_minion,
+            $ubuntu2004_ssh_minion, $ubuntu2004_minion,
             $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 else
   # Define twopence objects for QA environment
@@ -219,6 +222,8 @@ $node_by_host = { 'server'                => $server,
                   'ubuntu1604_ssh_minion' => $ubuntu1604_ssh_minion,
                   'ubuntu1804_minion'     => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion' => $ubuntu1804_ssh_minion,
+                  'ubuntu2004_minion'     => $ubuntu2004_minion,
+                  'ubuntu2004_ssh_minion' => $ubuntu2004_ssh_minion,
                   'sle11sp4_ssh_minion'   => $sle11sp4_ssh_minion,
                   'sle11sp4_minion'       => $sle11sp4_minion,
                   'sle11sp4_client'       => $sle11sp4_client,
