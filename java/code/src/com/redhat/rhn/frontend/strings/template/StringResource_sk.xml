@@ -200,8 +200,23 @@ spojené s vaším účtom, prosím, navštívte:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
-          <source>@@PRODUCT_NAME@@ has determined that the following advisory is applicable to one or more of the systems you have registered: Complete information about this patch can be found at the following location: {0} {1} - {2} ------------------------------------------------------------------------------ Summary: {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</source> <target>@@ PRODUCT_NAME @@ určil, že na jeden alebo viac systémov, ktoré ste zaregistrovali, sa vzťahujú nasledujúce upozornenia: Kompletné informácie o tejto oprave nájdete na nasledujúcom mieste: {0} {1} - {2} ------------------------------------------------------------------------------ Súhrn: {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</target><context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+          <source>
+@@PRODUCT_NAME@@ has determined that the following advisory is applicable to
+one or more of the systems you have registered:
+
+Complete information about this patch can be found at the following location:
+     {0}
+
+{1} - {2}
+------------------------------------------------------------------------------
+Summary:
+{3}
+
+{4} {5} {6}
+{7}
+------------------------------------------------------------------------------
+    </source> <target state="needs-adaptation">@@ PRODUCT_NAME @@ určil, že na jeden alebo viac systémov, ktoré ste zaregistrovali, sa vzťahujú nasledujúce upozornenia: Kompletné informácie o tejto oprave nájdete na nasledujúcom mieste: {0} {1} - {2} ------------------------------------------------------------------------------ Súhrn: {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -214,27 +229,69 @@ spojené s vaším účtom, prosím, navštívte:
       </context>
           </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
-          <source>--------------------- Affected Systems List --------------------- This Patch Advisory may apply to the systems listed below. If you know that this patch does not apply to a system listed, it might be possible that the package profile for that server is out of date. In that case you should run 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) as root on the system in question to refresh your software profile.</source> <target>--------------------- Zoznam ovplyvnených systémov --------------------- Toto upozornenie opravu sa môže vzťahovať na systémy uvedené nižšie. Ak viete, že táto oprava sa nevzťahuje na uvedený systém, je možné, že profil balíkov pre tento server je zastaraný. V takom prípade by ste mali spustiť 'up2date -p' (RHEL 4 a nižšie) alebo 'rhn-profile-sync' (SLES, RHEL 5 a vyššie) ako správca na príslušnom systéme, aby ste obnovili svoj softvérový profil.</target></trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
-          <source>There is 1 affected system registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>V 'Prehľade' je zaznamenaný 1 ovplyvnený systém (zobrazené sú iba systémy, pre ktoré ste výslovne povolili výstrahy opráv).</target></trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
-          <source>There are {0} affected systems registered in 'Overview' (only systems for which you have explicitly enabled Patch Alerts are shown).</source> <target>V 'Prehľade' je zaznamenaných {0} ovplyvnených systémov (zobrazené sú iba systémy, pre ktoré ste výslovne povolili Výstrahy opráv).</target><context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+          <source>
+---------------------
+Affected Systems List
+---------------------
+This Patch Advisory may apply to the systems listed below. If you know that
+this patch does not apply to a system listed, it might be possible that the
+package profile for that server is out of date. In that case you should run
+'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
+as root on the system in question to refresh your software profile.
+    </source> <target state="needs-adaptation">--------------------- Zoznam ovplyvnených systémov --------------------- Toto upozornenie opravu sa môže vzťahovať na systémy uvedené nižšie. Ak viete, že táto oprava sa nevzťahuje na uvedený systém, je možné, že profil balíkov pre tento server je zastaraný. V takom prípade by ste mali spustiť 'up2date -p' (RHEL 4 a nižšie) alebo 'rhn-profile-sync' (SLES, RHEL 5 a vyššie) ako správca na príslušnom systéme, aby ste obnovili svoj softvérový profil.</target></trans-unit>
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+          <source>
+There is 1 affected system registered in 'Overview' (only systems for
+which you have explicitly enabled Patch Alerts are shown).
+    </source> <target state="needs-adaptation">V 'Prehľade' je zaznamenaný 1 ovplyvnený systém (zobrazené sú iba systémy, pre ktoré ste výslovne povolili výstrahy opráv).</target></trans-unit>
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+          <source>
+There are {0} affected systems registered in 'Overview' (only systems for
+which you have explicitly enabled Patch Alerts are shown).
+    </source> <target state="needs-adaptation">V 'Prehľade' je zaznamenaných {0} ovplyvnených systémov (zobrazené sú iba systémy, pre ktoré ste výslovne povolili Výstrahy opráv).</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
-          <source>Release Arch Profile Name ---------- ---------- --------------------------------------------- {0} You may address the issues outlined in this advisory in two ways: - select your server name by clicking on its name from the list available at the following location, and then schedule a patch update for it: {1} - run the Update Agent on each affected server.</source> <target>Vydanie Arch Profil Názov ---------- ---------- --------------------------------------------- {0} Problémy uvedené v tomto upozornení môžete riešiť dvoma spôsobmi: - vyberte názov vášho servera kliknutím na jeho názov v zozname dostupnom na nasledujúcom mieste a potom naplánujte opravnú aktualizáciu neho: {1} - spustite agenta aktualizácie na každom ovplyvnenom serveri.</target><context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+          <source>
+Release    Arch       Profile Name
+---------- ---------- ---------------------------------------------
+{0}
+
+You may address the issues outlined in this advisory in two ways:
+
+     - select your server name by clicking on its name from the list
+       available at the following location, and then schedule a
+       patch update for it:
+           {1}
+
+     - run the Update Agent on each affected server.
+    </source> <target state="needs-adaptation">Vydanie Arch Profil Názov ---------- ---------- --------------------------------------------- {0} Problémy uvedené v tomto upozornení môžete riešiť dvoma spôsobmi: - vyberte názov vášho servera kliknutím na jeho názov v zozname dostupnom na nasledujúcom mieste a potom naplánujte opravnú aktualizáciu neho: {1} - spustite agenta aktualizácie na každom ovplyvnenom serveri.</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
-          <source>Changing Notification Preferences --------------------------------- To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@ and navigate from "Overview" / "My Account" to the "Preferences" tab. URL: {0} You can also enable/disable notification on a per system basis by selecting an individual system from the "Systems List". From the individual system view click the "Details" tab. {1} {2}</source> <target>Zmena predvolieb oznámení --------------------------------- Ak chcete globálne povoliť/zakázať svoje predvoľby výstrah opráv, prihláste sa do @@PRODUCT_NAME@@ a prejdite z "Prehľad" / "Môj účet" do karty "Predvoľby". URL: {0} Môžete tiež povoliť/zakázať oznámenia pre jednotlivé systémy výberom individuálneho systému zo "Zoznamu systémov". V zobrazení individuálneho systému kliknite na kartu "Podrobnosti". {1} {2}</target><context-group name="ctx">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+          <source>
+Changing Notification Preferences
+---------------------------------
+To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
+and navigate from "Overview" / "My Account" to the "Preferences" tab.
+
+        URL: {0}
+
+You can also enable/disable notification on a per system basis by selecting an
+individual system from the "Systems List". From the individual system view
+click the "Details" tab.
+
+{1}
+{2}
+    </source> <target state="needs-adaptation">Zmena predvolieb oznámení --------------------------------- Ak chcete globálne povoliť/zakázať svoje predvoľby výstrah opráv, prihláste sa do @@PRODUCT_NAME@@ a prejdite z "Prehľad" / "Môj účet" do karty "Predvoľby". URL: {0} Môžete tiež povoliť/zakázať oznámenia pre jednotlivé systémy výberom individuálneho systému zo "Zoznamu systémov". V zobrazení individuálneho systému kliknite na kartu "Podrobnosti". {1} {2}</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
