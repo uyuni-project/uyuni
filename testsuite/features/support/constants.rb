@@ -120,6 +120,8 @@ PACKAGE_BY_CLIENT = { 'ceos_minion' => 'ant',
                       'ubuntu1604_ssh_minion' => 'bison',
                       'ubuntu1804_minion' => 'bison',
                       'ubuntu1804_ssh_minion' => 'bison',
+                      'ubuntu2004_minion' => 'bison',
+                      'ubuntu2004_ssh_minion' => 'bison',
                       'sle11sp4_ssh_minion' => 'bison',
                       'sle11sp4_minion' => 'bison',
                       'sle11sp4_client' => 'bison',
@@ -160,7 +162,9 @@ CHANNEL_BY_CLIENT = { 'proxy' => 'SLES15-SP2-Pool',
                       'ubuntu1604_ssh_minion' => 'ubuntu-16.04-pool',
                       'ubuntu1604_minion' => 'ubuntu-16.04-pool',
                       'ubuntu1804_ssh_minion' => 'ubuntu-18.04-pool',
-                      'ubuntu1804_minion' => 'ubuntu-18.04-pool' }.freeze
+                      'ubuntu1804_minion' => 'ubuntu-18.04-pool',
+                      'ubuntu2004_ssh_minion' => 'ubuntu-20.04-pool',
+                      'ubuntu2004_minion' => 'ubuntu-20.04-pool' }.freeze
 
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
@@ -190,7 +194,9 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'ubuntu1604_ssh_minion' => 'x86_64',
                       'ubuntu1604_minion' => 'x86_64',
                       'ubuntu1804_ssh_minion' => 'x86_64',
-                      'ubuntu1804_minion' => 'x86_64' }.freeze
+                      'ubuntu1804_minion' => 'x86_64',
+                      'ubuntu2004_ssh_minion' => 'x86_64',
+                      'ubuntu2004_minion' => 'x86_64' }.freeze
 
 SPACEWALK_UTILS_RPMS = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup'\
                        'mgr-daemon mgr-osad mgr-cfg-actions spacewalk-oscap scap-security-guide'.freeze
