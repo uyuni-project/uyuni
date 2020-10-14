@@ -51,7 +51,8 @@ public class RpmVersionComparator implements Comparator<String> {
         int b1 = 0;
         int b2 = 0;
 
-        if (str1.indexOf("+") > 0 && str2.indexOf("+") > 0 && str1.indexOf("~") == -1 && str2.indexOf("~") == -1) {
+        if (str1.indexOf("+") > 0 && str2.indexOf("+") > 0 && str1.indexOf("~") == -1 && str2.indexOf("~") == -1 &&
+                str1.indexOf(".module") == -1 && str2.indexOf(".module") == -1) {
             str1 = str1.substring(0, str1.indexOf("+"));
             str2 = str2.substring(0, str2.indexOf("+"));
         }
