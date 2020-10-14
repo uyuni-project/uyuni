@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-10-03 02:49+0000\n"
+"POT-Creation-Date: 2020-10-14 17:04+0200\n"
+"PO-Revision-Date: 2020-10-07 10:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -272,8 +272,8 @@ msgstr "取り消し"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:36
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:27
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:280
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
 msgstr "削除"
 
@@ -569,7 +569,7 @@ msgstr "すべてを選択"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:229
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:228
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
 msgid "Loading..."
 msgstr "読み込んでいます..."
@@ -777,7 +777,7 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:229
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:118
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:117
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:234
 msgid "General"
@@ -910,7 +910,7 @@ msgstr "製品説明"
 #: ../html/src/manager/admin/setup/products/products.js:866
 #: ../html/src/manager/content-management/list-filters/filter-form.js:165
 #: ../html/src/manager/images/image-view-packages.js:48
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:184
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:183
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
@@ -1020,7 +1020,7 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 #: ../html/src/manager/images/image-stores.js:113
 #: ../html/src/manager/images/image-view.js:326
 #: ../html/src/manager/notifications/notification-messages.js:356
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:240
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
 msgstr "更新"
 
@@ -1192,9 +1192,9 @@ msgstr "監査イメージ"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:123
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:122
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:50
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:334
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Name"
 msgstr "名前"
@@ -1209,7 +1209,7 @@ msgstr "名前"
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:255
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "動作"
 
@@ -1757,7 +1757,7 @@ msgstr "クラスタ"
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:87
 #: ../html/src/manager/notifications/notification-messages.js:410
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:207
 msgid "Type"
 msgstr "タイプ"
 
@@ -1943,7 +1943,7 @@ msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:223
 msgid "Product Enhancement Advisory"
-msgstr "製品の機能拡張アドバイザリ"
+msgstr "製品の機能強化アドバイザリ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:225
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
@@ -2521,7 +2521,7 @@ msgstr "アクティベーションキー"
 #: ../html/src/manager/images/image-profile-edit.js:312
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:220
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:219
 msgid "None"
 msgstr "なし"
 
@@ -2814,8 +2814,8 @@ msgid "Building"
 msgstr "構築しています"
 
 #: ../html/src/manager/images/image-view.js:424
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:229
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:298
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:236
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
 msgstr "不明"
 
@@ -3039,7 +3039,7 @@ msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr "製品の機能拡張アドバイザリ"
+msgstr "製品の機能強化アドバイザリ"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
@@ -3219,7 +3219,7 @@ msgstr "将来のメンテナンスウィンドウ"
 #: ../html/src/manager/maintenance/details/schedule-details.js:123
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr "開始"
 
@@ -3448,7 +3448,7 @@ msgstr "パッケージの状態"
 #: ../html/src/manager/salt/keys/key-management.js:173
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:94
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:335
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
 msgstr "都道府県"
 
@@ -4345,37 +4345,37 @@ msgstr "何らかの問題が発生しています。接続が閉じられまし
 msgid "Create Virtual Machine"
 msgstr "仮想マシンの作成"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:125
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:124
 #: ../html/src/manager/virtualization/pools/pool-properties.js:241
 msgid "Can not contain the following characters: /\\"
 msgstr "下記の文字を含めることはできません: /\\"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:136
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:135
 msgid "Hypervisor"
 msgstr "ハイパーバイザ"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:151
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:150
 msgid "Virtual Machine Type"
 msgstr "仮想マシンのタイプ"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:163
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:162
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
 msgstr "最大メモリ (MiB)"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:165
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:174
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:164
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:173
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
 msgstr "正の整数を指定する必要があります"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:171
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
 msgstr "仮想 CPU 数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:204
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:203
 msgid "Graphics"
 msgstr "グラフィック"
 
@@ -4385,7 +4385,7 @@ msgstr "開始／再開"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:27
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:24
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:259
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
 msgstr "停止"
 
@@ -4531,12 +4531,12 @@ msgid ""
 msgstr "これはこのホスト内に設定されている仮想ネットワークの一覧です。"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:61
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:336
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
 msgstr "自動起動"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:69
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:337
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
 msgstr "恒久"
 
@@ -4548,36 +4548,36 @@ msgstr "ブリッジ"
 msgid "Create Virtual Storage Pool"
 msgstr "仮想ストレージプールの作成"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Delete the pool, including the contained volumes. "
 msgstr "含まれているボリュームを含めてプールを削除します。 "
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Cannot be undone"
 msgstr "取り消しできません"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
 msgid "Edit Pool"
 msgstr "プールの編集"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:338
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
 msgid "Location"
 msgstr "場所"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:339
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "Usage"
 msgstr "使用"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
 msgid "Create Pool"
 msgstr "プールの作成"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:363
 msgid "Virtual Storage Pools and Volumes"
 msgstr "仮想ストレージプールとボリューム"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:364
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
@@ -4585,7 +4585,7 @@ msgstr ""
 "これはこのホストにおいて仮想ゲストディスクを含んでいるストレージプールの一覧"
 "です。"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:375
 msgid "Filter by pool or volume name"
 msgstr "プールまたはボリューム名でフィルタ"
 
@@ -4747,7 +4747,7 @@ msgstr "  バグ修正アドバイザリ"
 
 #: ../html/src/manager/visualization/data-tree.js:214
 msgid "  product enhancement advisories"
-msgstr "  製品の機能拡張アドバイザリ"
+msgstr "  製品の機能強化アドバイザリ"
 
 #: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
@@ -4775,7 +4775,7 @@ msgstr "バグ修正アドバイザリ"
 
 #: ../html/src/manager/visualization/hierarchy.js:111
 msgid "product enhancement advisories"
-msgstr "製品の機能拡張アドバイザリ"
+msgstr "製品の機能強化アドバイザリ"
 
 #. System name filter
 #: ../html/src/manager/visualization/hierarchy.js:115

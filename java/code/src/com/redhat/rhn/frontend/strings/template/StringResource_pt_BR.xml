@@ -175,11 +175,7 @@ visite:
 Obrigado por usar o @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -223,6 +219,9 @@ Sumário:
 {7}
 ------------------------------------------------------------------------------
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
@@ -243,6 +242,9 @@ estes erros não aplicam-se ao sistema listado, é provável que o perfil do pac
 para este servidor esteja desatualizado. Neste caso, você deverá rodar
 'up2date -p' (RHEL 4 e versões inferiores) ou 'rhn-profile-sync' (RHEL 5 e versões acima) como raiz no sistema em questão para atualização do perfil de seu software.
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
@@ -252,6 +254,9 @@ which you have explicitly enabled Patch Alerts are shown).
 Existe apenas 1 sistema afetado e registrado na 'Visão Geral' (apenas
 sistemas pelos quais você ativou claramente os Alertas de Erro são apresentados).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
@@ -266,6 +271,9 @@ which you have explicitly enabled Patch Alerts are shown).
 Existe apenas {0} sistemas afetados e registrados na 'Visão Geral' (apenas sistemas
 pelos quais você ativou claramente os Alertas de Erros são apresentados).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
@@ -301,6 +309,9 @@ Você poderá endereçar os problemas descritos neste manual em duas maneiras:
 
      - rode um Agente Atualizador para cada servidor afetado.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
@@ -339,8 +350,10 @@ da visualização individual do sistema.
 {1}
 {2}
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">

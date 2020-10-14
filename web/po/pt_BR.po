@@ -9,27 +9,23 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-14 17:04+0200\n"
-"PO-Revision-Date: 2020-09-25 17:48+0000\n"
-"Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
-"Language: cs\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr "zbývající"
+msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
-"Prohlížeč Internet Explorer není podporován. Zkuste použít Firefox, Chrome "
-"nebo Edge"
 
 #: ../html/src/components/action-schedule.js:54
 msgid "new action chain"
@@ -3326,7 +3322,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
-msgstr "Stát"
+msgstr ""
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
@@ -3618,7 +3614,7 @@ msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
-msgstr "Uyuni"
+msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.js:212
 #: ../html/src/manager/shared/menu/menu.js:215
@@ -4101,7 +4097,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
 msgid "Organization"
-msgstr "Organizace"
+msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203

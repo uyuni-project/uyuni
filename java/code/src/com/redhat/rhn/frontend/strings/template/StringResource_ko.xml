@@ -173,11 +173,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@를 사용해주셔서 감사합니다.
 {2} </target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -222,8 +218,11 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -243,8 +242,11 @@ as root on the system in question to refresh your software profile.
 이러한 경우 해당 시스템에 root로 'up2date -p' (RHEL 4 이하) 또는
 'rhn-profile-sync' (RHEL 5 이상)를 실행하고 소프트웨어 프로파일을 업데이트합니다.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -253,8 +255,11 @@ which you have explicitly enabled Patch Alerts are shown).
 '개요'에 등록된 하나의 시스템이 영향을 받음(에라타 통보가 명시적으로 
 활성화된 시스템만 표시됩니다.)
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -268,8 +273,11 @@ which you have explicitly enabled Patch Alerts are shown).
 '개요'에 등록된 {0} 시스템이 영향을 받음(에라타 통보가 명시적으로 
 활성화된 시스템만 표시됩니다.)
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -303,8 +311,11 @@ You may address the issues outlined in this advisory in two ways:
 
      - 영향을 받은 각 서버에서 업데이트 에이전트를 실행합니다.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -341,8 +352,10 @@ click the "Details" tab.
 {1}
 {2}
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
