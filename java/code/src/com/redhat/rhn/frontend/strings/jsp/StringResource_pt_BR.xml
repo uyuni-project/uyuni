@@ -24301,6 +24301,10 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
           <source>Maintenance Windows</source>
         <target state="new" />
   </trans-unit>
-        </body>
+        <trans-unit id="kickstart.powermanagement.system_not_found" xml:space="preserve">
+        <source>System not found</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>
