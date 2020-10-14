@@ -45,7 +45,8 @@ Feature: Redfish Power management
   Scenario: Check power management SSM configuration for Redfish
     Given I am authorized
     And I am on the System Overview page
-    When I check the "sle_minion" client
+    When I follow "Clear"
+    And I check the "sle_minion" client
     And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
     Then I should see "sle_minion" as link
