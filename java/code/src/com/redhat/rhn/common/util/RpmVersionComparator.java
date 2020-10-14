@@ -21,7 +21,7 @@ import java.util.Comparator;
  * in Java. The comparator operates on two strings that
  * represent an RPM version or release.
  *
- * <p> This comparator is not perfectly antysymmetric for unequal versions,
+ * <p> This comparator is not perfectly antisymmetric for unequal versions,
  * but close enough to warrant being a comparator. For examples of asymmetry,
  * check the test.
  *
