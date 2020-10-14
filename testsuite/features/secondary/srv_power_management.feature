@@ -52,7 +52,8 @@ Feature: IPMI Power management
   Scenario: Check power management SSM configuration
     Given I am authorized
     And I am on the System Overview page
-    When I check the "sle_client" client
+    When I follow "Clear"
+    And I check the "sle_client" client
     And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
     Then I should see "sle_client" as link
