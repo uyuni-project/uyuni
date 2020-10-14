@@ -60,7 +60,6 @@ import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
-import com.suse.manager.webui.utils.salt.MinionStartEvent;
 import com.suse.manager.webui.utils.salt.custom.SystemIdGenerateEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
@@ -69,6 +68,7 @@ import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.event.MinionStartEvent;
 
 import org.apache.log4j.Logger;
 
