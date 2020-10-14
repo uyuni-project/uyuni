@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2020-10-14 17:04+0200\n"
 "PO-Revision-Date: 2020-08-24 21:26+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -263,8 +263,8 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:36
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:27
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:280
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
 msgstr ""
 
@@ -551,7 +551,7 @@ msgstr ""
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:229
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:228
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
 msgid "Loading..."
 msgstr ""
@@ -740,7 +740,7 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:229
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:118
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:117
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:234
 msgid "General"
@@ -863,7 +863,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.js:866
 #: ../html/src/manager/content-management/list-filters/filter-form.js:165
 #: ../html/src/manager/images/image-view-packages.js:48
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:184
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:183
 msgid "Architecture"
 msgstr ""
 
@@ -973,7 +973,7 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.js:113
 #: ../html/src/manager/images/image-view.js:326
 #: ../html/src/manager/notifications/notification-messages.js:356
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:240
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
 msgstr ""
 
@@ -1141,9 +1141,9 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:123
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:122
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:50
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:334
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Name"
 msgstr ""
@@ -1158,7 +1158,7 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:255
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr ""
 
@@ -1681,7 +1681,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:87
 #: ../html/src/manager/notifications/notification-messages.js:410
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:207
 msgid "Type"
 msgstr ""
 
@@ -2424,7 +2424,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.js:312
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:220
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:219
 msgid "None"
 msgstr ""
 
@@ -2708,8 +2708,8 @@ msgid "Building"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.js:424
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:229
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:298
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:236
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
 msgstr ""
 
@@ -3102,7 +3102,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.js:123
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr ""
 
@@ -3322,7 +3322,7 @@ msgstr ""
 #: ../html/src/manager/salt/keys/key-management.js:173
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:94
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:335
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
 msgstr "Bundesland"
 
@@ -4175,37 +4175,37 @@ msgstr ""
 msgid "Create Virtual Machine"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:125
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:124
 #: ../html/src/manager/virtualization/pools/pool-properties.js:241
 msgid "Can not contain the following characters: /\\"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:136
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:135
 msgid "Hypervisor"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:151
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:150
 msgid "Virtual Machine Type"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:163
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:162
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:165
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:174
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:164
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:173
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:171
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:204
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:203
 msgid "Graphics"
 msgstr ""
 
@@ -4215,7 +4215,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:27
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:24
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:259
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
 msgstr ""
 
@@ -4361,12 +4361,12 @@ msgid ""
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:61
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:336
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:69
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:337
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
 msgstr ""
 
@@ -4378,42 +4378,42 @@ msgstr ""
 msgid "Create Virtual Storage Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Delete the pool, including the contained volumes. "
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Cannot be undone"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
 msgid "Edit Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:338
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
 msgid "Location"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:339
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "Usage"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
 msgid "Create Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:363
 msgid "Virtual Storage Pools and Volumes"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:364
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:375
 msgid "Filter by pool or volume name"
 msgstr ""
 
