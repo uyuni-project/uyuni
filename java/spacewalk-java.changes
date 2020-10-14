@@ -1,3 +1,4 @@
+- Fix the links for downloading the binaries in the package details UI (bsc#1176603)
 - allow nightly ISS sync to also cover custom channels
 - Fix: reinspecting a container image (bsc#1177092)
 - add power management xmlrpc api
