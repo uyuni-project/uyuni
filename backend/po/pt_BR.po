@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-09-14 12:48+0000\n"
+"PO-Revision-Date: 2020-10-15 01:49+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/pt_BR/>\n"
@@ -54,9 +54,9 @@ msgstr ""
 "obter mais ajuda."
 
 #: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Seu sistema não foi encontrado no banco de dados RHN"
+msgstr "Seu sistema não foi encontrado no banco de dados do {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
@@ -137,12 +137,11 @@ msgstr ""
 #: ../server/handlers/xmlrpc/registration.py:1115
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "{PRODUCT_NAME} Mensagem de Boas vindas"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
 msgid "Privacy Statement"
-msgstr "Declaração de Privacidade do Red Hat Satellite"
+msgstr "Declaração de Privacidade"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -1477,7 +1476,7 @@ msgid " - live synchronization"
 msgstr " - sincronização ao vivo"
 
 #: ../satellite_tools/satsync.py:534
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
@@ -1485,11 +1484,11 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
-"ERRO: A sincronização de conteúdo ao vivo com o RHN Classic Hosted não é "
-"mais suportada.\n"
-"Em vez disso, use o comando cdn-sync, a menos que você esteja tentando "
-"sincronizar a partir de outro satélite via Inter-Satelite-Sync (ISS) ou a "
-"partir de conteúdo local em disco via ISOs de despejo de canal."
+"ERRO: A sincronização de conteúdo Live com o RHN Classic Hosted não é mais "
+"suportada.\n"
+"Use o comando cdn-sync em vez disso, a menos que você esteja tentando "
+"sincronizar de outro {PRODUCT_NAME} via Inter-Server-Sync (ISS), ou de "
+"conteúdo local no disco via Channel Dump ISOs."
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -2030,11 +2029,11 @@ msgstr ""
 "ignorado."
 
 #: ../satellite_tools/satsync.py:2375
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
-"ERRO: '%s' não é uma etapa válida. Veja 'man satellite-sync' para mais "
+"ERRO: '%s' não é uma etapa válida. Veja 'man mgr-inter-sync' para mais "
 "detalhes."
 
 #: ../satellite_tools/satsync.py:2407
