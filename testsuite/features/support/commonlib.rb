@@ -67,7 +67,7 @@ end
 # this is a safety net only, the best thing to do is to not start the reposync at all
 def compute_list_to_leave_running
   do_not_kill = []
-  [$minion, $build_host, $sshminion].each do |node|
+  [$minion, $build_host, $sshminion, $server].each do |node|
     next if node.nil?
     os_version, os_family = get_os_version(node)
     if os_family == 'sles' && os_version == '12-SP4'
@@ -76,6 +76,10 @@ def compute_list_to_leave_running
     elsif os_family == 'sles' && os_version == '15-SP1'
       do_not_kill += ['sle-product-sles15-sp1-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp1', 'sle-module-containers15-sp1-pool-x86_64',
                       'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64']
+    elsif os_family == 'sles' && os_version == '15-SP2'
+      do_not_kill += ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2',
+                      'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2',
+                      'sle-module-basesystem15-sp2-pool-x86_64', 'sle-module-basesystem15-sp2-updates-x86_64']
     end
   end
   do_not_kill
