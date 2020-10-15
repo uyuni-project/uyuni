@@ -34,6 +34,7 @@
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/srv_power_management.feature
 - features/secondary/srv_xmlrpc_power_management.feature
+- features/secondary/srv_power_management_redfish.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
 - features/secondary/min_action_chain.feature
