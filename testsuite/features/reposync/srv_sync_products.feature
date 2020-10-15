@@ -6,9 +6,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Let the products page appear
     Given I am authorized for the "Admin" section
-    # Order matters here, refresh first
-    When I refresh SCC
-    And I follow the left menu "Admin > Setup Wizard > Products"
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
     Then I should see a "Arch" text
     And I should see a "Channels" text
