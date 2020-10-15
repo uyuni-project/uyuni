@@ -16,18 +16,29 @@
 create type evr_t as (
         epoch           varchar(16),
         version         varchar(512),
-        release         varchar(512)
+        release         varchar(512),
+        type            varchar(10)
 );
 
-create or replace function evr_t(e varchar, v varchar, r varchar)
+create or replace function evr_t(e varchar, v varchar, r varchar, t varchar)
 returns evr_t as $$
-select row($1,$2,$3)::evr_t
+select row($1,$2,$3,$4)::evr_t
 $$ language sql;
 
 create or replace function evr_t_compare( a evr_t, b evr_t )
 returns int as $$
 begin
-  return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+  if a.type = b.type then
+      if a.type = 'rpm' then
+         return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+       elsif a.type = 'deb' then
+        return 0;
+       else
+         raise notice 'unknown evr type';
+      end if;
+  else
+     raise notice 'cant compare incompatible evr types';
+  end if;
 end;
 $$ language plpgsql immutable strict;
 

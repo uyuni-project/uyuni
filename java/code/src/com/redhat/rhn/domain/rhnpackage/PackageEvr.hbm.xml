@@ -16,7 +16,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="epoch" type="string" column="epoch"/>
         <property name="version" type="string" column="version"/>
         <property name="release" type="string" column="release"/>
-
+        <property name="type" type="string" column="type"/>
     </class>
 
     <query name="PackageEvr.findById">
