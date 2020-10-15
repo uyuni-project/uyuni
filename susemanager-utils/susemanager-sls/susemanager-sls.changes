@@ -1,3 +1,5 @@
+- Make grub2 autoinstall kernel path relative to the boot partition root (bsc#1175876)
+
 -------------------------------------------------------------------
 Tue Oct 06 11:33:27 CEST 2020 - jgonzalez@suse.com
 
