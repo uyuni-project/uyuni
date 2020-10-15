@@ -184,35 +184,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
      * The web code doesn't actually create any of these records, but
      * this will be needed by the backend code.
      * @param srvr Server to associate with the packages
-     * @param pn The package name to associate
-     * @param pe The package evr (version and release).
-     */
-    public static void associateSystemToPackage(Server srvr,
-            PackageName pn, PackageEvr pe) {
-        try {
-            WriteMode m =
-                ModeFactory.
-                getWriteMode("test_queries", "insert_into_rhnServerPackage");
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("server_id", srvr.getId());
-            params.put("pn_id", pn.getId());
-            params.put("p_epoch", pe.getEpoch());
-            params.put("p_version", pe.getVersion());
-            params.put("p_release", pe.getRelease());
-
-            m.executeUpdate(params);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * This method inserts a record into the rhnServerPackage mapping
-     * table to associate a given Server with a particular Package.
-     * The web code doesn't actually create any of these records, but
-     * this will be needed by the backend code.
-     * @param srvr Server to associate with the packages
      * @param p The package
      */
     public static void associateSystemToPackage(Server srvr, Package p) {

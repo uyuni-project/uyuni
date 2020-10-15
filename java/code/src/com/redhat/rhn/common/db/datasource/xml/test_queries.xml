@@ -252,19 +252,6 @@ update rhnServerGroup set group_type = :type_id where id = :sgid
   </query>
 </write-mode>
 
-<write-mode name="insert_into_rhnServerPackage">
-  <query params="server_id, pn_id, p_epoch, p_version, p_release">
-INSERT
-  INTO rhnServerPackage
-       (server_id,
-        name_id,
-  evr_id)
-VALUES (:server_id,
-        :pn_id,
-        LOOKUP_EVR(:p_epoch, :p_version, :p_release))
-  </query>
-</write-mode>
-
 <write-mode name="insert_into_rhnServerPackage_with_arch">
   <query params="server_id, pn_id, evr_id, arch_id">
 INSERT
