@@ -269,6 +269,12 @@ Metrics/MethodLength:
 Metrics/ParameterLists:
   Max: 6
 
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
 # Offense count: 8
 Naming/AccessorMethodName:
   Exclude:

@@ -129,6 +129,9 @@ end
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
+  # If the system is not known, just return the parameter
+  system_name = host
+
   if host == 'pxeboot_minion'
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
@@ -138,8 +141,12 @@ def get_system_name(host)
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
   else
-    node = get_target(host)
-    system_name = node.full_hostname
+    begin
+      node = get_target(host)
+      system_name = node.full_hostname
+    rescue RuntimeError => e
+      puts e.message
+    end
   end
   system_name
 end
