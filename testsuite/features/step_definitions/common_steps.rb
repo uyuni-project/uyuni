@@ -456,10 +456,10 @@ When(/^I enter the "(.*)" package in the css "(.*)"$/) do |client, css|
   find(css).set(PACKAGE_BY_CLIENT[client])
 end
 
-When(/^I select "([^\"]*)" as a product$/) do |product|
+When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
 end
 
 When(/^I wait until the tree item "([^"]+)" has no sub-list$/) do |item|
