@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import com.redhat.rhn.common.util.DebVersionComparator;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,15 +25,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * PackageEvr
  * @version $Rev$
  */
-public class PackageEvr implements Comparable {
+public class PackageEvr implements Comparable<PackageEvr> {
 
-    private static final RpmVersionComparator VERCMP = new RpmVersionComparator();
+    private static final RpmVersionComparator RPMVERCMP = new RpmVersionComparator();
+    private static final DebVersionComparator DEBVERCMP = new DebVersionComparator();
     private static final Integer ZERO = 0;
 
     private Long id;
     private String epoch;
     private String version;
     private String release;
+    private String type;
 
     /**
      * Null constructor, needed for hibernate
@@ -152,13 +155,12 @@ public class PackageEvr implements Comparable {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(PackageEvr other) {
         // This method mirrors the perl function RHN::Manifest::vercmp
         // There is another perl function, RHN::DB::Package::vercmp which
         // does almost the same, but has a subtle difference when it comes
         // to null epochs (the RHN::DB::Package version does not treat null
         // epochs the same as epoch == 0, but sorts them as Integer.MIN_VALUE)
-        PackageEvr other = (PackageEvr) o;
         int result = epochAsInteger().compareTo(other.epochAsInteger());
         if (result != 0) {
             return result;
@@ -167,13 +169,13 @@ public class PackageEvr implements Comparable {
             throw new IllegalStateException(
                     "To compare PackageEvr, both must have non-null versions");
         }
-        result = VERCMP.compare(getVersion(), other.getVersion());
+        result = RPMVERCMP.compare(getVersion(), other.getVersion());
         if (result != 0) {
             return result;
         }
         // The perl code doesn't check for null releases, so we won't either
         // In the long run, a check might be in order, though
-        return VERCMP.compare(getRelease(), other.getRelease());
+        return RPMVERCMP.compare(getRelease(), other.getRelease());
     }
 
     private Integer epochAsInteger() {
