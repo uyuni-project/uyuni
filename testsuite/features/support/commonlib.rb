@@ -70,10 +70,10 @@ def compute_list_to_leave_running
   [$minion, $build_host, $sshminion].each do |node|
     next if node.nil?
     os_version, os_family = get_os_version(node)
-    if os_family == 'sles' && os_version == '12SP4'
+    if os_family == 'sles' && os_version == '12-SP4'
       do_not_kill += ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
                       'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4']
-    elsif os_family == 'sles' && os_version == '15SP1'
+    elsif os_family == 'sles' && os_version == '15-SP1'
       do_not_kill += ['sle-product-sles15-sp1-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp1', 'sle-module-containers15-sp1-pool-x86_64',
                       'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64']
     end
