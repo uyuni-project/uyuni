@@ -212,7 +212,7 @@ Summary:
 {4} {5} {6}
 {7}
 ------------------------------------------------------------------------------
-    </source> <target state="needs-adaptation">@@ PRODUCT_NAME @@ určil, že na jeden alebo viac systémov, ktoré ste zaregistrovali, sa vzťahujú nasledujúce upozornenia: Kompletné informácie o tejto oprave nájdete na nasledujúcom mieste: {0} {1} - {2} ------------------------------------------------------------------------------ Súhrn: {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</target><context-group name="ctx">
+    </source> <target state="needs-adaptation">@@PRODUCT_NAME@@ určil, že na jeden alebo viac systémov, ktoré ste zaregistrovali, sa vzťahujú nasledujúce upozornenia: Kompletné informácie o tejto oprave nájdete na nasledujúcom mieste: {0} {1} - {2} ------------------------------------------------------------------------------ Súhrn: {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</target><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
