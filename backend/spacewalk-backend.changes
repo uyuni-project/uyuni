@@ -1,3 +1,4 @@
+- Add minrate/timeout configuration values for downloading DEB/RPM packages
 - add allow vendor change with patching via rhnstack 
 - Fixed kickstart tree permissions to a+r.
 - Avoid race condition due multiple reposync import threads (bsc#1183151)
