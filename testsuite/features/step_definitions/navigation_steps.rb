@@ -917,6 +917,15 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   end
 end
 
+# Wait until a modal window with a specific content is shown
+When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$/) do |timeout, title|
+  path = "//*[contains(@class, \"modal-body\") and contains(., \"#{title}\")]" \
+    '/ancestor::div[contains(@class, "modal-dialog")]'
+
+  dialog = find(:xpath, path, wait: timeout.to_i)
+  raise "#{title} modal did not appear" unless dialog
+end
+
 # Image-specific steps
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
   git_profiles = ENV['GITPROFILES']

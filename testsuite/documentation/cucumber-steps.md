@@ -713,6 +713,10 @@ Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
 Then "test-vm" virtual machine on "virt-server" should have a "myvolume" virtio disk from pool "test-pool"
 Then "test-vm" virtual machine on "virt-server" should have "/path/to/image.iso" attached to a cdrom
+Then "test-vm" virtual machine on "virt-server" should boot using autoyast
+Then "test-vm" virtual machine on "virt-server" should boot on hard disk at next start
+Then "test-vm" virtual machine on "virt-server" should stop on reboot
+Then "test-vm" virtual machine on "virt-server" should not stop on reboot at next start
 ```
 
 * Remove disk images from a storage pool

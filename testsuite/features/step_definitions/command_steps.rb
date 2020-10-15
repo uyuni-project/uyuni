@@ -1201,6 +1201,47 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have "([^"]*)" attached to 
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot using autoyast$/) do |vm, host|
+  node = get_target(host)
+  output, _code = node.run("virsh dumpxml #{vm}")
+  tree = Nokogiri::XML(output)
+  has_kernel = tree.xpath('//os/kernel').size == 1
+  has_initrd = tree.xpath('//os/initrd').size == 1
+  has_autoyast = tree.xpath('//os/cmdline')[0].to_s.include? ' autoyast='
+  unless has_kernel && has_initrd && has_autoyast
+    raise 'Wrong kernel/initrd/cmdline configuration, '\
+          "kernel: #{has_kernel ? '' : 'not'} set, "\
+          "initrd: #{has_initrd ? '' : 'not'} set, "\
+          "autoyast kernel parameter: #{has_autoyast ? '' : 'not'} set"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot on hard disk at next start$/) do |vm, host|
+  node = get_target(host)
+  output, _code = node.run("virsh dumpxml --inactive #{vm}")
+  tree = Nokogiri::XML(output)
+  has_kernel = tree.xpath('//os/kernel').size == 1
+  has_initrd = tree.xpath('//os/initrd').size == 1
+  has_cmdline = tree.xpath('//os/cmdline').size == 1
+  unless !has_kernel && !has_initrd && !has_cmdline
+    raise 'Virtual machine will not boot on hard disk at next start, '\
+          "kernel: #{has_kernel ? '' : 'not'} set, "\
+          "initrd: #{has_initrd ? '' : 'not'} set, "\
+          "cmdline: #{has_cmdline ? '' : 'not'} set"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((?: at next start)?)$/) do |vm, host, stop, next_start|
+  node = get_target(host)
+  inactive = next_start == ' at next start' ? '--inactive' : ''
+  output, _code = node.run("virsh dumpxml #{inactive} #{vm}")
+  tree = Nokogiri::XML(output)
+  on_reboot = tree.xpath('//on_reboot/text()')[0].to_s
+  unless on_reboot == 'destroy' && stop == 'stop' || on_reboot == 'restart' && stop == 'not stop'
+    raise "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}"
+  end
+end
+
 When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
   node = get_target(host)
   node.run("qemu-img create -f qcow2 #{path} 1G")
