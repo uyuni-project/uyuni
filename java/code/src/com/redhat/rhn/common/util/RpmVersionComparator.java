@@ -21,7 +21,7 @@ import java.util.Comparator;
  * in Java. The comparator operates on two strings that
  * represent an RPM version or release.
  *
- * <p> This comparator is not perfectly antysymmetric for unequal versions,
+ * <p> This comparator is not perfectly antisymmetric for unequal versions,
  * but close enough to warrant being a comparator. For examples of asymmetry,
  * check the test.
  *
@@ -51,7 +51,8 @@ public class RpmVersionComparator implements Comparator<String> {
         int b1 = 0;
         int b2 = 0;
 
-        if (str1.indexOf("+") > 0 && str2.indexOf("+") > 0 && str1.indexOf("~") == -1 && str2.indexOf("~") == -1) {
+        if (str1.indexOf("+") > 0 && str2.indexOf("+") > 0 && str1.indexOf("~") == -1 && str2.indexOf("~") == -1 &&
+                str1.indexOf(".module") == -1 && str2.indexOf(".module") == -1) {
             str1 = str1.substring(0, str1.indexOf("+"));
             str2 = str2.substring(0, str2.indexOf("+"));
         }
