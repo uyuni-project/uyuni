@@ -418,54 +418,69 @@ class ContentSource:
         # read configuration from /etc/rhn/rhn.conf
         initCFG('server.satellite')
 
-        # keep authtokens for mirroring
-        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
-        if query:
-            self.authtoken = query
+        # ensure the config namespace will be switched back in any case
+        try:
+            # keep authtokens for mirroring
+            (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+            if query:
+                self.authtoken = query
 
-        # load proxy configuration based on the url
-        self._load_proxy_settings(self.url)
+            # load proxy configuration based on the url
+            self._load_proxy_settings(self.url)
 
-        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
-        if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
-            http_headers_cfg = configparser.ConfigParser()
-            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
-            section_name = None
+            # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
+            if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
+                http_headers_cfg = configparser.ConfigParser()
+                http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
+                section_name = None
 
-            if http_headers_cfg.has_section(self.name):
-                section_name = self.name
-            elif http_headers_cfg.has_section(channel_label):
-                section_name = channel_label
-            elif http_headers_cfg.has_section('main'):
-                section_name = 'main'
+                if http_headers_cfg.has_section(self.name):
+                    section_name = self.name
+                elif http_headers_cfg.has_section(channel_label):
+                    section_name = channel_label
+                elif http_headers_cfg.has_section('main'):
+                    section_name = 'main'
 
-            if section_name:
-                for hdr in http_headers_cfg[section_name]:
-                    self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
+                if section_name:
+                    for hdr in http_headers_cfg[section_name]:
+                        self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
 
-        # perform authentication if implemented
-        self._authenticate(url)
+            # perform authentication if implemented
+            self._authenticate(url)
 
-        # Make sure baseurl ends with / and urljoin will work correctly
-        self.urls = [url]
-        if self.urls[0][-1] != '/':
-            self.urls[0] += '/'
+            # Make sure baseurl ends with / and urljoin will work correctly
+            self.urls = [url]
+            if self.urls[0][-1] != '/':
+                self.urls[0] += '/'
 
-        # Replace non-valid characters from reponame (only alphanumeric chars allowed)
-        self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
-        self.channel_label = channel_label
+            # Replace non-valid characters from reponame (only alphanumeric chars allowed)
+            self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
+            self.channel_label = channel_label
 
-        # SUSE vendor repositories belongs to org = NULL
-        # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
-        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
+            # SUSE vendor repositories belongs to org = NULL
+            # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+            root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
 
-        self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
-        self.num_packages = 0
-        self.num_excluded = 0
-        self.gpgkey_autotrust = None
-        self.groupsfile = None
-        # set config component back to original
-        initCFG(comp)
+            self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
+            self.num_packages = 0
+            self.num_excluded = 0
+            self.gpgkey_autotrust = None
+            self.groupsfile = None
+
+            # configure network connection
+            try:
+                # bytes per second
+                self.minrate = int(CFG.REPOSYNC_MINRATE)
+            except ValueError:
+                self.minrate = 1000
+            try:
+                # seconds
+                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+            except ValueError:
+                self.timeout = 300
+        finally:
+            # set config component back to original
+            initCFG(comp)
 
     def _load_proxy_settings(self, url):
         # read the proxy configuration in /etc/rhn/rhn.conf
@@ -1158,6 +1173,8 @@ type=rpm-md
         params['proxy_username'] = self.proxy_user
         params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.http_headers
+        params["timeout"] = self.timeout
+        params["minrate"] = self.minrate
         # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
 

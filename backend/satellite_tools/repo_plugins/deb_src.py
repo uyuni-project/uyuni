@@ -261,29 +261,44 @@ class ContentSource:
         # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
 
-        self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
-        self.authtoken = None
+        # ensure the config namespace will be switched back in any case
+        try:
+            self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
+            self.authtoken = None
 
-        # Replace non-valid characters from reponame (only alphanumeric chars allowed)
-        self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
-        self.channel_label = channel_label
+            # Replace non-valid characters from reponame (only alphanumeric chars allowed)
+            self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
+            self.channel_label = channel_label
 
-        # SUSE vendor repositories belongs to org = NULL
-        # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
-        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
-        self.repo = DebRepo(url, root,
-                            os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
-                            self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
-        initCFG(comp)
-        self.repo.verify()
+            # SUSE vendor repositories belongs to org = NULL
+            # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+            root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
+            self.repo = DebRepo(url, root,
+                                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
+                                self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
+            self.repo.verify()
 
-        self.num_packages = 0
-        self.num_excluded = 0
+            self.num_packages = 0
+            self.num_excluded = 0
 
-        # keep authtokens for mirroring
-        (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
-        if query:
-            self.authtoken = query
+            # keep authtokens for mirroring
+            (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
+            if query:
+                self.authtoken = query
+
+            # configure network connection
+            try:
+                # bytes per second
+                self.minrate = int(CFG.REPOSYNC_MINRATE)
+            except ValueError:
+                self.minrate = 1000
+            try:
+                # seconds
+                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+            except ValueError:
+                self.timeout = 300
+        finally:
+            initCFG(comp)
 
     def get_md_checksum_type(self):
         pass
@@ -437,6 +452,8 @@ class ContentSource:
         params['proxy_username'] = self.proxy_user
         params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.repo.http_headers
+        params["timeout"] = self.timeout
+        params["minrate"] = self.minrate
         # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)

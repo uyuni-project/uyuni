@@ -1,3 +1,5 @@
+- Add minrate/timeout configuration values for downloading DEB/RPM packages
+
 -------------------------------------------------------------------
 Mon Mar 29 12:00:19 CEST 2021 - jgonzalez@suse.com
 
