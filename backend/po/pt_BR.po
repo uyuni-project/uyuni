@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:44+0200\n"
-"PO-Revision-Date: 2020-07-14 12:37+0000\n"
-"Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
+"PO-Revision-Date: 2020-10-15 01:49+0000\n"
+"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -23,11 +23,52 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "token de autenticação de proxy incompleto: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "A assinatura de proxy enviada %s não corresponde à nossa %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "autenticação de proxy recusada"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Solicitação inválida recebida (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"SEGUINTE MENSAGEM IMPORTANTE:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Durante a execução de '%s': capturado\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "URI %s inválida"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -40,12 +81,13 @@ msgstr ""
 "obter mais ajuda."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
-msgstr "Seu sistema não foi encontrado no banco de dados RHN"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Seu sistema não foi encontrado no banco de dados do {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
-msgstr "O ISS está desativado neste satélite."
+msgid "ISS is disabled on this server."
+msgstr "O ISS está desativado neste servidor."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -64,8 +106,10 @@ msgstr "Esperado um pacote, não: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Serviço Spacewalk Proxy não ativado para o perfil do servidor: \"%s\""
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"O serviço SUSE Manager Proxy não está habilitado para o perfil do servidor: "
+"\"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -109,12 +153,13 @@ msgstr ""
 "não encontrados."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Mensagem de Boas-vindas do Red Hat Satellite"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "{PRODUCT_NAME} Mensagem de Boas vindas"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Red Hat Satellite Privacy Statement"
-msgstr "Declaração de Privacidade do Red Hat Satellite"
+msgid "Privacy Statement"
+msgstr "Declaração de Privacidade"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -165,108 +210,6 @@ msgstr ""
 "               A conta %s foi desativada neste servidor.\n"
 "               Entre em contato com o administrador da organização para "
 "obter mais ajuda."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Execute rhn_register como root neste cliente"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Serviço não ativado para o perfil do sistema: \"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "A arquitetura `%s' não é suportada"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "O token `%s' possui mais de um canal base atribuído"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Canais básicos conflitantes"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Falha ao adicionar servidor ao grupo %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Contagem máxima de uso de %s atingida"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"O empilhamento de tokens de recadastramento com diferentes direitos de base "
-"não é suportado"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Não foi possível encontrar o token '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Tokens de organizações incompatíveis"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Incompatibilidade de sessão do Kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "O empilhamento de tokens de re-registro não é suportado"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "token de autenticação de proxy incompleto: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "A assinatura de proxy enviada %s não corresponde à nossa %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "autenticação de proxy recusada"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Solicitação inválida recebida (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"SEGUINTE MENSAGEM IMPORTANTE:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Durante a execução de '%s': capturado\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "URI %s inválida"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -377,6 +320,15 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Execute rhn_register como root neste cliente"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Serviço não ativado para o perfil do sistema: \"%s\""
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -386,6 +338,57 @@ msgstr "Pacote RPM inválido %s solicitado"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "Pacote não encontrado"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "A arquitetura `%s' não é suportada"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "O token `%s' possui mais de um canal base atribuído"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Canais básicos conflitantes"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Falha ao adicionar servidor ao grupo %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Contagem máxima de uso de %s atingida"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"O empilhamento de tokens de recadastramento com diferentes direitos de base "
+"não é suportado"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Não foi possível encontrar o token '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Tokens de organizações incompatíveis"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Incompatibilidade de sessão do Kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "O empilhamento de tokens de re-registro não é suportado"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -1135,7 +1138,7 @@ msgstr "ERRO: %s %s: %s"
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s"
+msgstr "RASTREAR: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
@@ -1472,18 +1475,19 @@ msgid " - live synchronization"
 msgstr " - sincronização ao vivo"
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
-"ERRO: A sincronização de conteúdo ao vivo com o RHN Classic Hosted não é "
-"mais suportada.\n"
-"Em vez disso, use o comando cdn-sync, a menos que você esteja tentando "
-"sincronizar a partir de outro satélite via Inter-Satelite-Sync (ISS) ou a "
-"partir de conteúdo local em disco via ISOs de despejo de canal."
+"ERRO: A sincronização de conteúdo Live com o RHN Classic Hosted não é mais "
+"suportada.\n"
+"Use o comando cdn-sync em vez disso, a menos que você esteja tentando "
+"sincronizar de outro {PRODUCT_NAME} via Inter-Server-Sync (ISS), ou de "
+"conteúdo local no disco via Channel Dump ISOs."
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1655,7 +1659,7 @@ msgstr "ERRO: esses canais não existem ou não estão disponíveis:"
 #: ../satellite_tools/satsync.py:859
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
-msgstr "       ERRO: esses canais não existem ou não estão disponíveis:"
+msgstr "       (para ver uma lista de rótulos de canais: %s --list-channels)"
 
 #: ../satellite_tools/satsync.py:904
 #, python-format
@@ -2026,9 +2030,9 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
-"ERRO: '%s' não é uma etapa válida. Veja 'man satellite-sync' para mais "
+"ERRO: '%s' não é uma etapa válida. Veja 'man mgr-inter-sync' para mais "
 "detalhes."
 
 #: ../satellite_tools/satsync.py:2407
@@ -2180,3 +2184,38 @@ msgstr "  28 - erro: --master é válido apenas com --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERRO: versão de despejo desconhecida, tente um dos %s"
+
+#~ msgid "Your system was not found in the RHN database"
+#~ msgstr "Seu sistema não foi encontrado no banco de dados RHN"
+
+#~ msgid "ISS is disabled on this satellite."
+#~ msgstr "O ISS está desativado neste satélite."
+
+#~ msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
+#~ msgstr ""
+#~ "Serviço Spacewalk Proxy não ativado para o perfil do servidor: \"%s\""
+
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Mensagem de Boas-vindas do Red Hat Satellite"
+
+#~ msgid "Red Hat Satellite Privacy Statement"
+#~ msgstr "Declaração de Privacidade do Red Hat Satellite"
+
+#~ msgid ""
+#~ "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
+#~ "supported.\n"
+#~ "Please use the cdn-sync command instead unless you are attempting to sync "
+#~ "from another Satellite via Inter-Satelite-Sync (ISS), or from local "
+#~ "content on disk via Channel Dump ISOs."
+#~ msgstr ""
+#~ "ERRO: A sincronização de conteúdo ao vivo com o RHN Classic Hosted não é "
+#~ "mais suportada.\n"
+#~ "Em vez disso, use o comando cdn-sync, a menos que você esteja tentando "
+#~ "sincronizar a partir de outro satélite via Inter-Satelite-Sync (ISS) ou a "
+#~ "partir de conteúdo local em disco via ISOs de despejo de canal."
+
+#~ msgid ""
+#~ "ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+#~ msgstr ""
+#~ "ERRO: '%s' não é uma etapa válida. Veja 'man satellite-sync' para mais "
+#~ "detalhes."

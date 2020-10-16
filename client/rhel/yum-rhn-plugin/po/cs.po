@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:45+0200\n"
-"PO-Revision-Date: 2020-08-26 12:39+0000\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
+"PO-Revision-Date: 2020-09-25 17:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
 "plugin/cs/>\n"
@@ -23,16 +23,18 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../rhnplugin.py:48
-msgid "There was an error communicating with RHN."
-msgstr "Nastala chyba ve spojení s RHN."
+#: ../rhnplugin.py:49
+#, python-brace-format
+msgid "There was an error communicating with {PRODUCT_NAME} ."
+msgstr "Nastala chyba ve spojení s {PRODUCT_NAME}."
 
-#: ../rhnplugin.py:63
-msgid "Red Hat Satellite or RHN Classic support will be disabled."
-msgstr "Podpora pro Red Hat Satellite nebo RHN Classic bude zakázána."
+#: ../rhnplugin.py:64
+#, python-brace-format
+msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
+msgstr "Podpora pro {PRODUCT_NAME} nebo RHN Classic bude vypnuta."
 
 #. If non-root notify user Spacewalk repo not accessible
-#: ../rhnplugin.py:70
+#: ../rhnplugin.py:71
 msgid ""
 "*Note* Spacewalk repositories are not listed below. You must run this "
 "command as root to access Spacewalk repositories."
@@ -40,65 +42,104 @@ msgstr ""
 "*Upozornění* Úložiště Red Hat Network nejsou zobrazena. Pro zobrazení "
 "repositářů Spacewalk musíte tento příkaz spustit jako superuživatel (root)."
 
-#: ../rhnplugin.py:86
-msgid "There was an error parsing the Red Hat Satellite Proxy settings."
-msgstr ""
-"Nastala chyba při zpracování nastavení serveru Red Hat Satellite Proxy."
+#: ../rhnplugin.py:87
+#, python-brace-format
+msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
+msgstr "Nastala chyba při zpracování nastavení serveru {PRODUCT_NAME} Proxy."
 
-#: ../rhnplugin.py:98
+#: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
 msgstr "Buď nezadány žádné příkazy, nebo jen --version či --help"
 
-#: ../rhnplugin.py:103
+#: ../rhnplugin.py:104
 msgid "Cleaning"
 msgstr "Čistění"
 
-#: ../rhnplugin.py:112
-msgid "Using list of RHN repos from cache"
-msgstr "Použije se seznam úložišť RHN z keše"
+#: ../rhnplugin.py:113
+#, python-brace-format
+msgid "Using list of {PRODUCT_NAME} repos from cache"
+msgstr "Použije se seznam úložišť {PRODUCT_NAME} z keše"
 
-#: ../rhnplugin.py:128
-msgid "This system is not registered with RHN Classic or Red Hat Satellite."
-msgstr "Tento systém není registrován u RHN Classic ani u Red Hat Satellite."
+#: ../rhnplugin.py:129
+#, python-brace-format
+msgid "This system is not registered with RHN Classic or {PRODUCT_NAME}."
+msgstr "Tento systém není registrován u RHN Classic ani u {PRODUCT_NAME}."
 
-#: ../rhnplugin.py:129 ../rhnplugin.py:145
+#: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
 msgstr "K registraci lze použít rhn_register."
 
-#: ../rhnplugin.py:135
-msgid "RHN channel support will be disabled."
-msgstr "Podpora pro kanály RHN bude vypnuta."
+#: ../rhnplugin.py:136
+#, python-brace-format
+msgid "{PRODUCT_NAME} channel support will be disabled."
+msgstr "Podpora pro kanály {PRODUCT_NAME} bude vypnuta."
 
-#: ../rhnplugin.py:139
+#: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."
 msgstr "Tento systém není přihlášen do žádného kanálu."
 
-#: ../rhnplugin.py:144
+#: ../rhnplugin.py:145
+#, python-brace-format
 msgid ""
-"This system may not be registered to RHN Classic or Red Hat Satellite. "
-"SystemId could not be acquired."
+"This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
+"could not be acquired."
 msgstr ""
-"Tento systém možná není registrován u RHN Classic ani u Red Hat Satellite. "
-"ID systému nešlo získat."
+"Tento systém možná není registrován u RHN Classic ani u {PRODUCT_NAME}. ID "
+"systému nešlo získat."
 
-#: ../rhnplugin.py:157
-msgid "This system is receiving updates from RHN Classic or Red Hat Satellite."
-msgstr ""
-"Tento systém přijímá aktualizace z RHN Classic nebo z Red Hat Satellite."
+#: ../rhnplugin.py:158
+#, python-brace-format
+msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
+msgstr "Tento systém přijímá aktualizace z RHN Classic nebo z {PRODUCT_NAME}."
 
-#: ../rhnplugin.py:267
+#: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
 msgstr "Nelze odeslat informace o balících."
 
-#: ../rhnplugin.py:275
+#: ../rhnplugin.py:276
 msgid "Error Message:"
 msgstr "Chybové hlášení:"
 
-#: ../rhnplugin.py:276
+#: ../rhnplugin.py:277
 msgid "Please run rhn_register as root on this client"
 msgstr "Spusťte prosím rhn_register jako superuživatel (root) tohoto klienta"
 
-#: ../rhnplugin.py:355
-#, python-format
-msgid "Missing required login information for RHN: %s"
-msgstr "Chybí informace nutná pro přihlášení do RHN: %s"
+#: ../rhnplugin.py:356
+#, python-format, python-brace-format
+msgid "Missing required login information for {PRODUCT_NAME}: %s"
+msgstr "Chybí informace nutná pro přihlášení do {PRODUCT_NAME}: %s"
+
+#~ msgid "There was an error communicating with RHN."
+#~ msgstr "Nastala chyba ve spojení s RHN."
+
+#~ msgid "Red Hat Satellite or RHN Classic support will be disabled."
+#~ msgstr "Podpora pro Red Hat Satellite nebo RHN Classic bude zakázána."
+
+#~ msgid "There was an error parsing the Red Hat Satellite Proxy settings."
+#~ msgstr ""
+#~ "Nastala chyba při zpracování nastavení serveru Red Hat Satellite Proxy."
+
+#~ msgid "Using list of RHN repos from cache"
+#~ msgstr "Použije se seznam úložišť RHN z keše"
+
+#~ msgid "This system is not registered with RHN Classic or Red Hat Satellite."
+#~ msgstr ""
+#~ "Tento systém není registrován u RHN Classic ani u Red Hat Satellite."
+
+#~ msgid "RHN channel support will be disabled."
+#~ msgstr "Podpora pro kanály RHN bude vypnuta."
+
+#~ msgid ""
+#~ "This system may not be registered to RHN Classic or Red Hat Satellite. "
+#~ "SystemId could not be acquired."
+#~ msgstr ""
+#~ "Tento systém možná není registrován u RHN Classic ani u Red Hat "
+#~ "Satellite. ID systému nešlo získat."
+
+#~ msgid ""
+#~ "This system is receiving updates from RHN Classic or Red Hat Satellite."
+#~ msgstr ""
+#~ "Tento systém přijímá aktualizace z RHN Classic nebo z Red Hat Satellite."
+
+#~ msgid "Missing required login information for RHN: %s"
+#~ msgstr "Chybí informace nutná pro přihlášení do RHN: %s"

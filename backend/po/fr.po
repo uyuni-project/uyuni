@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:44+0200\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
@@ -29,11 +29,52 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "Jeton d'authentification proxy incomplet : %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "La signature de proxy envoyée %s ne correspond pas à la nôtre : %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "authentification proxy rejetée"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Réception de requête invalide (%s)"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"UN MESSAGE IMPORTANT SUIT :\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Lors de l'exécution de '%s': exception levée\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "URI invalide %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -46,11 +87,13 @@ msgstr ""
 "pour plus d'assistance."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr "Votre système n'a pas été trouvé dans la base de données RHN"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+#, fuzzy
+msgid "ISS is disabled on this server."
 msgstr "ISS est désactivé sur ce satellite."
 
 #: ../server/handlers/sat/auth.py:50
@@ -70,7 +113,7 @@ msgstr "Paquet attendu, pas : %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, fuzzy, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr "Service RHN Proxy non activé pour le profil de serveur : \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
@@ -113,13 +156,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Message de bienvenue de Red Hat Network"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1125
 #, fuzzy
-msgid "Red Hat Satellite Privacy Statement"
+msgid "Privacy Statement"
 msgstr "Déclaration de respect de la vie privée de Red Hat Network"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
@@ -174,108 +217,6 @@ msgstr ""
 "                   Le compte %s a été désactivé sur ce serveur.\n"
 "                   Veuillez contacter votre administrateur d'organisation "
 "pour plus d'assistance."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Service désactivé pour le profil de système : \"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "L'architecture `%s' n'est pas supportée"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Le jeton `%s' a plus d'un canal de base assigné"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Canaux de base conflictuels"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Échec dans l'ajout du serveur au groupe %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Limite d'utilisation maximale de %s atteinte"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"L'empilement de jetons de réenregistrement avec des droits de base "
-"différents n'est pas supporté"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Jeton '%s' introuvable"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Jetons provenant d'organisation incompatibles"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Inadéquation de session kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "L'empilement de jetons de réenregistrement n'est pas supporté"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "Jeton d'authentification proxy incomplet : %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "La signature de proxy envoyée %s ne correspond pas à la nôtre : %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "authentification proxy rejetée"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Réception de requête invalide (%s)"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"UN MESSAGE IMPORTANT SUIT :\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Lors de l'exécution de '%s': exception levée\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "URI invalide %s"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -385,6 +326,15 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Service désactivé pour le profil de système : \"%s\""
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -394,6 +344,57 @@ msgstr "Paquet RPM %s demandé invalide"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "Paquet non trouvé"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "L'architecture `%s' n'est pas supportée"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Le jeton `%s' a plus d'un canal de base assigné"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Canaux de base conflictuels"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Échec dans l'ajout du serveur au groupe %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Limite d'utilisation maximale de %s atteinte"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"L'empilement de jetons de réenregistrement avec des droits de base "
+"différents n'est pas supporté"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Jeton '%s' introuvable"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Jetons provenant d'organisation incompatibles"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Inadéquation de session kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "L'empilement de jetons de réenregistrement n'est pas supporté"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -1436,12 +1437,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -1958,7 +1960,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2105,3 +2107,21 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#~ msgid "Your system was not found in the RHN database"
+#~ msgstr "Votre système n'a pas été trouvé dans la base de données RHN"
+
+#~ msgid "ISS is disabled on this satellite."
+#~ msgstr "ISS est désactivé sur ce satellite."
+
+#, fuzzy
+#~ msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
+#~ msgstr "Service RHN Proxy non activé pour le profil de serveur : \"%s\""
+
+#, fuzzy
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Message de bienvenue de Red Hat Network"
+
+#, fuzzy
+#~ msgid "Red Hat Satellite Privacy Statement"
+#~ msgstr "Déclaration de respect de la vie privée de Red Hat Network"
