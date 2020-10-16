@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="ja">
+<?xml version='1.0' encoding='UTF-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
       <!-- New Account Email -->
-      <trans-unit id="email.newaccount.subject">
+      <trans-unit id="email.newaccount.subject" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -13,9 +13,9 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ アカウントの準備が整いました。</target>
+        <target>@@PRODUCT_NAME@@ アカウントの準備が整いました</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body">
+      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -32,6 +32,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
+        <target state="translated">こんにちは。
+
+{0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。
+ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
+組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。
+
+  @@PRODUCT_NAME@@ ログイン: {2}
+       パスワード: {3}
+         電子メール: {4}
+
+  {5}
+
+重要: ログイン後はパスワードを変更してください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -46,7 +62,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body">
+      <trans-unit id="email.newaccount.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -63,6 +79,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target state="translated">こんにちは。
+
+@@PRODUCT_NAME@@ ログインが作成されました。
+ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
+組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。
+
+  @@PRODUCT_NAME@@ ログイン: {0}
+       パスワード: {1}
+         電子メール: {2}
+
+  {3}
+
+重要: ログイン後はパスワードを変更してください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -77,7 +109,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.pam.body">
+      <trans-unit id="email.newaccount.pam.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
@@ -104,22 +136,22 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ ユーザー様
+        <target state="translated">こんにちは。
 
-Red Hat ログインが {0} {1} により作成されました。
-Red Hat ログインをアクティブな Red Hat サブスクリプションと合わせて
-ご使用頂くと、@@PRODUCT_NAME@@ 上でシステムを管理することができます。
+{0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。
+ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
+組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。
 
-  Red Hat ログイン: {2}
-        電子メール: {4}
+  @@PRODUCT_NAME@@ ログイン: {2}
+         電子メール: {4}
 
   {5}
 
-@@PRODUCT_NAME@@ をご利用頂きありがとうございます。
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
 {6}</target>
       </trans-unit>
       <!-- New User Email -->
-      <trans-unit id="email.newuser.subject">
+      <trans-unit id="email.newuser.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -133,7 +165,7 @@ Red Hat ログインをアクティブな Red Hat サブスクリプションと
         </context-group>
         <target>@@PRODUCT_NAME@@ ユーザーが作成されました: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
-      <trans-unit id="email.newuser.body">
+      <trans-unit id="email.newuser.body" xml:space="preserve">
         <source>Hello,
 
 A new user has been added to your account.
@@ -159,25 +191,21 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ ユーザー様
+        <target state="translated">こんにちは。
 
 新しいユーザーがアカウントに追加されました。
 
 {0}
 
-アカウントに関連付けられている有効なユーザーや Red Hat ログインをすべて表示するには、
-以下をご確認ください。
+アカウントに関連付けられている有効なユーザーや @@PRODUCT_NAME@@ ログインを
+すべて表示するには、 以下をご確認ください:
 
   {1}
 
-@@PRODUCT_NAME@@ をご利用頂きありがとうございます。
+@@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -193,8 +221,7 @@ Summary:
 {4} {5} {6}
 {7}
 ------------------------------------------------------------------------------
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -206,11 +233,11 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target>
+          <target state="translated">
 @@PRODUCT_NAME@@ は以下のアドバイザリーが、登録した 1 つまたは複数のシステムに
 適用可能であると判断しました。
 
-このエラータに関する完全な情報は以下の場所で見つけることができます。
+このパッチに関する完全な情報は以下の場所で見つけることができます。
      {0}
 
 {1} - {2}
@@ -222,8 +249,11 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -233,43 +263,50 @@ this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
-    </source>
-          <target>
+    </source> <target state="translated">
 ---------------------
 影響を受けるシステムのリスト
 ---------------------
-このエラータアドバイザリーは、以下に表示されるシステムに適用できます。
-リストされたシステムにこのエラータを適用しない場合は、該当するサーバーのパッケージプロファイルが古い
-可能性があります。この場合は、該当するシステムで root として 'up2date -p' (RHEL 4 以下) または
-'rhn-profile-sync' (RHEL 5 以上) を実行し、ソフトウェアプロファイルを更新する必要があります。
+このパッチアドバイザリーは、以下に表示されるシステムに適用できます。
+下記のシステム一覧が正しくない場合は、該当するシステムのパッケージプロファイルが
+古くなっている可能性があります。このような場合は、システム内で root になり、
+ 'up2date -p' (RHEL 4 またはそれ以前) もしくは 'rhn-profile-sync' (SLES や RHEL 5,
+またはそれ以降) を実行して、ソフトウェアプロファイルの更新を行なってください。
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source>
-          <target>
-[概要] で登録された 1 つのシステムが影響を受けています (明示的にエラータアラートを
+    </source> <target state="translated">
+'概要' で登録された 1 つのシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target>
-[概要] で登録された {0} 個のシステムが影響を受けています (明示的にエラータアラートを
+          <target state="translated">
+'概要' で登録された {0} 個のシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -283,29 +320,30 @@ You may address the issues outlined in this advisory in two ways:
            {1}
 
      - run the Update Agent on each affected server.
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target>
+          <target state="translated">
 リリース    アーキテクチャー       プロファイル名
 ---------- ---------- ---------------------------------------------
 {0}
 
-このアドバイザリーで簡単に説明された問題は次の 2 つの方法で解決できます。
+このアドバイザリーで示された問題は、下記のいずれかの方法で解決できます。
 
     -以下の場所で利用可能なリストからサーバー名をクリックして
-    サーバー名を選択し、そのエラータ更新をスケジュール
-    します。
+    サーバー名を選択し、そのパッチ更新をスケジュールします:
            {1}
 
      - 影響を受けた各サーバーで Update Agent を実行します。
-</target>
+    </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -320,32 +358,33 @@ click the "Details" tab.
 
 {1}
 {2}
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target>
+          <target state="translated">
 通知設定の変更
 ---------------------------------
-エラータアラート設定をグローバルで有効または無効にするには、@@PRODUCT_NAME@@ にログインし、
-&quot;概要&quot; / &quot;お客様のアカウント&quot; から &quot;個人設定&quot; タブにナビゲートします。
+パッチアラート設定をグローバルで有効または無効にするには、@@PRODUCT_NAME@@ にログインし、
+"概要" / "お客様のアカウント" から "個人設定" タブにナビゲートします。
 
         URL: {0}
 
-また、&quot;システムリスト&quot; から個々のシステム選択してシステムごとに通知を有効または
-無効にすることもできます。個々のシステムビューから、
-&quot;詳細&quot; タブをクリックします。
+また、"システムリスト" から個々のシステム選択してシステムごとに通知を有効または
+無効にすることもできます。この場合は、個々のシステムビューから、
+"詳細" タブをクリックします。
 
 {1}
 {2}
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <trans-unit id="dailysummary.email.subject">
+      <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
@@ -357,7 +396,7 @@ click the "Details" tab.
         </context-group>
         <target>{0} の @@PRODUCT_NAME@@ デイリーステータスレポート</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body">
+      <trans-unit id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
@@ -390,28 +429,28 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>これは、アカウント {0} ({1}) の @@PRODUCT_NAME@@ ステータスレポートです。
+        <target state="translated">これはアカウント {0} ({1}) の @@PRODUCT_NAME@@ ステータスレポートです。
 
-この電子メールは以下のいずれかの状況に該当する場合に送信されます。
+この電子メールは以下のいずれかの状況に該当する場合に送信されます:
 
-1. システムが、24 時間以内に @@PRODUCT_NAME@@ にチェックインするのに失敗する。
-2. システムが、スケジュールされた動作アクティビティーを登録する。
+1. システムが、24 時間以内に @@PRODUCT_NAME@@ にチェックインするのに失敗した場合。
+2. システムが、スケジュールされた動作を登録した場合。
 
 {2}
 {3}
-この電子メールの無効化:
+この電子メールの無効化について:
 ----------------------
 
-システムでこの電子メールを無効にする方法については、以下の参照ページを確認してください。
-https://{4}/rhn/help/reference/en-US/ref.webui.overview.jsp
+システムに対する電子メールを無効化する方法については、以下のページをお読みください:
+https://{4}/rhn/account/UserPreferences.do
 
 
-@@PRODUCT_NAME@@ をご利用頂きありがとうございます。
+@@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
 {5}
 {6}
 </target>
       </trans-unit>
-      <trans-unit id="email.forgotten.password">
+      <trans-unit id="email.forgotten.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -428,6 +467,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target state="translated">
+[ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。 ]
+
+ログイン {2} に対する @@PRODUCT_NAME@@ パスワードのリセット要求が行なわれました。
+
+この処理をこのまま続行するには、下記に進んでください:
+
+{1}
+
+パスワードのリセットを行ないたくない場合は、この電子メールを無視してください。
+
+また、パスワードのリセットに際して何か問題がある場合は、 @@PRODUCT_NAME@@ の管理者に
+問い合わせて支援を求めてください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -437,7 +492,7 @@ Thank you for using @@PRODUCT_NAME@@.
             </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.logins">
+      <trans-unit id="email.forgotten.logins" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -464,25 +519,26 @@ Thank you for using @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target>
-[ これは、ご依頼により {0} に自動的に送信される電子メールです。]
+        <target state="translated">
+[ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。]
 
-ユーザー様より、電子メールアドレス {0} に関連するすべての @@PRODUCT_NAME@@ ログインの一覧についてのリクエストをいただいております。
+電子メールアドレス {0} に関連するすべての @@PRODUCT_NAME@@ ログインの一覧についての
+要求が行なわれました。
 
-既存のログイン:
+既存のログインは下記のとおりです:
 
 {1}
 上記の @@PRODUCT_NAME@@ ログインのいずれのパスワードも、以下でリセットできます:
 
   https://{2}/rhn/help/ForgotCredentials.do
 
-ログインに問題がある場合には、@@PRODUCT_NAME@@ 管理者にお問い合わせください。
-この電子メールの送信をリクエストされなかった場合は、このメッセージを無視してください。
+ログインに問題がある場合には、@@PRODUCT_NAME@@ 管理者にお問い合わせください。 
+この電子メールの送信をリクエストされなかった場合は、このメッセージを無視してください。 
 
-@@PRODUCT_NAME@@ をご使用いただき、誠にありがとうございます。
+@@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
         </target>
       </trans-unit>
-      <trans-unit id="email.reset.password">
+      <trans-unit id="email.reset.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0}. ]
 
@@ -494,6 +550,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target state="translated">
+[ この電子メールは {0} 宛に自動送信されているものです。 ]
+
+{2} で要求されたとおり、ログイン {1} に対する @@PRODUCT_NAME@@ パスワードの
+リセットを行ないました。
+
+このパスワードのリセットがあなたからのものではない場合、 {2} の @@PRODUCT_NAME@@ 管理者に
+*すぐに* 連絡して支援を求めてください。
+
+@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
