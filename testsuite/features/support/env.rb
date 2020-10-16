@@ -182,6 +182,14 @@ Before('@ubuntu1804_ssh_minion') do
   skip_this_scenario unless $ubuntu1804_ssh_minion
 end
 
+Before('@ubuntu2004_minion') do
+  skip_this_scenario unless $ubuntu2004_minion
+end
+
+Before('@ubuntu2004_ssh_minion') do
+  skip_this_scenario unless $ubuntu2004_ssh_minion
+end
+
 Before('@sle11sp4_ssh_minion') do
   skip_this_scenario unless $sle11sp4_ssh_minion
 end
