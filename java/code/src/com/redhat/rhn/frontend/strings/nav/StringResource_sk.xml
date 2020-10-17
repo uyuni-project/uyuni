@@ -418,14 +418,14 @@
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.subscribed" xml:space="preserve">
         <source>Subscribed Systems</source>
-        <target/>
+        <target>Prihlásené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.target" xml:space="preserve">
         <source>Target Systems</source>
-        <target/>
+        <target>Cieľové systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
@@ -434,35 +434,35 @@
       <!-- config file nav -->
       <trans-unit id="configfile.nav.details" xml:space="preserve">
         <source>Details</source>
-        <target/>
+        <target>Podrobnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.revisions" xml:space="preserve">
         <source>Manage Revisions</source>
-        <target/>
+        <target>Spravovať revízie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileRevisions.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.deploy" xml:space="preserve">
         <source>Deploy File</source>
-        <target/>
+        <target>Nasadiť súbor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDeploy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.copy" xml:space="preserve">
         <source>Copy File</source>
-        <target/>
+        <target>Kopírovať súbor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.central" xml:space="preserve">
         <source>Copy To Centrally-Managed</source>
-        <target/>
+        <target>Kopírovať do Centrálne spravovaného</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
