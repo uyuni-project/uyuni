@@ -469,63 +469,63 @@
       </trans-unit>
       <trans-unit id="configfile.nav.copy.local" xml:space="preserve">
         <source>Copy To Locally-Managed</source>
-        <target/>
+        <target>Kopírovať do Lokálne spravovaného</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.sandbox" xml:space="preserve">
         <source>Copy To System Sandbox</source>
-        <target/>
+        <target>Kopírovať do systémového sandboxu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.compare" xml:space="preserve">
         <source>Compare File</source>
-        <target/>
+        <target>Porovnať súbor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.deployed" xml:space="preserve">
         <source>Deployed Files</source>
-        <target/>
+        <target>Nasadené súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.revision" xml:space="preserve">
         <source>Other Revisions</source>
-        <target/>
+        <target>Ostatné revízie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.copy" xml:space="preserve">
         <source>Other Copies</source>
-        <target/>
+        <target>Ostatné kópie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.file" xml:space="preserve">
         <source>Other Files</source>
-        <target/>
+        <target>Ostatné súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.system.audit.list_scans" xml:space="preserve">
           <source>List Scans</source>
-        <target/>
+        <target>Zoznam skenov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
           <source>Schedule</source>
-        <target/>
+        <target>Plán</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
@@ -533,7 +533,7 @@
       <!-- SDC Config file navigation-->
       <trans-unit id="nav.sdc.config.overview" xml:space="preserve">
           <source>Overview</source>
-        <target/>
+        <target>Prehľad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
