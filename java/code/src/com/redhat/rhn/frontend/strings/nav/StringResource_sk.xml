@@ -369,7 +369,7 @@
       </trans-unit>
       <trans-unit id="configchannel.nav.list" xml:space="preserve">
         <source>List/Remove Files</source>
-        <target>Vypísať/Odstrániť súbory</target>
+        <target>Zoznam/Odstrániť súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
@@ -540,70 +540,70 @@
       </trans-unit>
       <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
           <source>View/Modify Files</source>
-        <target/>
+        <target>Zobraziť/Upraviť súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
           <source>View Files</source>
-        <target/>
+        <target>Zobraziť súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
           <source>Compare Files</source>
-        <target/>
+        <target>Porovnať súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
           <source>Manage Configuration Channels</source>
-        <target/>
+        <target>Spravovať konfiguračné kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
           <source>List/Unsubscribe from Channels</source>
-        <target/>
+        <target>Zoznam/Odhlásiť sa z kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
           <source>Subscribe to Channels</source>
-        <target/>
+        <target>Prihlásiť sa ku kanálom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
           <source>View/Modify Rankings</source>
-        <target/>
+        <target>Zobraziť/Upraviť poradia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
           <source>Centrally-Managed Files</source>
-        <target/>
+        <target>Centrálne spravované súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
           <source>Locally-Managed Files</source>
-        <target/>
+        <target>Lokálne spravované súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
           <source>Local Sandbox</source>
-        <target/>
+        <target>Miestny sandbox</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -611,49 +611,49 @@
       <!-- END config file nav -->
       <trans-unit id="system.detail.nav.list" xml:space="preserve">
           <source>List</source>
-        <target/>
+        <target>Zoznam</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.detail.nav.remove" xml:space="preserve">
           <source>List / Remove</source>
-        <target/>
+        <target>Zoznam / Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Add" xml:space="preserve">
         <source>Add</source>
-        <target/>
+        <target>Pridať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Verify" xml:space="preserve">
         <source>Verify</source>
-        <target/>
+        <target>Overiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Snapshots" xml:space="preserve">
         <source>Snapshots</source>
-        <target/>
+        <target>Snímky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Installation Guide" xml:space="preserve">
         <source>Installation Guide</source>
-        <target/>
+        <target>Inštalačná príručka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Software" xml:space="preserve">
         <source>Software</source>
-        <target/>
+        <target>Softvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -667,7 +667,7 @@
       </trans-unit>
       <trans-unit id="Misc" xml:space="preserve">
         <source>Misc</source>
-        <target/>
+        <target>Rôzne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -681,42 +681,42 @@
       </trans-unit>
       <trans-unit id="Session Status" xml:space="preserve">
         <source>Session Status</source>
-        <target/>
+        <target>Stav sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sandbox" xml:space="preserve">
         <source>Sandbox</source>
-        <target/>
+        <target>Sandbox</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk" xml:space="preserve">
         <source>@@PRODUCT_NAME@@</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration" xml:space="preserve">
         <source>Manager Configuration</source>
-        <target/>
+        <target>Konfigurácia správcu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ISS Configuration" xml:space="preserve">
         <source>ISS Configuration</source>
-        <target/>
+        <target>Konfigurácia ISS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="External Authentication" xml:space="preserve">
         <source>External Authentication</source>
-        <target/>
+        <target>Externé overenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -821,7 +821,7 @@
       </trans-unit>
       <trans-unit id="Notes" xml:space="preserve">
         <source>Notes</source>
-        <target/>
+        <target>Poznámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -835,7 +835,7 @@
       </trans-unit>
       <trans-unit id="List / Remove" xml:space="preserve">
         <source>List / Remove</source>
-        <target/>
+        <target>Zoznam / Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -856,14 +856,14 @@
       </trans-unit>
       <trans-unit id="History" xml:space="preserve">
         <source>History</source>
-        <target/>
+        <target>História</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Hardware" xml:space="preserve">
         <source>Hardware</source>
-        <target/>
+        <target>Hardvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -884,7 +884,7 @@
       </trans-unit>
       <trans-unit id="Configuration" xml:space="preserve">
         <source>Configuration</source>
-        <target/>
+        <target>Konfigurácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1234,7 +1234,7 @@
       </trans-unit>
       <trans-unit id="Image List" xml:space="preserve">
         <source>Image List</source>
-        <target/>
+        <target>Zoznam obrazov</target>
       </trans-unit>
     </body>
   </file>
