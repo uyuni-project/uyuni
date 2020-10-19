@@ -80,8 +80,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the VNC graphical console for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm"
+    And I switch to last opened window
     Then I wait until I see the VNC graphical console
-    And I close the window
 
 @virthost_kvm
   Scenario: Suspend a KVM virtual machine
@@ -204,8 +204,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the Spice graphical console for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm2"
+    And I switch to last opened window
     Then I wait until I see the spice graphical console
-    And I close the window
 
 @virthost_kvm
   Scenario: delete a running KVM virtual machine

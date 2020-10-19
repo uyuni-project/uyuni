@@ -104,12 +104,23 @@ end
 
 Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
   repeat_until_timeout(message: "The #{type} graphical console didn't load") do
-    break unless has_xpath?('.//canvas')
+    break if find(:xpath, '//canvas')
+
+    # If the connection failed try reloading since the VM may not have been ready
+    if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
+      begin
+        accept_prompt do
+          execute_script 'window.location.reload()'
+        end
+      rescue Capybara::ModalNotFound
+        # ignored
+      end
+    end
   end
 end
 
-When(/^I close the window$/) do
-  evaluate_script 'window.close();'
+When(/^I switch to last opened window$/) do
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
 
 #
