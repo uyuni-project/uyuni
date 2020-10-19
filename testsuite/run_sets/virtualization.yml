@@ -31,7 +31,6 @@
 
 # IDEMPOTENT
 
-- features/secondary/srv_menu.feature
 - features/secondary/minkvm_guests.feature
 - features/secondary/minxen_guests.feature
 
