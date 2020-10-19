@@ -111,7 +111,6 @@ public class FormulaFactory {
                         }
                     }
                 })
-            .serializeNulls()
             .create();
     private static final Yaml YAML = new Yaml(new SafeConstructor());
 
