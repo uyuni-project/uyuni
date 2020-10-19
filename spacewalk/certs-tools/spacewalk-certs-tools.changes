@@ -1,4 +1,8 @@
 -------------------------------------------------------------------
+Fri Oct 19 16:45:00 CEST 2020 - michael.brookhuis@suse.com
+- Add option --notty to spacewalk-ssh-push-init
+
+-------------------------------------------------------------------
 Fri Sep 18 12:15:29 CEST 2020 - jgonzalez@suse.com
 
 - version 4.2.1-1
