@@ -115,7 +115,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         (url, parts) = opts.urlparser.parse(url, opts)
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
-        PyCurlFileObject.__init__(self, str(url), filename, opts)
+        super().__init__(str(url), filename, opts)
 
     def _do_open(self):
         self.curl_obj = self.curl_cache
@@ -132,7 +132,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
             if self.parent.first_in_queue_done:
                 self.parent.first_in_queue_lock.release()
         try:
-            PyCurlFileObject._do_perform(self)
+            super()._do_perform()
         finally:
             if not self.parent.first_in_queue_done:
                 self.parent.first_in_queue_done = True
@@ -145,7 +145,7 @@ class FailedDownloadError(Exception):
 
 class DownloadThread(Thread):
     def __init__(self, parent, queue):
-        Thread.__init__(self)
+        super().__init__()
         self.parent = parent
         self.queue = queue
         # pylint: disable=E1101
