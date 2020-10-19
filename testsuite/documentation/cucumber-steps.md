@@ -377,7 +377,10 @@ The check box can be identified by name, id or label text.
   When I enter "SUSE Test Key x86_64" as "description"
   When I enter "CVE-1999-12345" as "search_string" in the content area
   When I enter the hostname of "proxy" as "hostname"
+  When I enter "SUSE Test Key x86_64" as "description" text area
 ```
+
+Note that the text area variant handles the new lines characters while the others don't.
 
 * Make sure a text is in a given input field of a form
 
