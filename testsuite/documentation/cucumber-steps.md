@@ -205,12 +205,11 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on the System Manager System Overview page
 ```
 
-* Close current page
+* Test the last opened window
 
 ```cucumber
-  When I close the window
+  And I switch to last opened windo
 ```
-
 
 <a name="b3" />
 
