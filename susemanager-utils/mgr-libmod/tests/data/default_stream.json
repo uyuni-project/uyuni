@@ -1,0 +1,9 @@
+{
+	"function": "module_packages",
+	"paths": ["tests/data/sample-modules.yaml.gz"],
+	"streams": [
+		{
+			"name": "perl"
+		}
+	]
+}
