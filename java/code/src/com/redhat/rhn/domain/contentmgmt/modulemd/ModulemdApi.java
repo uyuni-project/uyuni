@@ -101,7 +101,8 @@ public class ModulemdApi {
                 case ModulemdApiResponse.MODULE_NOT_FOUND:
                     throw new ModuleNotFoundException(res.getData().getStreams());
                 case ModulemdApiResponse.DEPENDENCY_RESOLUTION_ERROR:
-                    throw new DependencyResolutionException(res.getData().getStreams().get(0));
+                    throw new DependencyResolutionException(res.getData().getStreams() != null ?
+                            res.getData().getStreams().get(0) : null);
                     default:
                         throw new RuntimeException(String.format("Cannot resolve modular dependencies. %s (%s)",
                                 res.getException(), res.getErrorCode()));
