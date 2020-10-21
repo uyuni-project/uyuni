@@ -3,7 +3,7 @@ require 'uri'
 require 'openssl'
 
 Given(/^I retrieve any static resource$/) do
-  resource = ['/img/action-add.gif', '/css/susemanager.css', '/fonts/DroidSans.ttf',
+  resource = ['/img/action-add.gif', '/css/susemanager-light.css', '/fonts/DroidSans.ttf',
               '/javascript/actionchain.js'].sample
   @url = Capybara.app_host + resource
   open(@url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |f|

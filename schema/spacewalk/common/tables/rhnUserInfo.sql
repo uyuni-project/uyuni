@@ -71,7 +71,8 @@ CREATE TABLE rhnUserInfo
     csv_separator           CHAR(1)
                                 DEFAULT (',') NOT NULL
                                 CONSTRAINT rhn_user_info_csv_ck
-                                    CHECK (csv_separator in (',',';'))
+                                    CHECK (csv_separator in (',',';')),
+    web_theme               VARCHAR(32)
 )
 
 ;

@@ -108,4 +108,8 @@ public class BaseUserSetupAction extends RhnAction {
         selection.put("value", value);
         return selection;
     }
+
+    public List getWebThemes() {
+        return ConfigDefaults.get().getWebThemesList();
+    }
 }

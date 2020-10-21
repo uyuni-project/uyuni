@@ -1,3 +1,6 @@
+- Enable to switch to multiple webUI theme
+- Hotfix the modular RPMs release comparison
+- enable redfish power management by default
 - renaming autoinstall distro didn't change the name of the Cobbler distro (bsc#1175876)
 - Fix: reinspecting a container image (bsc#1177092)
 - add power management xmlrpc api

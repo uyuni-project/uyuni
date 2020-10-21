@@ -173,11 +173,7 @@ Pour afficher tous utilisateurs actifs et les identifiants Red Hat associés
 Nous vous remercions d'utiliser @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -222,8 +218,11 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -243,8 +242,11 @@ Cet avis d'errata peuvent s'appliquer aux systèmes répertoriés ci-dessous. Si
  le profil de paquetage de ce serveur soit obsolète. Dans ce cas, vous devrez exécuter
  ' up2date -p ' (RHEL 4 et versions inférieures) ou 'rhn-profil-sync' (RHEL 5 et versions supérieures) en tant que racine sur le système en question pour actualiser votre profil de logiciel.
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -253,8 +255,11 @@ which you have explicitly enabled Patch Alerts are shown).
 Il y a 1 système affecté enregistré dans 'Présentation' (seuls les systèmes
  pour lesquels vous avez activé explicitement les alertes errata sont affichés).
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -268,8 +273,11 @@ which you have explicitly enabled Patch Alerts are shown).
 Il y a {0} système affecté enregistré dans 'Présentation' (seuls les systèmes
  pour lesquels vous avez activé explicitement les alertes errata sont affichés).
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -304,8 +312,11 @@ Vous pouvez régler les problèmes décrits dans cet avis de deux façons :
 
  - exécuter l'agent de mise à jour (Update Agent) sur chaque serveur concerné.
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -345,8 +356,10 @@ Vous pouvez également activer/désactiver la notification sur une base par syst
 {1}
 {2}
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">

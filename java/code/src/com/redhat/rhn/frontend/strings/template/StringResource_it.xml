@@ -174,11 +174,7 @@ Per poter visualizzare tutti gli utenti attivi ed i login di Red Hat associati a
 Grazie per aver utilizzato @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -222,8 +218,11 @@ Sommario:
 {7}
 ------------------------------------------------------------------------------
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -241,8 +240,11 @@ Elenco sistemi interessati
 Questo Errata Advisory può essere applicato ai sistemi di seguito elencati. Se questo errata non interessa uno dei sistemi presenti nell'elenco, è possibile che il profilo del pacchetto non risulti essere aggiornato. In tal caso eseguire 
 'up2date -p' (RHEL 4 e versioni meno recenti) o 'rhn-profile-sync' (RHEL 5 e versioni più recenti) come utente root sul sistema in questione per ricaricare il profilo software.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -250,8 +252,11 @@ which you have explicitly enabled Patch Alerts are shown).
           <target>
 È presente 1 sistema interessato registrato in 'Panoramica' (vengono mostrati solo i sistemi sui quali gli Errata Alerts risultano essere abilitati).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -264,8 +269,11 @@ which you have explicitly enabled Patch Alerts are shown).
           <target>
 Sono presenti {0} sistemi registrati in 'Panoramica' (vengono mostrati solo i sistemi sui quali gli Errata Alert risultano essere abilitati).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -299,8 +307,11 @@ Release    Arch       Nome Profilo
 
      - eseguire l'Update Agent su ogni server interessato.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -337,8 +348,10 @@ e navigare da "Panoramica" / "Il tuo Account" alla scheda delle "Preferenze".
 {1}
 {2}
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">

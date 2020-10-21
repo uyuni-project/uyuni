@@ -36,6 +36,7 @@ public class UserInfo extends AbstractUserChild {
     private RhnTimeZone timeZone;
     private User user;
     private char csvSeparator;
+    private String webTheme;
 
     /**
      * Create a new empty user
@@ -194,5 +195,22 @@ public class UserInfo extends AbstractUserChild {
      */
     public void setCsvSeparator(char csvSeparatorIn) {
         this.csvSeparator = csvSeparatorIn;
+    }
+
+
+    /**
+     * Getter for webTheme
+     * @return the webTheme
+     */
+    public String getWebTheme() {
+        return this.webTheme;
+    }
+
+    /**
+     * Setter for webTheme
+     * @param webThemeIn the webTheme to set
+     */
+    public void setWebTheme(String webThemeIn) {
+        this.webTheme = webThemeIn;
     }
 }

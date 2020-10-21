@@ -336,7 +336,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void updateSystemInfo(MinionList minionTarget) {
         try {
             LocalCall<SystemInfo> systeminfo =
-                    com.suse.manager.webui.utils.salt.State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
+                    State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
                     Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
             Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
             systemInfoMap.entrySet().stream().forEach(entry-> entry.getValue().result().ifPresent(si-> {
