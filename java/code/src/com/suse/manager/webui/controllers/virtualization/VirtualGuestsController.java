@@ -47,6 +47,7 @@ import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -64,6 +65,7 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
+import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -132,6 +134,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(this::data));
+        post("/manager/api/systems/details/virtualization/guests/:sid/refresh", withUser(this::refresh));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
                 withUser(this::guestAction));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
@@ -421,6 +424,23 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("token", token);
 
         return renderPage(request, response, user, "console", () -> data);
+    }
+
+    /**
+     * Refresh the database with the actual list of virtual machines from the host
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return Boolean indicating the success of the operation
+     */
+    public Boolean refresh(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        VirtualInstanceManager.updateHostVirtualInstance(host,
+                VirtualInstanceFactory.getInstance().getFullyVirtType());
+        Optional<List<VmInfo>> plan = virtManager.getGuestsUpdatePlan(host.getMinionId());
+        plan.ifPresent(updatePlan -> VirtualInstanceManager.updateGuestsVirtualInstances(host, updatePlan));
+        return plan.isPresent();
     }
 
     private String triggerGuestUpdateAction(Server host,
