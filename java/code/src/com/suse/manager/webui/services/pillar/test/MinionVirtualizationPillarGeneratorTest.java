@@ -38,9 +38,6 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.yaml.snakeyaml.Yaml;
-
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -129,22 +126,7 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
                 minion.getMinionId() + "_" + "virtualization" + "." +
                 PILLAR_DATA_FILE_EXT);
 
-        assertTrue(Files.exists(filePath));
-
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
-
-        assertTrue(map.containsKey("beacons"));
-        Map<String, Object> beacons = (Map<String, Object>) map.get("beacons");
-
-        assertTrue(beacons.containsKey("virtpoller"));
-        Map<String, Object> virtpoller = (Map<String, Object>)beacons.get("virtpoller");
-
-        assertTrue(virtpoller.containsKey("cache_file"));
-        assertTrue(virtpoller.containsKey("expire_time"));
-        assertTrue(virtpoller.containsKey("interval"));
+        assertFalse(Files.exists(filePath));
     }
 
 

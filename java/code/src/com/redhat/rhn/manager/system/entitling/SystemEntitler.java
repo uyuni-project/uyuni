@@ -39,10 +39,12 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
 
 import org.apache.log4j.Logger;
 
@@ -134,6 +136,7 @@ public class SystemEntitler {
             if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
                 this.updateLibvirtEngine(minion);
+                new MinionPillarFileManager(new MinionVirtualizationPillarGenerator()).updatePillarFile(minion);
             }
 
             if (EntitlementManager.MONITORING.equals(ent)) {

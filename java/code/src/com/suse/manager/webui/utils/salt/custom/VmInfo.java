@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils.salt.custom;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represent VM info returned from the virtpoller beacon
+ * Represent VM info needed to update the database
  */
 public class VmInfo {
 

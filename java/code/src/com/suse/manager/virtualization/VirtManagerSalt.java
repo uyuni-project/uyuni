@@ -18,11 +18,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
-import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -43,8 +40,6 @@ import java.util.stream.Collectors;
 public class VirtManagerSalt implements VirtManager {
 
     private final SaltApi saltApi;
-    private MinionPillarFileManager minionVirtualizationPillarFileManager =
-            new MinionPillarFileManager(new MinionVirtualizationPillarGenerator());
 
     /**
      * Service providing utility functions to handle virtual machines.
@@ -180,14 +175,6 @@ public class VirtManagerSalt implements VirtManager {
         pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
         saltApi.callSync(State.apply(Collections.singletonList("virt.engine-events"),
                 Optional.of(pillar)), minion.getMinionId());
-
-        if (minion.hasVirtualizationEntitlement()) {
-            minionVirtualizationPillarFileManager.updatePillarFile(minion);
-        }
-        else {
-            minionVirtualizationPillarFileManager.removePillarFile(minion.getMinionId());
-        }
-        saltApi.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
     /**
