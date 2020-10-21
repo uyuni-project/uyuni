@@ -821,16 +821,16 @@ public class ContentManagementHandler extends BaseHandler {
      * Build a Project
      *
      * @param loggedInUser the user
-     * @param message the log message to be assigned to the build
      * @param projectLabel the Project label
+     * @param message the log message to be assigned to the build
      * @throws EntityNotExistsFaultException when Project does not exist
      * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "message" "Log message to be assigned to the build")
      * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
+     * @xmlrpc.param #param_desc("string", "message" "Log message to be assigned to the build")
      * @xmlrpc.returntype #return_int_success()
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {
