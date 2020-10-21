@@ -1,3 +1,5 @@
+- fix unique machine_id detection (bsc#1176074)
+
 -------------------------------------------------------------------
 Mon Aug 10 12:36:30 CEST 2020 - jgonzalez@suse.com
 
