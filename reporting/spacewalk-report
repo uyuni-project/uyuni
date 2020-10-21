@@ -247,6 +247,7 @@ if __name__ == '__main__':
             outrow = None
             multival_dupes = {}
             while row is not None:
+                row = list(map(lambda v: v.tobytes().decode('utf-8') if isinstance(v, memoryview) else v, row))
                 if options.multivalonrows or not report.multival_column_names.keys():
                     writer.writerow(row)
                     row = h.fetchone()
