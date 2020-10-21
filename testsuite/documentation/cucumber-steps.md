@@ -631,12 +631,6 @@ Note that the text area variant handles the new lines characters while the other
   Then the pillar data for "timezone" should be empty on "ssh_minion"
 ```
 
-* Salt beacons
-
-```cucumber
-  Then the virtpoller beacon should be enabled on "xen_server"
-```
-
 * Apply the Salt highstate
 
 ```cucumber

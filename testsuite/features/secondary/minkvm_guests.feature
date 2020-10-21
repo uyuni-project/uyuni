@@ -26,7 +26,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And the virtpoller beacon should be enabled on "kvm_server"
     And I restart salt-minion on "kvm_server"
 
 @virthost_kvm
@@ -460,5 +459,3 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-pool0 virtual storage pool on "kvm_server" without error control
     And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
-    # Remove the virtpoller cache to avoid problems
-    And I run "rm /var/cache/virt_state.cache" on "kvm_server" without error control
