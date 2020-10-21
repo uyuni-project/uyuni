@@ -15,9 +15,13 @@
 package com.suse.manager.virtualization;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.utils.salt.custom.GuestProperties;
+import com.suse.manager.webui.utils.salt.custom.VmInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -25,6 +29,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -197,5 +202,44 @@ public class VirtManagerSalt implements VirtManager {
                         new TypeToken<Boolean>() { });
 
         return saltApi.callSync(call, minionId).orElse(false);
+    }
+
+    /**
+     * Get the plan to update the virtual machines list of a minion.
+     *
+     * @param minionId the virtualization host minionId
+     *
+     * @return the plan to pass to {@link VirtualInstanceManager#updateGuestsVirtualInstances(Server, List)}
+     */
+    public Optional<List<VmInfo>> getGuestsUpdatePlan(String minionId) {
+        // Get the list of VMs with at least (name, cpu, memory, status) virt.vm_info
+        LocalCall<Map<String, Map<String, Object>>> call =
+                new LocalCall<>("virt.vm_info", Optional.empty(), Optional.empty(),
+                        new TypeToken<Map<String, Map<String, Object>>>() { });
+
+        Optional<Map<String, Map<String, Object>>> vmInfos = saltApi.callSync(call, minionId);
+        return vmInfos.map(
+            infos -> {
+                List<VmInfo> plan = new ArrayList<>();
+                plan.add(new VmInfo(0, VirtualInstanceManager.EVENT_TYPE_FULLREPORT, null, null));
+
+                plan.addAll(
+                    infos.entrySet().stream().map(entry -> {
+                        Map<String, Object> vm = entry.getValue();
+                        String state = vm.get("state").toString();
+                        GuestProperties props = new GuestProperties(
+                                ((Double)vm.get("maxMem")).longValue(),
+                                entry.getKey(),
+                                "shutdown".equals(state) ? "stopped" : state,
+                                vm.get("uuid").toString(),
+                                ((Double)vm.get("cpu")).intValue(),
+                                null
+                        );
+                        return new VmInfo(0, VirtualInstanceManager.EVENT_TYPE_EXISTS, null, props);
+                    }).collect(Collectors.toList())
+                );
+                return plan;
+            }
+        );
     }
 }
