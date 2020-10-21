@@ -135,10 +135,6 @@ public class VirtualInstanceManager extends BaseManager {
                 deleteGuestVirtualInstance(virtualInstance);
             });
         }
-
-        if (!plan.isEmpty()) {
-            VirtNotifications.spreadRefresh("guest");
-        }
     }
 
     /**
@@ -203,6 +199,7 @@ public class VirtualInstanceManager extends BaseManager {
         else {
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
         }
+        VirtNotifications.spreadRefresh("guest");
     }
 
     /**
@@ -274,6 +271,8 @@ public class VirtualInstanceManager extends BaseManager {
 
             VirtualInstanceFactory.getInstance()
                     .saveVirtualInstance(virtualInstance);
+
+            VirtNotifications.spreadRefresh("guest");
         }
         else {
             log.warn("Preventing creation of a duplicated VirtualInstance " +
@@ -352,6 +351,8 @@ public class VirtualInstanceManager extends BaseManager {
         virtualInstance.setNumberOfCPUs(vCpus);
         virtualInstance.setTotalMemory(memory);
         VirtualInstanceFactory.getInstance().saveVirtualInstance(virtualInstance);
+
+        VirtNotifications.spreadRefresh("guest");
     }
 
     /**
