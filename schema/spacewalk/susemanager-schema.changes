@@ -1,3 +1,4 @@
+- Hotfix the modular RPMs release comparison
 - show info message when applying schema upgrade
 - Fix: handle version comparison corner cases in Ubuntu packages
 

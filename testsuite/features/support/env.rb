@@ -53,6 +53,7 @@ MultiTest.disable_autorun
 Capybara.register_driver(:headless_chrome) do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048] },
+    unexpectedAlertBehaviour: 'accept',
     unhandledPromptBehavior: 'accept'
   )
 
@@ -188,6 +189,14 @@ end
 
 Before('@ubuntu1804_ssh_minion') do
   skip_this_scenario unless $ubuntu1804_ssh_minion
+end
+
+Before('@ubuntu2004_minion') do
+  skip_this_scenario unless $ubuntu2004_minion
+end
+
+Before('@ubuntu2004_ssh_minion') do
+  skip_this_scenario unless $ubuntu2004_ssh_minion
 end
 
 Before('@sle11sp4_ssh_minion') do

@@ -195,11 +195,7 @@ Děkujeme, že používáte @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -242,6 +238,9 @@ Shrnutí:
         {7} - errata refs
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
@@ -262,7 +261,10 @@ Víte-li, že se tato oprava nevztahuje na uvedený systém, je možné, že pro
 balíčku pro tento server je zastaralý. V takovém případě byste měli spustit
 'up2date -p' (RHEL 4 a níže) nebo 'rhn-profile-sync' (SLES, RHEL 5 a vyšší)
 jako root příslušného systému, abyste obnovili svůj softwarový profil.
-    </target></trans-unit>
+    </target><context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
@@ -270,7 +272,10 @@ which you have explicitly enabled Patch Alerts are shown).
     </source> <target state="translated">
 V 'Přehledu' je zaregistrován 1 ovlivněný systém (zobrazeny jsou
 pouze systémy, pro které jste výslovně povolili Patch Alerts).
-    </target></trans-unit>
+    </target><context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
@@ -284,6 +289,9 @@ Existuje {0} ovlivněných systémů registrovaných v části 'Přehled'
         {0} - system count
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
@@ -319,6 +327,9 @@ Problémy popsané v tomto zpravodaji můžete řešit dvěma způsoby:
         {1} - system list URL
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
@@ -356,8 +367,10 @@ klikněte na kartu „Podrobnosti“.
         {2} - account info
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <target>@@PRODUCT_NAME@@ Denní zpráva o stavu pro {0}</target>

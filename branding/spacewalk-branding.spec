@@ -108,7 +108,8 @@ jar -cf java-branding.jar -C java/code/src com
 # Compile less into css
 ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
 ln -s /srv/www/htdocs/css/patternfly1 css/patternfly1
-lessc css/susemanager.less > css/susemanager.css
+lessc css/susemanager-light.less > css/susemanager-light.css
+lessc css/susemanager-dark.less > css/susemanager-dark.css
 lessc css/uyuni.less > css/uyuni.css
 lessc css/susemanager-fullscreen.less > css/susemanager-fullscreen.css
 rm -f css/bootstrap

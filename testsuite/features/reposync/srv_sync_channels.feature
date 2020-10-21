@@ -8,7 +8,9 @@ Feature: Be able to list available channels and enable them
 
 @scc_credentials
   Scenario: List available channels
-    When I execute mgr-sync "list channels -e" with user "admin" and password "admin"
+    # Order matters here, refresh first
+    When I refresh SCC
+    And I execute mgr-sync "list channels -e" with user "admin" and password "admin"
     Then I should get "[ ] SLES11-SP1-Pool for x86_64 SUSE Linux Enterprise Server 11 SP1 x86_64 [sles11-sp1-pool-x86_64]"
     And I should get "    [ ] SLE11-SDK-SP1-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 11 SP1 [sle11-sdk-sp1-updates-x86_64]"
 
