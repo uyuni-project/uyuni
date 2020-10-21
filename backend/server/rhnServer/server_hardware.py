@@ -1017,7 +1017,8 @@ class MachineInformation:
         if not name:
             name = "unknown"
         log_debug(4, "updating machine_id", sysid, name, machine_id)
-        if not self.__check_if_machine_id_exists(machine_id):
+        existing_srv_id = self.__check_if_machine_id_exists(machine_id)
+        if not existing_srv_id or existing_srv_id == sysid:
             s_update = rhnSQL.prepare("""
                         UPDATE rhnServer
                            SET machine_id = :machine_id
@@ -1033,8 +1034,10 @@ class MachineInformation:
         if machine_id:
             h = rhnSQL.prepare('SELECT id FROM rhnServer WHERE machine_id = :machine_id')
             h.execute(machine_id=machine_id)
-            return bool(h.fetchall_dict())
-        return False
+            d = h.fetchone_dict()
+            if d:
+                return d['id']
+        return None
 
     def __send_machine_id_alert_email(self, machine_id, sysid, name):
         log_debug(1, "Sending alert email about multiple machine_id")
