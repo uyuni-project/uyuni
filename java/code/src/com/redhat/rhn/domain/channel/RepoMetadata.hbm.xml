@@ -5,7 +5,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
 <hibernate-mapping>
     <class name="com.redhat.rhn.domain.channel.RepoMetadata"
-           mutable="false"
            table="rhnChannelComps"
            discriminator-value="-1">
 
