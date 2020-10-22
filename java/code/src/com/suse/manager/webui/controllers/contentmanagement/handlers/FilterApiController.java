@@ -39,8 +39,6 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -148,9 +146,9 @@ public class FilterApiController {
     public static String createContentFilter(Request req, Response res, User user) {
         FilterRequest createFilterRequest = FilterHandler.getFilterRequest(req);
 
-        HashMap<String, String> requestErrors = FilterHandler.validateFilterRequest(createFilterRequest);
+        List<String> requestErrors = FilterHandler.validateFilterRequest(createFilterRequest);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         FilterCriteria filterCriteria = new FilterCriteria(
@@ -195,9 +193,9 @@ public class FilterApiController {
     public static String updateContentFilter(Request req, Response res, User user) {
         FilterRequest updateFilterRequest = FilterHandler.getFilterRequest(req);
 
-        HashMap<String, String> requestErrors = FilterHandler.validateFilterRequest(updateFilterRequest);
+        List<String> requestErrors = FilterHandler.validateFilterRequest(updateFilterRequest);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         FilterCriteria filterCriteria = new FilterCriteria(

@@ -27,7 +27,8 @@ import com.google.gson.JsonParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import spark.Request;
 import spark.Spark;
@@ -74,39 +75,41 @@ public class ProjectHandler {
      * @param user the user
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectPropertiesRequest(
+    public static List<String> validateProjectPropertiesRequest(
             ProjectPropertiesRequest projPropsRequest, User user
     ) {
-        HashMap<String, String> requestErrors = new HashMap<>();
+        List<String> requestErrors = new ArrayList<>();
 
-        if (StringUtils.isEmpty(projPropsRequest.getLabel())) {
-            requestErrors.put("label", "Label is required");
+        String label = projPropsRequest.getLabel();
+        String name = projPropsRequest.getName();
+        var errors = new ArrayList<String>();
+        if (StringUtils.isEmpty(label)) {
+            errors.add("Label is required");
         }
 
-        if (!ValidationUtils.isLabelValid(projPropsRequest.getLabel())) {
-            requestErrors.put(
-                    "label",
+        if (!ValidationUtils.isLabelValid(label)) {
+            errors.add(
                     "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
                             " periods ('.'), underscores ('_'), and numerals."
             );
         }
 
-        if (projPropsRequest.getLabel().length() > 24) {
-            requestErrors.put("label", "Label must not exceed 24 characters");
+        if (label.length() > 24) {
+            errors.add("Label must not exceed 24 characters");
         }
 
-        if (StringUtils.isEmpty(projPropsRequest.getName())) {
-            requestErrors.put("name", "Name is required");
+        if (StringUtils.isEmpty(name)) {
+            errors.add("Name is required");
         }
 
-        if (projPropsRequest.getName().length() > 128) {
-            requestErrors.put("name", "Name must not exceed 128 characters");
+        if (name.length() > 128) {
+            errors.add("Name must not exceed 128 characters");
         }
-
+        requestErrors.addAll(errors);
 
         ContentManager.lookupProjectByNameAndOrg(projPropsRequest.getName(), user).ifPresent(cp -> {
             if (!cp.getLabel().equals(projPropsRequest.getLabel())) {
-                requestErrors.put("name", "Name already exists");
+                requestErrors.add("Name already exists");
             }
         });
 
@@ -120,10 +123,10 @@ public class ProjectHandler {
      * @param user the user
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectRequest(NewProjectRequest projectRequest, User user) {
-        HashMap<String, String> requestErrors = new HashMap<>();
+    public static List<String> validateProjectRequest(NewProjectRequest projectRequest, User user) {
+        List<String> requestErrors = new ArrayList<>();
 
-        requestErrors.putAll(validateProjectPropertiesRequest(projectRequest.getProperties(), user));
+        requestErrors.addAll(validateProjectPropertiesRequest(projectRequest.getProperties(), user));
 
         return requestErrors;
     }

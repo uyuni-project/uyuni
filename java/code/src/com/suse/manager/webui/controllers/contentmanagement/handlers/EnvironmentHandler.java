@@ -23,7 +23,8 @@ import com.google.gson.JsonParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import spark.Request;
 import spark.Spark;
@@ -55,23 +56,22 @@ public class EnvironmentHandler {
      * @param envRequest the environment request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateEnvironmentRequest(EnvironmentRequest envRequest) {
-        HashMap<String, String> requestErrors = new HashMap<>();
+    public static List<String> validateEnvironmentRequest(EnvironmentRequest envRequest) {
+        var requestErrors = new ArrayList<String>();
 
         if (StringUtils.isEmpty(envRequest.getName()) || StringUtils.isEmpty(envRequest.getLabel())) {
-            requestErrors.put("name", "Name is required");
+            requestErrors.add("Name is required");
         }
 
         if (!ValidationUtils.isLabelValid(envRequest.getLabel())) {
-            requestErrors.put(
-                    "label",
+            requestErrors.add(
                     "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
                             " periods ('.'), underscores ('_'), and numerals."
             );
         }
 
         if (envRequest.getLabel().length() > 16) {
-            requestErrors.put("label", "Label must not exceed 16 characters");
+            requestErrors.add("Label must not exceed 16 characters");
         }
         return requestErrors;
     }

@@ -30,8 +30,7 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -70,9 +69,9 @@ public class EnvironmentApiController {
     public static String createContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest createEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        HashMap<String, String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(createEnvironmentRequest);
+        List<String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(createEnvironmentRequest);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         CONTENT_MGR.createEnvironment(
@@ -98,9 +97,9 @@ public class EnvironmentApiController {
     public static String updateContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest updateEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        HashMap<String, String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(updateEnvironmentRequest);
+        List<String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(updateEnvironmentRequest);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         CONTENT_MGR.updateEnvironment(
@@ -125,9 +124,9 @@ public class EnvironmentApiController {
     public static String removeContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest removeEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        HashMap<String, String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(removeEnvironmentRequest);
+        List<String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(removeEnvironmentRequest);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         CONTENT_MGR.removeEnvironment(
