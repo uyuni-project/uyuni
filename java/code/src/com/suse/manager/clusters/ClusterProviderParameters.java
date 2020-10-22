@@ -15,6 +15,7 @@
 
 package com.suse.manager.clusters;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,14 +25,18 @@ import java.util.Optional;
 public class ClusterProviderParameters {
     private String clusterProvider;
     private Optional<Map<String, Object>> clusterParams;
+    private Optional<Map<String, List<String>>> hooks;
 
     /**
      * @param clusterProviderIn cluster type
-     * @param clusterParamsIn
+     * @param clusterParamsIn optional cluster params
+     * @param hooksIn optional state hooks
      */
-    public ClusterProviderParameters(String clusterProviderIn, Optional<Map<String, Object>> clusterParamsIn) {
+    public ClusterProviderParameters(String clusterProviderIn, Optional<Map<String, Object>> clusterParamsIn,
+                                     Optional<Map<String, List<String>>> hooksIn) {
         this.clusterProvider = clusterProviderIn;
         this.clusterParams = clusterParamsIn;
+        this.hooks = hooksIn;
     }
 
     /**
@@ -60,5 +65,19 @@ public class ClusterProviderParameters {
      */
     public void setClusterParams(Optional<Map<String, Object>> clusterParamsIn) {
         this.clusterParams = clusterParamsIn;
+    }
+
+    /**
+     * @return hooks to get
+     */
+    public Optional<Map<String, List<String>>> getHooks() {
+        return hooks;
+    }
+
+    /**
+     * @param hooksIn to set
+     */
+    public void setHooks(Optional<Map<String, List<String>>> hooksIn) {
+        this.hooks = hooksIn;
     }
 }

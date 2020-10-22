@@ -17,6 +17,7 @@ package com.suse.manager.webui.services.iface;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.exception.SaltException;
 
@@ -61,6 +62,19 @@ public interface SystemQuery {
      * @return product information
      */
     Optional<List<Zypper.ProductInfo>> getProducts(String minionId);
+
+
+    /**
+     * Synchronously executes a salt function on a single minion.
+     * If a SaltException is thrown, re-throw a RuntimeException.
+     *
+     * @param call salt function to call
+     * @param minionId minion id to target
+     * @param <R> result type of the salt function
+     * @return Optional holding the result of the function
+     * or empty if the minion did not respond.
+     */
+    <R> Optional<R> callSync(LocalCall<R> call, String minionId);
 
     /**
      * Upload built Kiwi image to SUSE Manager
