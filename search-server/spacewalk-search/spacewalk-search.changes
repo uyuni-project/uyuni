@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 22 10:47:49 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - change default maximum memory to 512 MB, preventing OutOfMemoryError
 
 -------------------------------------------------------------------
