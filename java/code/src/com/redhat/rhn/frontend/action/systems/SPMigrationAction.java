@@ -144,10 +144,9 @@ public class SPMigrationAction extends RhnAction {
         logger.debug("salt package is up-to-date? " + isSaltUpToDate);
         request.setAttribute(IS_SALT_UP_TO_DATE, isSaltUpToDate);
 
-        // Check if this server supports distribution upgrades
+        // Check if this server supports distribution upgrades via capabilities
         // (for traditional clients only)
-        boolean supported = DistUpgradeManager.isUpgradeSupported(
-                server, ctx.getCurrentUser());
+        boolean supported = isSUSEMinion || DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser());
         logger.debug("Upgrade supported for '" + server.getName() + "'? " + supported);
         request.setAttribute(UPGRADE_SUPPORTED, supported);
 
@@ -166,7 +165,7 @@ public class SPMigrationAction extends RhnAction {
 
         // Check if there is already a migration in the schedule
         Action migration = null;
-        if (supported || isSUSEMinion) {
+        if (supported) {
             migration = ActionFactory.isMigrationScheduledForServer(server.getId());
         }
         request.setAttribute(MIGRATION_SCHEDULED, migration);
@@ -217,7 +216,7 @@ public class SPMigrationAction extends RhnAction {
 
         // Put data to the request
         if (forward.getName().equals(TARGET) &&
-                (supported || isSUSEMinion) &&
+                supported &&
                 migration == null) {
             // Find target products
             Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
@@ -226,7 +225,7 @@ public class SPMigrationAction extends RhnAction {
                 logger.debug("Installed products are 'unknown'");
                 return forward;
             }
-
+            installedProducts.ifPresent(pset -> logger.debug(pset.toString()));
             List<SUSEProductSet> migrationTargets = getMigrationTargets(
                     request,
                     installedProducts,
