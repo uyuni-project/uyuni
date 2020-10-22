@@ -30,7 +30,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.utils.Json;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -42,10 +42,14 @@ public class ClusterManagerTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private FormulaManager formulaManagerMock;
 
+    {
+        context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+    }
+
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = context().mock(SaltService.class);
         formulaManagerMock = context().mock(FormulaManager.class);
     }

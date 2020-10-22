@@ -67,7 +67,7 @@
         "result": true,
         "start_time": "17:29:50.878892"
       },
-      "module_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-run": {
+      "mgrcompat_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-module_run": {
         "__id__": "mgr_cluster_upgrade_cluster",
         "__run_num__": 3,
         "__sls__": "clusters.upgradecluster",
