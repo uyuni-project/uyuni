@@ -722,10 +722,6 @@ public class ContentManager {
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
-        // extract this information before module filters are removed by resolver
-        // todo ask cbbayburt: can't we keep the module filters instead of removing them? the following check could
-        // be done anytime
-        boolean moduleFiltersPresent = !extractFiltersOfType(filters, ModuleFilter.class).isEmpty();
 
         // Resolve filters for dependencies
         try {
@@ -734,12 +730,6 @@ public class ContentManager {
 
             // align the contents
             newSrcTgtPairs.forEach(srcTgt -> {
-                Channel tgtChannel = srcTgt.getRight().getChannel();
-                if (moduleFiltersPresent) {
-                    stripModuleMetadata(tgtChannel);
-                } else {
-                    srcTgt.getRight().getChannel().cloneModulesFrom(srcTgt.getLeft());
-                }
                 alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user);
             });
         }
@@ -750,7 +740,7 @@ public class ContentManager {
 
     }
 
-    private void stripModuleMetadata(Channel channel) {
+    private static void stripModuleMetadata(Channel channel) {
         if (channel != null && channel.getModules() != null) {
             HibernateFactory.getSession().delete(channel.getModules());
             channel.setModules(null);
@@ -768,15 +758,18 @@ public class ContentManager {
      */
     private List<Pair<Channel, SoftwareEnvironmentTarget>> cloneChannelsToEnv(ContentEnvironment env,
             Channel leader, Stream<Channel> channels, User user) {
+        boolean moduleFiltersPresent =
+                !extractFiltersOfType(env.getContentProject().getActiveFilters(), ModuleFilter.class).isEmpty();
+
         // first make sure the leader exists
         SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
-                .map(tgt -> fixTargetProperties(tgt, leader, null))
+                .map(tgt -> fixTargetProperties(tgt, leader, null, moduleFiltersPresent))
                 .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user));
 
         // then do the same with the children
         Stream<Pair<Channel, SoftwareEnvironmentTarget>> nonLeaderTargets = channels
                 .map(src -> lookupTarget(src, env, user)
-                        .map(tgt -> fixTargetProperties(tgt, src, leaderTarget.getChannel()))
+                        .map(tgt -> fixTargetProperties(tgt, src, leaderTarget.getChannel(), moduleFiltersPresent))
                         .map(tgt -> Pair.of(src, tgt))
                         .orElseGet(() ->
                                 Pair.of(src, createSoftwareTarget(src, of(leaderTarget.getChannel()), env, user))));
@@ -800,11 +793,11 @@ public class ContentManager {
      * @param swTgt the target
      * @param newSource new source channel of the target
      * @param newParent new parent channel of the target
-     *
+     * @param stripModuleData whether to strip the module data
      * @return the fixed target
      */
     private static SoftwareEnvironmentTarget fixTargetProperties(SoftwareEnvironmentTarget swTgt, Channel newSource,
-            Channel newParent) {
+            Channel newParent, boolean stripModuleData) {
         Channel tgt = swTgt.getChannel();
         // make sure parent is set correctly
         tgt.setParentChannel(newParent);
@@ -816,6 +809,15 @@ public class ContentManager {
                     log.info("Channel is not a clone: " + tgt + ". Adding clone info.");
                     ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
                 });
+
+        // handle the module data: if there are modules filters present, we strip them, even if the source is modular;
+        // otherwise we set them according to the source channel modules
+        if (stripModuleData) {
+            stripModuleMetadata(tgt);
+        }
+        else {
+            tgt.cloneModulesFrom(newSource);
+        }
 
         return swTgt;
     }
