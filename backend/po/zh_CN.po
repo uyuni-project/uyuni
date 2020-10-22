@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-10-19 12:49+0000\n"
+"PO-Revision-Date: 2020-10-22 18:49+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/zh_CN/>\n"
@@ -51,15 +51,18 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   已在此服务器上停用 %s 帐户。\n"
+"                   请联系您的组织管理员取得更多帮助。"
 
 #: ../server/handlers/applet/applet.py:78
 #, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr ""
+msgstr "在 {PRODUCT_NAME} 数据库中未找到您的系统"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
-msgstr ""
+msgstr "已在此服务器上禁用 ISS。"
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -175,9 +178,8 @@ msgid ""
 msgstr ""
 
 #: ../server/rhnHandler.py:62
-#, fuzzy
 msgid "Please run rhn_register as root on this client"
-msgstr "请在这个客户端中以 root 身份运行 rhn_register"
+msgstr "请在此客户端中以 root 身份运行 rhn_register"
 
 #: ../server/rhnHandler.py:75
 #, python-format
