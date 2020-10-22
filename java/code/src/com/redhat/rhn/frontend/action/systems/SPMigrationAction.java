@@ -177,20 +177,17 @@ public class SPMigrationAction extends RhnAction {
             targetChildChannels = (Long[]) form.get(CHILD_CHANNELS);
 
             // Get additional flags
-            if (dispatch.equals(LocalizationService.getInstance().getMessage(
-                    DISPATCH_DRYRUN))) {
+            if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
                 dryRun = true;
             }
 
             // flag to know if we are going back or forward in the setup wizard
-            goBack = dispatch.equals(LocalizationService.
-                    getInstance().getMessage(GO_BACK));
+            goBack = dispatch.equals(LocalizationService.getInstance().getMessage(GO_BACK));
         }
 
         // if submitting step 1 (TARGET) but no radio button
         // for target migration selected, return step 1 (TARGET)
-        if (dispatch != null && actionStep.equals(TARGET) &&
-                targetProductSelected == null) {
+        if (dispatch != null && actionStep.equals(TARGET) && targetProductSelected == null) {
             targetProductSelectedEmpty = true;
             dispatch = null;
         }
@@ -200,9 +197,7 @@ public class SPMigrationAction extends RhnAction {
         ActionForward forward = findForward(actionMapping, actionStep, dispatch, goBack);
 
         // Put data to the request
-        if (forward.getName().equals(TARGET) &&
-                supported &&
-                migration == null) {
+        if (forward.getName().equals(TARGET) && supported && migration == null) {
             // Find target products
             Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
             if (installedProducts.isEmpty()) {
@@ -283,15 +278,13 @@ public class SPMigrationAction extends RhnAction {
         }
         else if (forward.getName().equals(CONFIRM)) {
             // Put product data
-            SUSEProductSet targetProductSet = createProductSet(
-                    targetBaseProduct, targetAddonProducts);
+            SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
 
             request.setAttribute(TARGET_PRODUCTS, targetProductSet);
             request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
             // Put channel data
-            Channel baseChannel = ChannelFactory.lookupByIdAndUser(
-                    targetBaseChannel, ctx.getCurrentUser());
+            Channel baseChannel = ChannelFactory.lookupByIdAndUser(targetBaseChannel, ctx.getCurrentUser());
             request.setAttribute(BASE_CHANNEL, baseChannel);
             // Add those child channels that will be subscribed
             List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel,
@@ -305,8 +298,7 @@ public class SPMigrationAction extends RhnAction {
         }
         else if (forward.getName().equals(SCHEDULE)) {
             // Create target product set from parameters
-            SUSEProductSet targetProductSet = createProductSet(
-                    targetBaseProduct, targetAddonProducts);
+            SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
 
             // Setup list of channels to subscribe to
             List<Long> channelIDs = new ArrayList<Long>();
@@ -322,8 +314,7 @@ public class SPMigrationAction extends RhnAction {
             // Display a message to the user
             String product = targetProductSet.getBaseProduct().getFriendlyName();
             String msgKey = dryRun ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
-            String[] msgParams = new String[] {server.getId().toString(),
-                    actionID.toString(), product};
+            String[] msgParams = new String[] {server.getId().toString(), actionID.toString(), product};
             getStrutsDelegate().saveMessage(msgKey, msgParams, request);
             Map<String, Long> params = new HashMap<String, Long>();
             params.put("sid", server.getId());
@@ -352,12 +343,10 @@ public class SPMigrationAction extends RhnAction {
             forward = mapping.findForward(SETUP);
         }
         else if (wizardStep.equals(SETUP)) {
-            forward = goBack ?
-                    mapping.findForward(TARGET) : mapping.findForward(CONFIRM);
+            forward = goBack ? mapping.findForward(TARGET) : mapping.findForward(CONFIRM);
         }
         else if (wizardStep.equals(CONFIRM)) {
-            forward = goBack ?
-                    mapping.findForward(SETUP) : mapping.findForward(SCHEDULE);
+            forward = goBack ? mapping.findForward(SETUP) : mapping.findForward(SCHEDULE);
         }
         else {
             // Unknown wizard step, go to setup
@@ -382,8 +371,7 @@ public class SPMigrationAction extends RhnAction {
         List<Channel> channels = baseChannel.getAccessibleChildrenFor(user);
 
         // Sort channels by name
-        Collections.sort(channels,
-                new DynamicComparator("name", RequestContext.SORT_ASC));
+        Collections.sort(channels, new DynamicComparator("name", RequestContext.SORT_ASC));
 
         List<ChildChannelDto> childChannels = new ArrayList<ChildChannelDto>();
         for (int i = 0; i < channels.size(); i++) {
@@ -411,12 +399,10 @@ public class SPMigrationAction extends RhnAction {
     @SuppressWarnings("unchecked")
     private List<EssentialChannelDto> getChannelDTOs(RequestContext ctx,
             Channel baseChannel, List<Long> channelIDs) {
-        List<Channel> childChannels = baseChannel.getAccessibleChildrenFor(
-                ctx.getCurrentUser());
+        List<Channel> childChannels = baseChannel.getAccessibleChildrenFor(ctx.getCurrentUser());
 
         // Sort channels by name
-        Collections.sort(childChannels,
-                new DynamicComparator("name", RequestContext.SORT_ASC));
+        Collections.sort(childChannels, new DynamicComparator("name", RequestContext.SORT_ASC));
 
         List<EssentialChannelDto> channelDTOs = new ArrayList<EssentialChannelDto>();
         for (Channel child : childChannels) {
