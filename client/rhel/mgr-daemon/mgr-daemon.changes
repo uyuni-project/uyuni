@@ -1,3 +1,5 @@
+- fix removal of mgr-deamon with selinux enabled (bsc#1177928)
+
 -------------------------------------------------------------------
 Thu Oct 22 10:39:07 CEST 2020 - jgonzalez@suse.com
 
