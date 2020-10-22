@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 22 10:43:27 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.16-1
 - prevent IntegrityError during mgr-inter-sync execution (bsc#1177235)
 
 -------------------------------------------------------------------
