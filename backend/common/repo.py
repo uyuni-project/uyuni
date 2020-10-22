@@ -302,7 +302,7 @@ class DpkgRepo:
                 raise GeneralRepoException("IOError while accessing file: {}".format(release_file))
 
         # Repo format is flat
-        if self.is_flat():
+        else:
             if os.access(self._get_parent_url(local_path, 0, "InRelease"), os.R_OK):
                 release_file = self._get_parent_url(local_path, 0, "InRelease")
             elif os.access(self._get_parent_url(local_path, 0, "Release"), os.R_OK):
