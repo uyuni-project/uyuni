@@ -744,8 +744,16 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
-When(/^I install all spacewalk client utils on "([^"]*)"$/) do |host|
-  step %(I install packages "#{SPACEWALK_UTILS_RPMS}" on this "#{host}")
+When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
+  step %(I #{action} packages "#{TRADITIONAL_STACK_RPMS}" #{where} this "#{host}")
+end
+
+When(/^I (install|remove) OpenSCAP (traditional|salt) dependencies (on|from) "([^"]*)"$/) do |action, client_type, where, host|
+  if client_type == 'traditional'
+    step %(I #{action} packages "#{OPEN_SCAP_TRAD_DEPS}" #{where} this "#{host}")
+  else
+    step %(I #{action} packages "#{OPEN_SCAP_SALT_DEPS}" #{where} this "#{host}")
+  end
 end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|

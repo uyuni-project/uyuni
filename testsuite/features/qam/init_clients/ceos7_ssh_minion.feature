@@ -34,10 +34,6 @@ Feature: Bootstrap a CentOS 7 Salt SSH minion
     And I follow "Proxy" in the content area
     Then I should see "ceos7_ssh_minion" hostname
 
-  Scenario: Prepare a CentOS 7 Salt SSH minion
-    Given I am authorized
-    And I install all spacewalk client utils on "ceos7_ssh_minion"
-
   Scenario: Check events history for failures on CentOS 7 Salt SSH minion
     Given I am on the Systems overview page of this "ceos7_ssh_minion"
     Then I check for failed events on history event page
