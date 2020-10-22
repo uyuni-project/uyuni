@@ -526,7 +526,11 @@ public class ClusterManager {
                     )
                     .ifPresentOrElse(minions ->
                             ctx.put("nodes", minions),
-                            () -> LOG.error("Could not find minions ids: " + context.get("nodes")));
+                            () -> {
+                        if (context.get("nodes") != null) {
+                            LOG.error("Could not find minions ids: " + context.get("nodes"));
+                        }
+                    });
 
             Optional.ofNullable(context.get("cluster"))
                     .filter(Number.class::isInstance)
