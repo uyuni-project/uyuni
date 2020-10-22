@@ -167,6 +167,14 @@ Before('@ceos7_client') do
   skip_this_scenario unless $ceos7_client
 end
 
+Before('@ceos8_minion') do
+  skip_this_scenario unless $ceos8_minion
+end
+
+Before('@ceos8_ssh_minion') do
+  skip_this_scenario unless $ceos8_ssh_minion
+end
+
 Before('@ubuntu1604_minion') do
   skip_this_scenario unless $ubuntu1604_minion
 end

@@ -12,9 +12,9 @@ Feature: Bootstrap a Ubuntu 16.04 Salt SSH minion
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
+    And I select "1-ubuntu1604_ssh_minion_key" from "activationKeys"
     And I enter the hostname of "ubuntu1604_ssh_minion" as "hostname"
     And I enter "linux" as "password"
-    And I select "1-ubuntu1604_ssh_minion_key" from "activationKeys"
     And I click on "Bootstrap"
     Then I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu1604_ssh_minion"

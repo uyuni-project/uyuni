@@ -10,3 +10,4 @@
 - features/qam/add_custom_repositories/add_ubuntu2004_repositories.feature
 - features/qam/add_custom_repositories/add_ceos6_repositories.feature
 - features/qam/add_custom_repositories/add_ceos7_repositories.feature
+- features/qam/add_custom_repositories/add_ceos8_repositories.feature

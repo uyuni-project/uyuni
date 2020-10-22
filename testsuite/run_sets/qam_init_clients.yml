@@ -7,12 +7,14 @@
 
 ## QAM Init Clients BEGIN ###
 
-#- features/qam/init_clients/ceos6_minion.feature
-#- features/qam/init_clients/ceos6_ssh_minion.feature
-#- features/qam/init_clients/ceos6_client.feature
+- features/qam/init_clients/ceos6_minion.feature
+- features/qam/init_clients/ceos6_ssh_minion.feature
+- features/qam/init_clients/ceos6_client.feature
 - features/qam/init_clients/ceos7_minion.feature
 - features/qam/init_clients/ceos7_ssh_minion.feature
 - features/qam/init_clients/ceos7_client.feature
+- features/qam/init_clients/ceos8_minion.feature
+- features/qam/init_clients/ceos8_ssh_minion.feature
 - features/qam/init_clients/sle11sp4_minion.feature
 - features/qam/init_clients/sle11sp4_ssh_minion.feature
 - features/qam/init_clients/sle11sp4_client.feature
@@ -25,8 +27,8 @@
 - features/qam/init_clients/sle15sp1_minion.feature
 - features/qam/init_clients/sle15sp1_ssh_minion.feature
 - features/qam/init_clients/sle15sp1_client.feature
-#- features/qam/init_clients/ubuntu1604_minion.feature
-#- features/qam/init_clients/ubuntu1604_ssh_minion.feature
+- features/qam/init_clients/ubuntu1604_minion.feature
+- features/qam/init_clients/ubuntu1604_ssh_minion.feature
 - features/qam/init_clients/ubuntu1804_minion.feature
 - features/qam/init_clients/ubuntu1804_ssh_minion.feature
 - features/qam/init_clients/ubuntu2004_minion.feature
