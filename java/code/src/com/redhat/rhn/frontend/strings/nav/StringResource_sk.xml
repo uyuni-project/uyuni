@@ -660,7 +660,7 @@
       </trans-unit>
       <trans-unit id="Provisioning" xml:space="preserve">
         <source>Provisioning</source>
-        <target/>
+        <target>Poskytovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
@@ -674,7 +674,7 @@
       </trans-unit>
       <trans-unit id="Snapshot Tags" xml:space="preserve">
         <source>Snapshot Tags</source>
-        <target/>
+        <target>Značky snímok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -723,56 +723,56 @@
       </trans-unit>
       <trans-unit id="Group Role Mapping" xml:space="preserve">
         <source>Group Role Mapping</source>
-        <target/>
+        <target>Mapovanie skupinových rolí</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Configuration" xml:space="preserve">
         <source>System Group Configuration</source>
-        <target/>
+        <target>Konfigurácia systémových skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Master Setup" xml:space="preserve">
         <source>Master Setup</source>
-        <target/>
+        <target>Hlavné nastavenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Slave Setup" xml:space="preserve">
         <source>Slave Setup</source>
-        <target/>
+        <target>Podriadené nastavenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Command" xml:space="preserve">
         <source>Remote Command</source>
-        <target/>
+        <target>Vzdialené ovládanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Configuration" xml:space="preserve">
         <source>Power Management Configuration</source>
-        <target/>
+        <target>Konfigurácia správy napájania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Operations" xml:space="preserve">
         <source>Power Management Operations</source>
-        <target/>
+        <target>Operácie správy napájania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tag Systems" xml:space="preserve">
         <source>Tag Systems</source>
-        <target/>
+        <target>Systémy značiek</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
