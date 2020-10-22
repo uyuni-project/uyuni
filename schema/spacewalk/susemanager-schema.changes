@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Oct 22 11:13:51 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
 - Execute Salt SSH actions in parallel (bsc#1173199)
 - show info message when applying schema upgrade
 
