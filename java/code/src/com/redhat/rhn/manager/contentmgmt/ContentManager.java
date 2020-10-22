@@ -835,16 +835,11 @@ public class ContentManager {
      * @param tgt the target {@link Channel}
      * @param user the user
      */
-    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
-            User user) {
-        // align packages and the cache (rhnServerNeededCache)
-        List<PackageFilter> packageFilters = filters.stream()
-                .flatMap(f -> stream((Optional<PackageFilter>) f.asPackageFilter()))
-                .collect(toList());
-        List<ErrataFilter> errataFilters = filters.stream()
-                .flatMap(f -> stream((Optional<ErrataFilter>) f.asErrataFilter()))
-                .collect(toList());
+    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt, User user) {
+        List<PackageFilter> packageFilters = extractFiltersOfType(filters, PackageFilter.class);
+        List<ErrataFilter> errataFilters = extractFiltersOfType(filters, ErrataFilter.class);
 
+        // align packages and the cache (rhnServerNeededCache)
         alignPackages(src, tgt, packageFilters);
 
         // align errata and the cache (rhnServerNeededCache)
@@ -860,6 +855,15 @@ public class ContentManager {
         tgt.setLastModified(new Date());
         HibernateFactory.getSession().saveOrUpdate(tgt);
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
+    }
+
+    // helper for extracting certain filter types
+    // it's not optimal to run this method multiple times for same collection of filters, but at least it's clear
+    private static <T> List<T> extractFiltersOfType(Collection<ContentFilter> filters, Class<T> type) {
+        return filters.stream()
+                .filter(f -> type.isAssignableFrom(f.getClass()))
+                .map(f -> (T) f)
+                .collect(toList());
     }
 
     private static void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
