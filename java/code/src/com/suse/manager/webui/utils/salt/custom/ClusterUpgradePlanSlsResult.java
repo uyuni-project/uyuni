@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class ClusterUpgradePlanSlsResult {
 
-    @SerializedName("module_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-run")
+    @SerializedName("mgrcompat_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> upgradeResult;
 
     /**
