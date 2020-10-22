@@ -714,7 +714,6 @@ public class ContentManager {
      * @param swTgt the target
      * @param newSource new source channel of the target
      * @param newParent new parent channel of the target
-     *
      * @return the fixed target
      */
     private static SoftwareEnvironmentTarget fixTargetProperties(SoftwareEnvironmentTarget swTgt, Channel newSource,
@@ -730,6 +729,9 @@ public class ContentManager {
                     log.info("Channel is not a clone: " + tgt + ". Adding clone info.");
                     ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
                 });
+
+        // handle the module data: we set them according to the source channel modules
+        tgt.cloneModulesFrom(newSource);
 
         return swTgt;
     }
