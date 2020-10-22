@@ -23,7 +23,8 @@ import com.google.gson.JsonParseException;
 
 import org.apache.http.HttpStatus;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.List;
 
 import spark.Request;
 import spark.Spark;
@@ -70,11 +71,8 @@ public class FilterHandler {
      * @param envRequest the environment request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateFilterRequest(FilterRequest envRequest) {
-        HashMap<String, String> requestErrors = new HashMap<>();
-
+    public static List<String> validateFilterRequest(FilterRequest envRequest) {
         // TODO: validations
-
-        return requestErrors;
+        return Collections.emptyList();
     }
 }

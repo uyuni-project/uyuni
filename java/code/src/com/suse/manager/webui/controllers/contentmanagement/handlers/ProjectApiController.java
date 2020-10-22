@@ -36,8 +36,7 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -76,9 +75,9 @@ public class ProjectApiController {
      */
     public static String createContentProject(Request req, Response res, User user) {
         NewProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
-        HashMap<String, String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest, user);
+        List<String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest, user);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         ProjectPropertiesRequest projectPropertiesRequest = createProjectRequest.getProperties();
@@ -141,11 +140,11 @@ public class ProjectApiController {
     public static String updateContentProjectProperties(Request req, Response res, User user) {
         ProjectPropertiesRequest updateProjectPropertiesRequest = ProjectHandler.getProjectPropertiesRequest(req);
 
-        HashMap<String, String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(
+        List<String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(
                 updateProjectPropertiesRequest, user
         );
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         ContentProject updatedProject;
