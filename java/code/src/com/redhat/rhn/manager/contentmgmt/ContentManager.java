@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
@@ -721,10 +722,10 @@ public class ContentManager {
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
-        // Strip modules metadata from the modular repositories if any modular filter is present
-        if (filters.stream().anyMatch(f -> f.asModuleFilter().isPresent())) {
-            newSrcTgtPairs.stream().map(p -> p.getRight().getChannel()).forEach(this::stripModuleMetadata);
-        }
+        // extract this information before module filters are removed by resolver
+        // todo ask cbbayburt: can't we keep the module filters instead of removing them? the following check could
+        // be done anytime
+        boolean moduleFiltersPresent = !extractFiltersOfType(filters, ModuleFilter.class).isEmpty();
 
         // Resolve filters for dependencies
         try {
@@ -732,8 +733,15 @@ public class ContentManager {
             DependencyResolutionResult result = resolver.resolveFilters(filters);
 
             // align the contents
-            newSrcTgtPairs.forEach(srcTgt ->
-                    alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user));
+            newSrcTgtPairs.forEach(srcTgt -> {
+                Channel tgtChannel = srcTgt.getRight().getChannel();
+                if (moduleFiltersPresent) {
+                    stripModuleMetadata(tgtChannel);
+                } else {
+                    srcTgt.getRight().getChannel().cloneModulesFrom(srcTgt.getLeft());
+                }
+                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user);
+            });
         }
         catch (DependencyResolutionException e) {
             // Build shouldn't be allowed if dependency resolution fails
