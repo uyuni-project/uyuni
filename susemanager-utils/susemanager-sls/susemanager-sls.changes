@@ -1,3 +1,5 @@
+- Fix grub2 autoinstall kernel path (bsc#1178060)
+
 -------------------------------------------------------------------
 Thu Oct 22 11:14:35 CEST 2020 - jgonzalez@suse.com
 
