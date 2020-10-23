@@ -1,3 +1,5 @@
+- add sock_pool_size setting by default for better performance
+
 -------------------------------------------------------------------
 Wed Sep 09 12:18:16 CEST 2020 - jgonzalez@suse.com
 
