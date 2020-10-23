@@ -741,7 +741,7 @@ class RepoSync(object):
             # decompress only for getting the checksum
             checksum = self._getDecompressedFileChecksum(filename, 'sha256')
             basename = checksum + "-" + basename
-            log(0, "Including the checksum in the modules file name: %s" % basename)
+            log(0, "  Including the checksum in the modules file name: %s" % basename)
 
         relativepath = os.path.join(relativedir, basename)
         abspath = os.path.join(absdir, basename)
