@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="Bare Metal Systems" xml:space="preserve">
         <source>Unprovisioned Systems</source>
-        <target>Nezaopatrené systémy</target>
+        <target>Neposkytnuté systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -779,42 +779,42 @@
       </trans-unit>
       <trans-unit id="Reactivation" xml:space="preserve">
         <source>Reactivation</source>
-        <target/>
+        <target>Reaktivácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Properties" xml:space="preserve">
         <source>Properties</source>
-        <target/>
+        <target>Vlastnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pending" xml:space="preserve">
         <source>Pending</source>
-        <target/>
+        <target>Čakajúce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Patches" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target>Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Patch List" xml:space="preserve">
         <source>Patch List</source>
-        <target/>
+        <target>Zoznam opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Patch Clusters" xml:space="preserve">
         <source>Patch Clusters</source>
-        <target/>
+        <target>Klastre opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -828,7 +828,7 @@
       </trans-unit>
       <trans-unit id="Managed Files" xml:space="preserve">
         <source>Managed Files</source>
-        <target/>
+        <target>Spravované súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -842,14 +842,14 @@
       </trans-unit>
       <trans-unit id="Add / Remove" xml:space="preserve">
         <source>Add / Remove</source>
-        <target/>
+        <target>Pridať / Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="List / Leave" xml:space="preserve">
         <source>List / Leave</source>
-        <target/>
+        <target>Zoznam / Ponechať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -870,14 +870,14 @@
       </trans-unit>
       <trans-unit id="Diff" xml:space="preserve">
         <source>Diff</source>
-        <target/>
+        <target>Rozdiel</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Custom Info" xml:space="preserve">
         <source>Custom Info</source>
-        <target/>
+        <target>Vlastné informácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -891,21 +891,21 @@
       </trans-unit>
       <trans-unit id="Config Files" xml:space="preserve">
         <source>Config Files</source>
-        <target/>
+        <target>Konfiguračné súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Join" xml:space="preserve">
         <source>Join</source>
-        <target/>
+        <target>Pripojiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Rollback" xml:space="preserve">
         <source>Rollback</source>
-        <target/>
+        <target>Vrátiť späť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -968,49 +968,49 @@
       </trans-unit>
       <trans-unit id="kickstart.variable.nav" xml:space="preserve">
         <source>Variables</source>
-        <target/>
+        <target>Premenné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Details" xml:space="preserve">
         <source>System Details</source>
-        <target/>
+        <target>Podrobnosti systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Scripts" xml:space="preserve">
         <source>Scripts</source>
-        <target/>
+        <target>Skripty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart File" xml:space="preserve">
         <source>Autoinstallation File</source>
-        <target/>
+        <target>Súbory automatickej inštalácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Operating System" xml:space="preserve">
         <source>Operating System</source>
-        <target/>
+        <target>Operačný systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart" xml:space="preserve">
         <source>Unprovisioned Autoinstallation</source>
-        <target/>
+        <target>Neposkytnutá automatická inštalácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal" xml:space="preserve">
         <source>Unprovisioned</source>
-        <target/>
+        <target>Neposkytnuté</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
