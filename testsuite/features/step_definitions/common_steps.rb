@@ -1154,9 +1154,9 @@ end
 
 When(/^I create the MU repository for (salt|traditional) "([^"]*)" if necessary$/) do |client_type, client|
   client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  url = $mu_repositories[client][client_type].strip
-  tmp = url.delete_prefix "http://download.suse.de/ibs/SUSE:/Maintenance:/"
-  repo_name = tmp.delete_prefix "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
+  repo_name = url = $mu_repositories[client][client_type].strip
+  repo_name.delete_prefix! "http://download.suse.de/ibs/SUSE:/Maintenance:/"
+  repo_name.delete_prefix! "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
   if repository_exist? repo_name
     puts "The MU repository #{repo_name} was already created, we will reuse it."
   else
@@ -1174,9 +1174,9 @@ end
 
 When(/^I select the MU repository name for (salt|traditional) "([^"]*)" from the list$/) do |client_type, client|
   client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  url = $mu_repositories[client][client_type].strip
-  tmp = url.delete_prefix "http://download.suse.de/ibs/SUSE:/Maintenance:/"
-  repo_name = tmp.delete_prefix "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
+  repo_name = url = $mu_repositories[client][client_type].strip
+  repo_name.delete_prefix! "http://download.suse.de/ibs/SUSE:/Maintenance:/"
+  repo_name.delete_prefix! "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
   step %(I check "#{repo_name}" in the list)
 end
 
