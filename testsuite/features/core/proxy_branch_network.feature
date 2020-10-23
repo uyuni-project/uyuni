@@ -92,12 +92,6 @@ Feature: Setup SUSE Manager for Retail branch network
     And I press "Add Item" in config options section
     And I enter "empty-zones-enable" in first option field
     And I enter "no" in first value field
-    And I press "Add Item" in config options section
-    And I enter "dnssec-enable" in second option field
-    And I enter "no" in second value field
-    And I press "Add Item" in config options section
-    And I enter "dnssec-validation" in third option field
-    And I enter "no" in third value field
     And I enter "example.org" in first configured zone name field
     And I press "Add Item" in configured zones section
     And I enter the local zone name in second configured zone name field
