@@ -1,3 +1,6 @@
+- add --force to mgr-create-bootstrap-repo to enforce generation
+  even when some products are not synchronized
+
 -------------------------------------------------------------------
 Thu Oct 22 11:11:21 CEST 2020 - jgonzalez@suse.com
 
