@@ -36,6 +36,37 @@ JOIN suseProductChannel spc ON sp.id = spc.product_id
 WHERE spc.channel_id IS NOT NULL
 """)
 
+_sql_find_pkgs_all = """
+SELECT distinct
+       pkg.id AS id,
+       pn.name || '-' || evr_t_as_vre_simple(pevr.evr) || '.' || pa.label AS nvrea,
+       pa.label AS arch,
+       pkg.path
+   FROM rhnPackage pkg
+   JOIN rhnPackageArch pa ON pkg.package_arch_id = pa.id
+   JOIN rhnPackageName pn ON pkg.name_id = pn.id
+   JOIN rhnPackageEVR pevr ON pkg.evr_id = pevr.id
+   JOIN rhnChannelPackage CP ON CP.package_id = pkg.id
+   JOIN rhnChannel c ON CP.channel_id = c.id
+   JOIN (
+          SELECT I_C.*
+            FROM suseProducts I_SP
+            JOIN suseProductChannel I_PC ON I_SP.id = I_PC.product_id
+            JOIN rhnChannel I_C ON I_PC.channel_id = I_C.id
+           WHERE  I_SP.product_id IN ( %s )
+           UNION
+           SELECT *
+             FROM rhnChannel
+            WHERE org_id IS NOT NULL
+              AND parent_channel IN (
+                                     SELECT pc.id
+                                       FROM rhnChannel pc
+                                      WHERE pc.label = :parentchannel)
+        ) spc ON spc.id = c.id
+  WHERE pn.name = :pkgname
+ORDER BY pkg.id
+"""
+
 _sql_find_pkgs = """
 SELECT distinct
         pkg.id AS id,
@@ -240,8 +271,10 @@ def create_repo(label, flush, additional=[]):
         print("Creating bootstrap repo for {0}".format(label))
     print()
 
-    if pdids:
+    if pdids and not options.force:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids)))
+    elif pdids and options.force:
+        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_all % (pdids)))
     else:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_custom ))
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
@@ -349,6 +382,8 @@ parser.add_option('-c', '--create', action='store', dest='create',
                   help='create bootstrap repo for given distribution label')
 parser.add_option('-f', '--flush', action='store_true', dest='flush',
                   help='when used in conjuction with --create, deletes the target repository before creating it')
+parser.add_option('--force', action='store_true', dest='force',
+                  help='Force creation even when not all required channels are available')
 parser.add_option('', '--datamodule', action="store", dest='datamodule',
                   help='Use an own datamodule (Default: mgr_bootstrap_data)')
 parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
