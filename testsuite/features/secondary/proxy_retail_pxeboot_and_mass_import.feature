@@ -11,15 +11,17 @@
 # * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
+@buildhost
+@long_test
+@proxy
+@private_net
+@pxeboot_minion
 Feature: PXE boot a Retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator
   I PXE boot one of the terminals
   I perform a mass import of several virtual terminals and one real minion
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Install or update PXE formulas on the server
     When I manually install the "tftpd" formula on the server
     And I manually install the "vsftpd" formula on the server
@@ -27,9 +29,6 @@ Feature: PXE boot a Retail terminal
     And I manually install the "pxe" formula on the server
     And I synchronize all Salt dynamic modules on "proxy"
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -44,9 +43,6 @@ Feature: PXE boot a Retail terminal
     And the "vsftpd" formula should be checked
     And the "pxe" formula should be checked
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Configure PXE part of DNS on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -83,8 +79,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
 @pxeboot_minion
   Scenario: Configure PXE part of DHCP on the branch server
     Given I am on the Systems overview page of this "proxy"
@@ -95,9 +89,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Parametrize TFTP on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -107,9 +98,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Parametrize vsFTPd on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -119,9 +107,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Configure PXE itself on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -129,9 +114,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Apply the PXE formulas via the highstate
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
@@ -142,9 +124,6 @@ Feature: PXE boot a Retail terminal
     Then socket "tftp" is enabled on "proxy"
     And socket "tftp" is active on "proxy"
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Create hardware type group
     Given I am on the groups page
     When I follow "Create Group"
@@ -153,9 +132,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Create Group"
     Then I should see a "System group HWTYPE:Intel-Genuine created." text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Create terminal branch group
     Given I am on the groups page
     When I follow "Create Group"
@@ -164,9 +140,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Create Group"
     Then I should see a "System group example created." text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Create all terminals group
     Given I am on the groups page
     When I follow "Create Group"
@@ -175,9 +148,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Create Group"
     Then I should see a "System group TERMINALS created." text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Create all branch servers group
     Given I am on the groups page
     When I follow "Create Group"
@@ -186,9 +156,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Create Group"
     Then I should see a "System group SERVERS created." text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Enable Saltboot formula for hardware type group
     Given I am on the groups page
     When I follow "HWTYPE:Intel-Genuine" in the content area
@@ -197,9 +164,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save"
     Then the "saltboot" formula should be checked
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Parametrize the Saltboot formula
     Given I am on the groups page
     When I follow "HWTYPE:Intel-Genuine" in the content area
@@ -224,9 +188,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: PXE boot the PXE boot minion
     Given I am authorized as "admin" with password "admin"
     When I reboot the PXE boot minion
@@ -242,18 +203,12 @@ Feature: PXE boot a Retail terminal
     And I wait until event "Package List Refresh scheduled by (none)" is completed
     Then the PXE boot minion should have been reformatted
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Check connection from terminal to branch server
     Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Install a package on the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
     When I install the GPG key of the test packages repository on the PXE boot minion
@@ -265,9 +220,6 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: remove a package on the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Software" in the content area
@@ -280,9 +232,6 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package removal has been scheduled" text
     When I wait until event "Package Removal scheduled by admin" is completed
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: delete the new Retail terminal
     Given I am on the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
@@ -292,9 +241,6 @@ Feature: PXE boot a Retail terminal
     Then "pxeboot_minion" should not be registered
     And I stop salt-minion on the PXE boot minion
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: undo TFTP and PXE formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -304,9 +250,6 @@ Feature: PXE boot a Retail terminal
     Then the "tftpd" formula should be unchecked
     And the "pxe" formula should be unchecked
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: undo CNAME aliases
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -317,9 +260,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: delete the terminal groups
     Given I am on the groups page
     When I follow "HWTYPE:Intel-Genuine" in the content area
@@ -339,9 +279,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: apply the highstate to clear PXE formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
@@ -349,8 +286,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
-@proxy
-@private_net
   Scenario: Enable the formulas needed for mass import on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -364,17 +299,12 @@ Feature: PXE boot a Retail terminal
     And the "tftpd" formula should be checked
     And the "vsftpd" formula should be checked
 
-@proxy
-@private_net
   Scenario: Mass import of terminals
     When I prepare the retail configuration file on server
     And I import the retail configuration using retail_yaml command
     And I am on the Systems page
     Then I should see the terminals imported from the configuration file
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cheat with missing avahi domain
     #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
     Given I am on the Systems overview page of this "proxy"
@@ -395,9 +325,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Apply the highstate to take into account the imported formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
@@ -406,9 +333,6 @@ Feature: PXE boot a Retail terminal
     And I wait until event "Apply highstate scheduled by admin" is completed
     And I disable repositories after installing branch server
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Bootstrap the PXE boot minion
     Given I am authorized
     When I stop and disable avahi on the PXE boot minion
@@ -419,9 +343,6 @@ Feature: PXE boot a Retail terminal
     Then I am on the System Overview page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Check connection from bootstrapped terminal to proxy
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -429,9 +350,6 @@ Feature: PXE boot a Retail terminal
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Install a package on the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -443,9 +361,6 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: remove a package on the bootstrapped terminal
     Given I am on the Systems page
     When I follow "pxeboot" terminal
@@ -459,23 +374,14 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package removal has been scheduled" text
     When I wait until event "Package Removal scheduled by admin" is completed
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: delete all imported Retail terminals
     Given I am on the Systems page
     When I delete all the imported terminals
     Then I should not see any terminals imported from the configuration file
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: make sure salt-minion is stopped after mass import
     When I stop salt-minion on the PXE boot minion
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: delete the terminal groups generated by retail_yaml command
     Given I am on the groups page
     When I follow "HWTYPE:Intel-Genuine" in the content area
@@ -495,9 +401,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Confirm Deletion"
     Then I should see a "deleted" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: remove DNS records added by mass import
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -514,9 +417,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: disable the formulas needed for mass import
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -530,9 +430,6 @@ Feature: PXE boot a Retail terminal
     And the "tftpd" formula should be unchecked
     And the "vsftpd" formula should be unchecked
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: reset to proper branch ID for pxeboot
     # Branch ID was changed by mass import yaml file
     Given I am on the Systems overview page of this "proxy"
@@ -542,9 +439,6 @@ Feature: PXE boot a Retail terminal
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: apply the highstate after the mass import cleanup changes
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
