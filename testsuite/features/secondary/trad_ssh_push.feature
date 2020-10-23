@@ -3,7 +3,7 @@
 
 Feature: Register a traditional system to be managed via SSH push
 
-  Scenario: Delete the traditional client for ssh-reverse bootrap
+  Scenario: Delete the traditional client for SSH reverse bootstrap
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -11,28 +11,8 @@ Feature: Register a traditional system to be managed via SSH push
     And I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
-  Scenario: Create an activation key for SSH push
-    Given I am on the Systems page
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "Create Key"
-    And I enter "SSH push key" as "description"
-    And I enter "ssh-push" as "key"
-    And I select "Push via SSH" from "contact-method"
-    And I click on "Create Activation Key"
-    Then I should see a "Activation key SSH push key has been created." text
-
-  Scenario: Create an activation key for SSH push via tunnel
-    Given I am on the Systems page
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "Create Key"
-    And I enter "SSH push via tunnel key" as "description"
-    And I enter "ssh-push-tunnel" as "key"
-    And I select "Push via SSH tunnel" from "contact-method"
-    And I click on "Create Activation Key"
-    Then I should see a "Activation key SSH push via tunnel key has been created." text
-
   Scenario: Create bootstrap script for traditional SSH push via tunnel
-    When I execute mgr-bootstrap "--activation-keys=1-ssh-push-tunnel --script=bootstrap-ssh-push-tunnel.sh --no-up2date --traditional"
+    When I execute mgr-bootstrap "--activation-keys=1-SUSE-SSH-TUNNEL-DEV-x86_64 --script=bootstrap-ssh-push-tunnel.sh --no-up2date --traditional"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'"
 
@@ -51,22 +31,6 @@ Feature: Register a traditional system to be managed via SSH push
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
-
-  Scenario: Cleanup: delete the activation key for SSH push
-    Given I am on the Systems page
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "SSH push key" in the content area
-    And I follow "Delete Key"
-    And I click on "Delete Activation Key"
-    And I should see a "Activation key SSH push key has been deleted." text
-
-  Scenario: Cleanup: delete the activation key for SSH push via tunnel
-    Given I am on the Systems page
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "SSH push via tunnel key" in the content area
-    And I follow "Delete Key"
-    And I click on "Delete Activation Key"
-    And I should see a "Activation key SSH push via tunnel key has been deleted." text
 
   Scenario: Cleanup: hosts file of traditional client via SSH tunnel
     Given I am on the Systems page
