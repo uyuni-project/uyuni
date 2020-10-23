@@ -10,6 +10,7 @@
 # which means "Enable Kiwi OS Image building"
 
 @buildhost
+@long_test
 Feature: Build OS images
 
   Scenario: Create an OS image profile with activation key
