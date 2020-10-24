@@ -912,56 +912,56 @@
       </trans-unit>
       <trans-unit id="Supported" xml:space="preserve">
         <source>Supported</source>
-        <target/>
+        <target>Podporované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Retired" xml:space="preserve">
         <source>Retired</source>
-        <target/>
+        <target>Ukončené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Connection" xml:space="preserve">
         <source>Connection</source>
-        <target/>
+        <target>Pripojenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Activation" xml:space="preserve">
         <source>Activation</source>
-        <target/>
+        <target>Aktivácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Systems Using Proxy" xml:space="preserve">
         <source>Systems Using Proxy</source>
-        <target/>
+        <target>Systémy používajúce proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Help Desk" xml:space="preserve">
         <source>Help Desk</source>
-        <target/>
+        <target>Technická podpora</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart Details" xml:space="preserve">
         <source>Autoinstallation Details</source>
-        <target/>
+        <target>Podrobnosti automatickej inštalácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.edit.nav" xml:space="preserve">
         <source>Edit</source>
-        <target/>
+        <target>Upraviť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -1017,77 +1017,77 @@
       </trans-unit>
       <trans-unit id="Advanced Options" xml:space="preserve">
         <source>Advanced Options</source>
-        <target/>
+        <target>Pokročilé možnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Locale" xml:space="preserve">
         <source>Locale</source>
-        <target/>
+        <target>Lokalizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Partitioning" xml:space="preserve">
         <source>Partitioning</source>
-        <target/>
+        <target>Rozdelenie disku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GPG_SSL" xml:space="preserve">
         <source>GPG &amp; SSL</source>
-        <target/>
+        <target>GPG &amp; SSL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Troubleshooting" xml:space="preserve">
         <source>Troubleshooting</source>
-        <target/>
+        <target>Riešenie problémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package Groups" xml:space="preserve">
         <source>Package Groups</source>
-        <target/>
+        <target>Skupiny balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package Profiles" xml:space="preserve">
         <source>Package Profiles</source>
-        <target/>
+        <target>Profily balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical" xml:space="preserve">
         <source>Critical</source>
-        <target/>
+        <target>Kritický</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Unknown" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznámy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Recently Registered" xml:space="preserve">
         <source>Recently Registered</source>
-        <target/>
+        <target>Nedávno registrované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Target Systems" xml:space="preserve">
         <source>Target Systems</source>
-        <target/>
+        <target>Cieľové systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
