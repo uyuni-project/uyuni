@@ -11,7 +11,7 @@ Feature: openSCAP audit of Ubuntu Salt minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
-    And I enter "--profile common" as "params"
+    And I enter "--profile standard" as "params"
     And I enter "/usr/share/xml/scap/ssg/content/ssg-ubuntu1604-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
