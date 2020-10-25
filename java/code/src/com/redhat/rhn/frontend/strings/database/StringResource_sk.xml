@@ -5,28 +5,28 @@
       <!-- Action Statuses -->
       <trans-unit id="Queued" xml:space="preserve">
         <source>Queued</source>
-        <target/>
+        <target>Zaradené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Picked Up" xml:space="preserve">
         <source>Picked Up</source>
-        <target/>
+        <target>Vyzdvihnuté</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Completed" xml:space="preserve">
         <source>Completed</source>
-        <target/>
+        <target>Dokončené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Failed" xml:space="preserve">
         <source>Failed</source>
-        <target/>
+        <target>Neúspešné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
@@ -34,21 +34,21 @@
       <!-- System Group Types -->
       <trans-unit id="Spacewalk Management Entitled Servers" xml:space="preserve">
         <source>Management</source>
-        <target/>
+        <target>Správa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Provisioning Entitled Servers" xml:space="preserve">
         <source>Provisioning</source>
-        <target/>
+        <target>Poskytovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Monitoring Entitled Servers" xml:space="preserve">
         <source>Monitoring</source>
-        <target/>
+        <target>Monitorovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
@@ -56,7 +56,7 @@
       <!--  Human Readable version of the entitlement labels -->
       <trans-unit id="bootstrap_entitled" xml:space="preserve">
           <source>Bootstrap</source>
-        <target/>
+        <target>Bootstrap</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -65,7 +65,7 @@
       </trans-unit>
       <trans-unit id="enterprise_entitled" xml:space="preserve">
           <source>Management</source>
-        <target/>
+        <target>Správa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="unentitled" xml:space="preserve">
           <source>&lt;em&gt;(none)&lt;/em&gt;</source>
-        <target/>
+        <target>&lt;em&gt;(žiadne)&lt;/em&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -83,7 +83,7 @@
       </trans-unit>
       <trans-unit id="base" xml:space="preserve">
           <source>Base</source>
-        <target/>
+        <target>Základné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
