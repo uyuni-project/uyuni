@@ -1094,91 +1094,91 @@
       </trans-unit>
       <trans-unit id="Admins" xml:space="preserve">
         <source>Admins</source>
-        <target/>
+        <target>Administrátori</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/*.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscribed Systems" xml:space="preserve">
         <source>Subscribed Systems</source>
-        <target/>
+        <target>Prihlásené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Repositories" xml:space="preserve">
         <source>Repositories</source>
-        <target/>
+        <target>Repozitáre</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Managers" xml:space="preserve">
         <source>Managers</source>
-        <target/>
+        <target>Správcovia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscribers" xml:space="preserve">
         <source>Subscribers</source>
-        <target/>
+        <target>Predplatitelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Downloads" xml:space="preserve">
         <source>Downloads</source>
-        <target/>
+        <target>Stiahnutia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="License" xml:space="preserve">
         <source>License</source>
-        <target/>
+        <target>Licencia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sync" xml:space="preserve">
         <source>Sync</source>
-        <target/>
+        <target>Synchronizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/SyncErrata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Organizations" xml:space="preserve">
         <source>Organizations</source>
-        <target/>
+        <target>Organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Trusts" xml:space="preserve">
         <source>Trusts</source>
-        <target/>
+        <target>Záruky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channels Consumed" xml:space="preserve">
         <source>Channels Consumed</source>
-        <target/>
+        <target>Spotrebované kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channels Provided" xml:space="preserve">
         <source>Channels Provided</source>
-        <target/>
+        <target>Poskytnuté kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscriptions" xml:space="preserve">
         <source>Subscriptions</source>
-        <target/>
+        <target>Predplatné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Subscriptions.do</context>
         </context-group>
@@ -1186,21 +1186,21 @@
       <!-- SSM NAV -->
       <trans-unit id="Child Channels" xml:space="preserve">
           <source>Child Channels</source>
-        <target/>
+        <target>Kanály potomkov</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="Chat" xml:space="preserve">
           <source>Chat</source>
-        <target/>
+        <target>Debata</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="Base Channels" xml:space="preserve">
           <source>Base Channels</source>
-        <target/>
+        <target>Základné kanály</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
@@ -1208,7 +1208,7 @@
       <!-- Activation Keys nav -->
       <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
           <source>Activated Systems</source>
-        <target/>
+        <target>Aktivované systémy</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
@@ -1216,21 +1216,21 @@
       <!-- Main nav -->
       <trans-unit id="manage" xml:space="preserve">
           <source>Manage</source>
-        <target/>
+        <target>Spravovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
       </trans-unit>
       <trans-unit id="clear" xml:space="preserve">
           <source>Clear</source>
-        <target/>
+        <target>Vyčistiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Deployment" xml:space="preserve">
         <source>Deployment</source>
-        <target/>
+        <target>Nasadenie</target>
       </trans-unit>
       <trans-unit id="Image List" xml:space="preserve">
         <source>Image List</source>
