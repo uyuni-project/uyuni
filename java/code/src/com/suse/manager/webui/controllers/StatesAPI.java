@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -213,7 +214,7 @@ public class StatesAPI {
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
                 .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .map(p -> new PackageStateJson(p.getName(), new PackageEvr(
-                        p.getEpoch(), p.getVersion(), p.getRelease()), p.getArch()))
+                        p.getEpoch(), p.getVersion(), p.getRelease(), server.getPackageType()), p.getArch()))
                 .collect(Collectors.toSet());
 
         response.type("application/json");
@@ -585,7 +586,8 @@ public class StatesAPI {
             new PackageStateJson(
                     state.getName().getName(),
                     Optional.ofNullable(state.getEvr())
-                            .orElse(new PackageEvr("", "", "")),
+                            //TODO: this should probably be rather null instead of a dummy value
+                            .orElse(new PackageEvr("", "", "", PackageType.RPM)),
                     Optional.ofNullable(state.getArch())
                             .map(PackageArch::getLabel).orElse(""),
                     Optional.of(state.getPackageStateTypeId()),

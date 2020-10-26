@@ -309,7 +309,7 @@ $in .= <<EOF;
 insert into rhnVersionInfo
        ( label, name_id, evr_id, created, modified )
        values ('schema', lookup_package_name('$my_schema_name'),
-               lookup_evr(null, '$my_schema_version' , '$my_schema_release' ),
+               lookup_evr2(null, '$my_schema_version' , '$my_schema_release', 'rpm' ),
                current_timestamp, current_timestamp );
 commit;
 EOF

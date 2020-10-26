@@ -76,6 +76,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -1512,13 +1513,13 @@ public class SaltUtils {
         Map<String, PackageName> packageNames = names.stream().collect(Collectors.toMap(Function.identity(),
                 PackageFactory::lookupOrCreatePackageByName));
 
-        String serverArchTypeLabel = server.getServerArch().getArchType().getLabel();
+
         Map<String, PackageEvr> packageEvrsBySaltPackageKey = packageInfoAndNameBySaltPackageKey.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         e -> {
                             Pkg.Info pkgInfo = e.getValue().getB();
                             return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().get(),
-                                    pkgInfo.getRelease(), serverArchTypeLabel);
+                                    pkgInfo.getRelease(), server.getPackageType());
                         }));
 
         return packageInfoAndNameBySaltPackageKey.entrySet().stream().map(e -> createInstalledPackage(
@@ -1547,7 +1548,7 @@ public class SaltUtils {
 
         // Add -deb suffix to architectures for Debian systems
         String pkgArch = pkgInfo.getArchitecture().get();
-        if ("deb".equals(server.getServerArch().getArchType().getLabel())) {
+        if (server.getPackageType() == PackageType.DEB) {
             pkgArch += "-deb";
         }
         pkg.setArch(PackageFactory.lookupPackageArchByLabel(pkgArch));
@@ -1593,7 +1594,10 @@ public class SaltUtils {
                 new PackageEvr(
                         info.getEpoch().orElse(null),
                         info.getVersion().get(),
-                        info.getRelease().orElse("X")
+                        info.getRelease().orElse("X"),
+                        //TODO: this is not correct but does not effect toUniversalEvrString.
+                        // we should still do this differently
+                        PackageType.RPM
                 ).toUniversalEvrString()
         );
         sb.append(".");
@@ -1609,7 +1613,7 @@ public class SaltUtils {
      * @param entry the package
      * @return the key
      */
-    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
+    private static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
         return packageToKey(entry.getKey(), entry.getValue());
     }
 
@@ -1665,15 +1669,16 @@ public class SaltUtils {
     }
 
     private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
-            String archTypeLabel) {
-
-        if ("deb".equals(archTypeLabel)) {
-            // We need additional parsing for deb package versions
-            return PackageEvrFactory.lookupOrCreatePackageEvr(PackageUtils.parseDebianEvr(version));
+                                              PackageType type) {
+        switch (type) {
+            case DEB:
+                return PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
+            case RPM:
+                return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
+                        version, release.orElse("0"), PackageType.RPM);
+            default:
+                throw new RuntimeException("unreachable");
         }
-
-        return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null), version,
-                release.orElse("0"));
     }
 
     private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
@@ -1685,17 +1690,12 @@ public class SaltUtils {
             Optional<String> release, String version, Optional<Long> installDateUnixTime, Optional<String> architecture,
             ImageInfo imageInfo) {
 
-        String archType = imageInfo.getImageArch().getArchType().getLabel();
-        Optional<String> pkgArch = architecture.map(arch -> archType.equals("deb") ? arch + "-deb" : arch);
-        PackageEvr evr = parsePackageEvr(epoch, version, release, archType);
-        return createImagePackageFromSalt(name, evr, installDateUnixTime, pkgArch, imageInfo);
-    }
-
-    private static ImagePackage createImagePackageFromSalt(String name, PackageEvr pkgEvr,
-            Optional<Long> installDateUnixTime, Optional<String> architecture, ImageInfo imageInfo) {
+        PackageType packageType = imageInfo.getPackageType();
+        Optional<String> pkgArch = architecture.map(arch -> packageType == PackageType.DEB ? arch + "-deb" : arch);
+        PackageEvr evr = parsePackageEvr(epoch, version, release, packageType);
         ImagePackage pkg = new ImagePackage();
-        pkg.setEvr(pkgEvr);
-        architecture.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
+        pkg.setEvr(evr);
+        pkgArch.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
         installDateUnixTime.ifPresent(udut -> pkg.setInstallTime(new Date(udut * 1000)));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setImageInfo(imageInfo);

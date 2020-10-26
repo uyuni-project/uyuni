@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -2191,5 +2192,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public String getChannelHost() {
         return this.getFirstServerPath().map(p -> p.getHostname())
                 .orElseGet(() -> ConfigDefaults.get().getCobblerHost());
+    }
+
+    public PackageType getPackageType() {
+        //TODO: consider moving this to getOs
+        return getServerArch().getArchType().getPackageType();
     }
 }

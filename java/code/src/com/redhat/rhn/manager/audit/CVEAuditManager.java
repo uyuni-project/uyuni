@@ -639,8 +639,7 @@ public class CVEAuditManager {
         CVEPatchStatus(long systemIdIn, String systemNameIn,
                 Optional<Long> errataIdIn, String errataAdvisoryIn,
                 Optional<Long> packageIdIn, Optional<String> packageNameIn,
-                Optional<String> packageEpochIn, Optional<String> packageVersionIn,
-                Optional<String> packageReleaseIn, boolean packageInstalledIn,
+                Optional<PackageEvr> evrIn, boolean packageInstalledIn,
                 Optional<Long> channelIdIn, String channelNameIn,
                 String channelLabelIn, boolean channelAssignedIn,
                 Optional<Long> channelRankIn) {
@@ -656,8 +655,7 @@ public class CVEAuditManager {
             this.channelLabel = channelLabelIn;
             this.channelAssigned = channelAssignedIn;
             this.channelRank = channelRankIn;
-            this.packageEvr = packageVersionIn
-                    .map(v -> new PackageEvr(packageEpochIn.orElse(null), v, packageReleaseIn.orElse(null)));
+            this.packageEvr = evrIn;
         }
 
         /**
@@ -774,24 +772,33 @@ public class CVEAuditManager {
         params.put("user_id", user.getId());
         DataResult<Map<String, Object>> results = m.execute(params);
 
-        return StreamSupport.stream(results.spliterator(), false)
-                .map(row -> new CVEPatchStatus(
-                        (long) row.get("image_info_id"),
-                        (String) row.get("image_name"),
-                        Optional.ofNullable((Long)row.get("errata_id")),
-                        (String) row.get("errata_advisory"),
-                        Optional.ofNullable((Long)row.get("package_id")),
-                        Optional.ofNullable((String)row.get("package_name")),
-                        Optional.ofNullable((String)row.get("package_epoch")),
-                        Optional.ofNullable((String)row.get("package_version")),
-                        Optional.ofNullable((String)row.get("package_release")),
-                        getBooleanValue(row, "package_installed"),
-                        Optional.ofNullable((Long)row.get("channel_id")),
-                        (String) row.get("channel_name"),
-                        (String) row.get("channel_label"),
-                        getBooleanValue(row, "channel_assigned"),
-                        Optional.ofNullable((Long)row.get("channel_rank"))
-                ));
+
+        return results.stream()
+                .map(row -> {
+                    Optional<PackageEvr> packageEvr =
+                        Optional.ofNullable((String) row.get("package_epoch")).flatMap(pe ->
+                        Optional.ofNullable((String) row.get("package_version")).flatMap(pv ->
+                        Optional.ofNullable((String) row.get("package_release")).flatMap(pr ->
+                        Optional.ofNullable((String) row.get("package_type"))
+                                .map(pt -> new PackageEvr(pe, pv, pr, pt)))));
+
+
+                    return new CVEPatchStatus(
+                            (long) row.get("image_info_id"),
+                            (String) row.get("image_name"),
+                            Optional.ofNullable((Long)row.get("errata_id")),
+                            (String) row.get("errata_advisory"),
+                            Optional.ofNullable((Long)row.get("package_id")),
+                            Optional.ofNullable((String)row.get("package_name")),
+                            packageEvr,
+                            getBooleanValue(row, "package_installed"),
+                            Optional.ofNullable((Long)row.get("channel_id")),
+                            (String) row.get("channel_name"),
+                            (String) row.get("channel_label"),
+                            getBooleanValue(row, "channel_assigned"),
+                            Optional.ofNullable((Long)row.get("channel_rank"))
+                    );
+                });
 
     }
 
@@ -806,23 +813,31 @@ public class CVEAuditManager {
         DataResult<Map<String, Object>> results = m.execute(params);
 
         return StreamSupport.stream(results.spliterator(), false)
-                .map(row -> new CVEPatchStatus(
-                    (long) row.get("system_id"),
-                    (String) row.get("system_name"),
-                    Optional.ofNullable((Long)row.get("errata_id")),
-                    (String) row.get("errata_advisory"),
-                    Optional.ofNullable((Long)row.get("package_id")),
-                    Optional.ofNullable((String)row.get("package_name")),
-                    Optional.ofNullable((String)row.get("package_epoch")),
-                    Optional.ofNullable((String)row.get("package_version")),
-                    Optional.ofNullable((String)row.get("package_release")),
-                    getBooleanValue(row, "package_installed"),
-                    Optional.ofNullable((Long)row.get("channel_id")),
-                    (String) row.get("channel_name"),
-                    (String) row.get("channel_label"),
-                    getBooleanValue(row, "channel_assigned"),
-                    Optional.ofNullable((Long)row.get("channel_rank"))
-                ));
+                .map(row -> {
+
+                    Optional<PackageEvr> packageEvr =
+                            Optional.ofNullable((String) row.get("package_epoch")).flatMap(pe ->
+                            Optional.ofNullable((String) row.get("package_version")).flatMap(pv ->
+                            Optional.ofNullable((String) row.get("package_release")).flatMap(pr ->
+                            Optional.ofNullable((String) row.get("package_type"))
+                                    .map(pt -> new PackageEvr(pe, pv, pr, pt)))));
+
+                    return new CVEPatchStatus(
+                            (long) row.get("system_id"),
+                            (String) row.get("system_name"),
+                            Optional.ofNullable((Long)row.get("errata_id")),
+                            (String) row.get("errata_advisory"),
+                            Optional.ofNullable((Long)row.get("package_id")),
+                            Optional.ofNullable((String)row.get("package_name")),
+                            packageEvr,
+                            getBooleanValue(row, "package_installed"),
+                            Optional.ofNullable((Long)row.get("channel_id")),
+                            (String) row.get("channel_name"),
+                            (String) row.get("channel_label"),
+                            getBooleanValue(row, "channel_assigned"),
+                            Optional.ofNullable((Long)row.get("channel_rank"))
+                    );
+                });
 
     }
 

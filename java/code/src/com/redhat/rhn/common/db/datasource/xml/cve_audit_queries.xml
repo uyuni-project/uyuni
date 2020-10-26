@@ -64,7 +64,8 @@
         rhnPackageEVR.epoch as package_epoch,
         rhnPackageEVR.version as package_version,
         rhnPackageEVR.release as package_release,
-        (SELECT DISTINCT 1
+        rhnPackageEVR.type as package_type,
+    (SELECT DISTINCT 1
             FROM rhnServerPackage sp, rhnPackageEVR sevr, rhnPackageUpgradeArchCompat puac
             WHERE rhnServerPackage.server_id = sp.server_id
               AND rhnServerPackage.name_id = sp.name_id
@@ -129,6 +130,7 @@
         CAST(NULL AS CHAR) AS package_epoch,
         CAST(NULL AS CHAR) AS package_version,
         CAST(NULL AS CHAR) AS package_release,
+        CAST(NULL AS CHAR) AS package_type,
         CAST(NULL AS INTEGER) AS package_installed,
         CAST(NULL AS INTEGER) AS channel_id,
         CAST(NULL AS CHAR) AS channel_name,
@@ -167,7 +169,8 @@
         rhnPackageEVR.epoch as package_epoch,
         rhnPackageEVR.version as package_version,
         rhnPackageEVR.release as package_release,
-        (SELECT DISTINCT 1
+        rhnPackageEVR.type as package_type,
+    (SELECT DISTINCT 1
             FROM suseImageInfoPackage iip, rhnPackageEVR sevr, rhnPackageUpgradeArchCompat puac
             WHERE suseImageInfoPackage.image_info_id = iip.image_info_id
               AND suseImageInfoPackage.name_id = iip.name_id
@@ -232,6 +235,7 @@
         CAST(NULL AS CHAR) AS package_epoch,
         CAST(NULL AS CHAR) AS package_version,
         CAST(NULL AS CHAR) AS package_release,
+        CAST(NULL AS CHAR) AS package_type,
         CAST(NULL AS INTEGER) AS package_installed,
         CAST(NULL AS INTEGER) AS channel_id,
         CAST(NULL AS CHAR) AS channel_name,

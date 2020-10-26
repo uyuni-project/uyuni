@@ -3681,7 +3681,8 @@ public class SystemHandler extends BaseHandler {
                 }
                 pkgMap.put("name_id", pkgName.getId());
                 pkgMap.put("evr_id", PackageEvrFactory.lookupOrCreatePackageEvr(epoch,
-                        packageNevra.get("package_version"), packageNevra.get("package_release")).getId());
+                        packageNevra.get("package_version"), packageNevra.get("package_release"),
+                        arch.getArchType().getPackageType()).getId());
                 pkgMap.put("arch_id", arch.getId());
             }
             // in case if we have more than one package with

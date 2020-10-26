@@ -416,7 +416,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             p = PackageManagerTest.
             addPackageToSystemAndChannel("up2date", s, c);
             PackageEvr pevr = PackageEvrFactory.lookupOrCreatePackageEvr("0",
-                    version, "0");
+                    version, "0", s.getPackageType());
             p.setPackageEvr(pevr);
             TestUtils.saveAndFlush(p);
         }
@@ -563,7 +563,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         //   Create upgraded package EVR so package will show up from the query
         PackageEvr upgradedPackageEvr =
-            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2");
+            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
         upgradedPackageEvr =
             (PackageEvr)TestUtils.saveAndReload(upgradedPackageEvr);
 

@@ -67,7 +67,8 @@ public class DebVersionComparator implements Comparator<String> {
             int rv = verrevcmp(revision1, revision2);
             if (rv > 0) {
                 return 1;
-            } else if (rv < 0) {
+            }
+            else if (rv < 0) {
                 return -1;
             }
             return 0;

@@ -1177,7 +1177,7 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageRunTransaction(User scheduler,
-            Server server, List pkgs, Date earliest) throws TaskomaticApiException {
+            Server server, List<PackageMetadata> pkgs, Date earliest) throws TaskomaticApiException {
 
         if (pkgs == null || pkgs.isEmpty()) {
             return null;
@@ -1209,15 +1209,13 @@ public class ActionManager extends BaseManager {
         // this is SOOOO WRONG, we need to get rid of DataSource
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "insert_package_delta_element");
-        for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-            PackageMetadata pm = (PackageMetadata) itr.next();
-            Map<String, Object> params = new HashMap<String, Object>();
+        for (PackageMetadata pm : pkgs) {
+            Map<String, Object> params = new HashMap<>();
             params.put("delta_id", pd.getId());
             if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_ONLY) {
 
                 if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_THIS_ONLY]; " +
-                            "deleting package from system");
+                    log.debug("compare returned [KEY_THIS_ONLY]; " + "deleting package from system");
                 }
 
                 params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
@@ -1254,9 +1252,9 @@ public class ActionManager extends BaseManager {
 
                 if (log.isDebugEnabled()) {
                     log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; " +
-                            "deleting package ["  + pm.getName() + "-" +
+                            "deleting package [" + pm.getName() + "-" +
                             pm.getSystemEvr() + "] from system " +
-                            "installing package ["  + pm.getName() + "-" +
+                            "installing package [" + pm.getName() + "-" +
                             pm.getOther().getEvr() + "] to system");
                 }
 
@@ -1268,8 +1266,7 @@ public class ActionManager extends BaseManager {
                     params.put("r", pm.getSystem().getRelease());
                     epoch = pm.getSystem().getEpoch();
                     params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
-                    params.put("a", pm.getSystem().getArch() != null ?
-                            pm.getOther().getArch() : "");
+                    params.put("a", pm.getSystem().getArch() != null ? pm.getOther().getArch() : "");
                     m.executeUpdate(params);
                 }
 
@@ -1279,8 +1276,7 @@ public class ActionManager extends BaseManager {
                 params.put("r", pm.getOther().getRelease());
                 epoch = pm.getOther().getEpoch();
                 params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
-                params.put("a", pm.getOther().getArch() != null ?
-                        pm.getOther().getArch() : "");
+                params.put("a", pm.getOther().getArch() != null ? pm.getOther().getArch() : "");
                 m.executeUpdate(params);
             }
         }
@@ -1288,7 +1284,7 @@ public class ActionManager extends BaseManager {
         // this is SOOOO WRONG, we need to get rid of DataSource
         m = ModeFactory.getWriteMode("Action_queries",
                 "insert_action_package_delta");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("action_id", action.getId());
         params.put("delta_id", pd.getId());
         m.executeUpdate(params);

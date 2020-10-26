@@ -28,6 +28,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.rhnpackage.PackageEvr as p
              where ((p.epoch is null and :e_in is null) or (p.epoch = :e_in)) and
                    p.version = :v_in and
-                   p.release = :r_in]]>
+                   p.release = :r_in and
+                   p.type = :t_in]]>
     </query>
 </hibernate-mapping>
