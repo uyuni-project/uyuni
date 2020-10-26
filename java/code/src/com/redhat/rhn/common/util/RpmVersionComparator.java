@@ -32,6 +32,7 @@ public class RpmVersionComparator implements Comparator<String> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare(String o1, String o2) {
         if (o1 == null) {
             o1 = "";
@@ -50,43 +51,6 @@ public class RpmVersionComparator implements Comparator<String> {
         String str2 = (String) o2;
         int b1 = 0;
         int b2 = 0;
-
-        if (str1.indexOf("+") > 0 && str2.indexOf("+") > 0 && str1.indexOf("~") == -1 && str2.indexOf("~") == -1 &&
-                str1.indexOf(".module") == -1 && str2.indexOf(".module") == -1) {
-            str1 = str1.substring(0, str1.indexOf("+"));
-            str2 = str2.substring(0, str2.indexOf("+"));
-        }
-
-        // Handling for Debian packages that contain a '-' in version (e.g. 8-20180414)
-        // These packages have a version like upstream_version-debian_revision
-        String debUpstreamVer1 = str1;
-        String debUpstreamVer2 = str2;
-        String debRevisionVer1 = "";
-        String debRevisionVer2 = "";
-
-        if (o1.length() > 1 && o1.indexOf('-') > 0) {
-            debUpstreamVer1 = o1.substring(0, o1.indexOf('-'));
-        }
-        if (o2.length() > 1 && o2.indexOf('-') > 0) {
-            debUpstreamVer2 = o2.substring(0, o2.indexOf('-'));
-        }
-        if (!debUpstreamVer1.equals(debUpstreamVer2)) {
-            // different upstream_version: we just compare the upstream_version
-            str1 = debUpstreamVer1;
-            str2 = debUpstreamVer2;
-        }
-        else {
-            // same upstream_version: we compare only the debian revision
-            if (o1.indexOf('-') > 0 && o2.indexOf('-') > 0) {
-                debRevisionVer1 = o1.substring(o1.indexOf('-') + 1);
-                debRevisionVer2 = o2.substring(o2.indexOf('-') + 1);
-            }
-            else {
-                return 0;
-            }
-            str1 = debRevisionVer1;
-            str2 = debRevisionVer2;
-        }
 
         /* loop through each version segment of str1 and str2 and compare them */
         while (true) {

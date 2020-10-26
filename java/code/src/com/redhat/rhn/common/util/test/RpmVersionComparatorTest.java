@@ -14,7 +14,13 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
+
+import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -40,7 +46,7 @@ public class RpmVersionComparatorTest extends TestCase {
         // Some equality
         assertCompareSymm(0, "0", "0");
         assertCompareSymm(0, "1-a.1", "1-a.1");
-        assertCompareSymm(0, "1_a.1", "1.a_1");
+        assertCompareSymm(0, "1-a.1", "1.a-1");
         assertCompareSymm(0, "", "");
 
         // all not alphanum signs are treated as the same
@@ -110,7 +116,6 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(-1, "7.module_el8.2.0+305+5e198a41", "7.module_el8.2.0+458+dab581ed");
         // some packages have "module+el8" in the release
         assertCompareSymm(-1, "10.module+el8.2.0+7749+4a513fb2", "10.module+el8.2.0+7749+5a513fb2");
-
         assertCompareSymm(-1, "6.module+el8+1645+8d4014a6", "7.module_el8.2.0+458+dab581ed");
     }
 
@@ -142,5 +147,20 @@ public class RpmVersionComparatorTest extends TestCase {
         assertEquals(exp, cmp.compare(v1, v2));
         assertEquals(0, cmp.compare(v1, v1));
         assertEquals(0, cmp.compare(v2, v2));
+        assertEquals(exp, testRPMVersionCompareInDatabase(
+                v1, v2));
+    }
+
+    private int testRPMVersionCompareInDatabase(String operand1, String operand2) {
+        // test the stored function
+        CallableMode m = ModeFactory.getCallableMode("PackageEvr_queries", "rpmstrcmp");
+        Map inParams = new HashMap();
+        Map outParams = new HashMap();
+        outParams.put("compareResult", Types.INTEGER);
+        Integer result;
+        inParams.put("operand1", operand1);
+        inParams.put("operand2", operand2);
+        result = (Integer) m.execute(inParams, outParams).get("compareResult");
+        return result;
     }
 }
