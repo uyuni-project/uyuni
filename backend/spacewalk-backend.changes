@@ -1,3 +1,4 @@
+- Re-enables possibility to use local repos with repo-sync (bsc#1175607)
 - support installer_updates flag in ISS
 - Take care of SCC auth tokens on DEB repos GPG checks (bsc#1175485)
 - Use spacewalk keyring for GPG checks on DEB repos (bsc#1175485)
