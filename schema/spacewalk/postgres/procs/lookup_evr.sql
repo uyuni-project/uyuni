@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 
 create or replace function
-lookup_evr(e_in in varchar, v_in in varchar, r_in in varchar)
+lookup_evr2(e_in in varchar, v_in in varchar, r_in in varchar, t_in)
 returns numeric
 as
 $$
@@ -25,13 +25,14 @@ begin
       from rhnPackageEVR
      where ((epoch is null and e_in is null) or (epoch = e_in)) and
            version = v_in and
-           release = r_in;
+           release = r_in and
+           (evr).type = t_in;
 
     if not found then
         -- HACK: insert is isolated in own function in order to be able to declare this function immutable
         -- Postgres optimizes immutable functions calls but those are compatible with the contract of lookup_\*
         -- see https://www.postgresql.org/docs/9.6/xfunc-volatility.html
-        return insert_evr(e_in, v_in, r_in);
+        return insert_evr(e_in, v_in, r_in, t_in);
     end if;
 
     return evr_id;

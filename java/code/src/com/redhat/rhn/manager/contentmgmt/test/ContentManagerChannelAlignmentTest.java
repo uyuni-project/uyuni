@@ -565,7 +565,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(
                 packageEvr.getEpoch(),
                 version,
-                packageEvr.getRelease()
+                packageEvr.getRelease(),
+                packageEvr.getPackageType()
         ));
         olderPkg.setPackageName(fromPkg.getPackageName());
         return olderPkg;
@@ -577,7 +578,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         olderPkg.setEvr(PackageEvrFactoryTest.createTestPackageEvr(
                 packageEvr.getEpoch(),
                 overrideVersion.orElse(packageEvr.getVersion()),
-                packageEvr.getRelease()
+                packageEvr.getRelease(),
+                packageEvr.getPackageType()
         ));
         olderPkg.setArch(otherPkg.getPackageArch());
         olderPkg.setName(otherPkg.getPackageName());

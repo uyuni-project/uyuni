@@ -45,6 +45,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
         epoch = null;
         version = null;
         release = null;
+        type = null;
     }
 
     /**
@@ -54,12 +55,31 @@ public class PackageEvr implements Comparable<PackageEvr> {
      * @param epochIn epoch
      * @param versionIn version
      * @param releaseIn release
+     * @param typeIn type
      */
-    public PackageEvr(String epochIn, String versionIn, String releaseIn) {
+    public PackageEvr(String epochIn, String versionIn, String releaseIn, String typeIn) {
         id = null;
         epoch = epochIn;
         version = versionIn;
         release = releaseIn;
+        type = typeIn;
+    }
+
+    /**
+     * Complete constructor. Use PackageEvrFactory to create PackageEvrs if you
+     * want to persist them to the Database. ONLY USE for non-persisting evr
+     * objects.
+     * @param epochIn epoch
+     * @param versionIn version
+     * @param releaseIn release
+     * @param typeIn type
+     */
+    public PackageEvr(String epochIn, String versionIn, String releaseIn, PackageType typeIn) {
+        id = null;
+        epoch = epochIn;
+        version = versionIn;
+        release = releaseIn;
+        type = typeIn.getDbString();
     }
 
     /**
@@ -68,7 +88,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
      * @param other the evr object to copy from
      */
     public PackageEvr(PackageEvr other) {
-        this(other.getEpoch(), other.getVersion(), other.getRelease());
+        this(other.getEpoch(), other.getVersion(), other.getRelease(), other.getType());
     }
 
     /**
@@ -104,6 +124,20 @@ public class PackageEvr implements Comparable<PackageEvr> {
      */
     public String getRelease() {
         return release;
+    }
+
+    /**
+     * @return package type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type package type
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**
@@ -223,4 +257,100 @@ public class PackageEvr implements Comparable<PackageEvr> {
 
         return builder.toString();
     }
+
+    /**
+     * Parses a Debian package version string to create a {@link PackageEvr} object.
+     *
+     * Debian package versioning policy format: [epoch:]upstream_version[-debian_revision]
+     * Additional ':' and '-' characters are allowed in 'upstream_version'
+     * https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
+     *
+     * @param version the package version string
+     * @return the package EVR
+     */
+    public static PackageEvr parseDebian(String version) {
+
+        // repo-sync replaces empty releases with 'X'. We copy the same behavior.
+        String release = "X";
+        String epoch = null;
+
+        int epochIndex = version.indexOf(':');
+        if (epochIndex > 0) {
+            // Strip away optional 'epoch'
+            epoch = version.substring(0, epochIndex);
+            version = version.substring(epochIndex + 1);
+        }
+
+        int releaseIndex = version.lastIndexOf('-');
+        if (releaseIndex > 0) {
+            // Strip away optional 'release'
+            release = version.substring(releaseIndex + 1);
+            version = version.substring(0, releaseIndex);
+        }
+
+        return new PackageEvr(epoch, version, release, "deb");
+    }
+
+    /**
+     * Parses a RPM package version string to create a {@link PackageEvr} object.
+     *
+     * RPM package version policy format: [epoch:]version[-release]
+     *
+     * @param version the package version string
+     * @return the package EVR
+     */
+    public static PackageEvr parseRpm(String version) {
+        String release = "";
+        String epoch = null;
+
+        int epochIndex = version.indexOf(':');
+        if (epochIndex > 0) {
+            // Strip away optional 'epoch'
+            epoch = version.substring(0, epochIndex);
+            version = version.substring(epochIndex + 1);
+        }
+
+        int releaseIndex = version.lastIndexOf('-');
+        if (releaseIndex > 0) {
+            // Strip away optional 'release'
+            release = version.substring(releaseIndex + 1);
+            version = version.substring(0, releaseIndex);
+        }
+
+        return new PackageEvr(epoch, version, release, "rpm");
+    }
+
+    /**
+     * @return package type
+     */
+    public PackageType getPackageType() {
+        if (type.equals(PackageType.DEB.getDbString())) {
+            return PackageType.DEB;
+        }
+        else if (type.equals(PackageType.RPM.getDbString())) {
+            return PackageType.RPM;
+        }
+        else {
+            throw new RuntimeException("unreachable");
+        }
+    }
+
+    /**
+     * Detect package type and call the correct parser for the version string.
+     *
+     * @param version the version string
+     * @param type package type
+     * @return parsed PackageEvr object
+     */
+    public static PackageEvr parsePackageEvr(PackageType type, String version) {
+        switch (type) {
+            case RPM:
+                return parseRpm(version);
+            case DEB:
+                return parseDebian(version);
+            default:
+                throw new RuntimeException("unreachable");
+        }
+    }
+
 }

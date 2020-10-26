@@ -325,7 +325,7 @@ class Packages:
         (
           select pn.name,
                  latest.name_id,
-                 lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release) AS evr_id,
+                 lookup_evr2((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
                  latest.arch_label AS ARCH,
                  latest.arch_id
             from

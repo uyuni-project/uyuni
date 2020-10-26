@@ -29,6 +29,7 @@ declare
     e_id        numeric;
     p_arch_id   numeric;
     tp_id       numeric;
+    type        varchar;
 begin
     select id
       into o_id
@@ -40,12 +41,18 @@ begin
     end if;
 
     n_id := lookup_package_name(n_in);
-    e_id := lookup_evr(e_in, v_in, r_in);
     p_arch_id := null;
 
     if a_in is not null then
         p_arch_id := lookup_package_arch(a_in);
+        select t.label into type from rhnpackagearch pa join rhnarchtype t
+         on t.id = pa.arch_type_id where pa.id = p_arch_id;
+    else
+	-- currently only used with kickstart and this is supported for Red Hat only
+	type := 'rpm';
     end if;
+
+    e_id := lookup_evr2(e_in, v_in, r_in, type);
 
     select id
       into tp_id

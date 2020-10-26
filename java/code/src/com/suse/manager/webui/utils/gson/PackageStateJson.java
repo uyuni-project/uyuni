@@ -15,7 +15,6 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
@@ -52,6 +51,9 @@ public class PackageStateJson {
     /** Package architecture */
     private final String arch;
 
+    /** Package evr **/
+    private final transient PackageEvr packageEvr;
+
     /** Id to represent the state of the package */
     private final Optional<Integer> packageStateId;
 
@@ -74,6 +76,7 @@ public class PackageStateJson {
         this.arch = archIn;
         this.packageStateId = packageStateIdIn;
         this.versionConstraintId = versionConstraintIdIn;
+        this.packageEvr = evrIn;
     }
 
     /**
@@ -89,6 +92,7 @@ public class PackageStateJson {
         this.arch = archIn;
         this.packageStateId = Optional.empty();
         this.versionConstraintId = Optional.empty();
+        this.packageEvr = evrIn;
     }
 
     /**
@@ -164,8 +168,7 @@ public class PackageStateJson {
                     VersionConstraints vc = versionConstraint.get();
                     if (!Arrays.asList(VersionConstraints.LATEST, VersionConstraints.ANY)
                             .contains(vc)) {
-                        packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
-                                getEpoch(), getVersion(), getRelease()));
+                        packageState.setEvr(packageEvr);
                     }
                     packageState.setVersionConstraint(vc);
                 }

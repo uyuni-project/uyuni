@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleStreams;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.modulemd.RepositoryNotModularException;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
@@ -156,9 +157,12 @@ public class MockModulemdApi extends ModulemdApi {
             Matcher m = nevraPattern.matcher(nevra);
             if (m.matches()) {
                 Package pkg = PackageTest.createTestPackage(user.getOrg());
+                PackageArch packageArch = PackageFactory.lookupPackageArchByLabel(m.group(5));
                 PackageTest.populateTestPackage(pkg, user.getOrg(), PackageNameTest.createTestPackageName(m.group(1)),
-                        PackageEvrFactoryTest.createTestPackageEvr(m.group(2), m.group(3), m.group(4)),
-                        PackageFactory.lookupPackageArchByLabel(m.group(5)));
+                        PackageEvrFactoryTest.createTestPackageEvr(m.group(2), m.group(3), m.group(4),
+                                packageArch.getArchType().getPackageType()),
+                                packageArch
+                        );
 
                 if (!perlNevra.equals(nevra)) {
                     // Exclude non-modular Perl package mentioned above

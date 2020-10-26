@@ -15,6 +15,8 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.SatelliteServer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -39,7 +41,7 @@ public class SatelliteServerTest extends RhnBaseTestCase {
 
     public void testSetVersion() {
         SatelliteServer ss = new SatelliteServer();
-        ss.setVersion("4.1.0");
+        ss.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "4.1.0", "1", PackageType.RPM));
         PackageEvr evr = ss.getVersion();
         assertNotNull(evr);
         assertNull(evr.getEpoch());

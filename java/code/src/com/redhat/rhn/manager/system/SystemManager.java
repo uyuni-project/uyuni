@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -2115,7 +2116,8 @@ public class SystemManager extends BaseManager {
 
         ProxyInfo info = new ProxyInfo();
         info.setServer(server);
-        info.setVersion(null, version, "1");
+        info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(
+                null, version, "1", server.getPackageType()));
         server.setProxyInfo(info);
         if (Config.get().getBoolean(ConfigDefaults.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
             Channel proxyChannel = ChannelManager.getProxyChannelByVersion(

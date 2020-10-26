@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 
-import com.suse.manager.utils.PackageUtils;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.utils.Opt;
 
@@ -373,7 +372,7 @@ public class DownloadController {
         if ("deb".equalsIgnoreCase(extension) || "udeb".equalsIgnoreCase(extension)) {
             name = StringUtils.substringBeforeLast(rest, "_");
             rest = StringUtils.substringAfterLast(rest, "_");
-            PackageEvr pkgEv = PackageUtils.parseDebianEvr(rest);
+            PackageEvr pkgEv = PackageEvr.parseDebian(rest);
             epoch = pkgEv.getEpoch();
             version = pkgEv.getVersion();
             release = pkgEv.getRelease();

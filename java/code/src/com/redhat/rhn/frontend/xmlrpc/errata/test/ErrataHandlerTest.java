@@ -673,7 +673,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package chanPack = PackageTest.createTestPackage(admin.getOrg());
         //we have to set the 2nd package to a different EVR to not violate a
         //      unique constraint
-        PackageEvr evr =  PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983");
+        PackageEvr evr =  PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983",
+                chanPack.getPackageType());
         chanPack.setPackageName(errataPack.getPackageName());
         chanPack.setPackageEvr(evr);
 

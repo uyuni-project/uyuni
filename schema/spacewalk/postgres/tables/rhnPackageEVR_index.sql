@@ -14,9 +14,9 @@
 --
 
 create unique index rhn_pe_v_r_e_uq
-    on rhnpackageevr (version, release, epoch)
+    on rhnpackageevr (version, release, epoch, ((evr).type))
  where epoch is not null;
 
 create unique index rhn_pe_v_r_uq
-    on rhnpackageevr (version, release)
+    on rhnpackageevr (version, release, ((evr).type))
  where epoch is null;

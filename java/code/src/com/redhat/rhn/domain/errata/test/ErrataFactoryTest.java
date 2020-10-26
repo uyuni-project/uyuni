@@ -138,7 +138,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Package chanPack = PackageTest.createTestPackage(user.getOrg());
         //we have to set the 2nd package to a different EVR to not violate a
         //      unique constraint
-        PackageEvr evr =  PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983");
+        PackageEvr evr =  PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983",
+                errataPack.getPackageEvr().getPackageType());
         chanPack.setPackageName(errataPack.getPackageName());
         chanPack.setPackageEvr(evr);
 

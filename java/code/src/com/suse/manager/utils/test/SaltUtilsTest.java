@@ -17,6 +17,7 @@ package com.suse.manager.utils.test;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 
 import com.google.gson.reflect.TypeToken;
@@ -33,7 +34,7 @@ public class SaltUtilsTest extends TestCase {
         var atomName = new PackageName();
         atomName.setName("atom");
 
-        var atomEvr = new PackageEvr(null, "1.42.0", "0.1");
+        var atomEvr = new PackageEvr(null, "1.42.0", "0.1", PackageType.RPM);
 
         var x86Arch = new PackageArch();
         x86Arch.setName("x86_64");
@@ -60,7 +61,7 @@ public class SaltUtilsTest extends TestCase {
         var initramfsToolsName = new PackageName();
         initramfsToolsName.setName("initramfs-tools");
 
-        var initramfsToolsEvr = new PackageEvr(null, "0.130ubuntu3.8", "X");
+        var initramfsToolsEvr = new PackageEvr(null, "0.130ubuntu3.8", "X", PackageType.DEB);
 
         var allDebArch = new PackageArch();
         allDebArch.setName("all-deb");

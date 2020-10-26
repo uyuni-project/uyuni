@@ -1685,7 +1685,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(
                 packageEvr.getEpoch(),
                 version,
-                packageEvr.getRelease()
+                packageEvr.getRelease(),
+                fromPkg.getPackageType()
         ));
         olderPkg.setPackageName(fromPkg.getPackageName());
         return olderPkg;
