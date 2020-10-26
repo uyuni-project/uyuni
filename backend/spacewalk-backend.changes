@@ -1,3 +1,4 @@
+- Re-enables possibility to use local repos with repo-sync (bsc#1175607)
 - support installer_updates flag in ISS
 - Remove duplicate languages and update translation strings
 
