@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 26 12:02:08 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
+- Fix grub2 autoinstall kernel path (bsc#1178060)
+
+-------------------------------------------------------------------
 Thu Oct 22 11:14:35 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.16-1
