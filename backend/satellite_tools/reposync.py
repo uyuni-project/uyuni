@@ -736,7 +736,7 @@ class RepoSync(object):
                 self.upload_patches(notices)
 
     @staticmethod
-    def _getDecompressedFileChecksum(abspath, hashtype):
+    def _get_decompressed_file_checksum(abspath, hashtype):
         src = fileutils.decompress_open(abspath)
         tmp = tempfile.TemporaryFile('w')
         shutil.copyfileobj(src, tmp)
@@ -762,7 +762,7 @@ class RepoSync(object):
             basename = 'comps' + basename[basename.find('.'):]
         elif comps_type == 'modules' and re.match('modules.yaml(' + "|".join(compressed_suffixes) + ')*', basename):
             # decompress only for getting the checksum
-            checksum = self._getDecompressedFileChecksum(filename, 'sha256')
+            checksum = self._get_decompressed_file_checksum(filename, 'sha256')
             basename = checksum + "-" + basename
             log(0, "  Including the checksum in the modules file name: %s" % basename)
 
