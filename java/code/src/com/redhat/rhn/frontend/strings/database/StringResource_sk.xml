@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="Pacific/Honolulu" xml:space="preserve">
         <source>(GMT-1000) United States (Hawaii)</source>
-        <target>(GMT-1000) Spojené štáty (Havaj)</target>
+        <target>(GMT-1000) Spojené štáty (Havajský)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -265,42 +265,42 @@
       </trans-unit>
       <trans-unit id="Pacific/Auckland" xml:space="preserve">
         <source>(GMT+1200) New Zealand (Auckland)</source>
-        <target/>
+        <target>(GMT+1200) Nový Zéland (Auckland)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Norfolk" xml:space="preserve">
         <source>(GMT+1130) Norfolk Island</source>
-        <target/>
+        <target>(GMT+1130) Ostrov Norfolk</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Guadalcanal" xml:space="preserve">
         <source>(GMT+1100) Micronesia</source>
-        <target/>
+        <target>(GMT+1100) Mikronézia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Darwin" xml:space="preserve">
         <source>(GMT+0930) Australia (Central/Darwin)</source>
-        <target/>
+        <target>(GMT+0930) Austrália (Stredný/Darwin)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Adelaide" xml:space="preserve">
         <source>Australia Adelaide</source>
-        <target/>
+        <target>Austrália Adelaide</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Jakarta" xml:space="preserve">
         <source>(GMT+0700) Thailand</source>
-        <target/>
+        <target>(GMT+0700) Thajsko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
