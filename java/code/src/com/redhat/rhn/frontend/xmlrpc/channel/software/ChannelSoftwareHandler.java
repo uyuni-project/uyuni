@@ -2332,6 +2332,32 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public Object[] mergePackages(User loggedInUser, String mergeFromLabel,
             String mergeToLabel) {
+        return mergePackages(loggedInUser,mergeFromLabel, mergeToLabel, false);
+    }
+
+    /**
+     * Merge a channel's packages into another channel.
+     * @param loggedInUser The current user
+     * @param mergeFromLabel the label of the channel to pull the packages from
+     * @param mergeToLabel the label of the channel to push packages into
+     * @param alignModules whether to align RHEL >= 8 modular data
+     * @return A list of packages that were merged.
+     *
+     * @xmlrpc.doc Merges all packages from one channel into another
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "mergeFromLabel", "the label of the
+     *          channel to pull packages from")
+     * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
+     *              packages into")
+     * @xmlrpc.param #param_desc("boolean", "alignModules", "align modular data of the target channel
+     *              to the source channel (RHEL8 and higher)")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *          $PackageSerializer
+     *      #array_end()
+     */
+    public Object[] mergePackages(User loggedInUser, String mergeFromLabel,
+            String mergeToLabel, boolean alignModules) {
 
         Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
         Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
@@ -2354,6 +2380,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
         mergeTo.getPackages().addAll(differentPackages);
         ChannelFactory.save(mergeTo);
         ChannelManager.refreshWithNewestPackages(mergeTo, "java::mergePackages");
+
+        if (alignModules) {
+            mergeTo.cloneModulesFrom(mergeFrom);
+        }
 
         List<Long> cids = new ArrayList<Long>();
         cids.add(mergeTo.getId());
