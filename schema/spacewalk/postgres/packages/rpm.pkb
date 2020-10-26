@@ -54,10 +54,6 @@ $$ language 'plpgsql';
         alpha VARCHAR(54) := lc_alpha || uc_alpha;
         one VARCHAR;
         two VARCHAR;
-        debupstreamv1 VARCHAR;
-        debupstreamv2 VARCHAR;
-        debrevisionv1 VARCHAR;
-        debrevisionv2 VARCHAR;
         isnum BOOLEAN;
     BEGIN
         if str1 is NULL or str2 is NULL
@@ -68,38 +64,6 @@ $$ language 'plpgsql';
         if str1 = str2
         then
             return 0;
-        end if;
-        if POSITION('+' in str1) <> 0 AND POSITION('+' in str2) <> 0 AND POSITION('~' in str1) = 0 AND POSITION('~' in str2) = 0 AND POSITION('.module' in str1) = 0 AND POSITION('.module' in str2) = 0
-        then
-            str1 := SUBSTR(str1, 0, POSITION('+' in str1));
-            str2 := SUBSTR(str2, 0, POSITION('+' in str2));
-        end if;
-        debupstreamv1 := str1;
-        debupstreamv2 := str2;
-        debrevisionv1 := '';
-        debrevisionv2 := '';
-        if POSITION('-' in str1) <> 0
-        then
-            debupstreamv1 := SUBSTR(str1, 0, POSITION('-' in str1));
-        end if;
-        if POSITION('-' in str2) <> 0
-        then
-            debupstreamv2 := SUBSTR(str2, 0, POSITION('-' in str2));
-        end if;
-        if (debupstreamv1 <> debupstreamv2)
-        then
-            str1 := debupstreamv1;
-            str2 := debupstreamv2;
-        else
-            if POSITION('-' in str1) <> 0 AND POSITION('-' in str2) <> 0
-            then
-                debrevisionv1 := SUBSTR(str1, POSITION('-' in str1) + 1);
-                debrevisionv2 := SUBSTR(str2, POSITION('-' in str2) + 1);
-	    else
-		return 0;
-            end if;
-            str1 := debrevisionv1;
-            str2 := debrevisionv2;
         end if;
         one := str1;
         two := str2;
