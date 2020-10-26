@@ -374,8 +374,10 @@ public class SaltActionChainGeneratorService {
             Path targetDir = getTargetDir();
             Path targetFilePath = Paths.get(targetDir.toString(),
                     getActionChainSLSFileName(actionChainId, new MinionSummary(minionServer), chunk));
-            // Add specified SLS chunk file to remove list
-            deleteSlsAndRefs(targetDir, targetFilePath);
+            if (Files.exists(targetFilePath)) {
+                // Add specified SLS chunk file to remove list
+                deleteSlsAndRefs(targetDir, targetFilePath);
+            }
 
             if (actionChainFailed) {
                 // Add also next SLS chunks because the Action Chain failed and these
