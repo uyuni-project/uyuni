@@ -3,8 +3,7 @@
 #
 # 1) delete CentOS minion and register as Centos SSH minion
 # 2) run a remote command
-# 3) try an openscap scan
-# 4) delete CentOS SSH minion client and register as Centos minion
+# 3) delete CentOS SSH minion client and register as Centos minion
 
 Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 

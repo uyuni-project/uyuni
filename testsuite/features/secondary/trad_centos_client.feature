@@ -25,7 +25,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I enable SUSE Manager tools repositories on "ceos_client"
     And I enable repository "CentOS-Base" on this "ceos_client"
     And I install the traditional stack utils on "ceos_client"
-    And I install OpenSCAP traditional dependencies on "ceos_client"
+    And I install OpenSCAP centos dependencies on "ceos_client"
     And I register "ceos_client" as traditional client
     And I run "rhn-actions-control --enable-all" on "ceos_client"
 
