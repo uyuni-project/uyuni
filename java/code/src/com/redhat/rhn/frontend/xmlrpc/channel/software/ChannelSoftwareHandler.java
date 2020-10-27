@@ -2330,7 +2330,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public Object[] mergePackages(User loggedInUser, String mergeFromLabel,
             String mergeToLabel) {
-        return mergePackages(loggedInUser,mergeFromLabel, mergeToLabel, false);
+        return mergePackages(loggedInUser, mergeFromLabel, mergeToLabel, false);
     }
 
     /**
