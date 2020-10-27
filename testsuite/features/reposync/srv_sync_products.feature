@@ -70,6 +70,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
     Then I should see that the "Server Applications Module 15 SP2 x86_64" product is "recommended"
     When I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
+    And I deselect "SUSE Manager Tools 15 x86_64 (BETA)" as a SUSE Manager product
     And I deselect "Server Applications Module 15 SP2 x86_64" as a product
     And I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
