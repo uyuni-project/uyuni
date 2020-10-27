@@ -1371,7 +1371,8 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Sets channel modules data from given channel.
      *
-     * @param from the Channel
+     * @param from the source Channel
+     * @param to  the target Channel
      */
     public static void cloneModulesMetadata(Channel from, Channel to) {
         if (!from.isModular()) {
