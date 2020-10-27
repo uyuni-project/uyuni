@@ -191,6 +191,67 @@ public enum SaltStateGeneratorService {
     }
 
     /**
+     * Generate OS Image specific pillar for Branch group, containing synced flag
+     * @param branch the ServerGroup for which the pillar is created
+     * @param name the OS image name
+     * @param version the OS image version
+     */
+    public void createImageSyncedPillar(ServerGroup branch, String name, String version) {
+
+        try {
+            SaltPillar pillar = new SaltPillar();
+            Map<String, Object> imagePillarDetails = Collections.singletonMap("synced", true);
+            Map<String, Object> imagePillarBase = Collections.singletonMap(version, imagePillarDetails);
+            Map<String, Object> imagePillar = Collections.singletonMap(name, imagePillarBase);
+
+            pillar.add("images", imagePillar);
+
+            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                    "group" + branch.getId().toString()
+            );
+
+            Path filePath = dirPath.resolve(
+                    name.replace('.', '-') + "-" + version + "." + PILLAR_IMAGE_DATA_FILE_EXT
+            );
+
+            if (!dirPath.toFile().exists()) {
+                dirPath.toFile().mkdirs();
+            }
+
+            SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
+            saltStateGenerator.generate(pillar);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Remove OS Image specific pillar for Branch group
+     * @param branch the ServerGroup
+     * @param name the OS image name
+     * @param version the OS image version
+     */
+    public void removeImageSyncedPillar(ServerGroup branch, String name, String version) {
+        try {
+            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                    "group" + branch.getId().toString()
+            );
+
+            Path filePath = dirPath.resolve(
+                    name.replace('.', '-') + "-" + version + "." + PILLAR_IMAGE_DATA_FILE_EXT
+            );
+
+            Files.deleteIfExists(filePath);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+
+    /**
      * Remove the config channel assignments for minion server.
      * @param minion the minion server
      */
