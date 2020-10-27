@@ -307,112 +307,112 @@
       </trans-unit>
       <trans-unit id="Indian/Cocos" xml:space="preserve">
         <source>(GMT+0630) Burma</source>
-        <target/>
+        <target>(GMT+0630) Barma</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Chagos" xml:space="preserve">
         <source>(GMT+0600) Bangladesh</source>
-        <target/>
+        <target>(GMT+0600) Bangladéš</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Katmandu" xml:space="preserve">
         <source>(GMT+0545) Nepal</source>
-        <target/>
+        <target>(GMT+0545) Nepál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Calcutta" xml:space="preserve">
         <source>(GMT+0530) India (Calcutta)</source>
-        <target/>
+        <target>(GMT+0530) India (Kalkata)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Maldives" xml:space="preserve">
         <source>(GMT+0500) Pakistan</source>
-        <target/>
+        <target>(GMT+0500) Pakistan</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Kabul" xml:space="preserve">
         <source>(GMT+0430) Afghanistan</source>
-        <target/>
+        <target>(GMT+0430) Afganistan</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Indian/Mauritius" xml:space="preserve">
         <source>(GMT+0400) Russia (Samara)</source>
-        <target/>
+        <target>(GMT+0400) Rusko (Samara)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Atlantic/Azores" xml:space="preserve">
         <source>(GMT-0100) Azores</source>
-        <target/>
+        <target>(GMT-0100) Azory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Atlantic/South_Georgia" xml:space="preserve">
         <source>(GMT-0200) Sandwich Islands</source>
-        <target/>
+        <target>(GMT-0200) Sandwichove ostrovy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Midway" xml:space="preserve">
         <source>(GMT-1100) Midway</source>
-        <target/>
+        <target>(GMT-1100) Midway</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Santiago" xml:space="preserve">
         <source>(GMT-0300) Chile (Continental)</source>
-        <target/>
+        <target>(GMT-0300) Čile (Kontinentálny)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Sao_Paulo" xml:space="preserve">
         <source>(GMT-0300) Brazil</source>
-        <target/>
+        <target>(GMT-0300) Brazília</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Indianapolis" xml:space="preserve">
         <source>(GMT-0500) United States (Indiana)</source>
-        <target/>
+        <target>(GMT-0500) Spojené štáty (Indiana)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Phoenix" xml:space="preserve">
         <source>(GMT-0700) United States (Arizona)</source>
-        <target/>
+        <target>(GMT-0700) Spojené štáty (Arizona)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Riyadh" xml:space="preserve">
         <source>(GMT+0300) Saudi Arabia</source>
-        <target/>
+        <target>(GMT+0300) Saudská Arábia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Tehran" xml:space="preserve">
         <source>(GMT+0330) Iran</source>
-        <target/>
+        <target>(GMT+0330) Irán</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -420,28 +420,28 @@
       <!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
       <trans-unit id="MAIL_MX" xml:space="preserve">
         <source>Local mail exchanger</source>
-        <target/>
+        <target>Lokálna poštová výmena</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MDOM" xml:space="preserve">
         <source>Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
-        <target/>
+        <target>Poštová doména (napr. 'suse.com' pre mojemail@suse.com)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHN_ADMIN_EMAIL" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ administrator email</source>
-        <target/>
+        <target>Email administrátora pre @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RHN_SAT_HOSTNAME" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ hostname (FQDN)</source>
-        <target/>
+        <target>Názov hostiteľa (FQDN) pre @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
