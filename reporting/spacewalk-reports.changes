@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 27 17:12:16 MSK 2020 - vzhestkov@suse.com
+
+- Fixes no file content in `spacewalk-report config-files`
+- Write `<binary data>` placeholder instead of dumping binary data
+
+-------------------------------------------------------------------
 Wed May 15 15:17:15 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.5-1
