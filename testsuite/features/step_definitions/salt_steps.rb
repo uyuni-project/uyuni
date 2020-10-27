@@ -715,7 +715,7 @@ end
 
 And(/^I cleanup minion "([^"]*)"$/) do |minion|
   node = get_target(minion)
-  if minion == 'sle_minion'
+  if %w[sle_minion sle_ssh_tunnel_minion].include?(minion)
     node.run('rcsalt-minion stop')
     node.run('rm -Rf /var/cache/salt/minion')
   elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
