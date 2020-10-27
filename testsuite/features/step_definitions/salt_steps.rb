@@ -714,14 +714,10 @@ When(/^I enter "([^"]*)" password$/) do |host|
 end
 
 And(/^I cleanup minion "([^"]*)"$/) do |minion|
+  raise "#{minion} is not a salt minion" unless minion.include? 'minion'
   node = get_target(minion)
-  if %w[sle_minion sle_ssh_tunnel_minion].include?(minion)
-    node.run('rcsalt-minion stop')
-    node.run('rm -Rf /var/cache/salt/minion')
-  elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
-    node.run('systemctl stop salt-minion')
-    node.run('rm -Rf /var/cache/salt/minion')
-  end
+  node.run('systemctl stop salt-minion')
+  node.run('rm -Rf /var/cache/salt/minion')
 end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|
