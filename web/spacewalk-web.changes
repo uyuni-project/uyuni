@@ -1,3 +1,5 @@
+- Don't allow selecting spice for Xen PV and PVH guests
+
 -------------------------------------------------------------------
 Tue Oct 06 11:28:36 CEST 2020 - jgonzalez@suse.com
 
