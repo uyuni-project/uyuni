@@ -35,7 +35,7 @@ public class ClusterOperationsSlsResult {
     @SerializedName("mgrcompat_|-mgr_cluster_list_nodes_|-mgrclusters.list_nodes_|-module_run")
     private StateApplyResult<Ret<Map<String, Map<String, Object>>>> listNodesResult;
 
-    @SerializedName("mgrcompat_|-mgr_cluster_list_nodes_|-mgrclusters.upgradecluster_|-module_run")
+    @SerializedName("mgrcompat_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgradecluster_|-module_run")
     private StateApplyResult<Ret<Map<String, Map<String, Object>>>> upgradeResult;
 
     /**

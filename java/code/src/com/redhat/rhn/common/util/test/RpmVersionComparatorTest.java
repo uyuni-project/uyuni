@@ -168,6 +168,26 @@ public class RpmVersionComparatorTest extends TestCase {
     public void testBugzilla1173201() {
         assertCompareSymm(-1, "1.27+1.3.9", "1.27.1ubuntu1+1.3.9");
         assertCompareSymm(-1, "1.27+1.3.9", "1.27.1+1.3.9");
+        assertCompareSymm(-1, "1.27+1.3.9", "1.27.1ubuntu2+1.3.11");
+        assertCompareSymm(1, "1.27+1.3.9", "1.3.11");
+        assertCompareSymm(1, "1.27", "1.3.11");
+        assertCompareSymm(1, "1.27+1.3.9", "1.3.9");
+        assertCompareSymm(-1, "1.27+1.3.9", "5.18.4.1");
+        assertCompareSymm(1, "2.27+1.3.9", "1.10~ubuntu18.04.4+1.2.10");
+        assertCompareSymm(1, "3.27", "1.10~ubuntu18.04.4+1.2.10");
+        assertCompareSymm(1, "4.27~test", "1.10~ubuntu18.04.4+1.2.10");
+    }
+
+    /**
+     * Test comparing strings of modular package releases.
+     */
+    public void testRhel8ModuleReleaseComparison() {
+        // some packages have "module_el8" in the release
+        assertCompareSymm(-1, "7.module_el8.2.0+305+5e198a41", "7.module_el8.2.0+458+dab581ed");
+        // some packages have "module+el8" in the release
+        assertCompareSymm(-1, "10.module+el8.2.0+7749+4a513fb2", "10.module+el8.2.0+7749+5a513fb2");
+
+        assertCompareSymm(-1, "6.module+el8+1645+8d4014a6", "7.module_el8.2.0+458+dab581ed");
     }
 
     /* from official rpm tests */

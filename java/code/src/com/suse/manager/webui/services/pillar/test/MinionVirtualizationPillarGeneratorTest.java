@@ -30,10 +30,10 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -68,6 +68,9 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             }
 
             @Override
+            public boolean startGuest(String minionId, String domainName) { return false; }
+
+            @Override
             public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
                 return Optional.empty();
             }
@@ -100,13 +103,18 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
             }
+
+            @Override
+            public Optional<String> getHypervisor(String minionId) {
+                return Optional.empty();
+            }
         };
 
         ServerGroupManager serverGroupManager =  new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
-                new SystemEntitler(new TestSystemQuery(), virtManager, new FormulaMonitoringManager(),
+                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
     }

@@ -56,7 +56,6 @@ import java.util.Optional;
  */
 public class ServerTest extends BaseTestCaseWithUser {
 
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
@@ -65,7 +64,7 @@ public class ServerTest extends BaseTestCaseWithUser {
             virtManager, monitoringManager, serverGroupManager);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             systemUnentitler,
-            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
     public void testIsInactive() throws Exception {
@@ -248,8 +247,8 @@ public class ServerTest extends BaseTestCaseWithUser {
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("SLES");
-        s.setRelease("11.4");
-        assertFalse(s.doesOsSupportsContainerization());
+        s.setRelease("10.4");
+        assertFalse(s.doesOsSupportsOSImageBuilding());
     }
 
     /**

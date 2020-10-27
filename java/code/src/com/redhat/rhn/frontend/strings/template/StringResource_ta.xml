@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="ta">
+<?xml version='1.0' encoding='UTF-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="ta">
     <body>
       <!-- New Account Email -->
-      <trans-unit id="email.newaccount.subject">
+      <trans-unit id="email.newaccount.subject" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -15,7 +15,7 @@
         </context-group>
         <target>உங்கள் @@PRODUCT_NAME@@ கணக்கு தயாராக உள்ளது</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body">
+      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -46,7 +46,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body">
+      <trans-unit id="email.newaccount.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -77,7 +77,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.pam.body">
+      <trans-unit id="email.newaccount.pam.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
@@ -119,7 +119,7 @@ Red Hat சந்தாவுடன் இணைந்த உங்கள் Red
 {6}</target>
       </trans-unit>
       <!-- New User Email -->
-      <trans-unit id="email.newuser.subject">
+      <trans-unit id="email.newuser.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -133,7 +133,7 @@ Red Hat சந்தாவுடன் இணைந்த உங்கள் Red
         </context-group>
         <target>@@PRODUCT_NAME@@ பயனர் உருவாக்கப்பட்டது: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
-      <trans-unit id="email.newuser.body">
+      <trans-unit id="email.newuser.body" xml:space="preserve">
         <source>Hello,
 
 A new user has been added to your account.
@@ -173,11 +173,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@ஐ பயன்படுத்தியதற்காக நன்றி.
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -206,8 +202,11 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -218,14 +217,20 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -235,8 +240,11 @@ which you have explicitly enabled Patch Alerts are shown).
         {0} - system count
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -257,8 +265,11 @@ You may address the issues outlined in this advisory in two ways:
         {1} - system list URL
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -281,9 +292,11 @@ click the "Details" tab.
         {2} - account info
       </context>
           </context-group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <trans-unit id="dailysummary.email.subject">
+      <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
@@ -295,7 +308,7 @@ click the "Details" tab.
         </context-group>
         <target>@@PRODUCT_NAME@@ {0} க்கு தினசரி அறிக்கை நிலை</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body">
+      <trans-unit id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
@@ -329,7 +342,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.password">
+      <trans-unit id="email.forgotten.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -355,7 +368,7 @@ Thank you for using @@PRODUCT_NAME@@.
             </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.logins">
+      <trans-unit id="email.forgotten.logins" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -383,7 +396,7 @@ Thank you for using @@PRODUCT_NAME@@.
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.reset.password">
+      <trans-unit id="email.reset.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0}. ]
 

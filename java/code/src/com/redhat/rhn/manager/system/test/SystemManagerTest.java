@@ -116,13 +116,14 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -165,7 +166,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
         MockConnection.clear();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
@@ -180,13 +181,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
-        SystemQuery systemQuery = new TestSystemQuery();
+        SaltApi saltApi = new TestSaltApi();
         VirtManager virtManager = new TestVirtManager();
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
-                new SystemEntitler(systemQuery, virtManager, new FormulaMonitoringManager(),
+                new SystemEntitler(saltApi, virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);

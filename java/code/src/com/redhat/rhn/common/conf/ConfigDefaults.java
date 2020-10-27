@@ -329,6 +329,21 @@ public class ConfigDefaults {
      */
     public static final String ALLOW_ADDING_PATCHES_VIA_API = "java.allow_adding_patches_via_api";
 
+    /**
+     * Specify the list of web interface branded themes templates
+     */
+    public static final String WEB_THEMES = "web.themes";
+
+    /**
+     * Specify the default web interface branded theme template
+     */
+    public static final String WEB_THEME = "web.theme_default";
+
+    /**
+     * Specify the default language to use if user preferences are not available such as on the login page
+     */
+    public static final String DEFAULT_LOCALE = "web.locale";
+
     private ConfigDefaults() {
     }
 
@@ -1007,5 +1022,32 @@ public class ConfigDefaults {
      */
     public boolean isAutomaticSystemLockForClusterNodesEnabled() {
         return Config.get().getBoolean(AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED);
+    }
+
+    /**
+     * Return the default locale. If not supported return en_US as default language.
+     *
+     * @return the preferred locale
+     */
+    public String getDefaultLocale() {
+        return Config.get().getString(DEFAULT_LOCALE, "en_US");
+    }
+
+    /**
+     * Return the list of possible themes for the webUI
+     *
+     * @return the list of possible themes for the webUI
+     */
+    public List<String> getWebThemesList() {
+        return Config.get().getList(WEB_THEMES);
+    }
+
+    /**
+     * Return the name of the theme for the webUI
+     *
+     * @return the name of the theme for the webUI
+     */
+    public String getDefaultWebTheme() {
+        return Config.get().getString(WEB_THEME, "susemanager-light");
     }
 }

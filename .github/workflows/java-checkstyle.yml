@@ -1,11 +1,12 @@
 name: Java checkstyle
 
 on:
-  # Limit this workflow to push events on the master branch, encrypted secrets
-  # cannot currently be used from actions triggered by PRs created from a fork.
   push:
     branches:
       - master
+    paths:
+      - 'java/**.java' 
+  pull_request:
     paths:
       - 'java/**.java'
 
@@ -22,12 +23,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: java/lib
-        key: ${{ runner.os }}-jars-${{ hashFiles('java/buildconf/ivy/*.*') }}
+        key: ${{ runner.os }}-java-lib-${{ hashFiles('java/buildconf/ivy/*.*') }}
 
     - name: Resolve dependencies
       if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: |
-        echo '${{ secrets.OSCRC_CONTENTS }}' > ~/.oscrc
         ant -f java/manager-build.xml ivy
 
     - name: Run checkstyle

@@ -2,7 +2,6 @@
 "use strict";
 
 const React = require("react");
-const createReactClass = require('create-react-class');
 const {Table} = require("components/table/Table");
 const {Column} = require("components/table/Column");
 const {SearchField} = require("components/table/SearchField");
@@ -11,10 +10,8 @@ const CsvLink = require("./subscription-matching-util").CsvLink;
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
-const Messages = createReactClass({
-  displayName: 'Messages',
-
-  buildRows: function(rawMessages, systems, subscriptions) {
+class Messages extends React.Component {
+  buildRows = (rawMessages, systems, subscriptions) => {
     return rawMessages.map(function(rawMessage, index) {
       const data = rawMessage["data"];
       var message;
@@ -61,9 +58,9 @@ const Messages = createReactClass({
         info: additionalInformation
       };
     });
-  },
+  };
 
-  render: function() {
+  render() {
     var body;
     if (this.props.messages.length > 0) {
       body = (
@@ -103,8 +100,8 @@ const Messages = createReactClass({
         {body}
       </div>
     );
-  },
-});
+  }
+}
 
 module.exports = {
   Messages: Messages,

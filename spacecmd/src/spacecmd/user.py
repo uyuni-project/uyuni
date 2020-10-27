@@ -30,6 +30,7 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 import shlex
 from getpass import getpass
 try:
@@ -38,10 +39,15 @@ except ImportError:
     import xmlrpclib
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_user_create(self):
-    print('user_create: Create an user')
-    print('''usage: user_create [options])
+    print(_('user_create: Create an user'))
+    print(_('''usage: user_create [options])
 
 options:
   -u USERNAME
@@ -49,7 +55,7 @@ options:
   -l LAST_NAME
   -e EMAIL
   -p PASSWORD
-  --pam enable PAM authentication''')
+  --pam enable PAM authentication'''))
 
 
 def do_user_create(self, args):
@@ -64,45 +70,45 @@ def do_user_create(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
-        options.username = prompt_user('Username:', noblank=True)
-        options.first_name = prompt_user('First Name:', noblank=True)
-        options.last_name = prompt_user('Last Name:', noblank=True)
-        options.email = prompt_user('Email:', noblank=True)
-        options.pam = self.user_confirm('PAM Authentication [y/N]:',
+        options.username = prompt_user(_('Username:'), noblank=True)
+        options.first_name = prompt_user(_('First Name:'), noblank=True)
+        options.last_name = prompt_user(_('Last Name:'), noblank=True)
+        options.email = prompt_user(_('Email:'), noblank=True)
+        options.pam = self.user_confirm(_('PAM Authentication [y/N]:'),
                                         nospacer=True,
                                         integer=True,
                                         ignore_yes=True)
 
         options.password = ''
         while options.password == '':
-            password1 = getpass('Password: ')
-            password2 = getpass('Repeat Password: ')
+            password1 = getpass(_('Password: '))
+            password2 = getpass(_('Repeat Password: '))
 
             if password1 == password2:
                 options.password = password1
             elif password1 == '':
-                logging.warning('Password must be at least 5 characters')
+                logging.warning(_('Password must be at least 5 characters'))
             else:
-                logging.warning("Passwords don't match")
+                logging.warning(_("Passwords don't match"))
     else:
         if not options.username:
-            logging.error('A username is required')
+            logging.error(_('A username is required'))
             return 1
 
         if not options.first_name:
-            logging.error('A first name is required')
+            logging.error(_('A first name is required'))
             return 1
 
         if not options.last_name:
-            logging.error('A last name is required')
+            logging.error(_('A last name is required'))
             return 1
 
         if not options.email:
-            logging.error('An email address is required')
+            logging.error(_('An email address is required'))
             return 1
 
         if not options.password and not options.pam:
-            logging.error('A password is required')
+            logging.error(_('A password is required'))
             return 1
 
         if options.pam:
@@ -110,7 +116,7 @@ def do_user_create(self, args):
             # API requires a non-None password even though it's not used
             # when PAM is enabled
             if options.password:
-                logging.warning("Note: password was ignored due to PAM mode")
+                logging.warning(_("Note: password was ignored due to PAM mode"))
             options.password = ""
         else:
             options.pam = 0
@@ -129,8 +135,8 @@ def do_user_create(self, args):
 
 
 def help_user_delete(self):
-    print('user_delete: Delete an user')
-    print('usage: user_delete NAME')
+    print(_('user_delete: Delete an user'))
+    print(_('usage: user_delete NAME'))
 
 
 def complete_user_delete(self, text, line, beg, end):
@@ -158,8 +164,8 @@ def do_user_delete(self, args):
 
 
 def help_user_disable(self):
-    print('user_disable: Disable an user account')
-    print('usage: user_disable NAME')
+    print(_('user_disable: Disable an user account'))
+    print(_('usage: user_disable NAME'))
 
 
 def complete_user_disable(self, text, line, beg, end):
@@ -185,8 +191,8 @@ def do_user_disable(self, args):
 
 
 def help_user_enable(self):
-    print('user_enable: Enable an user account')
-    print('usage: user_enable NAME')
+    print(_('user_enable: Enable an user account'))
+    print(_('usage: user_enable NAME'))
 
 
 def complete_user_enable(self, text, line, beg, end):
@@ -212,8 +218,8 @@ def do_user_enable(self, args):
 
 
 def help_user_list(self):
-    print('user_list: List all users')
-    print('usage: user_list')
+    print(_('user_list: List all users'))
+    print(_('usage: user_list'))
 
 
 def do_user_list(self, args, doreturn=False):
@@ -230,8 +236,8 @@ def do_user_list(self, args, doreturn=False):
 
 
 def help_user_listavailableroles(self):
-    print('user_listavailableroles: List all available roles for users')
-    print('usage: user_listavailableroles')
+    print(_('user_listavailableroles: List all available roles for users'))
+    print(_('usage: user_listavailableroles'))
 
 
 def do_user_listavailableroles(self, args, doreturn=False):
@@ -243,14 +249,14 @@ def do_user_listavailableroles(self, args, doreturn=False):
         if roles:
             print('\n'.join(sorted(roles)))
         else:
-            logging.error("No roles has been found")
+            logging.error(_("No roles has been found"))
 
 ####################
 
 
 def help_user_addrole(self):
-    print('user_addrole: Add a role to an user account')
-    print('usage: user_addrole USER ROLE')
+    print(_('user_addrole: Add a role to an user account'))
+    print(_('usage: user_addrole USER ROLE'))
 
 
 def complete_user_addrole(self, text, line, beg, end):
@@ -283,8 +289,8 @@ def do_user_addrole(self, args):
 
 
 def help_user_removerole(self):
-    print('user_removerole: Remove a role from an user account')
-    print('usage: user_removerole USER ROLE')
+    print(_('user_removerole: Remove a role from an user account'))
+    print(_('usage: user_removerole USER ROLE'))
 
 
 def complete_user_removerole(self, text, line, beg, end):
@@ -318,8 +324,8 @@ def do_user_removerole(self, args):
 
 
 def help_user_details(self):
-    print('user_details: Show the details of an user')
-    print('usage: user_details USER ...')
+    print(_('user_details: Show the details of an user'))
+    print(_('usage: user_details USER ...'))
 
 
 def complete_user_details(self, text, line, beg, end):
@@ -351,8 +357,8 @@ def do_user_details(self, args):
                 self.client.user.listDefaultSystemGroups(self.session,
                                                          user)
         except xmlrpclib.Fault as exc:
-            logging.warning('%s is not a valid user' % user)
-            logging.debug("Error '{}' while getting data about user '{}': {}".format(
+            logging.warning(_('%s is not a valid user') % user)
+            logging.debug(_("Error '{}' while getting data about user '{}': {}").format(
                 exc.faultCode, user, exc.faultString))
             continue
 
@@ -362,30 +368,30 @@ def do_user_details(self, args):
             print(self.SEPARATOR)
         add_separator = True
 
-        print('Username:      %s' % user)
-        print('First Name:    %s' % details.get('first_name'))
-        print('Last Name:     %s' % details.get('last_name'))
-        print('Email Address: %s' % details.get('email'))
-        print('Organisation:  %s' % org_name)
-        print('Last Login:    %s' % details.get('last_login_date'))
-        print('Created:       %s' % details.get('created_date'))
-        print('Enabled:       %s' % details.get('enabled'))
+        print(_('Username:      %s') % user)
+        print(_('First Name:    %s') % details.get('first_name'))
+        print(_('Last Name:     %s') % details.get('last_name'))
+        print(_('Email Address: %s') % details.get('email'))
+        print(_('Organisation:  %s') % org_name)
+        print(_('Last Login:    %s') % details.get('last_login_date'))
+        print(_('Created:       %s') % details.get('created_date'))
+        print(_('Enabled:       %s') % details.get('enabled'))
 
         if roles:
             print('')
-            print('Roles')
+            print(_('Roles'))
             print('-----')
             print('\n'.join(sorted(roles)))
 
         if groups:
             print('')
-            print('Assigned Groups')
+            print(_('Assigned Groups'))
             print('---------------')
             print('\n'.join(sorted([g.get('name') for g in groups])))
 
         if default_groups:
             print('')
-            print('Default Groups')
+            print(_('Default Groups'))
             print('--------------')
             print('\n'.join(sorted([g.get('name') for g in default_groups])))
 
@@ -395,8 +401,8 @@ def do_user_details(self, args):
 
 
 def help_user_addgroup(self):
-    print('user_addgroup: Add a group to an user account')
-    print('usage: user_addgroup USER <GROUP ...>')
+    print(_('user_addgroup: Add a group to an user account'))
+    print(_('usage: user_addgroup USER <GROUP ...>'))
 
 
 def complete_user_addgroup(self, text, line, beg, end):
@@ -433,8 +439,8 @@ def do_user_addgroup(self, args):
 
 
 def help_user_adddefaultgroup(self):
-    print('user_adddefaultgroup: Add a default group to an user account')
-    print('usage: user_adddefaultgroup USER <GROUP ...>')
+    print(_('user_adddefaultgroup: Add a default group to an user account'))
+    print(_('usage: user_adddefaultgroup USER <GROUP ...>'))
 
 
 def complete_user_adddefaultgroup(self, text, line, beg, end):
@@ -470,8 +476,8 @@ def do_user_adddefaultgroup(self, args):
 
 
 def help_user_removegroup(self):
-    print('user_removegroup: Remove a group to an user account')
-    print('usage: user_removegroup USER <GROUP ...>')
+    print(_('user_removegroup: Remove a group to an user account'))
+    print(_('usage: user_removegroup USER <GROUP ...>'))
 
 
 def complete_user_removegroup(self, text, line, beg, end):
@@ -511,9 +517,9 @@ def do_user_removegroup(self, args):
 
 
 def help_user_removedefaultgroup(self):
-    print('user_removedefaultgroup: Remove a default group from an ' +
-          'user account')
-    print('usage: user_removedefaultgroup USER <GROUP ...>')
+    print(_('user_removedefaultgroup: Remove a default group from an ' +
+          'user account'))
+    print(_('usage: user_removedefaultgroup USER <GROUP ...>'))
 
 
 def complete_user_removedefaultgroup(self, text, line, beg, end):
@@ -552,8 +558,8 @@ def do_user_removedefaultgroup(self, args):
 
 
 def help_user_setfirstname(self):
-    print('user_setfirstname: Set an user accounts first name field')
-    print('usage: user_setfirstname USER FIRST_NAME')
+    print(_('user_setfirstname: Set an user accounts first name field'))
+    print(_('usage: user_setfirstname USER FIRST_NAME'))
 
 
 def complete_user_setfirstname(self, text, line, beg, end):
@@ -587,8 +593,8 @@ def do_user_setfirstname(self, args):
 
 
 def help_user_setlastname(self):
-    print('user_setlastname: Set an user accounts last name field')
-    print('usage: user_setlastname USER LAST_NAME')
+    print(_('user_setlastname: Set an user accounts last name field'))
+    print(_('usage: user_setlastname USER LAST_NAME'))
 
 
 def complete_user_setlastname(self, text, line, beg, end):
@@ -622,8 +628,8 @@ def do_user_setlastname(self, args):
 
 
 def help_user_setemail(self):
-    print('user_setemail: Set an user accounts email field')
-    print('usage: user_setemail USER EMAIL')
+    print(_('user_setemail: Set an user accounts email field'))
+    print(_('usage: user_setemail USER EMAIL'))
 
 
 def complete_user_setemail(self, text, line, beg, end):
@@ -657,8 +663,8 @@ def do_user_setemail(self, args):
 
 
 def help_user_setprefix(self):
-    print('user_setprefix: Set an user accounts name prefix field')
-    print('usage: user_setprefix USER PREFIX')
+    print(_('user_setprefix: Set an user accounts name prefix field'))
+    print(_('usage: user_setprefix USER PREFIX'))
 
 
 def complete_user_setprefix(self, text, line, beg, end):
@@ -697,8 +703,8 @@ def do_user_setprefix(self, args):
 
 
 def help_user_setpassword(self):
-    print('user_setpassword: Set an user accounts name prefix field')
-    print('usage: user_setpassword USER PASSWORD')
+    print(_('user_setpassword: Set an user accounts name prefix field'))
+    print(_('usage: user_setpassword USER PASSWORD'))
 
 
 def complete_user_setpassword(self, text, line, beg, end):

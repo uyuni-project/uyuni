@@ -109,6 +109,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.clusters.ClusterManager;
@@ -116,7 +117,7 @@ import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -124,11 +125,11 @@ import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.salt.MgrActionChains;
-import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
@@ -221,25 +222,26 @@ public class SaltServerActionService {
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
-    private SystemQuery systemQuery;
-    private SaltSSHService saltSSHService = GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService();
+    private SaltApi saltApi;
+    private SaltSSHService saltSSHService = GlobalInstanceHolder.SALT_API.getSaltSSHService();
     private SaltUtils saltUtils;
     private SaltKeyUtils saltKeyUtils;
     private final FormulaManager formulaManager;
     private final ClusterManager clusterManager;
     private boolean skipCommandScriptPerms;
+    private TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
-     * @param systemQueryIn instance for getting information from a system.
+     * @param saltApiIn instance for getting information from a system.
      * @param saltUtilsIn
      * @param clusterManagerIn
      * @param formulaManagerIn
      * @param saltKeyUtilsIn
      */
-    public SaltServerActionService(SystemQuery systemQueryIn, SaltUtils saltUtilsIn,
+    public SaltServerActionService(SaltApi saltApiIn, SaltUtils saltUtilsIn,
                                    ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
                                    SaltKeyUtils saltKeyUtilsIn) {
-        this.systemQuery = systemQueryIn;
+        this.saltApi = saltApiIn;
         this.saltUtils = saltUtilsIn;
         this.clusterManager = clusterManagerIn;
         this.formulaManager = formulaManagerIn;
@@ -492,8 +494,16 @@ public class SaltServerActionService {
         List<MinionServer> sshPushMinions = MinionServerFactory.findMinionsByServerIds(
                 sshMinionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
-        for (MinionServer sshMinion: sshPushMinions) {
-            executeSSHAction(actionIn, sshMinion);
+        if (!sshPushMinions.isEmpty()) {
+            for (MinionServer sshMinion : sshPushMinions) {
+                try {
+                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
+                            " minion=" + sshMinion.getMinionId(), e);
+                }
+            }
         }
     }
 
@@ -574,7 +584,7 @@ public class SaltServerActionService {
         // start the action chain synchronously
         try {
             // first check if there's an action chain with a reboot already executing
-            Map<String, Result<Map<String, String>>> pendingResumeConf = systemQuery.getPendingResume(
+            Map<String, Result<Map<String, String>>> pendingResumeConf = saltApi.getPendingResume(
                     sshMinions.stream().map(minion -> minion.getMinionId())
                             .collect(Collectors.toList())
             );
@@ -1627,6 +1637,12 @@ public class SaltServerActionService {
             VirtualizationCreateGuestAction action) {
         String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
 
+        // Prepare the salt FS with kernel / initrd and pass params to kernel
+        String cobblerSystemName = action.getCobblerSystem();
+        Map<String, String> bootParams = cobblerSystemName != null ?
+                prepareCobblerBoot(action.getKickstartHost(), cobblerSystemName) :
+                null;
+
         Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
                 Collectors.toMap(minion -> {
                     // Some of these pillar data will be useless for update-vm, but they will just be ignored.
@@ -1683,6 +1699,17 @@ public class SaltServerActionService {
                     graphicsData.put("type", action.getGraphicsType());
                     pillar.put("graphics", graphicsData);
 
+                    if (bootParams != null) {
+                        pillar.put("boot", bootParams);
+                    }
+
+                    // If we have a DVD image and we are creating a VM, set "cdrom hd" boot devices
+                    // otherwise set "network hd"
+                    boolean hasCdromIso = action.getDisks().stream()
+                            .anyMatch(disk -> disk.getDevice().equals("cdrom") && disk.getSourceFile() != null &&
+                                    !disk.getSourceFile().isEmpty());
+                    pillar.put("boot_dev", hasCdromIso ? "cdrom hd" : "network hd");
+
                     return State.apply(
                             Collections.singletonList(state),
                             Optional.of(pillar));
@@ -1695,13 +1722,8 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> autoinstallInitAction(List<MinionSummary> minions,
-            KickstartInitiateAction autoInitAction) {
-
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
-        String cobblerSystem = ksActionDetails.getCobblerSystemName();
-        String host = ksActionDetails.getKickstartHost();
+    private Map<String, String> prepareCobblerBoot(String kickstartHost,
+                                                   String cobblerSystem) {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
         SystemRecord system = SystemRecord.lookupByName(con, cobblerSystem);
         Profile profile = system.getProfile();
@@ -1715,12 +1737,26 @@ public class SaltServerActionService {
         KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(nameParts.get(0),
                 OrgFactory.lookupById(Long.valueOf(nameParts.get(1))));
         tree.createOrUpdateSaltFS();
-        String kOpts = buildKernelOptions(system, profile, dist, host);
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("uyuni-reinstall-kernel", saltFSKernel);
-        pillar.put("uyuni-reinstall-initrd", saltFSInitrd);
-        pillar.put("uyuni-reinstall-kopts", kOpts);
+        String kOpts = buildKernelOptions(system, profile, dist, kickstartHost);
+        Map<String, String> pillar = new HashMap<>();
+        pillar.put("kernel", saltFSKernel);
+        pillar.put("initrd", saltFSInitrd);
+        pillar.put("kopts", kOpts);
+
+        return pillar;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> autoinstallInitAction(List<MinionSummary> minions,
+            KickstartInitiateAction autoInitAction) {
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+        KickstartActionDetails ksActionDetails = autoInitAction.getKickstartActionDetails();
+        String cobblerSystem = ksActionDetails.getCobblerSystemName();
+        String host = ksActionDetails.getKickstartHost();
+        Map<String, String> bootParams = prepareCobblerBoot(host, cobblerSystem);
+        Map<String, Object> pillar = new HashMap<>(bootParams);
         pillar.put("uyuni-reinstall-name", "reinstall-system");
+        String kOpts = bootParams.get("kopts");
 
         if (kOpts.contains("autoupgrade=1") || kOpts.contains("uyuni_keep_saltkey=1")) {
             ksActionDetails.setUpgrade(true);
@@ -2100,7 +2136,7 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = GlobalInstanceHolder.SYSTEM_QUERY
+            List<String> results = saltApi
                     .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
                     .get().getMinions();
 
@@ -2134,7 +2170,7 @@ public class SaltServerActionService {
         }
 
         try {
-            List<String> results = systemQuery
+            List<String> results = saltApi
                     .callAsync(call, new MinionList(minionIds),
                             Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain())).get().getMinions();
 
@@ -2193,7 +2229,7 @@ public class SaltServerActionService {
                 Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
-                    result = systemQuery.rawJsonCall(call, minion.getMinionId());
+                    result = saltApi.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +
@@ -2494,10 +2530,10 @@ public class SaltServerActionService {
 
     /**
      * Only used in unit tests.
-     * @param systemQueryIn to set
+     * @param saltApiIn to set
      */
-    public void setSystemQuery(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
+    public void setSaltApi(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
     }
 
     /**
@@ -2508,4 +2544,11 @@ public class SaltServerActionService {
         this.skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
+    /**
+     * Only needed for unit test.
+     * @param taskomaticApiIn to set
+     */
+    public void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        this.taskomaticApi = taskomaticApiIn;
+    }
 }

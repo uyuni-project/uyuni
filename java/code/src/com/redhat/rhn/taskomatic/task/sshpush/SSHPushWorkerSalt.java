@@ -25,8 +25,8 @@ import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -54,7 +54,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private SystemSummary system;
     private TaskQueue parentQueue;
 
-    private SystemQuery systemQuery;
+    private SaltApi saltApi;
     private SaltSSHService saltSSHService;
     private SaltServerActionService saltServerActionService;
     private SaltUtils saltUtils;
@@ -70,11 +70,11 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param saltUtilsIn
      */
     public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn,
-            SystemQuery saltServiceIn, SaltSSHService saltSSHServiceIn,
+            SaltApi saltServiceIn, SaltSSHService saltSSHServiceIn,
             SaltServerActionService saltServerActionServiceIn, SaltUtils saltUtilsIn) {
         log = logger;
         system = systemIn;
-        systemQuery = saltServiceIn;
+        saltApi = saltServiceIn;
         saltSSHService = saltSSHServiceIn;
         saltServerActionService = saltServerActionServiceIn;
         saltUtils = saltUtilsIn;
@@ -139,7 +139,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         try {
             // first check if there's any pending action chain execution on the minion
             // fetch the extra_filerefs and next_action_id
-            pendingResume = systemQuery.getPendingResume(Collections.singletonList(minion.getMinionId()));
+            pendingResume = saltApi.getPendingResume(Collections.singletonList(minion.getMinionId()));
         }
         catch (SaltException e) {
             log.error("Could not retrive pending action chain executions for minion", e);
@@ -324,7 +324,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void performCheckin(MinionServer minion) {
         // Ping minion and perform check-in on success
         log.info("Performing a check-in for: " + minion.getMinionId());
-        Optional<Boolean> result = systemQuery.ping(minion.getMinionId());
+        Optional<Boolean> result = saltApi.ping(minion.getMinionId());
 
         result.ifPresent(res -> minion.updateServerInfo());
     }
@@ -336,7 +336,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void updateSystemInfo(MinionList minionTarget) {
         try {
             LocalCall<SystemInfo> systeminfo =
-                    com.suse.manager.webui.utils.salt.State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
+                    State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
                     Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
             Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
             systemInfoMap.entrySet().stream().forEach(entry-> entry.getValue().result().ifPresent(si-> {

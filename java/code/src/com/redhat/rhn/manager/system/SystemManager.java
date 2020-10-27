@@ -91,6 +91,7 @@ import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemGroupOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.SystemPendingEventDto;
+import com.redhat.rhn.frontend.dto.SystemScheduleDto;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartSessionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -111,7 +112,7 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.utils.Opt;
 
@@ -147,7 +148,7 @@ import static java.util.Collections.emptyMap;
 public class SystemManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(SystemManager.class);
-    private static SystemQuery saltServiceInstance = GlobalInstanceHolder.SYSTEM_QUERY;
+    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";
@@ -181,7 +182,7 @@ public class SystemManager extends BaseManager {
      * @param mockedSaltService The mocked SaltService.
      */
     public static void mockSaltService(SaltService mockedSaltService) {
-        saltServiceInstance = mockedSaltService;
+        saltApi = mockedSaltService;
     }
 
     /**
@@ -657,7 +658,7 @@ public class SystemManager extends BaseManager {
         if (!ServerCleanupType.NO_CLEANUP.equals(cleanupType)) {
             Server server = lookupByIdAndUser(sid, user);
             if (server.asMinionServer().isPresent()) {
-                Optional<List<String>> errs = saltServiceInstance
+                Optional<List<String>> errs = saltApi
                         .cleanupMinion(server.asMinionServer().get(), cleanupTimeout);
                 if (errs.isPresent() &&
                         ServerCleanupType.FAIL_ON_CLEANUP_ERR.equals(cleanupType)) {
@@ -724,7 +725,7 @@ public class SystemManager extends BaseManager {
         ServerFactory.delete(server);
 
         server.asMinionServer().ifPresent(minion -> {
-            saltServiceInstance.deleteKey(minion.getMinionId());
+            saltApi.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
         });
     }
@@ -1243,19 +1244,34 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Returns the list of systems that are not assigned to a specific maintenance schedule.
+     * Returns the list of systems that are assigned to a specific maintenance schedule
+     *
      * @param user currently logged in user
-     * @param schedule a maintenance schedule
-     * @param pc PageControl
-     * @return list of SystemOverview objects
+     * @param schedule the maintenance schedule
+     * @param pc the {@link PageControl} object
+     * @return list of {@link EssentialServerDto} objects
      */
-    public static DataResult<EssentialServerDto> systemsNotInSchedule(User user, MaintenanceSchedule schedule,
+    public static DataResult<EssentialServerDto> systemsInSchedule(User user, MaintenanceSchedule schedule,
             PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "target_systems_for_maintenance_schedule");
+        SelectMode m = ModeFactory.getMode("System_queries", "systems_in_maintenance_schedule");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("schedule_id", schedule.getId());
         return makeDataResult(params, emptyMap(), pc, m, EssentialServerDto.class);
+    }
+
+    /**
+     * Returns a list of all systems and their assigned schedule details, if any
+     *
+     * @param user the authorized user
+     * @param pc the {@link PageControl} object
+     * @return list of {@link SystemScheduleDto} objects
+     */
+    public static DataResult<SystemScheduleDto> systemListWithSchedules(User user, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "visible_to_user_with_schedules");
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        return makeDataResult(params, emptyMap(), pc, m, SystemScheduleDto.class);
     }
 
     /**

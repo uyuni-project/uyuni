@@ -1,3 +1,15 @@
+- fix removal of mgr-deamon with selinux enabled (bsc#1177928)
+
+-------------------------------------------------------------------
+Mon Sep 21 11:59:11 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Updating translations from weblate
+
+-------------------------------------------------------------------
+Fri Sep 18 12:00:22 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Remove duplicate languages and update translation strings
 - Update package version to 4.2.0
 

@@ -14,13 +14,15 @@
  */
 package com.suse.manager.virtualization.test;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.services.iface.VirtManager;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.Map;
 import java.util.Optional;
@@ -29,6 +31,11 @@ public class TestVirtManager implements VirtManager {
 
     @Override
     public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean startGuest(String minionId, String domainName) {
         throw new UnsupportedOperationException();
     }
 
@@ -64,6 +71,11 @@ public class TestVirtManager implements VirtManager {
 
     @Override
     public void updateLibvirtEngine(MinionServer minion) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<String> getHypervisor(String minionId) {
         throw new UnsupportedOperationException();
     }
 }

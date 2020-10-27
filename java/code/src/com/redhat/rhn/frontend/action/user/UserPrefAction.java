@@ -61,11 +61,13 @@ public class UserPrefAction extends RhnAction {
         }
 
         String preferredLocale = form.getString("preferredLocale");
-        if (preferredLocale != null && preferredLocale.equals("none")) {
+        if (preferredLocale != null && preferredLocale.equals("default")) {
             preferredLocale = null;
         }
         user.setTimeZone(UserManager.getTimeZone(((Integer) form.get("timezone")).intValue()));
         user.setPreferredLocale(preferredLocale);
+
+        user.setWebTheme(form.getString("theme"));
 
         user.setEmailNotify(BooleanUtils.toInteger((Boolean) form
                 .get("emailNotif"), 1, 0, 0));

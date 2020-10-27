@@ -5,7 +5,7 @@ import {UserLocalizationProvider} from "core/user-localization/user-localization
 import {MessagesContainer} from 'components/toastr/toastr';
 import UpgradeCluster from './upgrade-cluster';
 
-export const renderer = (id, {cluster, flashMessage} = {}) => {
+export const renderer = (id, {cluster, flashMessage, showUpgradePlan} = {}) => {
 
   let clusterObj = {};
   try {
@@ -18,7 +18,7 @@ export const renderer = (id, {cluster, flashMessage} = {}) => {
     <RolesProvider>
       <UserLocalizationProvider>
         <MessagesContainer/>
-        <UpgradeCluster cluster={clusterObj} flashMessage={flashMessage}/>
+        <UpgradeCluster cluster={clusterObj} showUpgradePlan={showUpgradePlan} flashMessage={flashMessage} />
       </UserLocalizationProvider>
     </RolesProvider>,
     document.getElementById(id)

@@ -204,6 +204,7 @@ Then(/^I click on the filter button until page does not contain "([^"]*)" text$/
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless has_content?(text)
     find("button.spacewalk-button-filter").click
+    has_text?('is filtered', wait: 10)
   end
 end
 
@@ -211,11 +212,13 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if has_content?(text)
     find("button.spacewalk-button-filter").click
+    has_text?('is filtered', wait: 10)
   end
 end
 
 When(/^I click on the filter button$/) do
   find_and_wait_click("button.spacewalk-button-filter").click
+  has_text?('is filtered', wait: 10)
 end
 
 When(/^I click on the red confirmation button$/) do
@@ -363,6 +366,10 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'last IPv4 address for DHCP'      => 'default_net#ipv4#dhcp_end',
                'first option'                    => 'bind#config#options#0#0',
                'first value'                     => 'bind#config#options#0#1',
+               'second option'                   => 'bind#config#options#1#0',
+               'second value'                    => 'bind#config#options#1#1',
+               'third option'                    => 'bind#config#options#2#0',
+               'third value'                     => 'bind#config#options#2#1',
                'first configured zone name'      => 'bind#configured_zones#0#$key',
                'first available zone name'       => 'bind#available_zones#0#$key',
                'first file name'                 => 'bind#available_zones#0#file',
@@ -513,7 +520,7 @@ end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
-  output, _code = node.run('cat /etc/vconsole.conf')
+  output, _code = node.run("grep 'KEYMAP=' /etc/vconsole.conf")
   raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
@@ -530,7 +537,7 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
 end
 
-Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
+def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
@@ -542,22 +549,32 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
   else
     raise 'Invalid target'
   end
-  output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
-  if verb == 'be' && value == ''
+  $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
+end
+
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  output, _code = pillar_get(key, minion)
+  if value == ''
     raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
-  elsif verb == 'be'
-    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
-  elsif verb == 'contain'
-    raise "Output doesn't contain #{value}: #{output}" unless output.include? value
-  elsif verb == 'not contain'
-    raise "Output contains #{value}: #{output}" if output.include? value
   else
-    raise 'Invalid verb'
+    raise "Output value wasn't found: #{output}" unless output.split("\n").length > 1
+    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
   end
 end
 
+Then(/^the pillar data for "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  output, _code = pillar_get(key, minion)
+  raise "Output doesn't contain #{value}: #{output}" unless output.include? value
+end
+
+Then(/^the pillar data for "([^"]*)" should not contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  output, _code = pillar_get(key, minion)
+  raise "Output contains #{value}: #{output}" if output.include? value
+end
+
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
-  step %(the pillar data for "#{key}" should be "" on "#{minion}")
+  output, _code = pillar_get(key, minion)
+  raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
@@ -620,30 +637,22 @@ When(/^I accept "([^"]*)" key$/) do |host|
 end
 
 When(/^I go to the minion onboarding page$/) do
-  steps %(
-    When I follow the left menu "Salt > Keys"
-    )
+  step %(I follow the left menu "Salt > Keys")
 end
 
 When(/^I go to the bootstrapping page$/) do
-  steps %(
-    When I follow the left menu "Systems > Bootstrapping"
-    )
+  step %(I follow the left menu "Systems > Bootstrapping")
 end
 
 When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
-    steps %(
-     And I wait until I see the name of "#{minion}", refreshing the page
-      )
+    step %(I wait until I see the name of "#{minion}", refreshing the page)
   end
 end
 
 When(/^I refresh page until I do not see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
-    steps %(
-     And I wait until I do not see the name of "#{minion}", refreshing the page
-      )
+    step %(I wait until I do not see the name of "#{minion}", refreshing the page)
   end
 end
 
@@ -712,7 +721,7 @@ end
 
 And(/^I cleanup minion "([^"]*)"$/) do |minion|
   node = get_target(minion)
-  if minion == 'sle_minion'
+  if %w[sle_minion sle_ssh_tunnel_minion].include?(minion)
     node.run('rcsalt-minion stop')
     node.run('rm -Rf /var/cache/salt/minion')
   elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)

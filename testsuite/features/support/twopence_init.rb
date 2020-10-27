@@ -56,6 +56,8 @@ if $qam_test
   $ubuntu1604_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
+  $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
+  $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
   # As we share core features for QAM and QA environments, we share also those vm twopence objects
   $minion = $sle12sp4_minion
   $ssh_minion = $sle12sp4_ssh_minion
@@ -70,6 +72,7 @@ if $qam_test
             $ceos7_minion, $ceos7_ssh_minion, $ceos7_client,
             $ubuntu1604_ssh_minion, $ubuntu1604_minion,
             $ubuntu1804_ssh_minion, $ubuntu1804_minion,
+            $ubuntu2004_ssh_minion, $ubuntu2004_minion,
             $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 else
   # Define twopence objects for QA environment
@@ -126,6 +129,9 @@ end
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
+  # If the system is not known, just return the parameter
+  system_name = host
+
   if host == 'pxeboot_minion'
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
@@ -135,8 +141,12 @@ def get_system_name(host)
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
   else
-    node = get_target(host)
-    system_name = node.full_hostname
+    begin
+      node = get_target(host)
+      system_name = node.full_hostname
+    rescue RuntimeError => e
+      puts e.message
+    end
   end
   system_name
 end
@@ -189,6 +199,8 @@ $pxeboot_mac = ENV['PXEBOOT_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
+$no_auth_registry = ENV['NO_AUTH_REGISTRY'] if ENV['NO_AUTH_REGISTRY']
+$auth_registry = ENV['AUTH_REGISTRY'] if ENV['AUTH_REGISTRY']
 if ENV['SCC_CREDENTIALS']
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
@@ -202,6 +214,7 @@ $node_by_host = { 'server'                => $server,
                   'ubuntu_ssh_minion'     => $ubuntu_minion,
                   'ssh_minion'            => $ssh_minion,
                   'sle_minion'            => $minion,
+                  'sle_ssh_tunnel_minion' => $minion,
                   'build_host'            => $build_host,
                   'sle_client'            => $client,
                   'kvm_server'            => $kvm_server,
@@ -217,6 +230,8 @@ $node_by_host = { 'server'                => $server,
                   'ubuntu1604_ssh_minion' => $ubuntu1604_ssh_minion,
                   'ubuntu1804_minion'     => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion' => $ubuntu1804_ssh_minion,
+                  'ubuntu2004_minion'     => $ubuntu2004_minion,
+                  'ubuntu2004_ssh_minion' => $ubuntu2004_ssh_minion,
                   'sle11sp4_ssh_minion'   => $sle11sp4_ssh_minion,
                   'sle11sp4_minion'       => $sle11sp4_minion,
                   'sle11sp4_client'       => $sle11sp4_client,

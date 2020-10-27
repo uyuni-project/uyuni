@@ -179,7 +179,7 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
     if need_ca:
         for rhns_ca_cert in rhns_ca_certs:
             if not os.access(rhns_ca_cert, os.R_OK):
-                msg = "%s: %s" % (_("ERROR: can not find RHNS CA file"),
+                msg = "%s: %s" % (_("ERROR: can not find server CA file"),
                                      rhns_ca_cert)
                 log.log_me("%s" % msg)
                 raise up2dateErrors.SSLCertificateFileNotFound(msg)

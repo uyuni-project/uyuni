@@ -20,8 +20,8 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
-import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import com.google.gson.JsonElement;
@@ -190,4 +190,25 @@ public class VirtManagerSalt implements VirtManager {
         saltApi.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Optional<String> getHypervisor(String minionId) {
+        LocalCall<String> call =
+                new LocalCall<>("virt.get_hypervisor", Optional.empty(), Optional.empty(),
+                        new TypeToken<String>() { });
+
+        return saltApi.callSync(call, minionId);
+    }
+
+    @Override
+    public boolean startGuest(String minionId, String domainName) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("name", domainName);
+        LocalCall<Boolean> call =
+                new LocalCall<>("virt.start", Optional.empty(), Optional.of(args),
+                        new TypeToken<Boolean>() { });
+
+        return saltApi.callSync(call, minionId).orElse(false);
+    }
 }

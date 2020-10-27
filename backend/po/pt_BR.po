@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-07-14 12:37+0000\n"
-"Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
+"PO-Revision-Date: 2020-10-15 01:49+0000\n"
+"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -37,10 +37,11 @@ msgstr "A assinatura de proxy enviada %s não corresponde à nossa %s."
 msgid "declined proxy authentication"
 msgstr "autenticação de proxy recusada"
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -53,17 +54,22 @@ msgstr ""
 "obter mais ajuda."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
-msgstr "Seu sistema não foi encontrado no banco de dados RHN"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Seu sistema não foi encontrado no banco de dados do {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
-msgstr "O ISS está desativado neste satélite."
+msgid "ISS is disabled on this server."
+msgstr "O ISS está desativado neste servidor."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "O servidor \"%s\" não está ativado para o ISS."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Par system_id / action_id inválido."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -75,19 +81,6 @@ msgstr "Esperado um nome de pacote, não: %s"
 msgid "Expected a package, not: %s"
 msgstr "Esperado um pacote, não: %s"
 
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Serviço Spacewalk Proxy não ativado para o perfil do servidor: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Chave de sessão inválida"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Esse ID de servidor não existe mais"
-
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
@@ -98,14 +91,25 @@ msgstr "Tipo de valor de ação inválido%s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "A ação %s não pertence ao servidor %s"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Par system_id / action_id inválido."
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Valor inválido %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"O serviço SUSE Manager Proxy não está habilitado para o perfil do servidor: "
+"\"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Chave de sessão inválida"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Esse ID de servidor não existe mais"
 
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
@@ -131,12 +135,13 @@ msgstr ""
 "não encontrados."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Mensagem de Boas-vindas do Red Hat Satellite"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "{PRODUCT_NAME} Mensagem de Boas vindas"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Red Hat Satellite Privacy Statement"
-msgstr "Declaração de Privacidade do Red Hat Satellite"
+msgid "Privacy Statement"
+msgstr "Declaração de Privacidade"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -187,16 +192,6 @@ msgstr "Execute rhn_register como root neste cliente"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Serviço não ativado para o perfil do sistema: \"%s\""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Pacote RPM inválido %s solicitado"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Pacote não encontrado"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -308,6 +303,16 @@ msgstr "o nome de usuário deve ter pelo menos %d caracteres"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Não é possível registrar nomes de usuário que terminem com %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Pacote RPM inválido %s solicitado"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Pacote não encontrado"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -1134,7 +1139,7 @@ msgstr "ERRO: %s %s: %s"
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s"
+msgstr "RASTREAR: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
@@ -1379,16 +1384,16 @@ msgstr ""
 "e/ou escrito para:\n"
 "%s"
 
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ enviar log como um email +++"
 
-#: ../satellite_tools/reposync.py:112
+#: ../satellite_tools/reposync.py:114
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s sincronizado. relatório de %s"
 
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email solicitado, mas não há nada para enviar +++"
 
@@ -1471,18 +1476,19 @@ msgid " - live synchronization"
 msgstr " - sincronização ao vivo"
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
-"ERRO: A sincronização de conteúdo ao vivo com o RHN Classic Hosted não é "
-"mais suportada.\n"
-"Em vez disso, use o comando cdn-sync, a menos que você esteja tentando "
-"sincronizar a partir de outro satélite via Inter-Satelite-Sync (ISS) ou a "
-"partir de conteúdo local em disco via ISOs de despejo de canal."
+"ERRO: A sincronização de conteúdo Live com o RHN Classic Hosted não é mais "
+"suportada.\n"
+"Use o comando cdn-sync em vez disso, a menos que você esteja tentando "
+"sincronizar de outro {PRODUCT_NAME} via Inter-Server-Sync (ISS), ou de "
+"conteúdo local no disco via Channel Dump ISOs."
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1654,7 +1660,7 @@ msgstr "ERRO: esses canais não existem ou não estão disponíveis:"
 #: ../satellite_tools/satsync.py:859
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
-msgstr "       ERRO: esses canais não existem ou não estão disponíveis:"
+msgstr "       (para ver uma lista de rótulos de canais: %s --list-channels)"
 
 #: ../satellite_tools/satsync.py:904
 #, python-format
@@ -2025,9 +2031,9 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
-"ERRO: '%s' não é uma etapa válida. Veja 'man satellite-sync' para mais "
+"ERRO: '%s' não é uma etapa válida. Veja 'man mgr-inter-sync' para mais "
 "detalhes."
 
 #: ../satellite_tools/satsync.py:2407
@@ -2179,3 +2185,6 @@ msgstr "  28 - erro: --master é válido apenas com --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERRO: versão de despejo desconhecida, tente um dos %s"
+
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Mensagem de Boas-vindas do Red Hat Satellite"

@@ -1,3 +1,9 @@
+- Enable ppc64le for CentOS7 and CentOS8
+
+-------------------------------------------------------------------
+Fri Sep 18 12:17:53 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Avoid exceptions on the logs when looking for channels that do
   not exist (bsc#1175529)
 - Update package version to 4.2.0

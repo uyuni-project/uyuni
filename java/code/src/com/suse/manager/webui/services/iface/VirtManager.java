@@ -14,12 +14,14 @@
  */
 package com.suse.manager.webui.services.iface;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.server.MinionServer;
+
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +39,16 @@ public interface VirtManager {
      * @return the XML definition or an empty Optional
      */
     Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName);
+
+    /**
+     * Start a virtual machine
+     *
+     * @param minionId the host minion ID
+     * @param domainName the name of the domain to start
+     *
+     * @return whether it worked or not
+     */
+    boolean startGuest(String minionId, String domainName);
 
     /**
      * Query virtual host and domains capabilities.
@@ -93,4 +105,12 @@ public interface VirtManager {
      */
     void updateLibvirtEngine(MinionServer minion);
 
+    /**
+     * Get the name of the running hypervisor on a minion.
+     *
+     * @param minionId the minion to ask about
+     *
+     * @return either "kvm" or "xen"
+     */
+    Optional<String> getHypervisor(String minionId);
 }

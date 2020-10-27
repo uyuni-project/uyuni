@@ -37,12 +37,12 @@ import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltTop;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.salt.MgrActionChains;
-import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.Match;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.AuthMethod;
@@ -551,7 +551,7 @@ public class SaltSSHService {
 
         try {
             tmpKeyFileAbsolutePath.ifPresent(p -> parameters.getPrivateKey().ifPresent(k ->
-                    GlobalInstanceHolder.SYSTEM_QUERY.storeSshKeyFile(p, k)));
+                    GlobalInstanceHolder.SALT_API.storeSshKeyFile(p, k)));
             SaltRoster roster = new SaltRoster();
             roster.addHost(parameters.getHost(),
                     parameters.getUser(),
@@ -586,7 +586,7 @@ public class SaltSSHService {
     }
 
     private void cleanUpTempKeyFile(Path path) {
-        GlobalInstanceHolder.SYSTEM_QUERY
+        GlobalInstanceHolder.SALT_API
                 .removeFile(path)
                 .orElseThrow(() -> new IllegalStateException("Can't remove file " + path));
     }
@@ -783,7 +783,7 @@ public class SaltSSHService {
         Map<String, String> options = new HashMap<>();
         options.put("StrictHostKeyChecking", "no");
         options.put("ConnectTimeout", ConfigDefaults.get().getSaltSSHConnectTimeout() + "");
-        Optional<MgrUtilRunner.ExecResult> ret = GlobalInstanceHolder.SYSTEM_QUERY
+        Optional<MgrUtilRunner.ExecResult> ret = GlobalInstanceHolder.SALT_API
                 .chainSSHCommand(proxyPath,
                         SSH_KEY_PATH,
                         PROXY_SSH_PUSH_KEY,

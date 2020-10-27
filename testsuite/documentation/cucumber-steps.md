@@ -36,7 +36,7 @@ Possible values are currently:
 | SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
 | SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` | ```"minion"``` |
+| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` or ```"sle_ssh_tunnel_minion"```| ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
 | CentOS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ```"ceos_ssh_minion"``` | ```"minion"``` |
@@ -109,16 +109,16 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I follow the left menu "Systems > System List > System Currency"
 ```
 
-* Go to Admin => Setup Wizard
+* Go to Admin => Setup Wizard => Products
 
 ```cucumber
-  When I am on the Admin page
+  Given I am on the Products page
 ```
 
 * Go to Admin => Organizations
 
 ```cucumber
-  When I am on the Organizations page
+  Given I am on the Organizations page
 ```
 
 * Go to Patches => Patches => Relevant
@@ -205,12 +205,11 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on the System Manager System Overview page
 ```
 
-* Close current page
+* Test the last opened window
 
 ```cucumber
-  When I close the window
+  And I switch to last opened windo
 ```
-
 
 <a name="b3" />
 
@@ -378,7 +377,10 @@ The check box can be identified by name, id or label text.
   When I enter "SUSE Test Key x86_64" as "description"
   When I enter "CVE-1999-12345" as "search_string" in the content area
   When I enter the hostname of "proxy" as "hostname"
+  When I enter "SUSE Test Key x86_64" as "description" text area
 ```
+
+Note that the text area variant handles the new lines characters while the others don't.
 
 * Make sure a text is in a given input field of a form
 
@@ -711,6 +713,10 @@ Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
 Then "test-vm" virtual machine on "virt-server" should have a "myvolume" virtio disk from pool "test-pool"
 Then "test-vm" virtual machine on "virt-server" should have "/path/to/image.iso" attached to a cdrom
+Then "test-vm" virtual machine on "virt-server" should boot using autoyast
+Then "test-vm" virtual machine on "virt-server" should boot on hard disk at next start
+Then "test-vm" virtual machine on "virt-server" should stop on reboot
+Then "test-vm" virtual machine on "virt-server" should not stop on reboot at next start
 ```
 
 * Remove disk images from a storage pool

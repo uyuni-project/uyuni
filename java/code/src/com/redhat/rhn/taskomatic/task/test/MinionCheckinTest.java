@@ -29,7 +29,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Date;
 import java.util.Optional;
@@ -45,7 +45,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         this.thresholdMax =  Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD) * 86400;
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     /**
@@ -75,7 +75,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         } });
 
         MinionCheckin minionCheckinJob = new MinionCheckin();
-        minionCheckinJob.setSystemQuery(saltServiceMock);
+        minionCheckinJob.setSaltApi(saltServiceMock);
 
         minionCheckinJob.execute(null);
     }
@@ -107,7 +107,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         } });
 
         MinionCheckin minionCheckinJob = new MinionCheckin();
-        minionCheckinJob.setSystemQuery(saltServiceMock);
+        minionCheckinJob.setSaltApi(saltServiceMock);
 
         minionCheckinJob.execute(null);
     }

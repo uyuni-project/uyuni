@@ -1,3 +1,15 @@
+- Remove RH references in Python/Ruby localization and use the product name instead
+
+-------------------------------------------------------------------
+Mon Sep 21 12:00:19 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Updating translations from weblate
+
+-------------------------------------------------------------------
+Fri Sep 18 12:16:08 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - Remove duplicated languages and update translation strings
 - Update package version to 4.2.0
 

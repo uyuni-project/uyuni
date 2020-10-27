@@ -1,6 +1,31 @@
+- Adapt Debian10 bootstrap repository definition for salt on Python 3
+- add --force to mgr-create-bootstrap-repo to enforce generation
+  even when some products are not synchronized
+- Bootstrap repository definitions for CentOS7 and 8 for ppc64le
+- create bootstrap repo should not flush by default (bsc#1175843)
+- improve detection of base channels for products (bsc#1177478)
+- Add LTSS PIDs for SLE12SP1, SLE12SP2, SLE12SP3 and SLE12SP4 to
+  the bootstrap definitions as some packages from LTSS are
+  required (bsc#1177524)
+- fix logrotate config
+- Add missing packages to SLE12 >= SP1 bootstrap data to fix JeOS
+  bootstrap problems (bsc#1176913)
+- add missing packages to ubuntu20.04 bootstrap data (bsc#1176629)
+
+-------------------------------------------------------------------
+Mon Sep 21 12:01:54 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Updating translations from weblate
+
+-------------------------------------------------------------------
+Fri Sep 18 12:25:33 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - support installer update channels during autoinstallation
 - migrate all occurrences of kickstart to autoinstall in cobbler database (bsc#1169780)
 - define bootstrap repo data for SUSE Manager Proxies (bsc#1174470)
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------

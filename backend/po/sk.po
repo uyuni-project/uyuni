@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-08-18 10:23+0000\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
+"PO-Revision-Date: 2020-09-25 13:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
 ">\n"
@@ -34,10 +34,11 @@ msgstr "Zaslaný podpis proxy %s nezodpovedá nášmu %s."
 msgid "declined proxy authentication"
 msgstr "zamietnuté overenie proxy"
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -50,17 +51,22 @@ msgstr ""
 "organizácie."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
-msgstr "Váš systém sa nenašiel v databáze RHN"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
-msgstr "Na tomto satellite je ISS zakázané."
+msgid "ISS is disabled on this server."
+msgstr "Na tomto serveri je ISS zakázané."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nie je povolený pre ISS."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Neplatný pár system_id/action_id."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -72,19 +78,6 @@ msgstr "Očakávaný názov balíka, nie: %s"
 msgid "Expected a package, not: %s"
 msgstr "Očakávaný balík, nie: %s"
 
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Služba Spacewalk Proxy nie je povolená pre profil servera: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Neplatný kľúč sedenia"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Toto ID servera už neexistuje"
-
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
@@ -95,14 +88,23 @@ msgstr "Neplatný typ hodnoty akcie %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Akcia %s nepatrí k serveru %s"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Neplatný pár system_id/action_id."
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Neplatná hodnota %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "Služba SUSE Manager Proxy nie je povolená pre profil servera: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Neplatný kľúč sedenia"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Toto ID servera už neexistuje"
 
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
@@ -127,12 +129,13 @@ msgstr ""
 "Nepodarilo sa nájsť platné sieťové rozhranie, ipaddr a ip6addr sa nenašli."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Uvítacia správa Red Hat Satellite"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "Uvítacia správa {PRODUCT_NAME}"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Red Hat Satellite Privacy Statement"
-msgstr "Vyhlásenie o ochrane súkromia Red Hat Satellite"
+msgid "Privacy Statement"
+msgstr "Vyhlásenie o ochrane súkromia"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -182,16 +185,6 @@ msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Služba nie je povolená pre systémový profil: \"%s\""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Požaduje sa neplatný balík RPM %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Balík nebol nájdený"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -303,6 +296,16 @@ msgstr "používateľské meno by malo byť najmenej %d znakov dlhé"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nie je možné zaregistrovať používateľské mená končiace s %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Požaduje sa neplatný balík RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Balík nebol nájdený"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -1183,8 +1186,8 @@ msgstr ""
 "CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
 "       V závislosti od konkrétnych podrobností o chybe skontrolujte svoju "
 "konfiguráciu,\n"
-"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste znova."
-"\n"
+"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste "
+"znova.\n"
 "       Chybová správa: %s\n"
 
 #: ../satellite_tools/messages.py:51
@@ -1365,16 +1368,16 @@ msgstr ""
 "a/alebo zapísať do:\n"
 "%s"
 
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr "+++ odosielanie záznamu ako e-mail +++"
 
-#: ../satellite_tools/reposync.py:112
+#: ../satellite_tools/reposync.py:114
 #, python-format
 msgid "%s sync. report from %s"
 msgstr "%s sync. správa od %s"
 
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
@@ -1456,18 +1459,19 @@ msgid " - live synchronization"
 msgstr " - živá synchronizácia"
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 "CHYBA: Synchronizácia živého obsahu so serverom RHN Classic Hosted už nie je "
 "podporovaná.\n"
 "Namiesto toho použite príkaz cdn-sync, pokiaľ sa nepokúšate synchronizovať s "
-"ďalším Satellite cez Inter-Satelite-Sync (ISS) alebo s lokálnym obsahom na "
-"disku cez Channel Dump ISO."
+"ďalším {PRODUCT_NAME} cez Inter-Satelite-Sync (ISS) alebo s lokálnym obsahom "
+"na disku cez Channel Dump ISO."
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1816,8 +1820,8 @@ msgid ""
 "disk dump will be considered to be a full export; see \"man satellite-sync\" "
 "for more information."
 msgstr ""
-"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v \""
-"man satellite-sync\"."
+"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v "
+"\"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
@@ -1843,298 +1847,321 @@ msgstr "poslať e-mailom správu o tom, čo bolo synchronizované/importované"
 
 #: ../satellite_tools/satsync.py:2220
 msgid "forcibly process all (not a diff of) patch metadata"
-msgstr ""
+msgstr "nútene spracovať všetky (nie odlišné) metadáta opráv"
 
 #: ../satellite_tools/satsync.py:2222
 msgid "Do not use an http proxy under any circumstances."
-msgstr ""
+msgstr "Za žiadnych okolností nepoužiť http proxy."
 
 #: ../satellite_tools/satsync.py:2224
 msgid "alternative http proxy (hostname:port)"
-msgstr ""
+msgstr "alternatívne http proxy (názov_hostiteľa:port)"
 
 #: ../satellite_tools/satsync.py:2226
 msgid "alternative http proxy username"
-msgstr ""
+msgstr "používateľské meno alternatívneho http proxy"
 
 #: ../satellite_tools/satsync.py:2228
 msgid "alternative http proxy password"
-msgstr ""
+msgstr "heslo alternatívneho http proxy"
 
 #: ../satellite_tools/satsync.py:2230
 msgid "parent SUSE Manager to import content from"
-msgstr ""
+msgstr "rodičovský SUSE Manager, z ktorého sa má importovať obsah"
 
 #: ../satellite_tools/satsync.py:2232
 msgid "list all available channels and exit"
-msgstr ""
+msgstr "vypísať zoznam všetkých dostupných kanálov a ukončiť"
 
 #: ../satellite_tools/satsync.py:2234
 msgid "help on all error codes mgr-inter-sync returns"
-msgstr ""
+msgstr "pomocník pri všetkých chybových kódoch, ktoré vracia mgr-inter-sync"
 
 #: ../satellite_tools/satsync.py:2236
 msgid "source mount point for import - disk update only"
-msgstr ""
+msgstr "zdrojový bod pripojenia pre import - iba aktualizácia disku"
 
 #: ../satellite_tools/satsync.py:2238
 msgid "do not process patch data"
-msgstr ""
+msgstr "nespracovávať dáta opráv"
 
 #: ../satellite_tools/satsync.py:2240
 msgid "do not process kickstart data (provisioning only)"
-msgstr ""
+msgstr "nespracovávať dáta kickstart (iba poskytovanie)"
 
 #: ../satellite_tools/satsync.py:2242
 msgid "do not process full package metadata"
-msgstr ""
+msgstr "nespracovávať úplné metadáta balíkov"
 
 #: ../satellite_tools/satsync.py:2244
 msgid "do not download, or process any RPMs"
-msgstr ""
+msgstr "nesťahovať ani nespracovávať žiadne RPM"
 
 #: ../satellite_tools/satsync.py:2246
 msgid "turn off SSL (not recommended)"
-msgstr ""
+msgstr "vypnúť SSL (neodporúča sa)"
 
 #: ../satellite_tools/satsync.py:2248
 msgid "org to which the sync imports data. defaults to the admin account"
 msgstr ""
+"organizácia, do ktorej synchronizácia importuje dáta. predvolené nastavenia "
+"pre účet administrátora"
 
 #: ../satellite_tools/satsync.py:2250
 msgid "print the configuration and exit"
-msgstr ""
+msgstr "vytlačiť konfiguráciu a ukončiť"
 
 #: ../satellite_tools/satsync.py:2252
 msgid "alternative server with which to connect (hostname)"
-msgstr ""
+msgstr "alternatívny server, s ktorým sa možno spojiť (názov hostiteľa)"
 
 #: ../satellite_tools/satsync.py:2254
 msgid "synchronize to this step (man satellite-sync for more info)"
-msgstr ""
+msgstr "synchronizovať s týmto krokom (viac informácií v man satellite-sync)"
 
 #: ../satellite_tools/satsync.py:2256
 msgid "write complete data to tempfile before streaming to remainder of app"
 msgstr ""
+"zapísať kompletné dáta do dočasného súboru pred streamovaním do zvyšku "
+"aplikácie"
 
 #: ../satellite_tools/satsync.py:2258
 msgid "DEBUG ONLY: alternative path to digital system id"
-msgstr ""
+msgstr "IBA LADIŤ: alternatívna cesta k digitálnemu systémovému id"
 
 #: ../satellite_tools/satsync.py:2260
 msgid "alternative email address(es) for sync output (--email option)"
 msgstr ""
+"alternatívne emailové adresa(y) pre synchronizovaný výstup (voľba --email)"
 
 #: ../satellite_tools/satsync.py:2262
 msgid "do not remove rpms when importing from local dump"
-msgstr ""
+msgstr "neodstraňovať rpm pri importe z lokálneho výpisu"
 
 #: ../satellite_tools/satsync.py:2264
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
+"plne kvalifikovaný názov domény hlavného Satellite. Platné iba s --mount-"
+"point. Vyžaduje sa, ak chcete importovať dáta organizácie a oprávnenia "
+"kanálov."
 
 #: ../satellite_tools/satsync.py:2274
 #, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
 msgstr ""
+"CHYBA: tieto argumenty nedávajú v tejto súvislosti žiadny zmysel (skúste --"
+"help): %s"
 
 #. An SQL error is fatal... crash and burn
 #: ../satellite_tools/satsync.py:2286
 #, python-format
 msgid "ERROR: Can't connect to the database: %s"
-msgstr ""
+msgstr "ERROR: Nedá sa pripojiť k databáze: %s"
 
 #: ../satellite_tools/satsync.py:2287
 msgid "ERROR: Check if your database is running."
-msgstr ""
+msgstr "CHYBA: Skontrolujte, či je vaša databáza spustená."
 
 #: ../satellite_tools/satsync.py:2322
 #, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
-msgstr ""
+msgstr "CHYBA: --debug-level vezme celé číslo v rozsahu %s."
 
 #: ../satellite_tools/satsync.py:2324
 msgid "  0  - little logging/messaging."
-msgstr ""
+msgstr "  0  - málo zaznamenávania/odosielania správ."
 
 #: ../satellite_tools/satsync.py:2325
 msgid "  1  - minimal logging/messaging."
-msgstr ""
+msgstr "  1  - minimálne zaznamenávanie/odosielanie správ."
 
 #: ../satellite_tools/satsync.py:2326
 msgid "  2  - normal level of logging/messaging."
-msgstr ""
+msgstr "  2  - normálna úroveň zaznamenávania/odosielania správ."
 
 #: ../satellite_tools/satsync.py:2327
 msgid "  3  - lots of logging/messaging."
-msgstr ""
+msgstr "  3  - veľa zaznamenávania/odosielania správ."
 
 #: ../satellite_tools/satsync.py:2328
 msgid "  4+ - excessive logging/messaging."
-msgstr ""
+msgstr "  4+ - nadmerné zaznamenávanie/odosielanie správ."
 
 #: ../satellite_tools/satsync.py:2341
 msgid "ERROR: The --master option is only valid with the --mount-point option"
-msgstr ""
+msgstr "CHYBA: Voľba --master je platná iba s voľbou --mount-point"
 
 #: ../satellite_tools/satsync.py:2351
 #, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
-msgstr ""
+msgstr "CHYBA: Nepodarilo sa nájsť Org Id %s"
 
 #: ../satellite_tools/satsync.py:2360
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
+"UPOZORNENIE: Voľba --list-channels prepíše akúkoľvek voľbu --step. --step "
+"ignorované."
 
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
+"CHYBA: '%s' nie je platný krok. Ďalšie informácie nájdete v 'man mgr-inter-"
+"sync'."
 
 #: ../satellite_tools/satsync.py:2407
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
+"CHYBA: Momentálne nie sú importované žiadne kanály; skúste mgr-inter-sync --"
+"list-channels; potom mgr-inter-sync -c chn0 -c chn1..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
 #: ../satellite_tools/satsync.py:2457 ../satellite_tools/satsync.py:2461
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
-msgstr ""
+msgstr "CHYBA: --batch-size musí mať hodnotu v rozsahu: 1..50"
 
 #: ../satellite_tools/satsync.py:2469
 #, python-format
 msgid "ERROR: no such directory %s"
-msgstr ""
+msgstr "CHYBA: adresár %s neexistuje"
 
 #: ../satellite_tools/satsync.py:2474
 msgid "Error Codes: Returned codes means:"
-msgstr ""
+msgstr "Chybové kódy: Vrátené kódy znamenajú:"
 
 #: ../satellite_tools/satsync.py:2475
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
 msgstr ""
+" -1  - Nepodarilo sa zamknúť súbor alebo PrerušenieKlávesnice alebo "
+"UkončenieSystém"
 
 #: ../satellite_tools/satsync.py:2476
 msgid "  0  - User interrupted or intentional exit"
-msgstr ""
+msgstr "  0  - Používateľ prerušil alebo úmyselne ukončil"
 
 #: ../satellite_tools/satsync.py:2477
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
-msgstr ""
+msgstr "  1  - pokus o spustenie viac ako jednej inštancie mgr-inter-sync."
 
 #: ../satellite_tools/satsync.py:2478
 msgid "  2  - Unable to find synchronization tools."
-msgstr ""
+msgstr "  2  - Nepodarilo sa nájsť synchronizačné nástroje."
 
 #: ../satellite_tools/satsync.py:2479
 msgid "  3  - a general socket exception occurred"
-msgstr ""
+msgstr "  3  - vyskytla sa všeobecná výnimka soketu"
 
 #: ../satellite_tools/satsync.py:2480
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
-msgstr ""
+msgstr "  4  - vyskytla sa chyba SSL. Prekontrolujte svoje nastavenia SSL."
 
 #: ../satellite_tools/satsync.py:2481
 msgid "  5  - ISS error"
-msgstr ""
+msgstr "  5  - chyba ISS"
 
 #: ../satellite_tools/satsync.py:2482
 msgid "  6  - unhandled exception occurred"
-msgstr ""
+msgstr "  6  - vyskytla sa neošetrená výnimka"
 
 #: ../satellite_tools/satsync.py:2483
 msgid "  7  - unknown sync error"
-msgstr ""
+msgstr "  7  - neznáma chyba synchronizácie"
 
 #: ../satellite_tools/satsync.py:2484
 msgid "  8  - ERROR: must be root to execute"
-msgstr ""
+msgstr "  8  - CHYBA: na vykonanie musí byť správca systému"
 
 #: ../satellite_tools/satsync.py:2485
 msgid "  9  - rpclib fault during synchronization init"
-msgstr ""
+msgstr "  9  - zlyhanie rpclib počas inicializácie synchronizácie"
 
 #: ../satellite_tools/satsync.py:2486
 msgid "  10 - synchronization init error"
-msgstr ""
+msgstr "  10 - chyba inicializácie synchronizácie"
 
 #: ../satellite_tools/satsync.py:2487
 msgid "  11 - Error parsing XML stream"
-msgstr ""
+msgstr "  11 - Chyba analýzy prúdu XML"
 
 #: ../satellite_tools/satsync.py:2488
 msgid "  12 - Channel do not exist"
-msgstr ""
+msgstr "  12 - Kanál neexistuje"
 
 #: ../satellite_tools/satsync.py:2489
 msgid "  13 - SQL error during importing package metadata"
-msgstr ""
+msgstr "  13 - Chyba SQL počas importovania metadát balíka"
 
 #: ../satellite_tools/satsync.py:2490
 msgid "  14 - SQL error during linking channel packages"
-msgstr ""
+msgstr "  14 - Chyba SQL počas prepájania balíkov kanálov"
 
 #: ../satellite_tools/satsync.py:2491
 msgid "  15 - SQL error during xml processing"
-msgstr ""
+msgstr "  15 - chyba SQL počas spracovania xml"
 
 #: ../satellite_tools/satsync.py:2492
 msgid "  16 - server.mount_point not set in the configuration file"
-msgstr ""
+msgstr "  16 - server.bod_pripojenia nie je nastavené v konfiguračnom súbore"
 
 #: ../satellite_tools/satsync.py:2493
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
 msgstr ""
+"  17 - chyba SQL počas získavania kanálov už importovaných v databáze SUSE "
+"Manager"
 
 #: ../satellite_tools/satsync.py:2494
 msgid "  18 - Wrong db connection string in rhn.conf"
-msgstr ""
+msgstr "  18 - Nesprávny reťazec pripojenia db v rhn.conf"
 
 #: ../satellite_tools/satsync.py:2495
 msgid "  19 - Bad arguments"
-msgstr ""
+msgstr "  19 - Zlé argumenty"
 
 #: ../satellite_tools/satsync.py:2496
 msgid "  20 - Could not connect to db."
-msgstr ""
+msgstr "  20 - Nepodarilo sa pripojiť k db."
 
 #: ../satellite_tools/satsync.py:2497
 msgid "  21 - Bad debug level"
-msgstr ""
+msgstr "  21 - Zlá úroveň ladenia"
 
 #: ../satellite_tools/satsync.py:2498
 msgid "  22 - Not valid step"
-msgstr ""
+msgstr "  22 - Neplatný krok"
 
 #: ../satellite_tools/satsync.py:2499
 msgid "  24 - no such file"
-msgstr ""
+msgstr "  24 - súbor neexistuje"
 
 #: ../satellite_tools/satsync.py:2500
 msgid "  25 - no such directory"
-msgstr ""
+msgstr "  25 - adresár neexistuje"
 
 #: ../satellite_tools/satsync.py:2501
 msgid "  26 - mount_point does not exist"
-msgstr ""
+msgstr "  26 - bod_pripojenia neexistuje"
 
 #: ../satellite_tools/satsync.py:2502
 msgid "  27 - No such org"
-msgstr ""
+msgstr "  27 - Organizácia neexistuje"
 
 #: ../satellite_tools/satsync.py:2503
 msgid "  28 - error: --master is only valid with --mount-point"
-msgstr ""
+msgstr "  28 - chyba: --master je platné iba s --mount-point"
 
 #: ../satellite_tools/satsync.py:2510
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
-msgstr ""
+msgstr "CHYBA: neznáma verzia výpisu, vyskúšajte jeden z %s"
+
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Uvítacia správa Red Hat Satellite"

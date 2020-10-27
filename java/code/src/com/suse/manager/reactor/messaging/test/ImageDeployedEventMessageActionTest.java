@@ -30,12 +30,12 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
+import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.parser.JsonParser;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Test for {@link com.suse.manager.webui.utils.salt.ImageDeployedEvent}
+ * Test for {@link ImageDeployedEvent}
  */
 public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
@@ -64,7 +64,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         saltMock = mock(SaltService.class);
         taskomaticMock = mock(TaskomaticApi.class);

@@ -269,6 +269,12 @@ Metrics/MethodLength:
 Metrics/ParameterLists:
   Max: 6
 
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
 # Offense count: 8
 Naming/AccessorMethodName:
   Exclude:
@@ -357,6 +363,7 @@ Style/DateTime:
 # Cop supports --auto-correct.
 Style/DisableCopsWithinSourceCodeDirective:
   Exclude:
+    - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
 

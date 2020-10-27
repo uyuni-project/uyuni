@@ -47,10 +47,6 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
-Then(/^I should see the name of the image$/) do
-  step %(I should see a "#{compute_image_name}" text)
-end
-
 Then(/^I should see the terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
   terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
@@ -73,9 +69,7 @@ end
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
-  steps %(
-    When I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed
-  )
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed)
 end
 
 When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
@@ -99,7 +93,13 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     current_minute = now.strftime('%H:%M')
     previous_minute = (now - 60).strftime('%H:%M')
     break if find(:xpath, "//a[contains(text(),'#{event}')]/../..//td[4][contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../td[3]/a[1]", wait: 1)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -236,7 +236,7 @@ When(/^I trigger cobbler system record$/) do
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
       And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks=" on server
-      )
+    )
   end
 end
 
@@ -373,7 +373,7 @@ Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"
-    )
+  )
 end
 
 # setup wizard
@@ -456,10 +456,10 @@ When(/^I enter the "(.*)" package in the css "(.*)"$/) do |client, css|
   find(css).set(PACKAGE_BY_CLIENT[client])
 end
 
-When(/^I select "([^\"]*)" as a product$/) do |product|
+When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
 end
 
 When(/^I wait until the tree item "([^"]+)" has no sub-list$/) do |item|
@@ -544,6 +544,13 @@ Then(/^the SLE15 products should be added$/) do
   raise unless output[:stdout].include? '[I] SLE-Product-SLES15-Pool for x86_64 SUSE Linux Enterprise Server 15 x86_64 [sle-product-sles15-pool-x86_64]'
   raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-Updates for x86_64 Basesystem Module 15 x86_64 [sle-module-basesystem15-updates-x86_64]'
   raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-Pool for x86_64 Server Applications Module 15 x86_64 [sle-module-server-applications15-pool-x86_64]'
+end
+
+Then(/^the SLE15SP2 base products should be added$/) do
+  output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
+  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-SP2-Pool for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle-product-sles15-sp2-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-SP2-Updates for x86_64 Basesystem Module 15 SP2 x86_64 [sle-module-basesystem15-sp2-updates-x86_64]'
+  raise unless output[:stdout].include? '[ ] SLE-Module-Server-Applications15-SP2-Pool for x86_64 Server Applications Module 15 SP2 x86_64 [sle-module-server-applications15-sp2-pool-x86_64]'
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
@@ -644,15 +651,17 @@ When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run("salt-key -y --accept=pxeboot.example.org")
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
-  # Preparation of bootstrap script for different types of clients
-  client = client_type == 'traditional' ? '--traditional' : ''
   # Use server if proxy is not defined as proxy is not mandatory
   target = $proxy
   if target_type.include? 'server' or $proxy.nil?
     puts 'WARN: Bootstrapping to server, because proxy is not defined.' unless target_type.include? 'server'
     target = $server
   end
+
+  # Prepare bootstrap script for different types of clients
+  client = client_type == 'traditional' ? '--traditional' : ''
   cmd = "mgr-bootstrap #{client} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
@@ -660,7 +669,11 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=RHN-ORG-TRUSTED-SSL-CERT' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
   output, = target.run(cmd)
-  raise "Key: #{key} not included" unless output.include? key
+  unless output.include? key
+    STDOUT.puts output
+    raise "Key: #{key} not included"
+  end
+
   # Run bootstrap script and check for result
   boostrap_script = 'bootstrap-general.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + boostrap_script
@@ -669,8 +682,12 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
   output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
-  raise 'Bootstrapp didn\'t finish properly' unless output.include? '-bootstrap complete-'
+  unless output.include? '-bootstrap complete-'
+    STDOUT.puts output
+    raise "Bootstrap didn't finish properly"
+  end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
   node = get_target(host)
@@ -814,9 +831,10 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
     node.run('yum install wget', true, 600, 'root')
   end
   command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  node.run(command1, true, 500, 'root')
+  # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
+  puts node.run(command1, true, 500, 'root').to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
-  node.run(command2, true, 500, 'root')
+  puts node.run(command2, true, 500, 'root').to_s.gsub(/(\\x\h+){1,}/, '?')
 end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
@@ -829,8 +847,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     get_target(host).run('rhn_check -vvv')
   else
     # Ubuntu minion clients need more time to finish all onboarding events
-    onboarding_timeout = DEFAULT_TIMEOUT
-    onboarding_timeout = DEFAULT_TIMEOUT * 2 if %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
+    node = get_target(host)
+    _os_version, os_family = get_os_version(node)
+    onboarding_timeout = os_family.include?('ubuntu') ? DEFAULT_TIMEOUT * 2 : DEFAULT_TIMEOUT
     steps %(
       And I wait at most #{onboarding_timeout} seconds until event "Hardware List Refresh" is completed
       And I wait at most #{onboarding_timeout} seconds until event "Apply states" is completed
@@ -1045,9 +1064,17 @@ And(/^the notification badge and the table should count the same amount of messa
 end
 
 And(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do |arg1|
-  repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
-    break if has_checked_field?(arg1)
-    evaluate_script 'window.location.reload()'
+  unless has_checked_field?(arg1)
+    repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
+      break if has_checked_field?(arg1)
+      begin
+        accept_prompt do
+          execute_script 'window.location.reload()'
+        end
+      rescue Capybara::ModalNotFound
+        # ignored
+      end
+    end
   end
 end
 
@@ -1082,7 +1109,8 @@ end
 
 And(/^I remove package "([^"]*)" from highstate$/) do |package|
   steps %(
-    When I follow "States" in the content area
+    When I wait until I see "States" text
+    And I follow "States" in the content area
     And I follow "Packages" in the content area
     Then I should see a "Package States" text
   )
@@ -1118,14 +1146,37 @@ And(/^I check for failed events on history event page$/) do
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
 
-Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|refreshing) bullet$/) do |text, bullet_type|
+Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|pending|refreshing) bullet$/) do |text, bullet_type|
   item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, '#{BULLET_STYLE[bullet_type]}')]"
   find(:xpath, item_xpath)
 end
 
-When(/^I enter the MU repository for (salt|traditional) "([^"]*)" as URL$/) do |client_type, client|
+When(/^I create the MU repository for (salt|traditional) "([^"]*)" if necessary$/) do |client_type, client|
   client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  fill_in 'url', with: $mu_repositories[client][client_type]
+  repo_name = url = $mu_repositories[client][client_type].strip
+  repo_name.delete_prefix! "http://download.suse.de/ibs/SUSE:/Maintenance:/"
+  repo_name.delete_prefix! "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
+  if repository_exist? repo_name
+    puts "The MU repository #{repo_name} was already created, we will reuse it."
+  else
+    steps %(
+      When I follow "Create Repository"
+      And I enter "#{repo_name}" as "label"
+      And I enter "#{url}" as "url"
+      And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
+      And I click on "Create Repository"
+      Then I should see a "Repository created successfully" text
+      And I should see "metadataSigned" as checked
+    )
+  end
+end
+
+When(/^I select the MU repository name for (salt|traditional) "([^"]*)" from the list$/) do |client_type, client|
+  client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
+  repo_name = url = $mu_repositories[client][client_type].strip
+  repo_name.delete_prefix! "http://download.suse.de/ibs/SUSE:/Maintenance:/"
+  repo_name.delete_prefix! "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
+  step %(I check "#{repo_name}" in the list)
 end
 
 # content lifecycle steps

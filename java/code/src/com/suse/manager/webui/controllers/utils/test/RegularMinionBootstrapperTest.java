@@ -48,7 +48,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        bootstrapper = new RegularMinionBootstrapper(saltServiceMock);
+        bootstrapper = new RegularMinionBootstrapper(saltServiceMock, saltServiceMock);
     }
 
     /**

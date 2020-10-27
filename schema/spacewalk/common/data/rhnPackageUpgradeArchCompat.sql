@@ -144,4 +144,9 @@ insert into rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_i
 insert into rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_id, created, modified) values (LOOKUP_PACKAGE_ARCH('amd64-deb'), LOOKUP_PACKAGE_ARCH('all-deb'), current_timestamp, current_timestamp);
 insert into rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_id, created, modified) values (LOOKUP_PACKAGE_ARCH('amd64-deb'), LOOKUP_PACKAGE_ARCH('amd64-deb'), current_timestamp, current_timestamp);
 insert into rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_id, created, modified) values (LOOKUP_PACKAGE_ARCH('all-deb'), LOOKUP_PACKAGE_ARCH('amd64-deb'), current_timestamp, current_timestamp);
+insert into rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_id, created, modified) values (LOOKUP_PACKAGE_ARCH('arm64-deb'), LOOKUP_PACKAGE_ARCH('all-deb'), current_timestamp, current_timestamp);
+insert into rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_id, created, modified) values (LOOKUP_PACKAGE_ARCH('arm64-deb'), LOOKUP_PACKAGE_ARCH('arm64-deb'), current_timestamp, current_timestamp);
+insert into rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_id, created, modified) values (LOOKUP_PACKAGE_ARCH('all-deb'), LOOKUP_PACKAGE_ARCH('arm64-deb'), current_timestamp, current_timestamp);
+
+commit;
 

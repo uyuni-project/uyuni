@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RHN 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2000-08-08 16:51-0400\n"
 "Last-Translator: Cristian Gafton <gafton@redhat.com>\n"
 "Language-Team: English <rhns-i18n@redhat.com>\n"
@@ -29,10 +29,11 @@ msgstr ""
 msgid "declined proxy authentication"
 msgstr ""
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -41,17 +42,23 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr ""
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+msgid "ISS is disabled on this server."
 msgstr ""
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr ""
+
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "Invalid system release version requested"
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -61,19 +68,6 @@ msgstr ""
 #: ../server/handlers/xmlrpc/errata.py:115
 #, python-format
 msgid "Expected a package, not: %s"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
 msgstr ""
 
 #: ../server/handlers/xmlrpc/queue.py:433
@@ -86,14 +80,22 @@ msgstr ""
 msgid "Action %s does not belong to server %s"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Invalid system release version requested"
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:194
@@ -118,36 +120,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
-msgid "Red Hat Satellite Welcome Message"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
 msgstr ""
-"Now for the first time ever, information, updates, and services\n"
-"that enhance the security and reliability of your Red Hat Linux\n"
-"systems are available to you in one place-- Red Hat Network.\n"
-"Check out these benefits:\n"
-"\n"
-"-- Red Hat Linux information, updates, and services specific to\n"
-"   your systems\n"
-"-- Fast access and proactive delivery of updates (security errata,\n"
-"   bug fixes, enhancements)\n"
-"-- The latest news from Red Hat when new products and services\n"
-"   are available\n"
-"\n"
-"Joining is easy-- just follow this three step process:\n"
-"\n"
-"Step 1: Review the Red Hat privacy policy\n"
-"Step 2: Register a user account with Red Hat.\n"
-"        a. This registration program can take care of that for you\n"
-"        b. You can also register an account by going to\n"
-"           https://rhn.redhat.com/newlogin.pxt\n"
-"Step 3: Register a system profile on Red Hat Network\n"
-"\n"
-"Click on the \"Next\" button to register now, or click \"Cancel\"\n"
-"to banish this program forever."
 
 #: ../server/handlers/xmlrpc/registration.py:1125
 #, fuzzy
-msgid "Red Hat Satellite Privacy Statement"
+msgid "Privacy Statement"
 msgstr ""
 " We think our customers understand better than anyone else how Red\n"
 " Hat can most effectively serve their needs.  Because of this, Red\n"
@@ -406,16 +385,6 @@ msgstr ""
 msgid "Service not enabled for system profile: \"%s\""
 msgstr ""
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, fuzzy, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Invalid system release version requested"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr ""
-
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
@@ -523,6 +492,16 @@ msgstr ""
 #: ../server/rhnUser.py:662
 #, python-format
 msgid "Cannot register usernames ending with %s"
+msgstr ""
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, fuzzy, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Invalid system release version requested"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
 msgstr ""
 
 #: ../server/apacheRequest.py:59
@@ -1416,16 +1395,16 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:112
+#: ../satellite_tools/reposync.py:114
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
@@ -1500,12 +1479,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -2020,7 +2000,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2166,3 +2146,30 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr ""
+#~ "Now for the first time ever, information, updates, and services\n"
+#~ "that enhance the security and reliability of your Red Hat Linux\n"
+#~ "systems are available to you in one place-- Red Hat Network.\n"
+#~ "Check out these benefits:\n"
+#~ "\n"
+#~ "-- Red Hat Linux information, updates, and services specific to\n"
+#~ "   your systems\n"
+#~ "-- Fast access and proactive delivery of updates (security errata,\n"
+#~ "   bug fixes, enhancements)\n"
+#~ "-- The latest news from Red Hat when new products and services\n"
+#~ "   are available\n"
+#~ "\n"
+#~ "Joining is easy-- just follow this three step process:\n"
+#~ "\n"
+#~ "Step 1: Review the Red Hat privacy policy\n"
+#~ "Step 2: Register a user account with Red Hat.\n"
+#~ "        a. This registration program can take care of that for you\n"
+#~ "        b. You can also register an account by going to\n"
+#~ "           https://rhn.redhat.com/newlogin.pxt\n"
+#~ "Step 3: Register a system profile on Red Hat Network\n"
+#~ "\n"
+#~ "Click on the \"Next\" button to register now, or click \"Cancel\"\n"
+#~ "to banish this program forever."

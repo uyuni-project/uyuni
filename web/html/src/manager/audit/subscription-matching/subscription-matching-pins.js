@@ -2,7 +2,6 @@
 "use strict";
 
 const React = require("react");
-const createReactClass = require('create-react-class');
 const {Table} = require("components/table/Table");
 const {Column} = require("components/table/Column");
 const {SearchField} = require("components/table/SearchField");
@@ -19,16 +18,12 @@ const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
-const Pins = createReactClass({
-  displayName: 'Pins',
+class Pins extends React.Component {
+  state = {
+    showPopUp: false
+  };
 
-  getInitialState: function() {
-    return {
-        showPopUp: false
-    };
-  },
-
-  buildRows: function(props) {
+  buildRows = (props) => {
     const {pinnedMatches, systems, subscriptions} = props;
 
     return pinnedMatches.map((p) => {
@@ -53,29 +48,29 @@ const Pins = createReactClass({
         status: p.status
       };
     });
-  },
+  };
 
-  onRemovePin: function(pinId) {
+  onRemovePin = (pinId) => {
     Network.post("/rhn/manager/api/subscription-matching/pins/"+pinId+"/delete")
       .promise.then(data => this.props.onPinChanged(data));
-  },
+  };
 
-  showPopUp: function() {
+  showPopUp = () => {
     this.setState({showPopUp: true});
-  },
+  };
 
-  closePopUp: function() {
+  closePopUp = () => {
     this.setState({showPopUp: false});
-  },
+  };
 
-  savePin: function(systemId, subscriptionId) {
+  savePin = (systemId, subscriptionId) => {
     Network.post("/rhn/manager/api/subscription-matching/pins", {system_id: systemId, subscription_id: subscriptionId})
       .promise.then(data => this.props.onPinChanged(data));
     jQuery("#addPinPopUp").modal("hide"); //to trigger popup close action
     this.closePopUp();
-  },
+  };
 
-  render: function() {
+  render() {
     const popUpContent = this.state.showPopUp ? <AddPinPopUp products={this.props.products} systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
     return (
       <div className="row col-md-12">
@@ -161,8 +156,8 @@ const Pins = createReactClass({
         />
       </div>
     );
-  },
-});
+  }
+}
 
 const PinStatus = (props) => {
   if (props.status == "pending") {

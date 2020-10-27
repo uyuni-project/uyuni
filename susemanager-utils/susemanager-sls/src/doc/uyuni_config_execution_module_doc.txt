@@ -1,0 +1,775 @@
+=== channel_list_manageable_channels
+**(login, password)**
+List all of manageable channels for the authenticated user
+
+....
+login: user login id
+password: user password
+....
+
+    return: list of manageable channels for the user
+    
+=== channel_list_my_channels
+**(login, password)**
+List all of subscribed channels for the authenticated user
+
+....
+login: user login id
+password: user password
+....
+
+    return: list of subscribed channels for the user
+
+=== channel_software_is_globally_subscribable
+**(channel_label, org_admin_user=None, org_admin_password=None)**
+Returns whether the channel is globally subscribable on the organization
+
+....
+channel_label: label of the channel
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean which indicates if channel is globally subscribable
+    
+=== channel_software_is_user_manageable
+**(channel_label, login, org_admin_user=None, org_admin_password=None)**
+
+Returns whether the channel may be managed by the given user.
+
+....
+channel_label: label of the channel
+login: user login id
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean which indicates if user can manage channel or not
+    
+=== channel_software_is_user_subscribable
+**(channel_label, login, org_admin_user=None, org_admin_password=None)**
+
+Returns whether the channel may be subscribed by the given user.
+
+....
+channel_label: label of the channel
+login: user login id
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean which indicates if user subscribe the channel or not
+    
+=== channel_software_set_user_manageable
+**(channel_label, login, access, org_admin_user=None, org_admin_password=None)**
+
+Set the manageable flag for a given channel and user.
+If access is set to 'true', this method will give the user manage permissions to the channel.
+Otherwise, that privilege is revoked.
+
+....
+channel_label: label of the channel
+login: user login id
+access: True if the user should have management access to channel
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== channel_software_set_user_subscribable
+**(channel_label, login, access, org_admin_user=None, org_admin_password=None)**
+
+Set the subscribable flag for a given channel and user.
+If value is set to 'true', this method will give the user subscribe permissions to the channel.
+Otherwise, that privilege is revoked.
+
+....
+channel_label: label of the channel
+login: user login id
+access: True if the user should have subscribe access to channel
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== master_select_minions
+**(target=None, target_type='glob')**
+
+Return list minions from the configured Salt Master on the same host which match the expression on the defined target
+
+....
+target: target expression to filter minions
+target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+                pillar_exact, compound, compound_pillar_exact. Default: glob.
+....
+        
+    return: list of minion IDs
+    
+=== org_create
+**(name, org_admin_user, org_admin_password, first_name, last_name, email, admin_prefix='Mr.', pam=False, admin_user=None, admin_password=None)**
+
+Create an Uyuni organization
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+name: organization name
+org_admin_user: organization admin user
+org_admin_password: organization admin password
+first_name: organization admin first name
+last_name: organization admin last name
+email: organization admin email
+admin_prefix: organization admin prefix
+pam:organization admin pam authentication
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: dictionary with org information
+    
+=== org_delete
+**(name, admin_user=None, admin_password=None)**
+
+Delete an organization
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+name: organization name
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: boolean, True indicates success
+    
+=== org_get_details
+**(name, admin_user=None, admin_password=None)**
+
+Get details of an organization.
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+name: organisation name
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: organization details
+    
+=== org_list_orgs
+**(admin_user=None, admin_password=None)**
+
+List all organizations.
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+name: organisation name
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: list of all available organizations.
+    
+=== org_trust_add_trust
+**(org_id, org_trust_id, admin_user=None, admin_password=None)**
+
+Add an organization to the list of trusted organizations.
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+org_id: Organization id
+org_trust_id: Trust organization id
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: boolean, True indicates success
+    
+=== org_trust_add_trust_by_name
+**(org_name, org_trust, admin_user=None, admin_password=None)**
+
+Add an organization to the list of trusted organizations.
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+org_name: organization name
+org_trust: Trust organization name
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: boolean, True indicates success
+    
+=== org_trust_list_orgs
+**(org_admin_user=None, org_admin_password=None)**
+
+List all organizations trusted by the authenticated user organization
+
+....
+org_admin_user: organization admin user
+org_admin_password: organization admin password
+....
+
+    return: List of organization details
+    
+=== org_trust_list_trusts
+**(org_name, admin_user=None, admin_password=None)**
+
+List all trusts for one organization
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+org_name: Name of the organization to get the trusts
+admin_user: authentication user
+admin_password: authentication user password
+....
+
+    return: list with all organizations and their trust status
+    
+=== org_trust_remove_trust
+**(org_id, org_untrust_id, admin_user=None, admin_password=None)**
+
+Remove an organization from the list of trusted organizations.
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+org_id: orgnization id
+org_untrust_id: organizaton id to untrust
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: boolean, True indicates success
+    
+=== org_trust_remove_trust_by_name
+**(org_name, org_untrust, admin_user=None, admin_password=None)**
+
+Remove an organization from the list of trusted organizations.
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+org_name: organization name
+org_untrust: organization name to untrust
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: boolean, True indicates success
+    
+=== org_update_name
+**(org_id, name, admin_user=None, admin_password=None)**
+
+update an Uyuni organization name
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+org_id: organization internal id
+name: new organization name
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: organization details
+    
+=== systemgroup_add_remove_systems
+**(name, add_remove, system_ids=[], org_admin_user=None, org_admin_password=None)**
+
+Update systems on a system group.
+
+....
+name: Name of the system group.
+add_remove: True to add to the group, False to remove.
+system_ids: list of system ids to add/remove from group
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: boolean, True indicates success
+    
+=== systemgroup_create
+**(name, descr, org_admin_user=None, org_admin_password=None)**
+
+Create a system group.
+
+....
+name: Name of the system group.
+descr: Description of the system group.
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: details of the system group
+    
+=== systemgroup_delete
+**(name, org_admin_user=None, org_admin_password=None)**
+
+Delete a system group.
+
+....
+name: Name of the system group.
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: boolean, True indicates success
+    
+=== systemgroup_get_details
+**(name, org_admin_user=None, org_admin_password=None)**
+
+Return system group details.
+
+....
+name: Name of the system group.
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: details of the system group
+    
+=== systemgroup_list_systems
+**(name, minimal=True, org_admin_user=None, org_admin_password=None)**
+
+List systems in a system group
+
+....
+name: Name of the system group.
+minimal: default True. Only return minimal information about systems, use False to get more details
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: List of system information
+    
+=== systemgroup_update
+**(name, descr, org_admin_user=None, org_admin_password=None)**
+
+Update a system group.
+
+....
+name: Name of the system group.
+descr: Description of the system group.
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: details of the system group
+    
+=== systems_get_minion_id_map
+**(username=None, password=None, refresh=False)**
+
+Returns a map from minion ID to Uyuni system ID for all systems a user has access to
+
+....
+username: username to authenticate
+password: password for user
+refresh: Get new data from server, ignoring values in local context cache
+....
+
+    return: Map between minion ID and system ID of all system accessible by authenticated user
+    
+=== user_add_assigned_system_groups
+**(login, server_group_names, set_default=False, org_admin_user=None, org_admin_password=None)**
+
+Add system groups to user's list of assigned system groups.
+
+....
+login: user id to look for
+server_group_names: systems groups to add to list of assigned system groups
+set_default: Should system groups also be added to user's list of default system groups.
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== user_add_role
+**(login, role, org_admin_user=None, org_admin_password=None)**
+Adds a role to an Uyuni user.
+
+....
+login: user id to look for
+role: role to be added to the user
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== user_create
+**(login, password, email, first_name, last_name, use_pam_auth=False, org_admin_user=None, org_admin_password=None)**
+
+Create an Uyuni user.
+
+....
+login: user id to look for
+password: password for the user
+email: user email address
+first_name: user first name
+last_name: user last name
+use_pam_auth: if you wish to use PAM authentication for this user
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== user_delete
+**(login, org_admin_user=None, org_admin_password=None)**
+
+Deletes an Uyuni user
+
+....
+login: user id to look for
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== user_get_details
+**(login, password=None, org_admin_user=None, org_admin_password=None)**
+
+Get details of an Uyuni user
+If password is provided as a parameter, then it will be used to authenticate
+If no user credentials are provided, organization administrator credentials will be used
+If no user credentials neither organization admin credentials are provided, credentials from pillar will be used
+
+....
+login: user id to look for
+password: password for the user
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: The user information
+    
+=== user_list_assigned_system_groups
+**(login, org_admin_user=None, org_admin_password=None)**
+
+Returns the system groups that a user can administer.
+
+....
+login: user id to look for
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: List of system groups that a user can administer
+    
+=== user_list_roles
+**(login, password=None, org_admin_user=None, org_admin_password=None)**
+
+Returns an Uyuni user roles.
+If password is provided as a parameter, then it will be used to authenticate
+If no user credentials are provided, organization administrator credentials will be used
+If no user credentials neither organization admin credentials are provided, credentials from pillar are used
+
+....
+login: user id to look for
+password: password for the user
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: List of user roles assigned
+    
+=== user_list_users
+**(org_admin_user=None, org_admin_password=None)**
+
+Return all Uyuni users visible to the authenticated user.
+
+....
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: all users visible to the authenticated user
+    
+=== user_remove_assigned_system_groups
+**(login, server_group_names, set_default=False, org_admin_user=None, org_admin_password=None)**
+
+Remove system groups from a user's list of assigned system groups.
+
+....
+login: user id to look for
+server_group_names: systems groups to remove from list of assigned system groups
+set_default: Should system groups also be added to user's list of default system groups.
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== user_remove_role
+**(login, role, org_admin_user=None, org_admin_password=None)**
+
+Remove a role from an Uyuni user.
+
+....
+login: user id to look for
+role: role to be removed from the user
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+    
+=== user_set_details
+**(login, password, email, first_name=None, last_name=None, org_admin_user=None, org_admin_password=None)**
+
+Update an Uyuni user.
+
+....
+login: user id to look for
+password: password for the user
+email: user email address
+first_name: user first name
+last_name: user last name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_get_details
+**(id, org_admin_user=None, org_admin_password=None)**
+
+Get details of an Uyuni Activation Key
+
+....
+id: the Activation Key ID
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return:Activation Key information
+
+=== activation_key_delete
+**(id, org_admin_user=None, org_admin_password=None)**
+
+Deletes an Uyuni Activation Key
+
+....
+id: the Activation Key ID
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_create
+**(key, description, base_channel_label='', usage_limit=0, system_types=[], universal_default=False, org_admin_user=None, org_admin_password=None)**
+
+Creates an Uyuni Activation Key
+
+....
+key: activation key name
+description: activation key description
+base_channel_label: base channel to be used
+usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+system_types: system types to be assigned.
+              Can be one of: 'virtualization_host', 'container_build_host',
+              'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+universal_default: sets this activation key as organization universal default
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_set_details
+**(key, description=None, contact_method=None, base_channel_label=None, usage_limit=None, universal_default=False, org_admin_user=None, org_admin_password=None)**
+
+Updates an Uyuni Activation Key
+
+....
+key: activation key name
+description: activation key description
+base_channel_label: base channel to be used
+contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+universal_default: sets this activation key as organization universal default
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_entitlements
+**(key, system_types, org_admin_user=None, org_admin_password=None)**
+
+Add a list of entitlements to an activation key.
+
+....
+key: activation key name
+system_types: list of system types to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_entitlements
+**(key, system_types, org_admin_user=None, org_admin_password=None)**
+
+Remove a list of entitlements from an activation key.
+
+....
+key: activation key name
+system_types: list of system types to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_child_channels
+**(key, child_channels, org_admin_user=None, org_admin_password=None)**
+
+Add child channels to an activation key.
+
+....
+key: activation key name
+child_channels: List of child channels to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_child_channels
+**(key, child_channels, org_admin_user=None, org_admin_password=None)**
+
+Remove child channels from an activation key.
+
+....
+key: activation key name
+child_channels: List of child channels to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_check_config_deployment
+**(key, org_admin_user=None, org_admin_password=None)**
+
+Return the status of the 'configure_after_registration' flag for an Activation Key.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, true if enabled, false if disabled
+
+=== activation_key_enable_config_deployment
+**(key, org_admin_user=None, org_admin_password=None)**
+
+Enables the 'configure_after_registration' flag for an Activation Key.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_disable_config_deployment
+**(key, org_admin_user=None, org_admin_password=None)**
+
+Disables the 'configure_after_registration' flag for an Activation Key.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_packages
+**(key, packages, org_admin_user=None, org_admin_password=None)**
+
+Add a list of packages to an activation key.
+
+....
+key: activation key name
+packages: list of packages to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_packages
+**(key, packages, org_admin_user=None, org_admin_password=None)**
+
+Remove a list of packages from an activation key.
+
+....
+key: activation key name
+packages: list of packages to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_add_server_groups
+**(key, server_groups, org_admin_user=None, org_admin_password=None)**
+
+Add a list of server groups to an activation key.
+
+....
+key: activation key name
+server_groups: list of server groups to be added
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_remove_server_groups
+**(key, server_groups, org_admin_user=None, org_admin_password=None)**
+
+Remove a list of server groups from an activation key.
+
+....
+key: activation key name
+server_groups: list of server groups to be removed
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success
+
+=== activation_key_list_config_channels
+**(key, org_admin_user=None, org_admin_password=None)**
+
+List configuration channels associated to an activation key.
+
+....
+key: activation key name
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: List of configuration channels
+
+=== activation_key_set_config_channels
+**(keys, config_channel_label, org_admin_user=None, org_admin_password=None)**
+
+Replace the existing set of configuration channels on the given activation keys.
+Channels are ranked by their order in the array.
+
+....
+keys: list of activation key names
+config_channel_label: list of configuration channels labels
+org_admin_user: organization admin username
+org_admin_password: organization admin password
+....
+
+    return: boolean, True indicates success

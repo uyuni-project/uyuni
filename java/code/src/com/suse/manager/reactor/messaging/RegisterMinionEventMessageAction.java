@@ -55,9 +55,10 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.manager.webui.utils.salt.MinionStartupGrains;
+import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
@@ -94,6 +95,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             RegisterMinionEventMessageAction.class);
 
     // Reference to the SaltService instance
+    private final SaltApi saltApi;
     private final SystemQuery systemQuery;
 
     private static final String FQDN = "fqdn";
@@ -103,8 +105,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * Constructor taking a {@link SystemQuery} instance.
      *
      * @param systemQueryIn systemQuery instance for gathering data from a system.
+     * @param saltApiIn saltApi instance for gathering data from a system.
      */
-    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn) {
+    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+        saltApi = saltApiIn;
         systemQuery = systemQueryIn;
     }
 
@@ -115,7 +119,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     public void execute(EventMessage msg) {
         RegisterMinionEventMessage registerMinionEventMessage = ((RegisterMinionEventMessage) msg);
         Optional<MinionStartupGrains> startupGrainsOpt = Opt.or(registerMinionEventMessage.getMinionStartupGrains(),
-                () -> systemQuery.getGrains(registerMinionEventMessage.getMinionId(),
+                () -> saltApi.getGrains(registerMinionEventMessage.getMinionId(),
                         new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager"));
         registerMinion(registerMinionEventMessage.getMinionId(), false, empty(), empty(),  startupGrainsOpt);
     }
@@ -129,7 +133,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param proxyId the proxy to which the minion connects, if any
      */
     public void registerSSHMinion(String minionId, Optional<Long> proxyId, Optional<String> activationKeyOverride) {
-        Optional<MinionStartupGrains> startupGrainsOpt = systemQuery.getGrains(minionId,
+        Optional<MinionStartupGrains> startupGrainsOpt = saltApi.getGrains(minionId,
                 new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager");
         registerMinion(minionId, true, proxyId, activationKeyOverride, startupGrainsOpt);
     }
@@ -271,7 +275,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             migrateMinionFormula(minionId, Optional.of(oldMinionId));
 
-            systemQuery.deleteKey(oldMinionId);
+            saltApi.deleteKey(oldMinionId);
             SystemManager.addHistoryEvent(registeredMinion, "Duplicate Minion ID", "Minion '" +
                     oldMinionId + "' has been updated to '" + minionId + "'");
         }
@@ -303,7 +307,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                            Optional<String> activationKeyOverride,
                                            boolean isSaltSSH) {
         Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
-        ValueMap grains = new ValueMap(systemQuery.getGrains(minionId).orElseGet(HashMap::new));
+        ValueMap grains = new ValueMap(saltApi.getGrains(minionId).orElseGet(HashMap::new));
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
 
@@ -315,28 +319,33 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);
         Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
 
-
-        Org org = activationKey.map(ActivationKey::getOrg)
-                .orElse(creator.map(User::getOrg)
-                        .orElse(OrgFactory.getSatelliteOrg()));
-        if (minion.getOrg() == null) {
-            minion.setOrg(org);
-        }
-        else if (!minion.getOrg().equals(org)) {
-            // only log activation key ignore message when the activation key is not empty
-            String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
-            LOG.error("The existing server organization (" + minion.getOrg() + ") does not match the " +
-                    "organization selected for registration (" + org + "). Keeping the " +
-                    "existing server organization. " + ignoreAKMessage);
-            activationKey = empty();
-            org = minion.getOrg();
-            SystemManager.addHistoryEvent(minion, "Invalid Server Organization",
-                    "The existing server organization (" + minion.getOrg() + ") does not match the " +
-                            "organization selected for registration (" + org + "). Keeping the " +
-                            "existing server organization. " + ignoreAKMessage);
-        }
-
         try {
+            String master = saltApi
+                    .getMasterHostname(minionId)
+                    .orElseThrow(() -> new SaltException(
+                            "Master not found in minion configuration"));
+
+            Org org = activationKey.map(ActivationKey::getOrg)
+                            .orElseGet(() -> creator.map(User::getOrg)
+                            .orElseGet(() -> getProxyOrg(master, isSaltSSH, saltSSHProxyId)
+                            .orElseGet(() -> OrgFactory.getSatelliteOrg())));
+            if (minion.getOrg() == null) {
+                minion.setOrg(org);
+            }
+            else if (!minion.getOrg().equals(org)) {
+                // only log activation key ignore message when the activation key is not empty
+                String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
+                LOG.error("The existing server organization (" + minion.getOrg() + ") does not match the " +
+                        "organization selected for registration (" + org + "). Keeping the " +
+                        "existing server organization. " + ignoreAKMessage);
+                activationKey = empty();
+                org = minion.getOrg();
+                SystemManager.addHistoryEvent(minion, "Invalid Server Organization",
+                        "The existing server organization (" + minion.getOrg() + ") does not match the " +
+                                "organization selected for registration (" + org + "). Keeping the " +
+                                "existing server organization. " + ignoreAKMessage);
+            }
+
             // Set creator to the user who accepted the key if available
             minion.setCreator(creator.orElse(null));
 
@@ -378,11 +387,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             mapHardwareGrains(minion, grains);
 
-            String master = systemQuery
-                    .getMasterHostname(minionId)
-                    .orElseThrow(() -> new SaltException(
-                            "master not found in minion configuration"));
-
             setServerPaths(minion, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(minion);
@@ -408,7 +412,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
-            throw new RegisterMinionException(minionId, org);
+            throw new RegisterMinionException(minionId, minion.getOrg());
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
@@ -441,6 +445,17 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 }
             }
         });
+    }
+
+    private Optional<Org> getProxyOrg(String master, boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
+        if (isSaltSSH) {
+            return saltSSHProxyId
+                    .map(proxyId -> ServerFactory.lookupById(proxyId))
+                    .map(Server::getOrg);
+        }
+        else {
+            return ServerFactory.lookupProxyServer(master).map(Server::getOrg);
+        }
     }
 
     /**
@@ -651,23 +666,19 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     private void setServerPaths(MinionServer server, String master,
                                 boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
+        Optional<Set<ServerPath>> proxyPaths =
+                isSaltSSH ?
+                        saltSSHProxyId
+                                .map(proxyId -> ServerFactory.lookupById(proxyId))
+                                .map(proxy -> ServerFactory
+                                        .createServerPaths(server, proxy, proxy.getHostname())
+                                ) :
+                        ServerFactory.lookupProxyServer(master).map(proxy ->
+                            ServerFactory
+                                    .createServerPaths(server, proxy, master)
+                        );
         server.getServerPaths().clear();
-        if (isSaltSSH) {
-            saltSSHProxyId
-                .map(proxyId -> ServerFactory.lookupById(proxyId))
-                .ifPresent(proxy -> {
-                    Set<ServerPath> proxyPaths = ServerFactory
-                            .createServerPaths(server, proxy, proxy.getHostname());
-                    server.getServerPaths().addAll(proxyPaths);
-                });
-        }
-        else {
-            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
-                Set<ServerPath> proxyPaths = ServerFactory
-                        .createServerPaths(server, proxy, master);
-                server.getServerPaths().addAll(proxyPaths);
-            });
-        }
+        server.getServerPaths().addAll(proxyPaths.orElse(Collections.emptySet()));
     }
 
     private void giveCapabilities(MinionServer server) {
@@ -774,7 +785,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
                 "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
             MinionList target = new MinionList(Arrays.asList(minionId));
-            Optional<Result<String>> whatprovidesRes = systemQuery.runRemoteCommand(target,
+            Optional<Result<String>> whatprovidesRes = saltApi.runRemoteCommand(target,
                     "rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release")
                     .entrySet()
                     .stream()
@@ -811,7 +822,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 }
             })
             .flatMap(pkg ->
-                systemQuery.runRemoteCommand(target,
+                saltApi.runRemoteCommand(target,
                         "rpm -q --queryformat \"" +
                             "VERSION=%{VERSION}\\n" +
                             "PROVIDENAME=[%{PROVIDENAME},]\\n" +

@@ -18,23 +18,18 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
   Scenario: Add the Maintenance update repository for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
-    And I follow "Create Repository"
-    And I enter "custom_repo_<client>" as "label"
-    And I enter the MU repository for <type> "<client>" as URL
-    And I click on "Create Repository"
-    Then I should see a "Repository created successfully" text
-    And I should see "metadataSigned" as checked
+    And I create the MU repository for <type> "<client>" if necessary
 
-  Scenario: Add the repository to the Custom Channel for <client>
+  Scenario: Add the repository to the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
     And I follow "Repositories" in the content area
-    And I select the "custom_repo_<client>" repo
-    And I click on "Update Repositories"
+    And I select the MU repository name for <type> "<client>" from the list
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the Custom Channel for <client>
+  Scenario: Synchronize the repository in the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
@@ -42,3 +37,6 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
+
+  Scenario: The custom channel for <client> has been synced
+    When I wait until the channel "custom_channel_<client>" has been synced

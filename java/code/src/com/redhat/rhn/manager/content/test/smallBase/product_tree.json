@@ -8340,6 +8340,21 @@
         "channel_name": "SLES12-Debuginfo-Pool for x86_64"
     },
     {
+        "channel_label": "sles12-installer-updates-x86_64",
+        "parent_channel_label": "sles12-pool-x86_64",
+        "product_id": 1117,
+        "repository_id": 999999,
+        "parent_product_id": null,
+        "root_product_id": 1117,
+        "update_tag": "SLE-SERVER-INSTALLER",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER-INSTALLER/12/x86_64/update/",
+        "release_stage": "released",
+        "mandatory": false,
+        "signed": true,
+        "recommended": false,
+        "channel_name": "SLES12-Installer-Updates for x86_64"
+    },
+    {
         "channel_label": "sle-manager-tools12-updates-x86_64",
         "parent_channel_label": "sles12-pool-x86_64",
         "product_id": 1117,

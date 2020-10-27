@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
+"POT-Creation-Date: 2020-09-29 14:21+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/fedora/language/"
@@ -38,10 +38,11 @@ msgstr "Skickad proxy-signatur %s stämmer inte med våran %s."
 msgid "declined proxy authentication"
 msgstr "nekad proxy-autenticering"
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -53,17 +54,24 @@ msgstr ""
 "                   Kontakta din organisationsadministratör för mer hjälp."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr "Ditt system fanns inte i RHN-databasen"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+#, fuzzy
+msgid "ISS is disabled on this server."
 msgstr "ISS är inaktiverat på denna satellit."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Servern \"%s\" har inte ISS aktiverat."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "Ogiltiga systemrättigheter."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -75,19 +83,6 @@ msgstr "Ett paketnamn förväntades, inte: %s"
 msgid "Expected a package, not: %s"
 msgstr "Ett paket förväntades, inte: %s"
 
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "RHN-proxy-tjänst inte aktiverat för serverprofilen: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Ogiltig sessionsnyckel"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Denna server-ID finns inte längre"
-
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
@@ -98,15 +93,23 @@ msgstr "Otiltig typ på åtgärsvärde %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Åtgärd %s hör inte till server %s"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Ogiltiga systemrättigheter."
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Ogiltigt värde %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "RHN-proxy-tjänst inte aktiverat för serverprofilen: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Ogiltig sessionsnyckel"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Denna server-ID finns inte längre"
 
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
@@ -130,13 +133,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Red Hat Network välkomstmeddelande"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1125
 #, fuzzy
-msgid "Red Hat Satellite Privacy Statement"
+msgid "Privacy Statement"
 msgstr "Red Hat Network integritetspolicy"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
@@ -187,16 +190,6 @@ msgstr ""
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Drift ej aktiverat för systemprofilen: \"%s\""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Ogiltigt RPM-paket %s begärt"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Paketet finns inte"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -308,6 +301,16 @@ msgstr "användarnamn skall vara åtminstone %d tecken långa"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Det går inte att registrera användarnamn som slutar med %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Ogiltigt RPM-paket %s begärt"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Paketet finns inte"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -1330,16 +1333,16 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:112
+#: ../satellite_tools/reposync.py:114
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
@@ -1414,12 +1417,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -1936,7 +1940,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2083,3 +2087,7 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Red Hat Network välkomstmeddelande"

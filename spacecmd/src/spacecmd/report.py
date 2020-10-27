@@ -29,13 +29,19 @@
 # invalid function name
 # pylint: disable=C0103
 
+import gettext
 from operator import itemgetter
 from spacecmd.utils import *
 
+translation = gettext.translation('spacecmd', fallback=True)
+try:
+    _ = translation.ugettext
+except AttributeError:
+    _ = translation.gettext
 
 def help_report_inactivesystems(self):
-    print('report_inactivesystems: List all inactive systems')
-    print('usage: report_inactivesystems [DAYS]')
+    print(_('report_inactivesystems: List all inactive systems'))
+    print(_('usage: report_inactivesystems [DAYS]'))
 
 
 def do_report_inactivesystems(self, args):
@@ -75,8 +81,8 @@ def do_report_inactivesystems(self, args):
 
 
 def help_report_outofdatesystems(self):
-    print('report_outofdatesystems: List all out-of-date systems')
-    print('usage: report_outofdatesystems')
+    print(_('report_outofdatesystems: List all out-of-date systems'))
+    print(_('usage: report_outofdatesystems'))
 
 
 def do_report_outofdatesystems(self, args):
@@ -103,8 +109,8 @@ def do_report_outofdatesystems(self, args):
 
 
 def help_report_ungroupedsystems(self):
-    print('report_ungroupedsystems: List all ungrouped systems')
-    print('usage: report_ungroupedsystems')
+    print(_('report_ungroupedsystems: List all ungrouped systems'))
+    print(_('usage: report_ungroupedsystems'))
 
 
 def do_report_ungroupedsystems(self, args):
@@ -121,8 +127,8 @@ def do_report_ungroupedsystems(self, args):
 
 
 def help_report_errata(self):
-    print('report_errata: List all errata and how many systems they affect')
-    print('usage: report_errata [ERRATA|search:XXX ...]')
+    print(_('report_errata: List all errata and how many systems they affect'))
+    print(_('usage: report_errata [ERRATA|search:XXX ...]'))
 
 # XXX: performance is terrible due to all the API calls
 
@@ -134,7 +140,7 @@ def do_report_errata(self, args):
     (_args, _options) = parse_command_arguments(args, arg_parser)
 
     if not _args:
-        print('All errata requested - this may take a few minutes, please be patient!')
+        print(_('All errata requested - this may take a few minutes, please be patient!'))
         partial_errata = False
 
     errata_list = self.expand_errata(_args)
@@ -157,22 +163,22 @@ def do_report_errata(self, args):
             max_size = size
 
     if report:
-        print('%s  # Systems' % ('Errata'.ljust(max_size)))
+        print(_('%s  # Systems') % _(('Errata').ljust(max_size)))
         print('%s  ---------' % ('------'.ljust(max_size)))
         for erratum in sorted(report):
             print('%s        %s' %
                   (erratum.ljust(max_size), str(report[erratum]).rjust(3)))
         return 0
     elif partial_errata:
-        print("No errata found for '{}'".format(args))
+        print(_("No errata found for '{}'").format(args))
         return 1
 
 ####################
 
 
 def help_report_ipaddresses(self):
-    print('report_ipaddresses: List the hostname and IP of each system')
-    print('usage: report_ipaddresses [<SYSTEMS>]')
+    print(_('report_ipaddresses: List the hostname and IP of each system'))
+    print(_('usage: report_ipaddresses [<SYSTEMS>]'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -192,7 +198,7 @@ def do_report_ipaddresses(self, args):
         systems = self.get_system_names()
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     report = {}
@@ -235,8 +241,8 @@ def do_report_ipaddresses(self, args):
 
 
 def help_report_kernels(self):
-    print('report_kernels: List the running kernel of each system')
-    print('usage: report_kernels [<SYSTEMS>]')
+    print(_('report_kernels: List the running kernel of each system'))
+    print(_('usage: report_kernels [<SYSTEMS>]'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -256,7 +262,7 @@ def do_report_kernels(self, args):
         systems = self.get_system_names()
 
     if not systems:
-        logging.warning('No systems selected')
+        logging.warning(_('No systems selected'))
         return 1
 
     report = {}
@@ -273,7 +279,7 @@ def do_report_kernels(self, args):
             system_max_size = size
 
     if report:
-        print('%s  Kernel' % ('System'.ljust(system_max_size)))
+        print(_('%s  Kernel') % (_('System').ljust(system_max_size)))
 
         print('%s  ------' % ('------'.ljust(system_max_size)))
 
@@ -287,8 +293,8 @@ def do_report_kernels(self, args):
 
 
 def help_report_duplicates(self):
-    print('report_duplicates: List duplicate system profiles')
-    print('usage: report_duplicates')
+    print(_('report_duplicates: List duplicate system profiles'))
+    print(_('usage: report_duplicates'))
 
 
 def do_report_duplicates(self, args):
@@ -310,7 +316,7 @@ def do_report_duplicates(self, args):
             systems = self.client.system.searchByName(self.session,
                                                       '^%s$' % item)
 
-            print('System ID   Last Checkin')
+            print(_('System ID   Last Checkin'))
             print('----------  -----------------')
 
             for dupe in systems:
@@ -332,7 +338,7 @@ def do_report_duplicates(self, args):
             for item in dupes_by_ip:
                 print('%s:' % item.get('ip'))
 
-                print('System ID   Last Checkin')
+                print(_('System ID   Last Checkin'))
                 print('----------  -----------------')
 
                 for dupe in item.get('systems'):
@@ -350,7 +356,7 @@ def do_report_duplicates(self, args):
             for item in dupes_by_mac:
                 print('%s:' % item.get('mac').upper())
 
-                print('System ID   Last Checkin')
+                print(_('System ID   Last Checkin'))
                 print('----------  -----------------')
 
                 for dupe in item.get('systems'):
@@ -368,7 +374,7 @@ def do_report_duplicates(self, args):
             for item in dupes_by_hostname:
                 print('%s:' % item.get('hostname'))
 
-                print('System ID   Last Checkin')
+                print(_('System ID   Last Checkin'))
                 print('----------  -----------------')
 
                 for dupe in item.get('systems'):

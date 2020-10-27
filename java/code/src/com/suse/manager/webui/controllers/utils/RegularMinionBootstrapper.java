@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -43,9 +44,10 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
      * Standard constructor. For testing only - to obtain instance of this class, use
      * getInstance.
      * @param systemQueryIn systemQuery to use
+     * @param saltApiIn saltApi to use
      */
-    public RegularMinionBootstrapper(SystemQuery systemQueryIn) {
-        super(systemQueryIn);
+    public RegularMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+        super(systemQueryIn, saltApiIn);
     }
 
     @Override
@@ -65,7 +67,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
                                                    String contactMethod) {
         Map<String, Object> pillarData = super.createPillarData(user, input, contactMethod);
 
-        Key.Pair keyPair = systemQuery.generateKeysAndAccept(input.getHost(), false);
+        Key.Pair keyPair = saltApi.generateKeysAndAccept(input.getHost(), false);
         if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
             pillarData.put("minion_pub",  keyPair.getPub().get());
             pillarData.put("minion_pem", keyPair.getPriv().get());
@@ -93,20 +95,20 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
-        if (systemQuery.keyExists(minionId, KeyStatus.UNACCEPTED)) {
+        if (saltApi.keyExists(minionId, KeyStatus.UNACCEPTED)) {
             LOG.info("Pending key exists for " + minionId + ", rejecting...");
-            systemQuery.rejectKey(minionId);
+            saltApi.rejectKey(minionId);
             weRejectedIt = true;
         }
 
         BootstrapResult result = super.bootstrapInternal(input, user, defaultContactMethod);
         if (!result.isSuccess()) {
-            systemQuery.deleteKey(minionId);
+            saltApi.deleteKey(minionId);
             MinionPendingRegistrationService.removeMinion(minionId);
         }
         else if (weRejectedIt) {
             LOG.info("Removing key that was temporarily rejected for " + minionId);
-            systemQuery.deleteRejectedKey(minionId);
+            saltApi.deleteRejectedKey(minionId);
         }
         LOG.info("Minion bootstrap success: " + result.isSuccess());
         return result;

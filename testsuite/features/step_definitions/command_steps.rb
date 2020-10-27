@@ -59,22 +59,16 @@ Then(/^it should be possible to reach the test suite profiles$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
-Then(/^it should be possible to reach the portus registry$/) do
-  if $product == 'Uyuni'
-    # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://portus.mgr.suse.de:5000'
+Then(/^it should be possible to reach the authenticated registry$/) do
+  if not ($auth_registry.nil? || $auth_registry.empty?)
+    url = "https://#{$auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
 
-Then(/^it should be possible to reach the other registry$/) do
-  if $product == 'Uyuni'
-    # TODO: move that internal resource to some other external location
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://registry.mgr.suse.de:443'
+Then(/^it should be possible to reach the not authenticated registry$/) do
+  if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
+    url = "https://#{$no_auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
@@ -260,6 +254,17 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}")
 end
 
+When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+  begin
+    repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+      break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+      sleep 10
+    end
+  rescue StandardError => e
+    puts e.message # It might be that the MU repository is wrong, but we want to continue in any case
+  end
+end
+
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   arch = 'x86_64'
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
@@ -425,7 +430,7 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
 end
 
 When(/^the server starts mocking an IPMI host$/) do
-  ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
+  ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
     dest = "/etc/ipmi/" + file
     return_code = file_inject($server, source, dest)
@@ -438,6 +443,28 @@ end
 When(/^the server stops mocking an IPMI host$/) do
   $server.run("kill $(pidof ipmi_sim)")
   $server.run("kill $(pidof -x fake_ipmi_host.sh)")
+end
+
+When(/^the server starts mocking a Redfish host$/) do
+  $server.run("mkdir -p /root/Redfish-Mockup-Server/")
+  ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
+    source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
+    dest = "/root/Redfish-Mockup-Server/" + file
+    return_code = file_inject($server, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+  end
+  $server.run("curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip")
+  $server.run("unzip DSP2043_2019.1.zip")
+  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
+        "-H #{$server.full_hostname} -p 8443 " \
+        "-S -D /root/DSP2043_2019.1/public-catfish/ " \
+        "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
+        "< /dev/null > /dev/null 2>&1 &"
+  $server.run(cmd)
+end
+
+When(/^the server stops mocking a Redfish host$/) do
+  $server.run("pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py")
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -469,13 +496,15 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, system|
-  output = sshcmd("cobbler system report --name #{system}:1", ignore_err: true)[:stdout]
-  raise "Not found: #{output}" unless output.include?(arg1)
+Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |arg1, host|
+  node = get_target(host)
+  output = sshcmd("cobbler system report --name #{node.full_hostname}:1", ignore_err: true)[:stdout]
+  raise "Not found:\n#{output}" unless output.include?(arg1)
 end
 
-Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  step %(the cobbler report contains "#{arg1}" for system "#{$client.full_hostname}")
+Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |arg1, name|
+  output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
+  raise "Not found:\n#{output}" unless output.include?(arg1)
 end
 
 Then(/^I clean the search index on the server$/) do
@@ -566,6 +595,13 @@ end
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node = get_target(host)
   node.run(cmd)
+end
+
+When(/^I force picking pending events on "([^"]*)" if necessary$/) do |host|
+  if get_client_type(host) == 'traditional'
+    node = get_target(host)
+    node.run('rhn_check -vvv')
+  end
 end
 
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
@@ -672,26 +708,30 @@ When(/^I register this client for SSH push via tunnel$/) do
 end
 
 # Repositories and packages management
-When(/^I enable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
+When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+  _os_version, os_family = get_os_version(node)
+  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
+          "zypper mr --#{action} #{repos}"
         else
-    "zypper mr --enable #{repo}"
-        end
-  node.run(cmd, error_control.empty?)
-end
-
-When(/^I disable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
-  node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
-        else
-    "zypper mr --disable #{repo}"
+          cmd_list = if action == 'enable'
+                       repos.split(' ').map do |repo|
+                         if os_family =~ /^centos/
+                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
+                         elsif os_family =~ /^ubuntu/
+                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
+                         end
+                       end
+                     else
+                       repos.split(' ').map do |repo|
+                         if os_family =~ /^centos/
+                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
+                         elsif os_family =~ /^ubuntu/
+                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
+                         end
+                       end
+                     end
+          cmd_list.reduce(:+)
         end
   node.run(cmd, error_control.empty?)
 end
@@ -728,7 +768,11 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
-When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install all spacewalk client utils on "([^"]*)"$/) do |host|
+  step %(I install packages "#{SPACEWALK_UTILS_RPMS}" on this "#{host}")
+end
+
+When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y install #{package}"
@@ -743,7 +787,7 @@ When(/^I install package "([^"]*)" on this "([^"]*)"((?: without error control)?
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
-When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y downgrade #{package}"
@@ -758,7 +802,7 @@ When(/^I install old package "([^"]*)" on this "([^"]*)"((?: without error contr
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
-When(/^I remove package "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
     cmd = "yum -y remove #{package}"
@@ -1157,6 +1201,47 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have "([^"]*)" attached to 
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot using autoyast$/) do |vm, host|
+  node = get_target(host)
+  output, _code = node.run("virsh dumpxml #{vm}")
+  tree = Nokogiri::XML(output)
+  has_kernel = tree.xpath('//os/kernel').size == 1
+  has_initrd = tree.xpath('//os/initrd').size == 1
+  has_autoyast = tree.xpath('//os/cmdline')[0].to_s.include? ' autoyast='
+  unless has_kernel && has_initrd && has_autoyast
+    raise 'Wrong kernel/initrd/cmdline configuration, '\
+          "kernel: #{has_kernel ? '' : 'not'} set, "\
+          "initrd: #{has_initrd ? '' : 'not'} set, "\
+          "autoyast kernel parameter: #{has_autoyast ? '' : 'not'} set"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot on hard disk at next start$/) do |vm, host|
+  node = get_target(host)
+  output, _code = node.run("virsh dumpxml --inactive #{vm}")
+  tree = Nokogiri::XML(output)
+  has_kernel = tree.xpath('//os/kernel').size == 1
+  has_initrd = tree.xpath('//os/initrd').size == 1
+  has_cmdline = tree.xpath('//os/cmdline').size == 1
+  unless !has_kernel && !has_initrd && !has_cmdline
+    raise 'Virtual machine will not boot on hard disk at next start, '\
+          "kernel: #{has_kernel ? '' : 'not'} set, "\
+          "initrd: #{has_initrd ? '' : 'not'} set, "\
+          "cmdline: #{has_cmdline ? '' : 'not'} set"
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((?: at next start)?)$/) do |vm, host, stop, next_start|
+  node = get_target(host)
+  inactive = next_start == ' at next start' ? '--inactive' : ''
+  output, _code = node.run("virsh dumpxml #{inactive} #{vm}")
+  tree = Nokogiri::XML(output)
+  on_reboot = tree.xpath('//on_reboot/text()')[0].to_s
+  unless on_reboot == 'destroy' && stop == 'stop' || on_reboot == 'restart' && stop == 'not stop'
+    raise "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}"
+  end
+end
+
 When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
   node = get_target(host)
   node.run("qemu-img create -f qcow2 #{path} 1G")
@@ -1305,11 +1390,21 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   raise if code.zero?
 end
 
-# Enable/disable repository for monitoring exporters
-When(/^I "([^"]*)" Prometheus exporter repository on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  repo_name = 'tools_additional_repo'
-  if $product == 'Uyuni'
-    repo_name = 'tools_pool_repo'
+When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
+  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
+  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
+  node = get_target(host)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
   end
-  step %(I #{action} repository "#{repo_name}" on this "#{host}"#{error_control})
+end
+
+When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
+  node = get_target(host)
+  source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
+  remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
+  return_code = file_inject(node, source, remote_file)
+  raise 'File injection failed' unless return_code.zero?
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
 end

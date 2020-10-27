@@ -70,7 +70,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos_client"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
+    And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @centos_minion
   Scenario: Check the results of the OpenSCAP scan on the CentOS traditional client
@@ -113,7 +113,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I navigate to "rhn/systems/Overview.do" page
+    And I am on the System Overview page
     And I wait until I see the name of "ceos_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_minion"
 

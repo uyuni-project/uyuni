@@ -1,3 +1,19 @@
+- Add cobbler-related fields in VM Creation action table
+- Execute Salt SSH actions in parallel (bsc#1173199)
+- Hotfix the modular RPMs release comparison
+- show info message when applying schema upgrade
+- Fix: handle version comparison corner cases in Ubuntu packages
+
+-------------------------------------------------------------------
+Mon Sep 21 18:42:16 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Schema upgrade for Debian with ARM64v8+ (cpuach=aarch64, cpuarch=arm64) architecture
+
+-------------------------------------------------------------------
+Fri Sep 18 12:27:41 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
 - support installer update channels during autoinstallation
 - Prevent a deadlock error involving delete_server and update_needed_cache (bsc#1173073)
 - Add new states and types for virtual instances in order

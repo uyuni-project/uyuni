@@ -13,14 +13,15 @@
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
 - features/secondary/trad_lock_packages.feature
-- features/secondary/min_centos_openscap.feature
+- features/secondary/min_centos_openscap_audit.feature
 - features/secondary/min_centos_ssh.feature
 - features/secondary/trad_centos_client.feature
-- features/secondary/min_ubuntu_openscap.feature
+- features/secondary/min_ubuntu_openscap_audit.feature
 - features/secondary/min_ubuntu_ssh.feature
 - features/secondary/minssh_bootstrap_xmlrpc.feature
 - features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
+- features/secondary/min_ssh_tunnel.feature
 - features/secondary/min_activationkey.feature
 - features/secondary/trad_migrate_to_minion.feature
 - features/secondary/trad_migrate_to_sshminion.feature
@@ -33,6 +34,8 @@
 - features/secondary/minxen_guests.feature
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/srv_power_management.feature
+- features/secondary/srv_xmlrpc_power_management.feature
+- features/secondary/srv_power_management_redfish.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
 - features/secondary/min_action_chain.feature
@@ -46,5 +49,6 @@
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
 - features/secondary/srv_test_maintenance_windows.feature
+- features/secondary/srv_user_configuration_salt_states.feature
 
 ## Secondary features END ##

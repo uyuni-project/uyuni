@@ -22,6 +22,14 @@ mgrchannels_susemanagerplugin_conf_dnf:
     - user: root
     - group: root
     - mode: 644
+
+mgrchannels_enable_dnf_plugins:
+  file.replace:
+    - name: /etc/dnf/dnf.conf
+    - pattern: plugins=.*
+    - repl: plugins=1
+{#- default is '1' when option is not specififed #}
+    - onlyif: grep -e 'plugins=0' -e 'plugins=False' -e 'plugins=no' /etc/dnf/dnf.conf
 {%- endif %}
 
 {%- if is_yum %}
@@ -42,6 +50,14 @@ mgrchannels_susemanagerplugin_conf_yum:
     - user: root
     - group: root
     - mode: 644
+
+mgrchannels_enable_yum_plugins:
+  file.replace:
+    - name: /etc/yum.conf
+    - pattern: plugins=.*
+    - repl: plugins=1
+    - onlyif: grep plugins=0 /etc/yum.conf
+
 {%- endif %}
 {%- endif %}
 
@@ -70,6 +86,18 @@ mgrchannels_repo:
        - file: mgrchannels_susemanagerplugin_yum
        - file: mgrchannels_susemanagerplugin_conf_yum
 {%- endif %}
+{%- endif %}
+
+{%- if (grains['os'] == 'Debian' and grains['osmajorrelease']|int >= 10) or (grains['os'] == 'Ubuntu' and grains['osmajorrelease']|int >= 18) %}
+aptauth_conf:
+  file.managed:
+    - name: "/etc/apt/auth.conf.d/susemanager.conf"
+    - source:
+      - salt://channels/aptauth.conf
+    - template: jinja
+    - user: _apt
+    - group: root
+    - mode: 600
 {%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}

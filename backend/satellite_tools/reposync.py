@@ -400,6 +400,7 @@ class RepoSync(object):
         self.available_packages = {}
         self.ks_install_type = None
         self.show_packages_only = show_packages_only
+        self.regenerate_bootstrap_repo = False
 
         initCFG('server.susemanager')
         rhnSQL.initDB()
@@ -671,7 +672,8 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
-        if CFG.AUTO_GENERATE_BOOTSTRAP_REPO:
+        if CFG.AUTO_GENERATE_BOOTSTRAP_REPO and self.regenerate_bootstrap_repo:
+            log(0, '  Regenerating bootstrap repositories.')
             subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
 
         # update permissions
@@ -1108,6 +1110,7 @@ class RepoSync(object):
                 count += len(import_batch)
                 log(0, "    {} packages linked".format(count))
             self.regen = True
+            self.regenerate_bootstrap_repo = True
         self._normalize_orphan_vendor_packages()
         return failed_packages
 

@@ -1,3 +1,20 @@
+- Change VM creation state to handle installation from kernel, PXE or CDROM
+- States and metadata for showing the cluster upgrade plan in the UI
+- Fix action chain resuming when patches updating salt-minion don't cause service to be
+  restarted (bsc#1144447)
+- Make grub2 autoinstall kernel path relative to the boot partition root (bsc#1175876)
+- Fix: do not break when pod status is empty (bsc#1161903)
+- Move channel token information from sources.list to auth.conf on Debian 10 and Ubuntu 18 and newer
+- Add support for activation keys on server configuration Salt modules
+- ensure the yum/dnf plugins are enabled
+
+-------------------------------------------------------------------
+Fri Sep 18 12:29:55 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
+- Add uyuni-config-modules subpackage with Salt modules to configure
+  Servers
+- Fix the dnf plugin to add the token to the HTTP header (bsc#1175724)
 - Fix reporting of missing products in product.all_installed (bsc#1165829)
 - Fix: supply a dnf base when dealing w/repos (bsc#1172504)
 - Fix: autorefresh in repos is zypper-only

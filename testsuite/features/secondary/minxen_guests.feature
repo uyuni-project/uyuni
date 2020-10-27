@@ -45,6 +45,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
     And I select "Xen" from "hypervisor"
+    And I select "NAT" in virtual network mode field
     And I enter "192.168.124.1" in virtual network IPv4 address field
     And I enter "192.168.124.2" in first IPv4 address for DHCP field
     And I enter "192.168.124.254" in last IPv4 address for DHCP field
@@ -80,8 +81,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
   Scenario: Show the VNC graphical console for Xen
     Given I am on the "Virtualization" page of this "xen_server"
     When I click on "Graphical Console" in row "test-vm"
+    And I switch to last opened window
     Then I wait until I see the VNC graphical console
-    And I close the window
 
 @virthost_xen
   Scenario: Suspend a Xen virtual machine
@@ -204,8 +205,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
   Scenario: Show the Spice graphical console for Xen
     Given I am on the "Virtualization" page of this "xen_server"
     When I click on "Graphical Console" in row "test-vm2"
+    And I switch to last opened window
     Then I wait until I see the spice graphical console
-    And I close the window
 
 @virthost_xen
   Scenario: Create a Xen fully virtualized guest

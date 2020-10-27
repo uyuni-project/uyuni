@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -49,9 +50,10 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
      * Standard constructor. For testing only - to obtain instance of this class, use
      * getInstance.
      * @param systemQueryIn systemQuery to use
+     * @param saltApiIn saltApi to use
      */
-    public SSHMinionBootstrapper(SystemQuery systemQueryIn) {
-        super(systemQueryIn);
+    public SSHMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+        super(systemQueryIn, saltApiIn);
     }
 
     @Override
@@ -110,7 +112,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     // we want to override this in tests
     protected RegisterMinionEventMessageAction getRegisterAction() {
-        return new RegisterMinionEventMessageAction(systemQuery);
+        return new RegisterMinionEventMessageAction(systemQuery, saltApi);
     }
 
     /**
