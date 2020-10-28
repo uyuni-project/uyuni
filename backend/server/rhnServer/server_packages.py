@@ -57,6 +57,11 @@ class dbPackage:
         self.r = str(pdict['release'])
         self.e = pdict['epoch']
         self.a = str(pdict['arch'])
+        if 'type' in pdict:
+            self.t = pdict['type']
+        else:
+            self.t = self.get_package_type_by_arch(self.a)
+
         if 'installtime' in pdict:
             self.installtime = pdict['installtime']
         else:
@@ -98,6 +103,7 @@ class dbPackage:
             'r': self.r,
             'e': self.e,
             'a': self.a,
+            't': self.t,
             'installtime': self.installtime,
             'real': self.real,
             'name_id': self.name_id,
@@ -106,6 +112,22 @@ class dbPackage:
             'status': self.status,
         }
     __repr__ = __str__
+
+    _query_get_package_type_by_arch = rhnSQL.Statement("""
+        select at.label
+          from rhnArchType at
+          join rhnPackageArch pa ON pa.arch_type_id = at.id
+         where pa.id = lookup_package_arch(:arch)
+    """)
+
+    def get_package_type_by_arch(self, arch):
+        h = rhnSQL.prepare(self._query_get_package_type_by_arch)
+        h.execute(arch=arch)
+        row = h.fetchone_dict()
+        if not row:
+            return None
+        return row['label']
+
 
 
 class Packages:
@@ -211,7 +233,7 @@ class Packages:
             h = rhnSQL.prepare("""
             insert into rhnServerPackage
             (server_id, name_id, evr_id, package_arch_id, installtime)
-            values (:sysid, LOOKUP_PACKAGE_NAME(:n), LOOKUP_EVR(:e, :v, :r),
+            values (:sysid, LOOKUP_PACKAGE_NAME(:n), LOOKUP_EVR2(:e, :v, :r, :t),
                 LOOKUP_PACKAGE_ARCH(:a), TO_TIMESTAMP(:instime, 'YYYY-MM-DD HH24:MI:SS')
             )
             """)
@@ -229,6 +251,7 @@ class Packages:
                 'r': [a.r for a in alist],
                 'e': list(map(lambdaae, alist)),
                 'a': [a.a for a in alist],
+                't': [a.t for a in alist],
                 'instime': [self.__expand_installtime(a.installtime) for a in alist],
             }
             try:
@@ -289,6 +312,7 @@ class Packages:
             rpe.version,
             rpe.release,
             rpe.epoch,
+            rpe.type,
             sp.name_id,
             sp.evr_id,
             sp.package_arch_id,
