@@ -73,9 +73,6 @@
         <html:text styleId="kernelParamsId" property="kernelParams" onkeydown="return blockEnter(event)" styleClass="form-control"
             disabled="${form.kernelParamsType ne &quot;custom&quot;}"
         />
-        <rhn:tooltip>
-            <bean:message key="kickstart.schedule.kernel.options.custom.tip" arg0="${rhn:localize('Custom')}" />
-        </rhn:tooltip>
     </div>
 </div>
 
@@ -139,8 +136,5 @@
         <html:text styleId="postKernelParamsId" property="postKernelParams" onkeydown="return blockEnter(event)" styleClass="form-control"
             disabled="${form.postKernelParamsType ne &quot;custom&quot;}"
         />
-        <rhn:tooltip>
-            <bean:message key="kickstart.schedule.kernel.options.custom.tip" arg0="${rhn:localize('Custom')}" />
-        </rhn:tooltip>
     </div>
 </div>
