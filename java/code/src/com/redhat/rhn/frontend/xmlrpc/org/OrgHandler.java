@@ -314,7 +314,7 @@ public class OrgHandler extends BaseHandler {
 
     /**
      * Migrate systems from one organization to another.  If executed by
-     * a Satellite administrator, the systems will be migrated from their current
+     * a SUSE Manager administrator, the systems will be migrated from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
      * as that administrator and the systems will be migrated to the organization
@@ -327,7 +327,7 @@ public class OrgHandler extends BaseHandler {
      * @return list of systems migrated.
      * @throws FaultException A FaultException is thrown if:
      *   - The user performing the request is not an organization administrator
-     *   - The user performing the request is not a satellite administrator, but the
+     *   - The user performing the request is not a SUSE Manager administrator, but the
      *     from org id is different than the user's org id.
      *   - The from and to org id provided are the same.
      *   - One or more of the servers provides do not exist
@@ -335,7 +335,7 @@ public class OrgHandler extends BaseHandler {
      *   - The user is not defined in the destination organization's trust
      *
      * @xmlrpc.doc Migrate systems from one organization to another.  If executed by
-     * a Satellite administrator, the systems will be migrated from their current
+     * a SUSE Manager administrator, the systems will be migrated from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
      * as that administrator and the systems will be migrated to the organization

@@ -123,12 +123,12 @@ public class MasterHandler extends BaseHandler {
     }
 
     /**
-     * Make the specified Master the default for this Slave's satellite-sync
+     * Make the specified Master the default for this Slave's inter-server-sync
      * @param loggedInUser The current user
      * @param masterId Id of the Master to be the default
      * @return 1 on success, exception otherwise
      *
-     * @xmlrpc.doc Make the specified Master the default for this Slave's satellite-sync
+     * @xmlrpc.doc Make the specified Master the default for this Slave's inter-server-sync
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "id", "Id of the Master to make the default")
      * @xmlrpc.returntype #return_int_success()
@@ -168,11 +168,11 @@ public class MasterHandler extends BaseHandler {
     }
 
     /**
-     * Make this slave have no default Master for satellite-sync
+     * Make this slave have no default Master for inter-server-sync
      * @param loggedInUser The current user
      * @return 1 on success, exception otherwise
      *
-     * @xmlrpc.doc Make this slave have no default Master for satellite-sync
+     * @xmlrpc.doc Make this slave have no default Master for inter-server-sync
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #return_int_success()
      */

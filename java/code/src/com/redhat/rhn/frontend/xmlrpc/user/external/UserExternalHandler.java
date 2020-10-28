@@ -44,7 +44,7 @@ import org.apache.commons.lang3.StringUtils;
  * @version $Rev$
  * @xmlrpc.namespace user.external
  * @xmlrpc.doc If you are using IPA integration to allow authentication of users from
- * an external IPA server (rare) the users will still need to be created in the Satellite
+ * an external IPA server (rare) the users will still need to be created in the Uyuni
  * database. Methods in this namespace allow you to configure some specifics of how this
  * happens, like what organization they are created in or what roles they will have.
  * These options can also be set in the web admin interface.
@@ -118,7 +118,7 @@ public class UserExternalHandler extends BaseHandler {
      *
      * @xmlrpc.doc Set whether we place users into the organization that corresponds
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
-     * Satellite organization name. Can only be called by a satellite_admin.
+     * Uyuni organization name. Can only be called by a satellite_admin.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("boolean", "useOrgUnit", "True if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise.")
@@ -144,7 +144,7 @@ public class UserExternalHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get whether we place users into the organization that corresponds
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
-     * Satellite organization name. Can only be called by a satellite_admin.
+     * Uyuni organization name. Can only be called by a satellite_admin.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #param_desc("boolean", "use", "True if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise")
