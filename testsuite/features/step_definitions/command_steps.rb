@@ -34,6 +34,11 @@ Then(/^it should be possible to reach the test packages$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
+Then(/^it should be possible to use the HTTP proxy$/) do
+  url = 'https://updates.suse.com/SUSE/Products/SLE-Full/15-SP2/x86_64/iso/SLE-15-SP2-Full-x86_64-GM-Media1.iso.sha256.asc?puBv2yb9SYRD9TSM--G7wNmD-brWw-55ZleEl6oW7d9azO-egbH9I1neECM-Fxe8B1Vd67OxhDd2Ve0oLJ2npLoVjR6L7XvMPOph1pTD1hMYiedac3CO5MV9MzAz7o1nvRePINPUELIGwGe76UpJ8jjz5RdxUio49sBkjBVMv3MfgYnm4Qx-_eNIl9A&_ga=2.74585554.1711402403.1603885305-150982903.1600156280'
+  $server.run("curl --insecure --proxy 'suma:P4$$word@#{$server_http_proxy}' --location '#{url}' --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
