@@ -537,7 +537,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                and cp.channel_id = c.id
                and cp.package_id = p.id
                and p.name_id = LOOKUP_PACKAGE_NAME(:name)
-               and p.evr_id = LOOKUP_EVR(:epoch, :version, :release)
+               and p.evr_id = LOOKUP_EVR2(:epoch, :version, :release, (select at.label from rhnArchType at where at.id = pa.arch_type_id))
                and p.package_arch_id = pa.id
                and p.checksum_id = ch.id
                and ch.checksum = :checksum
