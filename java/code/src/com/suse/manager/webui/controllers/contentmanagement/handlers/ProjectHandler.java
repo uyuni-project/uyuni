@@ -117,19 +117,4 @@ public class ProjectHandler {
         return requestErrors;
     }
 
-    /**
-     * map validate project request bean
-     * @param projectRequest the project request bean
-     * @param user the user
-     * @return validation errors
-     */
-    public static List<String> validateProjectRequest(NewProjectRequest projectRequest, User user) {
-        List<String> requestErrors = new ArrayList<>();
-
-        requestErrors.addAll(validateProjectPropertiesRequest(projectRequest.getProperties(), user));
-
-        return requestErrors;
-    }
-
-
 }
