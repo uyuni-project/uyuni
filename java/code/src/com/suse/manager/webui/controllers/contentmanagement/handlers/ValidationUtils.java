@@ -14,9 +14,12 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.manager.channel.CreateChannelCommand;
 
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for validations
@@ -35,4 +38,14 @@ public class ValidationUtils {
                 Pattern.compile(CreateChannelCommand.CHANNEL_NAME_REGEX).matcher(label).find();
     }
 
+    /**
+     * Extract validation errors from {@link ValidatorException} and convert them into localized messages.
+     * @param exc the {@link ValidatorException}
+     * @return the list of localized messages
+     */
+    public static List<String> convertValidationErrors(ValidatorException exc) {
+        return exc.getResult().getErrors().stream()
+                .map(e -> e.getLocalizedMessage())
+                .collect(Collectors.toList());
+    }
 }

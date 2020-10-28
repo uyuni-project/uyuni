@@ -21,6 +21,7 @@ import static spark.Spark.delete;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.user.User;
@@ -36,7 +37,6 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 
-import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -75,12 +75,6 @@ public class ProjectApiController {
      */
     public static String createContentProject(Request req, Response res, User user) {
         NewProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
-        List<String> requestErrors = ProjectHandler
-                .validateProjectPropertiesRequest(createProjectRequest.getProperties(), user);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
-        }
-
         ProjectPropertiesRequest projectPropertiesRequest = createProjectRequest.getProperties();
 
         ContentProject createdProject;
@@ -94,6 +88,10 @@ public class ProjectApiController {
         }
         catch (EntityExistsException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("Project already exists"));
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
         }
         catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
@@ -140,14 +138,6 @@ public class ProjectApiController {
      */
     public static String updateContentProjectProperties(Request req, Response res, User user) {
         ProjectPropertiesRequest updateProjectPropertiesRequest = ProjectHandler.getProjectPropertiesRequest(req);
-
-        List<String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(
-                updateProjectPropertiesRequest, user
-        );
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
-        }
-
         ContentProject updatedProject;
         try {
             updatedProject = CONTENT_MGR.updateProject(
@@ -159,6 +149,10 @@ public class ProjectApiController {
         }
         catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
         }
 
         return ControllerApiUtils.fullProjectJsonResponse(res, updatedProject.getLabel(), user);
