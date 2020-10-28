@@ -145,7 +145,7 @@ class Errata(rhnHandler):
             rhnPackage p
         where
             p.name_id = LOOKUP_PACKAGE_NAME(:name)
-        and p.evr_id = LOOKUP_EVR(:epoch, :ver, :rel)
+        and p.evr_id = LOOKUP_EVR2(:epoch, :ver, :rel, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id))
         -- map to a channel
         and p.id = cp.package_id
         -- map to an errata as well

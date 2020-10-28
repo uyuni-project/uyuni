@@ -52,14 +52,14 @@ values (
 _query_update_pkg_data1 = rhnSQL.Statement("""
 update rhnServerCrash
    set package_name_id = lookup_package_name(:pkg_name),
-       package_evr_id = lookup_evr(:pkg_epoch, :pkg_version, :pkg_release)
+       package_evr_id = lookup_evr2(:pkg_epoch, :pkg_version, :pkg_release, 'rpm')
  where id = :crash_id
 """)
 
 _query_update_pkg_data2 = rhnSQL.Statement("""
 update rhnServerCrash
    set package_name_id = lookup_package_name(:pkg_name),
-       package_evr_id = lookup_evr(:pkg_epoch, :pkg_version, :pkg_release),
+       package_evr_id = lookup_evr2(:pkg_epoch, :pkg_version, :pkg_release, 'rpm'),
        package_arch_id = lookup_package_arch(:pkg_arch)
  where id = :crash_id
 """)

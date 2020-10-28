@@ -920,7 +920,7 @@ class Syncer:
                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
           from rhnPackage p, rhnChecksumView c
          where p.name_id = lookup_package_name(:name)
-           and p.evr_id = lookup_evr(:epoch, :version, :release)
+           and p.evr_id = lookup_evr2(:epoch, :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = p.package_arch_id))
            and p.package_arch_id = lookup_package_arch(:arch)
            and (p.org_id = :org_id or
                (p.org_id is null and :org_id is null))

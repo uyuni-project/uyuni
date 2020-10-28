@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 
 create or replace function
-lookup_evr2(e_in in varchar, v_in in varchar, r_in in varchar, t_in)
+lookup_evr2(e_in in varchar, v_in in varchar, r_in in varchar, t_in in varchar)
 returns numeric
 as
 $$
