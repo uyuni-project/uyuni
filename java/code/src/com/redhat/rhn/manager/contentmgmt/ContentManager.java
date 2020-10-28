@@ -55,6 +55,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
+import com.redhat.rhn.domain.contentmgmt.validation.strict.ContentStrictValidator;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
@@ -116,6 +117,7 @@ public class ContentManager {
      * @param user the creator
      * @throws EntityExistsException if a project with given label already exists
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the created Content Project
      */
     public ContentProject createProject(String label, String name, String description, User user) {
@@ -123,6 +125,7 @@ public class ContentManager {
         lookupProject(label, user).ifPresent(cp -> {
             throw new EntityExistsException(cp);
         });
+        ContentStrictValidator.validateProjectProperties(label, name, user);
         ContentProject contentProject = new ContentProject(label, name, description, user.getOrg());
         ContentProjectFactory.save(contentProject);
         return contentProject;
@@ -169,6 +172,7 @@ public class ContentManager {
      * @param user the user
      * @throws EntityNotExistsException if Content Project with given label is not found
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the updated Content Project
      */
     public ContentProject updateProject(String label, Optional<String> newName, Optional<String> newDesc,
@@ -176,6 +180,7 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
                 .map(cp -> {
+                    ContentStrictValidator.validateProjectProperties(label, newName.orElse(cp.getName()), user);
                     newName.ifPresent(name -> cp.setName(name));
                     newDesc.ifPresent(desc -> cp.setDescription(desc));
                     return cp;
