@@ -110,11 +110,17 @@ class DpkgRepo:
         if self._pkg_index[0] == "":
             for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
                 packages_url = self.append_index_file(cnt_fname)
-                resp = requests.get(packages_url, proxies=self.proxies)
-                if resp.status_code == http.HTTPStatus.OK:
-                    self._pkg_index = cnt_fname, resp.content
-                    break
-                resp.close()
+                if packages_url.startswith("file://"):
+                    with open(packages_url.replace("file://", ""), "rb") as f:
+                        self._pkg_index = cnt_fname, f.read()
+                        break
+                    # TODO: Add logging in error case!
+                else:
+                    resp = requests.get(packages_url, proxies=self.proxies)
+                    if resp.status_code == http.HTTPStatus.OK:
+                        self._pkg_index = cnt_fname, resp.content
+                        break
+                    resp.close()
 
         return self._pkg_index
 
@@ -184,37 +190,68 @@ class DpkgRepo:
         return self._release
 
 
-    def _has_valid_gpg_signature(self, response) -> bool:
+    def _has_valid_gpg_signature(self, uri: str, response=None) -> bool:
         """
         Validate GPG signature of Release file.
 
         :return: bool
         """
-        if parse.urlparse(response.url).path.endswith("InRelease"):
-            process = subprocess.Popen(
-                ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            out = process.communicate(response.content)
-        else:
-            signature_response = requests.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
-            if signature_response.status_code != http.HTTPStatus.OK:
-                return False
-            else:
-                temp_release_file = tempfile.NamedTemporaryFile()
-                temp_release_file.write(response.content)
-                temp_release_file.seek(0)
-                temp_signature_file = tempfile.NamedTemporaryFile()
-                temp_signature_file.write(signature_response.content)
-                temp_signature_file.seek(0)
+        process = None
+        uri = uri.replace("file://", "")
+        if not response:
+            # There is no response, so this is a local path.
+            if os.access(os.path.join(uri, "InRelease"), os.R_OK):
+                release_file = os.path.join(uri, "InRelease")
                 process = subprocess.Popen(
-                    ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR,
-                     temp_signature_file.name, temp_release_file.name],
+                    ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR, release_file],
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
+                out = process.wait(timeout=90)
+            elif os.access(os.path.join(uri, "Release"), os.R_OK):
+                release_file = os.path.join(uri, "Release")
+                release_signature_file = os.path.join(uri, "Release.gpg")
+                if os.access(release_signature_file, os.R_OK):
+                    process = subprocess.Popen(
+                        ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR,
+                        release_signature_file, release_file],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+                    out = process.wait(timeout=90)
+                else:
+                    raise GeneralRepoException("Signature file for GPG check could not be accessed: {}".format(release_signature_file))
+            else:
+                raise GeneralRepoException("No release file found: {}".format(uri))
+        else:
+            # There is a response, so we are dealing with a URL.
+            if parse.urlparse(response.url).path.endswith("InRelease"):
+                process = subprocess.Popen(
+                    ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                out = process.communicate(response.content, timeout=90)
+            else:
+                signature_response = requests.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
+                if signature_response.status_code != http.HTTPStatus.OK:
+                    return False
+                else:
+                    temp_release_file = tempfile.NamedTemporaryFile()
+                    temp_release_file.write(response.content)
+                    temp_release_file.seek(0)
+                    temp_signature_file = tempfile.NamedTemporaryFile()
+                    temp_signature_file.write(signature_response.content)
+                    temp_signature_file.seek(0)
+                    process = subprocess.Popen(
+                        ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR,
+                        temp_signature_file.name, temp_release_file.name],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+                    out = process.wait(timeout=90)
+
         if process.returncode == 0:
             return True
         else:
@@ -232,7 +269,57 @@ class DpkgRepo:
         :raises GeneralRepoException if the Release file cannot be found or the GPG signature can't be verified.
         :return: string
         """
+        if self._url.startswith("file://"):
+            return self._get_release_index_from_file()
+        else:
+            return self._get_release_index_from_http()
 
+
+    def _get_release_index_from_file(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
+        # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
+        local_path = self._url.replace("file://", "")
+        release_file = None
+        if os.access(self._get_parent_url(local_path, 2, "InRelease"), os.R_OK):
+            release_file = self._get_parent_url(local_path, 2, "InRelease")
+            self._flat = False
+        elif os.access(self._get_parent_url(local_path, 2, "Release"), os.R_OK):
+            release_file = self._get_parent_url(local_path, 2, "InRelease")
+            self._flat = False
+        else:
+            self._flat = True
+        self._flat_checked = 1
+
+        # Repo format is not flat
+        if not self.is_flat():
+            if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
+                raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
+            try:
+                with open(release_file, "rb") as f:
+                    self._release = self._parse_release_index(f.read().decode("utf-8"))
+            except IOError:
+                raise GeneralRepoException("IOError while accessing file: {}".format(release_file))
+
+        # Repo format is flat
+        else:
+            if os.access(self._get_parent_url(local_path, 0, "InRelease"), os.R_OK):
+                release_file = self._get_parent_url(local_path, 0, "InRelease")
+            elif os.access(self._get_parent_url(local_path, 0, "Release"), os.R_OK):
+                release_file = self._get_parent_url(local_path, 0, "Release")
+            else:
+                raise GeneralRepoException("No release file found in {}".format(self._get_parent_url(local_path, 0)))
+
+            try:
+                with open(release_file, "rb") as f:
+                    release_file_content = f.read().decode("utf-8")
+                    if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
+                        raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
+                    self._release = self._parse_release_index(release_file_content)
+            except IOError:
+                raise GeneralRepoException("IOError while accessing file: {}".format(release_file))
+
+        return self._release
+
+    def _get_release_index_from_http(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
         resp = requests.get(self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies)
         if resp.status_code != http.HTTPStatus.OK:
@@ -251,7 +338,7 @@ class DpkgRepo:
             self._flat = resp.status_code in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.FORBIDDEN]
             self._flat_checked = 1
 
-            if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp):
+            if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
                 raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
@@ -262,7 +349,7 @@ class DpkgRepo:
                     resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
 
                 if resp.status_code == http.HTTPStatus.OK:
-                    if self.gpg_verify and not self._has_valid_gpg_signature(resp):
+                    if self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
                         raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
                     self._release = self._parse_release_index(resp.content.decode("utf-8"))
         finally:
