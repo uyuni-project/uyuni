@@ -1,6 +1,12 @@
 - add new column to rhnactiondup table for allowVendorChange flag
 
 -------------------------------------------------------------------
+Wed Oct 28 14:27:32 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
+- Add web_theme user preferences column (bsc#1178204)
+
+-------------------------------------------------------------------
 Thu Oct 22 11:13:51 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.14-1
