@@ -59,9 +59,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.*;
 
@@ -77,7 +77,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     /**
@@ -606,7 +606,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
         Long actionID = DistUpgradeManager.scheduleDistUpgrade(
-                user, server, targetSet, channelIDs, true, scheduleDate);
+                user, server, targetSet, channelIDs, true, false, scheduleDate);
 
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
@@ -617,6 +617,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(server, serverActions.iterator().next().getServer());
         DistUpgradeActionDetails details = action.getDetails();
         assertTrue(details.isDryRun());
+        assertFalse(details.isAllowVendorChange());
 
         // Check product upgrade
         Set<SUSEProductUpgrade> upgrades = details.getProductUpgrades();

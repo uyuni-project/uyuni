@@ -18,7 +18,7 @@ function usage() {
     echo "$1" >&2
   fi
 
-  echo "USAGE: ${ME} --client <client> [--register <bootstrap_script> [--tunnel]] "
+  echo "USAGE: ${ME} --client <client> [--register <bootstrap_script> [--tunnel] [--nostricthostkeychecking]]"
   exit 1
 }
 
@@ -27,12 +27,14 @@ USE_TUNNEL=""
 BOOTSTRAP_ORIG=""
 CLIENT=""
 VARIABLE=""
+OPTIONS=""
 while true; do
   case "$1" in
     --client) VARIABLE=CLIENT;;
     --help|-h) usage;;
     --register) VARIABLE=BOOTSTRAP_ORIG;;
     --tunnel) USE_TUNNEL="Y";;
+    --nostricthostkeychecking) OPTIONS="-o StrictHostKeyChecking=no";;
     "") break;;
     *) usage "ERROR: Unknown option $1";;
   esac
@@ -224,13 +226,13 @@ fi
 
 # Copy public key to the client
 echo "* Pushing SSH key to '${CLIENT}', please login as ${USER}:"
-ssh-copy-id -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
+ssh-copy-id -i ${SSH_IDENTITY}.pub ${OPTIONS} ${USER}@${CLIENT} 2>&1
 exit_in_case_of_error
 
 # Check if sudo exists or if user has sudo access
 # Will fail if sudo isn't installed or user doesn't have sudo access
 if [ -n "${SUDO_USER}" ]; then
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} 'sudo -v'
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} 'sudo -v'
   exit_in_case_of_error
 fi
 
@@ -238,43 +240,43 @@ fi
 echo "* Removing duplicate host keys remotely for ${USER}"
 AUTH_KEYS='~/.ssh/authorized_keys'
 AUTH_KEYS2='~/.ssh/authorized_keys2'
-ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping: ${AUTH_KEYS} (not found)'"
-ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping: ${AUTH_KEYS2} (not found)'"
+ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping: ${AUTH_KEYS} (not found)'"
+ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping: ${AUTH_KEYS2} (not found)'"
 exit_in_case_of_error
 
 # Copy scripts to the client
 if [ -n "${BOOTSTRAP}" ]; then
   echo "* Pushing scripts to the client"
   if [ "${USE_TUNNEL}" = "Y" ]; then
-    scp -i ${SSH_IDENTITY} ${ENABLE} ${USER}@${CLIENT}:enable.sh
+    scp -i ${SSH_IDENTITY} ${OPTIONS} ${ENABLE} ${USER}@${CLIENT}:enable.sh
     exit_in_case_of_error
   fi
-  scp -i ${SSH_IDENTITY} ${BOOTSTRAP} ${USER}@${CLIENT}:bootstrap.sh
+  scp -i ${SSH_IDENTITY} ${OPTIONS} ${BOOTSTRAP} ${USER}@${CLIENT}:bootstrap.sh
   exit_in_case_of_error
 fi
 
 # Enablement, registration and cleanup
 if [ "${USE_TUNNEL}" = "Y" ]; then
   echo "* Enabling client for SSH Push via tunnel"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x enable.sh"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} ~/enable.sh"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "chmod +x enable.sh"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "${SUDO_CMD} ~/enable.sh"
   exit_in_case_of_error
 
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
-  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -fv enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "rm -fv enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
   cleanup_temp_files
 elif [ -n "${BOOTSTRAP}" ]; then
   # Simple registration with given bootstrap script
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files remotely"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -fv bootstrap.sh client-config-overrides.txt client_config_update.py"
+  ssh -i ${SSH_IDENTITY} ${OPTIONS} ${USER}@${CLIENT} "rm -fv bootstrap.sh client-config-overrides.txt client_config_update.py"
 fi

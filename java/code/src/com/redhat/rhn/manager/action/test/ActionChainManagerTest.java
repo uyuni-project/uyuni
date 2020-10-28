@@ -33,7 +33,8 @@ import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.redhat.rhn.testing.TestUtils;
-import org.jmock.lib.legacy.ClassImposteriser;
+
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,7 +53,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     /**

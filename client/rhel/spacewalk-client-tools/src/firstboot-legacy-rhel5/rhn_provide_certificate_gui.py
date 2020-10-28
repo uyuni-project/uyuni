@@ -20,6 +20,7 @@ import os
 from up2date_client import rhnreg
 from up2date_client import rhnregGui
 from up2date_client import up2dateErrors
+from up2date_client.rhnreg_constants import PRODUCT_NAME
 from rhn_register_firstboot_gui_window import RhnRegisterFirstbootGuiWindow
 
 import gtk
@@ -34,7 +35,7 @@ class RhnProvideCertificateWindow(RhnRegisterFirstbootGuiWindow, rhnregGui.Provi
     runPriority=107
     moduleName = _("Provide Certificate")
     windowTitle = moduleName
-    shortMessage = _("Provide a certificate for this Red Hat Satellite server")
+    shortMessage = _("Provide a certificate for this {PRODUCT_NAME} server").format(PRODUCT_NAME=PRODUCT_NAME)
     needsparent = 1
     needsnetwork = 1
     noSidebar = True

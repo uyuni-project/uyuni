@@ -35,6 +35,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -86,7 +87,14 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @return the ModelAndView object to render the page
      */
     public ModelAndView show(Request request, Response response, User user) {
-        return renderPage(request, response, user, "show", null);
+        Server host = getServer(request, user);
+        return renderPage(request, response, user, "show", () -> {
+            Map<String, Object> extra = new HashMap<>();
+            extra.put("hypervisor", host.hasVirtualizationEntitlement() ?
+                    virtManager.getHypervisor(host.getMinionId()).orElse("") :
+                    "");
+            return extra;
+        });
     }
 
     /**

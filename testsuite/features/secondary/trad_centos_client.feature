@@ -24,9 +24,8 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Given I am authorized
     When I enable SUSE Manager tools repositories on "ceos_client"
     And I enable repository "CentOS-Base" on this "ceos_client"
-    And I install package "hwdata m2crypto wget" on this "ceos_client"
-    And I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos_client"
-    And I install package "spacewalk-oscap scap-security-guide" on this "ceos_client"
+    And I install the traditional stack utils on "ceos_client"
+    And I install OpenSCAP centos dependencies on "ceos_client"
     And I register "ceos_client" as traditional client
     And I run "rhn-actions-control --enable-all" on "ceos_client"
 
@@ -70,7 +69,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos_client"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
+    And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @centos_minion
   Scenario: Check the results of the OpenSCAP scan on the CentOS traditional client
@@ -102,6 +101,11 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then "ceos_client" should not be registered
 
 @centos_minion
+  Scenario: Cleanup: delete the installed rpms on CentOS 7 traditional client
+    When I remove the traditional stack utils from "ceos_client"
+    And I remove OpenSCAP salt dependencies from "ceos_client"
+
+@centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after traditional client tests
     Given I am authorized
     When I go to the bootstrapping page
@@ -113,7 +117,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I navigate to "rhn/systems/Overview.do" page
+    And I am on the System Overview page
     And I wait until I see the name of "ceos_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_minion"
 

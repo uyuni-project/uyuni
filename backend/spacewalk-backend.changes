@@ -1,4 +1,19 @@
 - Re-enables possibility to use local repos with repo-sync (bsc#1175607)
+- add 'allow_vendor_change' option to rhn clients for dist upgrades
+
+-------------------------------------------------------------------
+Thu Oct 22 10:43:27 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.16-1
+- prevent IntegrityError during mgr-inter-sync execution (bsc#1177235)
+
+-------------------------------------------------------------------
+Tue Sep 15 10:36:45 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
+- Only regenerate bootstrap repositories when linking new packages (bsc#1174636)
+>>>>>>> origin/Manager-4.1
 - support installer_updates flag in ISS
 - Remove duplicate languages and update translation strings
 

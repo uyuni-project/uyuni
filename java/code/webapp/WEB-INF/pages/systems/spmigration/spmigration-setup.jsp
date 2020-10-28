@@ -98,6 +98,16 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    <bean:message key="spmigration.jsp.allow.vendor.change" />
+                </label>
+                <ul class="form-control-static products-list">
+                    <li>
+                        <input  name="allowVendorChange" type="checkbox" />
+                    </li>
+               </ul>
+            </div>
+            <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" name="dispatch"
                         class="btn btn-success" id="submitButton"
@@ -107,6 +117,7 @@
                     </button>
                 </div>
             </div>
+
             <html:hidden property="baseProduct"
                 value="${targetProducts.baseProduct.id}" />
             <c:forEach items="${targetProducts.addonProducts}" var="current">

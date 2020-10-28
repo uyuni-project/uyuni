@@ -105,10 +105,10 @@ const Login = (props: Props) => {
                 <div className="col-sm-6">
                   <h1>{product.bodyTitle}</h1>
                   <p className="gray-text margins-updown">
-                    Discover a new way of managing your servers, packages, patches and more via one interface.
+                    {t("Discover a new way of managing your servers, packages, patches and more via one interface.")}
                   </p>
                   <p className="gray-text">
-                    Learn more about
+                    {t("Learn more about")}
                     {' '}
                     {product.key}
                     :

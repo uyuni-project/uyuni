@@ -13,17 +13,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:46+0200\n"
-"PO-Revision-Date: 2018-03-16 11:04+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Slovak (http://www.transifex.com/projects/p/spacewalk/"
-"language/sk/)\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
+"PO-Revision-Date: 2020-09-29 17:48+0000\n"
+"Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -31,8 +31,8 @@ msgid ""
 "This client requires the server to support %s, which the current server does "
 "not support"
 msgstr ""
-"Tento klient vyžaduje aby server podporoval %s, čo momentálne server "
-"nepodporuje."
+"Tento klient vyžaduje, aby server podporoval %s, čo momentálne server "
+"nepodporuje"
 
 #: ../src/up2date_client/config.py:162
 #, python-format
@@ -46,17 +46,16 @@ msgstr "Získavam zoznam balíčkov nainštalovaných v systéme"
 #. self.druid.finish.set_label(_("_Finish"))
 #: ../src/up2date_client/gui.py:273
 msgid "Finish setting up software updates"
-msgstr ""
+msgstr "Ukončiť nastavenia softvérových aktualizácií"
 
 #. self.druid.finish.set_label(_("_Exit"))
 #: ../src/up2date_client/gui.py:276
-#, fuzzy
 msgid "Software updates setup unsuccessful"
-msgstr "Reštartujem up2date"
+msgstr "Nastavenie aktualizácií softvéru bolo neúspešné"
 
 #: ../src/up2date_client/gui.py:283
 msgid "You must run rhn_register as root."
-msgstr "Update Agenta musíte spúšťať ako root."
+msgstr "rhn_register musíte spúšťať ako správca systému."
 
 #: ../src/up2date_client/gui.py:308
 #, python-format
@@ -84,19 +83,16 @@ msgid "Error reading network interface information:"
 msgstr "Chyba pri čítaní informácii sieťového rozhrania:"
 
 #: ../src/up2date_client/hardware.py:1086
-#, fuzzy
 msgid "Error reading network FQDNs information:"
-msgstr "Chyba pri čítaní sieťových informácii:"
+msgstr "Chyba pri čítaní sieťových informácii FQDN:"
 
 #: ../src/up2date_client/hardware.py:1093
-#, fuzzy
 msgid "Error reading system info:"
-msgstr "Chyba pri čítaní pamäťových informácii:"
+msgstr "Chyba pri čítaní systémových informácií:"
 
 #: ../src/up2date_client/hardware.py:1100
-#, fuzzy
 msgid "Error reading machine info:"
-msgstr "Chyba pri čítaní cpu informácii:"
+msgstr "Chyba pri čítaní informácií o stroji:"
 
 #: ../src/up2date_client/messageWindow.py:106
 msgid "Error:"
@@ -108,7 +104,7 @@ msgstr "Áno/Nie okno:"
 
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
-msgstr ""
+msgstr "Nepodarilo sa nájsť SystemId"
 
 #: ../src/up2date_client/rhnChannel.py:119
 msgid "This system may not be updated until it is associated with a channel."
@@ -116,9 +112,8 @@ msgstr ""
 "Tento systém nemôže byť aktualizovaný, dokiaľ nebude priradený ku kanálu."
 
 #: ../src/up2date_client/rhncli.py:68
-#, fuzzy
 msgid "Show additional output. Repeat for more detail."
-msgstr "Ukázať dodatočný výstup"
+msgstr "Zobraziť ďalší výstup. Opakovať kvôli viac detailom."
 
 #: ../src/up2date_client/rhncli.py:70
 msgid "Specify an http proxy to use"
@@ -126,7 +121,7 @@ msgstr "Zadať http proxy pre použitie"
 
 #: ../src/up2date_client/rhncli.py:72
 msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Zadať meno užívateľa pre použitie s autentifikovaným http proxy"
+msgstr "Zadať meno používateľa pre použitie s autentifikovaným http proxy"
 
 #: ../src/up2date_client/rhncli.py:74
 msgid "Specify a password to use with an authenticated http proxy"
@@ -147,12 +142,12 @@ msgstr "Vyskytla sa neočakávaná chyba OS: %s\n"
 
 #: ../src/up2date_client/rhncli.py:104
 msgid "A connection was attempted with a malformed URI.\n"
-msgstr ""
+msgstr "Pokus o pripojenie s poškodeným URI.\n"
 
 #: ../src/up2date_client/rhncli.py:106
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
+msgstr "Pokus o pripojenie s poškodeným URI: %s.\n"
 
 #: ../src/up2date_client/rhncli.py:108
 #, python-format
@@ -185,7 +180,7 @@ msgstr "Pri overovaní pravosti došlo k chybe: %s\n"
 #: ../src/up2date_client/rhncli.py:139
 #, python-format
 msgid "You must be root to run %s"
-msgstr ""
+msgstr "Na spustenie %s musíte byť správca systému"
 
 #: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
 msgid "Unable to open gui. Try `up2date --nox`"
@@ -198,6 +193,9 @@ msgid ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "Licensed under the terms of the GPLv2."
 msgstr ""
+"%%prog (Klientské nástroje Spacewalk) %s\n"
+"Copyright (C) 1999--2014 Red Hat, Inc.\n"
+"Licencované podľa podmienok GPLv2."
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
@@ -208,252 +206,295 @@ msgid "See /var/log/up2date for more information"
 msgstr "Pozri /var/log/up2date pre viac informácii"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
+msgid "Uyuni"
+msgstr "Uyuni"
+
+#: ../src/up2date_client/rhnreg_constants.py:21
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr ""
+msgstr "Copyright © 2006--2014 Red Hat, Inc. Všetky práva vyhradené."
 
 #. Satellite URL Window
-#: ../src/up2date_client/rhnreg_constants.py:22
-msgid "Enter your Red Hat Satellite URL."
-msgstr ""
+#: ../src/up2date_client/rhnreg_constants.py:24
+#, python-brace-format
+msgid "Enter your {PRODUCT_NAME} URL."
+msgstr "Zadajte svoju adresu URL {PRODUCT_NAME}."
 
-#: ../src/up2date_client/rhnreg_constants.py:23
+#: ../src/up2date_client/rhnreg_constants.py:25
+#, python-brace-format
 msgid ""
-"Please enter the location of your Red Hat Satellite server and of its SSL "
+"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
 "certificate. The SSL certificate is only required if you will be connecting "
 "over https (recommended)."
 msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:27
-msgid "Satellite URL:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:28
-msgid "SSL certificate:"
-msgstr ""
+"Prosím, zadajte umiestnenie svojho servera {PRODUCT_NAME} a jeho certifikátu "
+"SSL. Certifikát SSL sa vyžaduje, iba ak sa pripájate prostredníctvom https "
+"(odporúčané)."
 
 #: ../src/up2date_client/rhnreg_constants.py:29
-msgid "You must enter a valid Satellite URL."
-msgstr ""
+#, python-brace-format
+msgid "{PRODUCT_NAME} URL:"
+msgstr "URL {PRODUCT_NAME}:"
 
 #: ../src/up2date_client/rhnreg_constants.py:30
+msgid "SSL certificate:"
+msgstr "SSL certifikát:"
+
+#: ../src/up2date_client/rhnreg_constants.py:31
+#, python-brace-format
+msgid "You must enter a valid {PRODUCT_NAME} URL."
+msgstr "Musíte zadať platnú adresu URL {PRODUCT_NAME}."
+
+#: ../src/up2date_client/rhnreg_constants.py:32
 msgid ""
 "If you are using https you must enter the location of a valid SSL "
 "certificate."
-msgstr ""
+msgstr "Ak používate https, musíte zadať umiestnenie platného certifikátu SSL."
 
 #. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:34
+#: ../src/up2date_client/rhnreg_constants.py:36
 msgid "Attempting to contact the Spacewalk server."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:35
-#, python-format
-msgid "We are attempting to contact the Red Hat Network server at %s."
-msgstr ""
+msgstr "Pokúšanie sa o kontaktovanie servera Spacewalk."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
+#, python-format, python-brace-format
+msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
+msgstr "Pokúšame sa kontaktovať server {PRODUCT_NAME} na %s."
+
+#: ../src/up2date_client/rhnreg_constants.py:39
 #, python-format
 msgid "A proxy was specified at %s."
-msgstr ""
+msgstr "Proxy bolo určené na %s."
 
 #. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:40
+#: ../src/up2date_client/rhnreg_constants.py:42
 msgid "System Registration"
 msgstr "registračnéČíslo"
 
-#: ../src/up2date_client/rhnreg_constants.py:41
+#: ../src/up2date_client/rhnreg_constants.py:43
+#, python-brace-format
 msgid ""
-"This assistant will guide you through connecting your system to Red Hat "
-"Satellite to receive software updates, including security updates, to keep "
-"your system supported and compliant.  You will need the following at this "
-"time:\n"
+"This assistant will guide you through connecting your system to "
+"{PRODUCT_NAME} to receive software updates, including security updates, to "
+"keep your system supported and compliant.  You will need the following at "
+"this time:\n"
 "\n"
 " * A network connection\n"
-" * Your Red Hat Login & password\n"
-" * The location of a Red Hat Satellite or Proxy\n"
+" * Your {PRODUCT_NAME} Login & password\n"
+" * The location of a {PRODUCT_NAME} Server or Proxy\n"
 "\n"
 msgstr ""
+"Tento asistent vás prevedie pripojením vášho systému k {PRODUCT_NAME} na "
+"prijímanie softvérových aktualizácií vrátane bezpečnostných aktualizácií, "
+"aby bol váš systém podporovaný a súhlasný.  Momentálne budete potrebovať "
+"nasledovné:\n"
+"\n"
+" * Sieťové pripojenie\n"
+" * Vaše prihlasovacie meno a heslo {PRODUCT_NAME}\n"
+" * Umiestnenie servera alebo proxy {PRODUCT_NAME}\n"
+"\n"
 
 #. Why Register Window
-#: ../src/up2date_client/rhnreg_constants.py:54 ../data/rh_register.glade.h:5
-msgid "Why Should I Connect to RHN? ..."
-msgstr ""
+#: ../src/up2date_client/rhnreg_constants.py:56
+#, python-brace-format
+msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
+msgstr "Prečo by som sa mal pripojiť k {PRODUCT_NAME}? ..."
 
-#: ../src/up2date_client/rhnreg_constants.py:55 ../data/rh_register.glade.h:69
+#: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
 msgid "Why Register"
 msgstr "Už zaregistrovaný"
 
-#: ../src/up2date_client/rhnreg_constants.py:56
-msgid ""
-"Connecting your system to Red Hat Satellite allows you to take full "
-"advantage of the benefits of a paid subscription, including:"
-msgstr ""
-
 #: ../src/up2date_client/rhnreg_constants.py:58
-msgid "Security & Updates:"
+#, python-brace-format
+msgid ""
+"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
+"of the benefits of a paid subscription, including:"
 msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:59
-msgid "Downloads & Upgrades:"
-msgstr ""
+"Pripájanie vášho systému k {PRODUCT_NAME} vám umožňuje plne využívať "
+"prednosť výhod predplatného vrátane:"
 
 #: ../src/up2date_client/rhnreg_constants.py:60
-msgid "Support:"
-msgstr ""
+msgid "Security & Updates:"
+msgstr "Bezpečnosť a aktualizácie:"
 
 #: ../src/up2date_client/rhnreg_constants.py:61
+msgid "Downloads & Upgrades:"
+msgstr "Stiahnutia a zvýšenia verzie:"
+
+#: ../src/up2date_client/rhnreg_constants.py:62
+msgid "Support:"
+msgstr "Podpora:"
+
+#: ../src/up2date_client/rhnreg_constants.py:63
 msgid "Compliance:"
 msgstr "Spoločnosť:"
 
-#: ../src/up2date_client/rhnreg_constants.py:62
+#: ../src/up2date_client/rhnreg_constants.py:64
 msgid ""
 "Receive the latest software updates, including security updates, keeping "
-"this Red Hat Enterprise Linux system updated and secure."
+"this system updated and secure."
 msgstr ""
+"Prijímajte najnovšie aktualizácie softvéru vrátane bezpečnostných "
+"aktualizácií, aby bol tento systém aktuálny a zabezpečený."
 
-#: ../src/up2date_client/rhnreg_constants.py:64 ../data/rh_register.glade.h:76
+#: ../src/up2date_client/rhnreg_constants.py:66
 msgid ""
-"Download installation images for Red Hat Enterprise Linux releases, "
-"including new releases."
+"Download installation images for system releases, including new releases."
 msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:66 ../data/rh_register.glade.h:78
-msgid ""
-"Access to the technical support experts at Red Hat or Red Hat's partners for "
-"help with any issues you might encounter with this system."
-msgstr ""
+"Stiahnite si inštalačné obrazy pre vydania systému, vrátane nových vydaní."
 
 #: ../src/up2date_client/rhnreg_constants.py:68
+msgid ""
+"Access to the technical support experts for help with any issues you might "
+"encounter with this system."
+msgstr ""
+"Prístup k expertom technickej podpory kvôli pomoci s akýmikoľvek problémami, "
+"s ktorými sa môžete stretnúť v tomto systéme."
+
+#: ../src/up2date_client/rhnreg_constants.py:70
 msgid ""
 "Stay in compliance with your subscription agreement and manage subscriptions "
 "for systems connected to your account."
 msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:71
-msgid ""
-"Tip: Red Hat values your privacy: http://www.redhat.com/legal/"
-"privacy_statement.html"
-msgstr ""
+"Dodržiavajte svoju predplatnú zmluvu a spravujte predplatné pre systémy "
+"spojené s vašim účtom."
 
 #: ../src/up2date_client/rhnreg_constants.py:73
+msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
+msgstr "Tip: SUSE si cení vaše súkromie: https://www.suse.com/company/legal/"
+
+#: ../src/up2date_client/rhnreg_constants.py:75
 msgid "Take me back to the registration"
 msgstr "Up2date - Zoznam balíčkov (registrácia)"
 
 #. Confirm Quit Window
-#: ../src/up2date_client/rhnreg_constants.py:76
+#: ../src/up2date_client/rhnreg_constants.py:78
 msgid "Software Update Not Set Up"
-msgstr "Reštartujem up2date"
-
-#: ../src/up2date_client/rhnreg_constants.py:77
-msgid ""
-"Are you sure you don't want to connect your system to Red Hat Satellite? "
-"You'll miss out on the benefits of a Red Hat Enterprise Linux subscription:\n"
-msgstr ""
+msgstr "Aktualizácia softvéru nie je nastavená"
 
 #: ../src/up2date_client/rhnreg_constants.py:79
+#, python-brace-format
 msgid ""
-"You will not be able to take advantage of these subscription privileges "
-"without connecting your system to Red Hat Satellite.\n"
+"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
+"miss out on the benefits of a SLES/RHEL subscription:\n"
 msgstr ""
+"Naozaj nechcete pripojiť svoj systém k {PRODUCT_NAME}? Prídete o výhody "
+"predplatného SLES/RHEL:\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
-msgid "Take me back to the setup process."
+#, python-brace-format
+msgid ""
+"You will not be able to take advantage of these subscription privileges "
+"without connecting your system to {PRODUCT_NAME}.\n"
 msgstr ""
+"Nebudete môcť využívať tieto výhody predplatného bez pripojenia vášho "
+"systému k {PRODUCT_NAME}.\n"
 
-#: ../src/up2date_client/rhnreg_constants.py:82
+#: ../src/up2date_client/rhnreg_constants.py:83
+msgid "Take me back to the setup process."
+msgstr "Vrátiť sa späť do procesu nastavenia."
+
+#: ../src/up2date_client/rhnreg_constants.py:84
 msgid "I'll register later."
-msgstr ""
+msgstr "Zaregistrujem sa neskôr."
 
 #. Info Window
-#: ../src/up2date_client/rhnreg_constants.py:85 ../data/gui.glade.h:5
-#: ../data/rh_register.glade.h:13
-msgid "Red Hat Account"
-msgstr "Red Hat Login"
-
-#: ../src/up2date_client/rhnreg_constants.py:86
-#, python-format
-msgid ""
-"Please enter your login information for the %s Red Hat Network Satellite:\n"
-"\n"
-msgstr ""
+#: ../src/up2date_client/rhnreg_constants.py:87
+#, python-brace-format
+msgid "{PRODUCT_NAME} Account"
+msgstr "Účet {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-msgid "Red Hat Login:"
-msgstr "Red Hat Login"
+#, python-format, python-brace-format
+msgid ""
+"Please enter your login information for the %s {PRODUCT_NAME}:\n"
+"\n"
+msgstr ""
+"Prosím, zadajte svoje prihlasovacie údaje pre %s {PRODUCT_NAME}:\n"
+"\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:89
-#: ../src/up2date_client/tui.py:138
-msgid "Login:"
-msgstr "_Login:  "
+#, python-brace-format
+msgid "{PRODUCT_NAME} Login:"
+msgstr "Prihlasovacie meno {PRODUCT_NAME}:"
 
 #: ../src/up2date_client/rhnreg_constants.py:90
+#: ../src/up2date_client/tui.py:139
+msgid "Login:"
+msgstr "Prihlasovacie meno:"
+
+#: ../src/up2date_client/rhnreg_constants.py:91
 msgid "Password:"
 msgstr "Heslo:"
 
-#: ../src/up2date_client/rhnreg_constants.py:91
+#: ../src/up2date_client/rhnreg_constants.py:92
+#, python-brace-format
 msgid ""
-"Tip: Forgot your login or password?  Contact your Satellite's Organization "
-"Administrator."
+"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+"Organization Administrator."
 msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:93
-msgid "Please enter a desired login."
-msgstr ""
+"Tip: Zabudli ste svoje prihlasovacie meno alebo heslo?  Kontaktujte "
+"administrátora {PRODUCT_NAME} vašej organizácie."
 
 #: ../src/up2date_client/rhnreg_constants.py:94
+msgid "Please enter a desired login."
+msgstr "Prosím, zadajte požadované prihlasovacie meno."
+
+#: ../src/up2date_client/rhnreg_constants.py:95
 msgid "Please enter and verify a password."
 msgstr "Musíte zadať a overiť heslo."
 
 #. OS Release Window
-#: ../src/up2date_client/rhnreg_constants.py:97 ../data/gui.glade.h:6
+#: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
 #: ../data/rh_register.glade.h:142
 msgid "Operating System Release Version"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:98
-msgid "Operating System version:"
-msgstr ""
+msgstr "Verzia vydania operačného systému"
 
 #: ../src/up2date_client/rhnreg_constants.py:99
-msgid " Minor Release: "
-msgstr "Vydanie"
+msgid "Operating System version:"
+msgstr "Verzia operačného systému:"
 
 #: ../src/up2date_client/rhnreg_constants.py:100
-msgid "Limited Updates Only"
-msgstr ""
+msgid " Minor Release: "
+msgstr " Vedľajšie vydanie: "
 
 #: ../src/up2date_client/rhnreg_constants.py:101
+msgid "Limited Updates Only"
+msgstr "Iba obmedzené aktualizácie"
+
+#: ../src/up2date_client/rhnreg_constants.py:102
 #: ../data/rh_register.glade.h:151
 msgid "All available updates"
 msgstr "Dostupné aktualizácie balíčkov"
 
-#: ../src/up2date_client/rhnreg_constants.py:102
-msgid "Confirm operating system release selection"
-msgstr ""
-
 #: ../src/up2date_client/rhnreg_constants.py:103
+msgid "Confirm operating system release selection"
+msgstr "Potvrďte výber vydania operačného systému"
+
+#: ../src/up2date_client/rhnreg_constants.py:104
 msgid ""
 "Your system will be subscribed to the base software channel to receive all "
 "available updates."
 msgstr ""
+"Váš systém bude prihlásený k základnému softvérovému kanálu na prijímanie "
+"všetkých dostupných aktualizácií."
 
 #. Hardware Window
-#: ../src/up2date_client/rhnreg_constants.py:108
+#: ../src/up2date_client/rhnreg_constants.py:109
 msgid "Create Profile - Hardware"
 msgstr "Pripojte Váš systém"
 
-#: ../src/up2date_client/rhnreg_constants.py:109
-#, fuzzy
+#: ../src/up2date_client/rhnreg_constants.py:110
+#, python-brace-format
 msgid ""
 "A Profile Name is a descriptive name that you choose to identify this System "
-"Profile on the Red Hat Satellite web pages. Optionally, include a computer "
+"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
 "serial or identification number."
 msgstr ""
-"Meno profilu je popisujúci názov, zvolený pre rozpoznanie tohoto systémového "
-"profilu na Red Hat Network stránkach. Môže obsahovať sériové alebo "
-"identifikačné číslo počítača."
+"Meno profilu je popisujúci názov, ktorý zvolíte na rozpoznanie tohoto "
+"systémového profilu na webových stránkach {PRODUCT_NAME}. Voliteľne obsahuje "
+"sériové alebo identifikačné číslo počítača."
 
-#: ../src/up2date_client/rhnreg_constants.py:113
+#: ../src/up2date_client/rhnreg_constants.py:114
 msgid ""
 "Additional hardware information including PCI devices, disk sizes and mount "
 "points will be included in the profile."
@@ -461,16 +502,16 @@ msgstr ""
 "Dodatočné hardvérové informácie vrátane PCI zariadení, veľkosti diskov a "
 "prípojných bodov budú vložené do profilu."
 
-#: ../src/up2date_client/rhnreg_constants.py:116
+#: ../src/up2date_client/rhnreg_constants.py:117
 msgid "Include the following information about hardware and network:"
 msgstr "Vložiť následujúce informácie o hardvéri a sieti:"
 
 #. Packages Window
-#: ../src/up2date_client/rhnreg_constants.py:120
+#: ../src/up2date_client/rhnreg_constants.py:121
 msgid "Create Profile - Packages"
 msgstr "Pripojte Váš systém"
 
-#: ../src/up2date_client/rhnreg_constants.py:121
+#: ../src/up2date_client/rhnreg_constants.py:122
 msgid ""
 "RPM information is important to determine what updated software packages are "
 "relevant to this system."
@@ -478,42 +519,40 @@ msgstr ""
 "RPM informácie sú dôležité pre určenie aktualizácii softvérových balíčkov, "
 "ktoré sú významné pre tento systém."
 
-#: ../src/up2date_client/rhnreg_constants.py:124
+#: ../src/up2date_client/rhnreg_constants.py:125
 msgid "Include RPM packages installed on this system in my System Profile"
 msgstr ""
 "Vložiť RPM balíčky nainštalované v systéme do môjho systémového profilu"
 
-#: ../src/up2date_client/rhnreg_constants.py:126
+#: ../src/up2date_client/rhnreg_constants.py:127
 msgid "You may deselect individual packages by unchecking them below."
 msgstr "Môžete zamietnuť jednotlivé balíčky ich odznačením nižšie."
 
-#: ../src/up2date_client/rhnreg_constants.py:128
+#: ../src/up2date_client/rhnreg_constants.py:129
 msgid "Building Package List"
 msgstr "Vytváram zoznam balíčkov"
 
 #. Product Window
-#: ../src/up2date_client/rhnreg_constants.py:131
+#: ../src/up2date_client/rhnreg_constants.py:132
 msgid "*Email Address:"
 msgstr "E-mailová adresa:"
 
-#: ../src/up2date_client/rhnreg_constants.py:133
+#: ../src/up2date_client/rhnreg_constants.py:134
 #: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
-msgstr ""
-"    --force                    - registrovať systém aj keď už je "
-"zaregistrovaný"
-
-#: ../src/up2date_client/rhnreg_constants.py:134
-#: ../data/rh_register.glade.h:126
-msgid "It appears this system has already been set up for software updates:"
-msgstr "Reštartujem up2date"
+msgstr "Systém je už zaregistrovaný"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
+#: ../data/rh_register.glade.h:126
+msgid "It appears this system has already been set up for software updates:"
+msgstr "Zdá sa, že tento systém už bol nastavený na aktualizácie softvéru:"
+
+#: ../src/up2date_client/rhnreg_constants.py:136
 #: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
-msgstr ""
+msgstr "Naozaj chcete pokračovať?"
 
-#: ../src/up2date_client/rhnreg_constants.py:137
+#: ../src/up2date_client/rhnreg_constants.py:138
 msgid ""
 "This system has already been registered using Red Hat Subscription "
 "Management.\n"
@@ -526,275 +565,397 @@ msgid ""
 "technologies please consult this Knowledge Base Article: https://access."
 "redhat.com/kb/docs/DOC-45563"
 msgstr ""
+"Tento systém už bol zaregistrovaný pomocou Red Hat Subscription Management.\n"
+"\n"
+"Váš systém sa znova registruje pomocou technológie Red Hat Satellite alebo "
+"Red Hat Satellite Proxy. Red Hat odporúča, aby sa zákazníci registrovali iba "
+"raz.\n"
+"\n"
+"Ak sa chcete dozvedieť viac o registrácii a technológiách RHN Classic/Red "
+"Hat Satellite, prečítajte si tento článok z Knowledge Base: https://access."
+"redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
-#: ../src/up2date_client/rhnreg_constants.py:144
-#, fuzzy
-msgid "Send Profile Information to Red Hat Satellite"
-msgstr "Odoslať informácie profilu do Red Hat Network"
-
 #: ../src/up2date_client/rhnreg_constants.py:145
+#, python-brace-format
+msgid "Send Profile Information to {PRODUCT_NAME}"
+msgstr "Odoslať informácie profilu do {PRODUCT_NAME}"
+
+#: ../src/up2date_client/rhnreg_constants.py:146
+#, python-brace-format
 msgid ""
 "We are finished collecting information for the System Profile.\n"
 "\n"
-"Press \"Next\" to send this System Profile to Red Hat Satellite.  Click "
-"\"Cancel\" and no information will be sent.  You can run the registration "
-"program later by typing `rhn_register` at the command line."
+"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel"
+"\" and no information will be sent.  You can run the registration program "
+"later by typing `rhn_register` at the command line."
 msgstr ""
+"Dokončili sme zhromažďovanie informácií pre systémový profil.\n"
+"\n"
+"Stlačte \"Ďalej\" na odoslanie systémového profilu do {PRODUCT_NAME}.  "
+"Kliknite na \"Zrušiť\" a nebudú odoslané žiadne informácie.  Registračný "
+"program môžete spustiť neskôr zadaním `rhn_register` do príkazového riadku."
 
 #. Sending Window
-#: ../src/up2date_client/rhnreg_constants.py:152
-#, fuzzy
-msgid "Sending Profile to Red Hat Satellite"
-msgstr "Odosielam profil do Red Hat Network"
+#: ../src/up2date_client/rhnreg_constants.py:153
+#, python-brace-format
+msgid "Sending Profile to {PRODUCT_NAME}"
+msgstr "Odosielanie profilu do {PRODUCT_NAME}"
 
 #. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:155
-msgid "Updates Configured"
-msgstr ""
-
 #: ../src/up2date_client/rhnreg_constants.py:156
-#, python-format
+msgid "Updates Configured"
+msgstr "Aktualizácie boli nakonfigurované"
+
+#: ../src/up2date_client/rhnreg_constants.py:157
+#, python-format, python-brace-format
 msgid ""
 "You may now run '%s update' from this system's command line to get the "
-"latest software updates from Red Hat Satellite. You will need to run this "
+"latest software updates from {PRODUCT_NAME}. You will need to run this "
 "periodically to get the latest updates. Alternatively, you may configure "
 "this system for automatic software updates (also known as 'auto errata "
-"update') via the Red Hat Satellite web interface.  (Instructions for this "
-"are in chapter 6 of the RHN Reference Guide, available from the 'Help' "
-"button in the main Red Hat Network Satellite web interface.)"
+"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
+"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
+"main {PRODUCT_NAME} web interface.)"
 msgstr ""
+"Teraz môžete spustiť '%s update' z príkazového riadku tohto systému na "
+"získanie najnovších aktualizácií softvéru od {PRODUCT_NAME}. Budete to "
+"musieť pravidelne spúšťať, aby ste získali najnovšie aktualizácie. Alebo "
+"tento systém môžete nakonfigurovať na automatické aktualizácie softvéru "
+"(tiež známe ako 'auto errata update') cez webové rozhranie {PRODUCT_NAME}.  "
+"(Pokyny sú uvedené v referenčnej príručke {PRODUCT_NAME} dostupnej "
+"prostredníctvom tlačidla 'Help' v hlavnom webovom rozhraní {PRODUCT_NAME}.)"
 
 #. Review Window
-#: ../src/up2date_client/rhnreg_constants.py:167 ../data/gui.glade.h:8
+#: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
 msgid "Review Subscription"
-msgstr "Popis"
+msgstr "Skontrolujte predplatné"
 
-#: ../src/up2date_client/rhnreg_constants.py:168 ../data/rh_register.glade.h:53
+#: ../src/up2date_client/rhnreg_constants.py:169 ../data/rh_register.glade.h:53
 msgid "Please review the subscription details below:"
-msgstr ""
+msgstr "Skontrolujte podrobnosti o predplatnom nižšie:"
 
-#: ../src/up2date_client/rhnreg_constants.py:169
-#, python-format
+#: ../src/up2date_client/rhnreg_constants.py:170
+#, python-format, python-brace-format
 msgid ""
 "The installation number %s was activated during this system's initial "
-"connection to Red Hat Satellite."
+"connection to {PRODUCT_NAME}."
 msgstr ""
+"Inštalačné číslo %s bolo aktivované počas počiatočného pripojenia tohto "
+"systému k {PRODUCT_NAME}."
 
-#: ../src/up2date_client/rhnreg_constants.py:171
-msgid ""
-"Subscriptions have been activated for the following Red Hat products/"
-"services:"
-msgstr "Prihlasovacie číslo nie je správne"
-
-#: ../src/up2date_client/rhnreg_constants.py:173
-msgid "Software Channel Subscriptions:"
-msgstr "Informácie o kanáli"
+#: ../src/up2date_client/rhnreg_constants.py:172
+msgid "Subscriptions have been activated for the following products/services:"
+msgstr "Aktivovali sa predplatné pre nasledujúce produkty/služby:"
 
 #: ../src/up2date_client/rhnreg_constants.py:174
+msgid "Software Channel Subscriptions:"
+msgstr "Predplatné softvérových kanálov:"
+
+#: ../src/up2date_client/rhnreg_constants.py:175
 msgid "This system will receive updates from the following software channels:"
 msgstr ""
+"Tento systém bude dostávať aktualizácie z nasledujúcich softvérových kanálov:"
 
-#: ../src/up2date_client/rhnreg_constants.py:176
+#: ../src/up2date_client/rhnreg_constants.py:177
+#, python-brace-format
 msgid ""
 "Warning: Only installed product listed above will receive updates and "
 "support. If you would like to receive updates for additional products, "
-"please login to your satellite web interface and subscribe this system to "
-"the appropriate software channels. See Kbase article for more details. "
-"(http://kbase.redhat.com/faq/docs/DOC-11313)"
+"please login to your {PRODUCT_NAME} web interface and subscribe this system "
+"to the appropriate software channels."
 msgstr ""
+"Upozornenie: Aktualizácie a podporu bude dostávať iba nainštalovaný produkt "
+"uvedený vyššie. Ak by ste chceli dostávať aktualizácie pre ďalšie produkty, "
+"prihláste sa do svojho webového rozhrania {PRODUCT_NAME} a prihláste tento "
+"systém k príslušným softvérovým kanálom."
 
-#: ../src/up2date_client/rhnreg_constants.py:184
+#: ../src/up2date_client/rhnreg_constants.py:183
 #, python-format
 msgid ""
 "Warning: %s is not present, could not enable it.\n"
 "Automatic updates will not work."
 msgstr ""
+"Upozornenie: %s nie je prítomný, nebolo možné ho povoliť.\n"
+"Automatické aktualizácie nebudú fungovať."
 
-#: ../src/up2date_client/rhnreg_constants.py:186
+#: ../src/up2date_client/rhnreg_constants.py:185
 #, python-format
 msgid "Note: %s has been enabled."
-msgstr ""
+msgstr "Poznámka: %s bolo povolené."
 
-#: ../src/up2date_client/rhnreg_constants.py:187
+#: ../src/up2date_client/rhnreg_constants.py:186
 #, python-format
 msgid ""
 "Warning: An error occurred during enabling %s.\n"
 "%s is not enabled.\n"
 "Automatic updates will not work."
 msgstr ""
+"Upozornenie: Počas povoľovania %s sa vyskytla chyba.\n"
+"%s nie je povolené.\n"
+"Automatické aktualizácie nebudú fungovať."
 
-#: ../src/up2date_client/rhnreg_constants.py:190
+#: ../src/up2date_client/rhnreg_constants.py:189
 msgid ""
 "You were unable to be subscribed to the following software channels because "
 "there were insufficient subscriptions available in your account:"
 msgstr ""
+"Nemohli ste byť prihlásený k nasledujúcim softvérovým kanálom, pretože vo "
+"vašom účte neboli k dispozícii dostačujúce predplatné:"
 
-#: ../src/up2date_client/rhnreg_constants.py:194
+#: ../src/up2date_client/rhnreg_constants.py:193
+#, python-brace-format
 msgid ""
 "This system was unable to subscribe to any software channels. Your system "
 "will not receive any software updates to keep it secure and supported. "
-"Contact your Satellite administrator about this problem. Once you make the "
-"appropriate active subscriptions available in your account, you may browse "
-"to this system's profile in the RHN web interface and subscribe this system "
-"to software channels via the software > software channels tab."
+"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
+"the appropriate active subscriptions available in your account, you may "
+"browse to this system's profile in the {PRODUCT_NAME} web interface and "
+"subscribe this system to software channels via the software > software "
+"channels tab."
 msgstr ""
+"Tento systém nebol schopný sa prihlásiť k žiadnym softvérovým kanálom. Váš "
+"systém nedostane žiadne aktualizácie softvéru, aby bol zabezpečený a "
+"podporovaný. Obráťte sa na svojho administrátora {PRODUCT_NAME} s týmto "
+"problémom. Keď vo svojom účte sprístupníte príslušné aktívne predplatné, "
+"môžete prejsť na profil tohto systému vo webovom rozhraní {PRODUCT_NAME} a "
+"prihlásiť tento systém k softvérovým kanálom cez kartu softvér > softvérové "
+"kanály."
+
+#: ../src/up2date_client/rhnreg_constants.py:199
+msgid "Service Level:"
+msgstr "Úroveň služieb:"
 
 #: ../src/up2date_client/rhnreg_constants.py:200
-msgid "Service Level:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:201
+#, python-brace-format
 msgid ""
-"Depending on what Red Hat Satellite modules are associated with a system, "
-"you'll enjoy different benefits. The following are the Red Hat Satellite "
-"modules associated with this system:"
+"Depending on what {PRODUCT_NAME} system types are associated with a system, "
+"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
+"types associated with this system:"
 msgstr ""
+"V závislosti od toho, aké systémové typy {PRODUCT_NAME} sú so systémom "
+"spojené, získate rôzne výhody. Nasledovné sú systémové typy {PRODUCT_NAME} "
+"spojené s týmto systémom:"
 
-#: ../src/up2date_client/rhnreg_constants.py:205
+#: ../src/up2date_client/rhnreg_constants.py:204
+#, python-brace-format
 msgid ""
-"This system was unable to be associated with the following RHN module(s) "
-"because there were insufficient subscriptions available in your account:"
+"This system was unable to be associated with the following {PRODUCT_NAME} "
+"system type(s) because there were insufficient subscriptions available in "
+"your account:"
 msgstr ""
+"Tento systém sa nemohol spojiť s nasledujúcim systémovým typom(i) "
+"{PRODUCT_NAME}, pretože vo vašom účte neboli k dispozícii dostačujúce "
+"predplatné:"
 
-#: ../src/up2date_client/rhnreg_constants.py:208
+#: ../src/up2date_client/rhnreg_constants.py:207
 msgid ""
-"Management module: automatic updates, systems grouping, systems permissions, "
+"Management type: automatic updates, systems grouping, systems permissions, "
 "system package profiling, bare-metal provisioning, existing state "
 "provisioning, rollbacks, configuration management"
 msgstr ""
+"Typ správy: automatické aktualizácie, zoskupenie systémov, povolenia "
+"systémov, profilovanie systémových balíkov, zabezpečovanie bare-metal, "
+"existujúci stav zabezpečovania, vrátenie vykonaných zmien, správa "
+"konfigurácie"
 
-#: ../src/up2date_client/rhnreg_constants.py:213
+#: ../src/up2date_client/rhnreg_constants.py:212
 msgid ""
-"Virtualization module: software updates for a limited number of virtual "
-"guests on this system."
+"Virtualization type: software updates for a limited number of virtual guests "
+"on this system."
 msgstr ""
+"Virtualizačný typ: aktualizácie softvéru pre obmedzený počet virtuálnych "
+"hostí v tomto systéme."
 
-#: ../src/up2date_client/rhnreg_constants.py:217
+#: ../src/up2date_client/rhnreg_constants.py:216
+#, python-brace-format
 msgid ""
 "<b>Warning:</b> Any guest systems you create on this system and register to "
-"RHN will consume Red Hat Enterprise Linux subscriptions beyond this host "
-"system's subscription. You will need to: (1) make a virtualization system "
-"entitlement available and (2) apply that system entitlement to this system "
-"in RHN's web interface if you do not want virtual guests of this system to "
-"consume additional subscriptions."
+"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
+"subscription. You will need to: (1) make a virtualization system entitlement "
+"available and (2) apply that system entitlement to this system in "
+"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
+"system to consume additional subscriptions."
 msgstr ""
+"<b>Upozornenie:</b> Všetky hosťovské systémy, ktoré vytvoríte v tomto "
+"systéme a zaregistrujete na {PRODUCT_NAME}, budú využívať systémové "
+"predplatné mimo predplatného tohto hostiteľského systému. Budete musieť: (1) "
+"sprístupniť oprávnenie virtualizačného systému a (2) uplatniť toto systémové "
+"oprávnenie na tento systém vo webovom rozhraní {PRODUCT_NAME}, ak nechcete, "
+"aby virtuálni hostia tohto systému spotrebovávali ďalšie predplatné."
 
-#: ../src/up2date_client/rhnreg_constants.py:225
+#: ../src/up2date_client/rhnreg_constants.py:224
+#, python-brace-format
 msgid ""
-"This system was unable to be associated with any RHN service level modules. "
-"This system will not receive any software updates to keep it secure and "
-"supported. Contace your Satellite administrator about this problem. Once you "
-"make the appropriate active subscriptions available in your account, you may "
-"browse to this system's profile in the RHN web interface, delete the "
-"profile, and re-connect this system to Red Hat Satellite."
+"This system was unable to be associated with any {PRODUCT_NAME} system "
+"types. This system will not receive any software updates to keep it secure "
+"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
+"Once you make the appropriate active subscriptions available in your "
+"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
+"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
 msgstr ""
+"Tento systém sa nemohol spojiť so žiadnymi systémovými typmi {PRODUCT_NAME}. "
+"Tento systém nebude dostávať žiadne aktualizácie softvéru, aby bol "
+"zabezpečený a podporovaný. Obráťte sa na svojho administrátora "
+"{PRODUCT_NAME} s týmto problémom. Keď vo svojom účte sprístupníte príslušné "
+"aktívne predplatné, môžete prejsť na profil tohto systému vo webovom "
+"rozhraní {PRODUCT_NAME}, vymazať profil a znova pripojiť tento systém k "
+"{PRODUCT_NAME}."
 
-#: ../src/up2date_client/rhnreg_constants.py:232
-#, python-format
+#: ../src/up2date_client/rhnreg_constants.py:231
+#, python-format, python-brace-format
 msgid ""
 "Universal default activation key detected\n"
 "A universal default activation key was detected in your account. This means "
 "that a set of properties (software channel subscriptions, package "
 "installations, system group memberships, etc.) for your system's connection "
-"to Red Hat Satellite or Red Hat Satellite Proxyhave been determined by the "
+"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
 "activation key rather than your installation number.  You may also refer to "
-"the RHN Reference Guide, section 6.4.6 for more details about activation "
-"keys (http://access.redhat.com/knowledge/docs/Red_Hat_Network/)\n"
+"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
 "Universal Default activation key: %s"
 msgstr ""
+"Bol zistený univerzálny predvolený aktivačný kľúč\n"
+"Vo vašom účte bol zistený univerzálny predvolený aktivačný kľúč. To znamená, "
+"že súbor vlastností (predplatné softvérových kanálov, inštalácie balíkov, "
+"členstvá v systémových skupinách atď.) pre pripojenie vášho systému k "
+"{PRODUCT_NAME} Server alebo {PRODUCT_NAME} Proxy boli určené skôr pomocou "
+"aktivačného kľúča než podľa vášho inštalačného čísla inštalácie.  Viac "
+"podrobností o aktivačných kľúčoch nájdete v referenčnej príručke "
+"{PRODUCT_NAME}.\n"
+"Univerzálny predvolený aktivačný kľúč: %s"
 
 #. Error Messages.
-#: ../src/up2date_client/rhnreg_constants.py:244
+#: ../src/up2date_client/rhnreg_constants.py:243
 msgid "Fatal Error"
 msgstr "Závažná chyba"
 
-#: ../src/up2date_client/rhnreg_constants.py:245
+#: ../src/up2date_client/rhnreg_constants.py:244
 #: ../src/up2date_client/rhnregGui.py:157
 #: ../src/up2date_client/rhnregGui.py:171
 msgid "Warning"
 msgstr "Varovanie"
 
-#: ../src/up2date_client/rhnreg_constants.py:246
-#, python-format
+#: ../src/up2date_client/rhnreg_constants.py:245
+#, python-format, python-brace-format
 msgid ""
-"We can't contact the Red Hat Satellite.\n"
+"We can't contact {PRODUCT_NAME}.\n"
 "\n"
 "Double check the location provided - is '%s' correct?\n"
 "If not, you can correct it and try again.\n"
 "\n"
 "Make sure that the network connection on this system is operational.\n"
 "\n"
-"This system will not be able to successfully receive software updates from "
-"Red Hat without connecting to a Red Hat Satellite server"
+"This system will not be able to successfully receive software updates "
+"without connecting to an {PRODUCT_NAME} server/proxy"
 msgstr ""
+"Nemôžeme kontaktovať {PRODUCT_NAME}.\n"
+"\n"
+"Prekontrolujte poskytnuté umiestnenie - je '%s' správne?\n"
+"Ak nie, môžete ho opraviť a skúsiť znova.\n"
+"\n"
+"Uistite sa, či je sieťové pripojenie na tomto systéme funkčné.\n"
+"\n"
+"Tento systém nebude schopný úspešne prijímať aktualizácie softvéru bez "
+"pripojenia k serveru/proxy {PRODUCT_NAME}"
 
-#: ../src/up2date_client/rhnreg_constants.py:253
+#: ../src/up2date_client/rhnreg_constants.py:252
 #, python-format
 msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr ""
+msgstr "Architektúra: %s, vydanie OS: %s, verzia OS: %s"
 
-#: ../src/up2date_client/rhnreg_constants.py:255
+#: ../src/up2date_client/rhnreg_constants.py:254
 msgid ""
 "This server doesn't support functionality needed by this version of the "
 "software update setup client. Please try again with a newer server."
 msgstr ""
+"Tento server nepodporuje funkcie potrebné pre túto verziu klienta nastavenia "
+"aktualizácií softvéru. Prosím. skúste to znova s novším serverom."
 
-#: ../src/up2date_client/rhnreg_constants.py:261
-#, python-format
+#: ../src/up2date_client/rhnreg_constants.py:260
+#, python-format, python-brace-format
 msgid ""
 "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
 "\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the Red Hat "
-"Satellite server at <b>%s</b>. You may want to double-check that you have "
-"provided a valid certificate file. Are you sure you have provided the "
+"The certificate you provided, <b>%s</b>, is not compatible with  the "
+"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+"have provided a valid certificate file. Are you sure you have provided the "
 "correct certificate, and that the certificate file has not been corrupted?\n"
 "\n"
 "Please try again with a different certificate file."
 msgstr ""
+"<b><span size=\"16000\">Nekompatibilný súbor certifikátu</span></b>\n"
+"\n"
+"Certifikát, ktorý ste poskytli <b>%s</b>, nie je kompatibilný so serverom "
+"{PRODUCT_NAME} na <b>%s</b>. Možno budete chcieť znova skontrolovať, či ste "
+"poskytli platný súbor certifikátu. Ste si istí, že ste poskytli správny "
+"certifikát a že súbor certifikátu nebol poškodený?\n"
+"\n"
+"Prosím, skúste to znova s iným súborom certifikátu."
 
-#: ../src/up2date_client/rhnreg_constants.py:269
+#: ../src/up2date_client/rhnreg_constants.py:268
 msgid ""
 "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
 "\n"
 " The certificate is expired. Please ensure you have the correct  certificate "
 "and your system time is correct."
 msgstr ""
+"<b><span size=\"12000\">Nekompatibilný súbor certifikátu</span></b>\n"
+"\n"
+" Platnosť certifikátu vypršala. Prosím, zaistite, že máte správny certifikát "
+"a že je váš systémový čas správny."
 
-#: ../src/up2date_client/rhnreg_constants.py:273
+#: ../src/up2date_client/rhnreg_constants.py:272
+#, python-brace-format
 msgid ""
 "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
 "up2date. You can either make the serverURL use http instead of https, or you "
-"can download the SSL cert from your Satellite, place it in /usr/share/rhn, "
-"and ensure sslCACert points to it."
+"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
+"rhn, and ensure sslCACert points to it."
 msgstr ""
+"Prosím, overte hodnoty sslCACert a serverURL v /etc/sysconfig/rhn/up2date. "
+"Môžete buď nastaviť, aby serverURL používal http namiesto https, alebo "
+"môžete stiahnuť certifikát SSL zo svojho {PRODUCT_NAME}, umiestniť ho do /"
+"usr/share/rhn a zaistiť, aby sslCACert naň ukazoval."
 
-#: ../src/up2date_client/rhnreg_constants.py:279
+#: ../src/up2date_client/rhnreg_constants.py:278
+#, python-brace-format
 msgid ""
 "Problem registering system.\n"
 "\n"
 "A universal default activation key limits the number of systems which can "
-"connect to the RHN organization associated with your login. To allow this "
-"system to connect, please contact your RHN organization administrator to "
-"increase the number of systems allowed to connect or to disable this "
-"universal default activation key. More details can be found in Red Hat "
-"Knowledgebase Article #7924 at http://kbase.redhat.com/faq/FAQ_61_7924.shtm "
+"connect to the {PRODUCT_NAME} organization associated with your login. To "
+"allow this system to connect, please contact your {PRODUCT_NAME} "
+"organization administrator to increase the number of systems allowed to "
+"connect or to disable this universal default activation key."
 msgstr ""
+"Problém s registráciou systému.\n"
+"\n"
+"Univerzálny predvolený aktivačný kľúč obmedzuje počet systémov, ktoré sa "
+"môžu pripojiť k organizácii {PRODUCT_NAME} spojenej s vaším prihlasovacím "
+"menom. Ak chcete povoliť pripojenie tohto systému, kontaktujte svojho "
+"administrátora organizácie {PRODUCT_NAME}, aby sa zvýšil počet systémov, "
+"ktoré sa môžu pripojiť, alebo zakázať tento univerzálny predvolený aktivačný "
+"kľúč."
 
-#: ../src/up2date_client/rhnreg_constants.py:292
+#: ../src/up2date_client/rhnreg_constants.py:288
 msgid ""
 "\n"
 " Tip: Minor releases with a '*' are currently supported by Red Hat.\n"
 "\n"
 msgstr ""
+"\n"
+" Tip: Vedľajšie vydania s '*' sú v súčasnosti podporované Red Hat.\n"
+"\n"
 
-#: ../src/up2date_client/rhnreg_constants.py:295
+#: ../src/up2date_client/rhnreg_constants.py:291
 msgid ""
 "Warning:You will not be able to limit this system to minor release that is "
 "older than the recent minor release if you select this option.\n"
 msgstr ""
+"Varovanie:Ak vyberiete túto možnosť, nebudete môcť obmedziť tento systém na "
+"vedľajšie vydanie, ktoré je staršie ako posledné vedľajšie vydanie.\n"
 
-#: ../src/up2date_client/rhnreg_constants.py:300
+#: ../src/up2date_client/rhnreg_constants.py:296
 #, python-format
 msgid ""
 "Your system will be subscribed to %s \n"
@@ -803,43 +964,48 @@ msgid ""
 "(you will be able to move to a newer release).\n"
 "Are you sure you would like to continue?"
 msgstr ""
+"Váš systém bude prihlásený k základnému \n"
+"softvérovému kanálu %s. Nebudete môcť\n"
+"presunúť tento systém na staršie vydanie\n"
+"(budete môcť prejsť na novšie vydanie).\n"
+"Naozaj chcete pokračovať?"
 
 #. Navigation
-#: ../src/up2date_client/rhnreg_constants.py:309
-#: ../src/up2date_client/tui.py:540
+#: ../src/up2date_client/rhnreg_constants.py:305
+#: ../src/up2date_client/tui.py:541
 msgid "OK"
 msgstr "OK"
 
-#: ../src/up2date_client/rhnreg_constants.py:310
-#: ../src/up2date_client/tui.py:540
+#: ../src/up2date_client/rhnreg_constants.py:306
+#: ../src/up2date_client/tui.py:541
 msgid "Error"
 msgstr "Chyba"
 
-#: ../src/up2date_client/rhnreg_constants.py:311
+#: ../src/up2date_client/rhnreg_constants.py:307
 msgid "Next"
 msgstr "Ďalej"
 
-#: ../src/up2date_client/rhnreg_constants.py:312
+#: ../src/up2date_client/rhnreg_constants.py:308
 msgid "Back"
 msgstr "Späť"
 
-#: ../src/up2date_client/rhnreg_constants.py:313
+#: ../src/up2date_client/rhnreg_constants.py:309
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: ../src/up2date_client/rhnreg_constants.py:314
+#: ../src/up2date_client/rhnreg_constants.py:310
 #: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
 msgstr "Zrušiť"
 
-#: ../src/up2date_client/rhnreg_constants.py:315
+#: ../src/up2date_client/rhnreg_constants.py:311
 #: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
-msgstr ""
+msgstr "Áno, pokračovať"
 
-#: ../src/up2date_client/rhnreg_constants.py:316
+#: ../src/up2date_client/rhnreg_constants.py:312
 msgid "Press <space> to deselect the option."
-msgstr ""
+msgstr "Stlačením <medzerníka> zrušíte výber možnosti."
 
 #: ../src/up2date_client/rhnregGui.py:147
 #: ../src/up2date_client/rhnregGui.py:164
@@ -848,26 +1014,28 @@ msgstr "Niue"
 
 #: ../src/up2date_client/rhnregGui.py:272
 msgid "There was an error while applying your choice."
-msgstr "Došlo k závažnej chybe pri inštalácii balíčku:"
+msgstr "Pri aplikovaní vašej voľby sa vyskytla chyba."
 
 #: ../src/up2date_client/rhnregGui.py:291
 msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr ""
+msgstr "Zadali ste neplatný protokol. Povolené sú iba https a http."
 
 #: ../src/up2date_client/rhnregGui.py:305
 msgid ""
 "You will not be able to successfully register this system without contacting "
 "a Spacewalk server."
 msgstr ""
+"Nebudete môcť úspešne zaregistrovať tento systém bez kontaktovania servera "
+"Spacewalk."
 
 #: ../src/up2date_client/rhnregGui.py:325
 msgid "Cannot contact selected server"
-msgstr ""
+msgstr "Nie je možné kontaktovať vybraný server"
 
 #: ../src/up2date_client/rhnregGui.py:326
 #, python-format
 msgid "We could not contact the Satellite or Proxy at '%s.'"
-msgstr ""
+msgstr "Nemohli sme kontaktovať Satellite alebo Proxy na '%s.'"
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -875,34 +1043,37 @@ msgid ""
 "Double-check the location - is '%s' correct? If not, you can correct it and "
 "try again."
 msgstr ""
+"Prekontrolujte umiestnenie - je '%s' správne? Ak nie, môžete ho opraviť a "
+"skúste znova."
 
 #: ../src/up2date_client/rhnregGui.py:331
 msgid "Make sure the network connection on this system is operational."
-msgstr ""
+msgstr "Uistite sa, či je sieťové pripojenie v tomto systéme funkčné."
 
 #: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
 msgid "There was an error communicating with Spacewalk server."
-msgstr ""
-"Vyskytla sa chyba pri komunikácii s registračným serverom.  Ohlásená chyba:\n"
+msgstr "Vyskytla sa chyba pri komunikácii so serverom Spacewalk."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
 msgstr ""
+"Server môže byť v režime výpadku. Možno budete musieť skúsiť pripojenie "
+"neskôr."
 
 #: ../src/up2date_client/rhnregGui.py:344
 msgid "You may be running a client that is incompatible with the server."
-msgstr ""
+msgstr "Možno používate klienta, ktorý nie je kompatibilný so serverom."
 
 #: ../src/up2date_client/rhnregGui.py:377
 #, python-format
 msgid ""
 "Please enter your account information for the <b>%s</b> Spacewalk server:"
 msgstr ""
+"Prosím, zadajte informácie o svojom účte pre <b>%s</b> Spacewalk server:"
 
 #: ../src/up2date_client/rhnregGui.py:416
 msgid "You must enter a login."
-msgstr "Musíte zadať vaše priezvisko."
+msgstr "Musíte zadať prihlasovacie meno."
 
 #: ../src/up2date_client/rhnregGui.py:422
 msgid "You must enter a password."
@@ -921,7 +1092,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:603
 msgid "There was an error while assembling information for the profile."
-msgstr "Došlo k závažnej chybe pri inštalácii balíčku:"
+msgstr "Pri zhromažďovaní informácií pre profil sa vyskytla chyba."
 
 #: ../src/up2date_client/rhnregGui.py:624
 msgid "Error running hardware profile"
@@ -929,7 +1100,7 @@ msgstr "Chyba pri spúšťaní hardvérového profilu"
 
 #: ../src/up2date_client/rhnregGui.py:655
 msgid "There was an error while populating the profile."
-msgstr "Došlo k závažnej chybe pri inštalácii balíčku:"
+msgstr "Pri vyplňovaní profilu sa vyskytla chyba."
 
 #: ../src/up2date_client/rhnregGui.py:675
 msgid "You must choose a name for this profile."
@@ -937,22 +1108,23 @@ msgstr "Musíte zvoliť meno pre prefil."
 
 #: ../src/up2date_client/rhnregGui.py:689
 msgid "There was an error while creating the profile."
-msgstr "Došlo k závažnej chybe pri inštalácii balíčku:"
+msgstr "Pri vytváraní profilu sa vyskytla chyba."
 
 #: ../src/up2date_client/rhnregGui.py:700
 msgid "Registering system and sending profile information.  Please wait."
 msgstr ""
+"Registrácia systému a odosielanie informácií o profile.  Prosím, čakajte."
 
 #: ../src/up2date_client/rhnregGui.py:719
 msgid "Registering System"
-msgstr "Problém s registráciou systému."
+msgstr "Registrácia systému"
 
 #: ../src/up2date_client/rhnregGui.py:734
 #: ../src/up2date_client/rhnregGui.py:739
 #: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:985
-#: ../src/up2date_client/tui.py:989 ../src/up2date_client/tui.py:993
-#: ../src/up2date_client/tui.py:997
+#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
+#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
+#: ../src/up2date_client/tui.py:998
 msgid "Problem registering system:\n"
 msgstr "Problém s registráciou systému:\n"
 
@@ -963,11 +1135,11 @@ msgid ""
 "Please go back to the previous screen and fix it."
 msgstr "Zadané prihlasovacie číslo [ %s ] nie je platným prihlasovacím číslom."
 
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1003
+#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
 msgstr "Problém s registráciou systému."
 
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1008
+#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
 msgid "Problem writing out system id to disk."
 msgstr "Problém pri zápise systémového id na disk."
 
@@ -977,11 +1149,11 @@ msgstr "Vyskytol sa problém pri registrácii systému."
 
 #: ../src/up2date_client/rhnregGui.py:790
 msgid "Sending hardware information"
-msgstr "Odoslať informácie o _hardvéri"
+msgstr "Odosielanie informácie o _hardvéri"
 
 #: ../src/up2date_client/rhnregGui.py:795
 msgid "Problem sending hardware information."
-msgstr "Chyba pri čítaní hardvérových informácii:"
+msgstr "Problém s odosielaním hardvérových informácií."
 
 #. #            for row in range(self.regPackageArea.n_rows):
 #. #                rowData = self.regPackageArea.get_row_data(row)
@@ -1000,16 +1172,18 @@ msgstr "Odoslať informácie o _hardvéri"
 msgid "Problem sending package information."
 msgstr "Problém pri odosielaní zoznamu balíčkov."
 
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1057
+#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
 #, python-format
 msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
+"Nebolo možné otvoriť %s\n"
+"%s nie je povolené.\n"
 
 #: ../src/up2date_client/rhnregGui.py:910
 msgid "There was an error while installing the certificate."
-msgstr "Došlo k závažnej chybe pri inštalácii balíčku:"
+msgstr "Pri inštalácii certifikátu sa vyskytla chyba."
 
 #: ../src/up2date_client/rhnregGui.py:936
 msgid "You must select a certificate."
@@ -1022,23 +1196,25 @@ msgid ""
 "There was an SSL error. This could be because the file you picked was not a "
 "certificate file."
 msgstr ""
+"Vyskytla sa chyba SSL. Dôvodom mohlo byť to, že vami vybraný súbor nebol "
+"súborom certifikátu."
 
 #. TODO Provide better messages
 #: ../src/up2date_client/rhnregGui.py:974
 msgid "Something went wrong while installing the new certificate:\n"
-msgstr ""
+msgstr "Počas inštalácie nového certifikátu sa niečo pokazilo:\n"
 
 #: ../src/up2date_client/rhnregGui.py:1027
 #: ../src/up2date_client/rhnregGui.py:1028
 #: ../src/up2date_client/rhnregGui.py:1029
 msgid "unknown"
-msgstr ""
+msgstr "neznámy"
 
 #: ../src/up2date_client/rhnregGui.py:1133
 msgid "There was an error getting the list of hardware."
-msgstr "Došlo k závažnej chybe pri inštalácii balíčku:"
+msgstr "Pri získavaní zoznamu hardvéru sa vyskytla chyba."
 
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:784
+#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
 msgstr "%d MHz"
@@ -1046,11 +1222,11 @@ msgstr "%d MHz"
 #: ../src/up2date_client/rhnregGui.py:1149
 #, python-format
 msgid "%s MB"
-msgstr ""
+msgstr "%s MB"
 
 #: ../src/up2date_client/rhnregGui.py:1194
 msgid "There was an error building the list of packages."
-msgstr "Došlo k závažnej chybe pri inštalácii balíčku:"
+msgstr "Pri zostavovaní zoznamu balíkov sa vyskytla chyba."
 
 #: ../src/up2date_client/rhnregGui.py:1209
 msgid "Package"
@@ -1090,11 +1266,13 @@ msgid ""
 "program, please file a bug at bugzilla.redhat.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
+"Táto chyba sa nemala stať. Ak nám chcete pomôcť vylepšiť tento program, "
+"predložte chybu na bugzilla.redhat.com. Veľmi užitočné by bolo zahrnutie "
+"príslušných častí '%s'. Vďaka!"
 
 #: ../src/up2date_client/rhnreg.py:76
-#, fuzzy
 msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "Varovanie: nepodarilo sa povoliť rhnsd pomocou chkconfig"
+msgstr "Varovanie: nepodarilo sa povoliť rhnsd s systemd"
 
 #: ../src/up2date_client/rhnreg.py:82
 msgid "Warning: unable to enable rhnsd with chkconfig"
@@ -1102,11 +1280,11 @@ msgstr "Varovanie: nepodarilo sa povoliť rhnsd pomocou chkconfig"
 
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
-msgstr ""
+msgstr "Chyba: Server je nedostupný.Prosím, skúste neskôr."
 
 #: ../src/up2date_client/rpcServer.py:182
-msgid "ERROR: can not find RHNS CA file"
-msgstr "CHYBA: nemožno nájsť RHNS CA súbor:"
+msgid "ERROR: can not find server CA file"
+msgstr "CHYBA: nemožno nájsť súbor CA servera"
 
 #: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
@@ -1116,95 +1294,97 @@ msgstr "Spojenie prerušené užívateľom"
 msgid "Server has refused connection due to high load"
 msgstr "Server odmietol spojenie pre príliš veľké vyťaženie"
 
-#: ../src/up2date_client/tui.py:137
+#: ../src/up2date_client/tui.py:138
 msgid "Spacewalk Location:"
-msgstr ""
+msgstr "Umiestnenie Spacewalk:"
 
-#: ../src/up2date_client/tui.py:139
+#: ../src/up2date_client/tui.py:140
 msgid "System ID:"
 msgstr "Priezvisko:"
 
-#: ../src/up2date_client/tui.py:540
+#: ../src/up2date_client/tui.py:541
 msgid "The server indicated an error:\n"
 msgstr "Server oznámil chybu:\n"
 
-#: ../src/up2date_client/tui.py:545
+#: ../src/up2date_client/tui.py:546
 msgid "There was an error communicating with the registration server:\n"
 msgstr ""
 "Vyskytla sa chyba pri komunikácii s registračným serverom.  Ohlásená chyba:\n"
 
-#: ../src/up2date_client/tui.py:733
+#: ../src/up2date_client/tui.py:734
 msgid "Profile name:"
 msgstr "Meno profilu:"
 
-#: ../src/up2date_client/tui.py:755 ../src/up2date_client/tui.py:756
+#: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
 msgid "Version: "
-msgstr "Verzia:"
+msgstr "Verzia: "
 
-#: ../src/up2date_client/tui.py:762
+#: ../src/up2date_client/tui.py:763
 msgid "CPU model: "
-msgstr "Model CPU:"
+msgstr "Model CPU: "
 
-#: ../src/up2date_client/tui.py:768
+#: ../src/up2date_client/tui.py:769
 msgid "Hostname: "
-msgstr "Počítač:"
+msgstr "Meno hostiteľa: "
 
-#: ../src/up2date_client/tui.py:780
+#: ../src/up2date_client/tui.py:781
 msgid "CPU speed: "
-msgstr "Rýchlosť CPU:"
+msgstr "Rýchlosť CPU: "
 
-#: ../src/up2date_client/tui.py:786
+#: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
-msgstr "IP adresa:"
+msgstr "IP adresa: "
 
-#: ../src/up2date_client/tui.py:795
+#: ../src/up2date_client/tui.py:796
 msgid "Memory: "
-msgstr "Pamäť:"
+msgstr "Pamäť: "
 
-#: ../src/up2date_client/tui.py:799
+#: ../src/up2date_client/tui.py:800
 #, python-format
 msgid "%s megabytes"
 msgstr "%s megabajtov"
 
-#: ../src/up2date_client/tui.py:1024
+#: ../src/up2date_client/tui.py:1025
 msgid "Problem sending hardware profile:\n"
 msgstr "Problém pri odosielaní hardvérového profilu:\n"
 
-#: ../src/up2date_client/tui.py:1028
+#: ../src/up2date_client/tui.py:1029
 msgid "Problem sending hardware profile."
 msgstr "Problém pri odosielaní hardvérového profilu."
 
-#: ../src/up2date_client/tui.py:1038
+#: ../src/up2date_client/tui.py:1039
 msgid "Problem sending package list:\n"
 msgstr "Problém pri odosielaní zoznamu balíčkov:\n"
 
-#: ../src/up2date_client/tui.py:1041
+#: ../src/up2date_client/tui.py:1042
 msgid "Problem sending package list."
 msgstr "Problém pri odosielaní zoznamu balíčkov."
 
-#: ../src/up2date_client/tui.py:1095
+#: ../src/up2date_client/tui.py:1096
 msgid "Finish"
 msgstr "Dokončiť"
 
-#: ../src/up2date_client/tui.py:1209
+#: ../src/up2date_client/tui.py:1210
 msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr ""
+msgstr "Zadali ste neplatný protokol. Povolené sú iba https a http."
 
-#: ../src/up2date_client/tui.py:1240
+#: ../src/up2date_client/tui.py:1241
 msgid ""
 "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
 msgstr ""
-" <Tab>/<Alt-Tab> pohyb medzi prvkami | <Space> označuje |  <F12> ďalšia obr."
+"  <Tab>/<Alt-Tab> medzi prvkami | <Medzerník> vyberá  |  <F12> ďalšia "
+"obrazovka"
 
-#: ../src/up2date_client/tui.py:1344
-msgid "You must run the RHN registration program as root."
-msgstr "Registračný program RHN·musíte spúšťať ako root."
+#: ../src/up2date_client/tui.py:1345
+#, python-brace-format
+msgid "You must run the {PRODUCT_NAME} registration program as root."
+msgstr "Registračný program {PRODUCT_NAME} musíte spúšťať ako správca systému."
 
 #: ../src/up2date_client/up2dateErrors.py:49
 #: ../src/up2date_client/up2dateErrors.py:82
 #, python-format
 msgid "class %s has no attribute '%s'"
-msgstr ""
+msgstr "trieda %s nemá žiadny atribút '%s'"
 
 #: ../src/up2date_client/up2dateErrors.py:109
 msgid "RPM error.  The message was:\n"
@@ -1238,40 +1418,35 @@ msgstr "Chyba potvrdzovania dát na serveri.\n"
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
-"To register with Red Hat Subscription Management please run:\n"
-"\n"
-"    subscription-manager register --auto-attach\n"
-"\n"
-"Get more information at access.redhat.com/knowledge\n"
 "    "
 msgstr ""
+"\n"
+"Red Hat Network Classic nie je podporovaný.\n"
+"    "
 
-#: ../src/up2date_client/up2dateErrors.py:204
+#: ../src/up2date_client/up2dateErrors.py:199
 msgid "The installation number is invalid"
 msgstr "Prihlasovacie číslo nie je správne"
 
-#: ../src/up2date_client/up2dateErrors.py:207
+#: ../src/up2date_client/up2dateErrors.py:202
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Chyba pri analýze oemInfo súboru na položke:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:234
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Network error: "
-msgstr ""
+msgstr "Chyba siete: "
 
-#: ../src/up2date_client/up2dateErrors.py:302
+#: ../src/up2date_client/up2dateErrors.py:297
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
 "register this\n"
-"    system to Red Hat Satellite. Please notify your organization "
-"administrator of this error.\n"
+"    system. Please notify your organization administrator of this error.\n"
 "    You should be able to register this system after your organization frees "
 "existing\n"
 "    or purchases additional entitlements. Additional entitlements may be "
 "purchased by your\n"
-"    organization administrator by logging into Red Hat Network Classic and "
-"visiting\n"
-"    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
+"    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
 "    Activation Key which is set as the universal default.  If an activation "
@@ -1280,10 +1455,29 @@ msgid ""
 "retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
+"\n"
+"    Vaša organizácia nemá dostatočné oprávnenia správy na registrovanie "
+"tohto\n"
+"    systému. Prosím, informujte svojho administrátora organizácie o tejto "
+"chybe.\n"
+"    Mali by ste byť schopní zaregistrovať tento systém potom, ako vaša "
+"organizácia uvoľní\n"
+"    existujúce alebo zakúpi ďalšie oprávnenia. Ďalšie oprávnenia môžu byť  "
+"zakúpené\n"
+"    administrátorom vašej organizácie v Zákazníckom centre SUSE.\n"
+"\n"
+"    Bežnou príčinou tohto chybového kódu je nesprávne nastavenie "
+"aktivačného\n"
+"    kľúča, ktorý je nastavený ako univerzálny predvolený.  Ak je aktivačný "
+"kľúč nastavený\n"
+"    na účte ako univerzálny predvolený, môžete tento kľúč zakázať a skúsiť "
+"znova,\n"
+"    aby ste sa vyhli požadovaniu oprávnenia správy."
 
 #: ../src/bin/rhn_check.py:428
-msgid "Attempting to run more than one instance of rhn_check. Exiting.\n"
+msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
+"Pokúšanie sa o spustenie viac ako jednej inštancie mgr_check. Ukončenie.\n"
 
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
@@ -1311,19 +1505,19 @@ msgstr "Nepokúšať sa použiť X"
 
 #: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
-msgstr ""
+msgstr "Zadať názov profilu"
 
 #: ../src/bin/rhnreg_ks.py:52
 msgid "Specify a username"
-msgstr ""
+msgstr "Zadať používateľské meno"
 
 #: ../src/bin/rhnreg_ks.py:54
 msgid "Specify a password"
-msgstr ""
+msgstr "Zadať heslo"
 
 #: ../src/bin/rhnreg_ks.py:56
 msgid "Specify an organizational id for this system"
-msgstr ""
+msgstr "Zadať organizačné id pre tento systém"
 
 #: ../src/bin/rhnreg_ks.py:58
 msgid "Specify a url to use as a server"
@@ -1331,9 +1525,7 @@ msgstr "Zadať url servera, ktorý použiť"
 
 #: ../src/bin/rhnreg_ks.py:60
 msgid "Specify a file to use as the ssl CA cert"
-msgstr ""
-"    --sslCACert=<cesta>        - určuje súbor, ktorý sa použije ako ssl CA "
-"cert"
+msgstr "Určitee súbor, ktorý sa použije ako ssl CA cert"
 
 #: ../src/bin/rhnreg_ks.py:62
 msgid "Specify an activation key"
@@ -1343,42 +1535,36 @@ msgstr "Zadať http proxy pre použitie"
 msgid ""
 "Subscribe this system to the EUS channel tied to the system's redhat-release"
 msgstr ""
+"Prihlásiť tento systém ku kanálu EUS, ktorý je viazaný k systémovému redhat-"
+"release"
 
 #: ../src/bin/rhnreg_ks.py:66
 msgid "[Deprecated] Read contact info from stdin"
-msgstr "    --contactinfo              - čítať kontaktné informácie z stdin "
+msgstr "[Zastarané] Čítať kontaktné informácie z stdin"
 
 #: ../src/bin/rhnreg_ks.py:68
 msgid "Do not probe or upload any hardware info"
-msgstr ""
-"    --nohardware               - nezisťovať a neposielať žiadné info o "
-"hardvéri"
+msgstr "Nezisťovať alebo neposielať žiadne informácie o hardvéri"
 
 #: ../src/bin/rhnreg_ks.py:70
 msgid "Do not profile or upload any package info"
-msgstr ""
-"    --nopackages               - nevytvárať a neposielať žiadné info o "
-"balíčkoch"
+msgstr "Nerobiť profil alebo neposielať žiadne informácie o balíkoch"
 
 #: ../src/bin/rhnreg_ks.py:72
 msgid "Do not upload any virtualization info"
-msgstr ""
+msgstr "Neodosielať žiadne informácie o virtualizácii"
 
 #: ../src/bin/rhnreg_ks.py:74
 msgid "Do not start rhnsd after completion"
-msgstr ""
+msgstr "Nespúšťať rhnsd po dokončení"
 
 #: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
-msgstr ""
-"    --force                    - registrovať systém aj keď už je "
-"zaregistrovaný"
+msgstr "Registrovať systém, aj keď už je zaregistrovaný"
 
 #: ../src/bin/rhnreg_ks.py:86
 msgid "A username and password are required to register a system."
-msgstr ""
-"Úžívateľské meno, heslo a emailová adresa sú vyžadované pre zaregistrovanie "
-"systému."
+msgstr "Používateľské meno a heslo sú vyžadované pre zaregistrovanie systému."
 
 #: ../src/bin/rhnreg_ks.py:91
 msgid "This system is already registered. Use --force to override"
@@ -1389,21 +1575,26 @@ msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
 msgstr ""
+"Použitie voľby --use-eus-channel s --activationkey nie je podporované. "
+"Namiesto toho použite používateľské meno a heslo."
 
 #: ../src/bin/rhnreg_ks.py:128
 msgid "The server you are registering against does not support EUS."
-msgstr ""
+msgstr "Server, do ktorého sa zaregistrujete, nepodporuje EUS."
 
 #: ../src/bin/rhnreg_ks.py:154
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
 "server web user Interface and update your contactinfo. "
 msgstr ""
+"Upozornenie: Voľba --contactinfo bola odmietnutá. Prosím, prihláste sa do "
+"webového používateľského rozhrania servera a aktualizujte svoje kontaktné "
+"informácie. "
 
 #: ../src/bin/rhnreg_ks.py:175
 #, python-format
 msgid "Warning: %s is not present, could not enable it."
-msgstr ""
+msgstr "Upozornenie: %s nie je prítomný, nebolo možné ho povoliť."
 
 #: ../src/bin/rhnreg_ks.py:178
 #, python-format
@@ -1411,6 +1602,8 @@ msgid ""
 "Warning: Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
+"Upozornenie: Nebolo možné otvoriť %s\n"
+"%s nie je povolené.\n"
 
 #: ../src/bin/rhnreg_ks.py:206
 msgid ""
@@ -1422,108 +1615,113 @@ msgstr ""
 
 #: ../src/bin/spacewalk-channel.py:98
 msgid "name of channel you want to (un)subscribe"
-msgstr ""
+msgstr "názov kanála, ku ktorému sa chcete (od)prihlásiť"
 
 #: ../src/bin/spacewalk-channel.py:100
 msgid "subscribe to channel"
-msgstr ""
+msgstr "prihlásiť sa ku kanálu"
 
 #: ../src/bin/spacewalk-channel.py:102
 msgid "unsubscribe from channel"
-msgstr ""
+msgstr "odhlásiť sa z kanála"
 
 #: ../src/bin/spacewalk-channel.py:104
 msgid "list channels"
-msgstr ""
+msgstr "vypísať zoznam kanálov"
 
 #: ../src/bin/spacewalk-channel.py:106
 msgid "show base channel of a system"
-msgstr ""
+msgstr "zobraziť základný kanál systému"
 
 #: ../src/bin/spacewalk-channel.py:108
 msgid "list all available child channels"
-msgstr ""
+msgstr "vypísať zoznam všetkých kanálov potomkov"
 
 #: ../src/bin/spacewalk-channel.py:110
 msgid "verbose output"
-msgstr ""
+msgstr "podrobný výstup"
 
 #: ../src/bin/spacewalk-channel.py:112
 msgid "your user name"
-msgstr ""
+msgstr "vaše používateľské meno"
 
 #: ../src/bin/spacewalk-channel.py:114
 msgid "your password"
-msgstr ""
+msgstr "vaše heslo"
 
 #: ../src/bin/spacewalk-channel.py:121
 msgid "ERROR: these arguments make no sense in this context (try --help)"
 msgstr ""
+"CHYBA: tieto argumenty nedávajú v tejto súvislosti žiadny zmysel (skúste --"
+"help)"
 
 #: ../src/bin/spacewalk-channel.py:163
 msgid "ERROR: you have to specify at least one channel"
-msgstr ""
+msgstr "CHYBA: musíte zadať aspoň jeden kanál"
 
 #: ../src/bin/spacewalk-channel.py:169
 msgid "ERROR: this action does not require channel"
-msgstr ""
+msgstr "CHYBA: táto akcia nevyžaduje kanál"
 
 #: ../src/bin/spacewalk-channel.py:176
 #, python-format
 msgid "Channel(s): %s successfully added"
-msgstr ""
+msgstr "Kanál(y): %s úspešne pridané"
 
 #: ../src/bin/spacewalk-channel.py:178
 #, python-format
 msgid "Error during adding channel(s) %s"
-msgstr ""
+msgstr "Chyba pri pridávaní kanála(ov) %s"
 
 #: ../src/bin/spacewalk-channel.py:185
 #, python-format
 msgid "Channel(s): %s successfully removed"
-msgstr ""
+msgstr "Kanál(y): %s úspešne odstránené"
 
 #: ../src/bin/spacewalk-channel.py:187
 #, python-format
 msgid "Error during removal of channel(s) %s"
-msgstr ""
+msgstr "Chyba pri odstraňovaní kanála(ov) %s"
 
 #: ../src/bin/spacewalk-channel.py:194
 msgid "This system is not associated with any channel."
-msgstr ""
+msgstr "Tento systém nie je priradený k žiadnemu kanálu."
 
 #: ../src/bin/spacewalk-channel.py:196
 msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr ""
+msgstr "Súbor SystemId sa nepodarilo nájsť. Je tento systém zaregistrovaný?"
 
 #: ../src/bin/spacewalk-channel.py:229
 msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr ""
+msgstr "CHYBA: možno chcete uviesť --add, --remove alebo --list"
 
 #: ../src/bin/spacewalk-channel.py:234
 msgid "ERROR: must be root to execute\n"
-msgstr ""
+msgstr "CHYBA: na vykonanie musí byť správca systému\n"
 
 #: ../src/bin/spacewalk-channel.py:239
 msgid "User interrupted process."
-msgstr ""
+msgstr "Proces prerušený používateľom."
 
 #: ../data/gui.glade.h:1
-#, fuzzy
 msgid "System registration"
-msgstr "registračnéČíslo"
+msgstr "Registrácia systému"
 
 #: ../data/gui.glade.h:2
 msgid "Set Up Software Updates"
-msgstr ""
+msgstr "Nastaviť softvérové aktualizácie"
 
 #: ../data/gui.glade.h:3 ../data/rh_register.glade.h:6
 msgid "Choose Service"
-msgstr ""
+msgstr "Zvoliť službu"
 
 #: ../data/gui.glade.h:4
 msgid "Provide a security certificate"
-msgstr "Musíte zadať meno užívateľa."
+msgstr "Poskytnite bezpečnostný certifikát"
+
+#: ../data/gui.glade.h:5 ../data/rh_register.glade.h:13
+msgid "Red Hat Account"
+msgstr "Účet Red Hat"
 
 #: ../data/gui.glade.h:7
 msgid "Create Profile"
@@ -1546,6 +1744,8 @@ msgid ""
 "<b>The network connection on your system is not active. Your system cannot "
 "be set up for software updates at this time.</b>"
 msgstr ""
+"<b>Sieťové pripojenie na vašom systéme nie je aktívne. Váš systém momentálne "
+"nie je možné nastaviť pre softvérové aktualizácie.</b>"
 
 #: ../data/rh_register.glade.h:2
 msgid ""
@@ -1556,11 +1756,23 @@ msgid ""
 "To keep your system updated, secure, and supported, please register this "
 "system at your earliest convenience."
 msgstr ""
+"Tento systém <b>nebude</b> môcť úspešne prijímať aktualizácie softvéru "
+"vrátane bezpečnostných aktualizácií z Red Hat bez pripojenia k Red Hat "
+"Satellite alebo Red Hat Network Classic.\n"
+"\n"
+"Ak chcete, aby bol váš systém aktualizovaný, zabezpečený a podporovaný, "
+"zaregistrujte ho hneď, ako sa vám to bude hodiť."
+
+#: ../data/rh_register.glade.h:5
+msgid "Why Should I Connect to RHN? ..."
+msgstr "Prečo by som sa mal pripojiť k RHN? ..."
 
 #: ../data/rh_register.glade.h:7
 msgid ""
 "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
 msgstr ""
+"Chcel by som sa zaregistrovať na Red Hat Satellite alebo Red Hat Satellite "
+"Proxy"
 
 #: ../data/rh_register.glade.h:8
 msgid "Location:"
@@ -1568,45 +1780,47 @@ msgstr "Postavenie:"
 
 #: ../data/rh_register.glade.h:9
 msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "napríklad: XXXX-XXXX-XXXX-XXXX (pomlčky nie sú povinné)"
+msgstr "Napríklad: https://satellite.example.com/XMLRPC"
 
 #: ../data/rh_register.glade.h:10
 msgid "satellite server location"
-msgstr ""
+msgstr "umiestnenie servera satellite"
 
 #: ../data/rh_register.glade.h:11
 msgid "_Proxy Setup"
-msgstr ""
+msgstr "Nastavenie _proxy"
 
 #: ../data/rh_register.glade.h:12
 msgid "Proxy Setup Button"
-msgstr ""
+msgstr "Tlačidlo nastavenia proxy"
 
 #: ../data/rh_register.glade.h:14
 msgid "Please enter your Red Hat account information:"
-msgstr "Informácie o balíčku"
+msgstr "Prosím, zadajte informácie o svojom účte Red Hat:"
 
 #: ../data/rh_register.glade.h:15
 msgid "RHN login field"
-msgstr "Red Hat Login"
+msgstr "Pole prihlasovacieho mena RHN"
 
 #: ../data/rh_register.glade.h:16
 msgid "RHN password field"
-msgstr ""
+msgstr "Pole hesla  RHN"
 
 #: ../data/rh_register.glade.h:17
 msgid "_Password:"
-msgstr ""
+msgstr "_Heslo:"
 
 #: ../data/rh_register.glade.h:18
 msgid "_Login:"
-msgstr ""
+msgstr "_Login:"
 
 #: ../data/rh_register.glade.h:19
 msgid ""
 "<small>Tip: Forgot your login or password? Contact your Satellite's "
 "<i>Organization Administrator</i>.</small>"
 msgstr ""
+"<small>Tip: Zabudli ste svoje prihlasovacie meno alebo heslo? Kontaktujte "
+"vášho <i>administrátora organizácie</i> Satellite.</small>"
 
 #: ../data/rh_register.glade.h:20
 msgid "Hardware Info"
@@ -1614,35 +1828,35 @@ msgstr "Info o hardvéri"
 
 #: ../data/rh_register.glade.h:21
 msgid "Red Hat Linux Version:"
-msgstr ""
+msgstr "Verzia Red Hat Linux:"
 
 #: ../data/rh_register.glade.h:22
 msgid "Hostname:"
-msgstr ""
+msgstr "Názov hostiteľa:"
 
 #: ../data/rh_register.glade.h:23
 msgid "IP Address:"
-msgstr ""
+msgstr "IP adresa:"
 
 #: ../data/rh_register.glade.h:24
 msgid "ERROR"
-msgstr ""
+msgstr "CHYBA"
 
 #: ../data/rh_register.glade.h:25
 msgid "CPU Model:"
-msgstr ""
+msgstr "Model CPU:"
 
 #: ../data/rh_register.glade.h:26
 msgid "CPU Speed:"
-msgstr ""
+msgstr "Rýchlosť CPU:"
 
 #: ../data/rh_register.glade.h:27
 msgid "Memory:"
-msgstr ""
+msgstr "Pamäť:"
 
 #: ../data/rh_register.glade.h:28
 msgid "Hardware Profile"
-msgstr ""
+msgstr "Hardvérový profil"
 
 #: ../data/rh_register.glade.h:29
 msgid "Package Information"
@@ -1650,7 +1864,7 @@ msgstr "Informácie o balíčku"
 
 #: ../data/rh_register.glade.h:30
 msgid "Start Window"
-msgstr ""
+msgstr "Okno štartu"
 
 #: ../data/rh_register.glade.h:31
 msgid ""
@@ -1658,54 +1872,59 @@ msgid ""
 "with Red Hat to receive software updates and other benefits. You will need "
 "the following to register:"
 msgstr ""
+"Tento asistent vás prevedie procesom registrácie systému v Red Hat na "
+"prijímanie aktualizácií softvéru a ďalších výhod. Na registráciu budete "
+"potrebovať nasledujúce:"
 
 #: ../data/rh_register.glade.h:32
 msgid "• A network connection"
-msgstr ""
+msgstr "• Sieťové pripojenie"
 
 #: ../data/rh_register.glade.h:33
 msgid "• Your account login"
-msgstr ""
+msgstr "• Prihlasovacie meno k vášmu účtu"
 
 #: ../data/rh_register.glade.h:34
 msgid "Your account login"
-msgstr ""
+msgstr "Prihlasovacie meno k vášmu účtu"
 
 #: ../data/rh_register.glade.h:35
 msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
+msgstr "• Adresa Red Hat Satellite alebo Red Hat Satellite Proxy"
 
 #: ../data/rh_register.glade.h:36
 msgid "_Why Should I Register?"
-msgstr ""
+msgstr "_Prečo by som sa mal zaregistrovať?"
 
 #: ../data/rh_register.glade.h:37
 msgid "Why Should I Register?"
-msgstr "Už zaregistrovaný"
+msgstr "Prečo by som sa mal registrovať?"
 
 #: ../data/rh_register.glade.h:38
 msgid ""
 "Would you like to register your system at this time? <b>(Strongly "
 "recommended.)</b>"
-msgstr ""
+msgstr "Chcete teraz zaregistrovať svoj systém? <b>(Dôsledne odporúčané.)</b>"
 
 #: ../data/rh_register.glade.h:39
 msgid "_Yes, I'd like to register now."
-msgstr ""
+msgstr "Áno, chcel by som sa teraz zaregistrovať."
 
 #: ../data/rh_register.glade.h:40
 msgid "_No, I prefer to register at a later time."
-msgstr ""
+msgstr "_Nie, radšej sa zaregistrujem neskôr."
 
 #: ../data/rh_register.glade.h:41
 msgid "Link To Subscription"
-msgstr "Popis"
+msgstr "Odkaz na predplatné"
 
 #: ../data/rh_register.glade.h:42
 msgid ""
 "Your system will need to access a subscription. This will allow you to keep "
 "your system updated, secure, and supported."
 msgstr ""
+"Váš systém bude musieť mať prístup k predplatnému. Umožní vám to, aby bol "
+"váš systém aktualizovaný, zabezpečený a podporovaný."
 
 #: ../data/rh_register.glade.h:43
 msgid ""
@@ -1713,99 +1932,109 @@ msgid ""
 "need to do one of the following to create an active subscription in your "
 "account before this system can be registered:"
 msgstr ""
+"<b>Vo svojom účte nemáte k dispozícii žiadne aktívne predplatné.</b> Aby "
+"mohol byť tento systém zaregistrovaný, budete musieť urobiť jeden z "
+"nasledujúcich krokov na vytvorenie aktívneho predplatného vo svojom účte:"
 
 #: ../data/rh_register.glade.h:44
 msgid ""
 "Purchase an additional Red Hat Enterprise Linux subscription at http://www."
 "redhat.com/store/."
 msgstr ""
+"Zakúpiť si dodatočné predplatné Red Hat Enterprise Linux na http://www."
+"redhat.com/store/."
 
 #: ../data/rh_register.glade.h:45
 msgid ""
 "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
 "RHN > Subscription Management > System Entitlements."
 msgstr ""
+"Prihláste sa na http://rhn.redhat.com/ a zrušte oprávnenie neaktívneho "
+"systému vo Vaše RHN > Spáva predplatného > Systémové oprávnenia."
 
 #: ../data/rh_register.glade.h:46
 msgid ""
 "Activate a previously purchased subscription you have not yet activated."
-msgstr ""
+msgstr "Aktivujte predtým zakúpené predplatné, ktoré ste ešte neaktivovali."
 
 #: ../data/rh_register.glade.h:47
 msgid "•"
-msgstr ""
+msgstr "•"
 
 #: ../data/rh_register.glade.h:48
 msgid "installation number field"
-msgstr "Prihlasovacie číslo nie je správne"
+msgstr "pole inštalačného čísla"
 
 #: ../data/rh_register.glade.h:49
 msgid "Installation _Number:"
-msgstr ""
+msgstr "I_nštalačné číslo:"
 
 #: ../data/rh_register.glade.h:50
 msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr ""
+msgstr "<small><b>Príklad</b>: XXXX-XXXX-XXXX-XXXX</small>"
 
 #: ../data/rh_register.glade.h:51
 msgid "_Activate a subscription now..."
-msgstr "Aktivovať vaše prihlásenie"
+msgstr "_Aktivovať predplatné teraz..."
 
 #: ../data/rh_register.glade.h:52
 msgid "Review system..."
-msgstr ""
+msgstr "Preskúmanie systému..."
 
 #: ../data/rh_register.glade.h:54
 msgid "Create profile"
-msgstr "Hardvérový profil"
+msgstr "Vytvoriť profil"
 
 #: ../data/rh_register.glade.h:55
 msgid "<big><b>System Name</b></big>"
-msgstr ""
+msgstr "<big><b>Názov systému</b></big>"
 
 #: ../data/rh_register.glade.h:56
 msgid ""
 "A recognizable name will help you identify this system in a management "
 "interface."
 msgstr ""
+"Rozpoznateľný názov vám pomôže identifikovať tento systém v rozhraní správy."
 
 #: ../data/rh_register.glade.h:57
 msgid "System _Name:"
-msgstr ""
+msgstr "_Názov systému:"
 
 #: ../data/rh_register.glade.h:58
 msgid "system name"
-msgstr "Priezvisko:"
+msgstr "názov systému"
 
 #: ../data/rh_register.glade.h:59
 msgid "<big><b>Profile Data</b></big>"
-msgstr ""
+msgstr "<big><b>Údaje profilu</b></big>"
 
 #: ../data/rh_register.glade.h:60
 msgid ""
 "Send us a profile of your current hardware and packages so we can determine "
 "what updates are available."
 msgstr ""
+"Pošlite nám profil vášho súčasného hardvéru a balíkov, aby sme mohli určiť, "
+"ktoré aktualizácie sú k dispozícii."
 
 #: ../data/rh_register.glade.h:61
 msgid "_View Hardware Profile ..."
-msgstr ""
+msgstr "_Zobraziť hardvérový profil ..."
 
 #: ../data/rh_register.glade.h:62
 msgid "View Hardware Profile"
-msgstr "Hardvérový profil"
+msgstr "Zobraziť hardvérový profil"
 
 #: ../data/rh_register.glade.h:63
 msgid "V_iew Package Profile ..."
-msgstr ""
+msgstr "Zobraz_iť profil balíkov ..."
 
 #: ../data/rh_register.glade.h:64
 msgid "View Package Profile"
-msgstr "Aktualizujem profil balíčka..."
+msgstr "Zobraziť profil balíkov"
 
 #: ../data/rh_register.glade.h:65
 msgid "Send _hardware profile"
-msgstr ""
+msgstr "Odoslať _hardvérový profil"
 
 #: ../data/rh_register.glade.h:66
 msgid "Send hardware profile checkbox"
@@ -1813,7 +2042,7 @@ msgstr "Hardvérový profil"
 
 #: ../data/rh_register.glade.h:67
 msgid "Send _package profile"
-msgstr ""
+msgstr "Odoslať _profil balíkov"
 
 #: ../data/rh_register.glade.h:68
 msgid "Send package profile checkbox"
@@ -1824,56 +2053,83 @@ msgid ""
 "Registering your system with Red Hat allows you to take full advantage of "
 "the benefits of a paid subscription, including:"
 msgstr ""
+"Registrácia vášho systému v Red Hat vám umožňuje plne využívať výhody "
+"predplatného vrátane:"
 
 #: ../data/rh_register.glade.h:71
 msgid "_Close"
-msgstr ""
+msgstr "_Zavrieť"
 
 #: ../data/rh_register.glade.h:72
 msgid "Close"
-msgstr ""
+msgstr "Zatvoriť"
 
 #: ../data/rh_register.glade.h:73
 msgid "<b>Security &amp; Updates:</b>"
-msgstr ""
+msgstr "<b>Bezpečnosť &amp; Aktualizácie:</b>"
 
 #: ../data/rh_register.glade.h:74
 msgid ""
 "Receive the latest software updates, including security updates, keeping "
 "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
 msgstr ""
+"Prijímajte najnovšie aktualizácie softvéru vrátane bezpečnostných "
+"aktualizácií, aby bol tento Red Hat Enterprise Linux systém <b>aktuálny</b> "
+"a <b>zabezpečený</b>."
 
 #: ../data/rh_register.glade.h:75
 msgid "<b>Downloads &amp; Upgrades:</b>"
+msgstr "<b>Stiahnutia &amp; Zvýšenia verzie:</b>"
+
+#: ../data/rh_register.glade.h:76
+msgid ""
+"Download installation images for Red Hat Enterprise Linux releases, "
+"including new releases."
 msgstr ""
+"Stiahnite si inštalačné obrazy vydaní Red Hat Enterprise Linux, vrátane "
+"nových vydaní."
 
 #: ../data/rh_register.glade.h:77
 msgid "<b>Support:</b>"
+msgstr "<b>Podpora:</b>"
+
+#: ../data/rh_register.glade.h:78
+msgid ""
+"Access to the technical support experts at Red Hat or Red Hat's partners for "
+"help with any issues you might encounter with this system."
 msgstr ""
+"Prístup k expertom technickej podpory spoločnosti Red Hat alebo partnerov "
+"Red Hat kvôli pomoci s akýmikoľvek problémami, s ktorými sa môžete stretnúť "
+"v tomto systéme."
 
 #: ../data/rh_register.glade.h:79
 msgid "<b>Management:</b>"
-msgstr ""
+msgstr "<b>Správa:</b>"
 
 #: ../data/rh_register.glade.h:80
 msgid "Management"
-msgstr ""
+msgstr "Správa"
 
 #: ../data/rh_register.glade.h:81
 msgid ""
 "Manage subscriptions and systems registered to Customer Portal via access."
 "redhat.com or through one of our other subscription management services."
 msgstr ""
+"Spravujte predplatné a systémy registrované na zákazníckom portáli "
+"prostredníctvom access.redhat.com alebo cez niektorú z našich ďalších "
+"služieb správy predplatného."
 
 #: ../data/rh_register.glade.h:82
 msgid ""
 "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
 "privacy_statement.html.</small>"
 msgstr ""
+"<small><b>Tip:</b> Red Hat si cení vaše súkromie: http://www.redhat.com/"
+"legal/privacy_statement.html.</small>"
 
 #: ../data/rh_register.glade.h:83
 msgid "Provide a Security Certificate"
-msgstr ""
+msgstr "Poskytnite bezpečnostný certifikát"
 
 #: ../data/rh_register.glade.h:85
 #, no-c-format
@@ -1885,34 +2141,44 @@ msgid ""
 "data communicated between this system and Spacewalk (including your login "
 "and password) is secure."
 msgstr ""
+"Bezpečnostný certifikát kompatibilný s <b>%s</b> nebol nájdený v tomto "
+"systéme.\n"
+"\n"
+"Bezpečnostný certifikát používajúci technológiu SSL je potrebný na zistenie "
+"toho, že dáta prenášané medzi týmto systémom a Spacewalk (vrátane vášho "
+"prihlasovacieho mena a hesla) sú zabezpečené."
 
 #: ../data/rh_register.glade.h:88
 msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr ""
+msgstr "Mám <b>_SSL certifikát</b> na komunikáciu so Spacewalk:"
 
 #: ../data/rh_register.glade.h:89
 msgid "Certificate _Location:"
-msgstr ""
+msgstr "Umiestnenie certifikátu:"
 
 #: ../data/rh_register.glade.h:90
 msgid "Select A File"
-msgstr ""
+msgstr "Vybrať súbor"
 
 #: ../data/rh_register.glade.h:91
 msgid ""
 "I <b>_don't</b> have an SSL certificate. I will contact my system "
 "administrator for assistance and will register at a later time."
 msgstr ""
+"<b>_Nemám</b> certifikát SSL. Požiadam o pomoc svojho systémového "
+"administrátora a zaregistrujem sa neskôr."
 
 #: ../data/rh_register.glade.h:92
 msgid "Your system is not setup for software updates."
-msgstr ""
+msgstr "Váš systém nie je nastavený pre aktualizácie softvéru."
 
 #: ../data/rh_register.glade.h:93
 msgid ""
 "You won't be able to receive software updates, including security updates, "
 "for this system."
 msgstr ""
+"Nebudete môcť dostávať aktualizácie softvéru vrátane bezpečnostných "
+"aktualizácií pre tento systém."
 
 #: ../data/rh_register.glade.h:94
 msgid "Proxy Configuration"
@@ -1920,23 +2186,23 @@ msgstr "Nastavenia siete"
 
 #: ../data/rh_register.glade.h:95
 msgid "<b>HTTP Proxy</b>"
-msgstr ""
+msgstr "<b>HTTP Proxy</b>"
 
 #: ../data/rh_register.glade.h:96
 msgid "I would like to connect via an _HTTP proxy."
-msgstr ""
+msgstr "Chcel by som sa pripojiť cez _HTTP proxy."
 
 #: ../data/rh_register.glade.h:97
 msgid "I would like to connect to Spacewalk via an _HTTP proxy."
-msgstr ""
+msgstr "Chcel by som sa pripojiť k Spacewalk cez _HTTP proxy."
 
 #: ../data/rh_register.glade.h:98
 msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr ""
+msgstr "<small><b>Príklad:</b> squid.priklad.sk:3128</small>"
 
 #: ../data/rh_register.glade.h:99
 msgid "_Proxy Location:"
-msgstr ""
+msgstr "Umiestnenie _Proxy:"
 
 #: ../data/rh_register.glade.h:100
 msgid "Enter in the format hostname(:port)"
@@ -1944,47 +2210,47 @@ msgstr "Zadajte vo formáte počítač(:port)"
 
 #: ../data/rh_register.glade.h:101
 msgid "proxy location"
-msgstr ""
+msgstr "umiestnenie proxy"
 
 #: ../data/rh_register.glade.h:102
 msgid "Use Au_thentication with HTTP Proxy:"
-msgstr ""
+msgstr "Použiť overenie s HTTP Proxy:"
 
 #: ../data/rh_register.glade.h:103
 msgid "Use Authentication with HTTP Proxy"
-msgstr "Použitť overenie totožnosti"
+msgstr "Použiť overenie s HTTP Proxy"
 
 #: ../data/rh_register.glade.h:104
 msgid "Proxy _Username:"
-msgstr ""
+msgstr "Používateľské meno pre Proxy:"
 
 #: ../data/rh_register.glade.h:105
 msgid "Proxy P_assword:"
-msgstr ""
+msgstr "Heslo pre Proxy:"
 
 #: ../data/rh_register.glade.h:106
 msgid "proxy user field"
-msgstr ""
+msgstr "pole používateľa proxy"
 
 #: ../data/rh_register.glade.h:107
 msgid "proxy password field"
-msgstr "Heslo:"
+msgstr "pole hesla proxy"
 
 #: ../data/rh_register.glade.h:108
 msgid "Confirm operation system release selection"
-msgstr ""
+msgstr "Potvrďte výber vydania operačného systému"
 
 #: ../data/rh_register.glade.h:109
 msgid "_No, Cancel"
-msgstr ""
+msgstr "_Nie, zrušiť"
 
 #: ../data/rh_register.glade.h:111
 msgid "_Yes, Continue"
-msgstr ""
+msgstr "Áno, pokračovať"
 
 #: ../data/rh_register.glade.h:113
 msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr ""
+msgstr "<big><b>Presun na predchádzajúce vydania nebude možný</b></big>"
 
 #: ../data/rh_register.glade.h:114
 msgid ""
@@ -1992,79 +2258,90 @@ msgid ""
 "be able to move this system to an earlier minor release channel if you "
 "continue (you will be able to move to a later release.)"
 msgstr ""
+"Váš systém bude prihlásený k základnému softvérovému kanálu.  Ak budete "
+"pokračovať, nebudete môcť presunúť tento systém na kanál s predchádzajúcim "
+"vedľajším vydaním (budete môcť prejsť na novšie vydanie.)"
 
 #: ../data/rh_register.glade.h:115
 msgid ""
 "\n"
 "Are you sure you would like to continue?"
 msgstr ""
+"\n"
+"Naozaj chcete pokračovať?"
 
 #: ../data/rh_register.glade.h:117
 msgid "Are you Sure?"
-msgstr ""
+msgstr "Ste si istí?"
 
 #: ../data/rh_register.glade.h:118
 msgid "_Go Back and Register"
-msgstr ""
+msgstr "Vrátiť sa a zaregistrovať sa"
 
 #: ../data/rh_register.glade.h:119
 msgid "Go Back and Register"
-msgstr ""
+msgstr "Vrátiť sa a zaregistrovať sa"
 
 #: ../data/rh_register.glade.h:120
 msgid "Register _Later"
-msgstr ""
+msgstr "Registrovať neskôr"
 
 #: ../data/rh_register.glade.h:121
 msgid "Register Later"
-msgstr "Problém s registráciou systému."
+msgstr "Registrovať neskôr"
 
 #: ../data/rh_register.glade.h:122
 msgid ""
 "Are you sure you don't want to register your system with Red Hat? You'll "
 "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
 msgstr ""
+"Naozaj nechcete zaregistrovať svoj systém v Red Hat? Prídete o výhody "
+"predplatného Red Hat Enterprise Linux:"
 
 #: ../data/rh_register.glade.h:123
 msgid "Management:"
-msgstr ""
+msgstr "Správa:"
 
 #: ../data/rh_register.glade.h:124
 msgid ""
 "You will not be able to take advantage of these benefits without registering."
-msgstr ""
+msgstr "Nebudete môcť využívať tieto výhody bez registrácie."
 
 #: ../data/rh_register.glade.h:127
 msgid "<b>Spacewalk Location:</b>"
-msgstr ""
+msgstr "<b>Umiestnenie Spacewalk:</b>"
 
 #: ../data/rh_register.glade.h:128
 msgid "<b>Login:</b>"
-msgstr ""
+msgstr "<b>Prihlasovacie meno:</b>"
 
 #: ../data/rh_register.glade.h:129
 msgid "<b>System ID:</b>"
-msgstr ""
+msgstr "<b>ID systému:</b>"
 
 #: ../data/rh_register.glade.h:130
 msgid "label"
-msgstr ""
+msgstr "označenie"
 
 #: ../data/rh_register.glade.h:132
 msgid "<b>Warning</b>"
-msgstr ""
+msgstr "<b>Varovanie</b>"
 
 #: ../data/rh_register.glade.h:133
 msgid ""
 "This system has already been registered with RHN using RHN certificate-based "
 "technology."
 msgstr ""
+"Tento systém už bol zaregistrovaný v RHN pomocou technológie založenej na "
+"certifikáte RHN."
 
 #: ../data/rh_register.glade.h:134
 msgid ""
 "Your system is being registered again using RHN Classic technology. Red Hat "
 "recommends that customers only register once."
 msgstr ""
+"Váš systém sa znova registruje pomocou technológie RHN Classic. Red Hat "
+"odporúča, aby sa zákazníci registrovali iba raz."
 
 #: ../data/rh_register.glade.h:135
 msgid ""
@@ -2072,10 +2349,13 @@ msgid ""
 "Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
 "DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
 msgstr ""
+"Ak sa chcete dozvedieť viac o registrácii a technológiách RHN, prečítajte si "
+"tento článok z Knowledge Base: <a href=\"https://access.redhat.com/kb/docs/"
+"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
 
 #: ../data/rh_register.glade.h:137
 msgid "Software update setup has been completed for this system."
-msgstr ""
+msgstr "Pre tento systém bolo dokončené nastavenie aktualizácií softvéru."
 
 #: ../data/rh_register.glade.h:138
 msgid ""
@@ -2087,48 +2367,60 @@ msgid ""
 "circled below.) Clicking on this icon, when available, will guide you "
 "through applying any updates that are available:"
 msgstr ""
+"Váš systém je teraz pripravený prijímať aktualizácie softvéru, ktoré ho budú "
+"udržovať zabezpečený a podporovaný.\n"
+"\n"
+"Keď sa v oznamovacej oblasti na pracovnej ploche objaví ikona balíka, budete "
+"vedieť, že sú k dispozícii aktualizácie softvéru (zvyčajne v pravom hornom "
+"rohu, zakrúžkované nižšie). Kliknutím na túto ikonu, ak je k dispozícii, "
+"budete prevedení aplikovaním všetkých dostupných aktualizácií:"
 
 #: ../data/rh_register.glade.h:141
 msgid "Aplet screenshot"
-msgstr ""
+msgstr "Snímka obrazovky apletu"
 
 #: ../data/rh_register.glade.h:143
 msgid "Select how your system will receive updates:"
-msgstr ""
+msgstr "Vyberte si, ako bude váš systém dostávať aktualizácie:"
 
 #: ../data/rh_register.glade.h:144
 msgid "Limited updates"
-msgstr "Spojené Štáty"
+msgstr "Obmedzené aktualizácie"
 
 #: ../data/rh_register.glade.h:145
 msgid ""
 "<b>_Limited updates</b> will be provided to this system, maintaining "
 "compatibility with the selected minor release software channel:"
 msgstr ""
+"<b>Obmedzené aktualizácie</b> sa budú poskytovať tomuto systému pri "
+"zachovaní kompatibility so softvérovým kanálom pre vybrané vedľajšie vydania:"
 
 #: ../data/rh_register.glade.h:146
 msgid ""
 "Limited updates will be provided to this system, maintaining compatibility "
 "with the selected minor release software channel:"
 msgstr ""
+"Obmedzené aktualizácie sa budú poskytovať tomuto systému pri zachovaní "
+"kompatibility so softvérovým kanálom pre vybrané vedľajšie vydania:"
 
 #: ../data/rh_register.glade.h:147
 msgid "_Minor release:"
-msgstr ""
+msgstr "Vedľajšie vydanie:"
 
 #: ../data/rh_register.glade.h:148
 msgid "Choose minor release"
-msgstr "Vydanie"
+msgstr "Zvoľte vedľajšie vydanie"
 
 #: ../data/rh_register.glade.h:149
 msgid "       "
-msgstr "     "
+msgstr "       "
 
 #: ../data/rh_register.glade.h:150
 msgid ""
 "<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
 "Hat."
 msgstr ""
+"<b>Tip:</b> Vedľajšie vydania s '*' sú v súčasnosti plne podporované Red Hat."
 
 #: ../data/rh_register.glade.h:152
 msgid ""
@@ -2136,6 +2428,9 @@ msgid ""
 "updated, this system will always be equivalent to the latest minor release "
 "in the main 'Red Hat Enterprise Linux x' software channel."
 msgstr ""
+"<b>Všetky dostupné aktualizácie</b> sa budú poskytovať tomuto systému. Ak "
+"bude systém aktualizovaný, bude vždy rovnocenný najnovšiemu vydaniu v "
+"hlavnom softvérovom kanáli 'Red Hat Enterprise Linux x'."
 
 #: ../data/rh_register.glade.h:153
 msgid ""
@@ -2143,6 +2438,9 @@ msgid ""
 "system will always be equivalent to the latest minor release in the main "
 "'Red Hat Enterprise Linux x' software channel."
 msgstr ""
+"Všetky dostupné aktualizácie sa budú poskytovať tomuto systému. Ak bude "
+"systém aktualizovaný, bude vždy rovnocenný najnovšiemu vydaniu v hlavnom "
+"softvérovom kanáli 'Red Hat Enterprise Linux x'."
 
 #: ../data/rh_register.glade.h:154
 msgid ""
@@ -2150,16 +2448,21 @@ msgid ""
 "recent minor release and <b>cannot</b> be limited to an older release "
 "version."
 msgstr ""
+"<b>Upozornenie:</b> Pri použití tejto možnosti bude váš systém vždy "
+"najnovším vedľajším vydaním a <b>nemôže</b> byť obmedzený na staršiu verziu "
+"vydania."
 
 #: ../data/rh_register.glade.h:155
 msgid ""
 "Warning: Using this option, your system will always be the most recent minor "
 "release and cannot be limited to an older release version."
 msgstr ""
+"Upozornenie: Pri použití tejto možnosti bude váš systém vždy najnovším "
+"vedľajším vydaním a nemôže byť obmedzený na staršiu verziu vydania."
 
 #: ../data/rh_register.glade.h:156
 msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr ""
+msgstr "<b>Počas inštalácie bol váš systém zaregistrovaný na aktualizácie.</b>"
 
 #: ../data/rh_register.glade.h:157
 msgid ""
@@ -2171,21 +2474,449 @@ msgid ""
 "circled below.) Clicking on this icon, when available, will guide you "
 "through applying any updates that are available:"
 msgstr ""
+"Váš systém je pripravený prijímať aktualizácie softvéru, ktoré ho budú "
+"udržovať zabezpečený a podporovaný.\n"
+"\n"
+"Keď sa v oznamovacej oblasti na pracovnej ploche objaví ikona balíka, budete "
+"vedieť, že sú k dispozícii aktualizácie softvéru (zvyčajne v pravom hornom "
+"rohu, zakrúžkované nižšie). Kliknutím na túto ikonu, ak je k dispozícii, "
+"budete prevedení aplikovaním všetkých dostupných aktualizácií:"
 
 #: ../data/rh_register.glade.h:160
 msgid "icon of aplet"
-msgstr ""
+msgstr "ikona apletu"
 
 #: ../rhn_register.desktop.in.h:1
 msgid "RHN Registration"
-msgstr "registračnéČíslo"
+msgstr "Registrácia RHN"
 
 #: ../rhn_register.desktop.in.h:2
 msgid ""
 "Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
 "Network Classic"
 msgstr ""
+"Registrovať sa pre aktualizácie softvéru z Spacewalk/Red Hat Satellite/Red "
+"Hat Network Classic"
 
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 msgstr ""
+"Zaregistrovať sa v Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+
+#~ msgid "Enter your Red Hat Satellite URL."
+#~ msgstr "Zadajte svoju adresu URL Red Hat Satellite."
+
+#~ msgid ""
+#~ "Please enter the location of your Red Hat Satellite server and of its SSL "
+#~ "certificate. The SSL certificate is only required if you will be "
+#~ "connecting over https (recommended)."
+#~ msgstr ""
+#~ "Prosím, zadajte umiestnenie svojho servera Red Hat Satellite a jeho "
+#~ "certifikátu SSL. Certifikát SSL sa vyžaduje, iba ak sa pripájate "
+#~ "prostredníctvom https (odporúčané)."
+
+#~ msgid "Satellite URL:"
+#~ msgstr "Satellite URL:"
+
+#~ msgid "You must enter a valid Satellite URL."
+#~ msgstr "Musíte zadať platnú adresu URL Satellite."
+
+#~ msgid "We are attempting to contact the Red Hat Network server at %s."
+#~ msgstr "Pokúšame sa kontaktovať server Red Hat Network na %s."
+
+#~ msgid ""
+#~ "This assistant will guide you through connecting your system to Red Hat "
+#~ "Satellite to receive software updates, including security updates, to "
+#~ "keep your system supported and compliant.  You will need the following at "
+#~ "this time:\n"
+#~ "\n"
+#~ " * A network connection\n"
+#~ " * Your Red Hat Login & password\n"
+#~ " * The location of a Red Hat Satellite or Proxy\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Tento asistent vás prevedie pripojením vášho systému k Red Hat Satellite "
+#~ "na prijímanie softvérových aktualizácií vrátane bezpečnostných "
+#~ "aktualizácií, aby bol váš systém podporovaný a súhlasný.  Momentálne "
+#~ "budete potrebovať nasledovné:\n"
+#~ "\n"
+#~ " * Sieťové pripojenie\n"
+#~ " * Vaše prihlasovacie meno a heslo Red Hat\n"
+#~ " * Umiestnenie Red Hat Satellite alebo Proxy\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Connecting your system to Red Hat Satellite allows you to take full "
+#~ "advantage of the benefits of a paid subscription, including:"
+#~ msgstr ""
+#~ "Pripájanie vášho systému k Red Hat Satellite vám umožňuje plne využívať "
+#~ "prednosť výhod predplatného vrátane:"
+
+#~ msgid ""
+#~ "Receive the latest software updates, including security updates, keeping "
+#~ "this Red Hat Enterprise Linux system updated and secure."
+#~ msgstr ""
+#~ "Prijímajte najnovšie aktualizácie softvéru vrátane bezpečnostných "
+#~ "aktualizácií, aby bol tento Red Hat Enterprise Linux systém aktuálny a "
+#~ "zabezpečený."
+
+#~ msgid ""
+#~ "Tip: Red Hat values your privacy: http://www.redhat.com/legal/"
+#~ "privacy_statement.html"
+#~ msgstr ""
+#~ "Tip: Red Hat si cení vaše súkromie: http://www.redhat.com/legal/"
+#~ "privacy_statement.html"
+
+#~ msgid ""
+#~ "Are you sure you don't want to connect your system to Red Hat Satellite? "
+#~ "You'll miss out on the benefits of a Red Hat Enterprise Linux "
+#~ "subscription:\n"
+#~ msgstr ""
+#~ "Naozaj nechcete pripojiť svoj systém k Red Hat Satellite? Prídete o "
+#~ "výhody predplatného Red Hat Enterprise Linux:\n"
+
+#~ msgid ""
+#~ "You will not be able to take advantage of these subscription privileges "
+#~ "without connecting your system to Red Hat Satellite.\n"
+#~ msgstr ""
+#~ "Nebudete môcť využívať tieto výhody predplatného bez pripojenia vášho "
+#~ "systému k Red Hat Satellite.\n"
+
+#~ msgid ""
+#~ "Please enter your login information for the %s Red Hat Network "
+#~ "Satellite:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Prosím, zadajte svoje prihlasovacie údaje pre %s Red Hat Network "
+#~ "Satellite:\n"
+#~ "\n"
+
+#~ msgid "Red Hat Login:"
+#~ msgstr "Prihlasovacie meno Red Hat:"
+
+#~ msgid ""
+#~ "Tip: Forgot your login or password?  Contact your Satellite's "
+#~ "Organization Administrator."
+#~ msgstr ""
+#~ "Tip: Zabudli ste svoje prihlasovacie meno alebo heslo?  Kontaktujte "
+#~ "administrátora Satellite vašej organizácie."
+
+#~ msgid ""
+#~ "A Profile Name is a descriptive name that you choose to identify this "
+#~ "System Profile on the Red Hat Satellite web pages. Optionally, include a "
+#~ "computer serial or identification number."
+#~ msgstr ""
+#~ "Meno profilu je popisujúci názov, ktorý zvolíte na rozpoznanie tohoto "
+#~ "systémového profilu na webových stránkach Red Hat Satellite. Môže "
+#~ "obsahovať sériové alebo identifikačné číslo počítača."
+
+#~ msgid "Send Profile Information to Red Hat Satellite"
+#~ msgstr "Odoslať informácie profilu do Red Hat Satellite"
+
+#~ msgid ""
+#~ "We are finished collecting information for the System Profile.\n"
+#~ "\n"
+#~ "Press \"Next\" to send this System Profile to Red Hat Satellite.  Click "
+#~ "\"Cancel\" and no information will be sent.  You can run the registration "
+#~ "program later by typing `rhn_register` at the command line."
+#~ msgstr ""
+#~ "Dokončili sme zhromažďovanie informácií pre systémový profil.\n"
+#~ "\n"
+#~ "Stlačte \"Ďalej\" na odoslanie systémového profilu do Red Hat Satellite.  "
+#~ "Kliknite na \"Zrušiť\" a nebudú odoslané žiadne informácie.  Registračný "
+#~ "program môžete spustiť neskôr zadaním `rhn_register` do príkazového "
+#~ "riadku."
+
+#~ msgid "Sending Profile to Red Hat Satellite"
+#~ msgstr "Odosielanie profilu do Red Hat Satellite"
+
+#~ msgid ""
+#~ "You may now run '%s update' from this system's command line to get the "
+#~ "latest software updates from Red Hat Satellite. You will need to run this "
+#~ "periodically to get the latest updates. Alternatively, you may configure "
+#~ "this system for automatic software updates (also known as 'auto errata "
+#~ "update') via the Red Hat Satellite web interface.  (Instructions for this "
+#~ "are in chapter 6 of the RHN Reference Guide, available from the 'Help' "
+#~ "button in the main Red Hat Network Satellite web interface.)"
+#~ msgstr ""
+#~ "Teraz môžete spustiť '%s update' z príkazového riadku tohto systému na "
+#~ "získanie najnovších aktualizácií softvéru od Red Hat Satellite. Budete to "
+#~ "musieť pravidelne spúšťať, aby ste získali najnovšie aktualizácie. Alebo "
+#~ "tento systém môžete nakonfigurovať na automatické aktualizácie softvéru "
+#~ "(tiež známe ako 'auto errata update') cez webové rozhranie Red Hat "
+#~ "Satellite.  (Pokyny sú uvedené v kapitole 6 referenčnej príručky RHN, k "
+#~ "dispozícii prostredníctvom tlačidla 'Help' v hlavnom webovom rozhraní Red "
+#~ "Hat Network Satellite.)"
+
+#~ msgid ""
+#~ "The installation number %s was activated during this system's initial "
+#~ "connection to Red Hat Satellite."
+#~ msgstr ""
+#~ "Inštalačné číslo %s bolo aktivované počas počiatočného pripojenia tohto "
+#~ "systému k Red Hat Satellite."
+
+#~ msgid ""
+#~ "Subscriptions have been activated for the following Red Hat products/"
+#~ "services:"
+#~ msgstr "Aktivovali sa predplatné pre nasledujúce produkty/služby Red Hat:"
+
+#~ msgid ""
+#~ "Warning: Only installed product listed above will receive updates and "
+#~ "support. If you would like to receive updates for additional products, "
+#~ "please login to your satellite web interface and subscribe this system to "
+#~ "the appropriate software channels. See Kbase article for more details. "
+#~ "(http://kbase.redhat.com/faq/docs/DOC-11313)"
+#~ msgstr ""
+#~ "Upozornenie: Aktualizácie a podporu bude dostávať iba nainštalovaný "
+#~ "produkt uvedený vyššie. Ak by ste chceli dostávať aktualizácie pre ďalšie "
+#~ "produkty, prihláste sa do svojho webového rozhrania satellite a prihláste "
+#~ "tento systém k príslušným softvérovým kanálom. Viac informácií nájdete v "
+#~ "článku Kbase. (http://kbase.redhat.com/faq/docs/DOC-11313)"
+
+#~ msgid ""
+#~ "This system was unable to subscribe to any software channels. Your system "
+#~ "will not receive any software updates to keep it secure and supported. "
+#~ "Contact your Satellite administrator about this problem. Once you make "
+#~ "the appropriate active subscriptions available in your account, you may "
+#~ "browse to this system's profile in the RHN web interface and subscribe "
+#~ "this system to software channels via the software > software channels tab."
+#~ msgstr ""
+#~ "Tento systém nebol schopný sa prihlásiť k žiadnym softvérovým kanálom. "
+#~ "Váš systém nedostane žiadne aktualizácie softvéru, aby bol zabezpečený a "
+#~ "podporovaný. Obráťte sa na svojho administrátora Satellite s týmto "
+#~ "problémom. Keď vo svojom účte sprístupníte príslušné aktívne predplatné, "
+#~ "môžete prejsť na profil tohto systému vo webovom rozhraní RHN a prihlásiť "
+#~ "tento systém k softvérovým kanálom cez kartu softvér > softvérové kanály."
+
+#~ msgid ""
+#~ "Depending on what Red Hat Satellite modules are associated with a system, "
+#~ "you'll enjoy different benefits. The following are the Red Hat Satellite "
+#~ "modules associated with this system:"
+#~ msgstr ""
+#~ "V závislosti od toho, aké moduly Red Hat Satellite sú so systémom "
+#~ "spojené, získate rôzne výhody. Nasledovné sú moduly Red Hat Satellite "
+#~ "spojené s týmto systémom:"
+
+#~ msgid ""
+#~ "This system was unable to be associated with the following RHN module(s) "
+#~ "because there were insufficient subscriptions available in your account:"
+#~ msgstr ""
+#~ "Tento systém sa nemohol spojiť s nasledujúcim modulom(i) RHN, pretože vo "
+#~ "vašom účte neboli k dispozícii dostačujúce predplatné:"
+
+#~ msgid ""
+#~ "Management module: automatic updates, systems grouping, systems "
+#~ "permissions, system package profiling, bare-metal provisioning, existing "
+#~ "state provisioning, rollbacks, configuration management"
+#~ msgstr ""
+#~ "Modul správy: automatické aktualizácie, zoskupenie systémov, povolenia "
+#~ "systémov, profilovanie systémových balíkov, zabezpečovanie bare-metal, "
+#~ "existujúci stav zabezpečovania, vrátenie vykonaných zmien, správa "
+#~ "konfigurácie"
+
+#~ msgid ""
+#~ "Virtualization module: software updates for a limited number of virtual "
+#~ "guests on this system."
+#~ msgstr ""
+#~ "Virtualizačný modul: aktualizácie softvéru pre obmedzený počet "
+#~ "virtuálnych hostí v tomto systéme."
+
+#~ msgid ""
+#~ "<b>Warning:</b> Any guest systems you create on this system and register "
+#~ "to RHN will consume Red Hat Enterprise Linux subscriptions beyond this "
+#~ "host system's subscription. You will need to: (1) make a virtualization "
+#~ "system entitlement available and (2) apply that system entitlement to "
+#~ "this system in RHN's web interface if you do not want virtual guests of "
+#~ "this system to consume additional subscriptions."
+#~ msgstr ""
+#~ "<b>Upozornenie:</b> Všetky hosťovské systémy, ktoré vytvoríte v tomto "
+#~ "systéme a zaregistrujete sa na RHN, budú využívať predplatné Red Hat "
+#~ "Enterprise Linux mimo predplatného tohto hostiteľského systému. Budete "
+#~ "musieť: (1) sprístupniť oprávnenie virtualizačného systému a (2) uplatniť "
+#~ "toto systémové oprávnenie na tento systém vo webovom rozhraní RHN, ak "
+#~ "nechcete, aby virtuálni hostia tohto systému spotrebovávali ďalšie "
+#~ "predplatné."
+
+#~ msgid ""
+#~ "This system was unable to be associated with any RHN service level "
+#~ "modules. This system will not receive any software updates to keep it "
+#~ "secure and supported. Contace your Satellite administrator about this "
+#~ "problem. Once you make the appropriate active subscriptions available in "
+#~ "your account, you may browse to this system's profile in the RHN web "
+#~ "interface, delete the profile, and re-connect this system to Red Hat "
+#~ "Satellite."
+#~ msgstr ""
+#~ "Tento systém sa nemohol spojiť so žiadnymi modulmi úrovne služieb RHN. "
+#~ "Tento systém nebude dostávať žiadne aktualizácie softvéru, aby bol "
+#~ "zabezpečený a podporovaný. Obráťte sa na svojho administrátora Satellite "
+#~ "s týmto problémom. Keď vo svojom účte sprístupníte príslušné aktívne "
+#~ "predplatné, môžete prejsť na profil tohto systému vo webovom rozhraní "
+#~ "RHN, vymazať profil a znova pripojiť tento systém k Red Hat Satellite."
+
+#~ msgid ""
+#~ "Universal default activation key detected\n"
+#~ "A universal default activation key was detected in your account. This "
+#~ "means that a set of properties (software channel subscriptions, package "
+#~ "installations, system group memberships, etc.) for your system's "
+#~ "connection to Red Hat Satellite or Red Hat Satellite Proxyhave been "
+#~ "determined by the activation key rather than your installation number.  "
+#~ "You may also refer to the RHN Reference Guide, section 6.4.6 for more "
+#~ "details about activation keys (http://access.redhat.com/knowledge/docs/"
+#~ "Red_Hat_Network/)\n"
+#~ "Universal Default activation key: %s"
+#~ msgstr ""
+#~ "Bol zistený univerzálny predvolený aktivačný kľúč\n"
+#~ "Vo vašom účte bol zistený univerzálny predvolený aktivačný kľúč. To "
+#~ "znamená, že súbor vlastností (predplatné softvérových kanálov, inštalácie "
+#~ "balíkov, členstvá v systémových skupinách atď.) pre pripojenie vášho "
+#~ "systému k Red Hat Satellite alebo Red Hat Satellite Proxy boli určené "
+#~ "skôr pomocou aktivačného kľúča než podľa vášho inštalačného čísla "
+#~ "inštalácie.  Viac podrobností o aktivačných kľúčoch nájdete v referenčnej "
+#~ "príručke RHN, oddiel 6.4.6 (http://access.redhat.com/knowledge/docs/"
+#~ "Red_Hat_Network/)\n"
+#~ "Univerzálny predvolený aktivačný kľúč: %s"
+
+#~ msgid ""
+#~ "We can't contact the Red Hat Satellite.\n"
+#~ "\n"
+#~ "Double check the location provided - is '%s' correct?\n"
+#~ "If not, you can correct it and try again.\n"
+#~ "\n"
+#~ "Make sure that the network connection on this system is operational.\n"
+#~ "\n"
+#~ "This system will not be able to successfully receive software updates "
+#~ "from Red Hat without connecting to a Red Hat Satellite server"
+#~ msgstr ""
+#~ "Nemôžeme kontaktovať Red Hat Satellite.\n"
+#~ "\n"
+#~ "Prekontrolujte poskytnuté umiestnenie - je '%s' správne?\n"
+#~ "Ak nie, môžete ho opraviť a skúsiť znova.\n"
+#~ "\n"
+#~ "Uistite sa, či je sieťové pripojenie na tomto systéme funkčné.\n"
+#~ "\n"
+#~ "Tento systém nebude schopný úspešne prijímať aktualizácie softvéru od Red "
+#~ "Hat bez pripojenia k serveru Red Hat Satellite"
+
+#~ msgid ""
+#~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
+#~ "\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the Red "
+#~ "Hat Satellite server at <b>%s</b>. You may want to double-check that you "
+#~ "have provided a valid certificate file. Are you sure you have provided "
+#~ "the correct certificate, and that the certificate file has not been "
+#~ "corrupted?\n"
+#~ "\n"
+#~ "Please try again with a different certificate file."
+#~ msgstr ""
+#~ "<b><span size=\"16000\">Nekompatibilný súbor certifikátu</span></b>\n"
+#~ "\n"
+#~ "Certifikát, ktorý ste poskytli <b>%s</b>, nie je kompatibilný so serverom "
+#~ "Red Hat Satellite na <b>%s</b>. Možno budete chcieť znova skontrolovať, "
+#~ "či ste poskytli platný súbor certifikátu. Ste si istí, že ste poskytli "
+#~ "správny certifikát a že súbor certifikátu nebol poškodený?\n"
+#~ "\n"
+#~ "Prosím, skúste to znova s iným súborom certifikátu."
+
+#~ msgid ""
+#~ "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
+#~ "up2date. You can either make the serverURL use http instead of https, or "
+#~ "you can download the SSL cert from your Satellite, place it in /usr/share/"
+#~ "rhn, and ensure sslCACert points to it."
+#~ msgstr ""
+#~ "Prosím overte hodnoty sslCACert a serverURL v /etc/sysconfig/rhn/up2date. "
+#~ "Môžete buď nastaviť, aby serverURL používal http namiesto https, alebo "
+#~ "môžete stiahnuť certifikát SSL zo svojho Satellite, umiestniť ho do /usr/"
+#~ "share/rhn a zaistiť, aby sslCACert naň ukazoval."
+
+#~ msgid ""
+#~ "Problem registering system.\n"
+#~ "\n"
+#~ "A universal default activation key limits the number of systems which can "
+#~ "connect to the RHN organization associated with your login. To allow this "
+#~ "system to connect, please contact your RHN organization administrator to "
+#~ "increase the number of systems allowed to connect or to disable this "
+#~ "universal default activation key. More details can be found in Red Hat "
+#~ "Knowledgebase Article #7924 at http://kbase.redhat.com/faq/FAQ_61_7924."
+#~ "shtm "
+#~ msgstr ""
+#~ "Problém s registráciou systému.\n"
+#~ "\n"
+#~ "Univerzálny predvolený aktivačný kľúč obmedzuje počet systémov, ktoré sa "
+#~ "môžu pripojiť k organizácii RHN spojenej s vaším prihlasovacím menom. Ak "
+#~ "chcete povoliť pripojenie tohto systému, kontaktujte svojho "
+#~ "administrátora organizácie RHN, aby sa zvýšil počet systémov, ktoré sa "
+#~ "môžu pripojiť, alebo zakázať tento univerzálny predvolený aktivačný kľúč. "
+#~ "Viac podrobností nájdete v článku Red Hat Knowledgebase #7924 at http://"
+#~ "kbase.redhat.com/faq/FAQ_61_7924.shtm "
+
+#~ msgid "ERROR: can not find RHNS CA file"
+#~ msgstr "CHYBA: nemožno nájsť súbor RHNS CA"
+
+#~ msgid "You must run the RHN registration program as root."
+#~ msgstr "Registračný program RHN·musíte spúšťať ako správca systému."
+
+#~ msgid ""
+#~ "\n"
+#~ "Red Hat Network Classic is not supported.\n"
+#~ "To register with Red Hat Subscription Management please run:\n"
+#~ "\n"
+#~ "    subscription-manager register --auto-attach\n"
+#~ "\n"
+#~ "Get more information at access.redhat.com/knowledge\n"
+#~ "    "
+#~ msgstr ""
+#~ "\n"
+#~ "Red Hat Network Classic nie je podporované.\n"
+#~ "Pre registrovanie s Red Hat Subscription Management spustite:\n"
+#~ "\n"
+#~ "    subscription-manager register --auto-attach\n"
+#~ "\n"
+#~ "Viac informácií získate na access.redhat.com/knowledge\n"
+#~ "    "
+
+#~ msgid ""
+#~ "\n"
+#~ "    Your organization does not have enough Management entitlements to "
+#~ "register this\n"
+#~ "    system to Red Hat Satellite. Please notify your organization "
+#~ "administrator of this error.\n"
+#~ "    You should be able to register this system after your organization "
+#~ "frees existing\n"
+#~ "    or purchases additional entitlements. Additional entitlements may be "
+#~ "purchased by your\n"
+#~ "    organization administrator by logging into Red Hat Network Classic "
+#~ "and visiting\n"
+#~ "    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
+#~ "\n"
+#~ "    A common cause of this error code is due to having mistakenly setup "
+#~ "an\n"
+#~ "    Activation Key which is set as the universal default.  If an "
+#~ "activation key is set\n"
+#~ "    on the account as a universal default, you can disable this key and "
+#~ "retry to avoid\n"
+#~ "    requiring a Management entitlement."
+#~ msgstr ""
+#~ "\n"
+#~ "    Vaša organizácia nemá dostatočné oprávnenia správy na registrovanie "
+#~ "tohto systému\n"
+#~ "    v Red Hat Satellite. Prosím, informujte svojho administrátora "
+#~ "organizácie o tejto chybe.\n"
+#~ "    Mali by ste byť schopní zaregistrovať tento systém potom, ako vaša "
+#~ "organizácia uvoľní\n"
+#~ "    existujúce alebo zakúpi ďalšie oprávnenia. Ďalšie oprávnenia môžu "
+#~ "byť  zakúpené\n"
+#~ "    administrátorom vašej organizácie prihlásením sa do Red Hat Network "
+#~ "Classic\n"
+#~ "    a návštevou stánky 'Spáva predplatného' v sekcii 'Vaše RHN' v RHN.\n"
+#~ "\n"
+#~ "    Bežnou príčinou tohto chybového kódu je nesprávne nastavenie "
+#~ "aktivačného\n"
+#~ "    kľúča, ktorý je nastavený ako univerzálny predvolený.  Ak je "
+#~ "aktivačný kľúč nastavený\n"
+#~ "    na účte ako univerzálny predvolený, môžete tento kľúč zakázať a "
+#~ "skúsiť znova,\n"
+#~ "    aby ste sa vyhli požadovaniu oprávnenia správy."
+
+#~ msgid "Attempting to run more than one instance of rhn_check. Exiting.\n"
+#~ msgstr ""
+#~ "Pokúšanie sa o spustenie viac ako jednej inštancie rhn_check. Ukončenie.\n"

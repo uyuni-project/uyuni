@@ -34,7 +34,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -57,7 +57,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     private TaskomaticApi taskomaticMock;
 
     {
-        context().setImposteriser(ClassImposteriser.INSTANCE);
+        context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Override

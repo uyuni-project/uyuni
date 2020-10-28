@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:44+0200\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
 "PO-Revision-Date: 2018-03-16 12:50+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -25,11 +25,52 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "неповний ключ розпізнавання на проксі: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "у розпізнаванні на проксі-сервері відмовлено"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Отримано неприпустимий запит (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Під час роботи «%s» отримано\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Некоректна адреса %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -42,11 +83,13 @@ msgstr ""
 "адміністратора вашої організації."
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr "Вашої системи не знайдено у базі даних RHN"
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+#, fuzzy
+msgid "ISS is disabled on this server."
 msgstr "ISS вимкнено для цього satellite."
 
 #: ../server/handlers/sat/auth.py:50
@@ -65,8 +108,8 @@ msgid "Expected a package, not: %s"
 msgstr "Мало бути вказано пакунок, а не: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr "Проксі-сервіс Spacewalk не включений для профілю сервера: «%s»"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
@@ -109,11 +152,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Вітальне повідомлення Red Hat Satellite"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Red Hat Satellite Privacy Statement"
+#, fuzzy
+msgid "Privacy Statement"
 msgstr "Угода щодо конфіденційності Red Hat Satellite"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
@@ -166,110 +211,6 @@ msgstr ""
 "                   На цьому сервері вимкнено обліковий запис %s.\n"
 "                   Щоб дізнатися більше, будь ласка, зверніться до "
 "адміністратора вашої організації."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-"Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені "
-"адміністратора (root)"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Службу не увімкнено для профілю системи: «%s»"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Підтримки архітектури «%s» не передбачено"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Із ключем «%s» пов’язано декілька базових каналів"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Конфлікт основних каналів"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Не вдалося додати сервер до групи %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Перевищено максимальну кількість використано %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Підтримки стосування повторних реєстраційних ключів із різними базовими "
-"прив’язками не передбачено"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Не вдалося знайти ключ «%s»"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Ключі з невідповідних установ"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Невідповідність сеансів kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Підтримки стосування повторних реєстраційних ключів не передбачено"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "неповний ключ розпізнавання на проксі: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "у розпізнаванні на проксі-сервері відмовлено"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Отримано неприпустимий запит (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Під час роботи «%s» отримано\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Некоректна адреса %s"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -379,6 +320,17 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+"Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені "
+"адміністратора (root)"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Службу не увімкнено для профілю системи: «%s»"
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -388,6 +340,57 @@ msgstr "Надіслано запит щодо некоректного паку
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "Пакунок не знайдено"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Підтримки архітектури «%s» не передбачено"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Із ключем «%s» пов’язано декілька базових каналів"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Конфлікт основних каналів"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Не вдалося додати сервер до групи %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Перевищено максимальну кількість використано %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Підтримки стосування повторних реєстраційних ключів із різними базовими "
+"прив’язками не передбачено"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Не вдалося знайти ключ «%s»"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Ключі з невідповідних установ"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Невідповідність сеансів kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Підтримки стосування повторних реєстраційних ключів не передбачено"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -1444,12 +1447,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -1966,7 +1970,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2113,3 +2117,18 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#~ msgid "Your system was not found in the RHN database"
+#~ msgstr "Вашої системи не знайдено у базі даних RHN"
+
+#~ msgid "ISS is disabled on this satellite."
+#~ msgstr "ISS вимкнено для цього satellite."
+
+#~ msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
+#~ msgstr "Проксі-сервіс Spacewalk не включений для профілю сервера: «%s»"
+
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr "Вітальне повідомлення Red Hat Satellite"
+
+#~ msgid "Red Hat Satellite Privacy Statement"
+#~ msgstr "Угода щодо конфіденційності Red Hat Satellite"

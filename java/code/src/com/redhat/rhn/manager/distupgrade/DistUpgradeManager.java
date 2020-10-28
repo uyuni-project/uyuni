@@ -106,8 +106,7 @@ public class DistUpgradeManager extends BaseManager {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findTargetProducts(long productId) {
-        SelectMode m = ModeFactory.getMode("distupgrade_queries",
-                "find_target_products");
+        SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_target_products");
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("product_id", productId);
         return m.execute(params);
@@ -121,8 +120,7 @@ public class DistUpgradeManager extends BaseManager {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findSourceProducts(long productId) {
-        SelectMode m = ModeFactory.getMode("distupgrade_queries",
-                "find_source_products");
+        SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_source_products");
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("product_id", productId);
         return m.execute(params);
@@ -137,13 +135,11 @@ public class DistUpgradeManager extends BaseManager {
      * @return list of channel DTOs
      */
     @SuppressWarnings("unchecked")
-    public static List<EssentialChannelDto> getRequiredChannels(
-            SUSEProductSet productSet, long baseChannelID) {
+    public static List<EssentialChannelDto> getRequiredChannels(SUSEProductSet productSet, long baseChannelID) {
         List<Long> productIDs = productSet.getProductIDs();
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("base_channel_id", baseChannelID);
-        SelectMode m = ModeFactory.getMode("distupgrade_queries",
-                    "channels_required_for_product_set");
+        SelectMode m = ModeFactory.getMode("distupgrade_queries", "channels_required_for_product_set");
         return m.execute(params, productIDs);
     }
 
@@ -157,13 +153,11 @@ public class DistUpgradeManager extends BaseManager {
      * @return base channel
      */
     @SuppressWarnings("unchecked")
-    public static EssentialChannelDto getProductBaseChannelDto(long productID,
-            ChannelArch arch) {
+    public static EssentialChannelDto getProductBaseChannelDto(long productID, ChannelArch arch) {
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("pid", productID);
         params.put("channel_arch_id", arch.getId());
-        SelectMode m = ModeFactory.getMode("Channel_queries",
-                    "suse_base_channels_for_suse_product");
+        SelectMode m = ModeFactory.getMode("Channel_queries", "suse_base_channels_for_suse_product");
         List<EssentialChannelDto> channels = makeDataResult(params, null, null, m);
         EssentialChannelDto ret = null;
         if (channels.size() > 0) {
@@ -184,8 +178,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param user user
      * @return base channel
      */
-    public static Channel getProductBaseChannel(long productID, ChannelArch arch,
-            User user) {
+    public static Channel getProductBaseChannel(long productID, ChannelArch arch, User user) {
         Channel ret = null;
         EssentialChannelDto channelDto = getProductBaseChannelDto(productID, arch);
         if (channelDto != null) {
@@ -201,8 +194,7 @@ public class DistUpgradeManager extends BaseManager {
         return ret;
     }
 
-    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR =
-            new Comparator<SUSEProduct>() {
+    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR = new Comparator<SUSEProduct>() {
         @Override
         public int compare(SUSEProduct o1, SUSEProduct o2) {
             int result = new RpmVersionComparator().compare(
@@ -235,8 +227,7 @@ public class DistUpgradeManager extends BaseManager {
                 return i;
             }
             else {
-                return PRODUCT_LIST_VERSION_COMPARATOR
-                        .compare(tgt2.getAddonProducts(), tgt1.getAddonProducts());
+                return PRODUCT_LIST_VERSION_COMPARATOR.compare(tgt2.getAddonProducts(), tgt1.getAddonProducts());
             }
         });
         return addMissingChannels(migrationTargets, arch, user);
@@ -251,8 +242,7 @@ public class DistUpgradeManager extends BaseManager {
             if (baseChannel == null) {
                 // No base channel found
                 target.addMissingChannel(target.getBaseProduct().getFriendlyName());
-                logger.debug("Missing Base Channels for " +
-                        target.getBaseProduct().getFriendlyName());
+                logger.debug("Missing Base Channels for " + target.getBaseProduct().getFriendlyName());
             }
             else {
                 // Check for addon product channels only if base channel is synced
@@ -367,8 +357,8 @@ public class DistUpgradeManager extends BaseManager {
 
                     return Lists.combinations(compatibleExtensionSuccessors).stream();
                 })
-                        .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
-                        .collect(toList());
+                .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
+                .collect(toList());
 
                 for (List<SUSEProduct> combination : combinations) {
                     SUSEProduct base = combination.get(0);
@@ -545,31 +535,27 @@ public class DistUpgradeManager extends BaseManager {
      * @return server object
      * @throws DistUpgradeException in case checks fail
      */
-    public static Server performServerChecks(Long sid, User user)
-            throws DistUpgradeException {
+    public static Server performServerChecks(Long sid, User user) throws DistUpgradeException {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
         if (!server.asMinionServer().isPresent()) {
             // Check if server supports distribution upgrades
             boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
             if (!supported) {
-                throw new DistUpgradeException(
-                        "Dist upgrade not supported for server: " + sid);
+                throw new DistUpgradeException("Dist upgrade not supported for server: " + sid);
             }
 
             // Check if zypp-plugin-spacewalk is installed
             boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
                     "zypp-plugin-spacewalk", server) != null;
             if (!zyppPluginInstalled) {
-                throw new DistUpgradeException(
-                        "Package zypp-plugin-spacewalk is not installed: " + sid);
+                throw new DistUpgradeException("Package zypp-plugin-spacewalk is not installed: " + sid);
             }
         }
         else {
             Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
             if (!minion.get().getOsFamily().equals("Suse")) {
-                throw new DistUpgradeException(
-                        "Dist upgrade only supported for SUSE systems");
+                throw new DistUpgradeException("Dist upgrade only supported for SUSE systems");
             }
         }
 
@@ -581,8 +567,7 @@ public class DistUpgradeManager extends BaseManager {
 
         // Check if there is already a migration in the schedule
         if (ActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
-            throw new DistUpgradeException(
-                    "Another dist upgrade is in the schedule for server: " + sid);
+            throw new DistUpgradeException("Another dist upgrade is in the schedule for server: " + sid);
         }
 
         return server;
@@ -605,8 +590,7 @@ public class DistUpgradeManager extends BaseManager {
             Channel channel = ChannelManager.lookupByLabelAndUser(label, user);
             if (channel.isBaseChannel()) {
                 if (baseChannel != null) {
-                    throw new DistUpgradeException(
-                            "More than one base channel given for dist upgrade");
+                    throw new DistUpgradeException("More than one base channel given for dist upgrade");
                 }
                 baseChannel = channel;
             }
@@ -639,6 +623,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param targetSet set of target products (base product and addons)
      * @param channelIDs IDs of all channels to subscribe
      * @param dryRun perform a dry run
+     * @param allowVendorChange allow vendor change during dist upgrade
      * @param earliest earliest schedule date
      * @return the action ID
      * @throws TaskomaticApiException if there was a Taskomatic error
@@ -646,7 +631,7 @@ public class DistUpgradeManager extends BaseManager {
      */
     public static Long scheduleDistUpgrade(User user, Server server,
             SUSEProductSet targetSet, Collection<Long> channelIDs,
-            boolean dryRun, Date earliest) throws TaskomaticApiException {
+            boolean dryRun, boolean allowVendorChange, Date earliest) throws TaskomaticApiException {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
 
@@ -692,6 +677,7 @@ public class DistUpgradeManager extends BaseManager {
 
         // Set additional attributes
         details.setDryRun(dryRun);
+        details.setAllowVendorChange(allowVendorChange);
         details.setFullUpdate(true);
 
         // Return the ID of the scheduled action
@@ -710,6 +696,7 @@ public class DistUpgradeManager extends BaseManager {
      */
     public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
             List<SUSEProductSet> allMigrationTargets, Optional<Set<String>> missingSuccessorExtensions) {
+
         List<SUSEProductSet> migrationTargets = new LinkedList<SUSEProductSet>();
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.get().getAddonProducts().isEmpty()) {

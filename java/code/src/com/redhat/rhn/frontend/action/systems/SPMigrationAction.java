@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -61,6 +62,7 @@ import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
@@ -96,6 +98,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String BASE_CHANNEL = "baseChannel";
     private static final String CHILD_CHANNELS = "childChannels";
     private static final String TARGET_PRODUCT_SELECTED = "targetProductSelected";
+    private static final String ALLOW_VENDOR_CHANGE = "allowVendorChange";
 
     // Message keys
     private static final String DISPATCH_DRYRUN = "spmigration.jsp.confirm.submit.dry-run";
@@ -143,10 +146,9 @@ public class SPMigrationAction extends RhnAction {
         logger.debug("salt package is up-to-date? " + isSaltUpToDate);
         request.setAttribute(IS_SALT_UP_TO_DATE, isSaltUpToDate);
 
-        // Check if this server supports distribution upgrades
+        // Check if this server supports distribution upgrades via capabilities
         // (for traditional clients only)
-        boolean supported = DistUpgradeManager.isUpgradeSupported(
-                server, ctx.getCurrentUser());
+        boolean supported = isSUSEMinion || DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser());
         logger.debug("Upgrade supported for '" + server.getName() + "'? " + supported);
         request.setAttribute(UPGRADE_SUPPORTED, supported);
 
@@ -165,7 +167,7 @@ public class SPMigrationAction extends RhnAction {
 
         // Check if there is already a migration in the schedule
         Action migration = null;
-        if (supported || isSUSEMinion) {
+        if (supported) {
             migration = ActionFactory.isMigrationScheduledForServer(server.getId());
         }
         request.setAttribute(MIGRATION_SCHEDULED, migration);
@@ -178,6 +180,8 @@ public class SPMigrationAction extends RhnAction {
         boolean dryRun = false;
         boolean goBack = false;
         boolean targetProductSelectedEmpty = false;
+        boolean allowVendorChange = false;
+
         String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
 
         // Read form parameters if dispatching
@@ -190,22 +194,20 @@ public class SPMigrationAction extends RhnAction {
             targetAddonProducts = (Long[]) form.get(ADDON_PRODUCTS);
             targetBaseChannel = (Long) form.get(BASE_CHANNEL);
             targetChildChannels = (Long[]) form.get(CHILD_CHANNELS);
+            allowVendorChange = BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE));
 
             // Get additional flags
-            if (dispatch.equals(LocalizationService.getInstance().getMessage(
-                    DISPATCH_DRYRUN))) {
+            if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
                 dryRun = true;
             }
 
             // flag to know if we are going back or forward in the setup wizard
-            goBack = dispatch.equals(LocalizationService.
-                    getInstance().getMessage(GO_BACK));
+            goBack = dispatch.equals(LocalizationService.getInstance().getMessage(GO_BACK));
         }
 
         // if submitting step 1 (TARGET) but no radio button
         // for target migration selected, return step 1 (TARGET)
-        if (dispatch != null && actionStep.equals(TARGET) &&
-                targetProductSelected == null) {
+        if (dispatch != null && actionStep.equals(TARGET) && targetProductSelected == null) {
             targetProductSelectedEmpty = true;
             dispatch = null;
         }
@@ -215,9 +217,7 @@ public class SPMigrationAction extends RhnAction {
         ActionForward forward = findForward(actionMapping, actionStep, dispatch, goBack);
 
         // Put data to the request
-        if (forward.getName().equals(TARGET) &&
-                (supported || isSUSEMinion) &&
-                migration == null) {
+        if (forward.getName().equals(TARGET) && supported && migration == null) {
             // Find target products
             Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
             if (installedProducts.isEmpty()) {
@@ -225,7 +225,7 @@ public class SPMigrationAction extends RhnAction {
                 logger.debug("Installed products are 'unknown'");
                 return forward;
             }
-
+            installedProducts.ifPresent(pset -> logger.debug(pset.toString()));
             List<SUSEProductSet> migrationTargets = getMigrationTargets(
                     request,
                     installedProducts,
@@ -294,15 +294,14 @@ public class SPMigrationAction extends RhnAction {
         }
         else if (forward.getName().equals(CONFIRM)) {
             // Put product data
-            SUSEProductSet targetProductSet = createProductSet(
-                    targetBaseProduct, targetAddonProducts);
+            SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
 
             request.setAttribute(TARGET_PRODUCTS, targetProductSet);
             request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
+            request.setAttribute(ALLOW_VENDOR_CHANGE, allowVendorChange);
             // Put channel data
-            Channel baseChannel = ChannelFactory.lookupByIdAndUser(
-                    targetBaseChannel, ctx.getCurrentUser());
+            Channel baseChannel = ChannelFactory.lookupByIdAndUser(targetBaseChannel, ctx.getCurrentUser());
             request.setAttribute(BASE_CHANNEL, baseChannel);
             // Add those child channels that will be subscribed
             List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel,
@@ -316,8 +315,7 @@ public class SPMigrationAction extends RhnAction {
         }
         else if (forward.getName().equals(SCHEDULE)) {
             // Create target product set from parameters
-            SUSEProductSet targetProductSet = createProductSet(
-                    targetBaseProduct, targetAddonProducts);
+            SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
 
             // Setup list of channels to subscribe to
             List<Long> channelIDs = new ArrayList<Long>();
@@ -328,13 +326,12 @@ public class SPMigrationAction extends RhnAction {
             Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
             Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
-                    server, targetProductSet, channelIDs, dryRun, earliest);
+                    server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest);
 
             // Display a message to the user
             String product = targetProductSet.getBaseProduct().getFriendlyName();
             String msgKey = dryRun ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
-            String[] msgParams = new String[] {server.getId().toString(),
-                    actionID.toString(), product};
+            String[] msgParams = new String[] {server.getId().toString(), actionID.toString(), product};
             getStrutsDelegate().saveMessage(msgKey, msgParams, request);
             Map<String, Long> params = new HashMap<String, Long>();
             params.put("sid", server.getId());
@@ -363,12 +360,10 @@ public class SPMigrationAction extends RhnAction {
             forward = mapping.findForward(SETUP);
         }
         else if (wizardStep.equals(SETUP)) {
-            forward = goBack ?
-                    mapping.findForward(TARGET) : mapping.findForward(CONFIRM);
+            forward = goBack ? mapping.findForward(TARGET) : mapping.findForward(CONFIRM);
         }
         else if (wizardStep.equals(CONFIRM)) {
-            forward = goBack ?
-                    mapping.findForward(SETUP) : mapping.findForward(SCHEDULE);
+            forward = goBack ? mapping.findForward(SETUP) : mapping.findForward(SCHEDULE);
         }
         else {
             // Unknown wizard step, go to setup
@@ -393,8 +388,7 @@ public class SPMigrationAction extends RhnAction {
         List<Channel> channels = baseChannel.getAccessibleChildrenFor(user);
 
         // Sort channels by name
-        Collections.sort(channels,
-                new DynamicComparator("name", RequestContext.SORT_ASC));
+        Collections.sort(channels, new DynamicComparator("name", RequestContext.SORT_ASC));
 
         List<ChildChannelDto> childChannels = new ArrayList<ChildChannelDto>();
         for (int i = 0; i < channels.size(); i++) {
@@ -422,12 +416,10 @@ public class SPMigrationAction extends RhnAction {
     @SuppressWarnings("unchecked")
     private List<EssentialChannelDto> getChannelDTOs(RequestContext ctx,
             Channel baseChannel, List<Long> channelIDs) {
-        List<Channel> childChannels = baseChannel.getAccessibleChildrenFor(
-                ctx.getCurrentUser());
+        List<Channel> childChannels = baseChannel.getAccessibleChildrenFor(ctx.getCurrentUser());
 
         // Sort channels by name
-        Collections.sort(childChannels,
-                new DynamicComparator("name", RequestContext.SORT_ASC));
+        Collections.sort(childChannels, new DynamicComparator("name", RequestContext.SORT_ASC));
 
         List<EssentialChannelDto> channelDTOs = new ArrayList<EssentialChannelDto>();
         for (Channel child : childChannels) {
@@ -521,7 +513,9 @@ public class SPMigrationAction extends RhnAction {
         List<Long> channelIds = channels.stream().map(Channel::getId).collect(Collectors.toList());
         List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel, channelIds);
 
-        SUSEProduct baseProduct = SUSEProductFactory.lookupByChannelName(baseChannel.getName()).get(0).getRootProduct();
+        // Get name of original base channel if channel is cloned
+        String origBaseChannelName = ChannelManager.getOriginalChannel(baseChannel).getName();
+        SUSEProduct baseProduct = SUSEProductFactory.lookupByChannelName(origBaseChannelName).get(0).getRootProduct();
 
         Server server = ctx.lookupAndBindServer();
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();

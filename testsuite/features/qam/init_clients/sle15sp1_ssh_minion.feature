@@ -30,7 +30,7 @@ Feature: Bootstrap a SLES 15 SP1 Salt SSH Minion
     Given I am on the Systems overview page of this "sle15sp1_ssh_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
 
 @proxy
   Scenario: Check registration on proxy of SLES 15 SP1 SSH minion

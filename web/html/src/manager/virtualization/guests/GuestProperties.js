@@ -16,7 +16,6 @@ import { GuestPropertiesForm } from './properties/guest-properties-form';
 import { GuestPropertiesTraditional } from './properties/guest-properties-traditional';
 import { VirtualizationDomainsCapsApi } from './virtualization-domains-caps-api';
 import { VirtualizationListRefreshApi } from '../virtualization-list-refresh-api';
-import { VirtualizationPoolsListRefreshApi } from '../pools/virtualization-pools-list-refresh-api';
 import { VirtualizationPoolCapsApi } from '../pools/virtualization-pools-capabilities-api';
 
 type Props = {
@@ -58,6 +57,7 @@ export function GuestProperties(props: Props) : React.Node {
   const osTypesLabels = {
     hvm: 'Fully Virtualized',
     xen: 'Para Virtualized',
+    xenpvh: 'PVH',
   };
 
   return (
@@ -67,11 +67,11 @@ export function GuestProperties(props: Props) : React.Node {
           data: networks,
           error: netListError,
         }) => (
-          <VirtualizationPoolsListRefreshApi serverId={props.host.id}>
+          <VirtualizationListRefreshApi serverId={props.host.id} lastRefresh={Date.now()} type="pools">
             {
               ({
-                pools,
-                errors: poolListError,
+                data: pools,
+                error: poolListError,
               }) => (
                 <VirtualizationPoolCapsApi hostId={props.host.id}>
                 {
@@ -209,9 +209,10 @@ export function GuestProperties(props: Props) : React.Node {
                                           name="graphicsType"
                                         >
                                           {
-                                            [{ key: 'vnc', display: 'VNC' }, { key: 'spice', display: 'Spice' }]
+                                            [{ key: 'vnc', display: 'VNC', osTypes: ['hvm', 'xen', 'xenpvh'] },
+                                             { key: 'spice', display: 'Spice', osTypes: ['hvm'] }]
                                               .filter(entry => caps !== undefined
-                                                && caps.devices.graphics.type.includes(entry.key))
+                                                && caps.devices.graphics.type.includes(entry.key) && entry.osTypes.includes(model.osType))
                                               .map(entry => (
                                                 <option key={entry.key} value={entry.key}>
                                                   {entry.display}
@@ -235,7 +236,7 @@ export function GuestProperties(props: Props) : React.Node {
                 </VirtualizationPoolCapsApi>
               )
             }
-          </VirtualizationPoolsListRefreshApi>
+          </VirtualizationListRefreshApi>
         )
       }
     </VirtualizationListRefreshApi>

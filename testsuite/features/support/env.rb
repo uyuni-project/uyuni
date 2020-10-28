@@ -53,7 +53,8 @@ MultiTest.disable_autorun
 Capybara.register_driver(:headless_chrome) do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048] },
-    unexpectedAlertBehaviour: 'accept'
+    unexpectedAlertBehaviour: 'accept',
+    unhandledPromptBehavior: 'accept'
   )
 
   Capybara::Selenium::Driver.new(
@@ -166,6 +167,14 @@ Before('@ceos7_client') do
   skip_this_scenario unless $ceos7_client
 end
 
+Before('@ceos8_minion') do
+  skip_this_scenario unless $ceos8_minion
+end
+
+Before('@ceos8_ssh_minion') do
+  skip_this_scenario unless $ceos8_ssh_minion
+end
+
 Before('@ubuntu1604_minion') do
   skip_this_scenario unless $ubuntu1604_minion
 end
@@ -180,6 +189,14 @@ end
 
 Before('@ubuntu1804_ssh_minion') do
   skip_this_scenario unless $ubuntu1804_ssh_minion
+end
+
+Before('@ubuntu2004_minion') do
+  skip_this_scenario unless $ubuntu2004_minion
+end
+
+Before('@ubuntu2004_ssh_minion') do
+  skip_this_scenario unless $ubuntu2004_ssh_minion
 end
 
 Before('@sle11sp4_ssh_minion') do
@@ -238,6 +255,10 @@ Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.feature.location.file.include? 'minion'
 end
 
+Before('@skip_for_traditional') do |scenario|
+  skip_this_scenario if scenario.feature.location.file.include? 'client'
+end
+
 # do some tests only if we have SCC credentials
 Before('@scc_credentials') do
   skip_this_scenario unless $scc_credentials
@@ -266,6 +287,16 @@ end
 # do test only if HTTP proxy for SUSE Manager is defined
 Before('@server_http_proxy') do
   skip_this_scenario unless $server_http_proxy
+end
+
+# do test only if the registry is available
+Before('@no_auth_registry') do
+  skip_this_scenario unless $no_auth_registry
+end
+
+# do test only if the registry with authentication is available
+Before('@auth_registry') do
+  skip_this_scenario unless $auth_registry
 end
 
 # have more infos about the errors

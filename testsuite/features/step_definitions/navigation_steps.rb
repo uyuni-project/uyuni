@@ -52,14 +52,22 @@ end
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   text.gsub! '$PRODUCT', $product
   # TODO: get rid of this substitution, using another step
+  next if has_content?(text)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
+  next if has_content?("This action's status is: Completed.")
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?("This action's status is: Completed.")
     raise 'Event failed' if has_content?("This action's status is: Failed.")
@@ -68,7 +76,13 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
       STDOUT.puts "#{current} Still waiting for action to complete..."
       last = current
     end
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -78,9 +92,16 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
+  next unless has_content?(text)
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless has_content?(text)
-    evaluate_script 'window.location.reload()'
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
   end
 end
 
@@ -91,12 +112,23 @@ end
 
 Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
   repeat_until_timeout(message: "The #{type} graphical console didn't load") do
-    break unless has_xpath?('.//canvas')
+    break if find(:xpath, '//canvas')
+
+    # If the connection failed try reloading since the VM may not have been ready
+    if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
+      begin
+        accept_prompt do
+          execute_script 'window.location.reload()'
+        end
+      rescue Capybara::ModalNotFound
+        # ignored
+      end
+    end
   end
 end
 
-When(/^I close the window$/) do
-  evaluate_script 'window.close();'
+When(/^I switch to last opened window$/) do
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
 
 #
@@ -153,7 +185,7 @@ end
 
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']"
-  if page.has_xpath?(toggle, wait: 60)
+  if page.has_xpath?(toggle, wait: 5)
     find(:xpath, toggle).click
   end
 end
@@ -175,6 +207,10 @@ When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
   end
 end
 
+When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
+  fill_in arg1, with: $no_auth_registry
+end
+
 #
 # Click on a button
 #
@@ -194,8 +230,12 @@ end
 #
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
-  accept_alert do
-    step %(I click on "#{text}")
+  begin
+    accept_alert do
+      step %(I click on "#{text}")
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
   end
 end
 
@@ -327,16 +367,17 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   end
 end
 
-When(/^I am on the Organizations page$/) do
+Given(/^I am on the Organizations page$/) do
   steps %(
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Organizations"
-    )
+  )
 end
 
-Given(/^I am on the SUSE Products page$/) do
+Given(/^I am on the Products page$/) do
   steps %(
-    When I navigate to "rhn/manager/admin/setup/products" page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
   )
 end
@@ -396,14 +437,14 @@ Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
     When I follow the left menu "Systems > System Groups"
-    )
+  )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Users > User List > Active"
-    )
+  )
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -489,12 +530,22 @@ When(/^I check test channel$/) do
 end
 
 When(/^I check the child channel "([^"]*)"$/) do |channel|
-  raise 'Timeout: Waiting loading child channels' unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
+  find(:xpath, "//i[@class='fa fa-angle-right']").click unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
   checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
   checkbox.set(true)
 end
 
-When(/^I check the custom channel for "([^"]*)"$/) do |client|
+When(/^I check the custom channels for "([^"]*)"$/) do |client|
+  node = get_target(client)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^ubuntu/
+    steps %(
+      When I check the child channel "main"
+      And I check the child channel "main-updates"
+    )
+  elsif os_family =~ /^centos/
+    step %(I check the child channel "DVD")
+  end
   # Both minion and ssh_minion uses the same repositories, so the custom channels
   client.sub! 'ssh_minion', 'minion'
   channel = "Custom Channel for #{client}"
@@ -529,7 +580,7 @@ Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
     And I should see a "About" text
-    )
+  )
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -718,13 +769,6 @@ When(/^I check the first patch in the list$/) do
   step %(I check the first row in the list)
 end
 
-Then(/^I check (a|the) "([^"]*)" patch in the list$/) do |_article, client|
-  steps %(
-    When I select the maximum amount of items per page
-    And I check "#{PATCH_BY_CLIENT[client]}" in the list
-  )
-end
-
 Then(/^I check (a|the) "([^"]*)" package in the list$/) do |_article, client|
   steps %(
     When I enter "#{PACKAGE_BY_CLIENT[client]}" as the filtered package name
@@ -830,20 +874,20 @@ Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
   has_css?("##{arg1}[disabled]")
 end
 
-Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |arg1, arg2|
-  raise "Field #{arg2} with #{arg1} value not found" unless has_field?(arg2, with: arg1)
+Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |text, field|
+  raise "'#{text}' not found in #{field}" unless find_field(field, with: /#{text}/).visible?
 end
 
-Then(/^I should see a "([^"]*)" element in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "Field #{arg1} not found" unless find_field(arg1, match: :first).visible?
+Then(/^I should see a "([^"]*)" field in "([^"]*)" form$/) do |field, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "Field #{field} not found" unless find_field(field, match: :first).visible?
   end
 end
 
-Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "xpath: textarea##{arg1} not found" unless find("textarea##{arg1}", visible: false)
-    raise "css: ##{arg1}-editor not found" unless has_css?("##{arg1}-editor")
+Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "xpath: textarea##{editor} not found" unless find("textarea##{editor}", visible: false)
+    raise "css: ##{editor}-editor not found" unless has_css?("##{editor}-editor")
   end
 end
 
@@ -886,12 +930,11 @@ When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field
 end
 
 When(/^I enter URI, username and password for portus$/) do
-  portus_uri = ENV['PORTUS_URI']
-  portus_username, portus_password = ENV['PORTUS_CREDENTIALS'].split('|')
+  auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
   steps %(
-    When I enter "#{portus_uri}" as "uri"
-    And I enter "#{portus_username}" as "username"
-    And I enter "#{portus_password}" as "password"
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
   )
 end
 
@@ -921,4 +964,8 @@ end
 
 When(/^I select the next maintenance window$/) do
   find(:xpath, "//select[@id='maintenance-window-select']/option", match: :first).select_option
+end
+
+When(/^I enter the server hostname as the redfish server address$/) do
+  step %(I enter "#{$server.full_hostname}:8443" as "powerAddress")
 end

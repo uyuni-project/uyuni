@@ -24,7 +24,7 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.1.12
+Version:        4.1.14
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -104,6 +104,10 @@ fi
 %endif
 
 %posttrans
+systemctl is-active --quiet uyuni-check-database.service && {
+  echo "  Running DB schema upgrade. This may take a while."
+  echo "  Call the following command to see progress: journalctl -f -u uyuni-check-database.service"
+} ||:
 systemctl try-restart uyuni-check-database.service ||:
 
 %files

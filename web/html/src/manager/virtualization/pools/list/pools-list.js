@@ -13,16 +13,17 @@ import { Utils as MessagesUtils } from 'components/messages';
 import { ActionStatus } from 'components/action/ActionStatus';
 import { ModalButton } from 'components/dialog/ModalButton';
 import { ActionConfirm } from 'components/dialog/ActionConfirm';
-import { VirtualizationPoolsListRefreshApi } from '../virtualization-pools-list-refresh-api';
+import { VirtualizationListRefreshApi } from '../../virtualization-list-refresh-api';
 import { VirtualizationPoolsActionApi } from '../virtualization-pools-action-api';
 import { useVirtNotification } from '../../useVirtNotification.js';
+import { HypervisorCheck } from '../../HypervisorCheck';
 
 import type {MessageType} from 'components/messages';
 
 type Props = {
   serverId: string,
-  refreshInterval: number,
   pageSize: number,
+  hypervisor: string,
 };
 
 function poolsInfoToTree(pools: Object) {
@@ -147,8 +148,15 @@ const DeleteActionConfirm = (props) => {
 export function PoolsList(props: Props) {
   const [selected, setSelected] = React.useState({});
   const [errors, setErrors] = React.useState([]);
+  const [lastRefresh, setLastRefresh] = React.useState(Date.now());
 
-  const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors, props.serverId, () => {});
+  const refresh = (type: string) => {
+    if (type === "pool") {
+      setLastRefresh(Date.now());
+    }
+  }
+
+  const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors, props.serverId, refresh);
 
   const actionCallback = (results: Object) => {
     const newActions = Object.keys(results).reduce((actions, poolName) => {
@@ -188,14 +196,15 @@ export function PoolsList(props: Props) {
         messages
       }) => {
         return (
-          <VirtualizationPoolsListRefreshApi
+          <VirtualizationListRefreshApi
             serverId={props.serverId}
-            refreshInterval={props.refreshInterval}
+            lastRefresh={lastRefresh}
+            type="pools"
           >
           {
             ({
-              pools,
-              errors: refreshError,
+              data: pools,
+              error: refreshError,
             }) => {
               function renderPool(pool: Object, renderNameColumn: Function): React.Node {
                 return [
@@ -341,6 +350,7 @@ export function PoolsList(props: Props) {
 
               return (
                 <>
+                  <HypervisorCheck hypervisor={props.hypervisor} />
                   <div className="pull-right btn-group">
                     <LinkButton
                       text={t('Create Pool')}
@@ -387,7 +397,7 @@ export function PoolsList(props: Props) {
               );
             }
           }
-          </VirtualizationPoolsListRefreshApi>
+          </VirtualizationListRefreshApi>
         );
       }
     }

@@ -44,7 +44,7 @@
 %endif
 
 Name:           spacecmd
-Version:        4.1.6
+Version:        4.1.8
 Release:        1%{?dist}
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 %if %{_vendor} == "debbuild"
@@ -146,6 +146,9 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %endif
 %endif
 
+make -C po install PREFIX=$RPM_BUILD_ROOT
+%find_lang spacecmd
+
 %check
 %if 0%{?pylint_check}
 %if 0%{?build_py3}
@@ -157,7 +160,7 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %endif
 %endif
 
-%files
+%files -f spacecmd.lang
 %defattr(-,root,root)
 %{_bindir}/spacecmd
 %{python_sitelib}/spacecmd/

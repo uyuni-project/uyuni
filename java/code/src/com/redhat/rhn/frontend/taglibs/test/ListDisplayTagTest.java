@@ -23,8 +23,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
 import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.Writer;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +49,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         RhnBaseTestCase.disableLocalizationServiceLogging();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);

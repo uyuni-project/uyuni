@@ -1,4 +1,18 @@
+- add new column to rhnactiondup table for allowVendorChange flag
+
+-------------------------------------------------------------------
+Thu Oct 22 11:13:51 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
+- Execute Salt SSH actions in parallel (bsc#1173199)
+- show info message when applying schema upgrade
+
+-------------------------------------------------------------------
+Tue Sep 15 10:53:16 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.13-1
 - support installer update channels during autoinstallation
+- Prevent a deadlock error involving delete_server and update_needed_cache (bsc#1173073)
 
 -------------------------------------------------------------------
 Wed Aug 12 10:57:28 CEST 2020 - jgonzalez@suse.com

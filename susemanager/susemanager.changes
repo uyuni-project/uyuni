@@ -1,3 +1,31 @@
+- Adapt Debian10 bootstrap repository definition for salt on Python 3
+- add --force to mgr-create-bootstrap-repo to enforce generation
+  even when some products are not synchronized
+
+-------------------------------------------------------------------
+Thu Oct 22 11:11:21 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.21-1
+- create bootstrap repo should not flush by default (bsc#1175843)
+- improve detection of base channels for products (bsc#1177478)
+- Add LTSS PIDs for SLE12SP1, SLE12SP2, SLE12SP3 and SLE12SP4 to
+  the bootstrap definitions as some packages from LTSS are
+  required (bsc#1177524)
+- fix logrotate config
+- add missing packages to ubuntu20.04 bootstrap data (bsc#1176629)
+
+-------------------------------------------------------------------
+Fri Sep 25 13:54:36 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.20-1
+- Add missing packages to SLE12 >= SP1 bootstrap data to fix JeOS
+  bootstrap problems (bsc#1176913)
+
+-------------------------------------------------------------------
+Tue Sep 15 10:47:45 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.19-1
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - support installer update channels during autoinstallation
 
 -------------------------------------------------------------------

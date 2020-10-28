@@ -14,11 +14,6 @@
  */
 package com.redhat.rhn.manager.system;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singleton;
-import static java.util.Optional.ofNullable;
-
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -90,6 +85,7 @@ import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemGroupOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.SystemPendingEventDto;
+import com.redhat.rhn.frontend.dto.SystemScheduleDto;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartSessionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -104,7 +100,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -112,8 +107,8 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.utils.Opt;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -138,7 +133,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.Optional.ofNullable;
 
 /**
  * SystemManager
@@ -719,6 +718,11 @@ public class SystemManager extends BaseManager {
         });
 
 
+        // clean known_hosts
+        if (server.asMinionServer().isPresent()) {
+            removeSaltSSHKnownHosts(server);
+        }
+
         // remove server itself
         ServerFactory.delete(server);
 
@@ -726,6 +730,16 @@ public class SystemManager extends BaseManager {
             saltServiceInstance.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
         });
+    }
+
+    private static void removeSaltSSHKnownHosts(Server server) {
+        Optional<MgrUtilRunner.RemoveKnowHostResult> result =
+                saltServiceInstance.removeSaltSSHKnownHost(server.getHostname());
+        boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
+        if (!removed) {
+            log.warn("Hostname " + server.getHostname() + " could not be removed from " +
+                    "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+        }
     }
 
     /**
@@ -1242,19 +1256,34 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Returns the list of systems that are not assigned to a specific maintenance schedule.
+     * Returns the list of systems that are assigned to a specific maintenance schedule
+     *
      * @param user currently logged in user
-     * @param schedule a maintenance schedule
-     * @param pc PageControl
-     * @return list of SystemOverview objects
+     * @param schedule the maintenance schedule
+     * @param pc the {@link PageControl} object
+     * @return list of {@link EssentialServerDto} objects
      */
-    public static DataResult<EssentialServerDto> systemsNotInSchedule(User user, MaintenanceSchedule schedule,
+    public static DataResult<EssentialServerDto> systemsInSchedule(User user, MaintenanceSchedule schedule,
             PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "target_systems_for_maintenance_schedule");
+        SelectMode m = ModeFactory.getMode("System_queries", "systems_in_maintenance_schedule");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("schedule_id", schedule.getId());
         return makeDataResult(params, emptyMap(), pc, m, EssentialServerDto.class);
+    }
+
+    /**
+     * Returns a list of all systems and their assigned schedule details, if any
+     *
+     * @param user the authorized user
+     * @param pc the {@link PageControl} object
+     * @return list of {@link SystemScheduleDto} objects
+     */
+    public static DataResult<SystemScheduleDto> systemListWithSchedules(User user, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "visible_to_user_with_schedules");
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        return makeDataResult(params, emptyMap(), pc, m, SystemScheduleDto.class);
     }
 
     /**

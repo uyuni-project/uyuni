@@ -42,7 +42,10 @@ def compute_image_filename
   when nil
     'Kiwi/POS_Image-JeOS6_head'
   when 'sles15sp2', 'sles15sp2o'
-    'Kiwi/POS_Image-JeOS7_head'
+    # Same kiwi image version is used in case of 4.0 and 4.1
+    'Kiwi/POS_Image-JeOS7_40'
+  when 'sles15sp1', 'sles15sp1o'
+    raise 'This is not supported image version.'
   else
     'Kiwi/POS_Image-JeOS6_head'
   end
@@ -53,7 +56,9 @@ def compute_image_name
   when nil
     'POS_Image_JeOS6_head'
   when 'sles15sp2', 'sles15sp2o'
-    'POS_Image_JeOS7_head'
+    'POS_Image_JeOS7_40'
+  when 'sles15sp1', 'sles15sp1o'
+    raise 'This is not supported image version.'
   else
     'POS_Image_JeOS6_head'
   end
@@ -205,4 +210,11 @@ def get_client_type(name)
   else
     'salt'
   end
+end
+
+def repository_exist?(repo)
+  repo_xmlrpc = XMLRPCRepositoryTest.new(ENV['SERVER'])
+  repo_xmlrpc.login('admin', 'admin')
+  repo_list = repo_xmlrpc.repo_list
+  repo_list.include? repo
 end

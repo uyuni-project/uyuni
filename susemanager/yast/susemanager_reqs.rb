@@ -155,9 +155,9 @@ module Yast
       )
       if Ops.get_integer(@f_out, "exit", -1) != 0
         if !Popup.AnyQuestionRichText(
-            _("hostname command failed"),
+            _("Hostname command failed"),
             _(
-              "the execution of 'hostname -f' failed. The product will not install correctly."
+              "The execution of 'hostname -f' failed. The product will not install correctly."
             ),
             40,
             10,
@@ -175,9 +175,9 @@ module Yast
           2
         )
         if !Popup.AnyQuestionRichText(
-            _("illegal FQHN"),
+            _("Illegal FQHN"),
             _(
-              "the FQHN must contain at least 2 dots. The product will not function correctly."
+              "The FQHN must contain at least 2 dots. The product will not function correctly."
             ),
             40,
             10,
@@ -195,9 +195,9 @@ module Yast
           0
         )
         if !Popup.AnyQuestionRichText(
-            _("illegal FQHN"),
+            _("Illegal FQHN"),
             _(
-              "the FQHN must not contain the '_' (undersorce) character. The product will not function correctly."
+              "The FQHN must not contain the '_' (undersorce) character. The product will not function correctly."
             ),
             40,
             10,
@@ -235,9 +235,9 @@ module Yast
         ) !=
           Ops.get_string(@f_out, "stdout", "x")
         if !Popup.AnyQuestionRichText(
-            _("illegal FQHN"),
+            _("Illegal FQHN"),
             _(
-              "the output of 'hostname -f' does not match the real hostname. The product will not install correctly."
+              "The output of 'hostname -f' does not match the real hostname. The product will not install correctly."
             ),
             40,
             10,

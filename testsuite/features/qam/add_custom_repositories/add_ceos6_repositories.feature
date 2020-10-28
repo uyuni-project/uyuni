@@ -5,7 +5,7 @@
 Feature: Adding the CentOS 6 distribution custom repositories
 
   Scenario: Download the iso of CentOS 6 DVD and mount it on the server
-    When I mount as "centos-6-iso" the ISO from "http://schnell.suse.de/CentOS/CentOS-6.5-x86_64-binDVD.iso" in the server
+    When I mount as "centos-6-iso" the ISO from "http://minima-mirror.qa.prv.suse.net/pub/centos/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD1.iso" in the server
 
   Scenario: Add a child channel for CentOS 6 DVD repositories
     Given I am authorized as "admin" with password "admin"
@@ -23,21 +23,21 @@ Feature: Adding the CentOS 6 distribution custom repositories
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "centos-6-iso" as "label"
-    And I enter "https://127.0.0.1/pub/centos-6-iso" as "url"
+    And I enter "http://127.0.0.1/centos-6-iso" as "url"
+    And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
-    And I should see "metadataSigned" as checked
 
-  Scenario: Add the repository to the Custom Channel for <label>
+  Scenario: Add the repository to the custom channel for <label>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 6 DVD"
     And I follow "Repositories" in the content area
     And I select the "centos-6-iso" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the Custom Channel for <label>
+  Scenario: Synchronize the repository in the custom channel for <label>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 6 DVD"
@@ -46,5 +46,5 @@ Feature: Adding the CentOS 6 distribution custom repositories
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
 
-  Scenario: The Custom channel for CentOS 6 has been synced
+  Scenario: The custom channel for CentOS 6 has been synced
     When I wait until the channel "centos-6-iso" has been synced

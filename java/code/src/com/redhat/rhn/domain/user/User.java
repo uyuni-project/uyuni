@@ -602,4 +602,14 @@ public interface User {
      * @param taskoNotifyIn tasko_notify to set
      */
     void setTaskoNotify(boolean taskoNotifyIn);
+
+    /**
+     * @return style web theme value
+     */
+    String getWebTheme();
+
+    /**
+     * @param webThemeIn style web theme to set
+     */
+    void setWebTheme(String webThemeIn);
 }

@@ -61,7 +61,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    When I navigate to "rhn/systems/Overview.do" page
+    When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 

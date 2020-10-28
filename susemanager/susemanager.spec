@@ -23,7 +23,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           susemanager
-Version:        4.1.18
+Version:        4.1.21
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -176,6 +176,10 @@ mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_prefix}/lib/firewalld/services
 %endif
 
+make -C po install PREFIX=$RPM_BUILD_ROOT
+
+%find_lang susemanager
+
 %check
 # we need to build a fake python dir. python did not work with
 # two site-package/spacewalk dirs having different content
@@ -242,7 +246,7 @@ fi
 %postun
 %{insserv_cleanup}
 
-%files
+%files -f susemanager.lang
 %defattr(-,root,root,-)
 %doc COPYING
 %dir %{_prefix}/lib/susemanager

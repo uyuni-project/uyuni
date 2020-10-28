@@ -74,7 +74,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.hibernate.criterion.Restrictions;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -101,7 +101,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     public static Bug createNewPublishedBug(Long id, String summary) {

@@ -41,7 +41,7 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.File;
 import java.time.ZonedDateTime;
@@ -65,7 +65,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         user.addPermanentRole(ORG_ADMIN);
 

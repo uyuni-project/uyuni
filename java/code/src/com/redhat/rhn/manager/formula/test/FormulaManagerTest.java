@@ -43,7 +43,7 @@ import com.suse.utils.Json;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -75,7 +75,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ClassImposteriser.INSTANCE);
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         MockConnection.clear();
         saltServiceMock = mock(SaltService.class);
         manager.setSystemQuery(saltServiceMock);

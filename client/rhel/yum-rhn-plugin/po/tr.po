@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:45+0200\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
 "PO-Revision-Date: 2015-03-17 12:23+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/fedora/language/"
@@ -22,78 +22,98 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../rhnplugin.py:48
-msgid "There was an error communicating with RHN."
+#: ../rhnplugin.py:49
+#, fuzzy, python-brace-format
+msgid "There was an error communicating with {PRODUCT_NAME} ."
 msgstr "RHN ile iletişim kurulurken bir hata oluştu."
 
-#: ../rhnplugin.py:63
-#, fuzzy
-msgid "Red Hat Satellite or RHN Classic support will be disabled."
+#: ../rhnplugin.py:64
+#, fuzzy, python-brace-format
+msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
 msgstr "RHN kanal desteği pasifleştirilecek."
 
 #. If non-root notify user Spacewalk repo not accessible
-#: ../rhnplugin.py:70
+#: ../rhnplugin.py:71
 msgid ""
 "*Note* Spacewalk repositories are not listed below. You must run this "
 "command as root to access Spacewalk repositories."
 msgstr ""
 
-#: ../rhnplugin.py:86
-#, fuzzy
-msgid "There was an error parsing the Red Hat Satellite Proxy settings."
+#: ../rhnplugin.py:87
+#, fuzzy, python-brace-format
+msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
 msgstr "RHN proxy ayarları parçalanırken bir hata meydana geldi."
 
-#: ../rhnplugin.py:98
+#: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
 msgstr ""
 
-#: ../rhnplugin.py:103
+#: ../rhnplugin.py:104
 msgid "Cleaning"
 msgstr "Temizleniyor"
 
-#: ../rhnplugin.py:112
-msgid "Using list of RHN repos from cache"
+#: ../rhnplugin.py:113
+#, python-brace-format
+msgid "Using list of {PRODUCT_NAME} repos from cache"
 msgstr ""
 
-#: ../rhnplugin.py:128
-msgid "This system is not registered with RHN Classic or Red Hat Satellite."
+#: ../rhnplugin.py:129
+#, python-brace-format
+msgid "This system is not registered with RHN Classic or {PRODUCT_NAME}."
 msgstr ""
 
-#: ../rhnplugin.py:129 ../rhnplugin.py:145
+#: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
 msgstr ""
 
-#: ../rhnplugin.py:135
-msgid "RHN channel support will be disabled."
+#: ../rhnplugin.py:136
+#, fuzzy, python-brace-format
+msgid "{PRODUCT_NAME} channel support will be disabled."
 msgstr "RHN kanal desteği pasifleştirilecek."
 
-#: ../rhnplugin.py:139
+#: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."
 msgstr "Bu sistem herhangi bir kanala üye değil."
 
-#: ../rhnplugin.py:144
+#: ../rhnplugin.py:145
+#, python-brace-format
 msgid ""
-"This system may not be registered to RHN Classic or Red Hat Satellite. "
-"SystemId could not be acquired."
+"This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
+"could not be acquired."
 msgstr ""
 
-#: ../rhnplugin.py:157
-msgid "This system is receiving updates from RHN Classic or Red Hat Satellite."
+#: ../rhnplugin.py:158
+#, python-brace-format
+msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
 msgstr ""
 
-#: ../rhnplugin.py:267
+#: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
 msgstr "Paket profil bilgisi gönderilemedi."
 
-#: ../rhnplugin.py:275
+#: ../rhnplugin.py:276
 msgid "Error Message:"
 msgstr "Hata Mesajı:"
 
-#: ../rhnplugin.py:276
+#: ../rhnplugin.py:277
 msgid "Please run rhn_register as root on this client"
 msgstr ""
 
-#: ../rhnplugin.py:355
-#, python-format
-msgid "Missing required login information for RHN: %s"
+#: ../rhnplugin.py:356
+#, python-format, python-brace-format
+msgid "Missing required login information for {PRODUCT_NAME}: %s"
 msgstr ""
+
+#~ msgid "There was an error communicating with RHN."
+#~ msgstr "RHN ile iletişim kurulurken bir hata oluştu."
+
+#, fuzzy
+#~ msgid "Red Hat Satellite or RHN Classic support will be disabled."
+#~ msgstr "RHN kanal desteği pasifleştirilecek."
+
+#, fuzzy
+#~ msgid "There was an error parsing the Red Hat Satellite Proxy settings."
+#~ msgstr "RHN proxy ayarları parçalanırken bir hata meydana geldi."
+
+#~ msgid "RHN channel support will be disabled."
+#~ msgstr "RHN kanal desteği pasifleştirilecek."

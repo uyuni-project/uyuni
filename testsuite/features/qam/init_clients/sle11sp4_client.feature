@@ -8,7 +8,8 @@ Feature: Bootstrap a SLES 11 SP4 traditional client
   I want to call rhnreg_ks
 
   Scenario: Register a SLES 11 SP4 traditional client
-    When I register "sle11sp4_client" as traditional client with activation key "1-sle11sp4_client_key"
+    When I bootstrap traditional client "sle11sp4_client" using bootstrap script with activation key "1-sle11sp4_client_key" from the proxy
+    And I install package "spacewalk-client-setup spacewalk-oscap mgr-cfg-actions" on this "sle11sp4_client"
     And I run "mgr-actions-control --enable-all" on "sle11sp4_client"
     Then I should see "sle11sp4_client" via spacecmd
 
@@ -33,7 +34,7 @@ Feature: Bootstrap a SLES 11 SP4 traditional client
     Given I am on the Systems overview page of this "sle11sp4_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
+    Then I should see "proxy" short hostname
 
 @proxy
   Scenario: Check registration on proxy of SLES 11 SP4 traditional

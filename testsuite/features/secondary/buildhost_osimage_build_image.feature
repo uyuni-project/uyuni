@@ -10,6 +10,7 @@
 # which means "Enable Kiwi OS Image building"
 
 @buildhost
+@long_test
 Feature: Build OS images
 
   Scenario: Create an OS image profile with activation key
@@ -29,7 +30,7 @@ Feature: Build OS images
 
   Scenario: Login as Kiwi image administrator and build an image
     Given I am authorized as "kiwikiwi" with password "kiwikiwi"
-    When I navigate to images build webpage
+    When I follow the left menu "Images > Build"
     And I select "suse_os_image" from "profileId"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
@@ -37,9 +38,8 @@ Feature: Build OS images
   Scenario: Check the OS image built as Kiwi image administrator
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
-    When I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
-    And I navigate to "os-images/1/" page
+    When I wait until the image build "suse_os_image" is completed
+    And I am on the image store of the kiwi image for organization "1"
     Then I should see the name of the image
 
 @proxy
@@ -53,13 +53,15 @@ Feature: Build OS images
 
   Scenario: Cleanup: remove the image from SUSE Manager server
     Given I am authorized as "admin" with password "admin"
-    When I navigate to images webpage
+    When I follow the left menu "Images > Image List"
     And I wait until I do not see "There are no entries to show." text
     And I check the first image
     And I click on "Delete"
     And I click on "Delete" in "Delete Selected Image(s)" modal
     And I wait until I see "Deleted successfully." text
 
+@proxy
+@private_net
   Scenario: Cleanup: Disable the repositories on branch server
     When I disable repositories after installing branch server
 

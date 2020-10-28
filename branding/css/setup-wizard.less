@@ -16,9 +16,9 @@ body{
       .btn-sm;
     }
     .panel{
-      box-shadow: 0px 2px 1px 0px #dadada;
-      -moz-box-shadow: 0px 2px 1px 0px #dadada;
-      -webkit-box-shadow: 0px 2px 1px 0px #dadada;
+      box-shadow: 0px 2px 1px 0px @box-shadow;
+      -moz-box-shadow: 0px 2px 1px 0px @box-shadow;
+      -webkit-box-shadow: 0px 2px 1px 0px @box-shadow;
     }
     .panel-footer {
       border-top: 0;
@@ -121,13 +121,13 @@ body{
         padding-right: 0;
       }
       .panel-inactive {
-        background: #f7f7f7;
-        border: 1px solid #dddddd;
+        background: @white;
+        border: 1px solid @inactive;
         text-align: center;
         .fa-plus-circle {
           font-size: 4em;
           color: @gray;
-          text-shadow: -1px -1px 0px #777, 1px 1px 0px #fff ;
+          text-shadow: -1px -1px 0px @gray-dark-1, 1px 1px 0px @white ;
           margin-top: 13px;
           margin-right: 0;
         }
@@ -179,12 +179,12 @@ ul.subscriptions-list {
 }
 
 .list-header{
-  border-bottom: 2px solid #ddd!important;
+  border-bottom: 2px solid @gray-light!important;
   font-weight: 700;
 }
 
 .row-odd {
-  background-color: #fafafa;
+  background-color: @gray-light-1;
 }
 .row-even {
   background-color: @white;
@@ -217,7 +217,7 @@ ul.product-list {
       }
     }
     .product-details-wrapper:hover {
-      background-color: #ededed;
+      background-color: @gray-light;
     }
     .product-installed {
       .product-description {

@@ -1,0 +1,168 @@
+=== group_absent
+**(name, org_admin_user=None, org_admin_password=None)**
+
+Ensure an Uyuni system group is not present
+
+....
+name: Group Name
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication
+    
+=== group_present
+**(name, description, target=None, target_type='glob', org_admin_user=None, org_admin_password=None)**
+
+Create or update an Uyuni system group
+
+....
+name: group name
+description: group description
+target: target expression used to filter which minions should be part of the group
+target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+            pillar_exact, compound, compound_pillar_exact. Default: glob.
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication
+    
+=== org_absent
+**(name, admin_user=None, admin_password=None)**
+
+Ensure an Uyuni organization is not present
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+name: organization name
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: dict for Salt communication
+    
+=== org_present
+**(name, org_admin_user, org_admin_password, first_name, last_name, email, pam=False, admin_user=None, admin_password=None)**
+
+Create or update an Uyuni organization
+Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
+....
+name: organization name
+org_admin_user: organization admin user
+org_admin_password: organization admin password
+first_name: organization admin first name
+last_name: organization admin last name
+email: organization admin email
+pam: organization admin pam authentication
+admin_user: uyuni admin user
+admin_password: uyuni admin password
+....
+
+    return: dict for Salt communication
+    
+=== org_trust
+**(name, org_name, trusts, admin_user=None, admin_password=None)**
+
+Establish trust relationships between Uyuni organizations.
+
+....
+name: state name
+org_name: Organization name
+trusts: list of organization names to trust
+admin_user: administrator username
+admin_password: administrator password
+....
+
+    return: dict for Salt communication
+    
+=== user_absent
+**(name, org_admin_user=None, org_admin_password=None)**
+
+Ensure an Uyuni user is not present.
+
+....
+name: user login name
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return:  dict for Salt communication
+    
+=== user_channels
+**(name, password, manageable_channels=[], subscribable_channels=[], org_admin_user=None, org_admin_password=None)**
+
+Ensure a user has access to the specified channels
+
+....
+name: user login name
+password: user password
+manageable_channels: channels user can manage
+subscribable_channels: channels user can subscribe
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication
+    
+=== user_present
+**(name, password, email, first_name, last_name, use_pam_auth=False, roles=None, system_groups=None, org_admin_user=None, org_admin_password=None)**
+
+Create or update an Uyuni user
+
+....
+name: user login name
+password: desired password for the user
+email: valid email address
+first_name: First name
+last_name: Last name
+use_pam_auth: if you wish to use PAM authentication for this user
+roles: roles to assign to user
+system_groups: system_groups to assign to user
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication
+
+=== activation_key_present
+**(name, description, base_channel='', usage_limit=0, contact_method='default', system_types=[],
+   universal_default=False, child_channels=[], configuration_channels=[], packages=[],
+   server_groups=[], configure_after_registration=False, org_admin_user=None, org_admin_password=None)**
+
+Ensure an Uyuni Activation Key is present.
+
+....
+name: the Activation Key name
+description: the Activation description
+base_channel: base channel to be used
+usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+system_types: system types to be assigned.
+              Can be one of: 'virtualization_host', 'container_build_host',
+              'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+universal_default: sets this activation key as organization universal default
+child_channels: list of child channels to be assigned
+configuration_channels: list of configuration channels to be assigned
+packages: list of packages which will be installed
+server_groups: list of server groups to assign the activation key with
+configure_after_registration: deploy configuration files to systems on registration
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication
+
+=== activation_key_absent
+**(name, org_admin_user=None, org_admin_password=None)**
+
+Ensure an Uyuni Activation Key is not present.
+
+....
+name: the Activation Key name
+org_admin_user: organization administrator username
+org_admin_password: organization administrator password
+....
+
+    return: dict for Salt communication

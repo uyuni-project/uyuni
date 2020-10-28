@@ -48,25 +48,25 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     Then I should see a "Repository created successfully" text
     And I should see "metadataSigned" as checked
 
-  Scenario: Add the repository to the Custom Channel for ubuntu-xenial-main
+  Scenario: Add the repository to the custom channel for ubuntu-xenial-main
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for ubuntu-xenial-main"
     And I follow "Repositories" in the content area
     And I select the "ubuntu-xenial-main" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Add the repository to the Custom Channel for ubuntu-xenial-main-updates
+  Scenario: Add the repository to the custom channel for ubuntu-xenial-main-updates
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for ubuntu-xenial-main-updates"
     And I follow "Repositories" in the content area
     And I select the "ubuntu-xenial-main-updates" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the Custom Channel for ubuntu-xenial-main
+  Scenario: Synchronize the repository in the custom channel for ubuntu-xenial-main
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for ubuntu-xenial-main"
@@ -75,7 +75,7 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
 
-  Scenario: Synchronize the repository in the Custom Channel for ubuntu-xenial-main-updates
+  Scenario: Synchronize the repository in the custom channel for ubuntu-xenial-main-updates
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for ubuntu-xenial-main-updates"
@@ -84,8 +84,8 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
 
-  Scenario: The Custom channel for ubuntu-xenial-main has been synced
+  Scenario: The custom channel for ubuntu-xenial-main has been synced
     When I wait until the channel "ubuntu-xenial-main" has been synced
 
-  Scenario: The Custom channel for ubuntu-xenial-main-updates has been synced
+  Scenario: The custom channel for ubuntu-xenial-main-updates has been synced
     When I wait until the channel "ubuntu-xenial-main-updates" has been synced

@@ -266,6 +266,13 @@ public interface SystemQuery {
     Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path);
 
     /**
+     * Removes a hostname from the Salt ~/.ssh/known_hosts file.
+     * @param hostname the hostname to remote
+     * @return the result of the runner call
+     */
+    Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname);
+
+    /**
      * Chain ssh calls over one or more hops to run a command on the last host in the chain.
      * This calls the mgrutil.chain_ssh_command runner.
      *

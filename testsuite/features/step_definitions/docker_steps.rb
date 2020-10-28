@@ -22,12 +22,20 @@ def retrieve_build_host_id
   build_host_id
 end
 
-When(/^I navigate to images webpage$/) do
-  visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
+# OS image build
+Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
+  steps %(
+    When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by kiwikiwi" is completed
+    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest scheduled by kiwikiwi" is completed
+  )
 end
 
-When(/^I navigate to images build webpage$/) do
-  visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
+Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
+  step %(I navigate to "os-images/#{org}/" page)
+end
+
+Then(/^I should see the name of the image$/) do
+  step %(I should see a "#{compute_image_name}" text)
 end
 
 When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
@@ -54,7 +62,7 @@ end
 When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
   def ck_container_imgs(timeout, count)
     repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
-      step %(I navigate to images webpage)
+      step %(I follow the left menu "Images > Image List")
       step %(I wait until I do not see "There are no entries to show." text)
       raise 'error detected while building images' if all(:xpath, "//*[contains(@title, 'Failed')]").any?
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
@@ -131,7 +139,7 @@ When(/^I list image store types and image stores via XML-RPC$/) do
 
   registry_list = cont_op.list_image_stores
   raise "Label #{registry_list[0]['label']} is different than 'galaxy-registry'" unless registry_list[0]['label'] == 'galaxy-registry'
-  raise "URI #{registry_list[0]['uri']} is different than 'registry.mgr.suse.de'" unless registry_list[0]['uri'] == 'registry.mgr.suse.de'
+  raise "URI #{registry_list[0]['uri']} is different than '#{$no_auth_registry}'" unless registry_list[0]['uri'] == $no_auth_registry.to_s
 end
 
 When(/^I set and get details of image store via XML-RPC$/) do

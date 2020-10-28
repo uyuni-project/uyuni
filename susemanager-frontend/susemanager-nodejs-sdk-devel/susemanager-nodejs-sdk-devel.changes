@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Oct 22 11:12:12 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
+- Drop node-fetch to fix CVE-2020-15168
+- Upgrade serialize-javascript - CVE-2020-7660
+- Upgrade elliptic - CVE-2020-13822
+
+-------------------------------------------------------------------
+Tue Sep 15 10:34:54 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.7-1
+- Add gettext-parser and node-gettext
+
+-------------------------------------------------------------------
 Thu Jul 23 13:35:36 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.6-1
