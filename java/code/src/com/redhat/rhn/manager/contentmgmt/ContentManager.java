@@ -474,7 +474,6 @@ public class ContentManager {
         }
         return ContentProjectFactory.createFilter(name, rule, entityType, criteria, user);
     }
-    // todo check behavior consistency with other crud methods
 
     /**
      * Update a {@link ContentFilter}
