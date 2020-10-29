@@ -21,6 +21,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -53,6 +54,7 @@ public class FilterApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private FilterApiController() {
     }
@@ -163,7 +165,7 @@ public class FilterApiController {
             );
         }
         catch (EntityExistsException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("Filter name already exists"));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("contentmanagement.filter_exists"));
         }
 
         if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
@@ -172,7 +174,7 @@ public class FilterApiController {
                     createdFilter.getId(),
                     user
             );
-            FlashScopeHelper.flash(req, String.format("Filter %s created successfully.", createdFilter.getName()));
+            FlashScopeHelper.flash(req, LOC.getMessage("contentmanagement.filter_created", createdFilter.getName()));
         }
 
         return ControllerApiUtils.listFiltersJsonResponse(res, user);
@@ -202,7 +204,7 @@ public class FilterApiController {
 
         if (!StringUtils.isEmpty(updateFilterRequest.getProjectLabel())) {
             FlashScopeHelper.flash(
-                    req, String.format("Filter %s updated successfully.", updateFilterRequest.getName())
+                    req, LOC.getMessage("contentmanagement.filter_updated", updateFilterRequest.getName())
             );
         }
 
