@@ -34,6 +34,12 @@ Then(/^it should be possible to reach the test packages$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
+Then(/^it should be possible to use the HTTP proxy$/) do
+  url = 'http://www.suse.com'
+  proxy = "suma:P4$$word@#{$server_http_proxy}"
+  $server.run("curl --insecure --proxy '#{proxy}' --location '#{url}' --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
   $server.run("curl --insecure --location #{url} --output /dev/null")
