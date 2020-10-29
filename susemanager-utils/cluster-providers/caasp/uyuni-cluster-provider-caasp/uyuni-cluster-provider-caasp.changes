@@ -1,4 +1,4 @@
-- States and metadata for showing the cluster upgrade plan in the UI
+- Show the cluster upgrade plan in the UI
 
 -------------------------------------------------------------------
 Fri Sep 18 11:59:39 CEST 2020 - jgonzalez@suse.com
