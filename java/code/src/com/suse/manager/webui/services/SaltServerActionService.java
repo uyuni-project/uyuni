@@ -87,6 +87,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
@@ -202,6 +203,7 @@ public class SaltServerActionService {
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
     private boolean skipCommandScriptPerms;
+    private TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * @param systemQueryIn instance for getting information from a system.
@@ -406,8 +408,16 @@ public class SaltServerActionService {
         List<MinionServer> sshPushMinions = MinionServerFactory.findMinionsByServerIds(
                 sshMinionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
-        for (MinionServer sshMinion: sshPushMinions) {
-            executeSSHAction(actionIn, sshMinion);
+        if (!sshPushMinions.isEmpty()) {
+            for (MinionServer sshMinion : sshPushMinions) {
+                try {
+                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
+                            " minion=" + sshMinion.getMinionId(), e);
+                }
+            }
         }
     }
 
@@ -1980,4 +1990,11 @@ public class SaltServerActionService {
         this.skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
+    /**
+     * Only needed for unit test.
+     * @param taskomaticApiIn to set
+     */
+    public void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        this.taskomaticApi = taskomaticApiIn;
+    }
 }

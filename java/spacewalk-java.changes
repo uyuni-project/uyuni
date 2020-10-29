@@ -1,3 +1,4 @@
+- Execute Salt SSH actions in parallel (bsc#1173199)
 - Take pool and volume from Salt virt.vm_info for files and blocks disks (bsc#1175987)
 - Fix action chain resuming when patches updating salt-minion don't cause service to be
   restarted (bsc#1144447)
