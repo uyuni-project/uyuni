@@ -43,4 +43,12 @@ public class ValidationException extends FaultException {
     public ValidationException(String msg, Throwable cause) {
         super(2800, "validationError", msg, cause);
     }
+
+    /**
+     * Constructor
+     * @param cause the cause (must be non-null)
+     */
+    public ValidationException(Throwable cause) {
+        this(cause.getMessage(), cause);
+    }
 }
