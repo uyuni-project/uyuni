@@ -80,9 +80,10 @@ public enum SaltStateGeneratorService {
      * @param bundle the OS image bundle resulting image from an inspection
      * @param bootImage the OS image boot image resulting image from an inspection
      * @param urlBase the OS Image store URL
+     * @param org the OS Image organization
      */
     public void generateOSImagePillar(OSImageInspectSlsResult.Image image, OSImageInspectSlsResult.Bundle bundle,
-                                      OSImageInspectSlsResult.BootImage bootImage, String urlBase) {
+                                      OSImageInspectSlsResult.BootImage bootImage, String urlBase, Org org) {
         try {
             SaltPillar pillar = new SaltPillar();
             String name = image.getName();
@@ -105,9 +106,16 @@ public enum SaltStateGeneratorService {
                 }
             }
 
-            Path filePath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                    "org" + org.getId().toString()
+            );
+            Path filePath = dirPath.resolve(
                     getImagePillarFileName(bundle)
             );
+
+            if (!dirPath.toFile().exists()) {
+                dirPath.toFile().mkdirs();
+            }
 
             SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
