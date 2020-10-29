@@ -146,11 +146,6 @@ public class FilterApiController {
     public static String createContentFilter(Request req, Response res, User user) {
         FilterRequest createFilterRequest = FilterHandler.getFilterRequest(req);
 
-        List<String> requestErrors = FilterHandler.validateFilterRequest(createFilterRequest);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
-        }
-
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(createFilterRequest.getMatcher()),
                 createFilterRequest.getCriteriaKey(),
@@ -192,11 +187,6 @@ public class FilterApiController {
      */
     public static String updateContentFilter(Request req, Response res, User user) {
         FilterRequest updateFilterRequest = FilterHandler.getFilterRequest(req);
-
-        List<String> requestErrors = FilterHandler.validateFilterRequest(updateFilterRequest);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
-        }
 
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
