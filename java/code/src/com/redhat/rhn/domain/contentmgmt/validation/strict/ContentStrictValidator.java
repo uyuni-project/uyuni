@@ -80,4 +80,34 @@ public class ContentStrictValidator {
             throw new ValidatorException(result);
         }
     }
+
+    /**
+     * Validate ContentEnvironment properties
+     *
+     * @param name the name
+     * @param label the label
+     * @throws ValidatorException when the parameters do not pass the validation
+     */
+    public static void validateEnvironmentProperties(String name, String label) {
+        ValidatorResult result = new ValidatorResult();
+
+        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(label)) {
+            result.addError("Name and label are required");
+        }
+
+        if (!ValidationUtils.isLabelValid(label)) {
+            result.addError(
+                    "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
+                            " periods ('.'), underscores ('_'), and numerals."
+            );
+        }
+
+        if (label.length() > 16) {
+            result.addError("Label must not exceed 16 characters");
+        }
+
+        if (result.hasErrors()) {
+            throw new ValidatorException(result);
+        }
+    }
 }

@@ -20,6 +20,7 @@ import static spark.Spark.delete;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
@@ -30,7 +31,6 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 
-import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -69,20 +69,21 @@ public class EnvironmentApiController {
     public static String createContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest createEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        List<String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(createEnvironmentRequest);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
+        try {
+            CONTENT_MGR.createEnvironment(
+                    createEnvironmentRequest.getProjectLabel(),
+                    Optional.ofNullable(createEnvironmentRequest.getPredecessorLabel()),
+                    createEnvironmentRequest.getLabel(),
+                    createEnvironmentRequest.getName(),
+                    createEnvironmentRequest.getDescription(),
+                    true,
+                    user
+            );
         }
-
-        CONTENT_MGR.createEnvironment(
-                createEnvironmentRequest.getProjectLabel(),
-                Optional.ofNullable(createEnvironmentRequest.getPredecessorLabel()),
-                createEnvironmentRequest.getLabel(),
-                createEnvironmentRequest.getName(),
-                createEnvironmentRequest.getDescription(),
-                true,
-                user
-        );
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
+        }
 
         return ControllerApiUtils.fullProjectJsonResponse(res, createEnvironmentRequest.getProjectLabel(), user);
     }
@@ -97,21 +98,21 @@ public class EnvironmentApiController {
     public static String updateContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest updateEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        List<String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(updateEnvironmentRequest);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
+        try {
+            CONTENT_MGR.updateEnvironment(
+                    updateEnvironmentRequest.getLabel(),
+                    updateEnvironmentRequest.getProjectLabel(),
+                    Optional.ofNullable(updateEnvironmentRequest.getName()),
+                    Optional.ofNullable(updateEnvironmentRequest.getDescription()),
+                    user
+            );
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
         }
 
-        CONTENT_MGR.updateEnvironment(
-                updateEnvironmentRequest.getLabel(),
-                updateEnvironmentRequest.getProjectLabel(),
-                Optional.ofNullable(updateEnvironmentRequest.getName()),
-                Optional.ofNullable(updateEnvironmentRequest.getDescription()),
-                user
-        );
-
         return ControllerApiUtils.fullProjectJsonResponse(res, updateEnvironmentRequest.getProjectLabel(), user);
-
     }
 
     /**
@@ -123,11 +124,6 @@ public class EnvironmentApiController {
      */
     public static String removeContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest removeEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
-
-        List<String> requestErrors = EnvironmentHandler.validateEnvironmentRequest(removeEnvironmentRequest);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
-        }
 
         CONTENT_MGR.removeEnvironment(
                 removeEnvironmentRequest.getLabel(),

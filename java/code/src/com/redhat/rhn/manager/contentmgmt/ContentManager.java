@@ -218,6 +218,7 @@ public class ContentManager {
      * is not found
      * @throws EntityExistsException if Environment with given parameters already exists
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the created Content Environment
      */
     public ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
@@ -226,6 +227,7 @@ public class ContentManager {
         lookupEnvironment(label, projectLabel, user).ifPresent(e -> {
             throw new EntityExistsException(e);
         });
+        ContentStrictValidator.validateEnvironmentProperties(name, label);
         return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);
@@ -283,6 +285,7 @@ public class ContentManager {
      * @param user the user
      * @throws EntityNotExistsException if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the updated Environment
      */
     public ContentEnvironment updateEnvironment(String envLabel, String projectLabel, Optional<String> newName,
@@ -290,6 +293,10 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
+                    ContentStrictValidator.validateEnvironmentProperties(
+                            newName.orElse(env.getName()),
+                            newDescription.orElse(env.getDescription())
+                    );
                     newName.ifPresent(name -> env.setName(name));
                     newDescription.ifPresent(desc -> env.setDescription(desc));
                     return env;
