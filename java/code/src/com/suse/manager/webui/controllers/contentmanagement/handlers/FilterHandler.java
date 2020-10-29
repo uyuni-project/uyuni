@@ -23,9 +23,6 @@ import com.google.gson.JsonParseException;
 
 import org.apache.http.HttpStatus;
 
-import java.util.Collections;
-import java.util.List;
-
 import spark.Request;
 import spark.Spark;
 
@@ -64,15 +61,5 @@ public class FilterHandler {
         catch (JsonParseException e) {
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
-    }
-
-    /**
-     * map validate filter request bean
-     * @param envRequest the environment request bean
-     * @return validation errors
-     */
-    public static List<String> validateFilterRequest(FilterRequest envRequest) {
-        // TODO: validations
-        return Collections.emptyList();
     }
 }
