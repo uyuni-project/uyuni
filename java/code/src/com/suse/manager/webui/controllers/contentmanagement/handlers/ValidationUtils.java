@@ -15,10 +15,8 @@
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
 import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.manager.channel.CreateChannelCommand;
 
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -27,16 +25,6 @@ import java.util.stream.Collectors;
 public class ValidationUtils {
 
     private ValidationUtils() { }
-
-    /**
-     * validate label pattern
-     * @param label label to validate
-     * @return true if label is valid
-     */
-    public static Boolean isLabelValid(String label) {
-        return Pattern.compile(CreateChannelCommand.CHANNEL_LABEL_REGEX).matcher(label).find() &&
-                Pattern.compile(CreateChannelCommand.CHANNEL_NAME_REGEX).matcher(label).find();
-    }
 
     /**
      * Extract validation errors from {@link ValidatorException} and convert them into localized messages.
