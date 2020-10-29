@@ -1,4 +1,3 @@
-- States and metadata for showing the cluster upgrade plan in the UI
 - add pillar option to get allowVendorChange option during dist upgrade
 - Sync state modules when starting action chain execution (bsc#1177336)
 
