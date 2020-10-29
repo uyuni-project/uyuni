@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
@@ -22,7 +24,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.system.SystemManager;
-
 import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -80,10 +81,6 @@ import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
-
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -216,15 +213,9 @@ public class SaltService implements SystemQuery, SaltApi {
     }
 
     /**
-     * Synchronously executes a salt function on a single minion.
-     * If a SaltException is thrown, re-throw a RuntimeException.
-     *
-     * @param call salt function to call
-     * @param minionId minion id to target
-     * @param <R> result type of the salt function
-     * @return Optional holding the result of the function
-     * or empty if the minion did not respond.
+     * {@inheritDoc}
      */
+    @Override
     public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
         try {
             Map<String, Result<R>> stringRMap = callSync(call, new MinionList(minionId));
