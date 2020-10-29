@@ -78,13 +78,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see "test-vm" virtual machine running on "xen_server"
 
 @virthost_xen
-  Scenario: Show the VNC graphical console for Xen
-    Given I am on the "Virtualization" page of this "xen_server"
-    When I click on "Graphical Console" in row "test-vm"
-    And I switch to last opened window
-    Then I wait until I see the VNC graphical console
-
-@virthost_xen
   Scenario: Suspend a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen_server"
     When I wait until table row for "test-vm" contains button "Suspend"
@@ -157,12 +150,13 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
+    And I select "test-pool0" from "disk1_source_pool"
     And I click on "add_disk"
     And I select "CDROM" from "disk2_device"
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen_server" should have a "test-vm_disk-1" xen disk from pool "test-pool0"
+    And "test-vm" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm_disk-1" xen disk
     And "test-vm" virtual machine on "xen_server" should have a ide cdrom
 
 @virthost_xen
@@ -192,21 +186,21 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template-xenpv.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
-    And I select "Spice" from "graphicsType"
+    And I select "VNC" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
     And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system" xen disk from pool "test-pool0"
+    And "test-vm2" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm2_system" xen disk
 
 @virthost_xen
-  Scenario: Show the Spice graphical console for Xen
+  Scenario: Show the VNC graphical console for Xen
     Given I am on the "Virtualization" page of this "xen_server"
     When I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
-    Then I wait until I see the spice graphical console
+    And I wait until I see the VNC graphical console
 
 @virthost_xen
   Scenario: Create a Xen fully virtualized guest
@@ -218,13 +212,21 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
+    And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm3" text
     And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
-    And "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
+    Then "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system" xen disk from pool "test-pool0"
+    And "test-vm3" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm3_system" xen disk
+
+@virthost_xen
+  Scenario: Show the Spice graphical console for Xen
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Graphical Console" in row "test-vm3"
+    And I switch to last opened window
+    And I wait until I see the spice graphical console
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen

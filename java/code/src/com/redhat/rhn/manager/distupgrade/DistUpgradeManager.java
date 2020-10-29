@@ -623,6 +623,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param targetSet set of target products (base product and addons)
      * @param channelIDs IDs of all channels to subscribe
      * @param dryRun perform a dry run
+     * @param allowVendorChange allow vendor change during dist upgrade
      * @param earliest earliest schedule date
      * @return the action ID
      * @throws TaskomaticApiException if there was a Taskomatic error
@@ -630,7 +631,7 @@ public class DistUpgradeManager extends BaseManager {
      */
     public static Long scheduleDistUpgrade(User user, Server server,
             SUSEProductSet targetSet, Collection<Long> channelIDs,
-            boolean dryRun, Date earliest) throws TaskomaticApiException {
+            boolean dryRun, boolean allowVendorChange, Date earliest) throws TaskomaticApiException {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
 
@@ -676,6 +677,7 @@ public class DistUpgradeManager extends BaseManager {
 
         // Set additional attributes
         details.setDryRun(dryRun);
+        details.setAllowVendorChange(allowVendorChange);
         details.setFullUpdate(true);
 
         // Return the ID of the scheduled action

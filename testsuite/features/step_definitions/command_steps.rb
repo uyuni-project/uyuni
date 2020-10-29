@@ -34,6 +34,12 @@ Then(/^it should be possible to reach the test packages$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
+Then(/^it should be possible to use the HTTP proxy$/) do
+  url = 'http://www.suse.com'
+  proxy = "suma:P4$$word@#{$server_http_proxy}"
+  $server.run("curl --insecure --proxy '#{proxy}' --location '#{url}' --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
@@ -1168,7 +1174,8 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) di
     output, _code = node.run("virsh dumpxml #{vm}")
     tree = Nokogiri::XML(output)
     disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) && (x.xpath('target/@bus')[0].to_s == bus)
+      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
+        (x.xpath('target/@bus')[0].to_s == bus.downcase)
     end
     break if !disks.empty?
     sleep 3

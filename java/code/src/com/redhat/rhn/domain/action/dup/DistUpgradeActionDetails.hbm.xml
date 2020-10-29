@@ -26,6 +26,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
       <one-to-many class="com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask" />
     </set>
     <property name="dryRun" column="dry_run" type="yes_no" />
+    <property name="allowVendorChange" column="allow_vendor_change" type="yes_no" />
     <property name="fullUpdate" column="full_update" type="yes_no" />
   </class>
 </hibernate-mapping>

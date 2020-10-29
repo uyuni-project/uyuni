@@ -1,3 +1,7 @@
+- show only kernel options in advanced autoinstallation page when working with
+  a salt minion (bsc#1177767)
+- add new allowVendorChange flag for dist upgrades
+- Take pool and volume from Salt virt.vm_info for files and blocks disks (bsc#1175987)
 - Create VM on a Salt host using a cobbler profile
 - Show cluster upgrade plan in the upgrade UI
 - Fix action chain resuming when patches updating salt-minion don't cause service to be

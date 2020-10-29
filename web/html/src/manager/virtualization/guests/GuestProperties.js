@@ -58,6 +58,7 @@ export function GuestProperties(props: Props) : React.Node {
   const osTypesLabels = {
     hvm: 'Fully Virtualized',
     xen: 'Para Virtualized',
+    xenpvh: 'PVH',
   };
 
   return (
@@ -249,9 +250,10 @@ export function GuestProperties(props: Props) : React.Node {
                                           name="graphicsType"
                                         >
                                           {
-                                            [{ key: 'vnc', display: 'VNC' }, { key: 'spice', display: 'Spice' }]
+                                            [{ key: 'vnc', display: 'VNC', osTypes: ['hvm', 'xen', 'xenpvh'] },
+                                             { key: 'spice', display: 'Spice', osTypes: ['hvm'] }]
                                               .filter(entry => caps !== undefined
-                                                && caps.devices.graphics.type.includes(entry.key))
+                                                && caps.devices.graphics.type.includes(entry.key) && entry.osTypes.includes(model.osType))
                                               .map(entry => (
                                                 <option key={entry.key} value={entry.key}>
                                                   {entry.display}
