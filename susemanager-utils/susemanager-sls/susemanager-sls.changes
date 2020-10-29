@@ -1,3 +1,4 @@
+- Fix grub2 autoinstall kernel path (bsc#1178060)
 - use require in reboot trigger (bsc#1177767)
 - add pillar option to get allowVendorChange option during dist upgrade
 - Change VM creation state to handle installation from kernel, PXE or CDROM
