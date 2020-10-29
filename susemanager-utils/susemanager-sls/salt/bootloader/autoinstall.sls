@@ -36,7 +36,7 @@ mgr_generate_grubconf:
 mgr_autoinstall_start:
   cmd.run:
     - name: shutdown -r +1
-    - onchanges:
+    - require:
       - cmd: mgr_generate_grubconf
 
 {% endif %}
