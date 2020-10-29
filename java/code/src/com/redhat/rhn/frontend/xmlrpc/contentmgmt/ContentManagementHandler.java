@@ -262,6 +262,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param description the Content Environment description
      * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
      * @throws EntityExistsFaultException when Environment with given parameters already exists
+     * @throws ValidationException if validation violation occurs
      * @return the created Content Environment
      *
      * @xmlrpc.doc Create a Content Environment and appends it behind given Content Environment
@@ -286,6 +287,9 @@ public class ContentManagementHandler extends BaseHandler {
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
         }
+        catch (ValidatorException e) {
+            throw new ValidationException(e);
+        }
     }
 
     /**
@@ -296,6 +300,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param envLabel the Environment label
      * @param props the map with the Environment properties
      * @throws EntityNotExistsFaultException when the Environment does not exist
+     * @throws ValidationException if validation violation occurs
      * @return the updated Environment
      *
      * @xmlrpc.doc Update Content Environment with given label
@@ -321,6 +326,9 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (ValidatorException e) {
+            throw new ValidationException(e);
         }
     }
 
