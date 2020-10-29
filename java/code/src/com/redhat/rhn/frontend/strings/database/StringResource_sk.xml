@@ -448,14 +448,14 @@
       </trans-unit>
       <trans-unit id="RHN_SAT_WEB_PORT" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ webserver port (80 for http, 443 for https)</source>
-        <target/>
+        <target>Webserver port pre @@PRODUCT_NAME@@ (80 pre http, 443 pre https)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="XPROTO" xml:space="preserve">
         <source>External protocol ('http' or 'https')</source>
-        <target/>
+        <target>Externý protokol ('http' alebo 'https')</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
@@ -463,56 +463,56 @@
       <!-- Monitoring Probe Command Parameter descriptions -->
       <trans-unit id="Application Protocol" xml:space="preserve">
         <source>Application Protocol</source>
-        <target/>
+        <target>Aplikačný protokol</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Critical if Above" xml:space="preserve">
         <source>Available Space Percent Used Critical if Above</source>
-        <target/>
+        <target>Využité percento dostupného priestoru je kritické, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Warn if Above" xml:space="preserve">
         <source>Available Space Percent Used Warn if Above</source>
-        <target/>
+        <target>Využité percento dostupného priestoru je varovné, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEA Domain Admin Server" xml:space="preserve">
         <source>BEA Domain Admin Server</source>
-        <target/>
+        <target>Server správy domény BEA</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEA Server Name" xml:space="preserve">
         <source>BEA Server Name</source>
-        <target/>
+        <target>Názov servera BEA</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Basic regular expression" xml:space="preserve">
         <source>Basic regular expression</source>
-        <target/>
+        <target>Základný regulárny výraz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Command" xml:space="preserve">
         <source>Command</source>
-        <target/>
+        <target>Príkaz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Command name" xml:space="preserve">
         <source>Command name</source>
-        <target/>
+        <target>Názov príkazu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
