@@ -18,11 +18,12 @@ package com.redhat.rhn.domain.contentmgmt.validation.strict;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.CreateChannelCommand;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
-import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.regex.Pattern;
 
 /**
  *
@@ -50,7 +51,7 @@ public class ContentStrictValidator {
             result.addError("Label is required");
         }
 
-        if (!ValidationUtils.isLabelValid(label)) {
+        if (!isLabelValid(label)) {
             result.addError(
                     "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
                             " periods ('.'), underscores ('_'), and numerals."
@@ -95,7 +96,7 @@ public class ContentStrictValidator {
             result.addError("Name and label are required");
         }
 
-        if (!ValidationUtils.isLabelValid(label)) {
+        if (!isLabelValid(label)) {
             result.addError(
                     "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
                             " periods ('.'), underscores ('_'), and numerals."
@@ -109,5 +110,15 @@ public class ContentStrictValidator {
         if (result.hasErrors()) {
             throw new ValidatorException(result);
         }
+    }
+
+    /**
+     * validate label pattern
+     * @param label label to validate
+     * @return true if label is valid
+     */
+    public static Boolean isLabelValid(String label) {
+        return Pattern.compile(CreateChannelCommand.CHANNEL_LABEL_REGEX).matcher(label).find() &&
+                Pattern.compile(CreateChannelCommand.CHANNEL_NAME_REGEX).matcher(label).find();
     }
 }
