@@ -36,7 +36,6 @@ public class ContentStrictValidator {
     private ContentStrictValidator() { }
 
 
-    // todo internationalize everything
     /**
      * Validate ContentProject properties
      * @param label the label
@@ -48,34 +47,30 @@ public class ContentStrictValidator {
         ValidatorResult result = new ValidatorResult();
 
         if (StringUtils.isEmpty(label)) {
-            result.addError("Label is required");
+            result.addError("contentmanagement.label_required");
         }
 
         if (!isLabelValid(label)) {
-            result.addError(
-                    "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
-                            " periods ('.'), underscores ('_'), and numerals."
-            );
+            result.addError("contentmanagement.label_invalid");
         }
 
         if (label.length() > 24) {
-            result.addError("Label must not exceed 24 characters");
+            result.addError("contentmanagement.project_label_too_long");
         }
 
         if (StringUtils.isEmpty(name)) {
-            result.addError("Name is required");
+            result.addError("contentmanagement.name_required");
         }
 
         if (name.length() > 128) {
-            result.addError("Name must not exceed 128 characters");
+            result.addError("contentmanagement.project_name_too_long");
         }
 
         ContentManager.lookupProjectByNameAndOrg(name, user).ifPresent(cp -> {
             if (!cp.getLabel().equals(label)) {
-                result.addError("Name already exists");
+                result.addError("contentmanagement.name_already_exists");
             }
         });
-
 
         if (result.hasErrors()) {
             throw new ValidatorException(result);
@@ -92,19 +87,20 @@ public class ContentStrictValidator {
     public static void validateEnvironmentProperties(String name, String label) {
         ValidatorResult result = new ValidatorResult();
 
-        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(label)) {
-            result.addError("Name and label are required");
+        if (StringUtils.isEmpty(label)) {
+            result.addError("contentmanagement.label_required");
+        }
+
+        if (StringUtils.isEmpty(name)) {
+            result.addError("contentmanagement.name_required");
         }
 
         if (!isLabelValid(label)) {
-            result.addError(
-                    "Label must begin with a letter and must contain only lowercase letters, hyphens ('-')," +
-                            " periods ('.'), underscores ('_'), and numerals."
-            );
+            result.addError("contentmanagement.label_invalid");
         }
 
         if (label.length() > 16) {
-            result.addError("Label must not exceed 16 characters");
+            result.addError("contentmanagement.envilonment_lbl_too_long");
         }
 
         if (result.hasErrors()) {
