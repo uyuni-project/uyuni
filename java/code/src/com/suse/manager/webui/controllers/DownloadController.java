@@ -35,6 +35,7 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.NumericDate;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
@@ -451,6 +452,13 @@ public class DownloadController {
         });
         try {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);
+
+            if (Opt.fold(Optional.ofNullable(claims.getExpirationTime()),
+                    () -> false,
+                    exp -> exp.isBefore(NumericDate.now()))) {
+                log.info("Forbidden: Token expired");
+                halt(HttpStatus.SC_FORBIDDEN, "Token expired");
+            }
 
             // enforce channel claim
             Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"))
