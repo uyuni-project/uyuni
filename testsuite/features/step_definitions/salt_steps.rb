@@ -719,11 +719,28 @@ When(/^I enter "([^"]*)" password$/) do |host|
   step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
 end
 
-And(/^I cleanup minion "([^"]*)"$/) do |minion|
+And(/^I clean up the minion's cache on "([^"]*)"$/) do |minion|
   raise "#{minion} is not a salt minion" unless minion.include? 'minion'
   node = get_target(minion)
-  node.run('systemctl stop salt-minion')
+  node.run_until_ok('systemctl stop salt-minion')
   node.run('rm -Rf /var/cache/salt/minion')
+  # TODO: Ideally we should remove /etc/salt/* /var/run/salt/* /var/log/salt/* and salt and salt-minion packages
+  #       But we can't do that as we don't have products synced, so it will fail installing salt and sal-minion
+  #       Instead we inject those packages when deploying through sumaform and we can't remove them.
+  #       If someday we have synced products, we can proceed to run a full cleanup:
+  #
+  # And(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |minion|
+  #   raise "#{minion} is not a salt minion" unless minion.include? 'minion'
+  #   node = get_target(minion)
+  #   if minion.include? 'ceos'
+  #     node.run('yum -y remove salt salt-minion')
+  #   elsif minion.include? 'ubuntu'
+  #     node.run('apt-get --assume-yes remove salt salt-minion')
+  #   else
+  #     node.run('zypper --non-interactive remove -y salt salt-minion')
+  #   end
+  #   node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt')
+  # end
 end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|
