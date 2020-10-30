@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt.validation.strict;
+package com.redhat.rhn.domain.contentmgmt.validation;
 
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -26,14 +26,14 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Validation for Content Lifecycle Management object properties
  */
-public class ContentStrictValidator {
+public class ContentPropertiesValidator {
 
     /**
      * Standard constructor
      */
-    private ContentStrictValidator() { }
+    private ContentPropertiesValidator() { }
 
 
     /**
