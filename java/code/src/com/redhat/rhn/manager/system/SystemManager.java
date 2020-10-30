@@ -738,7 +738,7 @@ public class SystemManager extends BaseManager {
 
     private static void removeSaltSSHKnownHosts(Server server) {
         Optional<MgrUtilRunner.RemoveKnowHostResult> result =
-                saltServiceInstance.removeSaltSSHKnownHost(server.getHostname());
+                saltApi.removeSaltSSHKnownHost(server.getHostname());
         boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
         if (!removed) {
             log.warn("Hostname " + server.getHostname() + " could not be removed from " +

@@ -151,6 +151,13 @@ public interface SaltApi {
                                                        String outputfile);
 
     /**
+     * Removes a hostname from the Salt ~/.ssh/known_hosts file.
+     * @param hostname the hostname to remote
+     * @return the result of the runner call
+     */
+    Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname);
+
+    /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
      * @param minionList minion list
      */
