@@ -32,6 +32,7 @@ import com.suse.utils.Opt;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -60,6 +61,8 @@ import static spark.Spark.head;
  * Controller for the download endpoint serving packages and metadata to managed clients.
  */
 public class DownloadController {
+
+    private static Logger log = Logger.getLogger(DownloadController.class);
 
     private static final Key KEY = TokenBuilder.getKeyForSecret(
             TokenBuilder.getServerSecret().orElseThrow(
@@ -401,11 +404,13 @@ public class DownloadController {
         String header = request.headers("X-Mgr-Auth");
         header = StringUtils.isNotBlank(header) ? header : getTokenForDebian(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {
+            log.info(String.format("Forbidden: You need a token to access %s", request.pathInfo()));
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("You need a token to access %s", request.pathInfo()));
         }
         if ((queryParams.size() > 1 && header == null) ||
                 (!queryParams.isEmpty() && header != null)) {
+            log.info("Bad Request: Only one token is accepted");
             halt(HttpStatus.SC_BAD_REQUEST, "Only one token is accepted");
         }
         if (!queryParams.isEmpty()) {
@@ -440,6 +445,7 @@ public class DownloadController {
     private static void validateToken(String token, String channel, String filename) {
         AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
             if (!obj.getValid()) {
+                log.info(String.format("Forbidden: invalid token to access %s", filename));
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
         });
@@ -451,20 +457,25 @@ public class DownloadController {
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
             if (Opt.fold(channelClaim, () -> false, channels -> !channels.contains(channel))) {
+                log.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
                 halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
             }
 
             // enforce org claim
             Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));
             Opt.consume(orgClaim, () -> {
+                log.info("Forbidden: Token does not specify the organization");
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
             }, orgId -> {
                 if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s" + channel);
+                    log.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
+                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
+            log.info(String.format("Forbidden: Token is not valid to access %s in %s: %s",
+                    filename, channel, e.getMessage()));
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
         }
