@@ -113,6 +113,28 @@ public class ContentPropertiesValidator {
     }
 
     /**
+     * Validate ContentFilter properties
+     *
+     * @param name the name
+     * @throws ValidatorException when the parameters do not pass the validation
+     */
+    public static void validateFilterProperties(String name) {
+        ValidatorResult result = new ValidatorResult();
+
+        if (StringUtils.isEmpty(name)) {
+            result.addError("contentmanagement.name_required");
+        }
+
+        if (name.length() > 128) {
+            result.addError("contentmanagement.filter_name_too_long");
+        }
+
+        if (result.hasErrors()) {
+            throw new ValidatorException(result);
+        }
+    }
+
+    /**
      * validate label pattern
      * @param label label to validate
      * @return true if label is valid

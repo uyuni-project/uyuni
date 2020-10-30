@@ -468,6 +468,8 @@ public class ContentManager {
             throw new EntityExistsException(cp);
         });
 
+        ContentPropertiesValidator.validateFilterProperties(name);
+
         if (ContentFilter.EntityType.MODULE.equals(entityType) && ContentFilter.Rule.DENY.equals(rule)) {
             // DENY rule is not applicable for module filters
             throw new IllegalArgumentException("DENY rule is not applicable to appstream filters.");
@@ -490,6 +492,9 @@ public class ContentManager {
         ensureOrgAdmin(user);
         ContentFilter filter = lookupFilterById(id, user)
                 .orElseThrow(() -> new EntityNotExistsException(id));
+
+        ContentPropertiesValidator.validateFilterProperties(name.orElse(filter.getName()));
+
         return ContentProjectFactory.updateFilter(filter, name, rule, criteria);
     }
 
