@@ -295,7 +295,7 @@ public class ContentManager {
                 .map(env -> {
                     ContentPropertiesValidator.validateEnvironmentProperties(
                             newName.orElse(env.getName()),
-                            newDescription.orElse(env.getDescription())
+                            env.getLabel() // label can't be changed
                     );
                     newName.ifPresent(name -> env.setName(name));
                     newDescription.ifPresent(desc -> env.setDescription(desc));

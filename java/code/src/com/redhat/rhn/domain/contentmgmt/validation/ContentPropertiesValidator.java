@@ -100,7 +100,11 @@ public class ContentPropertiesValidator {
         }
 
         if (label.length() > 16) {
-            result.addError("contentmanagement.envilonment_lbl_too_long");
+            result.addError("contentmanagement.environment_lbl_too_long");
+        }
+
+        if (name.length() > 128) {
+            result.addError("contentmanagement.environment_name_too_long");
         }
 
         if (result.hasErrors()) {
