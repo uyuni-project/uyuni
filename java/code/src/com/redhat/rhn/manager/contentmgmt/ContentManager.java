@@ -55,7 +55,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
-import com.redhat.rhn.domain.contentmgmt.validation.strict.ContentStrictValidator;
+import com.redhat.rhn.domain.contentmgmt.validation.ContentPropertiesValidator;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
@@ -125,7 +125,7 @@ public class ContentManager {
         lookupProject(label, user).ifPresent(cp -> {
             throw new EntityExistsException(cp);
         });
-        ContentStrictValidator.validateProjectProperties(label, name, user);
+        ContentPropertiesValidator.validateProjectProperties(label, name, user);
         ContentProject contentProject = new ContentProject(label, name, description, user.getOrg());
         ContentProjectFactory.save(contentProject);
         return contentProject;
@@ -180,7 +180,7 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
                 .map(cp -> {
-                    ContentStrictValidator.validateProjectProperties(label, newName.orElse(cp.getName()), user);
+                    ContentPropertiesValidator.validateProjectProperties(label, newName.orElse(cp.getName()), user);
                     newName.ifPresent(name -> cp.setName(name));
                     newDesc.ifPresent(desc -> cp.setDescription(desc));
                     return cp;
@@ -227,7 +227,7 @@ public class ContentManager {
         lookupEnvironment(label, projectLabel, user).ifPresent(e -> {
             throw new EntityExistsException(e);
         });
-        ContentStrictValidator.validateEnvironmentProperties(name, label);
+        ContentPropertiesValidator.validateEnvironmentProperties(name, label);
         return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);
@@ -293,7 +293,7 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
-                    ContentStrictValidator.validateEnvironmentProperties(
+                    ContentPropertiesValidator.validateEnvironmentProperties(
                             newName.orElse(env.getName()),
                             newDescription.orElse(env.getDescription())
                     );
