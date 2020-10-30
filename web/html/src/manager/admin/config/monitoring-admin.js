@@ -108,7 +108,7 @@ const HelpPanel = (props) => {
         {t("The server uses ")}<a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">{t("Prometheus")}</a>{t(" exporters to expose metrics about your environment.")}
       </p>
       <p>
-        {t("Refer to the ")}<a href="/docs/administration/pages/prometheus.html" target="_blank">{t("documentation")}</a>{t(" to learn how to to consume these metrics.")}
+        {t("Refer to the ")}<a href="/docs/suse-manager/administration/monitoring.html" target="_blank">{t("documentation")}</a>{t(" to learn how to to consume these metrics.")}
       </p>
   </div>);
 }
@@ -215,7 +215,7 @@ const MonitoringAdmin = (props) => {
         <h1>
           <i className="fa fa-info-circle"></i>
           {t("SUSE Manager Configuration - Monitoring")}
-          <a href="/docs/reference/admin/general.html" target="_blank">
+          <a href="/docs/suse-manager/administration/monitoring.html" target="_blank">
             <i className="fa fa-question-circle spacewalk-help-link"></i>
           </a>
         </h1>
