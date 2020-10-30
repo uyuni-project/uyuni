@@ -22,6 +22,7 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -166,6 +167,10 @@ public class FilterApiController {
         }
         catch (EntityExistsException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("contentmanagement.filter_exists"));
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
         }
 
         if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
