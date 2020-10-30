@@ -519,70 +519,70 @@
       </trans-unit>
       <trans-unit id="Count process groups" xml:space="preserve">
         <source>Count process groups</source>
-        <target/>
+        <target>Spočítať skupiny procesov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical 1 min" xml:space="preserve">
         <source>Critical 1 min</source>
-        <target/>
+        <target>Kritické 1 min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical 15 min" xml:space="preserve">
         <source>Critical 15 min</source>
-        <target/>
+        <target>Kritické 15 min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical 5 min" xml:space="preserve">
         <source>Critical 5 min</source>
-        <target/>
+        <target>Kritické 5 min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Accesses" xml:space="preserve">
         <source>Critical Accesses</source>
-        <target/>
+        <target>Kritické prístupy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Active Locks" xml:space="preserve">
         <source>Critical Active Locks</source>
-        <target/>
+        <target>Kritické aktívne zámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Active Sessions" xml:space="preserve">
         <source>Critical Active Sessions</source>
-        <target/>
+        <target>Kritické aktívne sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Avail Sessions Used Pct" xml:space="preserve">
         <source>Critical Avail Sessions Used Pct</source>
-        <target/>
+        <target>Kritické percento použitých využiteľných sedení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Blocked Process Count" xml:space="preserve">
         <source>Critical Blocked Process Count</source>
-        <target/>
+        <target>Kritický počet blokovaných procesov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Blocking Sessions" xml:space="preserve">
         <source>Critical Blocking Sessions</source>
-        <target/>
+        <target>Kritické blokujúce sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
