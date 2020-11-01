@@ -1646,35 +1646,35 @@
       </trans-unit>
       <trans-unit id="Warning Active Locks" xml:space="preserve">
         <source>Warning Active Locks</source>
-        <target/>
+        <target>Varovné aktívne zámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Active Sessions" xml:space="preserve">
         <source>Warning Active Sessions</source>
-        <target/>
+        <target>Varovné aktívne sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Avail Sessions Used Pct" xml:space="preserve">
         <source>Warning Avail Sessions Used Pct</source>
-        <target/>
+        <target>Varovné percento použitých využiteľných sedení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocked Process Count" xml:space="preserve">
         <source>Warning Blocked Process Count</source>
-        <target/>
+        <target>Varovný počet blokovaných procesov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocking Sessions" xml:space="preserve">
         <source>Warning Blocking Sessions</source>
-        <target/>
+        <target>Varovné blokujúce sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2165,28 +2165,28 @@
       <!-- PROBE METRICS -->
       <trans-unit id="metrics.Active locks" xml:space="preserve">
         <source>Active locks</source>
-        <target/>
+        <target>Aktívne zámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Active sessions" xml:space="preserve">
         <source>Active sessions</source>
-        <target/>
+        <target>Aktívne sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Blocked processes" xml:space="preserve">
         <source>Blocked processes</source>
-        <target/>
+        <target>Blokované procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Blocking sessions" xml:space="preserve">
         <source>Blocking sessions</source>
-        <target/>
+        <target>Blokujúce sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2963,7 +2963,7 @@
       </trans-unit>
       <trans-unit id="Active Sessions" xml:space="preserve">
           <source>Active Sessions</source>
-        <target/>
+        <target>Aktívne sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2977,14 +2977,14 @@
       </trans-unit>
       <trans-unit id="Blocking Sessions" xml:space="preserve">
           <source>Blocking Sessions</source>
-        <target/>
+        <target>Blokujúce sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Buffer Cache" xml:space="preserve">
           <source>Buffer Cache</source>
-        <target/>
+        <target>Pomer záznamov vyrovnávacej pamäte zásobníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
