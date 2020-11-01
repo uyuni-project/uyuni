@@ -3579,24 +3579,28 @@
       </trans-unit>
       <trans-unit id="error.unsupported_db_min" xml:space="preserve">
           <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
+        <target>不支持运行 postgresql {0}。所需的最低版本为 {1}。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_max" xml:space="preserve">
           <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
+        <target>不支持运行 postgresql {0}。允许的最高版本为 {1}。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_migrate" xml:space="preserve">
           <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
+        <target>不支持在 {1} 上运行 postgresql {0}。请迁移到 postgresql {2}。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unfinished_schema_upgrade" xml:space="preserve">
           <source>Database schema upgrade in progress!</source>
+        <target>数据库纲要升级正在进行！</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
