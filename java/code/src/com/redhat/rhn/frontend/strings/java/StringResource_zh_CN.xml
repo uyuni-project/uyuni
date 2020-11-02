@@ -427,7 +427,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Anywhere a list of words is delimited</context>
         </context-group>
-        <target state="translated">，</target>
+        <target state="translated">， </target>
       </trans-unit>
       <trans-unit id="Change Email" xml:space="preserve">
         <source>Change Email</source>
@@ -578,6 +578,7 @@
       </trans-unit>
       <trans-unit id="Guests" xml:space="preserve">
         <source>Guests</source>
+        <target>Guest</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
