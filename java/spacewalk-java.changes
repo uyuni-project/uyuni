@@ -1,3 +1,5 @@
+- Use correct eauth module and credentials for Salt SSH calls (bsc#1178319)
+
 -------------------------------------------------------------------
 Thu Oct 22 10:47:09 CEST 2020 - jgonzalez@suse.com
 
