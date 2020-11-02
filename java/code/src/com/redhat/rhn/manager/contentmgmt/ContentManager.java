@@ -837,7 +837,8 @@ public class ContentManager {
      * @param tgt the target {@link Channel}
      * @param user the user
      */
-    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt, User user) {
+    public static void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
+            User user) {
         List<PackageFilter> packageFilters = extractFiltersOfType(filters, PackageFilter.class);
         List<ErrataFilter> errataFilters = extractFiltersOfType(filters, ErrataFilter.class);
 
