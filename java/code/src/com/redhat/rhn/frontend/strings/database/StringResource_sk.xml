@@ -589,14 +589,14 @@
       </trans-unit>
       <trans-unit id="Critical Buffer Cache Hit Ratio" xml:space="preserve">
         <source>Critical Buffer Cache Hit Ratio</source>
-        <target/>
+        <target>Kritický pomer záznamov vyrovnávacej pamäte zásobníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CLOSE_WAIT Connections" xml:space="preserve">
         <source>Critical CLOSE_WAIT Connections</source>
-        <target/>
+        <target>Kritické pripojenia CLOSE_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -659,7 +659,7 @@
       </trans-unit>
       <trans-unit id="Critical Connections" xml:space="preserve">
         <source>Critical Connections</source>
-        <target/>
+        <target>Kritické pripojenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -694,7 +694,7 @@
       </trans-unit>
       <trans-unit id="Critical ESTABLISHED Connections" xml:space="preserve">
         <source>Critical ESTABLISHED Connections</source>
-        <target/>
+        <target>Kritické pripojenia ESTABLISHED</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -715,7 +715,7 @@
       </trans-unit>
       <trans-unit id="Critical FIN_WAIT Connections" xml:space="preserve">
         <source>Critical FIN_WAIT Connections</source>
-        <target/>
+        <target>Kritické pripojenia FIN_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -960,7 +960,7 @@
       </trans-unit>
       <trans-unit id="Critical SYN_RCVD Connections" xml:space="preserve">
         <source>Critical SYN_RCVD Connections</source>
-        <target/>
+        <target>Kritické pripojenia SYN_RCVD</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1681,7 +1681,7 @@
       </trans-unit>
       <trans-unit id="Warning Buffer Cache Hit Ratio" xml:space="preserve">
         <source>Warning Buffer Cache Hit Ratio</source>
-        <target/>
+        <target>Varovný pomer záznamov vyrovnávacej pamäte zásobníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2193,7 +2193,7 @@
       </trans-unit>
       <trans-unit id="metrics.Buffer cache hit ratio" xml:space="preserve">
         <source>Buffer cache hit ratio</source>
-        <target/>
+        <target>Pomer záznamov vyrovnávacej pamäte zásobníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2984,7 +2984,7 @@
       </trans-unit>
       <trans-unit id="Buffer Cache" xml:space="preserve">
           <source>Buffer Cache</source>
-        <target>Pomer záznamov vyrovnávacej pamäte zásobníka</target>
+        <target>Vyrovnávacia pamäť zásobníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
