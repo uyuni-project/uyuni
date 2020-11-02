@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -75,6 +76,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -641,10 +643,16 @@ public class DownloadFile extends DownloadAction {
                 }
                 else if (tree.getKernelOptions() != null &&
                          tree.getKernelOptions().contains("useonlinerepo") &&
-                         path.endsWith("/media.1/products") &&
-                         tree.getChannel().getMediaProducts() != null) {
-                    diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                        "/" + tree.getChannel().getMediaProducts().getRelativeFilename();
+                         path.endsWith("/media.1/products")) {
+                    MediaProducts mediaProducts = Optional.ofNullable(tree.getChannel().getMediaProducts())
+                            .orElse(ChannelManager.getOriginalChannel(tree.getChannel()).getMediaProducts());
+                    if (mediaProducts != null) {
+                        diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                                "/" + mediaProducts.getRelativeFilename();
+                    }
+                    else {
+                        diskPath = kickstartMount + "/" + tree.getBasePath() + path;
+                    }
                 }
                 else {
                     diskPath = kickstartMount + "/" + tree.getBasePath() + path;
