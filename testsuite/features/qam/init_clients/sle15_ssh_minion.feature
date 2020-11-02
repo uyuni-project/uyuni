@@ -25,6 +25,11 @@ Feature: Bootstrap a SLES 15 Salt SSH Minion
     Given I am on the Systems overview page of this "sle15_ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
 
+# WORKAROUD for bsc#1178328
+  Scenario: Install dmidecode package to avoid a Hardware Refresh issue in SLES 15 SSH minion
+  @ssh_minion
+    And I install package "dmidecode" on this "sle15_ssh_minion"
+
 @proxy
   Scenario: Check connection from SLES 15 SSH minion to proxy
     Given I am on the Systems overview page of this "sle15_ssh_minion"
