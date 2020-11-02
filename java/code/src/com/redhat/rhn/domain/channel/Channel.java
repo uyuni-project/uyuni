@@ -239,6 +239,14 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
+     * Return true if the channel is modular.
+     * @return true if the channel is modular.
+     */
+    public boolean isModular() {
+        return modules != null;
+    }
+
+    /**
      * @param mediaProductsIn The Media Products to set.
      */
     public void setMediaProducts(MediaProducts mediaProductsIn) {

@@ -1513,10 +1513,10 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testModularDataAlignmentNoModulesSource() throws Exception {
         var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        var env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
 
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         // we already have a modular target cloned from the past
         var alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
@@ -1526,40 +1526,9 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         alreadyExistingTgt.setModules(modules);
         env.addTarget(new SoftwareEnvironmentTarget(env, alreadyExistingTgt));
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
 
         // building project with unmodular source should reset the modular data in corresponding target
-        assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
-    }
-
-    /**
-     * Checks that building with a modular filter strips metadata of already existing target
-     *
-     * @throws Exception
-     */
-    public void testModularFiltersStripTargetModules() throws Exception {
-        var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
-        ContentProjectFactory.save(cp);
-        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
-
-        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
-        ContentFilter filter = contentManager.createFilter("my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-
-        var channel = MockModulemdApi.createModularTestChannel(user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-
-        var alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
-        Modules modules = new Modules();
-        modules.setRelativeFilename("srcfilename");
-        modules.setChannel(alreadyExistingTgt);
-        alreadyExistingTgt.setModules(modules);
-        env.addTarget(new SoftwareEnvironmentTarget(env, alreadyExistingTgt));
-
-        // both source and current target have modular metadata...
-        contentManager.buildProject("cplabel", empty(), false, user);
-
-        // ...but presence of a filter strips it away
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
     }
 
@@ -1570,12 +1539,12 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testModularDataAlignment() throws Exception {
         var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        var env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
 
         // verify that a non-modular source results in an non-modular target
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
 
         // verify that a modular source results in a modular target
@@ -1583,7 +1552,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         modules.setRelativeFilename("srcfilename");
         modules.setChannel(channel);
         channel.setModules(modules);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
         var tgtChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
         assertTrue(tgtChannel.isModular());
         assertEquals("srcfilename",  tgtChannel.getModules().getRelativeFilename());
@@ -1591,32 +1560,8 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // verify that a non-modular source strips the modular data
         HibernateFactory.getSession().delete(channel.getModules());
         channel.setModules(null);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
-    }
-
-    /**
-     * Test that the modular data is propagated in the promote operation, too.
-     *
-     * @throws Exception
-     */
-    public void testModularDataAlignmentPromote() throws Exception {
-        Channel channel = MockModulemdApi.createModularTestChannel(user);
-
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
-        ContentProjectFactory.save(cp);
-        ContentEnvironment fst = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
-        ContentEnvironment snd = contentManager.createEnvironment(cp.getLabel(), of("fst"), "snd", "second env", "desc", false, user);
-
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
-        contentManager.promoteProject("cplabel", "fst", false, user);
-
-        String relativeFilename = channel.getModules().getRelativeFilename();
-        Channel fstTgt = fst.getTargets().get(0).asSoftwareTarget().get().getChannel();
-        Channel sndTgt = snd.getTargets().get(0).asSoftwareTarget().get().getChannel();
-        assertEquals(relativeFilename, fstTgt.getModules().getRelativeFilename());
-        assertEquals(relativeFilename, sndTgt.getModules().getRelativeFilename());
     }
 
     private void assertBuildFails(String projectLabel) {
