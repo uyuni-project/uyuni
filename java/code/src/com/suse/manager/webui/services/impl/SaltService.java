@@ -1151,6 +1151,15 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    public Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname) {
+        RunnerCall<MgrUtilRunner.RemoveKnowHostResult> call = MgrUtilRunner.removeSSHKnowHost("salt", hostname);
+        return callSync(call);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public Optional<MgrUtilRunner.ExecResult> deleteRejectedKey(String minionId) {
         RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.deleteRejectedKey(minionId);
         return callSync(call);

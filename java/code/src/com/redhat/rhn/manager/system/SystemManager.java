@@ -114,6 +114,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -721,6 +722,11 @@ public class SystemManager extends BaseManager {
         });
 
 
+        // clean known_hosts
+        if (server.asMinionServer().isPresent()) {
+            removeSaltSSHKnownHosts(server);
+        }
+
         // remove server itself
         ServerFactory.delete(server);
 
@@ -728,6 +734,16 @@ public class SystemManager extends BaseManager {
             saltApi.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
         });
+    }
+
+    private static void removeSaltSSHKnownHosts(Server server) {
+        Optional<MgrUtilRunner.RemoveKnowHostResult> result =
+                saltApi.removeSaltSSHKnownHost(server.getHostname());
+        boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
+        if (!removed) {
+            log.warn("Hostname " + server.getHostname() + " could not be removed from " +
+                    "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+        }
     }
 
     /**

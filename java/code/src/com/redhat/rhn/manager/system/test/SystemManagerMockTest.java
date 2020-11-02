@@ -23,31 +23,30 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
-
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import com.suse.manager.webui.services.impl.SaltService;
-
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 
 import java.util.Collections;
+import java.util.Optional;
 
 
 /**
  * SystemManagerMockTest
  */
-public class SystemManagerMockTest extends RhnJmockBaseTestCase {
+public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
@@ -83,6 +82,8 @@ public class SystemManagerMockTest extends RhnJmockBaseTestCase {
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).deleteKey(testMinionServer.getMinionId());
+            allowing(saltServiceMock).removeSaltSSHKnownHost(testMinionServer.getHostname());
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
 
         SystemManager.mockSaltService(saltServiceMock);
