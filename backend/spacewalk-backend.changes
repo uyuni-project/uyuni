@@ -14,7 +14,6 @@ Tue Sep 15 10:36:45 CEST 2020 - jgonzalez@suse.com
 - version 4.1.15-1
 - Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - Only regenerate bootstrap repositories when linking new packages (bsc#1174636)
->>>>>>> origin/Manager-4.1
 - support installer_updates flag in ISS
 - Remove duplicate languages and update translation strings
 
