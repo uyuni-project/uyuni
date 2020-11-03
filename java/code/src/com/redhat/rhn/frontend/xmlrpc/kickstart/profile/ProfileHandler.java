@@ -736,7 +736,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart to download.")
      * @xmlrpc.param #param_desc("string", "host", "The host to use when
-     * referring to the Uyuni server. Usually this should be the FQDN,
+     * referring to the #product() server. Usually this should be the FQDN,
      * but could be the ip address or shortname as well.")
      * @xmlrpc.returntype #param_desc("string", "ks", "The contents of the kickstart file. Note: if
      * an activation key is not associated with the kickstart file, registration
