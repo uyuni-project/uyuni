@@ -1027,7 +1027,7 @@
               The page you requested, https://rhn.redhat.com/rhn/YourRhn.do, was not found.
           </context>
         </context-group>
-        <target state="translated">没有找到您所要求的页 {0}。 </target>
+        <target state="translated">未找到您请求的页 {0}。</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason1" xml:space="preserve">
         <source>If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated.</source>
@@ -1326,7 +1326,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">接收邮件通知</target>
+        <target state="translated"> 接收电子邮件通知</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivetaskonote" xml:space="preserve">
         <source> Receive taskomatic notifications</source>
@@ -1368,7 +1368,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">到 @@PRODUCT_NAME@@ 用户界面不同区域的快速链接任务导向菜单。</target>
+        <target state="translated"> 指向 @@PRODUCT_NAME@@ 用户界面不同区域的快速链接的任务导向式菜单。</target>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.name" xml:space="preserve">
         <source>Most Critical Systems</source>
@@ -1382,7 +1382,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">包括最关键更新和健康状态的系统列表。</target>
+        <target state="translated"> 包括最关键更新和运行状态的系统列表。</target>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.name" xml:space="preserve">
         <source>System Groups</source>
@@ -1396,7 +1396,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">您的系统组群总体状态预览。</target>
+        <target state="translated"> 预览系统组的总体运行状态。</target>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.name" xml:space="preserve">
         <source>Relevant Security Errata</source>
@@ -1410,7 +1410,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">查看最新的、适用于您系统的勘误。</target>
+        <target state="translated"> 查看适用于您系统的最新安全勘误。</target>
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.name" xml:space="preserve">
         <source>Inactive Systems</source>
@@ -1424,7 +1424,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">在 @@PRODUCT_NAME@@ 注册但目前却停止登录的系统列表。</target>
+        <target state="translated"> 列出最近停止签入的已注册 @@PRODUCT_NAME@@ 系统。</target>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.name" xml:space="preserve">
         <source>Recently Scheduled Actions</source>
@@ -1438,7 +1438,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">列出用户调度的动作。</target>
+        <target state="translated"> 列出为用户安排的操作。</target>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.name" xml:space="preserve">
         <source>Recently Registered Systems</source>
@@ -1452,7 +1452,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">最近 30 天之内注册的系统的列表。</target>
+        <target state="translated"> 过去 30 天内最近注册的系统列表。</target>
       </trans-unit>
       <!--END of  the Pane entries Section-->
       <trans-unit id="preferences.jsp.entriesperpage" xml:space="preserve">
@@ -1460,7 +1460,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">每个列表页中的项数</target>
+        <target state="translated"> 项（每个列表页）</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.tz" xml:space="preserve">
         <source>Time Zone</source>
@@ -1901,14 +1901,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">以下是您的机构可用的频道列表。您可以为这个用户明确分配对每个列出频道的管理权限。</target>
+        <target state="translated"> 下面是可供您组织使用的频道列表。对于列出的每个频道，您可以向此用户授予显式的频道管理权限。</target>
       </trans-unit>
       <trans-unit id="channelManagementPerms.granted" xml:space="preserve">
         <source> Management permission granted through org/channel admin status </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">通过机构／频道管理状态获得的管理权限</target>
+        <target state="translated"> 通过组织/频道管理状态授予的管理权限 </target>
       </trans-unit>
       <trans-unit id="Channel admin status" xml:space="preserve">
         <source>Channel admin status</source>
@@ -1923,14 +1923,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="translated">以下列出了与您的 @@PRODUCT_NAME@@ 帐户关联的地址。</target>
+        <target state="translated"> 下面列出了与您的 @@PRODUCT_NAME@@ 帐户关联的地址。 </target>
       </trans-unit>
       <trans-unit id="address.jsp.associated" xml:space="preserve">
         <source> The following addresses are associated with this user's account. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="translated">以下地址与这个用户的帐户关联。</target>
+        <target state="translated"> 以下地址与此用户的帐户相关联。 </target>
       </trans-unit>
       <trans-unit id="address.jsp.addresses" xml:space="preserve">
         <source>Addresses</source>
@@ -1952,8 +1952,8 @@ to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">您可以取消激活以下您的 @@PRODUCT_NAME@@ 帐户。&lt;b&gt;这将使您无法登录到
-@@PRODUCT_NAME@@。&lt;/b&gt; </target>
+        <target state="translated">您可以停用您的以下 @@PRODUCT_NAME@@ 帐户。&lt;b&gt;这会导致您无法
+登录到 @@PRODUCT_NAME@@。&lt;/b&gt;</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning" xml:space="preserve">
         <source>You will be logged out immediately after pressing the 'Deactivate Account'
@@ -1983,14 +1983,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">您的帐户</target>
+        <target state="translated"> 我的帐户 </target>
       </trans-unit>
       <trans-unit id="details.jsp.personal_info" xml:space="preserve">
         <source> Personal Info </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">个人资料</target>
+        <target state="translated"> 个人信息 </target>
       </trans-unit>
       <!-- channelperms.jsp -->
       <trans-unit id="channelperms.jsp.title" xml:space="preserve">
@@ -2005,7 +2005,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">以下是您的机构可用的频道列表。您可以为这个用户明确分配对每个列出的频道的订阅权限。</target>
+        <target state="translated">下面是可供您组织使用的频道列表。对于列出的每个频道，您可以向此用户授予显式的频道订阅权限 </target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.permGranted" xml:space="preserve">
         <source>Permission granted through org/channel admin status, or the channel is globally subscribable</source>
@@ -2111,14 +2111,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target state="translated">可插拔验证模块（PAM）：</target>
+        <target state="translated">可插拔身份验证模块 (PAM)： </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions" xml:space="preserve">
         <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target state="translated">使用 PAM 来实现 LDAP、Kerberos 和其它基于网络的验证系统。</target>
+        <target state="translated">使用 PAM 对 LDAP、Kerberos 和其他基于网络的身份验证系统进行身份验证。 </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions.note" xml:space="preserve">
         <source>Note: The password fields above are not required when this box is checked; however you may fill in a password that will work only when PAM authentication for this user account is disabled.</source>
@@ -2182,7 +2182,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">可以通过以下提供的表格编辑这个用户的信息。以星号（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）标注的项是&lt;strong&gt;必填的&lt;/strong&gt;。</target>
+        <target state="translated"> 可以使用下面提供的表单编辑此用户的信息。标有星号 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 的项是&lt;strong&gt;必填的&lt;/strong&gt;。 </target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles" xml:space="preserve">
         <source>Roles</source>
@@ -2245,7 +2245,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">使用 PAM：</target>
+        <target state="translated">使用 PAM： </target>
       </trans-unit>
       <!-- userlist.jsp -->
       <trans-unit id="userlist.jsp.useroverview" xml:space="preserve">
@@ -2298,7 +2298,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
-        <target state="translated">没有激活的用户</target>
+        <target state="translated">没有活动用户。</target>
       </trans-unit>
       <trans-unit id="extauth.jsp.noGroups" xml:space="preserve">
         <source>No external groups.</source>
@@ -2512,7 +2512,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target state="translated">地址</target>
+        <target state="translated"> 地址</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.summary" xml:space="preserve">
         <source>This user's address information may be edited in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
@@ -2582,7 +2582,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">请在以下提供的表格中输入您的信息。以星号（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）标记的项是 &lt;strong&gt;必填的&lt;/strong&gt;。</target>
+        <target state="translated"> 请在下面提供的表单中输入您的信息。标有星号 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 的项是&lt;strong&gt;必填的&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
@@ -2611,21 +2611,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">跟着是系统组群列表。使用选择框来设置这个用户对每个系统组群的访问权限。机构管理员有所有系统组群的权限。</target>
+        <target state="translated">随后会显示系统组列表。请使用复选框来设置此用户对每个系统组的访问权限。组织管理员对所有系统组拥有权限。 </target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.asadmin" xml:space="preserve">
         <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">作为系统组群管理员，这个用户可以修改选择的系统组群的所有属性。</target>
+        <target state="translated">作为系统组管理员，此用户可以修改选定系统组的所有各个方面。 </target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.youcanselect" xml:space="preserve">
         <source>You can select one or more default system groups for this user. When the user registers a system, that system will be assigned to the selected group or groups. This allows the user to have access to the newly-registered system immediately, if he or she has permissions to one or more of the groups the system is assigned to. System Groups to which this user has access to are preceded by a (*). </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">您可以为这个用户选择一个或多个默认的系统组群。当用户注册一个系统时，会将这个系统会分配给选择的组群。这将允许用户马上可以访问新注册的系统（如果用户有对系统被分配的组群的访问权限）。使用（*）标识这个用户已经访问的系统组群。</target>
+        <target state="translated">可为此用户选择一个或多个默认系统组。当该用户注册某个系统时，会将该系统分配到一个或多个选定的组。这样，如果该用户对新注册的系统所分配到的一个或多个组拥有权限，则他（她）就可以立即访问该系统。此用户有权访问的系统组前面带有 (*)。 </target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.defaultsysgroups" xml:space="preserve">
         <source>Default System Groups:</source>
@@ -2872,7 +2872,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target state="translated">以下的动作已经被调度，正在等待被一个或多个系统执行。只有机构管理员或调度这个系统的用户才可以把动作归档。</target>
+        <target state="translated"> 以下操作已安排，正在等待由一个或多个系统执行。操作只能由组织管理员或安排该操作的用户存档。 </target>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.nogroups" xml:space="preserve">
         <source>No actions pending.</source>
@@ -2909,7 +2909,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
-        <target state="translated">以下的动作在一个或多个系统中运行失败。只有机构管理员或调度这个动作的用户才可将动作归档。</target>
+        <target state="translated"> 以下操作无法在一个或多个系统上正常执行。操作只能由组织管理员或安排该操作的用户存档。 </target>
       </trans-unit>
       <trans-unit id="failedactions.jsp.nogroups" xml:space="preserve">
         <source>No failed actions.</source>
@@ -2931,7 +2931,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
-        <target state="translated">以下的动作在一个或多个系统中完成。只有机构管理员或调度这个动作的用户才可将动作归档。</target>
+        <target state="translated"> 以下操作已由一个或多个系统完成。操作只能由组织管理员或安排该操作的用户存档。 </target>
       </trans-unit>
       <trans-unit id="completedactions.jsp.nogroups" xml:space="preserve">
         <source>No completed actions.</source>
@@ -2953,7 +2953,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
-        <target state="translated">以下的动作已经被归档。</target>
+        <target state="translated"> 以下操作已存档。 </target>
       </trans-unit>
       <trans-unit id="archivedactions.jsp.nogroups" xml:space="preserve">
         <source>No archived actions.</source>
@@ -3388,7 +3388,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-        <target state="translated">以下的软件包可以安装在这个系统中</target>
+        <target state="translated">可在此系统上安装以下软件包。</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatches" xml:space="preserve">
         <source>Installable Patches</source>
@@ -3857,7 +3857,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">勘误：</target>
+        <target state="translated">补丁： </target>
       </trans-unit>
       <trans-unit id="errata.edit.editerrata" xml:space="preserve">
         <source>Edit Patch</source>
@@ -4126,7 +4126,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target state="translated">发布勘误：</target>
+        <target state="translated">发布补丁： </target>
       </trans-unit>
       <trans-unit id="errata.publish.instructions" xml:space="preserve">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
@@ -4243,7 +4243,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target state="translated">查看：</target>
+        <target state="translated">查看： </target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewsubmit" xml:space="preserve">
         <source>View</source>
@@ -4297,7 +4297,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target state="translated">在勘误 &lt;strong&gt;{1}&lt;/strong&gt; 中添加 &lt;strong&gt;{0}&lt;/strong&gt; 软件包</target>
+        <target state="translated">已将 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包添加到补丁 &lt;strong&gt;{1}&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4306,7 +4306,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target state="translated">在勘误 &lt;strong&gt;{1}&lt;/strong&gt; 中添加 &lt;strong&gt;{0}&lt;/strong&gt; 软件包</target>
+        <target state="translated">已将 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包添加到补丁 &lt;strong&gt;{1}&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4315,7 +4315,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target state="translated">从勘误 &lt;strong&gt;{1}&lt;/strong&gt; 中删除 &lt;strong&gt;{0}&lt;/strong&gt; 软件包</target>
+        <target state="translated">已从补丁 &lt;strong&gt;{1}&lt;/strong&gt; 中删除 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4324,7 +4324,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target state="translated">从勘误 &lt;strong&gt;{1}&lt;/strong&gt; 中删除 &lt;strong&gt;{0}&lt;/strong&gt; 软件包</target>
+        <target state="translated">已从补丁 &lt;strong&gt;{1}&lt;/strong&gt; 中删除 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包</target>
       </trans-unit>
       <trans-unit id="errata.overview.jsp.summary" xml:space="preserve">
         <source>The following patches apply to at least one system to which you have administrative access.</source>
@@ -4689,7 +4689,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/UserList</context>
         </context-group>
-        <target state="translated">没有机构</target>
+        <target state="translated">无组织。</target>
       </trans-unit>
       <trans-unit id="org.jsp.noUsers" xml:space="preserve">
         <source>No Users.</source>
@@ -4765,14 +4765,14 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
-        <target state="translated">指出起始日期：</target>
+        <target state="translated">颁发开始日期： </target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.end_date" xml:space="preserve">
         <source>Issue End Date: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
-        <target state="translated">指出终止日期：</target>
+        <target state="translated">颁发结束日期： </target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip" xml:space="preserve">
         <source>'kernel', 'slessp1-glibc'</source>
@@ -4870,7 +4870,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">所有项目</target>
+        <target state="translated">所有字段 </target>
       </trans-unit>
       <trans-unit id="search.jsp.package_name" xml:space="preserve">
         <source>Package Name</source>
@@ -4898,7 +4898,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">要搜索的勘误类型：</target>
+        <target state="translated">要搜索的补丁类型：</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.issueDate" xml:space="preserve">
         <source>Issue Date</source>
@@ -5273,7 +5273,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search.do</context>
         </context-group>
-        <target state="translated">软件包搜索将会从指定一个软件包组中返回软件包。</target>
+        <target state="translated">软件包搜索将从指定的软件频道集返回软件包。 </target>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
@@ -5370,7 +5370,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.summary2" xml:space="preserve">
           <source>The navigation tabs above will assist you in executing the following actions.</source>
-        <target state="translated">以下标签将帮您完成大量任务：</target>
+        <target state="translated">上面的导航选项卡可帮助您执行以下操作。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5384,7 +5384,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.systems.list" xml:space="preserve">
           <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source>
-        <target state="translated">&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;列出所选系统&lt;/a&gt;</target>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;列出系统&lt;/a&gt;（列出您选择使用的系统）</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5411,7 +5411,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.packages.upgrade" xml:space="preserve">
           <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source>
-        <target state="translated">&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;升级&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageInstall.do"&gt;安装&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageRemove.do"&gt;删除&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageVerify.do"&gt;确认&lt;/a&gt; 软件包</target>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;升级&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5478,7 +5478,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning" xml:space="preserve">
           <source>Provisioning</source>
-        <target state="translated">Provisioning</target>
+        <target state="translated">置备</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5709,7 +5709,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.notrust" xml:space="preserve">
           <source>No trusted organizations</source>
-        <target state="translated">没有可信的机构。</target>
+        <target state="translated">没有可信的组织</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -6080,7 +6080,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.update" xml:space="preserve">
           <source>Automatic application of relevant patches</source>
-        <target state="translated">相关勘误的自动应用。</target>
+        <target state="translated">自动应用相关补丁</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -6649,7 +6649,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target state="translated">查看注册的系统：</target>
+        <target state="translated">查看已注册的系统： </target>
       </trans-unit>
       <trans-unit id="proxylist.jsp.header" xml:space="preserve">
         <source>Proxy Servers</source>
@@ -6900,14 +6900,14 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="duplicate.compares.jsp.message" xml:space="preserve">
           <source>The systems below are potential duplicates of one another. You may select a combination of &lt;strong&gt;{0} systems at once&lt;/strong&gt; for detailed comparison</source>
-        <target state="translated">下面的系统是彼此的潜在复制系统。您可以一次选择 &lt;strong&gt;{0} 个系统&lt;/strong&gt;组合用于详细的比较。</target>
+        <target state="translated">以下系统可能彼此重复。您可以&lt;strong&gt;一次性&lt;/strong&gt;选择 {0} 个系统的组合进行详细比较</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.compares.max_limit.message" xml:space="preserve">
           <source>You have selected more than {0} system profiles for comparison. Please select a combination of &lt;strong&gt;{0} systems or less&lt;/strong&gt; to compare and select &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target state="translated">您选择了多于 {0} 系统侧写用于比较。请选择少于 &lt;strong&gt;{0} 个系统&lt;/strong&gt; 来进行比较并选择 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
+        <target state="translated">您已选择 {0} 个以上的系统配置文件进行比较。请选择 &lt;strong&gt;{0} 个或更少系统&lt;/strong&gt;的组合进行比较，然后选择 &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
@@ -7381,7 +7381,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemgroup.delete.summary" xml:space="preserve">
           <source>Note that this will only delete the system group itself, {0}not{1} any current systems that happen to be members.</source>
-        <target state="translated">注：这样只会删除系统组本身，</target>
+        <target state="translated">请注意，这只会删除系统组本身，而{0}不会{1}删除正好是其成员的任何当前系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7612,7 +7612,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="system_entitlements.provisioning.success" xml:space="preserve">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Provisioning&lt;/strong&gt;.</source>
-        <target state="translated">将 &lt;strong&gt;{0}&lt;/strong&gt; 个系统设为 &lt;strong&gt;Provisioning&lt;/strong&gt;</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 个系统已设置为&lt;strong&gt;置备&lt;/strong&gt;</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
@@ -7923,7 +7923,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已经为 &lt;a href="/network/systems/details/index.pxt?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 软件包删除。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的删除</target>
       </trans-unit>
       <trans-unit id="message.packageremovals" xml:space="preserve">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7931,7 +7931,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 软件包删除。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的删除</target>
       </trans-unit>
       <trans-unit id="message.packageupgrade" xml:space="preserve">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7939,7 +7939,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">{0} 个软件包升级已经对 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; 进行了&lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的升级</target>
       </trans-unit>
       <trans-unit id="message.packageupgrades" xml:space="preserve">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7947,7 +7947,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 软件包升级。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的升级</target>
       </trans-unit>
       <trans-unit id="message.packageinstall" xml:space="preserve">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7955,7 +7955,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 软件包安装。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的安装</target>
       </trans-unit>
       <trans-unit id="message.packageinstalls" xml:space="preserve">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7963,7 +7963,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 软件包安装。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的安装</target>
       </trans-unit>
       <trans-unit id="message.systeminstalls" xml:space="preserve">
         <source>Package install has been scheduled for {0} system(s).</source>
@@ -7977,7 +7977,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 软件包验证。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的校验</target>
       </trans-unit>
       <trans-unit id="message.packageverifys" xml:space="preserve">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7985,42 +7985,42 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 软件包验证。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个软件包的校验</target>
       </trans-unit>
       <trans-unit id="message.patchremoval" xml:space="preserve">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 补丁删除。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个补丁的删除</target>
       </trans-unit>
       <trans-unit id="message.patchremovals" xml:space="preserve">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 补丁删除。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个补丁的删除</target>
       </trans-unit>
       <trans-unit id="message.patchinstall" xml:space="preserve">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已经为&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 补丁安装。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
       <trans-unit id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已经为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;调度&lt;/a&gt;了 {0} 补丁安装。</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
       <trans-unit id="message.xccdfeval" xml:space="preserve">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt; &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;调度&lt;/a&gt; XCCDF 扫描</target>
+        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排了&lt;/a&gt; XCCDF 扫描</target>
       </trans-unit>
       <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
         <source>XCCDF scan has been scheduled successfully.</source>
@@ -8570,14 +8570,14 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/Consume</context>
         </context-group>
-        <target state="translated">以下是您的机构与 &lt;strong&gt;{0}&lt;/strong&gt; 共享的频道列表。这个列表还显示每个频道中有多少软件包，以及那个机构在这些共享频道中消耗了多少系统。如果您要修改共享的频道数目，请点击频道名称查看详情。</target>
+        <target state="translated">下面是您的组织正在与 &lt;strong&gt;{0}&lt;/strong&gt; 共享的频道列表。此列表还显示了每个频道中有多少软件包，以及该组织中有多个系统正在使用这些共享频道。如果您要修改共享的频道数目，请单击频道名称查看更多细节。 </target>
       </trans-unit>
       <trans-unit id="orgtrust.jsp.channelprovide.summary" xml:space="preserve">
         <source>Below is a list of channels that organization &lt;strong&gt;{0}&lt;/strong&gt; has shared with your organization, also showing how many packages are in each channel and how many systems in your organization are consuming from these shared channels. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/Provide</context>
         </context-group>
-        <target state="translated">以下是您的机构与 &lt;strong&gt;{0}&lt;/strong&gt; 共享的频道列表。这个列表还显示每个频道中有多少软件包，以及那个机构在这些共享频道中消耗了多少系统。</target>
+        <target state="translated">下面是您的组织正在与 &lt;strong&gt;{0}&lt;/strong&gt; 共享的频道列表。此列表还显示每个频道中有多少软件包，以及您组织中有多个系统正在使用这些共享频道。 </target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedto" xml:space="preserve">
         <source>Systems Migrated to Your Organization</source>
@@ -8605,7 +8605,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">删除侧写 &lt;strong&gt;{0}&lt;/strong&gt;</target>
+        <target state="translated">已删除配置文件 &lt;strong&gt;{0}&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.deleteprofile" xml:space="preserve">
         <source>Delete Profile</source>
@@ -8675,7 +8675,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">在您选择来同步的软件包侧写中类出以下软件包</target>
+        <target state="translated"> 您已选择同步的软件包配置文件中列出了以下软件包</target>
       </trans-unit>
       <trans-unit id="missingpkgs.jsp.removelistedpackagesfromsync" xml:space="preserve">
         <source>Remove listed packages from sync</source>
@@ -8807,7 +8807,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">以下是这个系统和被选为与其进行比较系统的软件包侧写的比较结果。</target>
+        <target state="translated">下面是此系统以及所选系统的软件包配置文件的比较结果。 </target>
       </trans-unit>
       <trans-unit id="message.thissystemonly" xml:space="preserve">
         <source>This system only</source>
@@ -8864,7 +8864,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
-        <target state="translated">通知过滤器配置</target>
+        <target state="translated">通知过滤器配置。</target>
       </trans-unit>
       <trans-unit id="filters.jsp.summary" xml:space="preserve">
         <source>Notification filters allow you to create long-term rules that suspend, redirect or automatically acknowledge standard notifications or send supplemental notifications.</source>
@@ -9159,7 +9159,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
         </context-group>
-        <target state="translated">Kickstart 侧写</target>
+        <target state="translated"> 自动安装配置文件</target>
       </trans-unit>
       <trans-unit id="filtercreate.jsp.header2" xml:space="preserve">
         <source>Create the notification filter using the form provided.</source>
@@ -9187,7 +9187,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/FilterCreate.do</context>
         </context-group>
-        <target state="translated">编辑通知过滤器</target>
+        <target state="translated">编辑通知过滤器。</target>
       </trans-unit>
       <trans-unit id="delete.jsp.delete" xml:space="preserve">
         <source>Delete Patch</source>
@@ -9802,8 +9802,8 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
-        <target state="translated">将使用以下信息生成启动脚本（bootstrap script）。可使用这些脚本将客户端系统配置为使用这个 @@PRODUCT_NAME@@ 接收更新。创建启动脚本后，可在 &lt;a href="/pub/bootstrap"&gt;这个服务器&lt;/a&gt;访问它们。&lt;br/&gt;&lt;br/&gt;
-请注意，您可能还需要对这些脚本进行一些手工配置。启动脚本位于 @@PRODUCT_NAME@@ 服务器文件系统：&lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt; </target>
+        <target state="translated"> 以下信息将用于生成引导脚本。可使用这些引导脚本将客户端配置为使用此 @@PRODUCT_NAME@@ 来接收更新。生成引导脚本后，&lt;a href="/pub/bootstrap"&gt;此服务器&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;中会提供这些脚本。
+请注意，仍可能需要对这些脚本进行一些手动配置。可以在 @@PRODUCT_NAME@@ 服务器的文件系统上找到引导脚本：&lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.header2" xml:space="preserve">
         <source>Client Bootstrap Script Configuration</source>
@@ -9893,7 +9893,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="translated">这些配置改变需要重启 @@PRODUCT_NAME@@。请点「重启」来重新启动 @@PRODUCT_NAME@@。此页面会在 4 分钟后自动刷新。请注意，这会影响到所有登录到这个应用程序的用户，并影响到正在试图在 @@PRODUCT_NAME@@ 注册或与其互动的系统。</target>
+        <target state="translated"> 更改配置需要重启动 @@PRODUCT_NAME@@。请单击 "重启动" 以重启动 @@PRODUCT_NAME@@。此页面将在 4 分钟后自动刷新。请注意，这会影响到所有已登录到此应用程序的用户，并会影响到尝试注册 @@PRODUCT_NAME@@ 或与其交互的系统。</target>
       </trans-unit>
       <trans-unit id="restart.jsp.header2" xml:space="preserve">
         <source>Restart @@PRODUCT_NAME@@</source>
@@ -9954,7 +9954,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="cobbler.jsp.synced" xml:space="preserve">
           <source>Cobbler Sync action was successfully executed. Look at /var/log/cobbler/*.log for more information</source>
-        <target state="translated">成功执行了 Cobbler Sync 动作。详情请查看 /var/log/cobbler/*. 日志。</target>
+        <target state="translated">已成功执行 Cobbler 同步操作。有关详细信息，请查看 /var/log/cobbler/*.log</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Cobbler.do</context>
         </context-group>
@@ -10108,7 +10108,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.norepos" xml:space="preserve">
         <source>No repositories currently exist.</source>
-        <target state="translated">数据库里没有库</target>
+        <target state="translated">当前不存在任何储存库。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.norepos" xml:space="preserve">
         <source>No repositories are currently associated with this channel.</source>
@@ -10162,7 +10162,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.create.url" xml:space="preserve">
         <source>Repository URL</source>
-        <target state="translated">库 URL </target>
+        <target state="translated">储存库 URL</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.type" xml:space="preserve">
         <source>Repository Type</source>
@@ -10205,7 +10205,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.delete.warning" xml:space="preserve">
         <source>Deleting this repository will remove any channel mappings this repository is associated with</source>
-        <target state="translated">删除这个库将删除这个库关联的任何频道映射。</target>
+        <target state="translated">删除此储存库会删除与其关联的所有频道映射</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.info.header" xml:space="preserve">
         <source>Repository Information</source>
@@ -10536,7 +10536,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="ssm.provisioning.rollbacktotag.summary1" xml:space="preserve">
           <source>The systems below may be rolled back to their system snapshot associated with the tag: {0}.</source>
-        <target state="translated">可将以下系统返回至与该标签关联的系统快照：{0}</target>
+        <target state="translated">可将以下系统回滚到与标记 {0} 关联的系统快照。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
         </context-group>
@@ -10594,11 +10594,11 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;所使用的 Kickstart 侧写可能会清除所有
-        采用 kickstart 安装的机器中的所有分区，其中包括附加爱 SAN 中的逻辑磁盘。
-        如果您不想要丢失一个或者多个
-        磁盘中的数据，则应在 Kickstart 前
-        或者编辑这个 Kickstart 侧写的 "clearpart" 选项前将该磁盘从该服务器中移除</target>
+        <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;所用的 Kickstart 配置文件可能会销毁
+        无人值守安装的计算机中所有磁盘上的所有分区，包括挂接的 SAN 上的逻辑磁盘。
+        如果您不想要丢失一个或多个磁盘上的数据，应在无人值守安装之前移除服务器上的
+        磁盘，或者通过编辑 "clearpart" 选项来确保所用的 Kickstart 配置文件
+        不会销毁分区。</target>
       </trans-unit>
       <trans-unit id="partitions" xml:space="preserve">
         <source>partitions</source>
@@ -11146,7 +11146,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts</context>
         </context-group>
-        <target state="translated">  您可以更改以下顺序以便更新要运行的 kickstart 脚本的顺序。预脚本总是在安装前运行，后脚本将在安装后运行。</target>
+        <target state="translated">可以通过更改以下顺序来更新 kickstart 脚本的运行顺序。前脚本始终在安装之前运行，后脚本始终在安装之后运行。</target>
       </trans-unit>
       <trans-unit id="kickstartscript.order.prescripts" xml:space="preserve">
         <source>Pre Scripts</source>
@@ -11326,7 +11326,7 @@ Kickstart 侧写的引导装载程序和分区选项，有可能覆盖用户定�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="translated">和这个 Kickstart 配置相关联的发布版本是无效的。</target>
+        <target state="translated">与此 kickstart 配置文件关联的发行套件无效。 </target>
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary-option1" xml:space="preserve">
         <source>To enable operations available to this kickstart profile, you may correct the distribution(&lt;strong&gt;{0}&lt;/strong&gt;) by visiting the &lt;a href = "{1}"&gt;Kickstart Distribution Details&lt;/a&gt; page.</source>
@@ -11340,14 +11340,14 @@ Kickstart 侧写的引导装载程序和分区选项，有可能覆盖用户定�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="translated">或者，您可以通过访问 &lt;a href = "{0}"&gt;Kickstart Operating System Details&lt;/a&gt; 页面将一个不同的发布版本和这个 Kickstart 配置关联。</target>
+        <target state="translated"> 或者，您可以访问 &lt;a href = "{0}"&gt;Kickstart 操作系统细节&lt;/a&gt;页，将一个不同的发行套件关联到此 kickstart 配置文件。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.advanced.invalid.jsp.summary-option2" xml:space="preserve">
         <source> Alternatively you may associate a different distribution to this kickstart profile by selecting a distribution and choosing '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="translated">或者，您可以通过选择一个不同的发布版本并选择 '{0}' 来关联其他版本到这个 Kickstart 配置。</target>
+        <target state="translated"> 或者，您可以选择一个不同的发行套件，然后选择 '{0}'，将该发行套件关联到此 kickstart 配置文件。</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.updatekickstart" xml:space="preserve">
         <source>Update Kickstart</source>
@@ -11546,7 +11546,7 @@ Kickstart 侧写的引导装载程序和分区选项，有可能覆盖用户定�
       </trans-unit>
       <trans-unit id="kickstart.registration.type.jsp.message" xml:space="preserve">
           <source>If a @@PRODUCT_NAME@@ system profile already exists for a re-provisioned system outside of the @@PRODUCT_NAME@@ UI</source>
-        <target state="translated">如果一个 @@PRODUCT_NAME@@ 系统侧写已经存在于 @@PRODUCT_NAME@@ UI 外部重新提供的系统中。</target>
+        <target state="translated">如果 @@PRODUCT_NAME@@ UI 外部的某个已重新置备系统已存在 @@PRODUCT_NAME@@ 系统配置文件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
@@ -11695,7 +11695,7 @@ Kickstart 侧写的引导装载程序和分区选项，有可能覆盖用户定�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        <target state="translated">使用第一个可用接口的 DHCP </target>
+        <target state="translated">使用第一个可用接口的 DHCP</target>
       </trans-unit>
       <trans-unit id="kickstart.selinux.enforce.policy.jsp.label" xml:space="preserve">
         <source>Enforcing - SELinux policy enforced</source>
@@ -11751,14 +11751,14 @@ Kickstart 侧写的引导装载程序和分区选项，有可能覆盖用户定�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        <target state="translated">新 Root 密码 </target>
+        <target state="translated">新 Root 密码</target>
       </trans-unit>
       <trans-unit id="kickstart.root.password.verify.jsp.label" xml:space="preserve">
         <source>Verify New Root Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
-        <target state="translated">确认新 Root 密码 </target>
+        <target state="translated">确认新 Root 密码</target>
       </trans-unit>
       <trans-unit id="kickstart.systemdetails.edit.submit.jsp.label" xml:space="preserve">
         <source>Update System Details</source>
@@ -11963,7 +11963,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target state="translated">选择上传的文件：</target>
+        <target state="translated">选择要上载的文件： </target>
       </trans-unit>
       <trans-unit id="keycreate.jsp.submit" xml:space="preserve">
         <source>Create Key</source>
@@ -12328,13 +12328,13 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target state="translated">您可以为下面的这个 kickstart 编辑前脚本和后脚本。当一个 kickstart 文件在一个系统上被解析后，kickstart 前脚本会被马上运行。
-您可以在这个部分访问网络，但您必须使用 IP 地址（此时还没有配置名称服务）。更多关于
-kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系统管理指南》&lt;/strong&gt; 中获得。
+        <target state="translated">可在下面编辑此 kickstart 的前脚本和后脚本。在系统上分析某个 kickstart 文件后，会立即运行 kickstart 前脚本。
+可在此部分访问网络，但必须使用 IP 地址（目前尚未配置名称服务）。有关
+kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ 系统管理指南&lt;/strong&gt;》。
 &lt;br/&gt;&lt;br/&gt;
-您也可以为这个 kickstart 编辑后脚本。首先，会自动执行与 @@PRODUCT_NAME@@ 相关的命令（例如，系统注册到 @@PRODUCT_NAME@@）。
-接下来会执行 non-chroot 后脚本。最后执行后脚本。更多关于 kickstart 后脚本的内容可以
-在&lt;strong&gt;《红帽企业版 Linux 系统管理指南》&lt;/strong&gt; 中获得。</target>
+还可在下面编辑此 kickstart 的后脚本。首先，会自动执行与 @@PRODUCT_NAME@@ 相关的命令（例如，将系统注册到 @@PRODUCT_NAME@@）。
+接下来会执行非 chroot 后脚本，最后执行后脚本。有关 kickstart 后脚本的更多细节，请参见
+《&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ 系统管理指南&lt;/strong&gt;》。</target>
       </trans-unit>
       <trans-unit id="kickstart.script.langheader" xml:space="preserve">
         <source>Kickstart Script Scripting Language</source>
@@ -12419,8 +12419,8 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
-        <target state="translated">指定您要在 Kickstart  期间安装的软件包和软件包组。请逐行列出软件包和组。关于更多的信息，请参考&lt;em&gt;《红帽企业级 Linux 系统管理指南》&lt;/em&gt;。如果您希望通过软件包配置同步来安装专有的软件包，请访问 &lt;em&gt; 软件包侧写 &lt;/em&gt; 标签页修改 Kickstart 软件安装方法。
-  </target>
+        <target state="translated">请在下面指定在无人值守安装期间您要在系统上安装的软件包和软件包组。请逐行列出软件包和组。有关详细信息，请参见《&lt;em&gt;Red Hat Enterprise Linux 系统管理指南&lt;/em&gt;》。如果您想要指定通过软件包配置文件同步安装软件包，请访问&lt;em&gt;软件包配置文件&lt;/em&gt;选项卡来更改 kickstart 软件安装方法。
+      </target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main2" xml:space="preserve">
         <source>&lt;b&gt;Note: only packages available in your Enterprise Linux install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.
@@ -12428,8 +12428,8 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
-        <target state="translated">&lt;b&gt;注：在这里只应该指定您的企业级 Linux 安装树里可用的软件包。&lt;/b&gt;要安装 @@PRODUCT_NAME@@ 软件包频道里可用的软件包，请在 &lt;em&gt;Activation Keys&lt;/em&gt; 标签页里将合适的激活密钥和这个 Kickstart 侧写关联。
-  </target>
+        <target state="translated">&lt;b&gt;注意：在此处只能指定 Enterprise Linux 安装树中提供的软件包。&lt;/b&gt;要安装 @@PRODUCT_NAME@@ 软件频道中提供的软件包，请在&lt;em&gt;激活密钥&lt;/em&gt;选项卡中将相应的激活密钥关联到此 kickstart 配置文件。
+      </target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.header1" xml:space="preserve">
         <source>Install Packages by Package Name and Group</source>
@@ -12592,7 +12592,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="cobbler.snippet.header.name" xml:space="preserve">
           <source>Kickstart Snippet: {0}</source>
-        <target state="translated">Kickstart Snippet: {0}</target>
+        <target state="translated">Kickstart 片段：{0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate.do</context>
@@ -12899,14 +12899,14 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;没有 critical 探测。&lt;/strong&gt;&lt;p&gt;对您的系统设定的所有探测都没有处于 critical 状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;所有 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt; 查看您的系统中的所有探测的列表</target>
+        <target state="translated">&lt;strong&gt;没有关键探测。&lt;/strong&gt;&lt;p&gt;分配到您系统的所有探测都不处于关键状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;全部 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;查看系统中所有探测的列表</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nowarningprobes" xml:space="preserve">
         <source>&lt;strong&gt;No warning probes.&lt;/strong&gt;&lt;p&gt;None of the probes assigned to your systems are in a warning state. You can view a list of all the probes in your system at &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;All &gt; Probes&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;没有 warning 探测。&lt;/strong&gt;&lt;p&gt;对您的系统设定的所有探测都没有处于 warning 状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;所有 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt; 查看您的系统中的所有探测的列表</target>
+        <target state="translated">&lt;strong&gt;没有警告探测。&lt;/strong&gt;&lt;p&gt;分配到您系统的所有探测都不处于警告状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;全部 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;查看系统中所有探测的列表</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.systems" xml:space="preserve">
         <source>System(s)</source>
@@ -13155,7 +13155,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="translated">相关勘误</target>
+        <target state="translated">相关补丁 </target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noerrata" xml:space="preserve">
         <source>&lt;strong&gt;No relevant security patches.&lt;/strong&gt;&lt;p&gt;There are no security patches that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; patches for the software your organization has entitlements to at &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;Patches &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
@@ -13395,7 +13395,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="channels.manage.jsp.header2" xml:space="preserve">
         <source>Modify an existing software channel by selecting it from the list below, or create a new software channel. </source>
-        <target state="translated">通过在下面的列表中选择软件频道对其进行编辑或者创建一个新软件频道。</target>
+        <target state="translated">通过在以下列表中进行选择来修改现有的软件频道，或者创建新的软件频道。 </target>
       </trans-unit>
       <trans-unit id="toolbar.create.channel" xml:space="preserve">
         <source>Create Channel</source>
@@ -13535,7 +13535,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
-        <target state="translated">kickstart 文件是一个简单文本文件，它包括了一个含有多项的列表，每个项由一个关键字来区分，它们提供了安装程序要成功安装红帽企业 Linux 所需的信息。一个 kickstart 侧写包括了一个 kickstart 文件和其它存储的选项，比如要安装的红帽企业 Linux 的版本，安装文件的位置。 </target>
+        <target state="translated">kickstart 文件是一个包含项列表的简单文本文件，其中每个项由一个关键字标识，该项解答了有关安装程序需要哪些信息才能成功安装 Red Hat Enterprise Linux 的问题。一个 kickstart 配置文件包含一个 kickstart 文件以及其他保存的选项，例如要安装的 Red Hat Enterprise Linux 版本和安装文件的位置。</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.create.wizard.kickstart.profile.label" xml:space="preserve">
         <source>Label</source>
@@ -13706,7 +13706,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="activation-keys.jsp.para2" xml:space="preserve">
           <source>The following activation keys have been created for use by your organization.</source>
-        <target state="translated">以下生成的激活码是由您机构使用的：</target>
+        <target state="translated">已创建以下激活密钥供您的组织使用。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -14158,7 +14158,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       <!-- profiles/packagelist.jsp -->
       <trans-unit id="profile.packagelist.summary" xml:space="preserve">
           <source>The following packages are associated with this stored profile.</source>
-        <target state="translated">以下的软件包与这个保存的侧写关联：</target>
+        <target state="translated">以下软件包与此储存的配置文件相关联。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
@@ -14625,7 +14625,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="system.audit.xccdfdeleteconfirm.jsp.message" xml:space="preserve">
           <source>{0} SCAP Scan(s) deleted. {1} SCAP Scan(s) retained</source>
-        <target state="translated">已删除 {0} 个 SCAP Scan(s)，尚余 {1} 个 SCAP Scan(s)。</target>
+        <target state="translated">已删除 {0} 个 SCAP 扫描项。已保留 {1} 个 SCAP 扫描项</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Confirmation dialog for deletion of SCAP scans for given system</context>
         </context-group>
@@ -14751,7 +14751,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="system.audit.xccdfdetails.jsp.nodiff" xml:space="preserve">
           <source>No comparable scan was found.</source>
-        <target state="translated">没有找到可比较的扫描</target>
+        <target state="translated">找不到可比较的扫描项</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
@@ -15003,7 +15003,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="scapdiff.jsp.toolbar" xml:space="preserve">
           <source>OpenSCAP Diff</source>
-        <target state="translated">OpenSCAP Diff</target>
+        <target state="translated">OpenSCAP 差异</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Diff of OpenSCAP XCCDF scans</context>
         </context-group>
@@ -15374,7 +15374,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="system.event.runAs" xml:space="preserve">
           <source>Run as: &lt;strong&gt;{0}:{1}&lt;/strong&gt;</source>
-        <target state="translated">作为 &lt;strong&gt;{0}:{1}&lt;/strong&gt; 运行</target>
+        <target state="translated">运行方式：&lt;strong&gt;{0}:{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15631,7 +15631,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="system.history.snapshot.nosnapshot" xml:space="preserve">
           <source>No system snapshots.</source>
-        <target state="translated">无系统快照</target>
+        <target state="translated">无系统快照。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Snapshot Pages</context>
         </context-group>
@@ -16118,7 +16118,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="system.history.snapshot.cfgFilesChecksum" xml:space="preserve">
           <source>Checksum</source>
-        <target state="translated">Checksum</target>
+        <target state="translated">校验和</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Snapshot Pages</context>
         </context-group>
@@ -16189,7 +16189,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
       </trans-unit>
       <trans-unit id="config.common.symlinkAlt" xml:space="preserve">
           <source>symlink</source>
-        <target state="translated">symlink</target>
+        <target state="translated">符号链接</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Management Pages</context>
         </context-group>
@@ -17362,14 +17362,14 @@ Note that if a given system overrides a given file, or has it in that system's l
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="translated">没有选择系统，或者没有系统符合您的过滤器标准。</target>
+        <target state="translated">未选择系统，或者没有任何系统与您的过滤准则相匹配</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.noFiles" xml:space="preserve">
         <source>Either no files have been selected, or none match your filter criteria</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
-        <target state="translated">没有选择文件，或者没有文件符合您的过滤器标准。</target>
+        <target state="translated">未选择文件，或者没有任何文件与您的过滤准则相匹配</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.zeroFiles" xml:space="preserve">
         <source>You must choose at least one file to deploy.</source>
@@ -17535,7 +17535,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">Tip: If you would like to deploy this version of the this file to other systems you'll need to _copy this file to a centrally-managed config channel_</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;提示：&lt;/strong&gt;如果您要部署这个版本的文件到其他系统，您将需要&lt;a href="{0}"&gt;将这个文件复制到一个集中管理的配置频道&lt;/a&gt;。</target>
+        <target state="translated">&lt;strong&gt;提示：&lt;/strong&gt;如果您要将此文件版本部署到其他系统，需&lt;a href="{0}"&gt;将此文件复制到一个集中管理的配置频道&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.tip.global-1" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If a system has a locally-managed override for this file, you will not be able to deploy it.  However, you may click on the 'Modify rank' link to re-rank the overriding channels.</source>
@@ -17552,7 +17552,7 @@ Note that if a given system overrides a given file, or has it in that system's l
 Tip: If you would like to deploy this file to a system not in this list, request a Configuration Administrator to subscribe the system to the _ConfigChan3_ configuration channel, then return to this screen.
           </context>
         </context-group>
-        <target state="translated">&lt;strong&gt;提示：&lt;/strong&gt;如果您要将该文件部署到不在本列表里的系统，您需要一个 {0} 订阅 {1} 配置频道，然后再返回该屏幕。 </target>
+        <target state="translated">&lt;strong&gt;提示：&lt;/strong&gt;如果您要将此文件部署到不在此列表中的系统，需请求 {0} 在系统中订阅 {1} 配置频道，然后返回此屏幕。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.configadmin" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the {0} configuration channel using the &lt;a href="{1}"&gt;'Target Systems' tab&lt;/a&gt; for that channel, then return to this screen.</source>
@@ -17569,7 +17569,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="translated">这些系统不具备配置部署能力。配置部署要求在您的系统中安装和启用特定的软件。您可以在 &lt;a href={0}&gt;{1}&lt;/a&gt; 页面中选择他们并点击 "{2}" 以确定启用配置部署功能。</target>
+        <target state="translated">这些系统尚不具备配置部署功能。配置部署要求在您的系统上安装并启用特定的软件。可以在 &lt;a href={0}&gt;{1}&lt;/a&gt; 屏幕上选择这些系统，然后单击 "{2}"，以确保在这些系统上启用配置部署功能</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.orgadmin" xml:space="preserve">
         <source> </source>
@@ -17579,7 +17579,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
 You may grant provisioning entitlements _here_.
           </context>
         </context-group>
-        <target state="translated">您可以在&lt;a href="{0}"&gt;这里&lt;/a&gt;赋予 provisioning 权利。</target>
+        <target state="translated"> </target>
       </trans-unit>
       <!-- date-picker strings -->
       <trans-unit id="deploy.jsp.widgetsummary" xml:space="preserve">
@@ -17587,7 +17587,7 @@ You may grant provisioning entitlements _here_.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="translated">您可以马上或不早于一个特定的时间调度这个部署：</target>
+        <target state="translated">可将此项部署安排为尽快进行，或者在不早于指定的时间进行</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.usedate" xml:space="preserve">
         <source>Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
@@ -17693,10 +17693,10 @@ From there, you can deploy the file to systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="translated">配置沙箱（Configuration sandbox）是保存处于开发阶段的配置文件的地方。
-如果您相信这个配置文件可以用来部署了，您可以&lt;a href="{0}"&gt;将其复制到一个本地管理的配置频道&lt;/a&gt;
-或者通过上面的 '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' 标签&lt;a href="{1}"&gt;将其复制到一个全局管理的配置频道&lt;/a&gt;
-然或，您就可以将其部署到系统中。 </target>
+        <target state="translated">配置沙箱是用于储存开发中配置文件的位置。
+如果您相信此配置文件可部署到系统，则可通过上面的 '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' 选项卡&lt;a href="{0}"&gt;将其复制到本地管理的配置频道&lt;/a&gt;
+或者&lt;a href="{1}"&gt;将其复制到全局管理的配置频道&lt;/a&gt;
+可在该频道中将该文件部署到系统。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.note" xml:space="preserve">
         <source>
@@ -17884,7 +17884,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/DeleteRevision.do</context>
           <context context-type="paramnotes">Revision 20 of configuration file /etc/newsig deleted</context>
         </context-group>
-        <target state="translated">删除了配置文件 {0} 的修订 {1} </target>
+        <target state="translated">已删除配置文件 {0} 的修订版 {1}</target>
       </trans-unit>
       <trans-unit id="deleterev.jsp.deletedfile" xml:space="preserve">
         <source>Configuration file {0} deleted</source>
@@ -17892,7 +17892,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/DeleteRevision.do</context>
           <context context-type="paramnotes">Configuration file /etc/newsig deleted</context>
         </context-group>
-        <target state="translated">删除了配置文件 {0} </target>
+        <target state="translated">已删除配置文件 {0}</target>
       </trans-unit>
       <trans-unit id="deleterev.jsp.unknown" xml:space="preserve">
         <source>Could not find revision to be deleted.</source>
@@ -17910,7 +17910,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
             Revision 7 of /etc/sysconfig/rhn/up2date from channel _@@PRODUCT_NAME@@Config_
           </context>
         </context-group>
-        <target state="translated">频道 &lt;a href="{3}"&gt;{2}&lt;/a&gt; 中的 {0} 的修订 {1}</target>
+        <target state="translated">频道 &lt;a href="{3}"&gt;{2}&lt;/a&gt; 中 {0} 的修订版 {1}</target>
       </trans-unit>
       <!-- Tips -->
       <trans-unit id="filedetails.jsp.tip.ownership" xml:space="preserve">
@@ -18145,7 +18145,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">Symlink</target>
+        <target state="translated">符号链接</target>
       </trans-unit>
       <trans-unit id="filedetails.manage_header.jspf.label" xml:space="preserve">
         <source>{0} from channel &lt;a href="{2}"&gt;{1}&lt;/a&gt;</source>
@@ -18153,7 +18153,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">2 days ago by UserX</context>
         </context-group>
-        <target state="translated">频道 &lt;a href="{2}"&gt;{1}&lt;/a&gt; 的 {0} </target>
+        <target state="translated">频道 &lt;a href="{2}"&gt;{1}&lt;/a&gt; 的 {0}</target>
       </trans-unit>
       <!-- add_details.jspf -->
       <trans-unit id="filedetails.add_details.jspf.header2" xml:space="preserve">
@@ -18259,7 +18259,7 @@ This is a binary file, and can not be displayed.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">文件过大，不能进行编辑。</target>
+        <target state="translated">文件太大，无法编辑</target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.toolarge-edit" xml:space="preserve">
         <source>
@@ -18417,7 +18417,7 @@ any of these revisions.  Are you sure you want to do this?</source>
               File /etc/sig successfully deleted
           </context>
         </context-group>
-        <target state="translated">成功删除文件 {0} </target>
+        <target state="translated">已成功删除文件 {0}。</target>
       </trans-unit>
       <trans-unit id="deletefile.jsp.failure" xml:space="preserve">
         <source>File {0} failed to be deleted.</source>
@@ -18726,7 +18726,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="configoverview.jsp.modconfig" xml:space="preserve">
           <source>Recently Modified Configuration Files</source>
-        <target state="translated">最近修改的配置文件：</target>
+        <target state="translated">最近修改的配置文件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview.do</context>
         </context-group>
@@ -18754,7 +18754,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="configoverview.jsp.schedconfig" xml:space="preserve">
           <source>Recently Scheduled Configuration File Deployments</source>
-        <target state="translated">最近计划的配置文件部署：</target>
+        <target state="translated">最近安排的配置文件部署</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview.do</context>
         </context-group>
@@ -19939,7 +19939,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.config.subscribeconfirm.jsp.step" xml:space="preserve">
           <source>Step 3: Confirm Channels for Subscription.</source>
-        <target state="translated">步骤 3：确认订阅的频道</target>
+        <target state="translated">步骤 3：确认订阅的频道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
@@ -20277,7 +20277,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.diff_result.rev" xml:space="preserve">
           <source>rev {0}</source>
-        <target state="translated">rev {0}</target>
+        <target state="translated">修订版 {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewDiffResult.do</context>
         </context-group>
@@ -20319,7 +20319,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.diff_result.diff" xml:space="preserve">
           <source>Diff</source>
-        <target state="translated">Diff</target>
+        <target state="translated">差异</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewDiffResult.do</context>
         </context-group>
@@ -20408,7 +20408,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.file_list.revision_from" xml:space="preserve">
           <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; from {2}</source>
-        <target state="translated">{2} 的 &lt;a href="{0}"&gt;修订 {1}&lt;/a&gt;</target>
+        <target state="translated">{2} 中的 &lt;a href="{0}"&gt;修订版 {1}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyCentralPaths.do</context>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyLocalPaths.do</context>
@@ -20772,7 +20772,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdcimportconfirm.jsp.noFiles" xml:space="preserve">
           <source>No selected configuration files.</source>
-        <target state="translated">没有选定的配置文件</target>
+        <target state="translated">选定的配置文件不存在。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
@@ -21081,7 +21081,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.operations.viewlog.emptyservers" xml:space="preserve">
           <source>No servers associated with this task</source>
-        <target state="translated">没有与此任务关联的服务器。</target>
+        <target state="translated">没有与此任务关联的服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/ViewLog.do</context>
           <context context-type="sourcefile">/rhn/ssm/ViewAllLog.do</context>
@@ -22135,21 +22135,21 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">已保存电源设置，已打开系统。</target>
+        <target state="translated">已保存电源设置，已打开系统</target>
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.powered_off" xml:space="preserve">
         <source>Power settings saved, system has been powered off</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">已保存电源设置，已关闭系统。</target>
+        <target state="translated">已保存电源设置，已关闭系统</target>
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.rebooted" xml:space="preserve">
         <source>Power settings saved, system has been rebooted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">已保存电源设置，已重启系统。</target>
+        <target state="translated">已保存电源设置，已重引导系统</target>
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.jsp.no_types" xml:space="preserve">
         <source>No Power Management Types configured, please check the "{0}" setting in rhn.conf.</source>
@@ -22191,7 +22191,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target state="translated">Cpus</target>
+        <target state="translated">CPU</target>
       </trans-unit>
       <trans-unit id="kickstart.channel.virtMemory.jsp" xml:space="preserve">
         <source>Memory</source>
@@ -22226,7 +22226,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target state="translated">无法保证在 kicstart 后，不是由 @@PRODUCT_NAME@@ 管理的侧写可在 @@PRODUCT_NAME@@ 中注册系统。您可以查看这些 kickstart（点击侧写名称即可）以确定在 kickstart 后您的系统是否会重新出现在 @@PRODUCT_NAME@@ 系统列表中。</target>
+        <target state="translated"> 不保证在自动安装后，不受 @@PRODUCT_NAME@@ 管理的配置文件能够将系统注册到 @@PRODUCT_NAME@@。您可以复查这些自动安装选项（通过单击配置文件名称），以确认在自动安装后您的系统是否再次出现在 @@PRODUCT_NAME@@ 系统列表中。</target>
       </trans-unit>
       <trans-unit id="kickstarts.distro.cobbler-only.tooltip" xml:space="preserve">
         <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
@@ -22370,7 +22370,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="translated">这是这个系统的 kickstart 进程的当前状态。&lt;strong&gt;注意：&lt;/strong&gt;这个页面每 15 秒更新一次。</target>
+        <target state="translated">这是此系统的当前自动安装进度状态。&lt;strong&gt;注意：&lt;/strong&gt;此页每隔 15 秒刷新一次</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.progress" xml:space="preserve">
         <source>Autoinstallation Progress</source>
@@ -22398,7 +22398,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="translated">使用现有侧写：</target>
+        <target state="translated">使用现有配置文件： </target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.next_action" xml:space="preserve">
         <source>Next Action:</source>
@@ -22468,7 +22468,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="translated">与 &lt;a href="/rhn/profiles/Details.do?prid={0}"&gt;软件包侧写&lt;/a&gt; 同步系统</target>
+        <target state="translated">将系统同步到 &lt;a href="/rhn/profiles/Details.do?prid={0}"&gt;软件包配置文件&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_config" xml:space="preserve">
         <source>Deploy configuration files</source>
@@ -23937,7 +23937,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">系统已经被 {0}: {1} &lt;strong&gt;锁定&lt;/strong&gt;</target>
+        <target state="translated">系统已由 {0} &lt;strong&gt;锁定&lt;/strong&gt;：{1}</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.lock" xml:space="preserve">
         <source>(&lt;a href="{0}"&gt;Lock system&lt;/a&gt;)</source>
@@ -23995,7 +23995,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="paramnotes">{0} - Ping status, will be either online or offline
                                                 This string will be followed by a date in a localized format</context>
         </context-group>
-        <target state="translated">{0} 如同</target>
+        <target state="translated">自以下版本开始为 {0} </target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.ping" xml:space="preserve">
         <source>Ping System</source>
@@ -24135,21 +24135,21 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;Critical: &lt;/a&gt;&lt;/strong&gt; {1}</target>
+        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;关键：&lt;/a&gt;&lt;/strong&gt; {1}</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updates.noncritical" xml:space="preserve">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Non-Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;Non-Critical: &lt;/a&gt;&lt;/strong&gt; {1}</target>
+        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;非关键：&lt;/a&gt;&lt;/strong&gt; {1}</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updates.packages" xml:space="preserve">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Packages: &lt;/a&gt;&lt;/strong&gt; {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;Packages: &lt;/a&gt;&lt;/strong&gt; {1}</target>
+        <target state="translated">&lt;strong&gt;&lt;a href="{0}"&gt;软件包：&lt;/a&gt;&lt;/strong&gt; {1}</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.requires_reboot" xml:space="preserve">
         <source>The system requires a reboot</source>
@@ -24170,7 +24170,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated"> (&lt;a href="{0}"&gt;more info&lt;/a&gt;)</target>
+        <target state="translated"> （&lt;a href="{0}"&gt;详细信息&lt;/a&gt;）</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unentitled" xml:space="preserve">
         <source>&lt;strong&gt;System not assigned to a system type&lt;/strong&gt; (&lt;a href="{0}"&gt;add it here&lt;/a&gt;)</source>
@@ -24739,7 +24739,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">Arch:</target>
+        <target state="translated">架构：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.vendor" xml:space="preserve">
         <source>Vendor:</source>
@@ -24753,14 +24753,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">Stepping:</target>
+        <target state="translated">步进：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.family" xml:space="preserve">
         <source>Family:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">Family:</target>
+        <target state="translated">系列：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.sockets" xml:space="preserve">
         <source>Sockets:</source>
@@ -24914,14 +24914,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">Asset Tag:</target>
+        <target state="translated">资产标记：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.dmi_board" xml:space="preserve">
         <source>Board:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">Board:</target>
+        <target state="translated">主板：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.dmi_product" xml:space="preserve">
         <source>Product:</source>
@@ -25413,7 +25413,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
-        <target state="translated">您的 &lt;strong&gt;@@PRODUCT_NAME@@ 管理员&lt;/strong&gt;角色将不允许您登录或者修改这个新机构，而且您的 @@PRODUCT_NAME@@ 登录不能是一个以上机构的成员。接下来，您还需要为启动&lt;strong&gt;机构管理员&lt;/strong&gt;为这个机构创建一个新的登录。</target>
+        <target state="translated">您的 &lt;strong&gt;@@PRODUCT_NAME@@ 管理员&lt;/strong&gt;角色并不允许您登录或修改此新组织，并且您的 @@PRODUCT_NAME@@ 登录名不能是多个组织的成员。因此，您需要为此组织的初始&lt;strong&gt;组织管理员&lt;/strong&gt;创建新的登录名：</target>
       </trans-unit>
       <trans-unit id="org.channel.subscribed.systems" xml:space="preserve">
         <source>Subscribed Systems</source>
@@ -25434,7 +25434,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/Organizations.do</context>
         </context-group>
-        <target state="translated"> {0}（{1}）信任的组织</target>
+        <target state="translated">{0} 信任的组织 ({1})</target>
       </trans-unit>
       <trans-unit id="org.login.tip" xml:space="preserve">
         <source>Between {0} and 64 characters</source>
@@ -25834,7 +25834,7 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems successfully subscribed to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
           </context-group>
-        <target state="translated">{0} 排队的系统不能订阅频道 '{1}'。</target>
+        <target state="translated">{0} 个系统已排队等待订阅频道 '{1}'</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.success-default" xml:space="preserve">
           <source>{0} systems queued to subscribe to the appropriate default base channel</source>
@@ -26167,7 +26167,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>
-        <target state="translated">文档搜索将返回与您搜索项目匹配的链接页面。</target>
+        <target state="translated">文档搜索将返回与搜索词匹配的页面的链接。 </target>
       </trans-unit>
       <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
@@ -26253,7 +26253,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.install" xml:space="preserve">
         <source>Detailed information regarding @@PRODUCT_NAME@@ server and its installation. </source>
-        <target state="translated">有关 @@PRODUCT_NAME@@ 服务器及其安装的详细信息。</target>
+        <target state="translated">有关 @@PRODUCT_NAME@@ 服务器及其安装的详细信息。 </target>
       </trans-unit>
       <trans-unit id="help.jsp.install.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Installation Guide</source>
@@ -26566,7 +26566,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.list" xml:space="preserve">
         <source>Channel Packages</source>
-        <target state="translated">频道软件包。</target>
+        <target state="translated">频道软件包</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.title" xml:space="preserve">
         <source>Custom System Info Keys</source>
@@ -27284,18 +27284,22 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">您确认删除这个频道吗？这个频道里的软件包将被删除，但仍会保留在服务器里。
-您将可以选择在频道被删除后再进行删除。和这个频道相关的勘误将不再和它相关，这些勘误可能会处于孤立状态。
-如果这个频道具有子频道，它就不能被删除。您必须先删除子频道。
-如果这个频道关联了 Kickstart 发布版本，它也无法被删除。您必须先删除那些 Kickstart 发布版本。
-   </target>
+        <target state="translated">您确实想要删除此频道吗？此频道中的软件包将被删除，但仍会保留在服务器中。
+          系统会提供相应的选项让您在删除频道后删除其中的
+          软件包。与频道相关的补丁将不再与该频道相关，并且
+          可能会处于孤立状态。
+          如果频道包含子频道，则无法删除该频道；必须先
+          删除子频道。
+          如果频道具有关联的可自动安装的发行套件，则无法
+          删除该频道；必须先从该频道取消关联发行套件
+         </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.arch" xml:space="preserve">
         <source>Architecture:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">体系构架</target>
+        <target state="translated">构架：</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.totalpackages" xml:space="preserve">
         <source>Total Packages:</source>
@@ -27309,7 +27313,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">订阅的系统</target>
+        <target state="translated">已订阅系统：</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsheader" xml:space="preserve">
         <source>Trusted Organizations</source>
@@ -27325,8 +27329,9 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">频道删除将影响任何定于到 {0} 频道的信任组织。
-        </target>
+        <target state="translated">删除频道会影响其系统已订阅 {0} 频道的
+            任何可信组织。
+         </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsaffected" xml:space="preserve">
         <source>Organizations Affected:
@@ -27334,15 +27339,15 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">所影响的组织：
-  </target>
+        <target state="translated">受影响的组织：
+         </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.unsubheader" xml:space="preserve">
         <source>Unsubscribe Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">退订系统。</target>
+        <target state="translated">取消订阅系统</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.unsubparagraph" xml:space="preserve">
         <source>Unsubscribe all trusted organization systems that are subscribed to the
@@ -27351,9 +27356,9 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">取消订阅 {0} 频道的所有信任的组织系统
-已订阅的系统将失去对该频道专有软件包的访问权限。
-   </target>
+        <target state="translated">取消订阅已订阅 {0} 频道的所有可信组织
+            系统。已订阅系统将失去对此频道特定的软件包的访问权限。
+         </target>
       </trans-unit>
       <trans-unit id="generic.jsp.none" xml:space="preserve">
         <source>None</source>
@@ -28174,7 +28179,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
-        <target state="translated">Picked Up</target>
+        <target state="translated">已拾取</target>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync" xml:space="preserve">
         <source>Sync Patches</source>
@@ -28212,11 +28217,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
         <source> Completed </source>
-        <target state="translated">已完成</target>
+        <target state="translated"> 已完成 </target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.inProgress" xml:space="preserve">
         <source> In Progress </source>
-        <target state="translated">进行中</target>
+        <target state="translated"> 正在进行 </target>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
@@ -28262,7 +28267,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="schedule.header" xml:space="preserve">
         <source>Select a Schedule</source>
-        <target state="translated">选择一个调度：</target>
+        <target state="translated">选择日程安排</target>
       </trans-unit>
       <trans-unit id="schedule.disabled" xml:space="preserve">
         <source>Disable Schedule</source>
@@ -28789,7 +28794,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.editmaster.jsp.nomasterorgs" xml:space="preserve">
           <source>This master did not export any of its organizations to this slave</source>
-        <target state="translated">这个主实例不会向这个辅实例导出任何它的机构。</target>
+        <target state="translated">此主服务器未将其任何组织导出到此从属服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
