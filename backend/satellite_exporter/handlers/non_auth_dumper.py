@@ -463,9 +463,9 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         self.set_channel_family_query()
         return self.dump_kickstartable_trees(kickstart_labels=kickstart_labels)
 
-    def get_rpm(self, package, channel):
-        log_debug(1, package, channel)
-        return self._send_package_stream(package, channel)
+    def get_rpm(self, package, channel, checksum):
+        log_debug(1, package, channel, checksum)
+        return self._send_package_stream(package, channel, checksum)
 
     def get_repomd_file(self, channel, comps_type_id):
         comps_query = """
@@ -513,9 +513,9 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     # Sends a package over the wire
     # prefix is whatever we prepend to the package id (rhn-package- or
     # rhn-source-package-)
-    def _send_package_stream(self, package, channel):
-        log_debug(3, package, channel)
-        path, dummy = self.get_package_path_by_filename(package, channel)
+    def _send_package_stream(self, package, channel, checksum):
+        log_debug(3, package, channel, checksum)
+        path, dummy = self.get_package_path_by_filename(package, channel, checksum)
 
         log_debug(3, "Package path", path)
         if not os.path.exists(path):
@@ -525,29 +525,32 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     # This query is similar to the one aove, except that we have already
     # authorized this channel (so no need for server_id)
-    _query_get_package_path_by_nvra = rhnSQL.Statement("""
+    _query_get_package_path_by_nvra_and_checksum = rhnSQL.Statement("""
             select distinct
                    p.id, p.path
               from rhnPackage p,
                    rhnChannelPackage cp,
                    rhnChannel c,
-                   rhnPackageArch pa
+                   rhnPackageArch pa,
+                   rhnChecksum ch
              where c.label = :channel
                and cp.channel_id = c.id
                and cp.package_id = p.id
                and p.name_id = LOOKUP_PACKAGE_NAME(:name)
                and p.evr_id = LOOKUP_EVR(:epoch, :version, :release)
                and p.package_arch_id = pa.id
+               and p.checksum_id = ch.id
+               and ch.checksum = :checksum
                and pa.label = :arch
     """)
 
-    def get_package_path_by_filename(self, fileName, channel):
-        log_debug(3, fileName, channel)
+    def get_package_path_by_filename(self, fileName, channel, checksum):
+        log_debug(3, fileName, channel, checksum)
         fileName = str(fileName)
         n, e, v, r, a = rhnLib.parseRPMFilename(fileName)
 
-        h = rhnSQL.prepare(self._query_get_package_path_by_nvra)
-        h.execute(name=n, version=v, release=r, epoch=e, arch=a, channel=channel)
+        h = rhnSQL.prepare(self._query_get_package_path_by_nvra_and_checksum)
+        h.execute(name=n, version=v, release=r, epoch=e, arch=a, channel=channel, checksum=checksum)
         try:
             return _get_path_from_cursor(h)
         except InvalidPackageError:
