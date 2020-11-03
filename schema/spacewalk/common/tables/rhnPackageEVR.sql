@@ -21,7 +21,8 @@ CREATE TABLE rhnPackageEVR
     epoch    VARCHAR(16),
     version  VARCHAR(512) NOT NULL,
     release  VARCHAR(512) NOT NULL,
-    evr      EVR_T NOT NULL
+    evr      EVR_T NOT NULL,
+    type varchar(10) generated always as ((evr).type) stored
 )
 
 ;
