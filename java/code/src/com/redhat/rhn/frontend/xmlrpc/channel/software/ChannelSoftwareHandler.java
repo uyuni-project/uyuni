@@ -2345,7 +2345,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "alignModules", "align modular data of the target channel
      *              to the source channel (RHEL8 and higher)")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #array()
      *          $PackageSerializer
      *      #array_end()
      */
