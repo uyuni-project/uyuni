@@ -778,11 +778,13 @@ When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do 
   step %(I #{action} packages "#{TRADITIONAL_STACK_RPMS}" #{where} this "#{host}")
 end
 
-When(/^I (install|remove) OpenSCAP (traditional|salt) dependencies (on|from) "([^"]*)"$/) do |action, client_type, where, host|
+When(/^I (install|remove) OpenSCAP (traditional|salt|centos) dependencies (on|from) "([^"]*)"$/) do |action, client_type, where, host|
   if client_type == 'traditional'
     step %(I #{action} packages "#{OPEN_SCAP_TRAD_DEPS}" #{where} this "#{host}")
-  else
+  elsif client_type == 'salt'
     step %(I #{action} packages "#{OPEN_SCAP_SALT_DEPS}" #{where} this "#{host}")
+  else
+    step %(I #{action} packages "#{OPEN_SCAP_CENTOS_DEPS}" #{where} this "#{host}")
   end
 end
 
