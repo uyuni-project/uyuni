@@ -8,7 +8,8 @@ Feature: Bootstrap a CentOS 6 traditional client
     When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-6-x86_64" on this "ceos6_client"
     And I enable repository "SLE-Manager-Tools-RES-6-x86_64" on this "ceos6_client"
     And I enable repository "CentOS-Base" on this "ceos6_client"
-    And I install all spacewalk client utils on "ceos6_client"
+    And I install the traditional stack utils on "ceos6_client"
+    And I install OpenSCAP traditional dependencies on "ceos6_client"
     And I register "ceos6_client" as traditional client with activation key "1-ceos6_client_key"
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
 
@@ -35,7 +36,7 @@ Feature: Bootstrap a CentOS 6 traditional client
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos6-xccdf.xml" as "path"
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos6_client"
     Then I should see a "XCCDF scan has been scheduled" text
@@ -46,7 +47,7 @@ Feature: Bootstrap a CentOS 6 traditional client
     When I follow "Audit" in the content area
     And I follow "xccdf_org.open-scap_testresult_standard"
     Then I should see a "Details of XCCDF Scan" text
-    And I should see a "RHEL-7" text
+    And I should see a "RHEL-6" text
     And I should see a "XCCDF Rule Results" text
     And I should see a "pass" text
     And I should see a "service_" link

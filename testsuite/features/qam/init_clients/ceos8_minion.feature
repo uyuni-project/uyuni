@@ -33,10 +33,6 @@ Feature: Bootstrap a CentOS 8 Salt minion
     And I follow "Proxy" in the content area
     Then I should see "ceos8_minion" hostname
 
-  Scenario: Prepare a CentOS 8 Salt minion
-    Given I am authorized
-    And I install all spacewalk client utils on "ceos8_minion"
-
   Scenario: Check events history for failures on CentOS 8 Salt minion
     Given I am on the Systems overview page of this "ceos8_minion"
     Then I check for failed events on history event page
