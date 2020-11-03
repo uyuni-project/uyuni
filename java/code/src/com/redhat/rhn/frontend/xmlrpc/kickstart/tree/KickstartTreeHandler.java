@@ -99,7 +99,7 @@ public class KickstartTreeHandler extends BaseHandler {
     }
 
     /**
-     * Create a Kickstart Tree (Distribution) in Uyuni.
+     * Create a Kickstart Tree (Distribution).
      *
      * @param loggedInUser The current user
      * @param treeLabel Label for the new kickstart tree
@@ -109,7 +109,7 @@ public class KickstartTreeHandler extends BaseHandler {
      * rhel_3, rhel_4, rhel_5, fedora_9)
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Create a Kickstart Tree (Distribution) in Uyuni.
+     * @xmlrpc.doc Create a Kickstart Tree (Distribution) in #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "treeLabel" "The new kickstart tree label.")
      * @xmlrpc.param #param_desc("string", "basePath", "Path to the base or
@@ -142,13 +142,13 @@ public class KickstartTreeHandler extends BaseHandler {
 
 
     /**
-     * Delete a Kickstart Tree (Distribution) from Uyuni.
+     * Delete a Kickstart Tree (Distribution).
      *
      * @param loggedInUser The current user
      * @param treeLabel Label for the new kickstart tree
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Delete a Kickstart Tree (Distribution) from Uyuni.
+     * @xmlrpc.doc Delete a Kickstart Tree (Distribution) from #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "treeLabel" "Label for the
      * kickstart tree to delete.")
@@ -216,7 +216,7 @@ public class KickstartTreeHandler extends BaseHandler {
      *
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Edit a Kickstart Tree (Distribution) in Uyuni.
+     * @xmlrpc.doc Edit a Kickstart Tree (Distribution) in #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "treeLabel" "Label for the kickstart tree.")
      * @xmlrpc.param #param_desc("string", "basePath", "Path to the base or
@@ -256,7 +256,7 @@ public class KickstartTreeHandler extends BaseHandler {
      * @param newLabel to assign to tree.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Rename a Kickstart Tree (Distribution) in Uyuni.
+     * @xmlrpc.doc Rename a Kickstart Tree (Distribution) in #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "originalLabel" "Label for the
      * kickstart tree to rename.")
