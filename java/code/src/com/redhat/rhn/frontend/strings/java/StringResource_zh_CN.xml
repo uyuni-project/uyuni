@@ -2271,7 +2271,7 @@ available for this kickstart profile to function properly.
 &lt;ul&gt;
 &lt;li&gt;
 此 kickstart 配置文件的基础频道的客户端工具频道是否
-适用于您的公司？如果不适用，则您需要
+适用于您的组织？如果不适用，则您需要
 向 @@PRODUCT_NAME@@ 管理员请求客户端工具频道的权利。
 &lt;/li&gt;
 &lt;li&gt;
