@@ -1,3 +1,5 @@
+- Add option --notty to spacewalk-ssh-push-init
+
 -------------------------------------------------------------------
 Fri Sep 18 12:15:29 CEST 2020 - jgonzalez@suse.com
 
