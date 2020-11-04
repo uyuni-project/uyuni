@@ -134,10 +134,10 @@ public class PackageEvr implements Comparable<PackageEvr> {
     }
 
     /**
-     * @param type package type
+     * @param t package type
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String t) {
+        this.type = t;
     }
 
     /**
@@ -185,11 +185,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
                 this.getVersion()).append(this.getRelease()).toHashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(PackageEvr other) {
+    private int rpmCompareTo(PackageEvr other) {
         // This method mirrors the perl function RHN::Manifest::vercmp
         // There is another perl function, RHN::DB::Package::vercmp which
         // does almost the same, but has a subtle difference when it comes
@@ -210,6 +206,33 @@ public class PackageEvr implements Comparable<PackageEvr> {
         // The perl code doesn't check for null releases, so we won't either
         // In the long run, a check might be in order, though
         return RPMVERCMP.compare(getRelease(), other.getRelease());
+    }
+
+    private int debCompareTo(PackageEvr other) {
+        //TODO:
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(PackageEvr other) {
+        if (this.getPackageType() == other.getPackageType()) {
+            if (this.getPackageType() == PackageType.DEB) {
+                return debCompareTo(other);
+            }
+            else if (this.getPackageType() == PackageType.RPM) {
+                return rpmCompareTo(other);
+            }
+            else {
+                throw new RuntimeException("unhandled package type " + this.getPackageType());
+            }
+        }
+        else {
+            throw new RuntimeException("can not compare incompatible packageevr of type " + this.getPackageType() +
+                    " with type " + other.getPackageType());
+        }
     }
 
     private Integer epochAsInteger() {
