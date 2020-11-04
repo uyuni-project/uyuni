@@ -32,6 +32,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
+        <target>您好：
+
+{0} {1} 已经为您创建了 @@PRODUCT_NAME@@ 登录名。将您的
+@@PRODUCT_NAME@@ 登录名与有效的 @@VENDOR_NAME@@ 订阅相结合，
+您可以获得在 @@PRODUCT_NAME@@ 上管理系统所需的访问权限。
+
+  @@PRODUCT_NAME@@ 登录名：{2}
+       密码：{3}
+         电子邮件地址：{4}
+
+  {5}
+
+重要说明：登录后请更改您的密码。
+
+感谢您使用 @@PRODUCT_NAME@@。
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -63,6 +79,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target>您好：
+
+已经为您创建了 @@PRODUCT_NAME@@ 登录名。将您的
+@@PRODUCT_NAME@@ 登录名与有效的 @@VENDOR_NAME@@ 订阅相结合，
+您可以获得在 @@PRODUCT_NAME@@ 上管理系统所需的访问权限。
+
+  @@PRODUCT_NAME@@ 登录名：{0}
+       密码：{1}
+         电子邮件：{2}
+
+  {3}
+
+重要说明：登录后请更改您的密码。
+
+感谢您使用 @@PRODUCT_NAME@@。
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -189,7 +221,8 @@ Summary:
 {4} {5} {6}
 {7}
 ------------------------------------------------------------------------------
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -201,11 +234,28 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target state="needs-adaptation">@@PRODUCT_NAME@@ 已经决定了下列建议可适用于 一个或多个您注册的系统： 这个错误的完整信息可以在下列位置找到： {0} {1} - {2} ------------------------------------------------------------------------------ 总结： {3} {4} {5} {6} {7} ------------------------------------------------------------------------------</target> <context-group name="ctx">
+        <target state="translated">
+@@PRODUCT_NAME@@ 确定以下建议适用于
+您注册的
+一个或多个系统：
+
+可在以下位置找到有关此补丁的完整信息：
+     {0}
+
+{1} - {2}
+------------------------------------------------------------------------------
+摘要：
+{3}
+
+{4} {5} {6}
+{7}
+------------------------------------------------------------------------------
+    </target>
+        <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -215,32 +265,51 @@ this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
-    </source> <target state="needs-adaptation">--------------------- 受影响的系统列表 --------------------- 这个勘误建议可以应用到下面列表中的系统。如果您知道 这个勘误不适用于这些系统，这可能是因为 用于该服务器的软件包配置已经过期。此时您应该以根用户在这些系统里运行 'up2date -p' (RHEL 4 及更低版本) 或 'rhn-profile-sync' (RHEL 5 及更高版本) 来刷新软件配置。</target> <context-group name="ctx">
+    </source>
+        <target state="translated">
+---------------------
+受影响的系统列表
+---------------------
+此补丁建议可能适用于下面列出的系统。如果您知道
+此补丁不适用于所列的某个系统，原因可能是该
+服务器的软件包配置文件已过时。在这种情况下，您应该以 root 身份在相关系统上运行 'up2date -p'（RHEL 4 和更低版本）或 'rhn-profile-sync'（SLES、RHEL 5 和更高版本）以刷新软件配置文件。
+    </target>
+        <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source> <target state="needs-adaptation">『Overview』里有一个已注册的系统受到了影响 （只显示已经显性启用勘误警告的系统）。</target> <context-group name="ctx">
+    </source>
+        <target state="translated">
+在 '概述' 中注册了 1 个受影响的系统（只显示
+已为其显式启用了补丁警报的系统）。
+    </target>
+        <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target state="needs-adaptation">『Overview』里有 {0} 个已注册的系统受到了影响 （只显示已经显性启用勘误警告的系统）。</target> <context-group name="ctx">
+        <target state="translated">
+在 '概述' 中注册{0} 个受影响的系统（只显示
+已为其显式启用了补丁警报的系统）。
+    </target>
+        <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -254,17 +323,32 @@ You may address the issues outlined in this advisory in two ways:
            {1}
 
      - run the Update Agent on each affected server.
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target state="needs-adaptation">发行版本 Arch 配置名称 ---------- ---------- --------------------------------------------- {0} 你可以以两种方法解决本顾问里列出的问题： - 通过点击下列位置下的可用列表里的名字选择您的服务器名称 然后为它调度 勘误更新： {1} - 在每个受影响的服务器上运行『更新代理』。</target> <context-group name="ctx">
+        <target state="translated">
+发行版    架构       配置文件名称
+---------- ---------- ---------------------------------------------
+{0}
+
+可通过两种方式解决此建议中所述的问题：
+
+     - 在位于以下位置的列表中单击相应的名称以
+        选择您的服务器名称，然后为该服务器安排
+        补丁更新：
+           {1}
+
+     - 在每个受影响的服务器上运行更新代理。
+    </target>
+        <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -279,17 +363,32 @@ click the "Details" tab.
 
 {1}
 {2}
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target state="needs-adaptation">修改通知首选项 --------------------------------- 要启用/禁用您的全局勘误警告，请登录到 @@PRODUCT_NAME@@ 并从『Overview』/『Your Account』到『Preferences』标签页。 URL: {0} 你也可以通过在『Systems List』里选择单个系统对每个系统启用/禁用通知。 在单个系统视图里 点击『Details』。 {1} {2}</target> <context-group name="ctx">
+        <target state="translated">
+更改通知首选项
+---------------------------------
+要全局启用/禁用补丁警报首选项，请登录到 @@PRODUCT_NAME@@
+并从 "概述" / "我的帐户"导航到 "首选项" 选项卡。
+
+        URL：{0}
+
+也可以在 "系统列表" 中选择单个系统，以在每个系统上
+启用/禁用通知。在单个系统视图中
+单击 "细节" 选项卡。
+{1}
+{2}
+    </target>
+        <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
@@ -374,6 +473,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ 这是按您的请求自动发送到 {0} 的一封电子邮件。]
+
+重设置登录名 {2} 的 @@PRODUCT_NAME@@ 密码的请求已发出。
+
+要继续完成重设置过程，请转到：
+
+{1}
+
+如果您不想要重设置密码，可忽略本电子邮件。
+
+如果您在重设置过程中遇到任何其他问题，
+请联系您的 @@PRODUCT_NAME@@ 管理员取得更多帮助。
+
+感谢您使用 @@PRODUCT_NAME@@。
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -442,6 +557,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ 这是自动发送到 {0} 的一封电子邮件。]
+
+为了响应 {2} 发出的重设置请求，现已重设置登录名 {1} 的
+@@PRODUCT_NAME@@ 密码
+
+如果您并未发出此项密码重设置请求，请立即联系 @@PRODUCT_NAME@@
+管理员 ({2}) 以取得更多帮助。
+
+感谢您使用 @@PRODUCT_NAME@@。
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
