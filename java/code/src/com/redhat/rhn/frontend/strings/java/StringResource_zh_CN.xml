@@ -1195,7 +1195,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="translated">Miss</target>
+        <target state="translated">小姐</target>
       </trans-unit>
       <trans-unit id="user prefix Mr." xml:space="preserve">
         <source>Mr.</source>
@@ -1209,7 +1209,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="translated">Mrs.</target>
+        <target state="translated">夫人</target>
       </trans-unit>
       <trans-unit id="user prefix Ms." xml:space="preserve">
         <source>Ms.</source>
@@ -1260,7 +1260,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Login or Logout</context>
         </context-group>
-        <target state="translated">已取消激活帐户  {0}</target>
+        <target state="translated">已停用帐户 {0}。</target>
       </trans-unit>
       <trans-unit id="user.enable" xml:space="preserve">
         <source>Reactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
@@ -1282,14 +1282,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="needs-adaptation">删除 {0} 的 Satellite 管理员角色</target>
+        <target state="translated">已从 {0} 中删除  @@PRODUCT_NAME@@ 管理员角色</target>
       </trans-unit>
       <trans-unit id="user.satadmin.add" xml:space="preserve">
         <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="needs-adaptation">在 {0} 中添加 Satellite 管理员角色</target>
+        <target state="translated">已将 @@PRODUCT_NAME@@ 管理员角色添加到 {0}</target>
       </trans-unit>
       <trans-unit id="user.deleteadmin" xml:space="preserve">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
@@ -1303,7 +1303,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target state="needs-adaptation">不能够删除最后一个 Satellite 管理员。</target>
+        <target state="translated">不能删除剩下的最后一个 @@PRODUCT_NAME@ 管理员。</target>
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
         <source>Users</source>
@@ -1339,14 +1339,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target state="translated">WEB TRACEBACK from </target>
+        <target state="translated">来源于以下位置的 WEB 回溯 </target>
       </trans-unit>
       <trans-unit id="taskomatic notif subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target state="needs-adaptation">RHN TASKOMATIC 通知</target>
+        <target state="translated">@@PRODUCT_NAME@@ TASKOMATIC 通知</target>
       </trans-unit>
       <trans-unit id="Notification Messages" xml:space="preserve">
         <source>Notification Messages</source>
@@ -1425,7 +1425,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="translated">为机构</target>
+        <target state="translated"> 针对组织 </target>
       </trans-unit>
       <trans-unit id="username" xml:space="preserve">
         <source>Username</source>
@@ -1886,7 +1886,7 @@
             Default system groups updated for zbeeblebrox
           </context>
         </context-group>
-        <target state="translated">为 &lt;strong&gt;{0}&lt;/strong&gt; 更新的默认系统组群</target>
+        <target state="translated">已更新 &lt;strong&gt;{0}&lt;/strong&gt; 的默认系统组</target>
       </trans-unit>
       <trans-unit id="message.preferencesModified" xml:space="preserve">
         <source>Preferences modified</source>
@@ -1945,14 +1945,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="translated">{0} 过滤器：</target>
+        <target state="translated">按 {0} 过滤： </target>
       </trans-unit>
       <trans-unit id="message.filterby.multiple" xml:space="preserve">
         <source>Filter by: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="translated">过滤器：</target>
+        <target state="translated">过滤依据： </target>
       </trans-unit>
       <trans-unit id="message.range" xml:space="preserve">
         <source>{0} - {1} of {2}</source>
@@ -1967,8 +1967,8 @@
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target state="translated">显示 &lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; 之 &lt;span&gt;{2}&lt;/span&gt;
-{3} </target>
+        <target state="translated">已显示 &lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; 个，共 &lt;span&gt;{2}&lt;/span&gt;
+个 {3}</target>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
         <source>({0} selected)</source>
@@ -2044,7 +2044,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target state="translated">IllegalInvocationException calling {0} ("{1}"): {2}</target>
+        <target state="translated">调用 {0} ("{1}") 时发生 IllegalInvocationException：{2}</target>
       </trans-unit>
       <trans-unit id="no notes" xml:space="preserve">
         <source>(none)</source>
@@ -2205,7 +2205,7 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
         </context-group>
-        <target state="translated">&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</target>
+        <target state="translated">&lt;a href="{3}"&gt;{4}&lt;/a&gt; 中 {2} 的&lt;a href="{0}"&gt;修订版 {1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="config.upload.onechannel" xml:space="preserve">
         <source>Destination Configuration Channel: {0}</source>
@@ -2266,28 +2266,29 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
-&lt;p&gt;要解决这个问题，请检查下列事项：&lt;/p&gt;
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;要解决此问题，请检查以下事项：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-用于这个 Kickstart 配置的基础频道的 'rhn-tools' 子软件频道对于
-你的公司可用吗？如果不可用，你将需要
-向 @@PRODUCT_NAME@@ 管理员请求该 'rhn-tools' 软件频道的权利。
+此 kickstart 配置文件的基础频道的客户端工具频道是否
+适用于您的公司？如果不适用，则您需要
+向 @@PRODUCT_NAME@@ 管理员请求客户端工具频道的权利。
 &lt;/li&gt;
 &lt;li&gt;
-请确定这个 kickstart 配置的基本频道的 'rhn-tools' 子频道
-可在 @@PRODUCT_NAME@@ 中使用。如果不能，请联络
-您的 satellite 管理员并请求一个 rhn-tools 频道
-然后再试一次。
+确保此 kickstart 配置文件的基础频道的客户端工具频道
+适用于您的 @@PRODUCT_NAME@@。如果不适用，请联系
+您的 @@PRODUCT_NAME@@ 管理员并请求对客户端工具频道运行 mgr-inter-sync，
+然后重试。
 &lt;/li&gt;
 &lt;li&gt;
-请确定 rhn-kickstart* 软件包与这个 kickstart 基本频道的
-的 'rhn-tools' 频道相应。如果不能，
-您需要使其可用于这个 kickstart 配置以便其正常工作。
+确保 kickstart 基础频道的工具频道中提供了对应于
+此 kickstart 的 spacewalk-koan 软件包。如果未提供，
+则您需要提供此软件包才能使此 kickstart 配置文件正常运行。
 &lt;/li&gt;
 &lt;li&gt;
-以上软件包在这个 kickstart 的基本频道中可用吗？如果不能，您需要
-使其可用于这个 kickstart 配置以便正常工作。
+此 kickstart 的基础频道中是否提供了上面列出的软件包？
+如果未提供，则您需要提供此软件包才能使
+此 kickstart 配置文件正常运行。
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -2342,7 +2343,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="translated">您选择了无效的 kickstart 标签，它应该至少有 {0} 个字符，而且只能是：A-Z，a-z，0-9，-</target>
+        <target state="translated">选择的自动安装标签无效，该标签的长度必须至少为 {0} 个字符，且只能包含以下字符：A-Z、a-z、0-9、_、- </target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists" xml:space="preserve">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
@@ -2753,14 +2754,14 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">Coma CMS Author</target>
+        <target state="translated">Coma CMS 作者</target>
       </trans-unit>
       <trans-unit id="coma_publisher" xml:space="preserve">
         <source>Coma CMS Publisher</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">Coma CMS Publisher</target>
+        <target state="translated">Coma CMS 发布者</target>
       </trans-unit>
       <trans-unit id="rhn_support" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Support Administrator</source>
@@ -3117,7 +3118,7 @@ and try again.
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">搜索服务器中缺少您所在区域的索引文件。使用默认区域执行搜索操作。假设数据库中存在您所在区域的数据，可运行 /usr/sbin/rhn-search cleanindex，然后 restart rhn-search 重新生成索引。</target>
+        <target state="translated">您所在区域的搜索服务器中缺少索引文件。已使用默认区域设置执行搜索操作。假设您所在区域的数据库中存在数据，可以依次运行 /usr/sbin/rhn-search cleanindex 和 restart rhn-search 来重新生成索引。</target>
       </trans-unit>
       <trans-unit id="packages.search.could_not_execute_query" xml:space="preserve">
         <source>Could not execute query '{0}'.</source>
@@ -3134,7 +3135,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target state="translated">SearchServer 索引和数据库条目不同步。请运行 '/usr/sbin/rhn-search cleanindex'。</target>
+        <target state="translated">SearchServer 索引和数据库项似乎不同步。请运行 '/usr/sbin/rhn-search cleanindex'</target>
       </trans-unit>
       <trans-unit id="patches.installed.notavailable" xml:space="preserve">
         <source>Not Available</source>
@@ -3198,7 +3199,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target state="translated">系统最后检入后的天数：</target>
+        <target state="translated">自上次签入以来的天数</target>
       </trans-unit>
       <trans-unit id="systemsearch_registered" xml:space="preserve">
         <source>Days Since First Registered</source>
@@ -4065,7 +4066,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.systems.monitoring.BaseProbeAction</context>
         </context-group>
-        <target state="translated">：</target>
+        <target state="translated">： </target>
       </trans-unit>
       <trans-unit id="error.duplicateprofilename" xml:space="preserve">
         <source>{0} is already in use. Please enter a different profile name.</source>
@@ -4798,7 +4799,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target state="translated">南乔治亚及南三明治群岛</target>
+        <target state="translated">南乔治亚和南桑德韦奇群岛</target>
       </trans-unit>
       <trans-unit id="GT" xml:space="preserve">
         <source>Guatemala</source>
@@ -6001,7 +6002,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">您已经为 @@PRODUCT_NAME@@ 服务创建了第一个用户。其它的配置应该&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;点这里&lt;/strong&gt;&lt;/a&gt;</target>
+        <target state="translated">您刚刚创建了您的第一个 @@PRODUCT_NAME@@ 用户。要完成安装，请使用&lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;安装向导&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -6086,7 +6087,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="translated">Bootstrap 脚本被成功生成。您可以通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它。</target>
+        <target state="translated">已成功生成引导脚本。可通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -6107,7 +6108,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="translated">重启 @@PRODUCT_NAME@@。如果本页在 5 分钟内没有刷新，请点击&lt;a href="/rhn/YourRhn.do"&gt;这里&lt;/a&gt;来尝试手动重启。</target>
+        <target state="translated">'@@PRODUCT_NAME@@ 正在重启动。如果本页面在 5 分钟内未刷新，请单击&lt;a href="/rhn/YourRhn.do"&gt;此处&lt;/a&gt;尝试手动刷新。 </target>
       </trans-unit>
       <trans-unit id="restart.config.norestart" xml:space="preserve">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6135,7 +6136,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Name of Monitoring Notification Method that is created during setup/install process.</context>
         </context-group>
-        <target state="translated">Panic Destination</target>
+        <target state="translated">恐慌目标</target>
       </trans-unit>
       <trans-unit id="crypto.key.gpg" xml:space="preserve">
         <source>GPG</source>
@@ -6219,7 +6220,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
         </context-group>
-        <target state="translated">文件保留标签已经存在，请选择一个不同的文件保留标签。</target>
+        <target state="translated">文件保留标签已存在。请选择唯一的文件保留标签。 </target>
       </trans-unit>
       <trans-unit id="filelists.jsp.selectafilelist" xml:space="preserve">
         <source>No File List(s) selected.</source>
@@ -6497,7 +6498,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">为 {0} 调度的系统 Kickstart。</target>
+        <target state="translated">已为 {0} 安排系统自动安装</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate" xml:space="preserve">
         <source>System record created for {0} in Cobbler.  This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
@@ -6622,7 +6623,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="translated">kickstart 发布被更新。</target>
+        <target state="translated">已更新可自动安装的发行套件</target>
       </trans-unit>
       <trans-unit id="tree.create.success" xml:space="preserve">
         <source>Autoinstallable Distribution Created</source>
@@ -6642,7 +6643,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="translated">标签的格式不正确。标签应该只包括字母、数字、横线、点和下划线。并且它的最小长度是4。</target>
+        <target state="translated">标签格式不正确。标签只能包括字母、数字、连字符、句点和下划线，其长度也必须是至少 4 个字符</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -6798,7 +6799,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-        <target state="needs-adaptation">您要确定在这个系统中启用了配置部署功能，在 &lt;a href="{0}"&gt;"{1}"&lt;/a&gt; 中选择这个系统，然后点击 "{2}" 就可达到此目的。</target>
+        <target state="translated">可以在 &lt;a href={0}&gt;{1}&lt;/a&gt; 屏幕上选择此系统，然后单击 "{2}"，以确保在此系统上启用配置部署功能</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -6993,7 +6994,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/Quota.do</context>
           <context context-type="paramnotes">sandbox for devserv.tootles.com</context>
         </context-group>
-        <target state="translated">{0} 的 sandbox </target>
+        <target state="translated">{0} 的沙箱</target>
       </trans-unit>
       <trans-unit id="config_channel.local_override" xml:space="preserve">
         <source>Locally-Managed</source>
@@ -7020,7 +7021,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
-        <target state="translated">Sandbox</target>
+        <target state="translated">沙箱</target>
       </trans-unit>
       <trans-unit id="scheduledeploy.ssm.success" xml:space="preserve">
         <source>Configuration Deploy Action is being scheduled for &lt;strong&gt;1 system&lt;/strong&gt;.</source>
@@ -7064,7 +7065,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
         </context-group>
-        <target state="translated">预定 Configuration Comparison Action 失败。</target>
+        <target state="translated">无法安排配置比较操作</target>
       </trans-unit>
       <trans-unit id="unsubscribe.ssm.success" xml:space="preserve">
         <source>System successfully unsubscribed from configuration channels.</source>
@@ -7152,7 +7153,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">没有指定文件路径。</target>
+        <target state="translated">未指定文件路径</target>
       </trans-unit>
       <trans-unit id="configmanager.filedetails.path.no-starting-slash" xml:space="preserve">
         <source>{0}: Configuration file path names must start with a '/'</source>
@@ -7200,7 +7201,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">Invalid arguments '{]*' to macro function 'rhn.system.net_interface.ip_address'</context>
         </context-group>
-        <target state="translated">宏函数 '{0}' 的无效参数 '{1}' </target>
+        <target state="translated">宏函数 '{0}' 的参数 '{1}' 无效</target>
       </trans-unit>
       <trans-unit id="configmanager.filedetails.content.bad-macro" xml:space="preserve">
         <source>Invalid macro - make sure the file isn't a binary file! '{0}'</source>
@@ -7295,7 +7296,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 被成功地解锁。</target>
+        <target state="translated">已解锁 &lt;strong&gt;{0}&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.pinged" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; has been pinged. OSA Status will be updated within the next minute.</source>
@@ -7303,7 +7304,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 已经用 ping 测试。OSA 状态将马上被更新。 </target>
+        <target state="translated">已 ping 通 &lt;strong&gt;{0}&lt;/strong&gt;。OSA 状态将马上更新。</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.applet.scheduled" xml:space="preserve">
         <source>RHN Applet @@PRODUCT_NAME@@ activation &lt;a href="{0}"&gt;scheduled&lt;/a&gt;</source>
@@ -7311,7 +7312,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">&lt;a href="{0}"&gt;预定了&lt;/a&gt; RHN Applet @@PRODUCT_NAME@@ 的激活</target>
+        <target state="translated">&lt;a href="{0}"&gt;已安排&lt;/a&gt; RHN Applet @@PRODUCT_NAME@@ 激活</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none" xml:space="preserve">
         <source>None</source>
@@ -7569,7 +7570,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
           <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
-        <target state="translated">系统中 1 文件中的 1 个与 @@PRODUCT_NAME@@ 管理的文件不同。</target>
+        <target state="translated">系统上有 1 个（共 1 个）文件与 @@PRODUCT_NAME@@ 管理的文件不同</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7590,7 +7591,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="sdc.config.time.message_url" xml:space="preserve">
           <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-        <target state="translated">{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
+        <target state="translated">{0} / &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
         <context-group name="sdc_actions_time_messages">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7880,7 +7881,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">高级 Lights Out Manager </target>
+        <target state="translated">Advanced Lights Out Manager</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.apc" xml:space="preserve">
         <source>APC</source>
@@ -8470,7 +8471,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">成功地更新了 {0} 频道管理器</target>
+        <target state="translated">已成功更新 {0} 个频道管理器。</target>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting" xml:space="preserve">
         <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
@@ -8593,7 +8594,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation">不能够自动向 RHN 工具频道订阅该系统。这个频道包含虚拟和所需的软件包。这最可能是由缺乏频道权利所导致的。</target>
+        <target state="translated">无法自动在系统中订阅 @@PRODUCT_NAME@@ 工具频道。此频道包含虚拟化所需的软件包。原因很可能是缺少频道权利。</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
@@ -8649,7 +8650,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target state="needs-adaptation">注：要在 @@PRODUCT_NAME@@ 中为这个系统启用并使用虚拟化功能，请使用关联的 RHN 工具子频道安装 rhn-virtualization-host 软件包。查看红帽文档中有关启用了主机系统虚拟化的红帽企业版 Linux 的所有注意事项和要求。</target>
+        <target state="translated">注意：要在 @@PRODUCT_NAME@@ 中为此系统启用并使用虚拟化功能，请安装关联的工具子频道中的 mgr-virtualization-host 软件包。有关为主机系统启用虚拟化的任何其他注意事项和要求，请查看文档。</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to migrate this system.</source>
@@ -8677,7 +8678,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="translated">必须指定一个组织。</target>
+        <target state="translated">必须指定组织</target>
       </trans-unit>
       <trans-unit id="system.entitle.invalid_addon_entitlement" xml:space="preserve">
         <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
@@ -8711,7 +8712,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.action.invalidactiontype" xml:space="preserve">
         <source>Invalid action type</source>
-        <target state="translated">无效动作类型。</target>
+        <target state="translated">无效操作类型</target>
       </trans-unit>
       <trans-unit id="api.org.pamAuthNotConfigured" xml:space="preserve">
         <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
@@ -8739,7 +8740,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg" xml:space="preserve">
         <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
-        <target state="needs-adaptation">无法在 satellite 机构中执行这个操作。（Org ID 1）</target>
+        <target state="translated">无法对 @@PRODUCT_NAME@@ 组织执行此操作。（组织 ID 1）</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata" xml:space="preserve">
         <source>Invalid patch: {0}</source>
@@ -8779,7 +8780,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied" xml:space="preserve">
         <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target state="needs-adaptation">在 Satellite 和修改管理员权限是不允许的。这些用户是缺省的，因此，下面的用户应该从输入里删除：{0}</target>
+        <target state="translated">不允许 @@PRODUCT_NAME@@ 和组织管理员更改管理员访问权限。默认已经为这些用户授予了访问权限，因此，应从输入中删除以下用户：{0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel" xml:space="preserve">
         <source>Invalid profile label specified: {0}</source>
@@ -8906,7 +8907,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="org.create.success" xml:space="preserve">
         <source>Organization {0} created successfully</source>
-        <target state="translated">成功创建机构 {0}。</target>
+        <target state="translated">已成功创建组织 {0}</target>
       </trans-unit>
       <trans-unit id="orgName" xml:space="preserve">
         <source>Organization Name</source>
@@ -8942,11 +8943,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster" xml:space="preserve">
         <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation">已有一条主 satellite {0} 记录</target>
+        <target state="translated">已存在主 @@PRODUCT_NAME@@ {0} 的记录</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave" xml:space="preserve">
         <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation">已有一条辅 satellite {0} 记录</target>
+        <target state="translated">已存在从属 @@PRODUCT_NAME@@ {0} 的记录</target>
       </trans-unit>
       <trans-unit id="securityErrata" xml:space="preserve">
         <source>Security Patches</source>
@@ -9206,11 +9207,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="listtag.clearfilter" xml:space="preserve">
         <source>Clear filter </source>
-        <target state="translated">清除过滤器</target>
+        <target state="translated">清除过滤器 </target>
       </trans-unit>
       <trans-unit id="listtag.seeall" xml:space="preserve">
         <source>to see all {0} items.  </source>
-        <target state="translated">来查看所有 {0} 项目。</target>
+        <target state="translated">以查看所有 {0} 项。  </target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessage" xml:space="preserve">
         <source>The list of {0} item(s) below is filtered.</source>
@@ -9432,7 +9433,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="Compare" xml:space="preserve">
         <source>Compare</source>
-        <target state="translated">Compare</target>
+        <target state="translated">比较</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.alreadyexists" xml:space="preserve">
         <source>A Custom Key with this label already exists.</source>
@@ -9465,7 +9466,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve">
         <source>Invalid autoinstall type: {0}.</source>
-        <target state="translated">无效 kickstart 安装类型：{0}</target>
+        <target state="translated">无效的自动安装类型：{0}。</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgfp" xml:space="preserve">
         <source>Invalid GPG Fingerprint</source>
@@ -9525,21 +9526,21 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名长度必须至少 {0} 个字符长。</target>
+        <target state="translated">频道名称长度必须至少为 {0} 个字符</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.maxlength" xml:space="preserve">
         <source>Channel name can not exceed {0} characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名称不能超过 {0} 个字符。</target>
+        <target state="translated">频道名称长度不能超过 {0} 个字符</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.nameinuse" xml:space="preserve">
         <source>The channel name '{0}' is already in use, please enter a different name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名称 '{0}' 已经被使用。请输入一个不同的名称。</target>
+        <target state="translated">频道名称 '{0}' 已被使用，请输入其他名称</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
@@ -9591,7 +9592,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道标签 '{0}' 已经被使用。请输入一个不同的名称。</target>
+        <target state="translated">频道标签 '{0}' 已被使用，请输入其他名称</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelreserved" xml:space="preserve">
         <source>The channel label '{0}' is reserved, please enter a different name</source>
@@ -9763,7 +9764,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target state="translated">库标签 '{0}' 已被使用，请选择不同的标签。</target>
+        <target state="translated">储存库标签 '{0}' 已被使用，请选择其他标签</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
@@ -9787,7 +9788,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="ssm.provision.scheduled" xml:space="preserve">
         <source>Successfully scheduled {0} system(s) for provisioning.{1}</source>
-        <target state="translated">成功地预定了 {0} 个系统。</target>
+        <target state="translated">已成功安排置备 {0} 个系统。{1}</target>
       </trans-unit>
       <trans-unit id="ssm.package.install.operationname" xml:space="preserve">
         <source>Schedule Package Installations</source>
@@ -9938,7 +9939,7 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="help.credentials.nologins" xml:space="preserve">
         <source>There are no registered accounts with that email address.</source>
-        <target state="translated">没有这个电子邮件地址注册帐户。 </target>
+        <target state="translated">未使用该电子邮件地址注册帐户。</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
         <source>Found login(s) sent to {0}.</source>
@@ -9949,7 +9950,7 @@ tree will not be usable for autoinstalling.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="needs-adaptation">所选系统有多个子频道可用，并包含 rhncfg 软件包。您必须手动订阅您需要的子频道，并再次尝试这个操作。</target>
+        <target state="translated">选定的系统具有多个包含 mgr-cfg 软件包的可用子频道。必须手动订阅所需的子频道，然后重试此操作。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
