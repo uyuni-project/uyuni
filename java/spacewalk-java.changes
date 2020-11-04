@@ -8,6 +8,12 @@
 - enable redfish power management by default
 
 -------------------------------------------------------------------
+Mon Nov 02 17:22:38 CET 2020 - mc@suse.de
+
+- version 4.1.22-1
+- Use correct eauth module and credentials for Salt SSH calls (bsc#1178319)
+
+-------------------------------------------------------------------
 Thu Oct 22 10:47:09 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.21-1
