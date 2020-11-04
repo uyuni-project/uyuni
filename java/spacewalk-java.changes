@@ -6,6 +6,12 @@
 - renaming autoinstall distro didn't change the name of the Cobbler distro (bsc#1175876)
 
 -------------------------------------------------------------------
+Mon Nov 02 17:42:56 CET 2020 - mc@suse.de
+
+- version 4.0.39-1
+- Use correct eauth module and credentials for Salt SSH calls (bsc#1178319)
+
+-------------------------------------------------------------------
 Tue Oct 06 11:27:45 CEST 2020 - jgonzalez@suse.com
 
 - version 4.0.38-1
