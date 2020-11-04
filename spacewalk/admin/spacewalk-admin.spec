@@ -91,7 +91,7 @@ fi
 
 
 %files
-%doc LICENSE
+%license LICENSE
 %dir %{rhnroot}
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
