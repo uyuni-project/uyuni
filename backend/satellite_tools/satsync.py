@@ -1884,7 +1884,7 @@ class Syncer:
         # pylint: disable=W0631
         return "%*.*f %s" % (int_len, fract_len, fuzzy, unit)
 
-    def _get_package_stream(self, channel, package_id, nvrea, sources):
+    def _get_package_stream(self, channel, package_id, nvrea, sources, checksum):
         """ returns (filepath, stream), so in the case of a "wire source",
             the return value is, of course, (None, stream)
         """
@@ -1904,11 +1904,11 @@ class Syncer:
 
         # Wire stream
         if CFG.ISS_PARENT:
-            stream = self.xmlDataServer.getRpm(nvrea, channel)
+            stream = self.xmlDataServer.getRpm(nvrea, channel, checksum)
         else:
             rpmServer = xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN,
                                                        self.xml_dump_version)
-            stream = rpmServer.getPackageStream(channel, nvrea)
+            stream = rpmServer.getPackageStream(channel, nvrea, checksum)
 
         return (None, stream)
 
@@ -2006,7 +2006,7 @@ class ThreadDownload(threading.Thread):
                 self.lock.acquire()
                 try:
                     rpmFile, stream = self.syncer._get_package_stream(self.channel,
-                                                                      package_id, nvrea, self.sources)
+                                                                      package_id, nvrea, self.sources, checksum)
                 except:
                     self.lock.release()
                     raise
