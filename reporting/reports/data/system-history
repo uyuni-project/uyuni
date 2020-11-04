@@ -54,7 +54,7 @@ sql:
 				end as event_data
 		from rhnserveraction left outer join rhnactionerrataupdate
 			on rhnserveraction.action_id = rhnactionerrataupdate.action_id
-			left outer join rhnserver 
+			inner join rhnserver 
 				on rhnserveraction.server_id = rhnserver.id
 			left outer join rhnactionpackage
 				on rhnserveraction.action_id = rhnactionpackage.action_id
@@ -94,7 +94,7 @@ sql:
 				when summary like 'unsubscribed from channel %' then details
 				when summary like 'Updated system release %' then substr(summary, 24)
 			end
-		from rhnserverhistory left outer join rhnserver on rhnserverhistory.server_id = rhnserver.id
+		from rhnserverhistory inner join rhnserver on rhnserverhistory.server_id = rhnserver.id
 	) X
 	-- where placeholder
 	order by server_id, time, event_id
