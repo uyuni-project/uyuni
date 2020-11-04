@@ -209,8 +209,21 @@ public class PackageEvr implements Comparable<PackageEvr> {
     }
 
     private int debCompareTo(PackageEvr other) {
-        //TODO:
-        return 0;
+        int result = epochAsInteger().compareTo(other.epochAsInteger());
+        if (result != 0) {
+            return result;
+        }
+        if (getVersion() == null || other.getVersion() == null) {
+            throw new IllegalStateException(
+                    "To compare PackageEvr, both must have non-null versions");
+        }
+        result = DEBVERCMP.compare(getVersion(), other.getVersion());
+        if (result != 0) {
+            return result;
+        }
+        // The perl code doesn't check for null releases, so we won't either
+        // In the long run, a check might be in order, though
+        return DEBVERCMP.compare(getRelease(), other.getRelease());
     }
 
     /**
