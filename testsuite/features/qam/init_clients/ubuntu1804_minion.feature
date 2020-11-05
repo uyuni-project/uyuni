@@ -7,6 +7,9 @@
 @ubuntu1804_minion
 Feature: Bootstrap a Ubuntu 18.04 minion and do some basic operations on it
 
+  Scenario: Clean up sumaform leftovers on a Ubuntu 18.04 Salt minion
+    When I perform a full salt minion cleanup on "ubuntu1804_minion"
+
   Scenario: Bootstrap a Ubuntu 18.04 minion
     Given I am authorized
     When I go to the bootstrapping page

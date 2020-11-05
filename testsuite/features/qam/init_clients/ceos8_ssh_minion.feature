@@ -7,6 +7,9 @@
 @ceos8_ssh_minion
 Feature: Bootstrap a CentOS 8 Salt SSH minion
 
+  Scenario: Clean up sumaform leftovers on a CentOS 8 Salt SSH minion
+    When I perform a full salt minion cleanup on "ceos8_ssh_minion"
+
   Scenario: Bootstrap a CentOS 8 Salt SSH minion
     Given I am authorized
     When I go to the bootstrapping page

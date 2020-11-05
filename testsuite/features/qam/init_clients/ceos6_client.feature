@@ -4,6 +4,9 @@
 @ceos6_client
 Feature: Be able to register a CentOS 6 traditional client and do some basic operations on it
 
+  Scenario: Clean up sumaform leftovers on a CentOS 6 traditional client
+    When I perform a full salt minion cleanup on "ceos6_client"
+
   Scenario: Prepare a CentOS 6 traditional client
     Given I am authorized
     When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-6-x86_64" on this "ceos6_client"
