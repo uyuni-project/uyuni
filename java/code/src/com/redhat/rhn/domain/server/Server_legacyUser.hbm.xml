@@ -567,6 +567,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                       p.name_id = sp.name_id AND
                       p.evr_id = pevr.id AND
                       sp.evr_id = spevr.id AND
+                      (pevr.evr).type = (spevr.evr).type AND
                       pevr.evr > spevr.evr AND
                       p.package_arch_id = sp.package_arch_id AND
                       p.name_id = pn.id
