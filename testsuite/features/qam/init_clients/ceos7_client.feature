@@ -4,6 +4,9 @@
 @ceos7_client
 Feature: Bootstrap a CentOS 7 traditional client
 
+  Scenario: Clean up sumaform leftovers on a CentOS 7 traditional client
+    When I perform a full salt minion cleanup on "ceos7_client"
+
   Scenario: Prepare a CentOS 7 traditional client
     When I bootstrap traditional client "ceos7_client" using bootstrap script with activation key "1-ceos7_client_key" from the proxy
     And I install the traditional stack utils on "ceos7_client"

@@ -7,6 +7,9 @@
 @ceos6_ssh_minion
 Feature: Bootstrap a CentOS 6 Salt SSH minion
 
+  Scenario: Clean up sumaform leftovers on a CentOS 6 Salt SSH minion
+    When I perform a full salt minion cleanup on "ceos6_ssh_minion"
+
   Scenario: Bootstrap a CentOS 6 Salt SSH minion
     Given I am authorized
     When I go to the bootstrapping page

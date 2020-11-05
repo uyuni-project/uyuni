@@ -7,6 +7,9 @@
 @ubuntu1604_minion
 Feature: Bootstrap a Ubuntu 16.04 Salt minion
 
+  Scenario: Clean up sumaform leftovers on a Ubuntu 16.04 Salt minion
+    When I perform a full salt minion cleanup on "ubuntu1604_minion"
+
   Scenario: Bootstrap a Ubuntu 16.04 minion
     Given I am authorized
     When I go to the bootstrapping page

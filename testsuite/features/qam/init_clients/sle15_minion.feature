@@ -2,7 +2,10 @@
 # Licensed under the terms of the MIT license.
 
 @sle15_minion
-Feature: Be able to bootstrap a SLES 15 Salt minion via the GUI
+Feature: Be able to bootstrap a SLES 15 Salt minion
+
+  Scenario: Clean up sumaform leftovers on a SLES 15 Salt minion
+    When I perform a full salt minion cleanup on "sle15_minion"
 
   Scenario: Create the bootstrap repository for a Salt client
     Given I am authorized
