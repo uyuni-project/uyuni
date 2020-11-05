@@ -1627,7 +1627,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>Confirmar Senha </target>
+        <target>Confirmar Senha</target>
       </trans-unit>
       <trans-unit id="confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -1676,7 +1676,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>Confirmar Senha </target>
+        <target>Confirmar Senha</target>
       </trans-unit>
       <trans-unit id="address1" xml:space="preserve">
         <source>Street Address</source>
@@ -4443,7 +4443,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>CONGO, República Democrática do </target>
+        <target>CONGO, República Democrática do</target>
       </trans-unit>
       <trans-unit id="CF" xml:space="preserve">
         <source>Central African Republic</source>
@@ -6114,7 +6114,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target>Ocorreu um erro e as suas mudanças à configuração do Satellite não puderam ser armazenadas. Por favor contate o serviço ao cliente para maiores informações. </target>
+        <target>Ocorreu um erro e as suas mudanças à configuração do @@PRODUCT_NAME@@ não puderam ser armazenadas. Por favor contate o serviço ao cliente para maiores informações</target>
       </trans-unit>
       <trans-unit id="restart.config.success" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ restarting.  If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually. </source>
@@ -7216,7 +7216,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">Invalid macro function name foo.bar.blech</context>
         </context-group>
-        <target>Nome de função macro inválido </target>
+        <target>Nome de função macro inválido</target>
       </trans-unit>
       <trans-unit id="configmanager.filedetails.content.bad-arg-content" xml:space="preserve">
         <source>Invalid arguments '{1}' to macro function '{0}'</source>
@@ -7575,14 +7575,14 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>{0} de {1}arquivo, {2} de {3} diretórios e {4} de 1 symlink  foram bem sucedidos no sistema quando comparados com os arquivos @@PRODUCT_NAME@@-Gerenciados.  [&lt;a href="{6}"&gt;View Details&lt;/a&gt;] </target>
+        <target>{0} de {1}arquivo, {2} de {3} diretórios e {4} de 1 symlink  foram bem sucedidos no sistema quando comparados com os @@PRODUCT_NAME@@-Arquivos Gerenciados.  [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>{0} de {1} arquivo, {2} de {3} diretórios e {4} de {5} symlinks  foram bem sucedidos no sistema quando comparados com os arquivos @@PRODUCT_NAME@@-Gerenciados.  [&lt;a href="{6}"&gt;View Details&lt;/a&gt;] </target>
+        <target>{0} de {1} arquivo, {2} de {3} diretórios e {4} de {5} symlinks  foram bem sucedidos no sistema quando comparados com os arquivos @@PRODUCT_NAME@@-Gerenciados.  [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -9608,14 +9608,14 @@ você não poderá retornar este sistema à este snapshot ou à qualquer outro.<
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>O nome do canal não pode exceder caracteres longos {0} </target>
+        <target>O nome do canal não pode exceder caracteres longos {0}</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.nameinuse" xml:space="preserve">
         <source>The channel name '{0}' is already in use, please enter a different name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>O nome do canal '{0}' já está em uso. Por favor indique um outro nome </target>
+        <target>O nome do canal '{0}' já está em uso. Por favor indique um outro nome</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
@@ -9874,7 +9874,7 @@ você não poderá retornar este sistema à este snapshot ou à qualquer outro.<
       </trans-unit>
       <trans-unit id="ssm.provision.scheduled" xml:space="preserve">
         <source>Successfully scheduled {0} system(s) for provisioning.{1}</source>
-        <target>O(s) sistema(s) {0} foram programados com êxito para configuração. </target>
+        <target>O(s) sistema(s) {0} foram programados com êxito para configuração.{1}</target>
       </trans-unit>
       <trans-unit id="ssm.package.install.operationname" xml:space="preserve">
         <source>Schedule Package Installations</source>
@@ -10707,195 +10707,195 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Atualização do pool de armazenamento virtual</target>
       </trans-unit>
       <trans-unit id="virt.pool_start" xml:space="preserve">
         <source>Virtual storage pool start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Início do pool de armazenamento virtual</target>
       </trans-unit>
       <trans-unit id="virt.pool_stop" xml:space="preserve">
         <source>Virtual storage pool stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Parada do pool de armazenamento virtual</target>
       </trans-unit>
       <trans-unit id="virt.pool_delete" xml:space="preserve">
         <source>Virtual storage pool delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Exclusão do pool de armazenamento virtual</target>
       </trans-unit>
       <trans-unit id="virt.pool_create" xml:space="preserve">
         <source>Virtual storage pool creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Criação de pool de armazenamento virtual</target>
       </trans-unit>
       <trans-unit id="virt.pool_update" xml:space="preserve">
         <source>Virtual storage pool update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Atualização do pool de armazenamento virtual</target>
       </trans-unit>
       <trans-unit id="virt.volume_delete" xml:space="preserve">
         <source>Virtual storage volume deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Exclusão do volume de armazenamento virtual</target>
       </trans-unit>
       <trans-unit id="virt.network_start" xml:space="preserve">
         <source>Virtual network start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Início da rede virtual</target>
       </trans-unit>
       <trans-unit id="virt.network_stop" xml:space="preserve">
         <source>Virtual network stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Parada de rede virtual</target>
       </trans-unit>
       <trans-unit id="virt.network_delete" xml:space="preserve">
         <source>Virtual network deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Exclusão de rede virtual</target>
       </trans-unit>
       <trans-unit id="cluster_admin" xml:space="preserve">
         <source>Cluster Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Administrador de Cluster</target>
       </trans-unit>
       <trans-unit id="clusters.nav.title" xml:space="preserve">
         <source>Clusters</source>
-        <target state="new" />
+        <target state="translated">Grupos</target>
       </trans-unit>
       <trans-unit id="clusters.nav.overview" xml:space="preserve">
         <source>Overview</source>
-        <target state="new" />
+        <target state="translated">Visão global</target>
       </trans-unit>
       <trans-unit id="clusters.nav.add" xml:space="preserve">
         <source>Add</source>
-        <target state="new" />
+        <target state="translated">Adicionar</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
         <source>Module '{0}' not found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Módulo '{0}' não encontrado.</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.moduleconflict" xml:space="preserve">
         <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">O módulo '{0}' está em conflito com o módulo '{1}'. Resolução não é possível.</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror.formodule" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Algumas das dependências modulares não podem ser resolvidas para o módulo '{0}'.</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Algumas das dependências modulares não podem ser resolvidas.</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodulefilters" xml:space="preserve">
         <source>No module filters attached. Module metadata will be cloned to target.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Nenhum filtro de módulo anexado. Os metadados do módulo serão clonados no destino.</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodularsources" xml:space="preserve">
         <source>No modular source attached. Module filters will be ignored.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Nenhuma fonte modular conectada. Os filtros do módulo serão ignorados.</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
         <source>Calendar name required</source>
-        <target state="new" />
+        <target state="translated">Nome do calendário obrigatório</target>
       </trans-unit>
       <trans-unit id="maintenance.schedule.name.empty" xml:space="preserve">
         <source>Schedule name required</source>
-        <target state="new" />
+        <target state="translated">Nome da programação obrigatório</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.data.empty" xml:space="preserve">
         <source>Calendar data required</source>
-        <target state="new" />
+        <target state="translated">Dados do calendário necessários</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.exists" xml:space="preserve">
         <source>Calendar '{0}' already exists</source>
-        <target state="new" />
+        <target state="translated">O calendário '{0}' já existe</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.fetch.error" xml:space="preserve">
         <source>Error fetching calendar data from '{0}'</source>
-        <target state="new" />
+        <target state="translated">Erro ao obter dados do calendário de '{0}'</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.not.exists" xml:space="preserve">
         <source>Calendar '{0}' does not exist</source>
-        <target state="new" />
+        <target state="translated">O calendário '{0}' não existe</target>
       </trans-unit>
       <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve">
         <source>Schedule with id '{0}' does not exist</source>
-        <target state="new" />
+        <target state="translated">A programação com id '{0}' não existe</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve">
         <source>Calendar with id '{0}' does not exist</source>
-        <target state="new" />
+        <target state="translated">O calendário com id '{0}' não existe</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target state="new" />
+        <target state="translated">Ocorreu um erro ao tentar cancelar as ações afetadas para a programação '{0}'</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target state="new" />
+        <target state="translated">A operação não pôde ser realizada. Existem ações programadas nos sistemas</target>
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target state="new" />
+        <target state="translated">A operação não pôde ser realizada. Existem ações programadas nos sistemas</target>
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.systemnotfound" xml:space="preserve">
         <source>Some of the specified servers cannot be found</source>
-        <target state="new" />
+        <target state="translated">Alguns dos servidores especificados não podem ser encontrados</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">Peixe vermelho</target>
       </trans-unit>
-    <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">Executar ações em minions ssh</target>
+      </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">Execute cadeias de ação em minions</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
