@@ -10,6 +10,7 @@ description:
 columns:
 
 	server_id:i	System identifier
+	hostname	hostname
 	event_id:i	Event id
 	time		Time of event
 	status		Status of the event
@@ -23,9 +24,10 @@ multival_columns:
 
 sql:
 
-	select server_id, event_id, time, status, event, event_data
+	select server_id, hostname, event_id, time, status, event, event_data
 	from (
 		select rhnserveraction.server_id,
+			rhnserver.hostname,
 			rhnserveraction.action_id as event_id,
 			to_char(rhnserveraction.completion_time, 'YYYY-MM-DD HH24:MI:SS') as time,
 			rhnactionstatus.name as status,
@@ -52,6 +54,8 @@ sql:
 				end as event_data
 		from rhnserveraction left outer join rhnactionerrataupdate
 			on rhnserveraction.action_id = rhnactionerrataupdate.action_id
+			inner join rhnserver 
+				on rhnserveraction.server_id = rhnserver.id
 			left outer join rhnactionpackage
 				on rhnserveraction.action_id = rhnactionpackage.action_id
 				left outer join rhnpackagename
@@ -76,9 +80,10 @@ sql:
 			and rhnaction.action_type = rhnactiontype.id
 			and rhnserveraction.status = rhnactionstatus.id
 		union all
-		select rhnserverhistory.server_id,
+		select rhnserverhistory.server_id, 
+			rhnserver.hostname,
 			rhnserverhistory.id,
-			to_char(greatest(created, modified), 'YYYY-MM-DD HH24:MI:SS'),
+			to_char(greatest(rhnserverhistory.created, rhnserverhistory.modified), 'YYYY-MM-DD HH24:MI:SS'),
 			'Done',
 			case when rhnserverhistory.summary like 'subscribed to channel %' then 'Subscribed to channel'
 				when rhnserverhistory.summary like 'unsubscribed from channel %' then 'Unsubscribed from channel'
@@ -89,7 +94,7 @@ sql:
 				when summary like 'unsubscribed from channel %' then details
 				when summary like 'Updated system release %' then substr(summary, 24)
 			end
-		from rhnserverhistory
+		from rhnserverhistory inner join rhnserver on rhnserverhistory.server_id = rhnserver.id
 	) X
 	-- where placeholder
 	order by server_id, time, event_id
