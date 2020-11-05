@@ -310,7 +310,7 @@ class DpkgRepo:
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
                 logging.exception("GPG verfication failed: {}".format(release_file), exc_info=True)
-                logging.error("GeneralRepoException will be raised!")
+                logging.error("Raising GeneralRepoException!")
                 raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
             try:
                 with open(release_file, "rb") as f:
