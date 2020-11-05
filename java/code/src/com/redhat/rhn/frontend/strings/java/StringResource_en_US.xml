@@ -8816,6 +8816,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="task.status.minion-action-executor">
         <source>Execute actions on minions</source>
       </trans-unit>
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+        <source>Execute actions on ssh minions</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
+        <source>Execute action chains on minions</source>
+      </trans-unit>
       <trans-unit id="task.status.notifications-cleanup">
         <source>Cleanup notifications</source>
       </trans-unit>
