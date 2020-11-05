@@ -883,37 +883,7 @@ public class IndexManager {
     }
 
     private void initDocLocaleLookup() {
-        docLocaleLookUp.put("bn", "bn-IN");
-        docLocaleLookUp.put("bn_in", "bn-IN");
-        docLocaleLookUp.put("de", "de-DE");
-        docLocaleLookUp.put("en_us", "en-US");
-        docLocaleLookUp.put("en", "en-US");
-        docLocaleLookUp.put("es", "es-ES");
-        docLocaleLookUp.put("fr", "fr-FR");
-        docLocaleLookUp.put("gu", "gu-IN");
-        docLocaleLookUp.put("hi", "hi-IN");
-        docLocaleLookUp.put("it", "it-IT");
-        docLocaleLookUp.put("ja", "ja-JP");
-        docLocaleLookUp.put("ko", "ko-KR");
-        docLocaleLookUp.put("pa", "pa-IN");
-        docLocaleLookUp.put("pt_br", "pt-BR");
-        docLocaleLookUp.put("pt", "pt-BR");
-        docLocaleLookUp.put("pt_pt", "pt-BR");
-        docLocaleLookUp.put("ru", "ru-RU");
-        docLocaleLookUp.put("ta", "ta-IN");
-        docLocaleLookUp.put("zh", "zh-CN");
-        docLocaleLookUp.put("zh_cn", "zh-CN");
-        docLocaleLookUp.put("zh_tw", "zh-TW");
-        // Below exist in docs, but weren't available as a doc option from
-        // satellite webui and they weren't available Locales on my machine
-        // guessing at what they will look at.
-        docLocaleLookUp.put("as", "as-IN");
-        docLocaleLookUp.put("ml", "ml-IN");
-        docLocaleLookUp.put("mr", "mr-IN");
-        docLocaleLookUp.put("or", "or-IN");
-        docLocaleLookUp.put("kn", "kn-IN");
-        docLocaleLookUp.put("si_lk", "si-LK");
-        docLocaleLookUp.put("te", "te-IN");
+        docLocaleLookUp.put("en", "en");
     }
 
 }

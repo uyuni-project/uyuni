@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +35,8 @@ import redstone.xmlrpc.XmlRpcFault;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorWarning;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.BaseSearchAction;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.HelpDocumentOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -88,6 +87,17 @@ public class DocSearchSetupAction extends BaseSearchAction {
 
         log.debug("Performing doc search");
 
+        // get lang we are searching in
+        RequestContext ctx = new RequestContext(request);
+        User user = ctx.getCurrentUser();
+        String locale;
+        if (user != null) {
+            locale = user.getPreferredDocsLocale();
+        }
+        else {
+            locale = ConfigDefaults.get().getDefaultDocsLocale();
+        }
+
         // call search server
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
@@ -95,9 +105,7 @@ public class DocSearchSetupAction extends BaseSearchAction {
         args.add(sessionId);
         args.add("docs");
         args.add(preprocessSearchString(searchString, mode));
-        // get lang we are searching in
-        Locale l = Context.getCurrentContext().getLocale();
-        args.add(l.toString());
+        args.add(locale);
         Boolean searchFreeForm = false;
         if (OPT_FREE_FORM.equals(mode)) {
             // adding a boolean of true to signify we want the results to be
