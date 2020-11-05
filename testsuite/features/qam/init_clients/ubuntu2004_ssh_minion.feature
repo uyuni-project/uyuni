@@ -5,7 +5,10 @@
 #  2) subscribe it to a base channel for testing
 
 @ubuntu2004_ssh_minion
-Feature: Bootstrap a SSH-managed Ubuntu 20.04 minion and do some basic operations on it
+Feature: Bootstrap a Ubuntu 20.04 Salt SSH Minion
+
+  Scenario: Clean up sumaform leftovers on a Ubuntu 20.04 Salt SSH Minion
+    When I perform a full salt minion cleanup on "ubuntu2004_ssh_minion"
 
   Scenario: Bootstrap a SSH-managed Ubuntu 20.04 minion
     Given I am authorized

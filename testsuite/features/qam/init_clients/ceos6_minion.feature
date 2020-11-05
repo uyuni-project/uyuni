@@ -5,9 +5,12 @@
 #  2) subscribe it to a base channel for testing
 
 @ceos6_minion
-Feature: Bootstrap a CentOS 6 minion and do some basic operations on it
+Feature: Bootstrap a CentOS 6 Salt minion
 
-  Scenario: Bootstrap a CentOS 6 minion
+  Scenario: Clean up sumaform leftovers on a CentOS 6 Salt minion
+    When I perform a full salt minion cleanup on "ceos6_minion"
+
+  Scenario: Bootstrap a CentOS 6 Salt minion
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
