@@ -617,7 +617,7 @@
       </trans-unit>
       <trans-unit id="Critical CPU Load 5-Min Ave" xml:space="preserve">
         <source>Critical CPU Load 5-Min Ave</source>
-        <target/>
+        <target>Kritické priemerné zaťaženie CPU 5-Min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
