@@ -624,21 +624,21 @@
       </trans-unit>
       <trans-unit id="Critical CPU Pct Used" xml:space="preserve">
         <source>Critical CPU Pct Used</source>
-        <target/>
+        <target>Kritické percento použitých CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Time Rate" xml:space="preserve">
         <source>Critical CPU Time Rate</source>
-        <target/>
+        <target>Kritická hodnota času CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Child Process Count" xml:space="preserve">
         <source>Critical Child Process Count</source>
-        <target/>
+        <target>Kritický počet procesov potomkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1716,21 +1716,21 @@
       </trans-unit>
       <trans-unit id="Warning CPU Pct Used" xml:space="preserve">
         <source>Warning CPU Pct Used</source>
-        <target/>
+        <target>Varovné percento použitých CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Time Rate" xml:space="preserve">
         <source>Warning CPU Time Rate</source>
-        <target/>
+        <target>Varovná hodnota času CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Child Process Count" xml:space="preserve">
         <source>Warning Child Process Count</source>
-        <target/>
+        <target>Varovný počet procesov potomkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2249,7 +2249,7 @@
       </trans-unit>
       <trans-unit id="metrics.CPU pct used" xml:space="preserve">
         <source>CPU pct used</source>
-        <target/>
+        <target>Percento použitých CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
