@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2020-11-05 16:18+0100\n"
 "PO-Revision-Date: 2020-10-23 16:49+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -111,7 +111,7 @@ msgid "Please run rhn_register as root on this client"
 msgstr "Execute rhn_register como root neste cliente"
 
 #: ../rhnplugin.py:356
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
 msgstr ""
 "Informação de login necessária para o {PRODUCT_NAME} não foi encontrada: %s"
