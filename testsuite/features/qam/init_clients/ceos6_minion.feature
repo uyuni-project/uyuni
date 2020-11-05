@@ -7,6 +7,9 @@
 @ceos6_minion
 Feature: Bootstrap a CentOS 6 Salt minion
 
+  Scenario: Clean up sumaform leftovers on a CentOS 6 Salt minion
+    When I perform a full salt minion cleanup on "ceos6_minion"
+
   Scenario: Bootstrap a CentOS 6 Salt minion
     Given I am authorized
     When I go to the bootstrapping page

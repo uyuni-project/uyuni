@@ -4,6 +4,9 @@
 @ceos6_client
 Feature: Bootstrap a CentOS 6 traditional client
 
+  Scenario: Clean up sumaform leftovers on a CentOS 6 traditional client
+    When I perform a full salt minion cleanup on "ceos6_client"
+
   Scenario: Prepare a CentOS 6 traditional client
     When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-6-x86_64" on this "ceos6_client"
     And I enable repository "SLE-Manager-Tools-RES-6-x86_64" on this "ceos6_client"
