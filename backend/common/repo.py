@@ -269,8 +269,10 @@ class DpkgRepo:
                     out = process.wait(timeout=90)
 
         if process.returncode == 0:
+            logging.debug("GPG signature is valid")
             return True
         else:
+            logging.debug("GPG signature is invalid. gpg return code: {}".format(process.returncode))
             return False
 
 
