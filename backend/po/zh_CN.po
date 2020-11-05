@@ -342,7 +342,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"您的帐户无权访问与 (release='%(release)s', arch='%(arch)s')%(www_activation)s 匹配的任何频道"
+"您的帐户无权访问与 (release='%(release)s', "
+"arch='%(arch)s')%(www_activation)s 匹配的任何频道"
 
 #: ../server/rhnChannel.py:2002
 msgid ""
@@ -352,7 +353,8 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"如果您有注册号，请先在 http://www.redhat.com/apps/activate/ 上使用该注册号注册，然后重试。\n"
+"如果您有注册号，请先在 http://www.redhat.com/apps/activate/ 上使用该注册号注"
+"册，然后重试。\n"
 "\n"
 
 #: ../server/rhnChannel.py:2012
@@ -1410,7 +1412,9 @@ msgstr "秒"
 msgid ""
 "ERROR: The dump is missing package data, use --no-rpms to skip this step or "
 "fix the content to include package data."
-msgstr "错误：转储中缺少软件包数据，请使用 --no-rpms 跳过此步骤，或者修复内容以包含软件包数据。"
+msgstr ""
+"错误：转储中缺少软件包数据，请使用 --no-rpms 跳过此步骤，或者修复内容以包含软"
+"件包数据。"
 
 #. the orgs() method doesn't exist; that's fine we just
 #. won't sync the orgs
@@ -1445,8 +1449,8 @@ msgid ""
 "content on disk via Channel Dump ISOs."
 msgstr ""
 "错误：不再支持使用 RHN Classic Hosted 进行实时内容同步。\n"
-"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道转储 ISO 从磁盘上的本地内容同步，否则请改用 "
-"cdn-sync 命令。"
+"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道"
+"转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1738,7 +1742,9 @@ msgstr "正在导入：  "
 msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
-msgstr "在缓存中找不到软件包，请清除缓存                                  以重新生成软件包。"
+msgstr ""
+"在缓存中找不到软件包，请清除缓存                                  以重新生成"
+"软件包。"
 
 #: ../satellite_tools/satsync.py:1709
 msgid "Importing channel patches"
@@ -1775,7 +1781,8 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "satellite-sync\" for more information."
 msgstr ""
-"仅限调试：已达到 XML 的最大批大小/正在处理数据库导入 (1..%s)。有关详细信息，请参见 \"man satellite-sync\"。"
+"仅限调试：已达到 XML 的最大批大小/正在处理数据库导入 (1..%s)。有关详细信息，"
+"请参见 \"man satellite-sync\"。"
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1789,7 +1796,8 @@ msgstr "仅处理此频道的数据"
 msgid ""
 "disk dump will be considered to be a full export; see \"man satellite-sync\" "
 "for more information."
-msgstr "磁盘转储将被视为完整导出内容；有关详细信息，请参见 \"man satellite-sync\"。"
+msgstr ""
+"磁盘转储将被视为完整导出内容；有关详细信息，请参见 \"man satellite-sync\"。"
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
@@ -1902,7 +1910,9 @@ msgstr "从本地转储导入时不要删除 RPM"
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
-msgstr "主服务器的从属服务器的完全限定域名。仅当与 --mount-point 结合使用时才有效。如果您想要导入组织数据和频道权限，则必须指定此选项。"
+msgstr ""
+"主服务器的从属服务器的完全限定域名。仅当与 --mount-point 结合使用时才有效。如"
+"果您想要导入组织数据和频道权限，则必须指定此选项。"
 
 #: ../satellite_tools/satsync.py:2274
 #, python-format
@@ -1969,8 +1979,8 @@ msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"错误：当前未导入任何频道；请尝试运行 mgr-inter-sync --list-channels；然后运行 mgr-inter-sync -c "
-"chn0 -c chn1..."
+"错误：当前未导入任何频道；请尝试运行 mgr-inter-sync --list-channels；然后运"
+"行 mgr-inter-sync -c chn0 -c chn1..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
