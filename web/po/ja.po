@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-10-07 10:48+0000\n"
+"PO-Revision-Date: 2020-11-06 00:50+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1791,9 +1791,8 @@ msgid "Upgrade"
 msgstr "アップグレード"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
-#, fuzzy
 msgid "Upgrade plan"
-msgstr "アップグレード "
+msgstr "アップグレードプラン"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:28
 msgid "You do not have permissions to perform this action"
@@ -4383,11 +4382,11 @@ msgstr "仮想 CPU 数"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:215
 msgid "Auto-installation Profile"
-msgstr ""
+msgstr "自動インストールプロファイル"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:229
 msgid "Kernel options"
-msgstr ""
+msgstr "カーネルオプション"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:245
 msgid "Graphics"
