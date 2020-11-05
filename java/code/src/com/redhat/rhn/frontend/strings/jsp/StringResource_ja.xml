@@ -5589,7 +5589,7 @@ organization. You may grant or remove the organization administrator role in the
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
           </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;注意:&lt;/strong&gt; 検証を行った上で対応している電力管理タイプは IPMI のみですが、他のタイプでも動作することがあります。他の電力管理タイプを有効にする場合は、rhn.conf 内の「java.power_management.types」オプションを上書きしてください。</target>
+        <target state="translated">&lt;strong&gt;注意:&lt;/strong&gt; 下記に示した電力管理タイプはいずれも検証済みでサポート対象内ですが、これら以外は動作するかどうかは保証されていません。詳しくはドキュメンテーションをお読みください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -17599,7 +17599,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>現在のバージョン</target>
       </trans-unit>
@@ -17607,7 +17607,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>最終変更</target>
       </trans-unit>
@@ -17636,7 +17636,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>このチャンネルをサブスクライブしていて配備可能なシステムはありません</target>
       </trans-unit>
@@ -17644,7 +17644,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>動作</target>
       </trans-unit>
@@ -17652,7 +17652,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17660,7 +17660,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>すべてのファイルを配備</target>
       </trans-unit>
@@ -17668,7 +17668,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備</target>
       </trans-unit>
@@ -17676,7 +17676,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備</target>
       </trans-unit>
@@ -17684,7 +17684,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">以下の一覧から配備したいファイルを選択することができます。  選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
@@ -17692,7 +17692,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17700,7 +17700,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>確認して選択したシステムに配備</target>
       </trans-unit>
@@ -17708,7 +17708,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備: 配備するシステムを選択します</target>
       </trans-unit>
@@ -17716,7 +17716,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備するシステムを選択してください。</target>
       </trans-unit>
@@ -17724,7 +17724,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりも順位が低くなる場合、この上書きや最上位のファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
@@ -22486,21 +22486,21 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       <!--KS schedule pages -->
       <trans-unit id="kickstart.schedule.heading4.jsp" xml:space="preserve">
           <source>Advanced Autoinstallation Configuration</source>
-        <target state="needs-adaptation">高度なキックスタート設定</target>
+        <target state="translated">高度な自動インストール設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.distro" xml:space="preserve">
           <source>As specified by the Distribution</source>
-        <target state="needs-adaptation">キックスタートディストリビューションによる指定にあわせる</target>
+        <target state="translated">ディストリビューションによる指定にあわせる</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.profile" xml:space="preserve">
           <source>As specified by the Profile</source>
-        <target state="needs-adaptation">キックスタートプロファイルによる指定にあわせる</target>
+        <target state="translated">プロファイルによる指定にあわせる</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -30006,24 +30006,24 @@ given channel.</source>
         <source>System not found</source>
         <target state="translated">システムが見つかりませんでした</target>
       </trans-unit>
-    <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
+      <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
         <source>Style Theme</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">スタイルテーマ</target>
+      </trans-unit>
       <trans-unit id="preferences.jsp.text.theme" xml:space="preserve">
         <source>Please select your preferred theme style.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">使用したいテーマスタイルを選択してください。</target>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">ベンダー変更を許可する</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
