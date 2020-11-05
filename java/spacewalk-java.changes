@@ -1,3 +1,4 @@
+- Remove the deprecated "satellite" API namespace
 - Make image pillar visible only in buildhost organization
 - Maintain list of synced images in pillar
 - Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
