@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-11-03 13:50+0000\n"
+"PO-Revision-Date: 2020-11-05 13:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/zh_CN/>\n"
@@ -206,6 +206,9 @@ msgid ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "Licensed under the terms of the GPLv2."
 msgstr ""
+"%%prog (Spacewalk Client Tools) %s\n"
+"版权所有 (C) 1999--2014 Red Hat, Inc.\n"
+"根据 GPLv2 条款授权。"
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
@@ -217,7 +220,7 @@ msgstr "有关详细信息，请查看 /var/log/up2date"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../src/up2date_client/rhnreg_constants.py:21
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
@@ -235,16 +238,16 @@ msgid ""
 "Please enter the location of your {PRODUCT_NAME} server and of its SSL "
 "certificate. The SSL certificate is only required if you will be connecting "
 "over https (recommended)."
-msgstr ""
+msgstr "请输入 {PRODUCT_NAME} 服务器及其 SSL 证书的位置。仅当您要通过 HTTPS 连接（建议）时，才需要 SSL 证书。"
 
 #: ../src/up2date_client/rhnreg_constants.py:29
 #, python-brace-format
 msgid "{PRODUCT_NAME} URL:"
-msgstr ""
+msgstr "{PRODUCT_NAME} URL："
 
 #: ../src/up2date_client/rhnreg_constants.py:30
 msgid "SSL certificate:"
-msgstr ""
+msgstr "SSL 证书："
 
 #: ../src/up2date_client/rhnreg_constants.py:31
 #, python-brace-format
@@ -255,7 +258,7 @@ msgstr "必须输入有效的 {PRODUCT_NAME} URL。"
 msgid ""
 "If you are using https you must enter the location of a valid SSL "
 "certificate."
-msgstr ""
+msgstr "如果您使用 HTTPS，则必须输入有效 SSL 证书的位置。"
 
 #. Connect Window
 #: ../src/up2date_client/rhnreg_constants.py:36
@@ -351,7 +354,7 @@ msgstr "在使用此系统时如果遇到任何问题，可以向技术支持专
 msgid ""
 "Stay in compliance with your subscription agreement and manage subscriptions "
 "for systems connected to your account."
-msgstr ""
+msgstr "始终遵守订阅协议，并管理连接到您帐户的系统的订阅。"
 
 #: ../src/up2date_client/rhnreg_constants.py:73
 msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
@@ -392,7 +395,7 @@ msgstr "以后再注册。"
 #: ../src/up2date_client/rhnreg_constants.py:87
 #, python-brace-format
 msgid "{PRODUCT_NAME} Account"
-msgstr ""
+msgstr "{PRODUCT_NAME} 帐户"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
 #, python-brace-format, python-format
@@ -406,7 +409,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:89
 #, python-brace-format
 msgid "{PRODUCT_NAME} Login:"
-msgstr ""
+msgstr "{PRODUCT_NAME} 登录名："
 
 #: ../src/up2date_client/rhnreg_constants.py:90
 #: ../src/up2date_client/tui.py:139
@@ -544,6 +547,13 @@ msgid ""
 "technologies please consult this Knowledge Base Article: https://access."
 "redhat.com/kb/docs/DOC-45563"
 msgstr ""
+"已使用 Red Hat 订阅管理注册此系统。\n"
+"\n"
+"正在使用 Red Hat Satellite 或 Red Hat Satellite Proxy 技术注册您的系统。Red Hat 建议客户仅注册一次。"
+"\n"
+"\n"
+"要详细了解 RHN Classic/Red Hat Satellite 注册和技术，请查阅此知识库文章：https://access.redhat."
+"com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:145
@@ -569,7 +579,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:153
 #, python-brace-format
 msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
+msgstr "正在将配置文件发送到 {PRODUCT_NAME}"
 
 #. Finish Window
 #: ../src/up2date_client/rhnreg_constants.py:156
@@ -617,7 +627,7 @@ msgstr "软件频道订阅："
 
 #: ../src/up2date_client/rhnreg_constants.py:175
 msgid "This system will receive updates from the following software channels:"
-msgstr ""
+msgstr "此系统将从以下软件频道接收更新："
 
 #: ../src/up2date_client/rhnreg_constants.py:177
 #, python-brace-format
@@ -672,10 +682,13 @@ msgid ""
 "subscribe this system to software channels via the software > software "
 "channels tab."
 msgstr ""
+"此系统无法订阅任何软件频道。您的系统将不会接收任何软件更新来保持其安全和受支持状态。请将此问题告知您的 {PRODUCT_NAME} "
+"管理员。在帐户中提供相应的活动订阅后，您可以在 {PRODUCT_NAME} Web 界面中浏览到此系统的配置文件，然后通过 \"软件\" > \""
+"软件频道\" 选项卡在此系统中订阅软件频道。"
 
 #: ../src/up2date_client/rhnreg_constants.py:199
 msgid "Service Level:"
-msgstr ""
+msgstr "服务级别："
 
 #: ../src/up2date_client/rhnreg_constants.py:200
 #, python-brace-format
@@ -683,7 +696,7 @@ msgid ""
 "Depending on what {PRODUCT_NAME} system types are associated with a system, "
 "you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
 "types associated with this system:"
-msgstr ""
+msgstr "根据与系统关联的 {PRODUCT_NAME} 系统类型，您将享受不同的权益。下面是与此系统关联的 {PRODUCT_NAME} 系统类型："
 
 #: ../src/up2date_client/rhnreg_constants.py:204
 #, python-brace-format
@@ -730,6 +743,9 @@ msgid ""
 "account, you may browse to this system's profile in the {PRODUCT_NAME} web "
 "interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
 msgstr ""
+"此系统无法与任何 {PRODUCT_NAME} 系统类型相关联。此系统将不会接收任何软件更新来保持其安全和受支持状态。请将此问题告知您的 "
+"{PRODUCT_NAME} 管理员。在帐户中提供相应的活动订阅后，您可以在 {PRODUCT_NAME} Web "
+"界面中浏览到此系统的配置文件，删除该配置文件，然后将此系统重新连接到 {PRODUCT_NAME}。"
 
 #: ../src/up2date_client/rhnreg_constants.py:231
 #, python-format, python-brace-format
@@ -743,6 +759,11 @@ msgid ""
 "the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
 "Universal Default activation key: %s"
 msgstr ""
+"检测到通用默认激活密钥\n"
+"在您的帐户中检测到了通用默认激活密钥。这意味着，用于将系统连接到 {PRODUCT_NAME} 服务器或 {PRODUCT_NAME} 代理的一组属性（软"
+"件频道订阅、软件包安装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥的更多细节，另请参见《{PRODUCT_NAME} 参考指南》。"
+"\n"
+"通用默认激活密钥：%s"
 
 #. Error Messages.
 #: ../src/up2date_client/rhnreg_constants.py:243
@@ -826,6 +847,9 @@ msgid ""
 "can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
 "rhn, and ensure sslCACert points to it."
 msgstr ""
+"请校验 /etc/sysconfig/rhn/up2date 中 sslCACert 和 serverURL 的值。可以让 serverURL 使用 "
+"http 而不是 https，或者，可以从 {PRODUCT_NAME} 下载 SSL 证书，将其放在 /usr/share/rhn 中，并确保 "
+"sslCACert 指向该证书。"
 
 #: ../src/up2date_client/rhnreg_constants.py:278
 #, python-brace-format
@@ -1008,7 +1032,7 @@ msgstr "创建配置文件时出错。"
 
 #: ../src/up2date_client/rhnregGui.py:700
 msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
+msgstr "正在注册系统并发送配置文件信息。请稍候。"
 
 #: ../src/up2date_client/rhnregGui.py:719
 msgid "Registering System"
@@ -1073,6 +1097,8 @@ msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
+"无法打开 %s\n"
+"未启用 %s。\n"
 
 #: ../src/up2date_client/rhnregGui.py:910
 msgid "There was an error while installing the certificate."
@@ -1305,6 +1331,9 @@ msgid ""
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
+"\n"
+"不支持 Red Hat Network Classic。\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:199
 msgid "The installation number is invalid"
@@ -1496,7 +1525,7 @@ msgstr "列出频道"
 
 #: ../src/bin/spacewalk-channel.py:106
 msgid "show base channel of a system"
-msgstr ""
+msgstr "显示系统的基础频道"
 
 #: ../src/bin/spacewalk-channel.py:108
 msgid "list all available child channels"
@@ -1524,7 +1553,7 @@ msgstr "错误：必须至少指定一个频道"
 
 #: ../src/bin/spacewalk-channel.py:169
 msgid "ERROR: this action does not require channel"
-msgstr ""
+msgstr "ERROR：此操作不需要频道"
 
 #: ../src/bin/spacewalk-channel.py:176
 #, python-format
@@ -1629,7 +1658,7 @@ msgstr "为何要要连接到 RHN？..."
 #: ../data/rh_register.glade.h:7
 msgid ""
 "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
+msgstr "我想要注册到 Red Hat Satellite 或 Red Hat Satellite Proxy"
 
 #: ../data/rh_register.glade.h:8
 msgid "Location:"
@@ -1734,15 +1763,15 @@ msgstr "• 网络连接"
 
 #: ../data/rh_register.glade.h:33
 msgid "• Your account login"
-msgstr ""
+msgstr "• 您的帐户登录名"
 
 #: ../data/rh_register.glade.h:34
 msgid "Your account login"
-msgstr ""
+msgstr "您的帐户登录名"
 
 #: ../data/rh_register.glade.h:35
 msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
+msgstr "• Red Hat Satellite 或 Red Hat Satellite Proxy 的地址"
 
 #: ../data/rh_register.glade.h:36
 msgid "_Why Should I Register?"
@@ -1970,6 +1999,9 @@ msgid ""
 "data communicated between this system and Spacewalk (including your login "
 "and password) is secure."
 msgstr ""
+"在此系统上找不到与 <b>%s</b> 兼容的安全证书。\n"
+"\n"
+"必须提供一个使用 SSL 技术的安全证书才能确保此系统与 Spacewalk 之间传送的数据（包括您的登录名和密码）安全。"
 
 #: ../data/rh_register.glade.h:88
 msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
