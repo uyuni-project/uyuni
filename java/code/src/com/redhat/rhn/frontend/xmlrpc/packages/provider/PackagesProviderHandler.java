@@ -45,7 +45,7 @@ public class PackagesProviderHandler extends BaseHandler {
      * @return List of package providers
      *
      * @xmlrpc.doc List all Package Providers.
-     * User executing the request must be a Satellite administrator.
+     * User executing the request must be a #product() administrator.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *  #array_begin()
@@ -66,7 +66,7 @@ public class PackagesProviderHandler extends BaseHandler {
      * @return set of package keys
      *
      * @xmlrpc.doc List all security keys associated with a package provider.
-     * User executing the request must be a Satellite administrator.
+     * User executing the request must be a #product() administrator.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "providerName", "The provider name")
      * @xmlrpc.returntype
@@ -95,7 +95,7 @@ public class PackagesProviderHandler extends BaseHandler {
      *
      * @xmlrpc.doc Associate a package security key and with the package provider.
      *      If the provider or key doesn't exist, it is created. User executing the
-     *      request must be a Satellite administrator.
+     *      request must be a #product() administrator.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "providerName", "The provider name")
      * @xmlrpc.param #param_desc("string", "key", "The actual key")

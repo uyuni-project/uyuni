@@ -314,7 +314,7 @@ public class OrgHandler extends BaseHandler {
 
     /**
      * Migrate systems from one organization to another.  If executed by
-     * a Satellite administrator, the systems will be migrated from their current
+     * a product administrator, the systems will be migrated from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
      * as that administrator and the systems will be migrated to the organization
@@ -327,7 +327,7 @@ public class OrgHandler extends BaseHandler {
      * @return list of systems migrated.
      * @throws FaultException A FaultException is thrown if:
      *   - The user performing the request is not an organization administrator
-     *   - The user performing the request is not a satellite administrator, but the
+     *   - The user performing the request is not a product administrator, but the
      *     from org id is different than the user's org id.
      *   - The from and to org id provided are the same.
      *   - One or more of the servers provides do not exist
@@ -335,7 +335,7 @@ public class OrgHandler extends BaseHandler {
      *   - The user is not defined in the destination organization's trust
      *
      * @xmlrpc.doc Migrate systems from one organization to another.  If executed by
-     * a Satellite administrator, the systems will be migrated from their current
+     * a #product() administrator, the systems will be migrated from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
      * as that administrator and the systems will be migrated to the organization
@@ -710,16 +710,14 @@ public class OrgHandler extends BaseHandler {
 
     /**
      * Returns whether Organization Administrator is able to manage his organization
-     * configuration. This organization configuration may have a high impact on the whole
-     * Spacewalk/Satellite performance
+     * configuration. This may have a high impact on general performance.
      *
      * @param loggedInUser The current user
      * @param orgId affected organization
      * @return Returns the status org admin management setting
      *
      * @xmlrpc.doc Returns whether Organization Administrator is able to manage his
-     * organization configuration. This organization configuration may have a high impact
-     * on the whole Spacewalk/Satellite performance
+     * organization configuration. This may have a high impact on general #product() performance.
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
@@ -732,7 +730,8 @@ public class OrgHandler extends BaseHandler {
     }
 
     /**
-     * Sets whether Organization Administrator can manage his organization configuration
+     * Sets whether Organization Administrator can manage his organization configuration.
+     * This may have a high impact on general performance.
      *
      * @param loggedInUser The current user
      * @param orgId affected organization id
@@ -741,8 +740,7 @@ public class OrgHandler extends BaseHandler {
      * @return Returns 1 for successful change, exception otherwise
      *
      * @xmlrpc.doc Sets whether Organization Administrator can manage his organization
-     * configuration. This organization configuration may have a high impact
-     * on the whole Spacewalk/Satellite performance
+     * configuration. This may have a high impact on general #product() performance.
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")

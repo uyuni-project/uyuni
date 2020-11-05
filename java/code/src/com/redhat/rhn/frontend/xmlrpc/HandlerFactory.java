@@ -55,7 +55,6 @@ import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandle
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
-import com.redhat.rhn.frontend.xmlrpc.satellite.SatelliteHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
@@ -180,7 +179,6 @@ public class HandlerFactory {
         factory.addHandler("proxy", proxyHandler);
         factory.addHandler("recurringaction", new RecurringActionHandler());
         factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
-        factory.addHandler("satellite", new SatelliteHandler(proxyHandler));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
         factory.addHandler("sync.master", new MasterHandler());
