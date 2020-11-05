@@ -34,10 +34,16 @@ begin
       elsif a.type = 'deb' then
         return deb.debvercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
       else
-        raise notice 'unknown evr type';
+        raise NOTICE 'unknown evr type (using rpm) -> %', a.type;
+        return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
       end if;
   else
-     raise notice 'cant compare incompatible evr types';
+     if a.type = 'deb' then
+       return deb.debvercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+     else
+       return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+     end if;
+     raise NOTICE 'comparing incompatible evr types. Using %', a.type;
   end if;
 end;
 $$ language plpgsql immutable strict;
