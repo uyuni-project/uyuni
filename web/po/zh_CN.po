@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-14 17:04+0200\n"
-"PO-Revision-Date: 2020-11-03 13:50+0000\n"
+"PO-Revision-Date: 2020-11-05 13:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -3325,7 +3325,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
-msgstr ""
+msgstr "州/省"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
@@ -3617,7 +3617,7 @@ msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.js:212
 #: ../html/src/manager/shared/menu/menu.js:215
@@ -4100,7 +4100,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
 msgid "Organization"
-msgstr ""
+msgstr "组织"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
