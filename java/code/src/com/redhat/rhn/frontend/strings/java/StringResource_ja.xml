@@ -10950,14 +10950,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="translated">Redfish</target>
       </trans-unit>
-    <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">ssh minion で動作を実行</target>
+      </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">minion で動作チェーンを実行</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
