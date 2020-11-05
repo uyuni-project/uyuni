@@ -95,6 +95,7 @@
       </trans-unit>
       <trans-unit id="Bare Metal Systems" xml:space="preserve">
         <source>Unprovisioned Systems</source>
+        <target>未置备的系统</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -241,6 +242,7 @@
       </trans-unit>
       <trans-unit id="ssm.nav.status" xml:space="preserve">
         <source>Task Log</source>
+        <target>任务日志</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
@@ -545,6 +547,7 @@
       </trans-unit>
       <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
           <source>View Files</source>
+        <target>查看文件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -804,6 +807,7 @@
       </trans-unit>
       <trans-unit id="Patch List" xml:space="preserve">
         <source>Patch List</source>
+        <target>补丁列表</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1226,9 +1230,11 @@
       </trans-unit>
       <trans-unit id="Deployment" xml:space="preserve">
         <source>Deployment</source>
+        <target>部署</target>
       </trans-unit>
       <trans-unit id="Image List" xml:space="preserve">
         <source>Image List</source>
+        <target>映像列表</target>
       </trans-unit>
     </body>
   </file>
