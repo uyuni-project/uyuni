@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-11-02 12:49+0000\n"
+"PO-Revision-Date: 2020-11-05 13:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "yum-rhn-plugin/zh_CN/>\n"
@@ -67,11 +67,11 @@ msgstr "使用缓存中的 {PRODUCT_NAME} 储存库列表"
 #: ../rhnplugin.py:129
 #, python-brace-format
 msgid "This system is not registered with RHN Classic or {PRODUCT_NAME}."
-msgstr ""
+msgstr "此系统未注册到 RHN Classic 或 {PRODUCT_NAME}。"
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "可以使用 rhn_register 来注册。"
 
 #: ../rhnplugin.py:136
 #, python-brace-format
@@ -87,12 +87,12 @@ msgstr "此系统未订阅任何频道。"
 msgid ""
 "This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
 "could not be acquired."
-msgstr ""
+msgstr "此系统无法注册到 RHN Classic 或 {PRODUCT_NAME}。无法获取 SystemId。"
 
 #: ../rhnplugin.py:158
 #, python-brace-format
 msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
-msgstr ""
+msgstr "此系统正在从 RHN Classic 或 {PRODUCT_NAME} 接收更新。"
 
 #: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
