@@ -125,6 +125,7 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
                   AND    SP.server_id = S.id
                   AND    SP.name_id = P.name_id
                   AND    SP.evr_id != P.evr_id
+                  AND    (SP_EVR.evr).type = (P_EVR.evr).type
                   AND    SP_EVR.evr &lt;  P_EVR.evr
                   AND    SP_EVR.evr = (SELECT MAX(PE.evr) FROM
                                   rhnServerPackage SP2, rhnPackageEvr PE WHERE PE.id = SP2.evr_id
@@ -162,6 +163,7 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
                   AND    SP.server_id = S.id
                   AND    SP.name_id = P.name_id
                   AND    SP.evr_id != P.evr_id
+                  AND    (SP_EVR.evr).type =  (P_EVR.evr).type
                   AND    SP_EVR.evr &lt;  P_EVR.evr
                   AND    SP_EVR.evr = (SELECT MAX(PE.evr) FROM
                                   rhnServerPackage SP2, rhnPackageEvr PE WHERE PE.id = SP2.evr_id

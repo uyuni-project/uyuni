@@ -70,6 +70,7 @@
             WHERE rhnServerPackage.server_id = sp.server_id
               AND rhnServerPackage.name_id = sp.name_id
               AND sp.evr_id = sevr.id
+              AND (rhnPackageEVR.evr).type = (sevr.evr).type
               AND rhnPackageEVR.evr &lt;= sevr.evr
               AND rhnServerPackage.package_arch_id = puac.package_arch_id
               AND puac.package_upgrade_arch_id = sp.package_arch_id
@@ -175,6 +176,7 @@
             WHERE suseImageInfoPackage.image_info_id = iip.image_info_id
               AND suseImageInfoPackage.name_id = iip.name_id
               AND iip.evr_id = sevr.id
+              AND (rhnPackageEVR.evr).type = (sevr.evr).type
               AND rhnPackageEVR.evr &lt;= sevr.evr
               AND suseImageInfoPackage.package_arch_id = puac.package_arch_id
               AND puac.package_upgrade_arch_id = iip.package_arch_id
