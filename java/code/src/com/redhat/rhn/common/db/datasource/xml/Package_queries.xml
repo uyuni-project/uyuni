@@ -1374,7 +1374,7 @@ WHERE EP.errata_id = :eid
   AND PE2.id = CNP.evr_id
   AND PA2.id = CNP.package_arch_id
   AND PN.id = P1.name_id
-  AND rpm.vercmp(PE1.epoch, PE1.version, PE1.release, PE2.epoch, PE2.version, PE2.release) > 0
+  AND PE1.evr &gt; PE2.evr
   </query>
 </mode>
 
@@ -1418,7 +1418,7 @@ WHERE EP.errata_id = :eid
       AND PE1.id = P1.evr_id
       AND PE2.id = CNP.evr_id
       AND PN.id = P1.name_id
-      AND rpm.vercmp(PE1.epoch, PE1.version, PE1.release, PE2.epoch, PE2.version, PE2.release) != 0)
+      AND PE1.evr != PE2.evr
   </query>
 </mode>
 
@@ -2083,8 +2083,7 @@ select  pn.name as package_name,
         end as right_nvrea,
         case when ch1.evr_id is null then -2
              when ch2.evr_id is null then 2
-             else rpm.vercmp(ch1.epoch, ch1.version, ch1.release,
-                             ch2.epoch, ch2.version, ch2.release)
+             else evr_t_compare(ch1.evr, ch2.evr)
         end as comparison
   from (select np1.name_id, np1.package_arch_id, np1.evr_id, np1.package_id,
                 pe1.evr, pe1.epoch, pe1.version, pe1.release
@@ -2205,8 +2204,7 @@ select  pn.name as package_name,
         (snapshot_pkgs.max_evr).release as snapshot_release,
         case when server_pkgs.max_evr is null then -2
              when snapshot_pkgs.max_evr is null then 2
-             else rpm.vercmp((server_pkgs.max_evr).epoch, (server_pkgs.max_evr).version, (server_pkgs.max_evr).release,
-                             (snapshot_pkgs.max_evr).epoch, (snapshot_pkgs.max_evr).version, (snapshot_pkgs.max_evr).release)
+             else evr_t_compare(server_pkgs.max_evr, snapshot_pkgs.max_evr)
         end as comparison
   from (select max(pem1.evr) as max_evr, sp.name_id, sp.package_arch_id
           from rhnServerPackage sp
@@ -2235,12 +2233,10 @@ select  pn.name as package_name,
     on pa.id = coalesce(server_pkgs.package_arch_id, snapshot_pkgs.package_arch_id)
  where server_pkgs.max_evr is null
     or snapshot_pkgs.max_evr is null
-    or (rpm.vercmp((coalesce(server_pkgs.max_evr, evr_t('0','0','0'))).epoch,
-                   (coalesce(server_pkgs.max_evr, evr_t('0','0','0'))).version,
-                   (coalesce(server_pkgs.max_evr, evr_t('0','0','0'))).release,
-                   (coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0'))).epoch,
-                   (coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0'))).version,
-                   (coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0'))).release) &lt;&gt; 0)
+    or (evr_t_compare(
+          coalesce(server_pkgs.max_evr, evr_t('0','0','0', coalesce('rpm', (snapshot_pkgs.max_evr).type))),
+          coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0', coalesce('rpm', (server_pkgs.max_evr).type)))
+      ) &lt;&gt; 0)
  order by pn.name
   </query>
 </mode>
