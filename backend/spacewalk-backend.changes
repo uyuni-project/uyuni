@@ -1,3 +1,4 @@
+- Added logging for dpkg repository detection
 - add 'allow_vendor_change' option to rhn clients for dist upgrades
 - Re-enables possibility to use local repos with repo-sync (bsc#1175607)
 - prevent IntegrityError during mgr-inter-sync execution (bsc#1177235)
