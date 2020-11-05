@@ -121,7 +121,7 @@ class DpkgRepo:
                     except FileNotFoundError as ex:
                         logging.execption(
                             "File not found: {}".format(
-                                packages_url.replace("file://", ""), exc_info=True)
+                                packages_url.replace("file://", "")), exc_info=True)
                         raise ex
                 else:
                     resp = requests.get(packages_url, proxies=self.proxies)
