@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @<client>
-Feature: Adding a Maintenance Update custom channel and repository for <client>
+Feature: Adding a Maintenance Update custom channel and the custom repositories for <client>
 
   Scenario: Add a child channel for <client>
     Given I am authorized as "admin" with password "admin"
@@ -15,21 +15,21 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for <client> created" text
 
-  Scenario: Add the Maintenance update repository for <client>
+  Scenario: Add the Maintenance update repositories for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
-    And I create the MU repository for <type> "<client>" if necessary
+    And I create the MU repositories for "<client>"
 
-  Scenario: Add the repository to the custom channel for <client>
+  Scenario: Add the custom repositories to the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
     And I follow "Repositories" in the content area
-    And I select the MU repository name for <type> "<client>" from the list
+    And I select the MU repositories for "<client>" from the list
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the custom channel for <client>
+  Scenario: Synchronize the repositories in the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
