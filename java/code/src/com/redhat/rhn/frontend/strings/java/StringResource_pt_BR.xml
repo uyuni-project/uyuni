@@ -10721,187 +10721,195 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.pool_start" xml:space="preserve">
         <source>Virtual storage pool start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.pool_stop" xml:space="preserve">
         <source>Virtual storage pool stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.pool_delete" xml:space="preserve">
         <source>Virtual storage pool delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.pool_create" xml:space="preserve">
         <source>Virtual storage pool creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.pool_update" xml:space="preserve">
         <source>Virtual storage pool update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.volume_delete" xml:space="preserve">
         <source>Virtual storage volume deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.network_start" xml:space="preserve">
         <source>Virtual network start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.network_stop" xml:space="preserve">
         <source>Virtual network stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="virt.network_delete" xml:space="preserve">
         <source>Virtual network deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="cluster_admin" xml:space="preserve">
         <source>Cluster Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="clusters.nav.title" xml:space="preserve">
         <source>Clusters</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="clusters.nav.overview" xml:space="preserve">
         <source>Overview</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="clusters.nav.add" xml:space="preserve">
         <source>Add</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
         <source>Module '{0}' not found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="contentmanagement.validation.moduleconflict" xml:space="preserve">
         <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror.formodule" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodulefilters" xml:space="preserve">
         <source>No module filters attached. Module metadata will be cloned to target.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodularsources" xml:space="preserve">
         <source>No modular source attached. Module filters will be ignored.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
         <source>Calendar name required</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.schedule.name.empty" xml:space="preserve">
         <source>Schedule name required</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.calendar.data.empty" xml:space="preserve">
         <source>Calendar data required</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.calendar.exists" xml:space="preserve">
         <source>Calendar '{0}' already exists</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.calendar.fetch.error" xml:space="preserve">
         <source>Error fetching calendar data from '{0}'</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.calendar.not.exists" xml:space="preserve">
         <source>Calendar '{0}' does not exist</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve">
         <source>Schedule with id '{0}' does not exist</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve">
         <source>Calendar with id '{0}' does not exist</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.systemnotfound" xml:space="preserve">
         <source>Some of the specified servers cannot be found</source>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
-    </body>
+    <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+        <source>Execute actions on ssh minions</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
+        <source>Execute action chains on minions</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>
