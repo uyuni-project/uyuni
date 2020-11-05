@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2020-11-05 16:18+0100\n"
 "PO-Revision-Date: 2020-10-23 16:49+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -279,7 +279,7 @@ msgid "Attempting to contact the Spacewalk server."
 msgstr "Tentando contactar o servidor Spacewalk."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
 msgstr "Estamos tentando contatar o servidor do {PRODUCT_NAME} em %s."
 
@@ -403,8 +403,8 @@ msgid ""
 "miss out on the benefits of a SLES/RHEL subscription:\n"
 msgstr ""
 "Tem certeza que você não quer conectar seu sistema ao {PRODUCT_NAME}? Você "
-"deixará de obter os benefícios de uma assinatura do Red Hat Enterprise Linux:"
-"\n"
+"deixará de obter os benefícios de uma assinatura do Red Hat Enterprise "
+"Linux:\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
 #, python-brace-format
@@ -430,7 +430,7 @@ msgid "{PRODUCT_NAME} Account"
 msgstr "Conta {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
@@ -636,7 +636,7 @@ msgid "Updates Configured"
 msgstr "Atualizações configuradas"
 
 #: ../src/up2date_client/rhnreg_constants.py:157
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "You may now run '%s update' from this system's command line to get the "
 "latest software updates from {PRODUCT_NAME}. You will need to run this "
@@ -665,7 +665,7 @@ msgid "Please review the subscription details below:"
 msgstr "Por favor revise os detalhes da subscrição listados abaixo:"
 
 #: ../src/up2date_client/rhnreg_constants.py:170
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "The installation number %s was activated during this system's initial "
 "connection to {PRODUCT_NAME}."
@@ -830,7 +830,7 @@ msgstr ""
 "excluir o perfil, e reconectar este sistema ao {PRODUCT_NAME}."
 
 #: ../src/up2date_client/rhnreg_constants.py:231
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Universal default activation key detected\n"
 "A universal default activation key was detected in your account. This means "
@@ -847,8 +847,8 @@ msgstr ""
 "software, instalações de pacotes, participações em grupos de sistemas, etc) "
 "para a conexão de seu sistema para o {PRODUCT_NAME} ou {PRODUCT_NAME} Proxy "
 "tem sido determinada pela chave de ativação, em vez de seu número de "
-"instalação. Você também pode consultar o Guia de Referência do {PRODUCT_NAME}"
-" para mais detalhes sobre as chaves de ativação.\n"
+"instalação. Você também pode consultar o Guia de Referência do "
+"{PRODUCT_NAME} para mais detalhes sobre as chaves de ativação.\n"
 "Chave de ativação padrão Universal: %s"
 
 #. Error Messages.
@@ -863,7 +863,7 @@ msgid "Warning"
 msgstr "Aviso"
 
 #: ../src/up2date_client/rhnreg_constants.py:245
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "We can't contact {PRODUCT_NAME}.\n"
 "\n"
@@ -900,7 +900,7 @@ msgstr ""
 "novamente com um servidor mais novo."
 
 #: ../src/up2date_client/rhnreg_constants.py:260
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
 "\n"
@@ -963,8 +963,8 @@ msgstr ""
 "que podem conectar à organização do {PRODUCT_NAME} associada com o seu "
 "login. Para permitir que o sistema conecte, por favor contate o seu "
 "administrador da organização do {PRODUCT_NAME} para aumentar o número de "
-"sistemas permitidos a conectar ou para desabilitar esta chave de ativação de "
-"âmbito global padrão."
+"sistemas permitidos a conectar ou para desabilitar esta "
+"chave de ativação de âmbito global padrão."
 
 #: ../src/up2date_client/rhnreg_constants.py:288
 msgid ""
