@@ -33,6 +33,12 @@
 - Fix: handle version comparison corner cases in Ubuntu packages
 
 -------------------------------------------------------------------
+Fri Nov 06 15:22:07 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Use correct eauth module and credentials for Salt SSH calls (bsc#1178319)
+
+-------------------------------------------------------------------
 Mon Sep 21 12:04:31 CEST 2020 - jgonzalez@suse.com
 
 - version 4.2.2-1
