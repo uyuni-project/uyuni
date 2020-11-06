@@ -61,6 +61,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 
+%if %{_vendor} == "debbuild"
+BuildRequires:  gettext
+BuildRequires:  intltool
+%endif
+
 %if 0%{?pylint_check}
 %if 0%{?build_py3}
 BuildRequires:  spacewalk-python3-pylint
