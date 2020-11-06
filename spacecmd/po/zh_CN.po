@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-06 09:42+0000\n"
+"PO-Revision-Date: 2020-11-06 09:47+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -263,7 +263,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:881 ../src/spacecmd/activationkey.py:930
 #, python-format
 msgid "%s is not a valid activation key"
-msgstr ""
+msgstr "%s 不是有效的激活密钥"
 
 #: ../src/spacecmd/activationkey.py:895
 msgid "activationkey_details: Show the details of an activation key"
