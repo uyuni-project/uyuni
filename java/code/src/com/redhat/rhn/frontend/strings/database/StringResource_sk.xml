@@ -645,14 +645,14 @@
       </trans-unit>
       <trans-unit id="Critical Child Process Groups" xml:space="preserve">
         <source>Critical Child Process Groups</source>
-        <target/>
+        <target>Kritické skupiny procesov potomkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Connection Rate" xml:space="preserve">
         <source>Critical Connection Rate</source>
-        <target/>
+        <target>Kritická miera pripojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -666,21 +666,21 @@
       </trans-unit>
       <trans-unit id="Critical Count" xml:space="preserve">
         <source>Critical Count</source>
-        <target/>
+        <target>Kritický počet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Data Dictionary Hit Ratio" xml:space="preserve">
         <source>Critical Data Dictionary Hit Ratio</source>
-        <target/>
+        <target>Kritický pomer záznamov dátového slovníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Defunct Process Count" xml:space="preserve">
         <source>Critical Defunct Process Count</source>
-        <target/>
+        <target>Kritický počet nefungujúcich procesov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1044,14 +1044,14 @@
       </trans-unit>
       <trans-unit id="Critical Transferred Per Child" xml:space="preserve">
         <source>Critical Transferred Per Child</source>
-        <target/>
+        <target>Kritické prenesené na potomka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Transferred Per Slot" xml:space="preserve">
         <source>Critical Transferred Per Slot</source>
-        <target/>
+        <target>Kritické prenesené na slot</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1737,14 +1737,14 @@
       </trans-unit>
       <trans-unit id="Warning Child Process Groups" xml:space="preserve">
         <source>Warning Child Process Groups</source>
-        <target/>
+        <target>Varovné skupiny procesov potomkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Connection Rate" xml:space="preserve">
         <source>Warning Connection Rate</source>
-        <target/>
+        <target>Varovná miera pripojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1758,21 +1758,21 @@
       </trans-unit>
       <trans-unit id="Warning Count" xml:space="preserve">
         <source>Warning Count</source>
-        <target/>
+        <target>Varovný počet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Data Dictionary Hit Ratio" xml:space="preserve">
         <source>Warning Data Dictionary Hit Ratio</source>
-        <target/>
+        <target>Varovný pomer záznamov dátového slovníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Defunct Process Count" xml:space="preserve">
         <source>Warning Defunct Process Count</source>
-        <target/>
+        <target>Varovný počet nefungujúcich procesov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2108,14 +2108,14 @@
       </trans-unit>
       <trans-unit id="Warning Transferred Per Child" xml:space="preserve">
         <source>Warning Transferred Per Child</source>
-        <target/>
+        <target>Varovné prenesené na potomka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Transferred Per Slot" xml:space="preserve">
         <source>Warning Transferred Per Slot</source>
-        <target/>
+        <target>Varovné prenesené na slot</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2270,14 +2270,14 @@
       </trans-unit>
       <trans-unit id="metrics.Child process groups" xml:space="preserve">
         <source>Child process groups</source>
-        <target/>
+        <target>Skupiny procesov potomkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Conn rate" xml:space="preserve">
         <source>Conn rate</source>
-        <target/>
+        <target>Miera pripojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2319,7 +2319,7 @@
       </trans-unit>
       <trans-unit id="metrics.Defunct processes" xml:space="preserve">
         <source>Defunct processes</source>
-        <target/>
+        <target>Nefungujúce procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2466,14 +2466,14 @@
       </trans-unit>
       <trans-unit id="metrics.Max transferred per child" xml:space="preserve">
         <source>Max transferred per child</source>
-        <target/>
+        <target>Maximálne prenesené na potomka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per slot" xml:space="preserve">
         <source>Max transferred per slot</source>
-        <target/>
+        <target>Maximálne prenesené na slot</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3019,7 +3019,7 @@
       </trans-unit>
       <trans-unit id="Data Dictionary Cache" xml:space="preserve">
           <source>Data Dictionary Cache</source>
-        <target/>
+        <target>Vyrovnávacia pamäť dátového slovníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3579,28 +3579,28 @@
       </trans-unit>
       <trans-unit id="error.unsupported_db_min" xml:space="preserve">
           <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
-        <target/>
+        <target>Spustenie postgresql {0} nie je podporované. Minimálna požadovaná verzia je {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_max" xml:space="preserve">
           <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
-        <target/>
+        <target>Spustenie postgresql {0} nie je podporované. Maximálna povolená verzia je {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_migrate" xml:space="preserve">
           <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-        <target/>
+        <target>Spustenie postgresql {0} na {1} nie je podporované. Prosím, migrujte na postgresql {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unfinished_schema_upgrade" xml:space="preserve">
           <source>Database schema upgrade in progress!</source>
-        <target/>
+        <target>Prebieha zvýšenie verzie databázovej schémy!</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
