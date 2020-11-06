@@ -299,7 +299,7 @@ msgstr ""
 "\n"
 " * 网络连接\n"
 " * 您的 {PRODUCT_NAME} 登录名和口令\n"
-" * {PRODUCT_NAME} Server 或 Proxy 的位置\n"
+" * {PRODUCT_NAME} 服务器或代理的位置\n"
 "\n"
 
 #. Why Register Window
