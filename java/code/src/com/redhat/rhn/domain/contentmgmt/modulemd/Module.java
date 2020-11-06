@@ -37,6 +37,14 @@ public class Module {
         this.stream = streamIn;
     }
 
+    /**
+     * Initialize a new Module instance
+     * @param moduleInfo the module information retrieved from the ModulemdApi
+     */
+    public Module(ModuleInfo moduleInfo) {
+        this(moduleInfo.getName(), moduleInfo.getStream());
+    }
+
     public String getName() {
         return name;
     }

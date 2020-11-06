@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
 import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_ERROR;
+import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
 
 public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
 
@@ -49,7 +50,8 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
     public void testMatchingFilter() throws Exception {
         attachModularSource();
         attachModularFilter();
-        assertTrue(validator.validate(project).isEmpty());
+        // There should be no ERR/WARN messages
+        assertTrue(validator.validate(project).stream().allMatch(m -> TYPE_INFO.equals(m.getType())));
     }
 
     public void testNonMatchingFilter() throws Exception {
