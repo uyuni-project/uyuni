@@ -1202,8 +1202,8 @@ msgid ""
 "content on disk via Channel Dump ISOs."
 msgstr ""
 "错误：不再支持使用 RHN Classic Hosted 进行在线内容同步。\n"
-"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道"
-"转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
+"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道转储 ISO 从磁盘上的本地内容同步，否则请改用 "
+"cdn-sync 命令。"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
