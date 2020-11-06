@@ -112,6 +112,7 @@ class URL(object):
     def getURL(self, stripPw=False):
         """Return the full url as a string"""
         netloc = ""
+        path = self.path
         if self.username:
             netloc = self.username
         if self.password and not stripPw:
@@ -126,7 +127,13 @@ class URL(object):
         if self.port:
             netloc = '%s:%s' % (netloc, self.port)
 
-        return urlparse.urlunsplit((self.scheme, netloc, self.path,
+        # Default ULN channels URIs are like: uln:///ol7_x86_64_u8_base
+        # If not netloc, we fix the path to avoid getting url:/ol7_x86_64_u8_base
+        # as results from urlunsplit
+        if self.scheme == 'uln' and not netloc:
+            path = "//" + self.path
+
+        return urlparse.urlunsplit((self.scheme, netloc, path,
                                     self.query, self.fragment))
 
 
