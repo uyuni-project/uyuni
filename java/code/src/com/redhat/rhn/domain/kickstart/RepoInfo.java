@@ -121,7 +121,7 @@ public class RepoInfo {
         String repourl = helper.getRepoUrl(this);
         if (name.equals("AppStream")) {
             /* RHEL 8 AppStream */
-            repourl = helper.getKickstartMediaUrl().replace("baseos", "appstream");
+            repourl = String.format("%s%s%s", repourl, repourl.endsWith("/") ? "" : "/", name);
         }
         return String.format("repo --name=%s --baseurl=%s", name,
                                     repourl);
