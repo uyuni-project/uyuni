@@ -358,7 +358,30 @@ msgstr "订阅权限不足，无法获取发行版 (%s, %s"
 msgid "System Registered but Inactive"
 msgstr "系统已注册但处于非活动状态"
 
-#: ../server/rhnChannel.py:2272
+#: ../server/rhnChannel.py:2277
+#, python-format
+msgid ""
+"\n"
+"Invalid Architecture and OS release combination (%s, %s).\n"
+"Your system has been registered, but will not receive updates\n"
+"because it is not subscribed to a channel. If you have not yet\n"
+"activated your product for service, please visit our website at:\n"
+"\n"
+"     http://www.redhat.com/apps/activate/\n"
+"\n"
+"...to activate your product."
+msgstr ""
+"\n"
+"体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
+"您的系统已注册，但不会接收更新，\n"
+"因为它未订阅频道。如果您尚未激活\n"
+"服务产品，请访问我们的网站：\n"
+"\n"
+"     http://www.redhat.com/apps/activate/\n"
+"\n"
+"...以激活您的产品。"
+
+#: ../server/rhnChannel.py:2288
 #, python-format
 msgid ""
 "\n"
