@@ -125,7 +125,6 @@ import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -551,8 +550,12 @@ public class SaltServerActionService {
      */
     private void startActionChainExecution(ActionChain actionChain, Set<MinionSummary> targetMinions) {
         // prepare the start action chain call
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("action_chain_id", actionChain.getId());
+
         Map<Boolean, ? extends Collection<MinionSummary>> results =
-                callAsyncActionChainStart(MgrActionChains.start(actionChain.getId()), targetMinions);
+                callAsyncActionChainStart(State.apply(Arrays.asList("actionchains.start"),
+                        Optional.of(pillar)), targetMinions);
 
         results.get(false).forEach(minionSummary -> {
             LOG.warn("Failed to schedule action chain for minion: " +
@@ -2458,7 +2461,7 @@ public class SaltServerActionService {
         Long retActionChainId = null;
         boolean actionChainFailed = false;
         List<Long> failedActionIds = new ArrayList<>();
-        for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
+        for (var entry : actionChainResult.entrySet()) {
             String key = entry.getKey();
             StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
 
@@ -2478,17 +2481,30 @@ public class SaltServerActionService {
                     // don't stop handling the result entries if there's a failed action
                     // the result entries are not returned in order
                 }
-                handleAction(actionId,
-                        minionId,
-                        actionStateApply.isResult() ? 0 : -1,
-                        actionStateApply.isResult(),
-                        jobId,
-                        actionStateApply.getChanges().getRet(),
-                        actionStateApply.getName());
+                try {
+                    handleAction(actionId,
+                            minionId,
+                            actionStateApply.isResult() ? 0 : -1,
+                            actionStateApply.isResult(),
+                            jobId,
+                            actionStateApply.getChanges().getRet(),
+                            actionStateApply.getName());
+                }
+                catch (Exception e) {
+                    LOG.error("Error handling result of action " + actionId + " for minion " + minionId, e);
+                    actionChainFailed = true;
+                    failedActionIds.add(actionId);
+                }
             }
             else if (!key.contains("schedule_next_chunk")) {
                 LOG.warn("Could not find action id in action chain state key: " + key);
             }
+        }
+        if (actionChainResult.isEmpty()) {
+            // if there are no entries we have no way of knowing which actions belonged to this action chain
+            // and set them to failed because the action chain is already gone from the db at this point
+            LOG.error("No action results found in response for minion " + minionId +
+                    ". Some actions will remain in pending.");
         }
 
         if (retActionChainId != null) {
