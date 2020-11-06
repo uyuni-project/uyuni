@@ -199,13 +199,19 @@ public class FilterApiController {
                 FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
                 updateFilterRequest.getCriteriaKey(),
                 updateFilterRequest.getCriteriaValue());
-        CONTENT_MGR.updateFilter(
-                Long.parseLong(req.params("filterId")),
-                Optional.ofNullable(updateFilterRequest.getName()),
-                Optional.ofNullable(updateFilterRequest.getRule()).map(ContentFilter.Rule::lookupByLabel),
-                Optional.of(filterCriteria),
-                user
-        );
+        try {
+            CONTENT_MGR.updateFilter(
+                    Long.parseLong(req.params("filterId")),
+                    Optional.ofNullable(updateFilterRequest.getName()),
+                    Optional.ofNullable(updateFilterRequest.getRule()).map(ContentFilter.Rule::lookupByLabel),
+                    Optional.of(filterCriteria),
+                    user
+            );
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
+        }
 
         if (!StringUtils.isEmpty(updateFilterRequest.getProjectLabel())) {
             FlashScopeHelper.flash(
