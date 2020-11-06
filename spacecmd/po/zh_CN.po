@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-03 13:50+0000\n"
+"PO-Revision-Date: 2020-11-06 09:42+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -215,7 +215,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:751
 #, python-format
 msgid "%s Entitlement [y/N]:"
-msgstr ""
+msgstr "%s 权利 [y/N]："
 
 #: ../src/spacecmd/activationkey.py:755
 msgid "Universal Default [y/N]:"
@@ -306,12 +306,12 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:952 ../src/spacecmd/kickstart.py:425
 #: ../src/spacecmd/system.py:3048
 msgid "Software Channels"
-msgstr ""
+msgstr "软件频道"
 
 #: ../src/spacecmd/activationkey.py:960 ../src/spacecmd/configchannel.py:765
 #: ../src/spacecmd/configchannel.py:870 ../src/spacecmd/system.py:3057
 msgid "Configuration Channels"
-msgstr ""
+msgstr "配置频道"
 
 #: ../src/spacecmd/activationkey.py:966 ../src/spacecmd/system.py:3062
 msgid "Entitlements"
@@ -327,7 +327,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1576
 #: ../src/spacecmd/softwarechannel.py:1822
 msgid "Packages"
-msgstr ""
+msgstr "软件包"
 
 #: ../src/spacecmd/activationkey.py:991
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
@@ -870,18 +870,18 @@ msgstr ""
 #: ../src/spacecmd/repo.py:349 ../src/spacecmd/repo.py:461
 #: ../src/spacecmd/softwarechannel.py:800
 msgid "Name:"
-msgstr ""
+msgstr "名称："
 
 #: ../src/spacecmd/configchannel.py:439
 msgid "Label:"
-msgstr ""
+msgstr "标签："
 
 #: ../src/spacecmd/configchannel.py:440 ../src/spacecmd/cryptokey.py:66
 #: ../src/spacecmd/custominfo.py:59 ../src/spacecmd/custominfo.py:203
 #: ../src/spacecmd/group.py:182 ../src/spacecmd/softwarechannel.py:812
 #: ../src/spacecmd/system.py:3519
 msgid "Description:"
-msgstr ""
+msgstr "说明："
 
 #: ../src/spacecmd/configchannel.py:441
 msgid "Type [normal, state]:"
@@ -1752,7 +1752,7 @@ msgstr ""
 #: ../src/spacecmd/errata.py:405 ../src/spacecmd/package.py:107
 #: ../src/spacecmd/softwarechannel.py:591
 msgid "Description"
-msgstr ""
+msgstr "说明"
 
 #: ../src/spacecmd/errata.py:411
 msgid "Notes"
@@ -1907,7 +1907,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:1475 ../src/spacecmd/system.py:1783
 #: ../src/spacecmd/system.py:4230
 msgid "Systems"
-msgstr ""
+msgstr "系统"
 
 #: ../src/spacecmd/group.py:149
 msgid "Remove these systems [y/N]:"
@@ -2269,7 +2269,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:449
 msgid "Partitioning"
-msgstr ""
+msgstr "分区"
 
 #: ../src/spacecmd/kickstart.py:454
 msgid "Software"
@@ -3412,7 +3412,7 @@ msgstr ""
 
 #: ../src/spacecmd/org.py:284
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: ../src/spacecmd/org.py:286
 msgid "Remove this trust [y/N]:"
@@ -4000,7 +4000,7 @@ msgstr ""
 
 #: ../src/spacecmd/report.py:282
 msgid "System"
-msgstr ""
+msgstr "系统"
 
 #: ../src/spacecmd/report.py:296
 msgid "report_duplicates: List duplicate system profiles"
@@ -4710,7 +4710,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:585
 msgid "Summary"
-msgstr ""
+msgstr "摘要"
 
 #: ../src/spacecmd/softwarechannel.py:596
 #, python-format
@@ -4779,7 +4779,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:732
 msgid "Channels"
-msgstr ""
+msgstr "频道"
 
 #: ../src/spacecmd/softwarechannel.py:760
 msgid "softwarechannel_update: Update a software channel"
@@ -4916,7 +4916,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:936
 msgid "Architecture"
-msgstr ""
+msgstr "体系结构"
 
 #: ../src/spacecmd/softwarechannel.py:943
 msgid "Checksum type"
@@ -5628,7 +5628,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2759
 msgid "Channel Name"
-msgstr ""
+msgstr "频道名称"
 
 #: ../src/spacecmd/softwarechannel.py:2759
 msgid "Update Schedule"
@@ -5970,7 +5970,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:612
 msgid "Network"
-msgstr ""
+msgstr "网络"
 
 #: ../src/spacecmd/system.py:621
 #, python-format
@@ -6095,7 +6095,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:666
 msgid "Devices"
-msgstr ""
+msgstr "设备"
 
 #: ../src/spacecmd/system.py:676
 msgid "Description: None"
