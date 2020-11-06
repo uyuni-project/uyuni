@@ -1573,7 +1573,7 @@
       </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
         <source>Passwords cannot be more than {0} characters.</source>
-        <target>密码不能超过 {0} 个字符。</target>
+        <target>口令不能超过 {0} 个字符。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -6361,7 +6361,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="taskscheduler.down" xml:space="preserve">
         <source>There was an error while scheduling a task. Please make sure that the task scheduler is running.</source>
-        <target>安排任务时出错。请确保任务日程安排器正在运行。</target>
+        <target>安排任务时出错。请确保任务日程安排程序正在运行。</target>
       </trans-unit>
       <trans-unit id="kickstart.software.success" xml:space="preserve">
         <source>Kickstart Operating System selection successfully updated.</source>
@@ -8867,7 +8867,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied" xml:space="preserve">
         <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target state="translated">不允许 @@PRODUCT_NAME@@ 和组织管理员更改管理员访问权限。默认已经为这些用户授予了访问权限，因此，应从输入中删除以下用户：{0}</target>
+        <target state="translated">不允许 @@PRODUCT_NAME@@ 和组织管理员更改管理员访问权限。默认已经为这些用户授予了访问权限，因此，应从输入中去除以下用户：{0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel" xml:space="preserve">
         <source>Invalid profile label specified: {0}</source>
@@ -9190,7 +9190,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="serverArchName" xml:space="preserve">
         <source>Server Architecture</source>
-        <target>服务器架构</target>
+        <target>服务器体系结构</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
@@ -10061,7 +10061,7 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}.</source>
-        <target>已将密码重设置信息发送到 {0}。</target>
+        <target>已将口令重设置信息发送到 {0}。</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -10248,7 +10248,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="sdc.channels.edit.deploy.warning" xml:space="preserve">
         <source>Changes to channel assignments will take effect at next highstate application</source>
-        <target>下一次对应用程序运行 highstate 时，对频道分配所做的更改将会生效</target>
+        <target>下一次对应用程序运行 highstate 时，对频道指派所做的更改将会生效</target>
       </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.provis_tip" xml:space="preserve">
         <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
@@ -10531,21 +10531,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target>由于您添加了 "监视系统" 类型，因此我们已自动将普罗米修斯导出器公式分配到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用普罗米修斯度量导出器。</target>
+        <target>由于您添加了 "监视系统" 类型，因此我们已自动将普罗米修斯导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用普罗米修斯度量导出器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target>由于您添加了 "监视系统" 类型，因此我们已自动将普罗米修斯导出器公式分配到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用普罗米修斯度量导出器。</target>
+        <target>由于您添加了 "监视系统" 类型，因此我们已自动将普罗米修斯导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用普罗米修斯度量导出器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
-        <target>分配普罗米修斯导出器公式时出现问题。</target>
+        <target>指派普罗米修斯导出器公式时出现问题。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10576,11 +10576,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="system.event.pending.canceled.taskscheduler.down" xml:space="preserve">
         <source>Could not cancel event(s). Please make sure that the task scheduler is running.</source>
-        <target>无法取消事件。请确保任务日程安排器正在运行。</target>
+        <target>无法取消事件。请确保任务日程安排程序正在运行。</target>
       </trans-unit>
       <trans-unit id="message.actionCancelServerFailure.taskscheduler.down" xml:space="preserve">
         <source>Could not cancel action. Please make sure that the task scheduler is running.</source>
-        <target>无法取消操作。请确保任务日程安排器正在运行。</target>
+        <target>无法取消操作。请确保任务日程安排程序正在运行。</target>
       </trans-unit>
       <trans-unit id="message.actionsCancelledWithErrors" xml:space="preserve">
         <source>{0} action(s) could not be canceled or canceled only partially. {1} action(s) canceled completely.</source>
@@ -10618,7 +10618,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="state.channels.not.supported.for.traditional" xml:space="preserve">
         <source>A state channel cannot be assigned to traditional system.</source>
-        <target>无法将状态频道分配到传统系统。</target>
+        <target>无法将状态频道指派到传统系统。</target>
       </trans-unit>
       <trans-unit id="directories.symlink.not.supported.for.minions" xml:space="preserve">
         <source>Directories/Symlinks are not supported in state channel.</source>
@@ -10957,14 +10957,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="translated">Redfish</target>
       </trans-unit>
-    <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">在 SSH 附属设备上执行操作</target>
+      </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">在附属设备上执行操作链</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
