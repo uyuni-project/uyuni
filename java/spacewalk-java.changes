@@ -1,3 +1,4 @@
+- calculate size to truncate a history message based on the htmlified version (bsc#1178503)
 - Make image pillar visible only in buildhost organization
 - Maintain list of synced images in pillar
 - Enable validation of Content Lifecycle Management entities in the XMLRPC API (bsc#1177706)
