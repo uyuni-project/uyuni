@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-05 13:50+0000\n"
+"PO-Revision-Date: 2020-11-06 09:42+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -22,56 +22,56 @@ msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "剩余"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
-msgstr ""
+msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
 
 #: ../html/src/components/action-schedule.js:54
 msgid "new action chain"
-msgstr ""
+msgstr "新操作链"
 
 #: ../html/src/components/action-schedule.js:197
 msgid ""
 "There are multiple maintenance schedules for selected systems. Make sure "
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
-msgstr ""
+msgstr "选定的系统有多个维护日程安排。如果您想要按日期或维护时段安排日程，请确保集内的系统最多使用 1 个维护日程安排。"
 
 #: ../html/src/components/action-schedule.js:204
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "没有即将到来的维护时段"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Earliest:"
-msgstr ""
+msgstr "最早："
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "维护时段："
 
 #: ../html/src/components/action-schedule.js:274
 msgid "Add to:"
-msgstr ""
+msgstr "添加到："
 
 #: ../html/src/components/action-schedule.js:290
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "正在装载日程安排程序..."
 
 #: ../html/src/components/config-channels.js:26
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "状态配置频道"
 
 #: ../html/src/components/config-channels.js:29
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "常规配置频道"
 
 #: ../html/src/components/config-channels.js:54
 msgid "Configuration Channel: {0}"
-msgstr ""
+msgstr "配置频道：{0}"
 
 #: ../html/src/components/config-channels.js:58
 #: ../html/src/manager/images/image-profiles.js:161
@@ -86,32 +86,32 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:155
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
 #: ../html/src/components/config-channels.js:59
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "编辑配置频道"
 
 #: ../html/src/components/config-channels.js:111
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "有更改未保存。您要继续吗？"
 
 #: ../html/src/components/config-channels.js:149
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "已保存状态指派。"
 
 #: ../html/src/components/config-channels.js:158
 msgid "An error occurred on save."
-msgstr ""
+msgstr "保存时出错。"
 
 #: ../html/src/components/config-channels.js:281
 #: ../html/src/manager/minion/packages/package-states.js:275
 msgid "No current changes."
-msgstr ""
+msgstr "无最新更改。"
 
 #: ../html/src/components/config-channels.js:282
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
+msgstr "未指派状态。请使用搜索来查找并指派状态。"
 
 #: ../html/src/components/config-channels.js:341
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:51
@@ -136,36 +136,36 @@ msgstr "上一步"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
-msgstr ""
+msgstr "确认"
 
 #: ../html/src/components/config-channels.js:349
 #: ../html/src/manager/maintenance/details/schedule-details.js:180
 #: ../html/src/manager/maintenance/details/schedule-details.js:187
 msgid "Save Changes"
-msgstr ""
+msgstr "保存更改"
 
 #: ../html/src/components/config-channels.js:355
 msgid "Apply"
-msgstr ""
+msgstr "应用"
 
 #: ../html/src/components/config-channels.js:360
 msgid "Reorder"
-msgstr ""
+msgstr "重新排序"
 
 #: ../html/src/components/config-channels.js:372
 #: ../html/src/components/config-channels.js:376
 msgid "Changes"
-msgstr ""
+msgstr "更改"
 
 #: ../html/src/components/config-channels.js:374
 msgid "1 Change"
-msgstr ""
+msgstr "1 项更改"
 
 #: ../html/src/components/config-channels.js:383
 #: ../html/src/components/config-channels.js:412
 #: ../html/src/manager/minion/packages/package-states.js:244
 msgid "Search"
-msgstr ""
+msgstr "搜索"
 
 #: ../html/src/components/config-channels.js:389
 #: ../html/src/manager/admin/config/monitoring-admin.js:43
@@ -177,48 +177,48 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:69
 msgid "System"
-msgstr ""
+msgstr "系统"
 
 #: ../html/src/components/config-channels.js:399
 msgid "Configuration Channels"
-msgstr ""
+msgstr "配置频道"
 
 #: ../html/src/components/config-channels.js:409
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "在配置频道中搜索"
 
 #: ../html/src/components/config-channels.js:423
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr ""
+msgstr "通过拖放操作编辑配置频道的排名。"
 
 #: ../html/src/components/config-channels.js:424
 msgid "There are no states assigned."
-msgstr ""
+msgstr "未指派任何状态。"
 
 #: ../html/src/components/config-channels.js:431
 msgid "Channel Name"
-msgstr ""
+msgstr "频道名称"
 
 #: ../html/src/components/config-channels.js:432
 msgid "Channel Label"
-msgstr ""
+msgstr "频道标签"
 
 #: ../html/src/components/config-channels.js:433
 msgid "Assign"
-msgstr ""
+msgstr "指派"
 
 #: ../html/src/components/config-channels.js:455
 #: ../html/src/components/table/TableDataHandler.js:287
 msgid "There are no entries to show."
-msgstr ""
+msgstr "没有可显示的项。"
 
 #: ../html/src/components/dialog/ActionConfirm.js:71
 msgid "Are you sure you want to {0} {1} "
-msgstr ""
+msgstr "您确定要 {0} {1} 吗 "
 
 #: ../html/src/components/dialog/ActionConfirm.js:81
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
-msgstr ""
+msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
@@ -267,58 +267,58 @@ msgstr "取消"
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 #: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
-msgstr ""
+msgstr "删除项目"
 
 #: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
-msgstr ""
+msgstr "您确定要删除项目吗 "
 
 #: ../html/src/components/FormulaForm.js:17
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
+msgstr "公式已保存。无需对此公式应用 highstate。"
 
 #: ../html/src/components/FormulaForm.js:79
 msgid ""
 "Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
 "on each system!"
-msgstr ""
+msgstr "检测到多个组公式。在每个系统上只能对 \"{0}\" 使用一个公式！"
 
 #: ../html/src/components/FormulaForm.js:107
 #: ../html/src/manager/clusters/cluster/cluster-config.js:50
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:60
 msgid "Please input required fields: {0}"
-msgstr ""
+msgstr "请输入必填字段：{0}"
 
 #: ../html/src/components/FormulaForm.js:110
 #: ../html/src/manager/clusters/cluster/cluster-config.js:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:63
 msgid "Invalid format of fields: {0}"
-msgstr ""
+msgstr "无效的字段格式：{0}"
 
 #: ../html/src/components/FormulaForm.js:157
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
-msgstr ""
+msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
 
 #: ../html/src/components/formulas/EditGroup.js:266
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
+msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formula-selection.js:130
 msgid " No group"
-msgstr ""
+msgstr " 无组"
 
 #: ../html/src/components/formula-selection.js:230
 msgid ""
 "On this page you can select Salt Formulas for this group/system, which can "
 "then be configured on group and system level. This allows you to "
 "automatically install and configure software."
-msgstr ""
+msgstr "在此页上，可为此组/系统选择 Salt 公式，然后可在组和系统级别配置 Salt 公式。这样您就可以自动安装和配置软件。"
 
 #: ../html/src/components/formula-selection.js:236
 #: ../html/src/components/panels/CreatorPanel.js:116
@@ -327,25 +327,25 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:143
 #: ../html/src/manager/minion/packages/package-states.js:201
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: ../html/src/components/formula-selection.js:244
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:59
 msgid "Formulas"
-msgstr ""
+msgstr "公式"
 
 #: ../html/src/components/formulas/PasswordInput.js:52
 msgid "Generate new password"
-msgstr ""
+msgstr "生成新口令"
 
 #: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
-msgstr ""
+msgstr "显示/隐藏口令"
 
 #: ../html/src/components/formulas/SectionToggle.js:15
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "切换部分可见性"
 
 #: ../html/src/components/input/Check.stories.js:31
 #: ../html/src/components/input/DateTime.stories.js:35
@@ -359,65 +359,65 @@ msgstr ""
 #: ../html/src/components/input/Select.stories.js:38
 #: ../html/src/components/input/Text.stories.js:36
 msgid "Submit"
-msgstr ""
+msgstr "提交"
 
 #: ../html/src/components/input/Combo.stories.js:30
 msgid "Flavor"
-msgstr ""
+msgstr "风格"
 
 #: ../html/src/components/input/Combo.stories.js:32
 msgid "Start typing..."
-msgstr ""
+msgstr "开始键入..."
 
 #: ../html/src/components/input/Combo.stories.js:33
 msgid "No flavors"
-msgstr ""
+msgstr "无风格"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
-msgstr ""
+msgstr "时间"
 
 #: ../html/src/components/input/FormMultiInput.js:122
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:59
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 #: ../html/src/components/input/FormMultiInput.js:134
 #: ../html/src/manager/clusters/remove-node/remove-node.js:81
 msgid "Remove"
-msgstr ""
+msgstr "去除"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 msgid "Users"
-msgstr ""
+msgstr "用户"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
 #: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
-msgstr ""
+msgstr "名字"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
 #: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/Text.stories.js:28
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "最少 2 个字符"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
-msgstr ""
+msgstr "姓氏"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
-msgstr ""
+msgstr "口令"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
-msgstr ""
+msgstr "最少 4 个字符"
 
 #: ../html/src/components/input/Radio.stories.js:26
 #: ../html/src/components/input/Radio.stories.js:55
@@ -425,32 +425,32 @@ msgstr ""
 #: ../html/src/components/input/Radio.stories.js:116
 #: ../html/src/components/input/Select.stories.js:26
 msgid "Level"
-msgstr ""
+msgstr "级别"
 
 #: ../html/src/components/input/Radio.stories.js:31
 #: ../html/src/components/input/Radio.stories.js:61
 #: ../html/src/components/input/Radio.stories.js:91
 #: ../html/src/components/input/Radio.stories.js:122
 msgid "Beginner"
-msgstr ""
+msgstr "新手"
 
 #: ../html/src/components/input/Radio.stories.js:32
 #: ../html/src/components/input/Radio.stories.js:62
 #: ../html/src/components/input/Radio.stories.js:92
 #: ../html/src/components/input/Radio.stories.js:123
 msgid "Normal"
-msgstr ""
+msgstr "普通"
 
 #: ../html/src/components/input/Radio.stories.js:33
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
-msgstr ""
+msgstr "专家"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
-msgstr ""
+msgstr "第一页"
 
 #: ../html/src/components/pagination.js:16
 #: ../html/src/manager/admin/setup/products/products.js:358
@@ -466,88 +466,88 @@ msgstr "下一步"
 
 #: ../html/src/components/pagination.js:54
 msgid "Page"
-msgstr ""
+msgstr "页码"
 
 #: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:363
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:766
 msgid "of"
-msgstr ""
+msgstr "/"
 
 #: ../html/src/components/pagination.js:72
 msgid "Page {0} of {1}"
-msgstr ""
+msgstr "第 {0} 页，共 {1} 页"
 
 #: ../html/src/components/picker/recurring-event-picker.js:305
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:84
 #: ../html/src/manager/maintenance/list/schedule-list.js:36
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
-msgstr ""
+msgstr "日程安排名称"
 
 #: ../html/src/components/picker/recurring-event-picker.js:309
 msgid "Select a Schedule"
-msgstr ""
+msgstr "选择日程安排"
 
 #: ../html/src/components/picker/recurring-event-picker.js:316
 msgid "Hourly:"
-msgstr ""
+msgstr "每小时："
 
 #: ../html/src/components/picker/recurring-event-picker.js:322
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "将在每小时的指定分钟执行该操作"
 
 #: ../html/src/components/picker/recurring-event-picker.js:328
 msgid "Daily:"
-msgstr ""
+msgstr "每日："
 
 #: ../html/src/components/picker/recurring-event-picker.js:337
 msgid "Weekly:"
-msgstr ""
+msgstr "每周："
 
 #: ../html/src/components/picker/recurring-event-picker.js:353
 msgid "Monthly:"
-msgstr ""
+msgstr "每月："
 
 #: ../html/src/components/picker/recurring-event-picker.js:366
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
-msgstr ""
+msgstr "天数限制为 28，使所有月份都可使用重复性日程安排"
 
 #: ../html/src/components/picker/recurring-event-picker.js:372
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "自定义 Quartz 格式："
 
 #: ../html/src/components/picker/recurring-event-picker.js:375
 msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
+msgstr "例如 \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:221
 msgid "Security Advisory"
-msgstr ""
+msgstr "安全建议"
 
 #: ../html/src/components/systems.js:58
 msgid "System Locked"
-msgstr ""
+msgstr "系统已锁定"
 
 #: ../html/src/components/table/SearchPanel.js:39
 msgid "Items {0} - {1} of {2}"
-msgstr ""
+msgstr "第 {0} - {1} 项，共 {2} 项"
 
 #: ../html/src/components/table/SearchPanel.js:42
 msgid "({0} selected)"
-msgstr ""
+msgstr "（已选择 {0} 个）"
 
 #: ../html/src/components/table/SearchPanel.js:43
 #: ../html/src/manager/admin/setup/products/products.js:288
 msgid "Clear"
-msgstr ""
+msgstr "清除"
 
 #: ../html/src/components/table/SearchPanel.js:48
 msgid "Select All"
-msgstr ""
+msgstr "全选"
 
 #: ../html/src/components/table/TableDataHandler.js:288
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
@@ -556,90 +556,90 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:271
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
 msgid "Loading..."
-msgstr ""
+msgstr "正在装载..."
 
 #: ../html/src/components/table/TableDataHandler.js:316
 msgid "items per page"
-msgstr ""
+msgstr "项每页"
 
 #: ../html/src/components/tree/tree.js:116
 msgid "Invalid data"
-msgstr ""
+msgstr "无效数据"
 
 #: ../html/src/components/tree/tree.js:124
 msgid "No data"
-msgstr ""
+msgstr "无数据"
 
 #: ../html/src/components/utils/HelpLink.js:20
 msgid "Help"
-msgstr ""
+msgstr "帮助"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:10
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
 msgid "Base channel not found or not authorized."
-msgstr ""
+msgstr "找不到或未授权基础频道。"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:11
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
 msgid "Child channel not found or not authorized."
-msgstr ""
+msgstr "找不到或未授权子频道。"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:12
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
 msgid "Invalid channel id"
-msgstr ""
+msgstr "无效的频道 ID"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 msgid "Required channels"
-msgstr ""
+msgstr "必需的频道"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "none"
-msgstr ""
+msgstr "无"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "Require this channel"
-msgstr ""
+msgstr "需要此频道"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:17
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr ""
+msgstr "需要重启动才能使配置更改生效。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:20
 msgid "An internal error has occured. See the server logs for details."
-msgstr ""
+msgstr "发生了内部错误。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "启用监视失败。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:22
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
-msgstr ""
+msgstr "无法启用所有监视服务。某些服务仍已禁用。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:23
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "禁用监视失败。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:24
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
-msgstr ""
+msgstr "无法禁用所有监视服务。某些服务仍已已启用。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:25
 msgid "Monitoring enabled successfully."
-msgstr ""
+msgstr "已成功启用监视。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:26
 msgid "Monitoring disabled successfully."
-msgstr ""
+msgstr "已成功禁用监视。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:27
 msgid ""
@@ -647,6 +647,8 @@ msgid ""
 "Click the Enable button to enable the JMX configuration or click Disable to "
 "stop the Prometheus exporter."
 msgstr ""
+"Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" "
+"以停止普罗米修斯导出器。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:29
 msgid ""
@@ -654,6 +656,8 @@ msgid ""
 "Click the Disable button to disable the JMX configuration or click Enable to "
 "start the Prometheus exporter."
 msgstr ""
+"Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" "
+"以启动普罗米修斯导出器。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:31
 msgid ""
@@ -661,6 +665,8 @@ msgid ""
 "disabled. Click the Enable button to enable the JMX configuration of click "
 "Disable to stop the Prometheus exporter."
 msgstr ""
+"Taskomatic 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" "
+"以停止普罗米修斯导出器。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:33
 msgid ""
@@ -668,198 +674,200 @@ msgid ""
 "enabled. Click the Disable button to disable the JMX configuration of click "
 "Enable to start the Prometheus exporter."
 msgstr ""
+"Taskomatic 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" "
+"以启动普罗米修斯导出器。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:38
 msgid "Monitoring status hasn't changed."
-msgstr ""
+msgstr "监视状态未更改。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "An error occured. Monitoring status unknown. Refresh the page."
-msgstr ""
+msgstr "发生了错误。监视状态未知。请刷新页面。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:44
 msgid "Tomcat (Java JMX)"
-msgstr ""
+msgstr "Tomcat (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:45
 msgid "Taskomatic (Java JMX)"
-msgstr ""
+msgstr "Taskomatic (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:46
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "PostgreSQL 数据库"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:47
 msgid "Server self monitoring"
-msgstr ""
+msgstr "服务器自我监视"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:56
 #: ../html/src/manager/admin/config/monitoring-admin.js:58
 msgid "Enabled"
-msgstr ""
+msgstr "已启用"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:64
 #: ../html/src/manager/admin/config/monitoring-admin.js:66
 msgid "Disabled"
-msgstr ""
+msgstr "已禁用"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:109
 msgid "The server uses "
-msgstr ""
+msgstr "服务器使用 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:109
 msgid "Prometheus"
-msgstr ""
+msgstr "普罗米修斯"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:112
 msgid "Refer to the "
-msgstr ""
+msgstr "参见 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:112
 msgid "documentation"
-msgstr ""
+msgstr "文档"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:170
 #: ../html/src/manager/admin/config/monitoring-admin.js:179
 #: ../html/src/manager/admin/config/monitoring-admin.js:188
 #: ../html/src/manager/admin/config/monitoring-admin.js:201
 msgid "Enable"
-msgstr ""
+msgstr "启用"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:172
 #: ../html/src/manager/admin/config/monitoring-admin.js:181
 #: ../html/src/manager/admin/config/monitoring-admin.js:190
 #: ../html/src/manager/admin/config/monitoring-admin.js:206
 msgid "Disable"
-msgstr ""
+msgstr "禁用"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:218
 msgid "SUSE Manager Configuration - Monitoring"
-msgstr ""
+msgstr "SUSE Manager 配置 - 监视"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:224
 msgid "Setup your SUSE Manager server monitoring."
-msgstr ""
+msgstr "设置 SUSE Manager 服务器监视。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:229
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:234
 msgid "General"
-msgstr ""
+msgstr "常规"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:230
 msgid "Bootstrap Script"
-msgstr ""
+msgstr "引导脚本"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Organizations"
-msgstr ""
+msgstr "组织"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:30
 msgid "Restart"
-msgstr ""
+msgstr "重启动"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:233
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Bare-metal systems"
-msgstr ""
+msgstr "裸机系统"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:235
 #: ../html/src/manager/admin/config/monitoring-admin.js:240
 #: ../html/src/manager/admin/config/monitoring-admin.js:252
 msgid "Monitoring"
-msgstr ""
+msgstr "监视"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:263
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
-msgstr ""
+msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
 #: ../html/src/manager/admin/setup/products/products.js:115
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
-msgstr ""
+msgstr "没有可用的 SUSE Manager 服务器订阅。需要客户端工具频道的产品将不显示。"
 
 #: ../html/src/manager/admin/setup/products/products.js:157
 msgid "The product catalog refresh is running..."
-msgstr ""
+msgstr "产品目录刷新正在运行..."
 
 #: ../html/src/manager/admin/setup/products/products.js:227
 msgid "Setup Wizard"
-msgstr ""
+msgstr "安装向导"
 
 #: ../html/src/manager/admin/setup/products/products.js:245
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
-msgstr ""
+msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
 
 #: ../html/src/manager/admin/setup/products/products.js:252
 msgid "The product catalog is still refreshing, please wait."
-msgstr ""
+msgstr "产品目录仍在刷新，请稍候。"
 
 #: ../html/src/manager/admin/setup/products/products.js:254
 msgid "Select some product first."
-msgstr ""
+msgstr "请先选择某个产品。"
 
 #: ../html/src/manager/admin/setup/products/products.js:263
 #: ../html/src/manager/admin/setup/products/products.js:270
 msgid "Add products"
-msgstr ""
+msgstr "添加产品"
 
 #: ../html/src/manager/admin/setup/products/products.js:287
 msgid "Clear products selection"
-msgstr ""
+msgstr "清除产品选择"
 
 #: ../html/src/manager/admin/setup/products/products.js:327
 msgid "Why aren't all products displayed in the list?"
-msgstr ""
+msgstr "列表中为何不显示所有产品？"
 
 #: ../html/src/manager/admin/setup/products/products.js:328
 msgid ""
 "The products displayed on this list are directly linked to "
 "your                   Organization credentials (Mirror credentials) as well "
 "as your SUSE subscriptions."
-msgstr ""
+msgstr "此列表中显示的产品已直接链接到您的                   组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
 #: ../html/src/manager/admin/setup/products/products.js:330
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct                   Organization credentials in the previous wizard "
 "step."
-msgstr ""
+msgstr "如果您确信缺少了产品，请确认已在上一个向导步骤中                   添加了正确的组织身份凭证。"
 
 #: ../html/src/manager/admin/setup/products/products.js:339
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
-msgstr ""
+msgstr "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产品。"
 
 #: ../html/src/manager/admin/setup/products/products.js:352
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
-msgstr ""
+msgstr "上一步"
 
 #: ../html/src/manager/admin/setup/products/products.js:402
 msgid "Filter by architecture"
-msgstr ""
+msgstr "按体系结构过滤"
 
 #: ../html/src/manager/admin/setup/products/products.js:489
 msgid "Filter by product Description"
-msgstr ""
+msgstr "按产品说明过滤"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 msgid "Product Description"
-msgstr ""
+msgstr "产品说明"
 
 #: ../html/src/manager/admin/setup/products/products.js:540
 #: ../html/src/manager/admin/setup/products/products.js:866
@@ -867,39 +875,39 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:197
 msgid "Architecture"
-msgstr ""
+msgstr "体系结构"
 
 #: ../html/src/manager/admin/setup/products/products.js:540
 msgid "Arch"
-msgstr "架构"
+msgstr "体系结构"
 
 #: ../html/src/manager/admin/setup/products/products.js:541
 msgid "Channels"
-msgstr ""
+msgstr "频道"
 
 #: ../html/src/manager/admin/setup/products/products.js:705
 msgid " channels sync failed"
-msgstr ""
+msgstr " 频道同步失败"
 
 #: ../html/src/manager/admin/setup/products/products.js:711
 msgid " channels sync in progress"
-msgstr ""
+msgstr " 频道同步正在进行"
 
 #: ../html/src/manager/admin/setup/products/products.js:717
 msgid " channels synced"
-msgstr ""
+msgstr " 频道已同步"
 
 #: ../html/src/manager/admin/setup/products/products.js:735
 msgid "To enable this product, the parent product should be selected first"
-msgstr ""
+msgstr "要启用此产品，应先选择父产品"
 
 #: ../html/src/manager/admin/setup/products/products.js:735
 msgid "Select this product"
-msgstr ""
+msgstr "选择此产品"
 
 #: ../html/src/manager/admin/setup/products/products.js:745
 msgid "This product is mirrored."
-msgstr ""
+msgstr "已镜像此产品。"
 
 #: ../html/src/manager/admin/setup/products/products.js:771
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
@@ -907,7 +915,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
-msgstr ""
+msgstr "建议"
 
 #: ../html/src/manager/admin/setup/products/products.js:785
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
@@ -915,59 +923,59 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
-msgstr ""
+msgstr "包括建议项"
 
 #: ../html/src/manager/admin/setup/products/products.js:825
 msgid "SCC product catalog refresh in progress"
-msgstr ""
+msgstr "SCC 产品目录刷新正在进行"
 
 #: ../html/src/manager/admin/setup/products/products.js:829
 msgid "Scheduling channels product resync"
-msgstr ""
+msgstr "正在安排频道产品重新同步"
 
 #: ../html/src/manager/admin/setup/products/products.js:833
 msgid "Channels product resync scheduled"
-msgstr ""
+msgstr "已安排频道产品重新同步"
 
 #: ../html/src/manager/admin/setup/products/products.js:837
 msgid "Schedule channels product resync"
-msgstr ""
+msgstr "安排频道产品重新同步"
 
 #: ../html/src/manager/admin/setup/products/products.js:876
 msgid "Show product's channels"
-msgstr ""
+msgstr "显示产品的频道"
 
 #: ../html/src/manager/admin/setup/products/products.js:900
 msgid "Product Channels - "
-msgstr ""
+msgstr "产品频道 - "
 
 #: ../html/src/manager/admin/setup/products/products.js:905
 msgid "Mandatory Channels"
-msgstr ""
+msgstr "必需频道"
 
 #: ../html/src/manager/admin/setup/products/products.js:910
 msgid "Optional Channels"
-msgstr ""
+msgstr "可选频道"
 
 #: ../html/src/manager/admin/setup/products/products.js:932
 msgid "not synced"
-msgstr ""
+msgstr "未同步"
 
 #: ../html/src/manager/admin/setup/products/products.js:934
 msgid "sync in progress"
-msgstr ""
+msgstr "同步正在进行"
 
 #: ../html/src/manager/admin/setup/products/products.js:936
 msgid "synced"
-msgstr ""
+msgstr "已同步"
 
 #: ../html/src/manager/admin/setup/products/products.js:938
 msgid "sync failed"
-msgstr ""
+msgstr "同步失败"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
 msgid "Refresh the product catalog from SUSE Customer Center"
-msgstr ""
+msgstr "从 SUSE Customer Center 刷新产品目录"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:214
@@ -977,20 +985,20 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
-msgstr ""
+msgstr "刷新"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
 msgid "Please be patient, this might take several minutes."
-msgstr ""
+msgstr "请耐心等候，这可能需要几分钟时间。"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
 #: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
-msgstr ""
+msgstr "已完成"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
 msgid "Operation not successful: Empty reply from the server"
-msgstr ""
+msgstr "操作不成功：服务器返回了空答复"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
 #: ../html/src/manager/images/image-view.js:600
@@ -1000,57 +1008,57 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
-msgstr ""
+msgstr "细节"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:87
 msgid " running"
-msgstr ""
+msgstr " 正在运行"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:88
 msgid " finished"
-msgstr ""
+msgstr " 已完成"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:89
 msgid " failed"
-msgstr ""
+msgstr " 失败"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:90
 msgid " interrupted"
-msgstr ""
+msgstr " 已中断"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:91
 msgid " ready to run"
-msgstr ""
+msgstr " 准备好运行"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:92
 msgid " skipped"
-msgstr ""
+msgstr " 已跳过"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:108
 msgid "Task Engine Status"
-msgstr ""
+msgstr "任务引擎状态"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:116
 msgid "Last Execution Times"
-msgstr ""
+msgstr "上次执行时间"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:117
 msgid "Runtime Status"
-msgstr ""
+msgstr "运行时状态"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:129
 msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
-msgstr ""
+msgstr "在过去 5 分钟服务器正在运行或已完成执行以下任务。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:130
 msgid "Data is refreshed every "
-msgstr ""
+msgstr "数据每隔 "
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:130
 msgid " seconds"
-msgstr ""
+msgstr " 秒刷新"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:140
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
@@ -1058,27 +1066,27 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
 #: ../html/src/manager/virtualization/ListTab.js:231
 msgid "Filter by name"
-msgstr ""
+msgstr "按名称过滤"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:145
 msgid "Task Id"
-msgstr ""
+msgstr "任务 ID"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:151
 msgid "Task Name"
-msgstr ""
+msgstr "任务名称"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:157
 msgid "Start Time"
-msgstr ""
+msgstr "开始时间"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:163
 msgid "End Time"
-msgstr ""
+msgstr "结束时间"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:169
 msgid "Elapsed Time"
-msgstr ""
+msgstr "已用时间"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:235
@@ -1087,22 +1095,22 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
 msgid "Status"
-msgstr ""
+msgstr "状态"
 
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:181
 msgid "Data"
-msgstr ""
+msgstr "数据"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:193
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:211
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
 #: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
+msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:213
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
@@ -1111,23 +1119,23 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.js:61
 msgid "Server error, please check log files."
-msgstr ""
+msgstr "服务器错误，请查看日志文件。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:165
 msgid "CVE Audit"
-msgstr ""
+msgstr "CVE 审计"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:171
 msgid "CVE"
-msgstr ""
+msgstr "CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:214
 msgid "Audit Servers"
-msgstr ""
+msgstr "审计服务器"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:215
 msgid "Audit Images"
-msgstr ""
+msgstr "审计映像"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:246
@@ -1148,7 +1156,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:263
 #: ../html/src/manager/images/image-profiles.js:148
@@ -1162,214 +1170,214 @@ msgstr ""
 #: ../html/src/manager/virtualization/ListTab.js:255
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
-msgstr ""
+msgstr "操作"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
 msgid "Edit Virtual Host Managers"
-msgstr ""
+msgstr "编辑虚拟主机管理器"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
 msgid "Subscription Matching"
-msgstr ""
+msgstr "订阅匹配"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Subscriptions"
-msgstr ""
+msgstr "订阅"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:98
 msgid "Unmatched Products"
-msgstr ""
+msgstr "不匹配的产品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Pins "
-msgstr ""
+msgstr "关联 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Messages "
-msgstr ""
+msgstr "消息 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
 msgid "Match data status"
-msgstr ""
+msgstr "匹配数据状态"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:62
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
-msgstr ""
+msgstr "无法启动匹配运行。请联系您的 SUSE Manager 管理员以确保任务日程安排程序正在运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:68
 msgid "No match data is currently available."
-msgstr ""
+msgstr "当前没有可用的匹配数据。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:69
 msgid "You can also trigger a first run now by clicking the button below."
-msgstr ""
+msgstr "您也可以单击以下按钮立即触发首次运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:75
 msgid "Matching data is currently being recomputed, it was started {0}."
-msgstr ""
+msgstr "当前正在重新计算匹配数据，开始时间为 {0}。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:78
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
-msgstr ""
+msgstr "在 {0} 已计算出最新成功的匹配数据，您可以单击以下按钮触发新的运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
+msgstr "默认将在夜间通过任务日程安排计算匹配数据（可以 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
 msgid "change the task schedule from the administration page"
-msgstr ""
+msgstr "通过管理页更改任务日程安排"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
 msgid "). "
-msgstr ""
+msgstr "）。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
 msgid "Refresh matching data"
-msgstr ""
+msgstr "刷新匹配数据"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:21
 msgid "Unsupported part number detected"
-msgstr ""
+msgstr "检测到不支持的部件号"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:25
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
+msgstr "物理系统已报告为虚拟 Guest，请检查硬件数据"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:29
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
+msgstr "虚拟 Guest 包含未知主机，将假定它是物理系统"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:33
 msgid "System has an unknown number of sockets, assuming 16"
-msgstr ""
+msgstr "系统包含未知数量的插槽，将假定为 16 个"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:37
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
-msgstr ""
+msgstr "某个捆绑包中包含两个具有相同部件号的订阅 - 已合并成一个订阅"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:41
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
-msgstr ""
+msgstr "已将两个具有相同部件号（和其他属性）的订阅合并到一起 - 开始/结束日期可能会指示此状态"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:45
 msgid "Pinned match adjusted due to merged subscriptions"
-msgstr ""
+msgstr "由于合并了订阅而调整了关联的匹配项"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:46
 msgid "Subscription IDs"
-msgstr ""
+msgstr "订阅 ID"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:68
 msgid "Please review warning and information messages below."
-msgstr ""
+msgstr "请查看下面的警告和信息消息。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:78
 msgid "Message"
-msgstr ""
+msgstr "消息"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:84
 msgid "Additional information"
-msgstr ""
+msgstr "其他信息"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:94
 msgid "No messages from the last match run."
-msgstr ""
+msgstr "上次匹配运行未返回任何消息。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:99
 msgid "Messages"
-msgstr ""
+msgstr "消息"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:79
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
-msgstr ""
+msgstr "可将订阅关联到系统，以向匹配算法建议特定的关联。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:81
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
-msgstr ""
+msgstr "下一次尝试匹配时，算法将尝试生成一条可向指定的系统应用该订阅的结果。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:83
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
-msgstr ""
+msgstr "请注意，根据订阅的可用性和适用性规则，算法可能会判定 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:84
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
-msgstr ""
+msgstr "无法遵循特定的关联，在这种情况下，该关联会显示为 \"不符合\"。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:109
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:80
 msgid "Policy"
-msgstr ""
+msgstr "策略"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:144
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:145
 msgid "Add a Pin"
-msgstr ""
+msgstr "添加关联"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:164
 msgid "pending next run"
-msgstr ""
+msgstr "等待下一次运行"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:169
 msgid "not satisfied"
-msgstr ""
+msgstr "不符合"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:218
 msgid "Available Systems"
-msgstr ""
+msgstr "可用系统"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:219
 msgid "Step 1/2: select the system to pin from the table below."
-msgstr ""
+msgstr "步骤 1/2：从下表中选择要关联的系统。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:239
 msgid "Socket/IFL count"
-msgstr ""
+msgstr "插槽/IFL 计数"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:244
 msgid "Products"
-msgstr ""
+msgstr "产品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:254
 msgid "Select"
-msgstr ""
+msgstr "选择"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:266
 msgid "Available Subscriptions for the Selected System"
-msgstr ""
+msgstr "选定系统的可用订阅"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:267
 msgid "Step 2/2: pick a subscription for system "
-msgstr ""
+msgstr "步骤 2/2：选取系统的订阅 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:275
 msgid "Back to sytem selection"
-msgstr ""
+msgstr "返回系统选择页"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:68
 msgid "Part number"
-msgstr ""
+msgstr "部件号"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:74
@@ -1381,118 +1389,118 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
-msgstr ""
+msgstr "说明"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:334
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:101
 msgid "End date"
-msgstr ""
+msgstr "结束日期"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:342
 msgid "Save Pin"
-msgstr ""
+msgstr "保存关联"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:348
 msgid ""
 "No subscriptions have been found to match this system, considering all "
 "products installed, either directly or in virtual guests."
-msgstr ""
+msgstr "找不到与此系统匹配的订阅，将假定直接或者在虚拟 Guest 中安装所有产品。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:63
 msgid "Filter by description"
-msgstr ""
+msgstr "按说明过滤"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:86
 msgid "Matched/Total"
-msgstr ""
+msgstr "匹配数/总计"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:92
 msgid "Start date"
-msgstr ""
+msgstr "开始日期"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:120
 msgid "No subscriptions found."
-msgstr ""
+msgstr "找不到订阅。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:125
 msgid "Your subscriptions"
-msgstr ""
+msgstr "您的订阅"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:61
 msgid "Product name"
-msgstr ""
+msgstr "产品名称"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:67
 msgid "Unmatched system count"
-msgstr ""
+msgstr "不匹配的系统计数"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:73
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:74
 msgid "Show system list"
-msgstr ""
+msgstr "显示系统列表"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:93
 msgid "No unmatching products are found."
-msgstr ""
+msgstr "找不到不匹配的产品。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:143
 msgid "System name"
-msgstr ""
+msgstr "系统名称"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:148
 msgid "Unmatched systems"
-msgstr ""
+msgstr "不匹配的系统"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:38
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:43
 msgid "Add Cluster"
-msgstr ""
+msgstr "添加群集"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:52
 msgid "Select management node"
-msgstr ""
+msgstr "选择管理节点"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:61
 #: ../html/src/manager/clusters/cluster/cluster.js:103
 msgid "Provider Settings"
-msgstr ""
+msgstr "提供程序设置"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:76
 msgid "Provider:"
-msgstr ""
+msgstr "提供程序："
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:80
 msgid "Management Node:"
-msgstr ""
+msgstr "管理节点："
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:45
 msgid "Add cluster"
-msgstr ""
+msgstr "添加群集"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:69
 msgid "Name:"
-msgstr ""
+msgstr "名称："
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:75
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
 msgid "Label:"
-msgstr ""
+msgstr "标签："
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:82
 msgid "Description:"
-msgstr ""
+msgstr "说明："
 
 #: ../html/src/manager/clusters/add-cluster/select-provider.js:20
 msgid "Available cluster providers"
-msgstr ""
+msgstr "可用的群集提供程序"
 
 #: ../html/src/manager/clusters/cluster/cluster-config.js:59
 msgid "Settings saved successfully"
-msgstr ""
+msgstr "已成功保存设置"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
 msgid "Action has been "
-msgstr ""
+msgstr "操作 "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
 #: ../html/src/manager/images/image-build.js:178
@@ -1500,85 +1508,85 @@ msgstr ""
 #: ../html/src/manager/minion/packages/use-package-states.api.js:60
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "scheduled"
-msgstr ""
+msgstr "已安排"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:25
 #: ../html/src/manager/images/image-build.js:175
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:943
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
-msgstr ""
+msgstr "操作已成功添加到操作链 "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:26
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:21
 msgid "Cluster "
-msgstr ""
+msgstr "群集 "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:74
 #: ../html/src/manager/clusters/cluster/cluster.js:85
 msgid "Delete cluster"
-msgstr ""
+msgstr "删除群集"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:75
 msgid "Delete Cluster"
-msgstr ""
+msgstr "删除群集"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
 msgid "Are you sure you want to delete cluster?"
-msgstr ""
+msgstr "您确定要删除群集吗？"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
+msgstr "这不会销毁该群集，而只会将它从 Uyuni 中去除"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:98
 #: ../html/src/manager/images/image-view.js:669
 #: ../html/src/manager/maintenance/details/schedule-details.js:60
 msgid "Overview"
-msgstr ""
+msgstr "概述"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:33
 #: ../html/src/manager/virtualization/pools/pool-properties.js:181
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:88
 msgid "System group refresh action scheduled successfully"
-msgstr ""
+msgstr "已成功安排系统组刷新操作"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:113
 msgid "Cluster properties updated successfully"
-msgstr ""
+msgstr "已成功更新群集属性"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:186
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:242
 msgid "Edit cluster details"
-msgstr ""
+msgstr "编辑群集细节"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:199
 msgid "Join node"
-msgstr ""
+msgstr "加入节点"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:208
 #: ../html/src/manager/clusters/remove-node/remove-node.js:46
 msgid "Remove node"
-msgstr ""
+msgstr "去除节点"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:222
 msgid "Upgrade cluster"
-msgstr ""
+msgstr "升级群集"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:229
 msgid "Refresh system group"
-msgstr ""
+msgstr "刷新系统组"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:236
 msgid "Cluster Properties"
-msgstr ""
+msgstr "群集属性"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:241
 msgid "Edit properties"
-msgstr ""
+msgstr "编辑属性"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:249
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
@@ -1590,20 +1598,20 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:256
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
 msgid "Label"
-msgstr ""
+msgstr "标签"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:261
 msgid "Cluster provider"
-msgstr ""
+msgstr "群集提供程序"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:265
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:104
 msgid "Management node"
-msgstr ""
+msgstr "管理节点"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:269
 msgid "System group"
-msgstr ""
+msgstr "系统组"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:286
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
@@ -1611,70 +1619,70 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/content-management/list-projects/list-projects.js:81
 msgid "Filter by any value"
-msgstr ""
+msgstr "按任意值过滤"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:304
 msgid "Node Hostname"
-msgstr ""
+msgstr "节点主机名"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:311
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:116
 msgid "(none)"
-msgstr ""
+msgstr "（无）"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:37
 msgid "Join "
-msgstr ""
+msgstr "加入 "
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:40
 msgid "NOTE: before joining a new node, make sure that the node has:"
-msgstr ""
+msgstr "注意：在加入某个新节点之前，请确保："
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:42
 msgid ""
 "Container as a Service Platform (CaaSP) channels assigned - or any children "
 "channels of CaaSP channels"
-msgstr ""
+msgstr "为该节点指派了容器即服务平台 (CaaSP) 频道 - 或 CaaSP 频道的任何子频道"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:43
 msgid ""
 "The management node can access the node as root via ssh without password"
-msgstr ""
+msgstr "管理节点可以在不使用口令的情况下以 root 身份通过 SSH 访问该节点"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:50
 msgid "Select system to join"
-msgstr ""
+msgstr "选择要加入的系统"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:58
 msgid "New node configuration"
-msgstr ""
+msgstr "新节点配置"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:71
 msgid "Schedule join node"
-msgstr ""
+msgstr "安排加入节点"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:75
 #: ../html/src/manager/clusters/remove-node/remove-node.js:62
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:63
 msgid "Cluster:"
-msgstr ""
+msgstr "群集："
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:79
 msgid "Node to join:"
-msgstr ""
+msgstr "要加入的节点："
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:87
 msgid "Join"
-msgstr ""
+msgstr "加入"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:42
 msgid "Add an existing cluster"
-msgstr ""
+msgstr "添加现有群集"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:69
 msgid "Clusters"
-msgstr ""
+msgstr "群集"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:98
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
@@ -1685,51 +1693,51 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:249
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:39
 msgid "Remove nodes"
-msgstr ""
+msgstr "去除节点"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:58
 msgid "Schedule remove node"
-msgstr ""
+msgstr "安排去除节点"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:66
 msgid "Nodes to remove:"
-msgstr ""
+msgstr "要去除的节点："
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:33
 msgid "Upgrade "
-msgstr ""
+msgstr "升级 "
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:47
 msgid "Configuration override"
-msgstr ""
+msgstr "配置覆盖"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:59
 msgid "Schedule upgrade cluster"
-msgstr ""
+msgstr "安排升级群集"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:69
 msgid "Upgrade"
-msgstr ""
+msgstr "升级"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
 msgid "Upgrade plan"
-msgstr ""
+msgstr "升级计划"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:28
 msgid "You do not have permissions to perform this action"
-msgstr ""
+msgstr "您无权执行此操作"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:33
 msgid "Create a new Content Lifecycle Project"
-msgstr ""
+msgstr "创建新的内容生命周期项目"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
 msgid "Create project"
-msgstr ""
+msgstr "创建项目"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
 #: ../html/src/manager/images/image-profile-edit.js:380
@@ -1744,93 +1752,93 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:35
 msgid "Create"
-msgstr ""
+msgstr "创建"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:30
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:24
 msgid "Module"
-msgstr ""
+msgstr "模块"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:35
 msgid "Select a module..."
-msgstr ""
+msgstr "选择模块..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:36
 msgid "No modules available"
-msgstr ""
+msgstr "无可用模块"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:148
 msgid "Stream"
-msgstr ""
+msgstr "流"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:47
 msgid "Select a stream..."
-msgstr ""
+msgstr "选择流..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:48
 msgid "No streams available"
-msgstr ""
+msgstr "无可用流"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:33
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
 msgid "Channel"
-msgstr ""
+msgstr "频道"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:38
 msgid "Select a channel to browse available modules"
-msgstr ""
+msgstr "选择一个频道以浏览可用模块"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
 msgid "Module Name"
-msgstr ""
+msgstr "模块名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:22
 msgid "Updating the filter..."
-msgstr ""
+msgstr "正在更新过滤器..."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:71
 msgid "Filter Details"
-msgstr ""
+msgstr "过滤器细节"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:72
 msgid "Create a new filter"
-msgstr ""
+msgstr "创建新过滤器"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:115
 msgid "Filter deleted successfully"
-msgstr ""
+msgstr "已成功删除过滤器"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:147
 msgid "Check the required fields below"
-msgstr ""
+msgstr "检查以下必填字段"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:156
 msgid "Filter updated successfully"
-msgstr ""
+msgstr "已成功更新过滤器"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:170
 msgid "Filter created successfully"
-msgstr ""
+msgstr "已成功创建过滤器"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:63
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
-msgstr ""
+msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:70
 msgid "Filter Name"
-msgstr ""
+msgstr "过滤器名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:80
 msgid "Filter Type"
-msgstr ""
+msgstr "过滤器类型"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:103
 msgid "Matcher"
-msgstr ""
+msgstr "匹配器"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:127
 #: ../html/src/manager/content-management/list-filters/filter-form.js:139
@@ -1839,12 +1847,12 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:339
 msgid "Package Name"
-msgstr ""
+msgstr "软件包名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:146
 #: ../html/src/manager/content-management/list-filters/filter-form.js:184
 msgid "Epoch"
-msgstr ""
+msgstr "纪元"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:151
 #: ../html/src/manager/content-management/list-filters/filter-form.js:189
@@ -1854,106 +1862,106 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-view.js:549
 msgid "Version"
-msgstr ""
+msgstr "版本"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:158
 #: ../html/src/manager/content-management/list-filters/filter-form.js:196
 msgid "Release"
-msgstr ""
+msgstr "发行版"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:208
 msgid "Advisory name"
-msgstr ""
+msgstr "建议名称"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:222
 msgid "Bug Fix Advisory"
-msgstr ""
+msgstr "Bug 修复建议"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:223
 msgid "Product Enhancement Advisory"
-msgstr ""
+msgstr "产品增强建议"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:225
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
-msgstr ""
+msgstr "建议类型"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:234
 msgid "Issued"
-msgstr ""
+msgstr "颁发日期"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:246
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
-msgstr ""
+msgstr "摘要"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:259
 msgid "Reboot Required"
-msgstr ""
+msgstr "需要重引导"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:260
 msgid "Package Manager Restart Required"
-msgstr ""
+msgstr "需要重启动软件包管理器"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:263
 msgid "Advisory Keywords"
-msgstr ""
+msgstr "建议关键字"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:293
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
-msgstr ""
+msgstr "拒绝"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:294
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
-msgstr ""
+msgstr "允许"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:296
 msgid "Rule"
-msgstr ""
+msgstr "规则"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.js:62
 msgid "Content Lifecycle Filters"
-msgstr ""
+msgstr "内容生命周期过滤器"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.js:82
 msgid "Projects in use"
-msgstr ""
+msgstr "使用中的项目"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:64
 msgid "Create a new content lifecycle project"
-msgstr ""
+msgstr "创建新的内容生命周期项目"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:65
 msgid "Create Project"
-msgstr ""
+msgstr "创建项目"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:73
 msgid "Content Lifecycle Projects"
-msgstr ""
+msgstr "内容生命周期项目"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:40
 msgid "Environment Lifecycle"
-msgstr ""
+msgstr "环境生命周期"
 
 #: ../html/src/manager/content-management/project/project.js:54
 msgid "The project you are looking for does not exist or has been deleted"
-msgstr ""
+msgstr "您要查找的项目不存在或已删除"
 
 #: ../html/src/manager/content-management/project/project.js:89
 msgid "Content Lifecycle Project - {0}"
-msgstr ""
+msgstr "内容生命周期项目 - {0}"
 
 #: ../html/src/manager/content-management/project/project.js:104
 msgid "Delete Project"
-msgstr ""
+msgstr "删除项目"
 
 #: ../html/src/manager/content-management/project/project.js:105
 msgid "Are you sure you want to delete project"
-msgstr ""
+msgstr "您确定要删除项目吗"
 
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:67
 #: ../html/src/manager/login/use-login-api.js:54
@@ -1964,7 +1972,7 @@ msgstr ""
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
-msgstr ""
+msgstr "请求已中断，或者从服务器收到了无效响应。请重试。"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:16
 msgid "Package"
@@ -1972,117 +1980,117 @@ msgstr "软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:20
 msgid "Patch"
-msgstr ""
+msgstr "补丁"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:31
 msgid "contains"
-msgstr ""
+msgstr "包含"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:32
 msgid "containing"
-msgstr ""
+msgstr "包含"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:36
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:81
 msgid "matches"
-msgstr ""
+msgstr "匹配"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:37
 msgid "regular expression matches package name"
-msgstr ""
+msgstr "正则表达式匹配软件包名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:41
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:71
 msgid "equals"
-msgstr ""
+msgstr "等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:42
 msgid "contains package name equals"
-msgstr ""
+msgstr "包含等于以下值的软件包名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:46
 msgid "version lower than"
-msgstr ""
+msgstr "版本低于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:47
 msgid "contains package with epoch/version/release lower than"
-msgstr ""
+msgstr "包含纪元/版本/发行版低于以下值的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:51
 msgid "version lower or equal than"
-msgstr ""
+msgstr "版本低于或等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:52
 msgid "contains package with epoch/version/release lower or equal than"
-msgstr ""
+msgstr "包含纪元/版本/发行版低于或等于以下值的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:56
 msgid "version equal"
-msgstr ""
+msgstr "版本等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:57
 msgid "contains package with epoch/version/release equal than"
-msgstr ""
+msgstr "包含纪元/版本/发行版等于以下值的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:61
 msgid "version greater or equal than"
-msgstr ""
+msgstr "版本高于或等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:62
 msgid "contains package with epoch/version/release greater or equal than"
-msgstr ""
+msgstr "包含纪元/版本/发行版高于或等于以下值的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:67
 msgid "contains package with epoch/version/release greater than"
-msgstr ""
+msgstr "包含纪元/版本/发行版高于以下值的软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:72
 msgid "equal"
-msgstr ""
+msgstr "等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:76
 msgid "later or equal"
-msgstr ""
+msgstr "晚于或等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:77
 msgid "later or equal than"
-msgstr ""
+msgstr "晚于或等于"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:82
 msgid "matches regular expression"
-msgstr ""
+msgstr "匹配正则表达式"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:96
 msgid "NEVRA"
-msgstr ""
+msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:102
 msgid "Advisory Name"
-msgstr ""
+msgstr "建议名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:120
 msgid "Keyword"
-msgstr ""
+msgstr "关键字"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:126
 msgid "Issue date"
-msgstr ""
+msgstr "颁发日期"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:132
 msgid "Contains Package Name"
-msgstr ""
+msgstr "包含软件包名称"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:138
 msgid "Contains Package"
-msgstr ""
+msgstr "包含软件包"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:169
 msgid "enable module"
-msgstr ""
+msgstr "启用模块"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:55
 msgid "Build ({0})"
-msgstr ""
+msgstr "构建 ({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:118
@@ -2092,243 +2100,243 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.js:375
 #: ../html/src/manager/images/image-view-overview.js:457
 msgid "Build"
-msgstr ""
+msgstr "构建"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:68
 msgid "Build Project"
-msgstr ""
+msgstr "构建项目"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:76
 msgid "Building project.."
-msgstr ""
+msgstr "正在构建项目..."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:93
 msgid "Version Message"
-msgstr ""
+msgstr "版本消息"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:98
 msgid "Version {0} history"
-msgstr ""
+msgstr "版本 {0} 历史记录"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:127
 msgid "Version {0} successfully built into {1}"
-msgstr ""
+msgstr "已成功在 {1} 中构建版本 {0}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
 msgid "Insert before"
-msgstr ""
+msgstr "在前面插入"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:41
 msgid "Add Environment"
-msgstr ""
+msgstr "添加环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:52
 msgid "Environment created successfully"
-msgstr ""
+msgstr "已成功创建环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:68
 msgid "Creating the environment..."
-msgstr ""
+msgstr "正在创建环境..."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:85
 msgid "No environments created"
-msgstr ""
+msgstr "未创建环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:103
 msgid "Environment updated successfully"
-msgstr ""
+msgstr "已成功更新环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:117
 msgid "Environment {0} deleted successfully"
-msgstr ""
+msgstr "已成功删除环境 {0}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:25
 msgid "New"
-msgstr ""
+msgstr "新建"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:26
 msgid "Cloning channels"
-msgstr ""
+msgstr "克隆频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:27
 msgid "Generating repositories data"
-msgstr ""
+msgstr "生成储存库数据"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
 #: ../html/src/manager/images/image-view.js:420
 msgid "Built"
-msgstr ""
+msgstr "已构建"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
 #: ../html/src/manager/images/image-view.js:422
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid "Failed"
-msgstr ""
+msgstr "失败"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:84
 msgid "not built"
-msgstr ""
+msgstr "未构建"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:73
 msgid "Built time"
-msgstr ""
+msgstr "构建时间"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
-msgstr ""
+msgstr "编辑过滤器 {0}"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Filters"
-msgstr ""
+msgstr "过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:92
 msgid "Attach/Detach Filters"
-msgstr ""
+msgstr "挂接/分离过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:109
 msgid "Filter edited successfully"
-msgstr ""
+msgstr "已成功编辑过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "AppStreams"
-msgstr ""
+msgstr "AppStreams"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "enabled module streams"
-msgstr ""
+msgstr "已启用模块流"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "filter out"
-msgstr ""
+msgstr "过滤掉"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid ""
 "select from the full source even if you have excluded them before with deny"
-msgstr ""
+msgstr "即使以前已使用 deny 将其排除，也要从整个源中选择"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:37
 msgid "Loading global filters..."
-msgstr ""
+msgstr "正在装载全局过滤器..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:43
 msgid "Updating project filters..."
-msgstr ""
+msgstr "正在更新项目过滤器..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:72
 msgid "Create New Filter"
-msgstr ""
+msgstr "创建新过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:51
 msgid "No version to promote or colliding environment build in progress"
-msgstr ""
+msgstr "没有可升级的版本，或者正在进行有冲突的环境构建"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:58
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:109
 msgid "Promote"
-msgstr ""
+msgstr "升级"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:76
 msgid "Promoting project.."
-msgstr ""
+msgstr "正在升级项目..."
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:90
 msgid "Target environment"
-msgstr ""
+msgstr "目标环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:95
 msgid "Promote version {0} into {1}"
-msgstr ""
+msgstr "将版本 {0} 升级到 {1}"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:110
 msgid "Promote environment"
-msgstr ""
+msgstr "升级环境"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:118
 msgid "Version {0} successfully promoted into {1}"
-msgstr ""
+msgstr "已成功将版本 {0} 升级到 {1}"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:17
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
 msgid "Project Properties"
-msgstr ""
+msgstr "项目属性"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:36
 msgid "(draft - not built) - Check the changes below"
-msgstr ""
+msgstr "（草稿 - 未构建）- 请检查下面的更改"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:50
 msgid "Edit Properties"
-msgstr ""
+msgstr "编辑属性"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:63
 msgid "Project properties updated successfully"
-msgstr ""
+msgstr "已成功更新项目属性"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:81
 msgid "Editing properties.."
-msgstr ""
+msgstr "正在编辑属性..."
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
 msgid "Versions history:"
-msgstr ""
+msgstr "版本历史记录："
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:68
 msgid "show more"
-msgstr ""
+msgstr "显示更多"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:78
 msgid "Versions history"
-msgstr ""
+msgstr "版本历史记录"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:78
 msgid "New Base Channel"
-msgstr ""
+msgstr "新建基础频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:95
 msgid "Choose the channel to be elected as the new base channel"
-msgstr ""
+msgstr "选择要用作新基础频道的频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:104
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
-msgstr ""
+msgstr "子频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:118
 msgid "Clear Search"
-msgstr ""
+msgstr "清除搜索"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
 msgid "no child channels"
-msgstr ""
+msgstr "无子频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
 msgid "This channel is recommended"
-msgstr ""
+msgstr "建议使用此频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
 msgid "Sources"
-msgstr ""
+msgstr "源"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
 msgid "Sources edited successfully"
-msgstr ""
+msgstr "已成功编辑源"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
 #: ../html/src/manager/images/image-build.js:221
 msgid "Software Channels"
-msgstr ""
+msgstr "软件频道"
 
 #: ../html/src/manager/errors/not-found.js:11
 msgid "Page Not Found"
-msgstr ""
+msgstr "找不到页面"
 
 #: ../html/src/manager/errors/not-found.js:16
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization. The address you are copying may also be outdated."
-msgstr ""
+msgstr "如果您在浏览器中键入了此地址，请仔细检查拼写和大写字母。您复制的地址也可能已过时。"
 
 #: ../html/src/manager/errors/not-found.js:25
 msgid ""
@@ -2336,95 +2344,95 @@ msgid ""
 "since the bookmark was created. Use the top (or left) navigation bars to "
 "find the page you are looking for, and if you find the document be sure to "
 "update your bookmark."
-msgstr ""
+msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:31
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
-msgstr ""
+msgstr "已为此组中的每个附属服务器安排了配置频道应用"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
 msgid "Formula saved. Apply the "
-msgstr ""
+msgstr "已保存公式。请应用 "
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:18
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:19
 msgid "Highstate"
-msgstr ""
+msgstr "Highstate"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:18
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:20
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:21
 msgid "Invalid target type."
-msgstr ""
+msgstr "无效目标类型。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:16
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
-msgstr ""
+msgstr "已保存公式。请在已启用的公式中编辑配置选项，并应用 "
 
 #: ../html/src/manager/images/image-build.js:27
 msgid "An unknown error has occurred."
-msgstr ""
+msgstr "发生了未知错误。"
 
 #: ../html/src/manager/images/image-build.js:28
 msgid "The image build has been scheduled."
-msgstr ""
+msgstr "已安排映像构建。"
 
 #: ../html/src/manager/images/image-build.js:29
 #: ../html/src/manager/images/image-import.js:24
 msgid ""
 "There was an error while scheduling a task. Please make sure that the task "
 "scheduler is running."
-msgstr ""
+msgstr "安排任务时出错。请确保任务日程安排程序正在运行。"
 
 #: ../html/src/manager/images/image-build.js:177
 msgid "Building the image has been "
-msgstr ""
+msgstr "映像构建 "
 
 #: ../html/src/manager/images/image-build.js:207
 msgid "No profile selected"
-msgstr ""
+msgstr "未选择配置文件"
 
 #: ../html/src/manager/images/image-build.js:212
 #: ../html/src/manager/images/image-profile-edit.js:395
 msgid "Image Type"
-msgstr ""
+msgstr "映像类型"
 
 #: ../html/src/manager/images/image-build.js:214
 #: ../html/src/manager/virtualization/pools/pool-properties.js:540
 msgid "Path"
-msgstr ""
+msgstr "路径"
 
 #: ../html/src/manager/images/image-build.js:275
 #: ../html/src/manager/images/image-import.js:276
 msgid "Build Host"
-msgstr ""
+msgstr "构建主机"
 
 #: ../html/src/manager/images/image-import.js:20
 msgid "Image store not found"
-msgstr ""
+msgstr "找不到映像储存"
 
 #: ../html/src/manager/images/image-import.js:22
 msgid "The image import has been scheduled."
-msgstr ""
+msgstr "已安排映像导入。"
 
 #: ../html/src/manager/images/image-import.js:231
 #: ../html/src/manager/images/image-profile-edit.js:305
 msgid "There are no channels assigned to this key."
-msgstr ""
+msgstr "未将任何频道指派到此密钥。"
 
 #: ../html/src/manager/images/image-import.js:235
 #: ../html/src/manager/images/image-profile-edit.js:309
 msgid "Activation Key"
-msgstr ""
+msgstr "激活密钥"
 
 #: ../html/src/manager/images/image-import.js:237
 #: ../html/src/manager/images/image-profile-edit.js:312
@@ -2432,79 +2440,79 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:262
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: ../html/src/manager/images/image-import.js:249
 msgid "Import Image"
-msgstr ""
+msgstr "导入映像"
 
 #: ../html/src/manager/images/image-import.js:254
 msgid "You can import Container images only using this feature."
-msgstr ""
+msgstr "使用此功能只能导入容器映像。"
 
 #: ../html/src/manager/images/image-import.js:259
 msgid "Image Store"
-msgstr ""
+msgstr "映像储存"
 
 #: ../html/src/manager/images/image-import.js:264
 #: ../html/src/manager/images/image-profile-edit.js:260
 msgid "Select an image store"
-msgstr ""
+msgstr "选择映像储存"
 
 #: ../html/src/manager/images/image-import.js:272
 msgid "Image name"
-msgstr ""
+msgstr "映像名称"
 
 #: ../html/src/manager/images/image-import.js:272
 msgid "Image name is required."
-msgstr ""
+msgstr "映像名称是必填的。"
 
 #: ../html/src/manager/images/image-import.js:274
 msgid "Image version"
-msgstr ""
+msgstr "映像版本"
 
 #: ../html/src/manager/images/image-import.js:274
 msgid "Image version is required."
-msgstr ""
+msgstr "映像版本是必填的。"
 
 #: ../html/src/manager/images/image-import.js:288
 #: ../html/src/manager/images/image-view.js:324
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 #: ../html/src/manager/images/image-import.js:289
 #: ../html/src/manager/images/image-profile-edit.js:375
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
 msgid "Clear fields"
-msgstr ""
+msgstr "清除字段"
 
 #: ../html/src/manager/images/image-profile-edit.js:255
 msgid "Target Image Store"
-msgstr ""
+msgstr "目标映像储存"
 
 #: ../html/src/manager/images/image-profile-edit.js:280
 msgid "Config URL"
-msgstr ""
+msgstr "配置 URL"
 
 #: ../html/src/manager/images/image-profile-edit.js:309
 msgid "Activation key is required for kiwi images."
-msgstr ""
+msgstr "kiwi 映像需要激活密钥。"
 
 #: ../html/src/manager/images/image-profile-edit.js:344
 msgid "Remove entry"
-msgstr ""
+msgstr "去除项"
 
 #: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Custom Info Values"
-msgstr ""
+msgstr "自定义信息值"
 
 #: ../html/src/manager/images/image-profile-edit.js:356
 msgid "Select a custom info key"
-msgstr ""
+msgstr "选择自定义信息键"
 
 #: ../html/src/manager/images/image-profile-edit.js:365
 msgid "Create additional custom info keys"
-msgstr ""
+msgstr "创建更多自定义信息键"
 
 #: ../html/src/manager/images/image-profile-edit.js:378
 #: ../html/src/manager/images/image-store-edit.js:168
@@ -2512,161 +2520,161 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:112
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: ../html/src/manager/images/image-profile-edit.js:388
 msgid "Edit Image Profile: '"
-msgstr ""
+msgstr "编辑映像配置文件：'"
 
 #: ../html/src/manager/images/image-profile-edit.js:388
 msgid "Create Image Profile"
-msgstr ""
+msgstr "创建映像配置文件"
 
 #: ../html/src/manager/images/image-profile-edit.js:394
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
-msgstr ""
+msgstr "标签是必填的，必须是唯一字符串，且不能包含冒号 (:)。"
 
 #: ../html/src/manager/images/image-profiles.js:22
 msgid "Dockerfile"
-msgstr ""
+msgstr "Dockerfile"
 
 #: ../html/src/manager/images/image-profiles.js:23
 msgid "Kiwi"
-msgstr ""
+msgstr "Kiwi"
 
 #: ../html/src/manager/images/image-profiles.js:27
 msgid "Image profile cannot be found."
-msgstr ""
+msgstr "找不到映像配置文件。"
 
 #: ../html/src/manager/images/image-profiles.js:28
 msgid "Image profile has been deleted."
-msgstr ""
+msgstr "已删除映像配置文件。"
 
 #: ../html/src/manager/images/image-profiles.js:29
 msgid "Image profiles have been deleted."
-msgstr ""
+msgstr "已删除映像配置文件。"
 
 #: ../html/src/manager/images/image-profiles.js:108
 #: ../html/src/manager/images/image-stores.js:111
 #: ../html/src/manager/images/image-view.js:317
 msgid "Delete selected"
-msgstr ""
+msgstr "删除选定项"
 
 #: ../html/src/manager/images/image-profiles.js:118
 msgid "Image Profiles"
-msgstr ""
+msgstr "映像配置文件"
 
 #: ../html/src/manager/images/image-profiles.js:142
 msgid "Build Type"
-msgstr ""
+msgstr "构建类型"
 
 #: ../html/src/manager/images/image-profiles.js:181
 #: ../html/src/manager/systems/delete-system-confirm.js:13
 msgid "Delete Profile"
-msgstr ""
+msgstr "删除配置文件"
 
 #: ../html/src/manager/images/image-profiles.js:182
 msgid "Are you sure you want to delete profile"
-msgstr ""
+msgstr "您确定要删除配置文件吗"
 
 #: ../html/src/manager/images/image-profiles.js:188
 msgid "Delete Selected Profile(s)"
-msgstr ""
+msgstr "删除选定的配置文件"
 
 #: ../html/src/manager/images/image-profiles.js:191
 msgid "Are you sure you want to delete the selected profile?"
-msgstr ""
+msgstr "您确定要删除选定的配置文件吗？"
 
 #: ../html/src/manager/images/image-profiles.js:191
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
-msgstr ""
+msgstr "您确定要删除选定的配置文件吗？（已选择 {0} 个配置文件）"
 
 #: ../html/src/manager/images/image-store-edit.js:151
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
 #: ../html/src/manager/virtualization/pools/pool-properties.js:517
 msgid "Username"
-msgstr ""
+msgstr "用户名"
 
 #: ../html/src/manager/images/image-store-edit.js:178
 msgid "Edit Image Store: '"
-msgstr ""
+msgstr "编辑映像储存：'"
 
 #: ../html/src/manager/images/image-store-edit.js:178
 msgid "Create Image Store"
-msgstr ""
+msgstr "创建映像储存"
 
 #: ../html/src/manager/images/image-store-edit.js:184
 msgid "Store Type"
-msgstr ""
+msgstr "储存类型"
 
 #: ../html/src/manager/images/image-store-edit.js:191
 msgid "Label is required and must be unique."
-msgstr ""
+msgstr "标签是必填的，且必须唯一。"
 
 #: ../html/src/manager/images/image-store-edit.js:192
 msgid "Store URI"
-msgstr ""
+msgstr "储存 URI"
 
 #: ../html/src/manager/images/image-stores.js:22
 msgid "Image store cannot be found."
-msgstr ""
+msgstr "找不到映像储存。"
 
 #: ../html/src/manager/images/image-stores.js:23
 msgid "Image store has been deleted."
-msgstr ""
+msgstr "已删除映像储存。"
 
 #: ../html/src/manager/images/image-stores.js:24
 msgid "Image stores have been deleted."
-msgstr ""
+msgstr "已删除映像储存。"
 
 #: ../html/src/manager/images/image-stores.js:121
 msgid "Image Stores"
-msgstr ""
+msgstr "映像储存"
 
 #: ../html/src/manager/images/image-stores.js:177
 msgid "Delete Store"
-msgstr ""
+msgstr "删除储存"
 
 #: ../html/src/manager/images/image-stores.js:178
 msgid "Are you sure you want to delete store"
-msgstr ""
+msgstr "您确定要删除储存吗"
 
 #: ../html/src/manager/images/image-stores.js:184
 msgid "Delete Selected Store(s)"
-msgstr ""
+msgstr "删除选定的储存"
 
 #: ../html/src/manager/images/image-stores.js:187
 msgid "Are you sure you want to delete the selected store?"
-msgstr ""
+msgstr "您确定要删除选定的储存吗？"
 
 #: ../html/src/manager/images/image-stores.js:187
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
-msgstr ""
+msgstr "您确定要删除选定的储存吗？（已选择 {0} 个储存）"
 
 #: ../html/src/manager/images/image-view.js:282
 msgid "Deleted successfully."
-msgstr ""
+msgstr "已成功删除。"
 
 #: ../html/src/manager/images/image-view.js:294
 msgid "Image inspect has been scheduled."
-msgstr ""
+msgstr "已安排映像检查。"
 
 #: ../html/src/manager/images/image-view.js:307
 msgid "Image build has been scheduled."
-msgstr ""
+msgstr "已安排映像构建。"
 
 #: ../html/src/manager/images/image-view.js:321
 #: ../html/src/manager/images/image-view.js:619
 #: ../html/src/manager/images/image-view-overview.js:426
 msgid "Delete Image"
-msgstr ""
+msgstr "删除映像"
 
 #: ../html/src/manager/images/image-view.js:334
 msgid "Images"
-msgstr ""
+msgstr "映像"
 
 #: ../html/src/manager/images/image-view.js:397
 #: ../html/src/manager/images/image-view.js:439
@@ -2677,352 +2685,352 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:44
 #: ../html/src/manager/images/image-view-runtime.js:79
 msgid "No information"
-msgstr ""
+msgstr "无信息"
 
 #: ../html/src/manager/images/image-view.js:399
 #: ../html/src/manager/images/image-view-overview.js:296
 msgid "Critical updates available"
-msgstr ""
+msgstr "有关键更新可用"
 
 #: ../html/src/manager/images/image-view.js:401
 #: ../html/src/manager/images/image-view-overview.js:298
 msgid "Non-critical updates available"
-msgstr ""
+msgstr "有非关键更新可用"
 
 #: ../html/src/manager/images/image-view.js:403
 #: ../html/src/manager/images/image-view-overview.js:300
 msgid "Package updates available"
-msgstr ""
+msgstr "有软件包更新可用"
 
 #: ../html/src/manager/images/image-view.js:405
 #: ../html/src/manager/images/image-view-overview.js:302
 msgid "Image is up to date"
-msgstr ""
+msgstr "映像是最新的"
 
 #: ../html/src/manager/images/image-view.js:414
 #: ../html/src/manager/images/image-view-overview.js:48
 msgid "Built externally"
-msgstr ""
+msgstr "已在外部构建"
 
 #: ../html/src/manager/images/image-view.js:416
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid "Queued"
-msgstr ""
+msgstr "已排队"
 
 #: ../html/src/manager/images/image-view.js:418
 msgid "Building"
-msgstr ""
+msgstr "正在构建"
 
 #: ../html/src/manager/images/image-view.js:424
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #: ../html/src/manager/images/image-view.js:432
 #: ../html/src/manager/images/image-view.js:473
 #: ../html/src/manager/images/image-view-overview.js:120
 #: ../html/src/manager/images/image-view-overview.js:151
 msgid "Waiting for update ..."
-msgstr ""
+msgstr "正在等待更新..."
 
 #: ../html/src/manager/images/image-view.js:437
 #: ../html/src/manager/images/image-view-overview.js:156
 msgid "All instances are consistent with SUSE Manager"
-msgstr ""
+msgstr "所有实例与 SUSE Manager 相一致"
 
 #: ../html/src/manager/images/image-view.js:441
 #: ../html/src/manager/images/image-view-overview.js:160
 msgid "Outdated instances found"
-msgstr ""
+msgstr "找到已过时的实例"
 
 #: ../html/src/manager/images/image-view.js:460
 #: ../html/src/manager/images/image-view-overview.js:107
 msgid "Cluster"
-msgstr ""
+msgstr "群集"
 
 #: ../html/src/manager/images/image-view.js:461
 #: ../html/src/manager/images/image-view.js:515
 #: ../html/src/manager/images/image-view-overview.js:108
 msgid "Instances"
-msgstr ""
+msgstr "实例"
 
 #: ../html/src/manager/images/image-view.js:487
 #: ../html/src/manager/images/image-view-overview.js:134
 msgid "View cluster summary"
-msgstr ""
+msgstr "查看群集摘要"
 
 #: ../html/src/manager/images/image-view.js:508
 #: ../html/src/manager/images/image-view.js:670
 msgid "Runtime"
-msgstr ""
+msgstr "运行时"
 
 #: ../html/src/manager/images/image-view.js:555
 msgid "Revision"
-msgstr ""
+msgstr "修订版"
 
 #: ../html/src/manager/images/image-view.js:561
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:84
 msgid "Updates"
-msgstr ""
+msgstr "更新"
 
 #: ../html/src/manager/images/image-view.js:566
 #: ../html/src/manager/images/image-view.js:669
 msgid "Patches"
-msgstr ""
+msgstr "补丁"
 
 #: ../html/src/manager/images/image-view.js:575
 #: ../html/src/manager/images/image-view.js:669
 msgid "Packages"
-msgstr ""
+msgstr "软件包"
 
 #: ../html/src/manager/images/image-view.js:587
 msgid "Last Modified"
-msgstr ""
+msgstr "上次修改时间"
 
 #: ../html/src/manager/images/image-view.js:620
 #: ../html/src/manager/images/image-view-overview.js:427
 msgid "Are you sure you want to delete image"
-msgstr ""
+msgstr "您确定要删除映像吗"
 
 #: ../html/src/manager/images/image-view.js:626
 msgid "Delete Selected Image(s)"
-msgstr ""
+msgstr "删除选定的映像"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete the selected image?"
-msgstr ""
+msgstr "您确定要删除选定的映像吗？"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
-msgstr ""
+msgstr "您确定要删除选定的映像吗？（已选择 {0} 个映像）"
 
 #: ../html/src/manager/images/image-view.js:636
 #: ../html/src/manager/images/image-view-overview.js:258
 msgid "Instance Details for '{0}'"
-msgstr ""
+msgstr "'{0}' 的实例细节"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 #: ../html/src/manager/images/image-view-overview.js:33
 #: ../html/src/manager/images/image-view-overview.js:35
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid "Go to event"
-msgstr ""
+msgstr "转到事件"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid " is queued"
-msgstr ""
+msgstr " 已排队"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid "In progress"
-msgstr ""
+msgstr "正在进行"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid " in progress"
-msgstr ""
+msgstr " 正在进行"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid "Successful"
-msgstr ""
+msgstr "成功"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid " is successful"
-msgstr ""
+msgstr " 成功"
 
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid " has failed"
-msgstr ""
+msgstr " 失败"
 
 #: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
-msgstr ""
+msgstr " 状态"
 
 #: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
-msgstr ""
+msgstr "已拾取"
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
-msgstr ""
+msgstr "编辑配置文件"
 
 #: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
-msgstr ""
+msgstr "编辑储存"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
-msgstr ""
+msgstr "映像状态"
 
 #: ../html/src/manager/images/image-view-overview.js:365
 msgid "Image Info"
-msgstr ""
+msgstr "映像信息"
 
 #: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
-msgstr ""
+msgstr "构建状态"
 
 #: ../html/src/manager/images/image-view-overview.js:381
 #: ../html/src/manager/images/image-view-overview.js:516
 msgid "Inspect"
-msgstr ""
+msgstr "检查"
 
 #: ../html/src/manager/images/image-view-overview.js:390
 msgid "Rebuild"
-msgstr ""
+msgstr "重构建"
 
 #: ../html/src/manager/images/image-view-overview.js:391
 msgid "Reschedule the build"
-msgstr ""
+msgstr "重安排构建"
 
 #: ../html/src/manager/images/image-view-overview.js:399
 msgid "Reinspect"
-msgstr ""
+msgstr "重新检查"
 
 #: ../html/src/manager/images/image-view-overview.js:400
 msgid "Reschedule the inspect"
-msgstr ""
+msgstr "重安排检查"
 
 #: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
-msgstr ""
+msgstr "自定义映像信息"
 
 #: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
-msgstr ""
+msgstr "安排构建"
 
 #: ../html/src/manager/images/image-view-overview.js:489
 msgid "Rebuild Image"
-msgstr ""
+msgstr "重构建映像"
 
 #: ../html/src/manager/images/image-view-overview.js:517
 msgid "Schedule inspect"
-msgstr ""
+msgstr "安排检查"
 
 #: ../html/src/manager/images/image-view-overview.js:548
 msgid "Reinspect Image"
-msgstr ""
+msgstr "重新检查映像"
 
 #: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:315
 msgid "Installed"
-msgstr ""
+msgstr "已安装"
 
 #: ../html/src/manager/images/image-view-patches.js:12
 msgid "fa fa-shield fa-1-5x"
-msgstr ""
+msgstr "fa fa-shield fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:13
 msgid "fa fa-bug fa-1-5x"
-msgstr ""
+msgstr "fa fa-bug fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:14
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
-msgstr ""
+msgstr "fa spacewalk-icon-enhancement fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:15
 msgid "fa fa-refresh fa-1-5x"
-msgstr ""
+msgstr "fa fa-refresh fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:16
 msgid "fa fa-archive fa-1-5"
-msgstr ""
+msgstr "fa fa-archive fa-1-5"
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
-msgstr ""
+msgstr "安全建议"
 
 #: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "Bug 修复建议"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "产品增强建议"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
-msgstr ""
+msgstr "需要重引导"
 
 #: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
-msgstr ""
+msgstr "影响软件包管理堆栈"
 
 #: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
-msgstr ""
+msgstr "建议"
 
 #: ../html/src/manager/images/image-view-patches.js:92
 msgid "Updated"
-msgstr ""
+msgstr "已更新"
 
 #: ../html/src/manager/images/image-view-runtime.js:42
 msgid "Instance is consistent with SUSE Manager"
-msgstr ""
+msgstr "实例与 SUSE Manager 相一致"
 
 #: ../html/src/manager/images/image-view-runtime.js:46
 msgid "Instance is outdated"
-msgstr ""
+msgstr "实例已过时"
 
 #: ../html/src/manager/images/image-view-runtime.js:77
 msgid "Cluster is consistent with SUSE Manager"
-msgstr ""
+msgstr "群集与 SUSE Manager 相一致"
 
 #: ../html/src/manager/images/image-view-runtime.js:81
 msgid "Cluster is outdated"
-msgstr ""
+msgstr "群集已过时"
 
 #: ../html/src/manager/images/image-view-runtime.js:95
 msgid "Pod"
-msgstr ""
+msgstr "Pod"
 
 #: ../html/src/manager/images/image-view-runtime.js:96
 msgid "Namespace"
-msgstr ""
+msgstr "名称空间"
 
 #: ../html/src/manager/login/login.js:45
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
-msgstr ""
+msgstr "需要进行纲要升级。请尽早升级您的纲要，以接收最新 bug 修复并避免潜在问题。"
 
 #: ../html/src/manager/login/login.js:54
 msgid "Signing in ..."
-msgstr ""
+msgstr "正在登录..."
 
 #: ../html/src/manager/login/login.js:108
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
-msgstr ""
+msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的新方式。"
 
 #: ../html/src/manager/login/login.js:130
 msgid "Login"
-msgstr ""
+msgstr "登录"
 
 #: ../html/src/manager/login/login.js:150
 msgid "Sign In"
-msgstr ""
+msgstr "登录"
 
 #: ../html/src/manager/login/use-login-api.js:14
 msgid "Either the password or username is incorrect."
-msgstr ""
+msgstr "口令或用户名不正确。"
 
 #: ../html/src/manager/login/use-login-api.js:15
 msgid "Your account has been deactivated."
-msgstr ""
+msgstr "您的帐户已停用。"
 
 #: ../html/src/manager/login/use-login-api.js:16
 msgid "This user has read only API access. WebUI login is denied."
-msgstr ""
+msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 
 #: ../html/src/manager/login/use-login-api.js:28
 msgid "Are you sure you want to close this page while login is in progress?"
-msgstr ""
+msgstr "登录正在进行，您确定要关闭此页面吗？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:33
 #: ../html/src/manager/maintenance/list/calendar-list.js:99
 msgid "Delete maintenance calendar"
-msgstr ""
+msgstr "删除维护日历"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:36
 #: ../html/src/manager/maintenance/details/schedule-details.js:50
@@ -3031,94 +3039,94 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
-msgstr ""
+msgstr "您确定要删除选定项吗？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:37
 #: ../html/src/manager/maintenance/details/schedule-details.js:51
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
-msgstr ""
+msgstr "这会从指派到该项的所有系统中去除当前日程安排。"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:162
 #: ../html/src/manager/maintenance/list/calendar-list.js:104
 msgid "Cancel affected actions?"
-msgstr ""
+msgstr "取消受影响的操作？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:64
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:114
 #: ../html/src/manager/maintenance/list/calendar-list.js:51
 msgid "Calendar Name"
-msgstr ""
+msgstr "日历名称"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:65
 #: ../html/src/manager/maintenance/list/calendar-list.js:58
 msgid "Used by Schedule"
-msgstr ""
+msgstr "已由日程安排使用"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:67
 msgid "Url"
-msgstr ""
+msgstr "URL"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:71
 msgid "Calendar Details"
-msgstr ""
+msgstr "日历细节"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:47
 #: ../html/src/manager/maintenance/list/schedule-list.js:85
 msgid "Delete maintenance schedule"
-msgstr ""
+msgstr "删除维护日程安排"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:65
 #: ../html/src/manager/maintenance/details/schedule-details.js:168
 msgid "Assigned Systems"
-msgstr ""
+msgstr "指派的系统"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:98
 msgid "Schedule name"
-msgstr ""
+msgstr "日程安排名称"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:99
 msgid "Assigned calendar"
-msgstr ""
+msgstr "指派的日历"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 msgid "Schedule type"
-msgstr ""
+msgstr "日程安排类型"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:89
 msgid "Single"
-msgstr ""
+msgstr "单个"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:90
 msgid "Multi"
-msgstr ""
+msgstr "多个"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:105
 #: ../html/src/manager/state/recurring-states-details.js:92
 msgid "Schedule Details"
-msgstr ""
+msgstr "日程安排细节"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:117
 msgid "Upcoming Maintenance Windows"
-msgstr ""
+msgstr "即将到来的维护时段"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:123
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
-msgstr ""
+msgstr "开始"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:124
 msgid "End"
-msgstr ""
+msgstr "结束"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:154
 msgid "Maintenance schedule has been assigned to {0} system(s)"
-msgstr ""
+msgstr "已将维护日程安排指派到 {0} 个系统"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:117
@@ -3126,51 +3134,51 @@ msgstr ""
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:143
 msgid "Cancel affected actions"
-msgstr ""
+msgstr "取消受影响的操作"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:196
 msgid "Search systems"
-msgstr ""
+msgstr "搜索系统"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:211
 msgid "Current Schedule"
-msgstr ""
+msgstr "当前日程安排"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:108
 msgid "Url '{0}' is invalid"
-msgstr ""
+msgstr "URL '{0}' 无效"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:121
 msgid "Calendar data"
-msgstr ""
+msgstr "日历数据"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:127
 msgid "Enter Url to ical file"
-msgstr ""
+msgstr "编辑 ical 文件的 URL"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:138
 msgid "Attach file"
-msgstr ""
+msgstr "附加文件"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:144
 msgid "Remove file"
-msgstr ""
+msgstr "去除文件"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:153
 msgid "Refresh data from url"
-msgstr ""
+msgstr "从 URL 刷新数据"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:157
 msgid "Confirm calendar refresh"
-msgstr ""
+msgstr "确认日历刷新"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:160
 msgid "Refreshing the calendar will reschedule all affected actions."
-msgstr ""
+msgstr "刷新日历会重安排所有受影响的操作。"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:161
 msgid "Confirm if you want to proceed."
-msgstr ""
+msgstr "请确认是否继续。"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
@@ -3178,151 +3186,151 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/pools/pool-properties.js:584
 msgid "Schedule"
-msgstr ""
+msgstr "日程安排"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:110
 #: ../html/src/manager/maintenance/list/schedule-list.js:43
 msgid "Calendar"
-msgstr ""
+msgstr "日历"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:49
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
 msgid "Maintenance"
-msgstr ""
+msgstr "维护"
 
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:99
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:104
 msgid "Add Calendar"
-msgstr ""
+msgstr "添加日历"
 
 #: ../html/src/manager/maintenance/list/calendar-list.js:47
 msgid "No calendars created. Use Create to add a calendar."
-msgstr ""
+msgstr "未创建日历。请使用 \"创建\" 添加日历。"
 
 #: ../html/src/manager/maintenance/list/calendar-list.js:103
 msgid "This will unassign all schedules from this calendar."
-msgstr ""
+msgstr "这会取消指派此日历中的所有日程安排。"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:30
 msgid "Create a new maintenance schedule"
-msgstr ""
+msgstr "创建新的维护日程安排"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
 msgid "Schedules"
-msgstr ""
+msgstr "日程安排"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:38
 msgid "Calendars"
-msgstr ""
+msgstr "日历"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:43
 msgid "schedule"
-msgstr ""
+msgstr "日程安排"
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:32
 msgid "No schedules created. Use Create to add a schedule."
-msgstr ""
+msgstr "未创建日程安排。请使用 \"创建\" 添加日程安排。"
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:89
 msgid "This will remove the schedule from all the systems assigned to it."
-msgstr ""
+msgstr "这会从指派到该项的所有系统中去除日程安排。"
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:103
 msgid "successfully"
-msgstr ""
+msgstr "成功"
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:127
 msgid "Error when deleting the "
-msgstr ""
+msgstr "删除以下项时出错： "
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:142
 msgid "Calendar successfully refreshed"
-msgstr ""
+msgstr "已成功刷新日历"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:23
 msgid ""
 "Any pending maintenance-only actions for these systems will be cancelled "
 "unless they are inside the new maintenance windows."
-msgstr ""
+msgstr "除非这些系统的任何仅维护等待中操作处于新维护时段，否则会取消这些操作。"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
 msgid "Are you sure you want to proceed?"
-msgstr ""
+msgstr "您确定要继续吗？"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:42
 msgid "Maintenance schedule has been cleared"
-msgstr ""
+msgstr "已清除维护日程安排"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:89
 msgid "Clear All"
-msgstr ""
+msgstr "全部清除"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:90
 msgid "fa-times"
-msgstr ""
+msgstr "fa-times"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:100
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:107
 msgid "Assign All"
-msgstr ""
+msgstr "全部指派"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:101
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:108
 msgid "fa-edit"
-msgstr ""
+msgstr "fa-edit"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:17
 msgid "Maintenance Schedules"
-msgstr ""
+msgstr "维护日程安排"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:21
 msgid "Assign a maintenance schedule to {0} system(s)"
-msgstr ""
+msgstr "将维护日程安排指派到 {0} 个系统"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:22
 msgid ""
 "Assigning a schedule will replace any prior assignments in all of the "
 "systems in the set."
-msgstr ""
+msgstr "指派一个日程安排会替换集内所有系统中以前的任何指派。"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 msgid "Applying the config channels has been "
-msgstr ""
+msgstr "应用配置频道 "
 
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:60
 msgid "Configuration"
-msgstr ""
+msgstr "配置"
 
 #: ../html/src/manager/minion/packages/package-states.js:276
 msgid "No package states."
-msgstr ""
+msgstr "无软件包状态。"
 
 #: ../html/src/manager/minion/packages/package-states.js:295
 msgid "Latest"
-msgstr ""
+msgstr "最新"
 
 #: ../html/src/manager/minion/packages/package-states.js:296
 msgid "Any"
-msgstr ""
+msgstr "任何"
 
 #: ../html/src/manager/minion/packages/package-states.js:303
 msgid "Undo"
-msgstr ""
+msgstr "撤销"
 
 #: ../html/src/manager/minion/packages/package-states.js:314
 msgid "Unmanaged"
-msgstr ""
+msgstr "不受管"
 
 #: ../html/src/manager/minion/packages/package-states.js:316
 msgid "Removed"
-msgstr ""
+msgstr "已去除"
 
 #: ../html/src/manager/minion/packages/package-states.js:332
 msgid "Package States"
-msgstr ""
+msgstr "软件包状态"
 
 #: ../html/src/manager/minion/packages/package-states.js:340
 #: ../html/src/manager/salt/keys/key-management.js:173
@@ -3334,39 +3342,39 @@ msgstr "州/省"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
-msgstr ""
+msgstr "已保存软件包状态。"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:59
 msgid "Applying the packages states has been "
-msgstr ""
+msgstr "应用软件包状态 "
 
 #: ../html/src/manager/notifications/notification-messages.js:23
 msgid "Onboarding failed"
-msgstr ""
+msgstr "载入失败"
 
 #: ../html/src/manager/notifications/notification-messages.js:27
 msgid "Channel sync failed"
-msgstr ""
+msgstr "频道同步失败"
 
 #: ../html/src/manager/notifications/notification-messages.js:31
 msgid "Channel sync finished"
-msgstr ""
+msgstr "频道同步已完成"
 
 #: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
-msgstr ""
+msgstr "创建引导储存库失败"
 
 #: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
-msgstr ""
+msgstr "状态应用失败"
 
 #: ../html/src/manager/notifications/notification-messages.js:112
 msgid "Filter by type"
-msgstr ""
+msgstr "按类型过滤"
 
 #: ../html/src/manager/notifications/notification-messages.js:211
 msgid "Info"
-msgstr ""
+msgstr "信息"
 
 #: ../html/src/manager/notifications/notification-messages.js:214
 msgid "Warning"
@@ -3378,247 +3386,247 @@ msgstr "错误"
 
 #: ../html/src/manager/notifications/notification-messages.js:272
 msgid "show details"
-msgstr ""
+msgstr "显示细节"
 
 #: ../html/src/manager/notifications/notification-messages.js:318
 msgid "Retry onboarding"
-msgstr ""
+msgstr "重试载入"
 
 #: ../html/src/manager/notifications/notification-messages.js:322
 msgid "Retry repo sync"
-msgstr ""
+msgstr "重试储存库同步"
 
 #: ../html/src/manager/notifications/notification-messages.js:336
 msgid "Unread Messages"
-msgstr ""
+msgstr "未读消息"
 
 #: ../html/src/manager/notifications/notification-messages.js:339
 msgid "All Messages"
-msgstr ""
+msgstr "所有消息"
 
 #: ../html/src/manager/notifications/notification-messages.js:358
 msgid "Delete selected messages"
-msgstr ""
+msgstr "删除选定的消息"
 
 #: ../html/src/manager/notifications/notification-messages.js:362
 msgid "Mark selected as read"
-msgstr ""
+msgstr "将选定消息标记为已读"
 
 #: ../html/src/manager/notifications/notification-messages.js:374
 #: ../html/src/manager/notifications/notification-messages.js:456
 msgid "Notification Messages"
-msgstr ""
+msgstr "通知消息"
 
 #: ../html/src/manager/notifications/notification-messages.js:379
 msgid "The server has collected the following notification messages."
-msgstr ""
+msgstr "服务器已收集以下通知消息。"
 
 #: ../html/src/manager/notifications/notification-messages.js:398
 msgid "Filter by summary"
-msgstr ""
+msgstr "按摘要过滤"
 
 #: ../html/src/manager/notifications/notification-messages.js:404
 msgid "Severity"
-msgstr ""
+msgstr "严重性"
 
 #: ../html/src/manager/notifications/notification-messages.js:416
 msgid "Summary"
-msgstr ""
+msgstr "摘要"
 
 #: ../html/src/manager/notifications/notification-messages.js:422
 msgid "Created"
-msgstr ""
+msgstr "创建日期"
 
 #: ../html/src/manager/notifications/notification-messages.js:427
 msgid "Action"
-msgstr ""
+msgstr "操作"
 
 #: ../html/src/manager/notifications/notification-messages.js:433
 msgid "Read|Delete"
-msgstr ""
+msgstr "阅读|删除"
 
 #: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Unread"
-msgstr ""
+msgstr "标记为未读"
 
 #: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Read"
-msgstr ""
+msgstr "标记为已读"
 
 #: ../html/src/manager/notifications/notification-messages.js:441
 msgid "Delete Notification"
-msgstr ""
+msgstr "删除通知"
 
 #: ../html/src/manager/notifications/notifications.js:36
 #: ../html/src/manager/salt/cmd/remote-commands.js:284
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
-msgstr ""
+msgstr "Websocket 连接已关闭。请刷新页面以重试。"
 
 #: ../html/src/manager/notifications/notifications.js:49
 #: ../html/src/manager/salt/cmd/remote-commands.js:304
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
-msgstr ""
+msgstr "连接到服务器时出错。请刷新页面以重试。"
 
 #: ../html/src/manager/notifications/notifications.js:95
 msgid ""
 "Session expired, please reload the page to receive notifications in real-"
 "time."
-msgstr ""
+msgstr "会话已失效，请重新装载页面以实时接收通知。"
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
 #: ../html/src/utils/network.js:57
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
-msgstr ""
+msgstr "授权错误，请重新装载页面或重试注销/登录。"
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.js:31
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
-msgstr ""
+msgstr "已为此组中的每个附属服务器安排了配置频道应用"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:48
 #: ../html/src/manager/salt/keys/key-management.js:57
 msgid "pending"
-msgstr ""
+msgstr "等待中"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:55
 msgid "timed out"
-msgstr ""
+msgstr "超时"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- hide error -"
-msgstr ""
+msgstr "- 隐藏错误 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- show error -"
-msgstr ""
+msgstr "- 显示错误 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- hide response -"
-msgstr ""
+msgstr "- 隐藏响应 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- show response -"
-msgstr ""
+msgstr "- 显示响应 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:159
 msgid "Stop waiting"
-msgstr ""
+msgstr "停止等待"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:161
 msgid "Stop waiting for all the minions to respond"
-msgstr ""
+msgstr "停止等待所有附属设备做出响应"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:164
 msgid "Find targets"
-msgstr ""
+msgstr "查找目标"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:166
 #: ../html/src/manager/salt/cmd/remote-commands.js:172
 msgid "Check which minions match the target expression"
-msgstr ""
+msgstr "检查哪些附属设备与目标表达式匹配"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:174
 msgid "Run command"
-msgstr ""
+msgstr "运行命令"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:176
 msgid "Run the command on the target minions"
-msgstr ""
+msgstr "在目标附属设备上运行命令"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:183
 msgid "Remote Commands"
-msgstr ""
+msgstr "远程命令"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:190
 msgid "Type the command here"
-msgstr ""
+msgstr "在此处键入命令"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:193
 msgid "Type the minion_id pattern to target here"
-msgstr ""
+msgstr "在此处键入目标的 minion_id 模式"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:205
 msgid "Target systems"
-msgstr ""
+msgstr "目标系统"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems previewed"
-msgstr ""
+msgstr "未预览目标系统"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems found"
-msgstr ""
+msgstr "未找到目标系统"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:393
 msgid "Not all minions responded on time."
-msgstr ""
+msgstr "并非所有附属设备都按时做出了响应。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:418
 msgid "No minions matched the target expression."
-msgstr ""
+msgstr "没有任何附属设备与目标表达式匹配。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:420
 msgid "Server returned an error: {0}"
-msgstr ""
+msgstr "服务器返回了错误：{0}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:487
 #: ../html/src/manager/salt/cmd/remote-commands.js:491
 msgid "Matching ssh-push minions..."
-msgstr ""
+msgstr "正在匹配 ssh-push 附属设备..."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
-msgstr ""
+msgstr "会话已失效，请重新装载页面以在系统上运行命令。"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
-msgstr ""
+msgstr "公式目录"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
 msgid "Filter by formula name"
-msgstr ""
+msgstr "按公式名称过滤"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
-msgstr ""
+msgstr "公式"
 
 #: ../html/src/manager/salt/keys/key-management.js:35
 msgid "Accept"
-msgstr ""
+msgstr "接受"
 
 #: ../html/src/manager/salt/keys/key-management.js:53
 msgid "accepted"
-msgstr ""
+msgstr "已接受"
 
 #: ../html/src/manager/salt/keys/key-management.js:61
 msgid "rejected"
-msgstr ""
+msgstr "已拒绝"
 
 #: ../html/src/manager/salt/keys/key-management.js:65
 msgid "denied"
-msgstr ""
+msgstr "已拒绝"
 
 #: ../html/src/manager/salt/keys/key-management.js:161
 msgid "Fingerprint"
-msgstr ""
+msgstr "指纹"
 
 #: ../html/src/manager/shared/menu/menu.js:168
 msgid "Clear Menu"
-msgstr ""
+msgstr "清除菜单"
 
 #: ../html/src/manager/shared/menu/menu.js:170
 msgid "Filter menu"
-msgstr ""
+msgstr "过滤菜单"
 
 #: ../html/src/manager/shared/menu/menu.js:205
 #: ../html/src/manager/shared/menu/menu.js:208
 msgid "Uyuni homepage"
-msgstr ""
+msgstr "Uyuni 主页"
 
 #: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
@@ -3627,279 +3635,279 @@ msgstr "Uyuni"
 #: ../html/src/manager/shared/menu/menu.js:212
 #: ../html/src/manager/shared/menu/menu.js:215
 msgid "SUSE Manager homepage"
-msgstr ""
+msgstr "SUSE Manager 主页"
 
 #: ../html/src/manager/shared/menu/menu.js:213
 msgid "SUSE"
-msgstr ""
+msgstr "SuSE"
 
 #: ../html/src/manager/shared/menu/menu.js:213
 msgid "Manager"
-msgstr ""
+msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.js:30
 msgid "Highstate for {0}"
-msgstr ""
+msgstr "{0} Highstate"
 
 #: ../html/src/manager/state/display-highstate.js:125
 msgid "There are no applicable systems."
-msgstr ""
+msgstr "没有适用的系统。"
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "Action has been successfully added to the "
-msgstr ""
+msgstr "操作已成功添加到 "
 
 #: ../html/src/manager/state/highstate.js:52
 msgid "Applying the highstate has been "
-msgstr ""
+msgstr "应用 highstate "
 
 #: ../html/src/manager/state/highstate.js:52
 msgid "scheduled."
-msgstr ""
+msgstr "已安排。"
 
 #: ../html/src/manager/state/highstate.js:96
 msgid "Apply Highstate"
-msgstr ""
+msgstr "应用 Highstate"
 
 #: ../html/src/manager/state/highstate.js:108
 msgid "Create Recurring"
-msgstr ""
+msgstr "创建重复性"
 
 #: ../html/src/manager/state/recurring-states-details.js:43
 msgid "Execution time"
-msgstr ""
+msgstr "执行时间"
 
 #: ../html/src/manager/state/recurring-states-details.js:97
 msgid "State:"
-msgstr ""
+msgstr "状态："
 
 #: ../html/src/manager/state/recurring-states-details.js:98
 #: ../html/src/manager/state/recurring-states-list.js:75
 msgid "Active"
-msgstr ""
+msgstr "活动"
 
 #: ../html/src/manager/state/recurring-states-details.js:98
 msgid "Inactive"
-msgstr ""
+msgstr "非活动"
 
 #: ../html/src/manager/state/recurring-states-details.js:102
 msgid "Test"
-msgstr ""
+msgstr "测试"
 
 #: ../html/src/manager/state/recurring-states-details.js:103
 msgid "True"
-msgstr ""
+msgstr "True"
 
 #: ../html/src/manager/state/recurring-states-details.js:107
 msgid "Target type"
-msgstr ""
+msgstr "目标类型"
 
 #: ../html/src/manager/state/recurring-states-details.js:112
 msgid "Organization name"
-msgstr ""
+msgstr "组织名称"
 
 #: ../html/src/manager/state/recurring-states-details.js:117
 msgid "Created by"
-msgstr ""
+msgstr "创建者"
 
 #: ../html/src/manager/state/recurring-states-details.js:121
 msgid "Created at"
-msgstr ""
+msgstr "创建时间"
 
 #: ../html/src/manager/state/recurring-states-details.js:126
 msgid "Quartz format string"
-msgstr ""
+msgstr "Quartz 格式字符串"
 
 #: ../html/src/manager/state/recurring-states-details.js:174
 #: ../html/src/manager/state/recurring-states-list.js:136
 msgid "Delete Recurring State Schedule"
-msgstr ""
+msgstr "删除重复性状态日程安排"
 
 #: ../html/src/manager/state/recurring-states-details.js:175
 msgid "Are you sure you want to delete this schedule?"
-msgstr ""
+msgstr "您确定要删除此日程安排吗？"
 
 #: ../html/src/manager/state/recurring-states-edit.js:99
 msgid "Test mode"
-msgstr ""
+msgstr "测试模式"
 
 #: ../html/src/manager/state/recurring-states.js:115
 msgid "Schedule successfully"
-msgstr ""
+msgstr "安排成功"
 
 #: ../html/src/manager/state/recurring-states.js:140
 msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
+msgstr "删除操作时出错。请检查 Taskomatic 是否正在运行"
 
 #: ../html/src/manager/state/recurring-states-list.js:58
 msgid "Recurring States"
-msgstr ""
+msgstr "重复性状态"
 
 #: ../html/src/manager/state/recurring-states-list.js:71
 msgid "No schedules created."
-msgstr ""
+msgstr "未创建日程安排。"
 
 #: ../html/src/manager/state/recurring-states-list.js:95
 msgid "Frequency"
-msgstr ""
+msgstr "频率"
 
 #: ../html/src/manager/state/recurring-states-list.js:102
 msgid "Target Type"
-msgstr ""
+msgstr "目标类型"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
 msgid "SUSE Manager Default"
-msgstr ""
+msgstr "SUSE Manager Default"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
 msgid "Child Channels:"
-msgstr ""
+msgstr "子频道："
 
 #: ../html/src/manager/systems/activation-key/child-channels.js:140
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
 msgid "mandatory"
-msgstr ""
+msgstr "必需"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:163
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
-msgstr ""
+msgstr "请求已中断，或者从服务器收到了无效响应。请检查您的附属设备是否已正常引导。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr ""
+msgstr "已成功引导主机！您的系统很快应会显示在"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "systems"
-msgstr ""
+msgstr "系统"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "shortly"
-msgstr ""
+msgstr "中"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:191
 msgid "Your system is bootstrapping: waiting for a response.."
-msgstr ""
+msgstr "您的系统正在引导：正在等待响应..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:195
 msgid "Loading SSH Private Key.."
-msgstr ""
+msgstr "正在装载 SSH 私用密钥..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
-msgstr ""
+msgstr "引导"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
-msgstr ""
+msgstr "例如 ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:216
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:275
 msgid "SSH Private Key"
-msgstr ""
+msgstr "SSH 私用密钥"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:220
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
-msgstr ""
+msgstr "该文件将储存在服务器上的临时文件中，在完成引导过程后将被删除"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:225
 msgid "SSH Private Key Passphrase"
-msgstr ""
+msgstr "SSH 私用密钥通行口令"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:227
 msgid "Leave empty for no passphrase"
-msgstr ""
+msgstr "留空表示无通行口令"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
 msgid "Bootstrap Minions"
-msgstr ""
+msgstr "引导附属设备"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
-msgstr ""
+msgstr "只能通过提供 SSH 身份凭证来添加要管理的系统。{0} 将远程准备系统并执行注册。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
 msgid "e.g., host.domain.com"
-msgstr ""
+msgstr "例如 host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:248
 msgid "Port range: 1 - 65535"
-msgstr ""
+msgstr "端口范围：1 - 65535"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
 msgid "Proxy"
-msgstr ""
+msgstr "代理"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:311
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
-msgstr ""
+msgstr "代理的主机名不是完全限定的。这可能导致在访问频道时出现问题。"
 
 #: ../html/src/manager/systems/delete-system.js:17
 msgid "Cleanup timed out. Please check if the machine is reachable."
-msgstr ""
+msgstr "清理操作超时。请检查计算机是否可访问。"
 
 #: ../html/src/manager/systems/delete-system.js:18
 msgid "No result found in state apply response."
-msgstr ""
+msgstr "在状态应用响应中未找到结果。"
 
 #: ../html/src/manager/systems/delete-system.js:85
 msgid "An error occurred during cleanup"
-msgstr ""
+msgstr "清理期间出错"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.js:26
 msgid "Confirm Deletion"
-msgstr ""
+msgstr "确认删除"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:31
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
 msgid "Error scheduling job in Taskomatic. Please check the logs."
-msgstr ""
+msgstr "在 Taskomatic 中安排作业时出错。请查看日志。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
 msgid "Could not determine system default channel."
-msgstr ""
+msgstr "无法确定系统默认频道。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
 msgid "Channel change is invalid."
-msgstr ""
+msgstr "频道更改无效。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
 msgid "Selected base is not compatible with system."
-msgstr ""
+msgstr "选定的基础频道与系统不兼容。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
 msgid "No base channel change found."
-msgstr ""
+msgstr "未找到基础频道更改。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:39
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:193
 msgid "No Change"
-msgstr ""
+msgstr "无更改"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:452
 msgid "Subscribe"
-msgstr ""
+msgstr "订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
 msgid "Unsubsribe"
-msgstr ""
+msgstr "取消订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:140
 msgid "System Default Base Channel"
-msgstr ""
+msgstr "系统默认基础频道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:144
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
-msgstr ""
+msgstr "基础频道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:148
 msgid ""
@@ -3909,198 +3917,200 @@ msgid ""
 "version and processor type. Systems will be unsubscribed from all channels, "
 "and subscribed to their new base channels. "
 msgstr ""
+"作为频道管理员，您可以更改系统订阅的基础频道。有效频道是您的组织创建的频道，或者适用于您操作系统版本和处理器类型的默认 SUSE "
+"基础频道。系统将取消订阅所有频道，然后订阅其新的基础频道。 "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:150
 msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
-msgstr ""
+msgstr "此操作可能会对适用于系统的软件包和补丁造成重大影响，因此应该慎用。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:165
 msgid "Current base Channel"
-msgstr ""
+msgstr "当前基础频道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:172
 msgid "Systems"
-msgstr ""
+msgstr "系统"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:180
 msgid "Desired base Channel"
-msgstr ""
+msgstr "所需基础频道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:196
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
 msgid "SUSE Channels"
-msgstr ""
+msgstr "SUSE 频道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:202
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
-msgstr ""
+msgstr "自定义频道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:214
 msgid "Systems subscribed to"
-msgstr ""
+msgstr "系统已订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:388
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:565
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:578
 msgid "(Couldn't determine new base channel)"
-msgstr ""
+msgstr "（无法确定新的基础频道）"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:404
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:588
 msgid "system(s) to subscribe"
-msgstr ""
+msgstr "个系统要订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:412
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:595
 msgid "system(s) incompatible"
-msgstr ""
+msgstr "个系统不兼容"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:445
 msgid "No change"
-msgstr ""
+msgstr "无更改"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:459
 msgid "Unsubscribe"
-msgstr ""
+msgstr "取消订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:475
 msgid "Below is a list of channels in your organization. "
-msgstr ""
+msgstr "下面是您组织中的频道列表。 "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:477
 msgid "To make no changes for a channel, check Do Nothing for that channel."
-msgstr ""
+msgstr "要防止对某个频道进行更改，请选中该频道对应的 \"不执行任何操作\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
-msgstr ""
+msgstr "要让选定的系统订阅某个频道，请选中该频道对应的 \"已订阅\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
-msgstr ""
+msgstr "要让选定的系统取消订阅某个频道，请选中该频道对应的 \"已取消订阅\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:486
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:633
 msgid "Systems to subscribe to"
-msgstr ""
+msgstr "要订阅以下频道的系统"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:573
 msgid "(None)"
-msgstr ""
+msgstr "（无）"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:580
 msgid " (system default)"
-msgstr ""
+msgstr " （系统默认）"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:618
 msgid "Channel Changes Overview"
-msgstr ""
+msgstr "频道更改概述"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:661
 msgid "Channel Changes Actions"
-msgstr ""
+msgstr "频道更改操作"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:686
 msgid "Scheduled"
-msgstr ""
+msgstr "已安排"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:688
 msgid "Unknown error. Could not schedule channel change"
-msgstr ""
+msgstr "未知错误。无法安排频道更改"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:818
 msgid "Some changes scheduled successfully."
-msgstr ""
+msgstr "已成功安排某些更改。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:945
 msgid "Channel changes scheduled."
-msgstr ""
+msgstr "已安排频道更改。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
 msgid "(none, disable service)"
-msgstr ""
+msgstr "（无，禁用服务）"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
 msgid "Changing the channels has been "
-msgstr ""
+msgstr "更改频道 "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
-msgstr ""
+msgstr "您可以更改系统订阅的基础软件频道。该系统将取消订阅所有软件频道，然后订阅新的基础软件频道。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
-msgstr ""
+msgstr "此系统已订阅下面选中的频道（如果有）。已禁用的复选框表示相应的频道不可手动订阅或取消订阅。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
 msgid "No child channels available."
-msgstr ""
+msgstr "无可用子频道。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
 msgid "Confirm Software Channel Change"
-msgstr ""
+msgstr "确认软件频道更改"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:49
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
-msgstr ""
+msgstr "已触发此虚拟主机管理器的数据刷新。"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:65
 msgid "Properties"
-msgstr ""
+msgstr "属性"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:69
 msgid "Nodes"
-msgstr ""
+msgstr "节点"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:85
 msgid "OS"
-msgstr ""
+msgstr "操作系统"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:91
 msgid "CPU Arch"
-msgstr ""
+msgstr "CPU 体系结构"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:97
 msgid "CPU Sockets"
-msgstr ""
+msgstr "CPU 插槽数"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:103
 msgid "RAM (Mb)"
-msgstr ""
+msgstr "RAM (Mb)"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:118
 msgid "Refresh Data"
-msgstr ""
+msgstr "刷新数据"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:120
 msgid "Refresh data from this Virtual Host Manager"
-msgstr ""
+msgstr "刷新此虚拟主机管理器中的数据"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:140
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:91
 msgid "Delete Virtual Host Manager"
-msgstr ""
+msgstr "删除虚拟主机管理器"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
 msgid "Are you sure you want to delete this virtual host manager?"
-msgstr ""
+msgstr "您确定要删除此虚拟主机管理器吗？"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
@@ -4111,394 +4121,394 @@ msgstr "组织"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:48
 msgid "Gatherer module"
-msgstr ""
+msgstr "收集器模块"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:246
 msgid "Current Context"
-msgstr ""
+msgstr "当前上下文"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:258
 msgid "Kubeconfig file"
-msgstr ""
+msgstr "Kubeconfig 文件"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
 msgid "File-based"
-msgstr ""
+msgstr "基于文件"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:20
 msgid "VMWare-based"
-msgstr ""
+msgstr "基于 VMWare"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:21
 msgid "Kubernetes Cluster"
-msgstr ""
+msgstr "Kubernetes 群集"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:22
 msgid "Amazon EC2"
-msgstr ""
+msgstr "Amazon EC2"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:23
 msgid "Google Compute Engine"
-msgstr ""
+msgstr "Google 计算引擎"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:24
 msgid "Azure"
-msgstr ""
+msgstr "Azure"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:25
 msgid "Nutanix AHV"
-msgstr ""
+msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Virtual Host Manager"
-msgstr ""
+msgstr "虚拟主机管理器"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Add a {0}"
-msgstr ""
+msgstr "添加 {0}"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
 msgid "Virtual Host Managers"
-msgstr ""
+msgstr "虚拟主机管理器"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
 msgid "Add a virtual host manager"
-msgstr ""
+msgstr "添加虚拟主机管理器"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
 msgid "No Virtual Host Managers."
-msgstr ""
+msgstr "无虚拟主机管理器。"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:175
 msgid "Toggle full size"
-msgstr ""
+msgstr "切换完整大小"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
 msgid "Something went wrong, connection is closed"
-msgstr ""
+msgstr "出现了问题，已关闭连接"
 
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:85
 msgid "Create Virtual Machine"
-msgstr ""
+msgstr "创建虚拟机"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
 #: ../html/src/manager/virtualization/pools/pool-properties.js:241
 msgid "Can not contain the following characters: /\\"
-msgstr ""
+msgstr "不能包含以下字符：/\\"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:149
 msgid "Hypervisor"
-msgstr ""
+msgstr "超级管理程序"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:164
 msgid "Virtual Machine Type"
-msgstr ""
+msgstr "虚拟机类型"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:176
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
-msgstr ""
+msgstr "最大内存 (MiB)"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:178
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:187
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
-msgstr ""
+msgstr "必须指定正整数"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:185
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
-msgstr ""
+msgstr "虚拟 CPU 计数"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:215
 msgid "Auto-installation Profile"
-msgstr ""
+msgstr "自动安装配置文件"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:229
 msgid "Kernel options"
-msgstr ""
+msgstr "内核选项"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:245
 msgid "Graphics"
-msgstr ""
+msgstr "图形"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:24
 msgid "Start / Resume"
-msgstr ""
+msgstr "开始/恢复"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:27
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:24
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
-msgstr ""
+msgstr "停止"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:27
 msgid "Force off"
-msgstr ""
+msgstr "强制关闭"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:30
 msgid "Reset"
-msgstr ""
+msgstr "重设置"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:33
 msgid "Suspend"
-msgstr ""
+msgstr "挂起"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Hosted Virtual Systems"
-msgstr ""
+msgstr "托管虚拟系统"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:49
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
-msgstr ""
+msgstr "这是配置为在此主机上运行的虚拟 Guest 列表。"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:63
 msgid "Guest"
-msgstr ""
+msgstr "Guest"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:72
 msgid "Unregistered System"
-msgstr ""
+msgstr "未注册的系统"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:101
 msgid "Current Memory"
-msgstr ""
+msgstr "当前内存"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:107
 msgid "vCPUs"
-msgstr ""
+msgstr "vCPU"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:113
 msgid "Base Software Channel"
-msgstr ""
+msgstr "基础软件频道"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:138
 msgid "paused"
-msgstr ""
+msgstr "已暂停"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:147
 msgid "Graphical Console"
-msgstr ""
+msgstr "图形控制台"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:56
 msgid "Device type"
-msgstr ""
+msgstr "设备类型"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:63
 msgid "Disk"
-msgstr ""
+msgstr "磁盘"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:64
 msgid "CDROM"
-msgstr ""
+msgstr "CDROM"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:65
 msgid "Floppy"
-msgstr ""
+msgstr "软盘"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:78
 msgid "Bus"
-msgstr ""
+msgstr "总线"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:28
 msgid "File"
-msgstr ""
+msgstr "文件"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:120
 #: ../html/src/manager/virtualization/pools/pool-properties.js:503
 msgid "Format"
-msgstr ""
+msgstr "格式"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
 msgid "Disks"
-msgstr ""
+msgstr "磁盘"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:66
 msgid "Source storage pool"
-msgstr ""
+msgstr "源储存池"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:81
 msgid "Source Volume"
-msgstr ""
+msgstr "源卷"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:102
 msgid "Disk size (GiB)"
-msgstr ""
+msgstr "磁盘大小 (GiB)"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:110
 msgid "Source template image URL"
-msgstr ""
+msgstr "源模板映像 URL"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:37
 msgid "Network"
-msgstr ""
+msgstr "网络"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:53
 msgid "MAC address"
-msgstr ""
+msgstr "MAC 地址"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:54
 msgid "Leave blank to generate a MAC address"
-msgstr ""
+msgstr "保留空白会生成 MAC 地址"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:86
 msgid "Networks"
-msgstr ""
+msgstr "网络"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
 #: ../html/src/manager/virtualization/pools/pool-properties.js:608
 msgid "Clear Fields"
-msgstr ""
+msgstr "清除字段"
 
 #: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
-msgstr ""
+msgstr "请安装 libvirt Python 模块。"
 
 #: ../html/src/manager/virtualization/ListTab.js:142
 msgid "{0} selected"
-msgstr ""
+msgstr "已选择 {0}"
 
 #: ../html/src/manager/virtualization/ListTab.js:238
 msgid "Action Status"
-msgstr ""
+msgstr "操作状态"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:38
 msgid "Virtual Networks"
-msgstr ""
+msgstr "虚拟网络"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:39
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
-msgstr ""
+msgstr "这是配置为在此主机上运行的虚拟网络列表。"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:61
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
-msgstr ""
+msgstr "自动启动"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:69
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
-msgstr ""
+msgstr "持久"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:78
 msgid "Bridge"
-msgstr ""
+msgstr "网桥"
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
-msgstr ""
+msgstr "创建虚拟储存池"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Delete the pool, including the contained volumes. "
-msgstr ""
+msgstr "删除池，包括其中包含的卷。 "
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Cannot be undone"
-msgstr ""
+msgstr "无法撤销"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:273
 msgid "Edit Pool"
-msgstr ""
+msgstr "编辑池"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:345
 msgid "Location"
-msgstr ""
+msgstr "位置"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "Usage"
-msgstr ""
+msgstr "用法"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:357
 msgid "Create Pool"
-msgstr ""
+msgstr "创建池"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:363
 msgid "Virtual Storage Pools and Volumes"
-msgstr ""
+msgstr "虚拟储存池和卷"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:364
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
-msgstr ""
+msgstr "这是在此主机上定义的包含虚拟 Guest 磁盘的储存池列表。"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:375
 msgid "Filter by pool or volume name"
-msgstr ""
+msgstr "按池或卷名称过滤"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:175
 msgid "Partition separator"
-msgstr ""
+msgstr "分区分隔符"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:182
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:207
 msgid "Host name"
-msgstr ""
+msgstr "主机名"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:216
 msgid "Port"
-msgstr ""
+msgstr "端口"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:250
 msgid "Pool Type"
-msgstr ""
+msgstr "池类型"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:264
 msgid "Start during virtual host boot"
-msgstr ""
+msgstr "在虚拟主机引导期间启动"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:272
 msgid "Source"
-msgstr ""
+msgstr "源"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:288
 msgid "Hosts"
-msgstr ""
+msgstr "主机"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:320
 msgid "Devices"
-msgstr ""
+msgstr "设备"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:353
 msgid "Initiator IQN"
-msgstr ""
+msgstr "发起端 IQN"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:364
 msgid "Adapter type"
-msgstr ""
+msgstr "适配器类型"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:394
 msgid "Adapter name"
-msgstr ""
+msgstr "适配器名称"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "Adapter parent PCI address"
-msgstr ""
+msgstr "适配器父项 PCI 地址"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:407
 #: ../html/src/manager/virtualization/pools/pool-properties.js:418
 msgid "PCI address formatted like 0000:00:00.0"
-msgstr ""
+msgstr "类似于 0000:00:00.0 格式的 PCI 地址"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:414
 msgid "Adapter parent address unique ID"
-msgstr ""
+msgstr "适配器父项地址唯一 ID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:425
 msgid "Adapter parent name"
-msgstr ""
+msgstr "适配器父项名称"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:433
 msgid "Adapter parent wwnn"
-msgstr ""
+msgstr "适配器父项 wwnn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:436
 #: ../html/src/manager/virtualization/pools/pool-properties.js:446
@@ -4506,181 +4516,181 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/pool-properties.js:467
 #: ../html/src/manager/virtualization/pools/pool-properties.js:478
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr ""
+msgstr "长度为 16 个字符的十六进制值。示例：500277a4100c4e21"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:443
 msgid "Adapter parent wwpn"
-msgstr ""
+msgstr "适配器父项 wwpn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:453
 msgid "Adapter parent fabric wwn"
-msgstr ""
+msgstr "适配器父项结构 wwn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "Adapter wwnn"
-msgstr ""
+msgstr "适配器 wwnn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:474
 msgid "Adapter wwpn"
-msgstr ""
+msgstr "适配器 wwpn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:485
 msgid "Manage vHBA deletion"
-msgstr ""
+msgstr "管理 vHBA 删除操作"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:494
 msgid "Source name"
-msgstr ""
+msgstr "源名称"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:523
 msgid "Passphrase"
-msgstr ""
+msgstr "通行口令"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:535
 msgid "Target"
-msgstr ""
+msgstr "目标"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:548
 msgid "Owner UID"
-msgstr ""
+msgstr "拥有者 UID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:552
 msgid "UID is a numeric value"
-msgstr ""
+msgstr "UID 是一个数字值"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "Group ID"
-msgstr ""
+msgstr "组 ID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:560
 #: ../html/src/manager/virtualization/pools/pool-properties.js:569
 msgid "GID is a numeric value"
-msgstr ""
+msgstr "GID 是一个数字值"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:564
 msgid "Permission mode"
-msgstr ""
+msgstr "权限模式"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:565
 msgid "target directory permissions in octal form, like 0775"
-msgstr ""
+msgstr "八进制格式（例如 0775）的目标目录权限"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:574
 msgid "SELinux label"
-msgstr ""
+msgstr "SELinux 标签"
 
 #: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
-msgstr ""
+msgstr "无法从服务器获取储存池功能。请重试。"
 
 #: ../html/src/manager/visualization/data-tree.js:167
 msgid "Add/remove system from SSM"
-msgstr ""
+msgstr "在 SSM 中添加/去除系统"
 
 #: ../html/src/manager/visualization/data-tree.js:201
 msgid "  security advisories"
-msgstr ""
+msgstr "  安全建议"
 
 #: ../html/src/manager/visualization/data-tree.js:207
 msgid "  bug fix advisories"
-msgstr ""
+msgstr "  bug 修复建议"
 
 #: ../html/src/manager/visualization/data-tree.js:214
 msgid "  product enhancement advisories"
-msgstr ""
+msgstr "  产品增强建议"
 
 #: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
-msgstr ""
+msgstr "将子项添加到 SSM"
 
 #: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
-msgstr ""
+msgstr "过滤"
 
 #: ../html/src/manager/visualization/hierarchy.js:63
 msgid "Partitioning"
-msgstr ""
+msgstr "分区"
 
 #: ../html/src/manager/visualization/hierarchy.js:84
 msgid "Show systems with:"
-msgstr ""
+msgstr "显示具有以下资源的系统："
 
 #: ../html/src/manager/visualization/hierarchy.js:109
 msgid "security advisories"
-msgstr ""
+msgstr "安全建议"
 
 #: ../html/src/manager/visualization/hierarchy.js:110
 msgid "bug fix advisories"
-msgstr ""
+msgstr "bug 修复建议"
 
 #: ../html/src/manager/visualization/hierarchy.js:111
 msgid "product enhancement advisories"
-msgstr ""
+msgstr "产品增强建议"
 
 #. System name filter
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "Filter by system name"
-msgstr ""
+msgstr "按系统名称过滤"
 
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "e.g., client.nue.sles"
-msgstr ""
+msgstr "例如 client.nue.sles"
 
 #. Base channel filter
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "Filter by system base channel"
-msgstr ""
+msgstr "按系统基础频道过滤"
 
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
-msgstr ""
+msgstr "例如 SLE12"
 
 #. Installed products filter
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "Filter by system installed products"
-msgstr ""
+msgstr "按系统安装的产品过滤"
 
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
-msgstr ""
+msgstr "例如 SLES"
 
 #: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
-msgstr ""
+msgstr "根据系统是否有适用的补丁将系统分区："
 
 #: ../html/src/manager/visualization/hierarchy.js:204
 msgid "There was an error fetching data from the server."
-msgstr ""
+msgstr "从服务器提取数据时出错。"
 
 #: ../html/src/manager/visualization/hierarchy.js:240
 msgid " filters"
-msgstr ""
+msgstr " 过滤器"
 
 #: ../html/src/manager/visualization/ui/components.js:42
 msgid "Partition systems by given check-in time:"
-msgstr ""
+msgstr "按给定的签入时间将系统分区："
 
 #: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
-msgstr ""
+msgstr "添加分组级别"
 
 #: ../html/src/manager/visualization/ui/components.js:187
 msgid "Select a system group"
-msgstr ""
+msgstr "选择系统组"
 
 #: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
-msgstr ""
+msgstr "分割成组"
 
 #: ../html/src/utils/network.js:55
 msgid "Session expired, please reload the page."
-msgstr ""
+msgstr "会话已失效，请重新装载页面。"
 
 #: ../html/src/utils/network.js:59
 msgid "Resource not found."
-msgstr ""
+msgstr "未找到资源。"
 
 #: ../html/src/utils/network.js:63
 msgid "HTTP Error code "
-msgstr ""
+msgstr "HTTP 错误代码 "
