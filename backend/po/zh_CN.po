@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-11-04 11:50+0000\n"
+"PO-Revision-Date: 2020-11-06 09:41+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/zh_CN/>\n"
@@ -192,12 +192,12 @@ msgstr "未为系统配置文件启用服务：\"%s\""
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr "不支持架构 `%s'"
+msgstr "不支持体系结构 `%s'"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "为令牌 `%s' 分配了多个基础频道"
+msgstr "为令牌 `%s' 指派了多个基础频道"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
@@ -240,7 +240,7 @@ msgstr "不支持堆叠重新注册令牌"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
-msgstr "无效的用户名/密码组合"
+msgstr "无效的用户名/口令组合"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:467
@@ -276,17 +276,17 @@ msgstr "请将您的电子邮件地址限制为 %s 个字符"
 #: ../server/rhnUser.py:623
 #, python-format
 msgid "password must be at least %d characters"
-msgstr "密码必须至少为 %d 个字符"
+msgstr "口令必须至少为 %d 个字符"
 
 #: ../server/rhnUser.py:626
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr "密码必须短于 %d 个字符"
+msgstr "口令必须短于 %d 个字符"
 
 #: ../server/rhnUser.py:644
 #, python-format
 msgid "password contains character `%s'"
-msgstr "密码包含字符 `%s'"
+msgstr "口令包含字符 `%s'"
 
 #: ../server/rhnUser.py:651
 #, python-format
@@ -385,7 +385,7 @@ msgid ""
 "...to activate your product."
 msgstr ""
 "\n"
-"架构和操作系统发行版的组合无效 (%s, %s)。\n"
+"体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
 "您的系统已注册，但不会接收更新，\n"
 "因为它未订阅频道。如果您尚未激活\n"
 "服务产品，请访问我们的网站：\n"
@@ -404,7 +404,7 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 "\n"
-"架构和操作系统发行版的组合无效 (%s, %s)。\n"
+"体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
 "您的系统已注册，但不会接收更新，\n"
 "因为它无法订阅基础频道。\n"
 "请联系您的组织管理员以取得帮助。\n"
@@ -447,11 +447,11 @@ msgstr "这似乎不是有效的用户名。"
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
-msgstr "无效的用户名和密码组合。"
+msgstr "无效的用户名和口令组合。"
 
 #: ../common/rhnException.py:55
 msgid "This login is already taken, or the password is incorrect."
-msgstr "此登录名已被使用，或者密码不正确。"
+msgstr "此登录名已被使用，或者口令不正确。"
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
@@ -479,7 +479,7 @@ msgstr "必须填写有效用户名。"
 
 #: ../common/rhnException.py:62
 msgid "Valid password required."
-msgstr "必须填写有效密码。"
+msgstr "必须填写有效口令。"
 
 #: ../common/rhnException.py:63
 msgid "Minimum username length violation."
@@ -487,7 +487,7 @@ msgstr "最小用户名长度违规。"
 
 #: ../common/rhnException.py:64
 msgid "Minimum password length violation."
-msgstr "最小密码长度违规。"
+msgstr "最小口令长度违规。"
 
 #: ../common/rhnException.py:65
 msgid "The username contains invalid characters."
@@ -499,7 +499,7 @@ msgstr "找不到文件。"
 
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
-msgstr "不支持该架构和操作系统版本组合。"
+msgstr "不支持该体系结构和操作系统版本组合。"
 
 #: ../common/rhnException.py:68
 msgid "Could not retrieve system data from database."
@@ -519,7 +519,7 @@ msgstr "无法更新数据库项。"
 
 #: ../common/rhnException.py:72
 msgid "Unsupported server architecture."
-msgstr "不支持的服务器架构。"
+msgstr "不支持的服务器体系结构。"
 
 #: ../common/rhnException.py:73
 #, python-format
@@ -662,9 +662,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     架构无效。\n"
+"     体系结构无效。\n"
 "\n"
-"     软件包的架构不受以下对象的支持：\n"
+"     软件包的体系结构不受以下对象的支持：\n"
 "     "
 
 #: ../common/rhnException.py:121
@@ -827,7 +827,7 @@ msgstr "最大用户名长度违规"
 
 #: ../common/rhnException.py:183
 msgid "Maximum password length violation"
-msgstr "最大密码长度违规"
+msgstr "最大口令长度违规"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
@@ -1437,7 +1437,7 @@ msgstr " - 文件系统同步"
 
 #: ../satellite_tools/satsync.py:533 ../satellite_tools/satsync.py:541
 msgid " - live synchronization"
-msgstr " - 实时同步"
+msgstr " - 在线同步"
 
 #: ../satellite_tools/satsync.py:534
 #, python-brace-format
@@ -1448,9 +1448,9 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
-"错误：不再支持使用 RHN Classic Hosted 进行实时内容同步。\n"
-"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道"
-"转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
+"错误：不再支持使用 RHN Classic Hosted 进行在线内容同步。\n"
+"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道转储 ISO 从磁盘上的本地内容同步，否则请改用 "
+"cdn-sync 命令。"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1836,7 +1836,7 @@ msgstr "备用 HTTP 代理用户名"
 
 #: ../satellite_tools/satsync.py:2228
 msgid "alternative http proxy password"
-msgstr "备用 HTTP 代理密码"
+msgstr "备用 HTTP 代理口令"
 
 #: ../satellite_tools/satsync.py:2230
 msgid "parent SUSE Manager to import content from"
@@ -1904,7 +1904,7 @@ msgstr "用于同步输出的备用电子邮件地址（--email 选项）"
 
 #: ../satellite_tools/satsync.py:2262
 msgid "do not remove rpms when importing from local dump"
-msgstr "从本地转储导入时不要删除 RPM"
+msgstr "从本地转储导入时不要去除 RPM"
 
 #: ../satellite_tools/satsync.py:2264
 msgid ""
