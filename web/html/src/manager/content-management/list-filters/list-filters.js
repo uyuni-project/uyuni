@@ -34,7 +34,7 @@ const ListFilters = (props: Props) => {
   }, [])
 
   const searchData = (row, criteria) => {
-    const keysToSearch = ['name'];
+    const keysToSearch = ['filter_name'];
     if (criteria) {
       return keysToSearch.map(key => row[key]).join().toLowerCase().includes(criteria.toLowerCase());
     }
@@ -67,7 +67,7 @@ const ListFilters = (props: Props) => {
         searchField={(
           <SearchField
             filter={searchData}
-            placeholder={t('Filter by any value')}
+            placeholder={t('Filter by name')}
           />
         )}
       >

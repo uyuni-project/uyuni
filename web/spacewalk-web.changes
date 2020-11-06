@@ -1,3 +1,4 @@
+- Fix the search panel in CLM filters page
 - Localize documentation links
 - Don't allow selecting spice for Xen PV and PVH guests
 - Allow creating a VM on Salt host using a cobbler profile
