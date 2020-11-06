@@ -1,3 +1,4 @@
+- add requests module to salt-thin
 - add sock_pool_size setting by default for better performance
 
 -------------------------------------------------------------------
