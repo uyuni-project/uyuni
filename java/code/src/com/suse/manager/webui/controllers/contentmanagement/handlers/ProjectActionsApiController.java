@@ -30,8 +30,7 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import spark.Request;
@@ -79,9 +78,9 @@ public class ProjectActionsApiController {
      */
     public static String buildProject(Request req, Response res, User user) {
         ProjectBuildRequest projectLabelRequest = ProjectActionsHandler.getProjectBuildRequest(req);
-        HashMap<String, String> requestErrors = ProjectActionsHandler.validateProjectBuildRequest(projectLabelRequest);
+        List<String> requestErrors = ProjectActionsHandler.validateProjectBuildRequest(projectLabelRequest);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         String projectLabel = projectLabelRequest.getProjectLabel();
@@ -99,9 +98,9 @@ public class ProjectActionsApiController {
      */
     public static String promoteProject(Request req, Response res, User user) {
         ProjectPromoteRequest projectPromoteReq = ProjectActionsHandler.getProjectPromoteRequest(req);
-        HashMap<String, String> requestErrors = ProjectActionsHandler.validateProjectPromoteRequest(projectPromoteReq);
+        List<String> requestErrors = ProjectActionsHandler.validateProjectPromoteRequest(projectPromoteReq);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
         }
 
         String projectLabel = projectPromoteReq.getProjectLabel();

@@ -21,6 +21,8 @@ import static spark.Spark.delete;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.user.User;
@@ -36,8 +38,6 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Optional;
 
 import spark.Request;
@@ -50,6 +50,7 @@ public class ProjectApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private ProjectApiController() {
     }
@@ -76,11 +77,6 @@ public class ProjectApiController {
      */
     public static String createContentProject(Request req, Response res, User user) {
         NewProjectRequest createProjectRequest = ProjectHandler.getProjectRequest(req);
-        HashMap<String, String> requestErrors = ProjectHandler.validateProjectRequest(createProjectRequest, user);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
-        }
-
         ProjectPropertiesRequest projectPropertiesRequest = createProjectRequest.getProperties();
 
         ContentProject createdProject;
@@ -93,7 +89,12 @@ public class ProjectApiController {
             );
         }
         catch (EntityExistsException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("Project already exists"));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(LOC.getMessage("contentmanagement.project_exists")));
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
         }
         catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
@@ -101,7 +102,7 @@ public class ProjectApiController {
 
         FlashScopeHelper.flash(
                 req,
-                String.format("Project %s created successfully.", projectPropertiesRequest.getName())
+                LOC.getMessage("contentmanagement.project_created", projectPropertiesRequest.getName())
         );
 
         return ControllerApiUtils.fullProjectJsonResponse(res, createdProject.getLabel(), user);
@@ -120,7 +121,7 @@ public class ProjectApiController {
         int removingResult = CONTENT_MGR.removeProject(projectLabel, user);
 
         if (removingResult == 1) {
-            String successMessage = String.format("Project %s deleted successfully.", projectLabel);
+            String successMessage = LOC.getMessage("contentmanagement.project_deleted", projectLabel);
             FlashScopeHelper.flash(
                     req,
                     successMessage
@@ -140,14 +141,6 @@ public class ProjectApiController {
      */
     public static String updateContentProjectProperties(Request req, Response res, User user) {
         ProjectPropertiesRequest updateProjectPropertiesRequest = ProjectHandler.getProjectPropertiesRequest(req);
-
-        HashMap<String, String> requestErrors = ProjectHandler.validateProjectPropertiesRequest(
-                updateProjectPropertiesRequest, user
-        );
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
-        }
-
         ContentProject updatedProject;
         try {
             updatedProject = CONTENT_MGR.updateProject(
@@ -159,6 +152,10 @@ public class ProjectApiController {
         }
         catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
         }
 
         return ControllerApiUtils.fullProjectJsonResponse(res, updatedProject.getLabel(), user);

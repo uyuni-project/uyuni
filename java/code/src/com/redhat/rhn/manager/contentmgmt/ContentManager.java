@@ -55,6 +55,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
+import com.redhat.rhn.domain.contentmgmt.validation.ContentPropertiesValidator;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
@@ -116,6 +117,7 @@ public class ContentManager {
      * @param user the creator
      * @throws EntityExistsException if a project with given label already exists
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the created Content Project
      */
     public ContentProject createProject(String label, String name, String description, User user) {
@@ -123,6 +125,7 @@ public class ContentManager {
         lookupProject(label, user).ifPresent(cp -> {
             throw new EntityExistsException(cp);
         });
+        ContentPropertiesValidator.validateProjectProperties(label, name, user);
         ContentProject contentProject = new ContentProject(label, name, description, user.getOrg());
         ContentProjectFactory.save(contentProject);
         return contentProject;
@@ -169,6 +172,7 @@ public class ContentManager {
      * @param user the user
      * @throws EntityNotExistsException if Content Project with given label is not found
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the updated Content Project
      */
     public ContentProject updateProject(String label, Optional<String> newName, Optional<String> newDesc,
@@ -176,6 +180,7 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupProject(label, user)
                 .map(cp -> {
+                    ContentPropertiesValidator.validateProjectProperties(label, newName.orElse(cp.getName()), user);
                     newName.ifPresent(name -> cp.setName(name));
                     newDesc.ifPresent(desc -> cp.setDescription(desc));
                     return cp;
@@ -213,6 +218,7 @@ public class ContentManager {
      * is not found
      * @throws EntityExistsException if Environment with given parameters already exists
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the created Content Environment
      */
     public ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
@@ -221,6 +227,7 @@ public class ContentManager {
         lookupEnvironment(label, projectLabel, user).ifPresent(e -> {
             throw new EntityExistsException(e);
         });
+        ContentPropertiesValidator.validateEnvironmentProperties(name, label);
         return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);
@@ -278,6 +285,7 @@ public class ContentManager {
      * @param user the user
      * @throws EntityNotExistsException if Project or Environment is not found
      * @throws PermissionException if given user does not have required role
+     * @throws com.redhat.rhn.common.validator.ValidatorException if validation violation occurs
      * @return the updated Environment
      */
     public ContentEnvironment updateEnvironment(String envLabel, String projectLabel, Optional<String> newName,
@@ -285,6 +293,10 @@ public class ContentManager {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
                 .map(env -> {
+                    ContentPropertiesValidator.validateEnvironmentProperties(
+                            newName.orElse(env.getName()),
+                            env.getLabel() // label can't be changed
+                    );
                     newName.ifPresent(name -> env.setName(name));
                     newDescription.ifPresent(desc -> env.setDescription(desc));
                     return env;
@@ -456,13 +468,14 @@ public class ContentManager {
             throw new EntityExistsException(cp);
         });
 
+        ContentPropertiesValidator.validateFilterProperties(name);
+
         if (ContentFilter.EntityType.MODULE.equals(entityType) && ContentFilter.Rule.DENY.equals(rule)) {
             // DENY rule is not applicable for module filters
             throw new IllegalArgumentException("DENY rule is not applicable to appstream filters.");
         }
         return ContentProjectFactory.createFilter(name, rule, entityType, criteria, user);
     }
-    // todo check behavior consistency with other crud methods
 
     /**
      * Update a {@link ContentFilter}
@@ -479,6 +492,9 @@ public class ContentManager {
         ensureOrgAdmin(user);
         ContentFilter filter = lookupFilterById(id, user)
                 .orElseThrow(() -> new EntityNotExistsException(id));
+
+        ContentPropertiesValidator.validateFilterProperties(name.orElse(filter.getName()));
+
         return ContentProjectFactory.updateFilter(filter, name, rule, criteria);
     }
 
