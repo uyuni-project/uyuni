@@ -34,11 +34,11 @@ Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
         <target state="translated">Olá,
 
-Um login @@ PRODUCT_NAME @@ foi criado para você por {0} {1}. Seu
-@@ PRODUCT_NAME @@ login, em combinação com uma assinatura @@ VENDOR_NAME @@ ativa,
-fornece acesso para gerenciar sistemas em @@ PRODUCT_NAME @@.
+Um login @@PRODUCT_NAME@@ foi criado para você por {0} {1}. Seu
+@@PRODUCT_NAME@@ login, em combinação com uma assinatura @@VENDOR_NAME@@ ativa,
+fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@.
 
-   @@ PRODUCT_NAME @@ login: {2}
+   @@PRODUCT_NAME@@ login: {2}
         Senha: {3}
           e-mail: {4}
 
@@ -46,7 +46,7 @@ fornece acesso para gerenciar sistemas em @@ PRODUCT_NAME @@.
 
 Importante: Por favor, altere sua senha ao fazer o login.
 
-Obrigado por usar @@ PRODUCT_NAME @@.
+Obrigado por usar @@PRODUCT_NAME@@.
 {6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
@@ -81,11 +81,11 @@ Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
         <target state="translated">Olá,
 
-Um login @@ PRODUCT_NAME @@ foi criado para você. Seu
-@@ PRODUCT_NAME @@ login, em combinação com uma assinatura @@ VENDOR_NAME @@ ativa,
-fornece acesso para gerenciar sistemas em @@ PRODUCT_NAME @@.
+Um login @@PRODUCT_NAME@@ foi criado para você. Seu
+@@PRODUCT_NAME@@ login, em combinação com uma assinatura @@VENDOR_NAME@@ ativa,
+fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@.
 
-   @@ PRODUCT_NAME @@ login: {0}
+   @@PRODUCT_NAME@@ login: {0}
         Senha: {1}
           e-mail: {2}
 
@@ -93,7 +93,7 @@ fornece acesso para gerenciar sistemas em @@ PRODUCT_NAME @@.
 
 Importante: Por favor, altere sua senha ao fazer o login.
 
-Obrigado por usar @@ PRODUCT_NAME @@.
+Obrigado por usar @@PRODUCT_NAME@@.
 {4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
@@ -477,7 +477,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <target state="translated">
 [Este é um e-mail automático enviado para {0} a seu pedido. ]
 
-Foi feito um pedido para redefinir a senha de @@ PRODUCT_NAME @@ para login {2}.
+Foi feito um pedido para redefinir a senha de @@PRODUCT_NAME@@ para login {2}.
 
 Para continuar o processo de redefinição, prossiga para:
 
@@ -486,9 +486,9 @@ Para continuar o processo de redefinição, prossiga para:
 Se não quiser que sua senha seja redefinida, você pode ignorar este e-mail.
 
 Se você tiver mais dificuldades com o processo de reinicialização,
-contacte o seu administrador de @@ PRODUCT_NAME @@ para obter mais assistência.
+contacte o seu administrador de @@PRODUCT_NAME@@ para obter mais assistência.
 
-Obrigado por usar @@ PRODUCT_NAME @@.
+Obrigado por usar @@PRODUCT_NAME@@.
         </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
@@ -530,20 +530,20 @@ Thank you for using @@PRODUCT_NAME@@.
 [Este é um e-mail automático enviado para {0} a seu pedido. ]
 
 Você solicitou uma lista de todos os nomes de usuário de
-@@ PRODUCT_NAME @@ associado ao endereço de e-mail {0}.
+@@PRODUCT_NAME@@ associado ao endereço de e-mail {0}.
 
 Os nomes de usuário existentes:
 
 {1}
-Você pode redefinir a senha de nomes de usuário para @@ PRODUCT_NAME @@ em:
+Você pode redefinir a senha de nomes de usuário para @@PRODUCT_NAME@@ em:
 
    https://{2}/rhn/help/ForgotCredentials.do
 
 Se você continuar tendo dificuldade para fazer login, entre em contato
-seu administrador @@ PRODUCT_NAME @@ para obter mais assistência.
+seu administrador @@PRODUCT_NAME@@ para obter mais assistência.
 Se você não solicitou este e-mail, ignore esta mensagem.
 
-Obrigado por usar @@ PRODUCT_NAME @@.
+Obrigado por usar @@PRODUCT_NAME@@.
         </target>
       </trans-unit>
       <trans-unit id="email.reset.password" xml:space="preserve">
@@ -561,13 +561,13 @@ Thank you for using @@PRODUCT_NAME@@.
         <target state="translated">
 [Este é um e-mail automático enviado para {0}. ]
 
-A senha do @@ PRODUCT_NAME @@ para login {1} foi redefinida em resposta a uma solicitação de redefinição
+A senha do @@PRODUCT_NAME@@ para login {1} foi redefinida em resposta a uma solicitação de redefinição
 feito em {2}
 
-Se você não iniciou esta redefinição de senha, por favor IMEDIATAMENTE contate o @@ PRODUCT_NAME @@
+Se você não iniciou esta redefinição de senha, por favor IMEDIATAMENTE contate o @@PRODUCT_NAME@@
 administrador em {2} para obter mais assistência.
 
-Obrigado por usar @@ PRODUCT_NAME @@.
+Obrigado por usar @@PRODUCT_NAME@@.
         </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>

@@ -1311,7 +1311,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target state="translated">不能删除剩下的最后一个 @@PRODUCT_NAME@ 管理员。</target>
+        <target state="translated">不能删除剩下的最后一个 @@PRODUCT_NAME@@ 管理员。</target>
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
         <source>Users</source>
