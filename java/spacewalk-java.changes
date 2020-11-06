@@ -1,3 +1,5 @@
+- Enable validation of Content Lifecycle Management entities in the XMLRPC API (bsc#1177706)
+- Fix the order of the arguments in the XMLRPC API doc for contentmanagement.buildProject (bsc#1177704)
 - Fix repo url of AppStream in generated RHEL/Centos 8 kickstart file (bsc#1175739)
 - log token verify errors and check for expired tokens
 - show only kernel options in advanced autoinstallation page when working with
