@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-06 12:50+0000\n"
+"PO-Revision-Date: 2020-11-07 05:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -1425,7 +1425,7 @@ msgstr ""
 #: ../src/spacecmd/cryptokey.py:207
 #, python-format
 msgid "%s is not a valid crypto key"
-msgstr ""
+msgstr "%s 不是有效的加密密钥"
 
 #: ../src/spacecmd/custominfo.py:39
 msgid "custominfo_createkey: Create a custom key"
@@ -1723,7 +1723,7 @@ msgstr ""
 #: ../src/spacecmd/errata.py:389
 #, python-format
 msgid "%s is not a valid erratum"
-msgstr ""
+msgstr "%s 不是有效的勘误"
 
 #: ../src/spacecmd/errata.py:396
 #, python-format
@@ -2042,7 +2042,7 @@ msgstr ""
 #: ../src/spacecmd/group.py:426
 #, python-format
 msgid "%s is not a valid group"
-msgstr ""
+msgstr "%s 不是有效的组"
 
 #: ../src/spacecmd/group.py:439
 msgid "group_details: Show the details of a system group"
@@ -2510,7 +2510,7 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:1348
 #, python-format
 msgid "%s needs to be set as a custom option"
-msgstr ""
+msgstr "%s 需设置为自定义选项"
 
 #: ../src/spacecmd/kickstart.py:1356
 msgid "kickstart_removeoptions: Remove options from a Kickstart profile"
