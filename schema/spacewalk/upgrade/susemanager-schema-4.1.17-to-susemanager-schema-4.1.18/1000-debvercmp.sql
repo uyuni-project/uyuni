@@ -54,6 +54,25 @@ end;
 $$ language plpgsql immutable strict;
 
 
+create or replace function evr_t_ne( a evr_t, b evr_t )
+returns boolean as $$
+begin
+  return evr_t_compare( a, b ) != 0;
+end;
+$$ language plpgsql immutable strict;
+
+drop operator if exists <> (evr_t, evr_t);
+create operator <> (
+  leftarg = evr_t,
+  rightarg = evr_t,
+  procedure = evr_t_ne,
+  commutator = <>,
+  negator = =,
+  restrict = eqsel,
+  join = eqjoinsel
+);
+
+
 -- update insert_evr
 create or replace function
 insert_evr(e_in in varchar, v_in in varchar, r_in in varchar, t_in in varchar)

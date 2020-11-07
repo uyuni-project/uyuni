@@ -69,6 +69,13 @@ begin
 end;
 $$ language plpgsql immutable strict;
 
+create or replace function evr_t_ne( a evr_t, b evr_t )
+returns boolean as $$
+begin
+  return evr_t_compare( a, b ) != 0;
+end;
+$$ language plpgsql immutable strict;
+
 create or replace function evr_t_ge( a evr_t, b evr_t )
 returns boolean as $$
 begin
@@ -132,6 +139,17 @@ create operator > (
   restrict = scalargtsel,
   join = scalargtjoinsel
 );
+
+create operator <> (
+  leftarg = evr_t,
+  rightarg = evr_t,
+  procedure = evr_t_ne,
+  commutator = <>,
+  negator = =,
+  restrict = eqsel,
+  join = eqjoinsel
+);
+
 
 create operator class evr_t_ops
 default for type evr_t using btree as
