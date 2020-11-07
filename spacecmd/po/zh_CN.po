@@ -7518,36 +7518,6 @@ msgstr ""
 "system_scheduleapplyconfigchannels：安排将指派的配置频道应用到系统（仅限附属"
 "设备）"
 
-#: ../src/spacecmd/system.py:4183
-msgid ""
-"usage: scheduleapplyconfigchannels <SYSTEMS> [options]\n"
-"\n"
-"    options:\n"
-"        -s START_TIME"
-msgstr ""
-"用法：scheduleapplyconfigchannels <系统> [选项]\n"
-"\n"
-"    选项：\n"
-"        -s 开始时间"
-
-#: ../src/spacecmd/system.py:4234
-msgid "Schedule applying config channels to these systems [y/N]:"
-msgstr "安排将配置频道应用到这些系统 [y/N]："
-
-#: ../src/spacecmd/system.py:4251
-msgid ""
-"system_listmigrationtargets: List possible migration targets for given "
-"systems."
-msgstr "system_listmigrationtargets：列出给定系统的可能迁移目标。"
-
-#: ../src/spacecmd/system.py:4252
-msgid "usage: system_listmigrationtargets <SYSTEMS>"
-msgstr "用法：system_listmigrationtargets <系统>"
-
-#: ../src/spacecmd/system.py:4279
-msgid "WARN: Cannot find system "
-msgstr "警告：找不到系统 "
-
 #: ../src/spacecmd/system.py:4286
 msgid "  No migration targets"
 msgstr "  无迁移目标"
