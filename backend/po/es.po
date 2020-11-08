@@ -16,10 +16,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-10-15 19:49+0000\n"
+"PO-Revision-Date: 2020-11-08 16:50+0000\n"
 "Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,12 +58,11 @@ msgstr ""
 "organización para más ayuda."
 
 #: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Su sistema no se encuentra en la base de datos {PRODUCT_NAME}"
+msgstr "Su sistema no se encuentra en la base de datos de {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
-#, fuzzy
 msgid "ISS is disabled on this server."
 msgstr "ISS está deshabilitado en este servidor."
 
@@ -102,10 +101,10 @@ msgid "Invalid value %s (%s)"
 msgstr "Valor no válido %s (%s)"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
-"El servicio SUSE Manager Proxy no está habilitado para el perfil del "
+"El servicio {PRODUCT_NAME} Proxy no está habilitado para el perfil del "
 "servidor: “%s”"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
@@ -136,16 +135,17 @@ msgstr "Solicitada versión de sistema no válida"
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Imposible encontrar una interfaz de red válida, no se ha encontrado ni "
+"ipaddr ni ip6addr."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "Mensaje de bienvenida de {PRODUCT_NAME}"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
 msgid "Privacy Statement"
-msgstr "Declaración de Privacidad de la Red Red Hat"
+msgstr "Declaración de Privacidad"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -176,19 +176,20 @@ msgid ""
 msgstr "Usted no tiene permitido manejar el canal %s o ese canal no existe"
 
 #: ../server/importlib/userAuth.py:204
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"%s La cuenta ha sido desactivada en este servidor. Por favor contacte con su "
-"administrador de sistema para más ayuda."
+"               %s La cuenta ha sido desactivada en este servidor. \n"
+"                 Por favor contacte con su administrador de sistema para más "
+"ayuda."
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Por favor ejecute rhn_register como root en este cliente"
 
 #: ../server/rhnHandler.py:75
 #, python-format
@@ -375,7 +376,7 @@ msgid "System Registered but Inactive"
 msgstr "Sistema Registrado pero Inactivo"
 
 #: ../server/rhnChannel.py:2277
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Invalid Architecture and OS release combination (%s, %s).\n"
@@ -388,11 +389,14 @@ msgid ""
 "...to activate your product."
 msgstr ""
 "\n"
-"Combinación de Arquitectura y SO no válida (%s, %s). Su sistema ha sido "
-"registrado, pero no recibirá actualizaciones porque no está suscrito a un "
-"canal. Si usted no tiene todavía activado su producto para servicio, por "
-"favor visite nuestra web en: http://www.redhat.com/apps/activate/ …para "
-"activar su producto."
+"Combinación de Arquitectura y SO no válida (%s, %s). \n"
+"Su sistema ha sido registrado, pero no recibirá actualizaciones \n"
+"porque no está suscrito a un canal. Si usted no tiene todavía \n"
+"activado su producto para servicio, por favor visite nuestra web en:\n"
+"\n"
+"         http://scc.suse.com/ \n"
+"\n"
+"… para activar su producto."
 
 #: ../server/rhnChannel.py:2288
 #, python-format
