@@ -687,7 +687,7 @@
       </trans-unit>
       <trans-unit id="Critical Disk Sort Ratio" xml:space="preserve">
         <source>Critical Disk Sort Ratio</source>
-        <target/>
+        <target>Kritický pomer triedenia diskov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1779,7 +1779,7 @@
       </trans-unit>
       <trans-unit id="Warning Disk Sort Ratio" xml:space="preserve">
         <source>Warning Disk Sort Ratio</source>
-        <target/>
+        <target>Varovný pomer triedenia diskov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2326,14 +2326,14 @@
       </trans-unit>
       <trans-unit id="metrics.Disk sort rate" xml:space="preserve">
         <source>Disk sort rate</source>
-        <target/>
+        <target>Miera triedenia diskov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Disk sort ratio" xml:space="preserve">
         <source>Disk sort ratio</source>
-        <target/>
+        <target>Pomer triedenia diskov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3040,7 +3040,7 @@
       </trans-unit>
       <trans-unit id="Disk Sort Ratio" xml:space="preserve">
           <source>Disk Sort Ratio</source>
-        <target/>
+        <target>Pomer triedenia diskov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3572,7 +3572,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.failed" xml:space="preserve">
           <source>Autoinstallation failed.</source>
-        <target/>
+        <target>Automatická inštalácia zlyhala.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
