@@ -14441,6 +14441,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channelOverview.jsp.newToolbar.stateType">
+        <source>New Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.name-edit">
         <source>Name&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
@@ -14567,6 +14573,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="channelOverview.jsp.submitCreate">
         <source>Create Config Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.submitCreate.state">
+        <source>Create Config State Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
