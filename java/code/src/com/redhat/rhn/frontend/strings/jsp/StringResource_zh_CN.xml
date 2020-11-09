@@ -7980,7 +7980,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">更新以下配置选项后，需要重启动此 @@PRODUCT_NAME@@ 服务器上的监控服务，以及所有启用了监控的 @@PRODUCT_NAME@@ 代理服务器。更新此页面时会自动安排此操作。</target>
+        <target state="translated">更新以下配置选项后，需要重启动此 @@PRODUCT_NAME@@ 服务器上的监视服务，以及所有启用了监视的 @@PRODUCT_NAME@@ 代理服务器。更新此页面时会自动安排此操作。</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
@@ -9926,7 +9926,7 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
         <target state="translated"> 以下信息将用于生成引导脚本。可使用这些引导脚本将客户端配置为使用此 @@PRODUCT_NAME@@ 来接收更新。生成引导脚本后，&lt;a href="/pub/bootstrap"&gt;此服务器&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;中会提供这些脚本。
-请注意，仍可能需要对这些脚本进行一些手动配置。可以在 @@PRODUCT_NAME@@ 服务器的文件系统上找到引导脚本：&lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;</target>
+请注意，仍可能需要对这些脚本进行一些手动配置。可以在 @@PRODUCT_NAME@@ Server 的文件系统上找到引导脚本：&lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.header2" xml:space="preserve">
         <source>Client Bootstrap Script Configuration</source>
@@ -12016,7 +12016,7 @@ A system will need the correct keys to install signed packages, and correct cert
 For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <target>
 可以在 kickstart 配置文件中引用这些密钥和/或证书，以便在无人值守安装期间在系统上安装这些密钥/证书。
-系统需要拥有正确的密钥（用于安装已签名的软件包），以及要由 @@PRODUCT_NAME@@ 代理服务器或 @@PRODUCT_NAME@@ 服务器以无人值守模式安装的正确证书。
+系统需要拥有正确的密钥（用于安装已签名的软件包），以及要由 @@PRODUCT_NAME@@ Proxy 服务器或 @@PRODUCT_NAME@@ Server 以无人值守模式安装的正确证书。
 有关详细信息，请参见&lt;a href={0} target="_blank" &gt;参考指南&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
@@ -25080,14 +25080,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.proxy.unlicensed" xml:space="preserve">
         <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
-        <target>WebUI @@PRODUCT_NAME@@ 代理安装程序已过时。请使用软件包 spacewalk-proxy-installer 中的命令行安装程序。</target>
+        <target>WebUI @@PRODUCT_NAME@@ Proxy 安装程序已过时。请使用软件包 spacewalk-proxy-installer 中的命令行安装程序。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve">
         <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
-        <target>此计算机目前是已许可的 @@PRODUCT_NAME@@ 代理 (v{0})。</target>
+        <target>此计算机目前是已许可的 @@PRODUCT_NAME@@ Proxy (v{0})。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
