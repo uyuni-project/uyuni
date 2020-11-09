@@ -17,6 +17,8 @@
  */
 package com.redhat.rhn.manager.channel.repo;
 
+import org.apache.commons.validator.UrlValidator;
+
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
@@ -216,6 +218,11 @@ public abstract class BaseRepoCommand {
         }
 
         if (this.url != null && this.type != null) {
+            String[] schemes = {"http", "https", "file", "ftp", "uln"};
+            UrlValidator urlValidator = new UrlValidator(schemes);
+            if (!urlValidator.isValid(this.url)) {
+                throw new InvalidRepoUrlInputException(url);
+            }
             ContentSourceType cst = ChannelFactory.lookupContentSourceType(this.type);
             boolean alreadyExists = !ChannelFactory.lookupContentSourceByOrgAndRepo(
                     org, cst, url).isEmpty();
