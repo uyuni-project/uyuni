@@ -153,7 +153,7 @@ class DpkgRepo:
             logging.exception("Unknown exception during decompression of \
                                pkg index. Raising GeneralRepoException",
                               exc_info=True)
-            raise GeneralRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc))
+            raise GeneralRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc)) from exc
 
         return cnt_data.decode("utf-8")
 
@@ -311,16 +311,16 @@ class DpkgRepo:
         # Repo format is not flat
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                logging.exception("GPG verfication failed: {}".format(release_file), exc_info=True)
+                logging.error("GPG verfication failed: {}".format(release_file))
                 logging.error("Raising GeneralRepoException!")
                 raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
             try:
                 with open(release_file, "rb") as f:
                     self._release = self._parse_release_index(f.read().decode("utf-8"))
-            except IOError:
+            except IOError as ex:
                 logging.exception("IOError while accessing file: '{}'. Raising \
                                    GeneralRepoException!".format(release_file), exc_info=True)
-                raise GeneralRepoException("IOError while accessing file: {}".format(release_file))
+                raise GeneralRepoException("IOError while accessing file: {}".format(release_file)) from ex
 
         # Repo format is flat
         else:
@@ -329,22 +329,22 @@ class DpkgRepo:
             elif os.access(self._get_parent_url(local_path, 0, "Release"), os.R_OK):
                 release_file = self._get_parent_url(local_path, 0, "Release")
             else:
-                logging.exception("No release file found in '{}'. Raising \
-                                   GeneralRepoException.".format(self._get_parent_url(local_path, 0)), exc_info=True)
+                logging.error("No release file found in '{}'. Raising \
+                                   GeneralRepoException.".format(self._get_parent_url(local_path, 0)))
                 raise GeneralRepoException("No release file found in {}".format(self._get_parent_url(local_path, 0)))
 
             try:
                 with open(release_file, "rb") as f:
                     release_file_content = f.read().decode("utf-8")
                     if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                        logging.exception("GPG verfication failed: '{}'. \
-                                           Raising GeneralRepoException.".format(release_file), exc_info=True)
+                        logging.error("GPG verfication failed: '{}'. \
+                                           Raising GeneralRepoException.".format(release_file))
                         raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
                     self._release = self._parse_release_index(release_file_content)
-            except IOError:
+            except IOError as ex:
                 logging.exception("IOError while accessing file: '{}'. Raising \
                                    GeneralRepoException.".format(release_file), exc_info=True)
-                raise GeneralRepoException("IOError while accessing file: {}".format(release_file))
+                raise GeneralRepoException("IOError while accessing file: {}".format(release_file)) from ex
 
         return self._release
 
