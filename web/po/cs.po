@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-09-25 17:48+0000\n"
+"PO-Revision-Date: 2020-11-09 14:50+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -794,7 +794,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.js:227
 msgid "Setup Wizard"
-msgstr ""
+msgstr "Průvodce nastavením"
 
 #: ../html/src/manager/admin/setup/products/products.js:245
 msgid ""
