@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.ProductType;
 import com.redhat.rhn.domain.product.ReleaseStage;
@@ -1724,6 +1725,8 @@ public class ContentSyncManager {
     /**
      * Check if all mandatory repositories of product for the given root are accessible.
      * No recursive checking if bases are accessible too.
+     * For ISS Slave we cannot check if the channel would be available on the master.
+     * In this case we also return true
      * @param product the product to check
      * @param root the root we check for
      * @return true in case of all mandatory repos could be mirrored, otherwise false
@@ -1737,12 +1740,15 @@ public class ContentSyncManager {
                 .filter(e -> e.isMandatory())
                 .allMatch(entry -> {
                     boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
-                    boolean isMirrorable = entry.getRepository().isAccessible();
+                    boolean isISSSlave = IssFactory.getCurrentMaster() != null;
+                    boolean isMirrorable = false;
+                    if (!isISSSlave) {
+                        isMirrorable = entry.getRepository().isAccessible();
+                    }
                     log.debug(product.getFriendlyName() + " - " + entry.getChannelLabel() +
-                            " isPublic: " + isPublic + " isMirrorable: " + isMirrorable);
-                    return  isPublic &&
-                            // isMirrorable
-                            isMirrorable;
+                            " isPublic: " + isPublic + " isMirrorable: " + isMirrorable +
+                            " isISSSlave: " + isISSSlave);
+                    return  isPublic && (isMirrorable || isISSSlave);
                 }
              );
     }
