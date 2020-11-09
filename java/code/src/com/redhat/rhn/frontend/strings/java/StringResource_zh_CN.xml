@@ -895,14 +895,14 @@
       </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
-        <target>@@PRODUCT_NAME@@ 代理</target>
+        <target>@@PRODUCT_NAME@@ Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_server" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Server</source>
-        <target>@@PRODUCT_NAME@@ 服务器</target>
+        <target>@@PRODUCT_NAME@@ Server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
