@@ -47,7 +47,6 @@ class ContentSource(yum_ContentSource):
         self.uln_token = self._uln_auth.authenticate(url)
         self.http_headers = {'X-ULN-Api-User-Key': self.uln_token}
         hostname, label = self._uln_auth.get_hostname(url)
-        self.url = self._uln_auth.url + "/XMLRPC/GET-REQ/" + label
         print(("The download URL is: " + self.url))
         if self.proxy_url:
             print(("Trying proxy " + self.proxy_url))
