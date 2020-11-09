@@ -39,16 +39,15 @@ begin
       elsif a.type = 'deb' then
         return deb.debvercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
       else
-        raise NOTICE 'unknown evr type (using rpm) -> %', a.type;
-        return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+        raise EXCEPTION 'unknown evr type (using rpm) -> %', a.type;
       end if;
   else
-     if a.type = 'deb' then
-       return deb.debvercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
-     else
-       return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
-     end if;
      raise NOTICE 'comparing incompatible evr types. Using %', a.type;
+     if a.type = 'deb' then
+       return -1;
+     else
+       return 1;
+     end if;
   end if;
 end;
 $$ language plpgsql immutable strict;
@@ -505,8 +504,6 @@ delete from rhnpackageevr p
  ) as sub
 where p.id = sub.id;
 
-
--- TODO one potential option
 alter table rhnpackageevr add column if not exists type varchar(10) generated always as ((evr).type) stored;
 
 ALTER TABLE rhnpackageevr ENABLE TRIGGER USER;
