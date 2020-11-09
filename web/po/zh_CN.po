@@ -793,11 +793,7 @@ msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
-<<<<<<< HEAD
 msgstr "没有可用的 SUSE Manager Server 订阅。需要客户端工具频道的产品将不显示。"
-=======
-msgstr "没有可用的 SUSE Manager 服务器订阅。需要客户端工具频道的产品将不显示。"
->>>>>>> c2632154f93... Translated using Weblate (Chinese (China))
 
 #: ../html/src/manager/admin/setup/products/products.js:157
 msgid "The product catalog refresh is running..."
@@ -4153,11 +4149,7 @@ msgstr "Amazon EC2"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:23
 msgid "Google Compute Engine"
-<<<<<<< HEAD
 msgstr "Google Compute Engine"
-=======
-msgstr "Google 计算引擎"
->>>>>>> c2632154f93... Translated using Weblate (Chinese (China))
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:24
 msgid "Azure"
