@@ -17,8 +17,6 @@
  */
 package com.redhat.rhn.manager.channel.repo;
 
-import org.apache.commons.validator.UrlValidator;
-
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
@@ -31,6 +29,8 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoTypeException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 
+import java.net.URL;
+import java.net.URI;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -218,9 +218,25 @@ public abstract class BaseRepoCommand {
         }
 
         if (this.url != null && this.type != null) {
-            String[] schemes = {"http", "https", "file", "ftp", "uln"};
-            UrlValidator urlValidator = new UrlValidator(schemes);
-            if (!urlValidator.isValid(this.url)) {
+            try {
+                final URL u;
+                if (this.type.equals("uln")) {
+                    // URL for ULN repositories, i.a. uln:///uln_channel_label, are not
+                    // passing Java URL validation due unknown protocol. We fake the
+		    // protocol to "file" and run the validation for the rest of the URL.
+                    final URI uri = new URI(this.url);
+                    if (uri.getScheme().equals("uln")) {
+                       u = new URI("file", uri.getSchemeSpecificPart(), uri.getFragment()).toURL();
+                    }
+                    else {
+                        throw new InvalidRepoUrlInputException(url);
+                    }
+                }
+                else {
+                    u = new URL(this.url);
+                }
+            }
+            catch (Exception e) {
                 throw new InvalidRepoUrlInputException(url);
             }
             ContentSourceType cst = ChannelFactory.lookupContentSourceType(this.type);
