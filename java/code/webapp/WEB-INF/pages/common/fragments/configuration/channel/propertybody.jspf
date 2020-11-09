@@ -41,7 +41,14 @@
                 <bean:message key="channel.edit.jsp.editchannel" />
             </c:when>
             <c:otherwise>
-                <bean:message key="channelOverview.jsp.submitCreate" />
+                <c:choose>
+                    <c:when test="${param.type == 'state'}">
+                        <bean:message key="channelOverview.jsp.submitCreate.state" />
+                    </c:when>
+                    <c:otherwise>
+                        <bean:message key="channelOverview.jsp.submitCreate" />
+                    </c:otherwise>
+                </c:choose>
             </c:otherwise>
         </c:choose>
     </html:submit>

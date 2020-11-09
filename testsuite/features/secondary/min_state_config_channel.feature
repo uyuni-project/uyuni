@@ -10,12 +10,12 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
-    Then I should see a "New Config Channel" text
+    Then I should see a "New Config State Channel" text
     When I enter "My State Channel" as "cofName"
     And I enter "statechannel" as "cofLabel"
     And I enter "This is a state channel" as "cofDescription"
     And I enter "touch /root/statechannel:\n  cmd.run:\n    - creates: /root/statechannel" in the editor
-    And I click on "Create Config Channel"
+    And I click on "Create Config State Channel"
     Then I should see a "State Channel" text
     And I should see a "Channel Properties" text
     And I should see a "Channel Information" text
@@ -25,12 +25,12 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
-    Then I should see a "New Config Channel" text
+    Then I should see a "New Config State Channel" text
     When I enter "My State Channel" as "cofName"
     And I enter "statechannel2" as "cofLabel"
     And I enter "This is a state channel" as "cofDescription"
     And I enter "touch /root/statechannel2:\n  cmd.run:\n    - creates: /root/statechannel2" in the editor
-    And I click on "Create Config Channel"
+    And I click on "Create Config State Channel"
     Then I should see a "State Channel" text
     And I should see a "Channel Properties" text
     And I should see a "Channel Information" text
