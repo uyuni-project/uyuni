@@ -2099,9 +2099,10 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = systemQuery
-                    .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
-                    .get().getMinions();
+            List<String> results = Opt.fold(
+                    systemQuery.callAsync(call, new MinionList(minionIds), Optional.of(metadata)),
+                    () -> new ArrayList<String>(),
+                    l -> l.getMinions());
 
             result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));
