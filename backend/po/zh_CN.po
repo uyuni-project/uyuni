@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-11-06 09:41+0000\n"
+"PO-Revision-Date: 2020-11-09 14:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/zh_CN/>\n"
@@ -101,7 +101,7 @@ msgstr "无效的值 %s (%s)"
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "未为服务器配置文件启用 SUSE Manager 代理服务：\"%s\""
+msgstr "未为服务器配置文件启用 SUSE Manager Proxy 服务：\"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -841,11 +841,11 @@ msgstr "系统名不能短于 1 个字符"
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
 msgid "SUSE Manager Proxy error."
-msgstr "SUSE Manager 代理错误。"
+msgstr "SUSE Manager Proxy 错误。"
 
 #: ../common/rhnException.py:191
 msgid "SUSE Manager Proxy unable to login."
-msgstr "SUSE Manager 代理无法登录。"
+msgstr "SUSE Manager Proxy 无法登录。"
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -856,17 +856,17 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     SUSE Manager 代理系统 ID 与数据库中的 Spacewalk 代理服务器\n"
+"     SUSE Manager Proxy 系统 ID 与数据库中的 Spacewalk 代理服务器\n"
 "     不匹配。\n"
 "     "
 
 #: ../common/rhnException.py:197
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "SUSE Manager 代理会话令牌无效。"
+msgstr "SUSE Manager Proxy 会话令牌无效。"
 
 #: ../common/rhnException.py:198
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "SUSE Manager 代理会话令牌已失效。"
+msgstr "SUSE Manager Proxy 会话令牌已失效。"
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
@@ -899,7 +899,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     已在此 SUSE Manager 服务器上禁用服务器间同步。\n"
+"     已在此 SUSE Manager Server 上禁用服务器间同步。\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
