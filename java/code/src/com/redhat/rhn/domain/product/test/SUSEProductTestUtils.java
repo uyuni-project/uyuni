@@ -305,6 +305,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         Channel channel = ChannelTestUtils.createBaseChannel(admin);
         channel.setChannelArch(channelArch);
         channel.setName("Channel for " + product.getFriendlyName());
+        channel.setOrg(null);
         channel = TestUtils.saveAndReload(channel);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel, product, true);
         return channel;
@@ -316,6 +317,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         channel.setChannelArch(channelArch);
         channel.setParentChannel(baseChannel);
         channel.setName("Channel for " + product.getFriendlyName());
+        channel.setOrg(null);
         channel = TestUtils.saveAndReload(channel);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel, product, true);
         return channel;
