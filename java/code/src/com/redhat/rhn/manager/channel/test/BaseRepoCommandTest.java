@@ -64,6 +64,8 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
         validUrlInput("https://another-one.de/example%20");
         validUrlInput("http://another-one.de/example?v=10");
         validUrlInput("ftp://exampleABC.com");
+        validUrlInput("uln:///example_label");
+        validUrlInput("uln://foo/example_label");
     }
 
     private void invalidUrlInput(String url) {
