@@ -323,8 +323,8 @@ class ChooseServerPage:
             log.log_exception(*sys.exc_info())
             protocol, host, path, parameters, query, fragmentIdentifier = urlparse.urlparse(config.getServerlURL()[0])
             dialog = messageWindow.BulletedOkDialog(_("Cannot contact selected server"))
-            dialog.add_text(_("We could not contact the Satellite or Proxy "
-                              "at '%s.'") % host)
+            dialog.add_text(_("We could not contact the {PRODUCT_NAME} or Proxy "
+                              "at '{HOST}'.").format(PRODUCT_NAME=rhnreg_constants.PRODUCT_NAME, HOST=host))
             dialog.add_bullet(_("Double-check the location - is '%s' "
                                 "correct? If not, you can correct it and "
                                 "try again.") % host)
@@ -1323,7 +1323,7 @@ def unexpectedError(message, exc_info=None):
     logFile = cfg['logFile'] or '/var/log/up2date'
     message = message + "\n" + (_("This error shouldn't have happened. If you'd "
                                  "like to help us improve this program, please "
-                                 "file a bug at bugzilla.redhat.com. Including "
+                                 "file a bug at bugzilla.suse.com. Including "
                                  "the relevant parts of '%s' would be very "
                                  "helpful. Thanks!") % logFile)
     errorWindow(message)

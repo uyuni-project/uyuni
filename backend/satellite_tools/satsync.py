@@ -684,7 +684,7 @@ class Syncer:
 
         # print out the relevant channel tree
         # 3/6/06 wregglej 183213 Don't print out the end-of-service message if
-        # satellite-sync is running with the --mount-point (-m) option. If it
+        # mgr-inter-sync is running with the --mount-point (-m) option. If it
         # did, it would incorrectly list channels as end-of-service if they had been
         # synced already but aren't in the channel dump.
         self._printChannelTree(doEOSYN=doEOSYN)
@@ -2200,14 +2200,14 @@ def processCommandline():
     optionsTable = [
         Option('--batch-size',          action='store',
                help=_('DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).'
-                      + '"man satellite-sync" for more information.') % SequenceServer.NEVER_MORE_THAN),
+                      + '"man mgr-inter-sync" for more information.') % SequenceServer.NEVER_MORE_THAN),
         Option('--ca-cert',             action='store',
                help=_('alternative SSL CA Cert (fullpath to cert file)')),
         Option('-c', '--channel',             action='append',
                help=_('process data for this channel only')),
         Option('--consider-full',       action='store_true',
                help=_('disk dump will be considered to be a full export; '
-                      'see "man satellite-sync" for more information.')),
+                      'see "man mgr-inter-sync" for more information.')),
         Option('--include-custom-channels',       action='store_true',
                help=_('existing custom channels will also be synced (unless -c is used)')),
         Option('--debug-level',         action='store',
@@ -2251,7 +2251,7 @@ def processCommandline():
         Option('-s', '--server',        action='store',
                help=_('alternative server with which to connect (hostname)')),
         Option('--step',                action='store',
-               help=_('synchronize to this step (man satellite-sync for more info)')),
+               help=_('synchronize to this step (man mgr-inter-sync for more info)')),
         Option('--sync-to-temp',        action='store_true',
                help=_('write complete data to tempfile before streaming to remainder of app')),
         Option('--systemid',            action='store',

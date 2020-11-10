@@ -41,7 +41,7 @@ except AttributeError:
     _ = translation.gettext
 
 def help_api(self):
-    print(_('api: call RHN API with arguments directly'))
+    print(_('api: call server API with arguments directly'))
     print(_('''usage: api [options] API_STRING)
 
 options:
