@@ -49,11 +49,25 @@ class ContentSource(yum_ContentSource):
         self._uln_auth = ULNAuth()
         self.uln_token = self._uln_auth.authenticate(url)
         self.http_headers = {'X-ULN-Api-User-Key': self.uln_token}
-        hostname, label = self._uln_auth.get_hostname(url)
-        print(("The download URL is: " + self.url))
+        hostname, label = self._uln_auth.get_hostname(self.url)
+        self._load_proxy_settings(hostname)
+        print(("The download URL is: " + self._uln_auth.url + "/XMLRPC/GET-REQ/" + label))
         if self.proxy_url:
             print(("Trying proxy " + self.proxy_url))
 
     # pylint: disable=arguments-differ
     def setup_repo(self, repo, *args, **kwargs):
         yum_ContentSource.setup_repo(self, repo, *args, uln_repo=True, **kwargs)
+
+    # Get download parameters for threaded downloader
+    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None,
+                                checksum_value=None, bytes_range=None):
+        yum_ContentSource.set_download_parameters(self,
+                                                  params=params,
+                                                  relative_path=relative_path,
+                                                  target_file=target_file,
+                                                  checksum_type=checksum_type,
+                                                  checksum_value=checksum_value,
+                                                  bytes_range=bytes_range)
+        hostname, label = self._uln_auth.get_hostname(self.url)
+        params['urls'] = [self._uln_auth.url + "/XMLRPC/GET-REQ/" + label]
