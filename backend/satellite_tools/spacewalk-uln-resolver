@@ -39,8 +39,10 @@ class SpacewalkULNPlugin(Plugin):
             }
         except Exception as exc:
             self.answer("ERROR", {}, str(exc))
-        hostname, label = self._uln_auth.get_hostname(headers['url'])
+        hostname, label = self._uln_auth.get_hostname(headers.pop('url'))
         url = self._uln_auth.url + "/XMLRPC/GET-REQ/" + label
+        if headers:
+           url += "?{}".format(urllib.parse.urlencode(headers))
         self.answer("RESOLVEDURL", self.auth_headers, url)
 
 plugin = SpacewalkULNPlugin()

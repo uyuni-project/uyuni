@@ -580,7 +580,7 @@ class ContentSource:
         Setup repository and fetch metadata
         """
         self.zypposync = ZyppoSync(root=repo.root)
-        zypp_repo_url = self._prep_zypp_repo_url(self.url)
+        zypp_repo_url = self._prep_zypp_repo_url(self.url, uln_repo)
 
         mirrorlist = self._get_mirror_list(repo, self.url)
         if mirrorlist:
@@ -630,7 +630,7 @@ type=rpm-md
         rhnLog.log_clean(0, message)
         sys.stderr.write(str(message) + "\n")
 
-    def _prep_zypp_repo_url(self, url):
+    def _prep_zypp_repo_url(self, url, uln_repo):
         """
         Prepare the repository baseurl to use in the Zypper repo file.
         This will add the HTTP Proxy and Client certificate settings as part of
@@ -661,7 +661,7 @@ type=rpm-md
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
         new_query = unquote(urlencode(query_params, doseq=True))
-        if self.authtoken:
+        if self.authtoken or uln_repo:
             ret_url = "{0}&{1}".format(url, new_query)
         else:
             ret_url = "{0}?{1}".format(url, new_query) if new_query else url
