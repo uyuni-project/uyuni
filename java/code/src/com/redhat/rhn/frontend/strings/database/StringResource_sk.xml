@@ -701,7 +701,7 @@
       </trans-unit>
       <trans-unit id="Critical Execution Time Moving Ave" xml:space="preserve">
         <source>Critical Execution Time Moving Ave</source>
-        <target/>
+        <target>Kritický kĺzavý priemer času vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -3068,7 +3068,7 @@
       </trans-unit>
       <trans-unit id="Execution Time" xml:space="preserve">
           <source>Execution Time</source>
-        <target/>
+        <target>Čas vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
