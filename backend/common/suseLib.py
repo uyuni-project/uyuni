@@ -628,7 +628,7 @@ def _useProxyFor(url):
     u = urlparse.urlsplit(url)
     # pylint can't see inside the SplitResult class
     # pylint: disable=E1103
-    if u.scheme == 'file':
+    if u.scheme == 'file' or not u.hostname:
         return False
     hostname = u.hostname.lower()
     if hostname in ["localhost", "127.0.0.1", "::1"]:
