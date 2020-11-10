@@ -15,7 +15,7 @@ INSERT INTO rhnVersionInfo
 )
 ( SELECT 'schema',
          lookup_package_name(SCHEMA_NAME),
-         lookup_evr2(NULL, SCHEMA_VERSION , SCHEMA_RELEASE, 'rpm' )
+         lookup_evr(NULL, SCHEMA_VERSION , SCHEMA_RELEASE, 'rpm' )
   FROM dual
 );
 commit;

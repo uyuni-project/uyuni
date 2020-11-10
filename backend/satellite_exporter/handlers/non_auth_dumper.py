@@ -537,7 +537,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                and cp.channel_id = c.id
                and cp.package_id = p.id
                and p.name_id = LOOKUP_PACKAGE_NAME(:name)
-               and p.evr_id = LOOKUP_EVR2(:epoch, :version, :release, (select at.label from rhnArchType at where at.id = pa.arch_type_id))
+               and p.evr_id = LOOKUP_EVR(:epoch, :version, :release, :package_type)
                and p.package_arch_id = pa.id
                and p.checksum_id = ch.id
                and ch.checksum = :checksum
@@ -548,9 +548,10 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         log_debug(3, fileName, channel, checksum)
         fileName = str(fileName)
         n, e, v, r, a = rhnLib.parseRPMFilename(fileName)
+        package_type = fileName[-3:].lower()
 
         h = rhnSQL.prepare(self._query_get_package_path_by_nvra_and_checksum)
-        h.execute(name=n, version=v, release=r, epoch=e, arch=a, channel=channel, checksum=checksum)
+        h.execute(name=n, version=v, release=r, epoch=e, arch=a, channel=channel, checksum=checksum, package_type=package_type)
         try:
             return _get_path_from_cursor(h)
         except InvalidPackageError:

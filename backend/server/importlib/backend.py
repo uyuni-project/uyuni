@@ -679,7 +679,7 @@ class Backend:
         return row['id']
 
     def lookupEVRs(self, evrHash, ptype):
-        sql = "select LOOKUP_EVR2(:epoch, :version, :release, :ptype) id from dual"
+        sql = "select LOOKUP_EVR(:epoch, :version, :release, :ptype) id from dual"
         h = self.dbmodule.prepare(sql)
         for evr in sorted(evrHash.keys(), key=lambda k: (str(k[0] or 0), k[1], k[2])):
             epoch, version, release = evr
