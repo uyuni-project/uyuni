@@ -65,11 +65,11 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
         validUrlInput("http://another-one.de/example?v=10", "yum");
         validUrlInput("ftp://exampleABC.com", "yum");
 
-	// ULN - V A L I D
+        // ULN - V A L I D
         validUrlInput("uln://foo/example_label", "uln");
         validUrlInput("uln:///example_label", "uln");
 
-	// ULN - I N V A L I D
+        // ULN - I N V A L I D
         invalidUrlInput("", "uln");
         invalidUrlInput("example.com", "uln");
         invalidUrlInput("htp://some_test_url.com", "uln");

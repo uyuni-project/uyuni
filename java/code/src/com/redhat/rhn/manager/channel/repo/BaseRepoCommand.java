@@ -225,7 +225,7 @@ public abstract class BaseRepoCommand {
                 if (this.type.equals("uln")) {
                     // URL for ULN repositories, i.a. uln:///uln_channel_label, are not
                     // passing Java URL validation due unknown protocol. We fake the
-		    // protocol to "file" and run the validation for the rest of the URL.
+                    // protocol to "file" and run the validation for the rest of the URL.
                     final URI uri = new URI(this.url);
                     if (uri.getScheme().equals("uln")) {
                        u = new URI("file", uri.getSchemeSpecificPart(), uri.getFragment()).toURL();
