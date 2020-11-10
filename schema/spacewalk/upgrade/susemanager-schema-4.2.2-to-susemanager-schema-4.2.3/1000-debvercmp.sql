@@ -100,7 +100,7 @@ $$ language plpgsql;
 
 -- update lookup_evr
 create or replace function
-lookup_evr2(e_in in varchar, v_in in varchar, r_in in varchar, t_in in varchar)
+lookup_evr(e_in in varchar, v_in in varchar, r_in in varchar, t_in in varchar)
 returns numeric
 as
 $$
@@ -167,7 +167,7 @@ begin
         type := 'rpm';
     end if;
 
-    e_id := lookup_evr2(e_in, v_in, r_in, type);
+    e_id := lookup_evr(e_in, v_in, r_in, type);
 
     select id
       into tp_id
@@ -202,7 +202,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnpackage
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnpackage.id = sub.id;
 
@@ -215,7 +215,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnactionpackage
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnactionpackage.id = sub.id;
 
@@ -230,7 +230,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnactionpackageremovalfailure
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnactionpackageremovalfailure.server_id = sub.server_id and
       rhnactionpackageremovalfailure.action_id = sub.action_id;
@@ -256,7 +256,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnpackagenevra
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnpackagenevra.id = sub.id;
 
@@ -269,7 +269,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnserverpackage
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnserverpackage.server_id = sub.server_id and
       rhnserverpackage.name_id = sub.name_id and
@@ -285,7 +285,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update suseproductfile
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where suseproductfile.id = sub.id;
 
@@ -298,7 +298,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update suseimageinfopackage
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where suseimageinfopackage.image_info_id = sub.image_info_id and
       suseimageinfopackage.evr_id = sub.evr_id and
@@ -313,7 +313,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnversioninfo
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, 'rpm')
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, 'rpm')
 from sub
 where rhnversioninfo.label = sub.label;
 
@@ -328,7 +328,7 @@ with sub as (
          join rhnpackageevr pe on p.proxy_evr_id = pe.id
 )
 update rhnproxyinfo
-set proxy_evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set proxy_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnproxyinfo.server_id = sub.server_id;
 
@@ -343,7 +343,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnsatelliteinfo
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnsatelliteinfo.server_id = sub.server_id;
 
@@ -357,7 +357,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnserverprofilepackage
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnserverprofilepackage.server_profile_id = sub.server_profile_id and
       rhnserverprofilepackage.name_id = sub.name_id and
@@ -373,7 +373,7 @@ with sub as (
          join rhnpackageevr pe on p.package_evr_id = pe.id
 )
 update rhnservercrash
-set package_evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set package_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnservercrash.server_id = sub.server_id and
       rhnservercrash.crash = sub.crash;
@@ -388,7 +388,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhnlockedpackages
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnlockedpackages.server_id = sub.server_id and
       rhnlockedpackages.name_id = sub.name_id and
@@ -405,7 +405,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update susepackagestate
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where susepackagestate.id = sub.id;
 
@@ -419,7 +419,7 @@ with sub as (
          join rhnpackageevr pe on p.package_evr_id = pe.id
 )
 update rhnserveractionverifymissing
-set package_evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set package_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnserveractionverifymissing.server_id = sub.server_id and
       rhnserveractionverifymissing.action_id = sub.action_id and
@@ -438,7 +438,7 @@ with sub as (
          join rhnpackageevr pe on p.package_evr_id = pe.id
 )
 update rhnserveractionverifyresult
-set package_evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set package_evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhnserveractionverifyresult.server_id = sub.server_id and
       rhnserveractionverifyresult.action_id = sub.action_id and
@@ -457,7 +457,7 @@ with sub as (
          join rhnpackageevr pe on p.evr_id = pe.id
 )
 update rhntransactionpackage
-set evr_id = lookup_evr2((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
+set evr_id = lookup_evr((sub.evr).epoch, (sub.evr).version, (sub.evr).release, sub.label)
 from sub
 where rhntransactionpackage.id = sub.id;
 

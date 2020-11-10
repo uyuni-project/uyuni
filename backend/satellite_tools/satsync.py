@@ -920,16 +920,32 @@ class Syncer:
                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
           from rhnPackage p, rhnChecksumView c
          where p.name_id = lookup_package_name(:name)
-           and p.evr_id = lookup_evr2(:epoch, :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = p.package_arch_id))
+           and p.evr_id = lookup_evr(:epoch, :version, :release, :package_type)
            and p.package_arch_id = lookup_package_arch(:arch)
            and (p.org_id = :org_id or
                (p.org_id is null and :org_id is null))
            and p.checksum_id = c.id
     """
 
+    _query_channel_package_type = """
+        select at.label from rhnArchType at
+          join rhnchannelarch ca on at.id = ca.arch_type_id
+          join rhnchannel c on ca.id = c.channel_arch_id
+         where c.label = :channel_label
+    """
+
+    def _get_package_type_for_channel(self, channel_label):
+        h = rhnSQL.prepare(self._query_channel_package_type)
+        h.execute(channel_label=channel_label)
+        row = h.fetchone_dict()
+        if row:
+            return row['label']
+        return None
+
     def _diff_packages_process(self, chunk, channel_label):
         package_collection = sync_handlers.ShortPackageCollection()
 
+        package_type = self._get_package_type_for_channel(channel_label)
         h = rhnSQL.prepare(self._query_compare_packages)
         for pid in chunk:
             package = package_collection.get_package(pid)
@@ -940,6 +956,7 @@ class Syncer:
                 package['org_id'] = OPTIONS.orgid or DEFAULT_ORG
             nevra = get_nevra_dict(package)
             nevra['org_id'] = package['org_id']
+            nevra['package_type'] = package_type
 
             h.execute(**nevra)
             row = None

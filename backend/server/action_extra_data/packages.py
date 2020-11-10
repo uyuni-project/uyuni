@@ -53,7 +53,7 @@ insert into rhnServerActionVerifyResult (
 values (
       :server_id, :action_id,
       lookup_package_name(:package_name),
-      lookup_evr2(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),
+      lookup_evr(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),
       lookup_package_arch(:arch),
       lookup_package_capability(:filename),
       :attrib, :test_S, :test_M, :test_5,
@@ -75,7 +75,7 @@ values (
     :server_id,
     :action_id,
     lookup_package_name(:package_name),
-    lookup_evr2(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),
+    lookup_evr(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),
     lookup_package_arch(:arch),
     lookup_package_capability(:filename)
 )
@@ -351,7 +351,7 @@ _query_insert_dep_failures = rhnSQL.Statement("""
         flags, suggested, sense)
     values (
         :server_id, :action_id, LOOKUP_PACKAGE_NAME(:name),
-        LOOKUP_EVR2(:epoch, :version, :release, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id)),
+        LOOKUP_EVR(:epoch, :version, :release, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id)),
         LOOKUP_PACKAGE_CAPABILITY(:needs_name, :needs_version),
         :flags, LOOKUP_PACKAGE_NAME(:suggested, :ignore_null), :sense)
 """)

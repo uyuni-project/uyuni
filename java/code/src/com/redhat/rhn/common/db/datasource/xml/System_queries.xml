@@ -160,7 +160,7 @@ SELECT  S.id AS ID,
         S.name AS SERVER_NAME,
         PN.name || '-' || evr_t_as_vre_simple(max(PE.evr)) || '-' || PA.label NVRE,
         PN.id AS NAME_ID,
-        lookup_evr2((max(PE.evr)).epoch, (max(PE.evr)).version, (max(PE.evr)).release, (max(PE.evr)).type) as EVR_ID,
+        lookup_evr((max(PE.evr)).epoch, (max(PE.evr)).version, (max(PE.evr)).release, (max(PE.evr)).type) as EVR_ID,
         PA.id AS ARCH_ID
   FROM  rhnServer S,
         rhnPackageEVR PE,

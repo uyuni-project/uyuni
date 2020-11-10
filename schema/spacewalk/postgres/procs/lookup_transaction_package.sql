@@ -52,7 +52,7 @@ begin
 	type := 'rpm';
     end if;
 
-    e_id := lookup_evr2(e_in, v_in, r_in, type);
+    e_id := lookup_evr(e_in, v_in, r_in, type);
 
     select id
       into tp_id

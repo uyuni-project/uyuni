@@ -233,7 +233,7 @@ class Packages:
             h = rhnSQL.prepare("""
             insert into rhnServerPackage
             (server_id, name_id, evr_id, package_arch_id, installtime)
-            values (:sysid, LOOKUP_PACKAGE_NAME(:n), LOOKUP_EVR2(:e, :v, :r, :t),
+            values (:sysid, LOOKUP_PACKAGE_NAME(:n), LOOKUP_EVR(:e, :v, :r, :t),
                 LOOKUP_PACKAGE_ARCH(:a), TO_TIMESTAMP(:instime, 'YYYY-MM-DD HH24:MI:SS')
             )
             """)
@@ -349,7 +349,7 @@ class Packages:
         (
           select pn.name,
                  latest.name_id,
-                 lookup_evr2((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
+                 lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
                  latest.arch_label AS ARCH,
                  latest.arch_id
             from
