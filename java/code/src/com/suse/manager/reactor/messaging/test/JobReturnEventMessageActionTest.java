@@ -19,8 +19,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.cluster.BaseClusterModifyNodesAction;
@@ -2024,60 +2022,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\n" +
                 "drwxr-xr-x 14 root root 4096 Jul 25  2017 salt\n",
                 new String(scriptResult.getOutput()));
-    }
-
-    public void testActionChainSaltErrorResponse() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
-        ActionChainFactory.setTaskomaticApi(taskomaticMock);
-        context().checking(new Expectations() { {
-            oneOf(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
-        } });
-
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
-
-        Date earliestAction = new Date();
-
-        String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-
-        ApplyStatesAction applyState = (ApplyStatesAction)ActionChainManager
-                .scheduleApplyStates(user, Arrays.asList(minion.getId()), Optional.of(false), earliestAction, actionChain)
-                .stream().findFirst().get();
-
-        ScriptActionDetails sad = ActionFactory
-                .createScriptActionDetails("root", "root", 10L, "#!/bin/csh\necho hello");
-        ScriptRunAction runScript = (ScriptRunAction)ActionChainManager
-                .scheduleScriptRuns(user, Arrays.asList(minion.getId()), "test", sad, earliestAction, actionChain)
-                .stream().findFirst().get();
-
-        ActionChainFactory.schedule(actionChain, earliestAction);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("${minion-id}", minion.getMinionId());
-
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("action.chain.salt.error.json", 0,
-                        placeholders));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-
-        // Process the event message
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.execute(message);
-
-        applyState = (ApplyStatesAction)ActionFactory.lookupById(applyState.getId());
-        ServerAction saApplyState = applyState.getServerActions().stream().findFirst().get();
-
-        assertEquals(ActionFactory.STATUS_QUEUED, saApplyState.getStatus());
-
-        Action runScriptAction = ActionFactory.lookupById(runScript.getId());
-        ServerAction saScript = runScriptAction.getServerActions().stream().findFirst().get();
-
-        assertEquals(ActionFactory.STATUS_QUEUED, saScript.getStatus());
     }
 
     public void testActionChainPackageRefreshNeeded() throws Exception {

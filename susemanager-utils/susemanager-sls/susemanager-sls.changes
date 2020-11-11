@@ -1,3 +1,4 @@
+- Temp: revert Sync state modules when starting action chain execution (bsc#1177336)
 - Handle group- and org-specific image pillars
 - use require in reboot trigger (bsc#1177767)
 - add pillar option to get allowVendorChange option during dist upgrade
