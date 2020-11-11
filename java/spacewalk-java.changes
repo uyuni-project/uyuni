@@ -1,3 +1,4 @@
+- Remove expiration date from ics files (bsc#1177892)
 - Localize documentation links
 - fix check for available products on ISS Slaves (bsc#1177184)
 - XMLRPC: Report architecture label in the list of installed packages (bsc#1176898)
