@@ -41,7 +41,6 @@ import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -149,24 +148,11 @@ public class JobReturnEventMessageAction implements MessageAction {
                 throw e;
             }
 
-            Optional<StateApplyResult<Ret<JsonElement>>> result = Optional.ofNullable(
-                    actionChainResult.get("mgrcompat_|-start_action_chain_|-mgractionchains.start_|-module_run"));
-            var entries = result.map(r -> r.getChanges())
-                    .map(c -> c.getRet())
-                    .map(r -> r.getAsJsonObject())
-                    .map(o -> o.entrySet())
-                    .map(set -> set.stream()
-                            .collect(Collectors.toMap(e -> e.getKey(),
-                                    e -> (StateApplyResult<Ret<JsonElement>>)Json.GSON.fromJson(e.getValue(),
-                                            new TypeToken<StateApplyResult<Ret<JsonElement>>>() { }.getType())
-                                    )))
-                    .orElse(Collections.emptyMap());
-
             saltServerActionService.handleActionChainResult(jobReturnEvent.getMinionId(),
                     jobReturnEvent.getJobId(),
                     jobReturnEvent.getData().getRetcode(),
                     jobReturnEvent.getData().isSuccess(),
-                    entries,
+                    actionChainResult,
                     stateResult -> false);
 
             boolean packageRefreshNeeded = actionChainResult.entrySet().stream()
@@ -212,6 +198,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             }
         }
     }
+
 
     /**
      * This method does two things
