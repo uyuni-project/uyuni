@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-10-23 16:49+0000\n"
+"PO-Revision-Date: 2020-11-12 01:50+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "web/pt_BR/>\n"
@@ -22,17 +22,19 @@ msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "restante"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
+"O navegador Internet Explorer não é compatível. Tente usar Firefox, Chrome "
+"ou Edge"
 
 #: ../html/src/components/action-schedule.js:54
 msgid "new action chain"
-msgstr ""
+msgstr "Cadeia de novas ações"
 
 #: ../html/src/components/action-schedule.js:197
 msgid ""
@@ -40,26 +42,29 @@ msgid ""
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
 msgstr ""
+"Existem vários programas de manutenção para sistemas selecionados. "
+"Certifique-se de que os sistemas do conjunto usem no máximo 1 programação de "
+"manutenção se desejar programar por data ou janela de manutenção."
 
 #: ../html/src/components/action-schedule.js:204
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "Sem janelas de manutenção futuras"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Earliest:"
-msgstr ""
+msgstr "Não agendar antes do que: "
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "Janela de manutenção:"
 
 #: ../html/src/components/action-schedule.js:274
 msgid "Add to:"
-msgstr ""
+msgstr "Adicionar à Corrente da Ação:"
 
 #: ../html/src/components/action-schedule.js:290
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "Carregando o calendário..."
 
 #: ../html/src/components/config-channels.js:26
 msgid "State Configuration Channel"
@@ -86,7 +91,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:155
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: ../html/src/components/config-channels.js:59
 msgid "Edit Configuration Channel"
@@ -3330,7 +3335,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
@@ -4105,7 +4110,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
 msgid "Organization"
-msgstr ""
+msgstr "Organização"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
