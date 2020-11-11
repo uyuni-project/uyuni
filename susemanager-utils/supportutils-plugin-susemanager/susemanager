@@ -56,6 +56,8 @@ pconf_files /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
             /etc/apache2/ssl.crt/server.crt
 plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
+plugin_command "/bin/ls -l --time-style=long-iso /srv/www/htdocs/pub/ | grep -i trusted"
+
 
 plugin_command "psql --version"
 plugin_command "cat /var/lib/pgsql/data/PG_VERSION"
