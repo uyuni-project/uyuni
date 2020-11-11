@@ -1,3 +1,4 @@
+- Allow creating custom ULN repositories with uln:// urls
 - Change message "Minion is down" to be more accurate
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Remove expiration date from ics files (bsc#1177892)
