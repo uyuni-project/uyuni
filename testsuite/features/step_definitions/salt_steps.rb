@@ -720,8 +720,13 @@ end
 When(/^I clean up the minion's cache on "([^"]*)"$/) do |minion|
   raise "#{minion} is not a salt minion" unless minion.include? 'minion'
   node = get_target(minion)
-  node.run_until_ok('systemctl stop salt-minion')
-  node.run('rm -Rf /var/cache/salt/minion')
+  if %w[sle_minion sle_ssh_tunnel_minion].include?(minion)
+    node.run('rcsalt-minion stop')
+    node.run('rm -Rf /var/cache/salt/minion')
+  elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
+    node.run('systemctl stop salt-minion')
+    node.run('rm -Rf /var/cache/salt/minion')
+  end
 end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
