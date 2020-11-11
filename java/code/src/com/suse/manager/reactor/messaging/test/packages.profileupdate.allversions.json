@@ -56,6 +56,18 @@
                 "arch": "x86_64",
                 "version": "13.2+git20140911.61c1681",
                 "install_date_time_t": "1459866432"
+              },
+              {
+                "release": "12.1",
+                "arch": "x86_64",
+                "version": "13.2+git20140911.61c1681",
+                "install_date_time_t": "1459866433"
+              },
+              {
+                "release": "12.1",
+                "arch": "x86_64",
+                "version": "13.2+git20140911.61c1681",
+                "install_date_time_t": "1459866434"
               }
             ],
             "bash": [

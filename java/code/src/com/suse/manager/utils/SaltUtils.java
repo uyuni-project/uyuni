@@ -1295,7 +1295,8 @@ public class SaltUtils {
                 )
                 .collect(Collectors.toMap(
                         SaltUtils::packageToKey,
-                        Function.identity()
+                        Function.identity(),
+                        (first, duplicate) -> first // Deal with duplicates: ignore additional entries
                 ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
