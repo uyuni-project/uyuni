@@ -257,7 +257,7 @@ artifacts:
     package: apache-commons-lang
     repository: Leap
   - artifact: velocity
-    repository: Uyuni_Other
+    repository: Leap
 
   - artifact: jasper
     package: tomcat-lib
