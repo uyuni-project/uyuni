@@ -736,7 +736,7 @@
       </trans-unit>
       <trans-unit id="Critical High Execution Time" xml:space="preserve">
         <source>Critical High Execution Time</source>
-        <target/>
+        <target>Kritický vysoký čas vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1793,7 +1793,7 @@
       </trans-unit>
       <trans-unit id="Warning Execution Time Moving Ave" xml:space="preserve">
         <source>Warning Execution Time Moving Ave</source>
-        <target/>
+        <target>Varovný kĺzavý priemer času vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1828,7 +1828,7 @@
       </trans-unit>
       <trans-unit id="Warning High Execution Time" xml:space="preserve">
         <source>Warning High Execution Time</source>
-        <target/>
+        <target>Varovný vysoký čas vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2347,21 +2347,21 @@
       </trans-unit>
       <trans-unit id="metrics.Exec time moving ave" xml:space="preserve">
         <source>Exec time moving ave</source>
-        <target/>
+        <target>Kĺzavý priemer času vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution rate" xml:space="preserve">
         <source>Execution rate</source>
-        <target/>
+        <target>Miera vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution time ave" xml:space="preserve">
         <source>Execution time ave</source>
-        <target/>
+        <target>Priemer času vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2389,7 +2389,7 @@
       </trans-unit>
       <trans-unit id="metrics.High exec time" xml:space="preserve">
         <source>High exec time</source>
-        <target/>
+        <target>Vysoký čas vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2459,7 +2459,7 @@
       </trans-unit>
       <trans-unit id="metrics.Low exec time" xml:space="preserve">
         <source>Low exec time</source>
-        <target/>
+        <target>Nízky čas vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
