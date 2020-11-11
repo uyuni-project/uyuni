@@ -298,6 +298,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * minion which already has installed packages using the new return format which
      * includes all package versions installed on the minion.
      *
+     * Special case: Some packages are reported multiple times with the same NEVRA in the array output.
+     * The test runs against this case with the 'aaa_base' package in the test input (bsc#1176018).
+     *
      * @throws Exception in case of an error
      */
     public void testPackagesProfileUpdateAllVersions() throws Exception {
