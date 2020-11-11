@@ -9,7 +9,7 @@
 # Modified:    2020 November 09
 #############################################################
 
-SVER=1.0.2
+SVER=4.1.0
 RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
