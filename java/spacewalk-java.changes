@@ -1,3 +1,5 @@
+- Revert: Sync state modules when starting action chain execution (bsc#1177336)
+- Sync state modules when starting action chain execution (bsc#1177336)
 - Fix repo url of AppStream in generated RHEL/Centos 8 kickstart file (bsc#1175739)
 - log token verify errors and check for expired tokens
 - Execute Salt SSH actions in parallel (bsc#1173199)
