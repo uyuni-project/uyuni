@@ -5,7 +5,7 @@
 #              about a SUSE Manager Client
 # License:     GPLv2
 # Author:      Michael Calmer <mc@suse.de>
-# Modified:    2013 October 10
+# Modified:    2020 November 09
 #############################################################
 
 SVER=1.0.0
@@ -37,41 +37,20 @@ RPMLIST="
 spacewalk-client-tools
 spacewalk-check
 spacewalk-client-setup
-spacewalksd
 rhnlib
 osad
-rhncfg
-mgr-cfg-actions
-rhncfg-client
-rhncfg-management
-rhn-custom-info
-rhnmd
-rhnpush
-rhn-virtualization-common
-rhn-virtualization-host
-spacewalk-koan
-spacewalk-backend-libs
-spacewalk-remote-utils
-spacewalk-oscap
-suseRegisterInfo
 zypp-plugin-spacewalk
-python-dmidecode
-koan
-python-jabberpy
-openscap
-openscap-utils
-libopenscap1
-openscap-content
 salt-minion
 salt
-python-Jinja2
-python-tornado
-python-pyzmq
 "
 
 for THISRPM in $RPMLIST; do
     validate_rpm_if_installed $THISRPM
 done
+
+plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib"
+plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib64"
+plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
 section_header "SUSE Manager Client Config Files"
 
@@ -87,6 +66,7 @@ pconf_files \
     /etc/salt/minion \
     /etc/salt/minion.d/susemanager.conf \
     /etc/salt/minion.d/_schedule.conf
+
 
 section_header "SUSE Manager Client Capabilities"
 
@@ -106,3 +86,4 @@ plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
 plugin_command "salt-minion --versions-report"
 
+plugin_command "cp /var/log/zypper.log $LOG"
