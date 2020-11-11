@@ -1,3 +1,5 @@
+- improve check for correct CA trust store directory (bsc#1176417)
+
 -------------------------------------------------------------------
 Tue Sep 15 10:44:02 CEST 2020 - jgonzalez@suse.com
 
