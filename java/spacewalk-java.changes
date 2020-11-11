@@ -1,3 +1,4 @@
+- Allow creating custom ULN repositories with uln:// urls
 - Change message "Minion is down" to be more accurate
 - Localize documentation links
 - Temp: revert Sync state modules when starting action chain execution (bsc#1177336)
