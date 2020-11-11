@@ -1,3 +1,4 @@
+- Fix the activation key handling from kickstart profile (bsc#1178647)
 - Ignore docker network ifaces in the system duplicates list
 - Fix incorrect password autocompletions (bsc#1148357)
 - add translation strings for newly added countries and timezones (jsc#PM-2081)
