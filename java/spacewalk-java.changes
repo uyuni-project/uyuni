@@ -1,3 +1,4 @@
+- Fix the activation key handling from kickstart profile (bsc#1178647)
 - Update exception message in findSyncedMandatoryChannels
 - fix check for available products on ISS Slaves (bsc#1177184)
 - get media.1/products for cloned channels (bsc#1178303)
