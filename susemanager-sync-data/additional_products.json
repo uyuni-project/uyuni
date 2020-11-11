@@ -511,16 +511,6 @@
                 "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
-            },
-            {
-                "id" : -170,
-                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/ceph/x86_64/",
-                "name" : "oraclelinux7-ceph",
-                "distro_target" : "x86_64",
-                "description" : "Ceph Storage for Oracle Linux Release 2.0 for Oracle Linux 7",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
             }
         ]
     },

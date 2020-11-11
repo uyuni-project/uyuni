@@ -1,3 +1,6 @@
+- add new channel families for CAASP on ARM64 and HPC15 SP2 LTSS
+- remove duplicate repo definition
+
 -------------------------------------------------------------------
 Fri Sep 18 11:52:17 CEST 2020 - jgonzalez@suse.com
 
