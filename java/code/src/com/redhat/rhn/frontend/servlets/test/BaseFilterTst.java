@@ -25,6 +25,8 @@ import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.mockobjects.servlet.MockFilterChain;
 import com.mockobjects.servlet.MockHttpSession;
 
+import org.junit.Before;
+
 /**
  * AuthFilterTest
  * @version $Rev: 59372 $
@@ -36,6 +38,7 @@ public abstract class BaseFilterTst extends RhnBaseTestCase {
     protected RhnMockHttpServletResponse response;
     protected MockFilterChain chain;
 
+    @Before
     public void setUp() throws Exception {
         request = new RhnMockHttpServletRequest();
         session = new RhnMockHttpSession();

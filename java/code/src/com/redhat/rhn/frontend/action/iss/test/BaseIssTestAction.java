@@ -21,12 +21,15 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.Before;
+
 public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
 
     protected IssMaster masterDto;
     protected IssSlave slaveDto;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         String masterName = "testMaster" + TestUtils.randomString();

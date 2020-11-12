@@ -18,6 +18,9 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * BaseDeleteActionTest
  */
@@ -26,6 +29,7 @@ public abstract class BaseDeleteErrataActionAbstractTest extends RhnMockStrutsTe
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo(getRequestPath());
@@ -35,6 +39,7 @@ public abstract class BaseDeleteErrataActionAbstractTest extends RhnMockStrutsTe
     /**
      * {@inheritDoc}
      */
+    @Test
     public void testExecuteSatellite() throws Exception {
         /* This test never finishes correctly on hosted
          * due to the errata deletion stored procedure

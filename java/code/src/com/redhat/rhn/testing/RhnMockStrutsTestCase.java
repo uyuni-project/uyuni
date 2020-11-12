@@ -29,6 +29,8 @@ import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.HibernateException;
+import org.junit.After;
+import org.junit.Before;
 
 import servletunit.HttpServletRequestSimulator;
 import servletunit.ServletContextSimulator;
@@ -63,6 +65,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -106,7 +109,8 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      * Tears down the fixture, and closes the HibernateSession.
      */
     @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();
     }

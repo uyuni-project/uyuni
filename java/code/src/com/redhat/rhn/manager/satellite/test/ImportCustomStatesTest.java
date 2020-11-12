@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.satellite;
+package com.redhat.rhn.manager.satellite.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -24,10 +24,14 @@ import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
+import com.redhat.rhn.manager.satellite.UpgradeCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,11 +45,13 @@ import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY
 /**
  * Tests importing the legacy custom states contents into the custom channels.
  */
+// todo not migrated!!!!!!!!!!!!!
 public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
     private Path legacyStatesBackupDirectory;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         createTask(UpgradeCommand.UPGRADE_CUSTOM_STATES);
@@ -53,6 +59,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         assertTaskDoesNotExist(UpgradeCommand.UPGRADE_CUSTOM_STATES);

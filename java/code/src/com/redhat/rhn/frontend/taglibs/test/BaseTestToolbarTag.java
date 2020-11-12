@@ -23,6 +23,9 @@ import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockHttpServletRequest;
 import com.mockobjects.servlet.MockJspWriter;
 
+import org.junit.After;
+import org.junit.Before;
+
 import java.net.URL;
 import java.util.HashMap;
 
@@ -39,6 +42,7 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
     protected ToolbarTag tt;
     protected MockJspWriter out;
 
+    @Before
     public void setUp() {
         tt = new ToolbarTag();
         tth = TagTestUtils.setupTagTest(tt, null);
@@ -47,6 +51,7 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
         req.setupGetAttribute(new HashMap());
     }
 
+    @After
     public void tearDown() {
         tt = null;
         tth = null;

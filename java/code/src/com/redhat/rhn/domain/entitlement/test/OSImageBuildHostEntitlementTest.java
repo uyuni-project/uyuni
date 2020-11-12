@@ -1,5 +1,6 @@
 package com.redhat.rhn.domain.entitlement.test;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
@@ -31,7 +32,9 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
-    @Override public void setUp() throws Exception {
+    @Override
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }

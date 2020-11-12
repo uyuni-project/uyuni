@@ -24,6 +24,8 @@ import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerat
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,6 +49,7 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
@@ -67,6 +70,7 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      * {@inheritDoc}
      */
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
 

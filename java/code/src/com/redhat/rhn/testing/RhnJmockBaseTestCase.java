@@ -15,6 +15,8 @@
 package com.redhat.rhn.testing;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.After;
+import org.junit.Before;
 
 /**
  * RhnJmockBaseTestCase - This is the same thing as {@link RhnBaseTestCase}
@@ -27,7 +29,8 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
      *
      * @throws Exception if an error occurs during test setup
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
@@ -36,7 +39,8 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
      *
      * @throws Exception if an error occurs during tear down
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();
     }
