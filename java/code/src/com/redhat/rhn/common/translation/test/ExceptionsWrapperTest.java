@@ -162,7 +162,7 @@ public class ExceptionsWrapperTest extends Assert {
     }
 
     @BeforeClass
-    public static void oneTimeSetup() throws Exception {
+    public static void oneTimeSetup() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -187,7 +187,7 @@ public class ExceptionsWrapperTest extends Assert {
     }
 
     @AfterClass
-    public static void oneTimeTeardown() throws Exception {
+    public static void oneTimeTeardown() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

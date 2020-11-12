@@ -35,7 +35,6 @@ public class RhnSetTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         set = new RhnSetImpl();
         set.sync();
     }

@@ -42,10 +42,8 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         mailer = new MockMail();
     }
 

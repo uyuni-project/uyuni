@@ -40,10 +40,8 @@ public class NavTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         TestUtils.disableLocalizationLogging();
     }
 

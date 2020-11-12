@@ -35,10 +35,8 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     private NavNode node;
 
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         node = new NavNode();
         TestUtils.disableLocalizationLogging();
     }

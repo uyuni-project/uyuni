@@ -324,7 +324,6 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     }
 
 
-    @Override
     @Before
     public void setUp() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {

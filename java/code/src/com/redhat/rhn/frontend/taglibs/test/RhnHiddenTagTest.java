@@ -37,7 +37,6 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     private RhnHiddenTag ht;
     private MockJspWriter out;
 
-    @Override
     @Before
     public void setUp() {
         ht = new RhnHiddenTag();

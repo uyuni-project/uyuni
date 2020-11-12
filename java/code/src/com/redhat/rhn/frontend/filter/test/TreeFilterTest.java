@@ -37,7 +37,6 @@ public class TreeFilterTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         main = populate();
         filter = new TreeFilter();
     }

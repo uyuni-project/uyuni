@@ -40,7 +40,6 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME);
         cleanup = new TestSetCleanup();
     }

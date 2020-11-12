@@ -30,7 +30,6 @@ public class BaseHandlerTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         th = new TestHandler();
     }
 

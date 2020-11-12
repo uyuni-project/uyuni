@@ -46,7 +46,6 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         verifyDatasourceConfig();
     }
 

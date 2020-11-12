@@ -32,7 +32,6 @@ public class UserOverviewTest extends RhnBaseTestCase {
      */
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         uo = new UserOverview();
     }
 

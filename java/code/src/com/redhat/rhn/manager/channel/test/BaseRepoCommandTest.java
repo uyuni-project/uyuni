@@ -35,7 +35,6 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         user = UserTestUtils.createUser("testUser", oid);
         Org org = user.getOrg();

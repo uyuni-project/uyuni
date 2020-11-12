@@ -35,7 +35,6 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         command = new CreateUserCommand();
         assertNotNull(command.getUser());
     }

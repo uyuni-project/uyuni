@@ -13,7 +13,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  * Base for Cobbler command tests.
  * Contains pre-filled KickstartData instance to be used by tests.
  */
-public class CobblerCommandTestBase extends BaseTestCaseWithUser {
+public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
 
     protected KickstartData ksdata;
 

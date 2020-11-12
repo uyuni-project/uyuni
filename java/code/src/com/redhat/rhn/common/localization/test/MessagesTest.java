@@ -51,7 +51,6 @@ public class MessagesTest extends RhnBaseTestCase {
      */
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         getMessage = "Get this";
         germanMessage = "Ich bin ein Berliner";
         oneArg = "one arg: fooboo";

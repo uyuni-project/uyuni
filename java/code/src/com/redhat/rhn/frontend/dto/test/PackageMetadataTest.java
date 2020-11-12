@@ -26,14 +26,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class PackageMetadataTest extends RhnBaseTestCase {
 
-    /*
-     * @see RhnBaseTestCase#setUp()
-     */
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
     @Test
     public void testParameterizedCtor() {
         PackageMetadata pm = new PackageMetadata(null, null);

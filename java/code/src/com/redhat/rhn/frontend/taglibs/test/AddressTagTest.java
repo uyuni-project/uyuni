@@ -45,7 +45,6 @@ public class AddressTagTest extends RhnBaseTestCase {
      */
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         sah = new ActionHelper();
         sah.setUpAction(new AddressesAction());
         sah.getRequest().setRequestURL("foo");
