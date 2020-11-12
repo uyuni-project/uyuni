@@ -13,8 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.hibernate.test;
-import org.junit.Before;
-import org.junit.After;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -25,16 +23,16 @@ import com.redhat.rhn.domain.test.TestInterface;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.log4j.Logger;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
-
-import junit.extensions.TestSetup;
-import org.junit.Test;
-// FIXME include in TestSuite @RunWith(Suite.class)@Suite.SuiteClasses(...)
 
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
     private static Logger log = Logger.getLogger(TestFactoryWrapperTest.class);
@@ -153,25 +151,8 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
     }
 
-
-    public static Test suite()
-        throws Exception {
-        TestSuite suite = new TestSuite(TestFactoryWrapperTest.class);
-
-        return new TestSetup(suite) {
-    @Before
-    public void setUp() throws Exception {
-                oneTimeSetup();
-            }
-
-    @After
-    public void tearDown() throws Exception {
-                oneTimeTeardown();
-            }
-        };
-    }
-
-    protected static void oneTimeSetup() throws Exception {
+    @BeforeClass
+    public static void oneTimeSetup() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -215,7 +196,8 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         });
     }
 
-    protected static void oneTimeTeardown() throws Exception {
+    @AfterClass
+    public static void oneTimeTeardown() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

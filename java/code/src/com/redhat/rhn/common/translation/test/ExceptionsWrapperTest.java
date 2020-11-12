@@ -13,8 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.translation.test;
-import org.junit.Before;
-import org.junit.After;
 
 import com.redhat.rhn.common.db.ConstraintViolationException;
 import com.redhat.rhn.common.db.WrappedSQLException;
@@ -24,25 +22,20 @@ import com.redhat.rhn.common.translation.ExceptionConstants;
 import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 
 import org.apache.log4j.Logger;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import junit.extensions.TestSetup;
-import org.junit.Test;
-import org.junit.Assert;
-// FIXME include in TestSuite @RunWith(Suite.class)@Suite.SuiteClasses(...)
 
 public class ExceptionsWrapperTest extends Assert {
 
     private static final Logger LOG = Logger.getLogger(ExceptionsWrapperTest.class);
     private static final String EXCEPTION_TRANSLATOR =
         "com.redhat.rhn.common.translation.ExceptionTranslator";
-
-    public ExceptionsWrapperTest(String name) {
-
-    }
 
     @Test
     public void testConstraintViolation() throws Exception {
@@ -168,23 +161,8 @@ public class ExceptionsWrapperTest extends Assert {
         });
     }
 
-    public static Test suite() throws Exception {
-        TestSuite suite = new TestSuite(ExceptionsWrapperTest.class);
-
-        return new TestSetup(suite) {
-    @Before
-    public void setUp() throws Exception {
-                oneTimeSetup();
-            }
-
-    @After
-    public void tearDown() throws Exception {
-                oneTimeTeardown();
-            }
-        };
-    }
-
-    protected static void oneTimeSetup() throws Exception {
+    @BeforeClass
+    public static void oneTimeSetup() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -208,7 +186,8 @@ public class ExceptionsWrapperTest extends Assert {
         });
     }
 
-    protected static void oneTimeTeardown() throws Exception {
+    @AfterClass
+    public static void oneTimeTeardown() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

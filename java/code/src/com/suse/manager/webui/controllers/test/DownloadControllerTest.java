@@ -14,8 +14,6 @@
  */
 
 package com.suse.manager.webui.controllers.test;
-import org.junit.Before;
-import org.junit.After;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -46,14 +44,19 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.mockobjects.servlet.MockHttpServletResponse;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SparkTestUtils;
 
+import com.mockobjects.servlet.MockHttpServletResponse;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,10 +72,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import junit.extensions.TestSetup;
-import org.junit.Test;
-// FIXME include in TestSuite @RunWith(Suite.class)@Suite.SuiteClasses(...)
-import junit.framework.TestSuite;
 import spark.Request;
 import spark.RequestResponseFactory;
 import spark.Response;
@@ -97,28 +96,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     private static String originalMountPoint;
 
-
-
-    /**
-     * One-time setup. Does not seem to run if single test method is run.
-     * @return Test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(DownloadControllerTest.class);
-        TestSetup wrapper = new TestSetup(suite) {
-    @Before
-    public void setUp() throws Exception {
-                // Config class keeps the config files sorted by a TreeSet with a File
-                // comparator, which makes it sometimes override the test rhn.conf with
-                // the defaults, nullifying server.secret_key.
-                // Until this is fixed, set it manually
-                Config.get().setString("server.secret_key",
-                        DigestUtils.sha256Hex(TestUtils.randomString()));
-                originalMountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
-            }
-        };
-
-        return wrapper;
+    @BeforeClass
+    public static void beforeAll() {
+        Config.get().setString("server.secret_key",
+                DigestUtils.sha256Hex(TestUtils.randomString()));
+        originalMountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
     /**
