@@ -2126,11 +2126,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>Nota: Quando viene selezionata questa casella, i campi della pasword sopra riportati non risultano essere necessari, tuttavia         potrete inserire una password in grado di funzionare correttamente, solo quando l'autenticazione PAM relativa a questo account utente, risulta essere    disabilitata.</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
-        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/docs/administration/auth-methods.html"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>Per impostare Satellite in modo da eseguire una autenticazione utilizzando LDAP, kerberos, e altri sistemi di autenticazione basati sulla rete, consultare la &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;guida all'installazione&lt;/a&gt; per informazioni su come impostare PAM.</target>
+        <target>Per impostare Satellite in modo da eseguire una autenticazione utilizzando LDAP, kerberos, e altri sistemi di autenticazione basati sulla rete, consultare la &lt;a href={0}&gt;guida all'installazione&lt;/a&gt; per informazioni su come impostare PAM.</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly" xml:space="preserve">
         <source>Read-only API user:</source>
@@ -11828,7 +11828,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -11984,7 +11984,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <source>
         File preservation lists are lists of files that will be restored to a system during a particular kickstart.
         You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
+        For more information refer to the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.
         The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
@@ -12124,7 +12124,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>Crea Elenco Conservazione dei file Kickstart</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary" xml:space="preserve">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
@@ -22568,6 +22568,13 @@ per sottoscrivere i sistemi ai canali software durante un kickstart.&lt;/span&gt
         <target>Tedesco</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.en_US" xml:space="preserve">
+        <source>English</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+        <target>Inglese</target>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.lang.en" xml:space="preserve">
         <source>English</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>

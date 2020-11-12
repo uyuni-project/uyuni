@@ -14,7 +14,7 @@
              creationUrl="/rhn/admin/ScheduleDetail.do"
              creationType="schedule"
              creationAcl="user_role(satellite_admin)"
-             helpUrl="/docs/reference/admin/task-schedules.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/task-schedules.html">
     <bean:message key="schedule.edit.jsp.satschedules"/>
 </rhn:toolbar>
 

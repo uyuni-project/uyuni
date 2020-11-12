@@ -226,7 +226,7 @@ class ProductsPageWrapper extends React.Component {
           &nbsp;
           {t('Setup Wizard')}
           &nbsp;
-          <HelpLink url='/docs/reference/admin/setup-wizard.html'/>
+          <HelpLink url='reference/admin/setup-wizard.html'/>
         </h1>
       </div>
     ;

@@ -68,6 +68,7 @@ CREATE TABLE rhnUserInfo
     modified                TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL,
     preferred_locale        VARCHAR(8),
+    preferred_docs_locale   VARCHAR(8),
     csv_separator           CHAR(1)
                                 DEFAULT (',') NOT NULL
                                 CONSTRAINT rhn_user_info_csv_ck

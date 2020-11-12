@@ -6,7 +6,7 @@
 <html:html xhtml="true">
   <body>
     <rhn:toolbar base="h1" icon="system-bare-metal"
-                 helpUrl="/docs/reference/admin/bare-metal-systems.html">
+                 helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/bare-metal-systems.html">
       <bean:message key="bootstrapsystems.jsp.toolbar"/>
     </rhn:toolbar>
 

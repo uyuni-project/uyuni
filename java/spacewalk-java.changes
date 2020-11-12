@@ -1,3 +1,4 @@
+- Localize documentation links
 - Temp: revert Sync state modules when starting action chain execution (bsc#1177336)
 - fix check for available products on ISS Slaves (bsc#1177184)
 - XMLRPC: Report architecture label in the list of installed packages (bsc#1176898)
