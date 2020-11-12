@@ -14,16 +14,21 @@
  */
 package com.redhat.rhn.common.security.acl.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * AccessTest
  */
 public class AclFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testGetAcl() {
         AclFactory aclFactory = new AclFactory(new Access());
         Acl test = aclFactory.getAcl("  com.redhat.rhn.common.security.acl.test.MixinTestHandler  ");

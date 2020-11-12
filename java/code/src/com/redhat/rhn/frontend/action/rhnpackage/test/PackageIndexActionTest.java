@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -24,6 +26,8 @@ import com.redhat.rhn.frontend.action.rhnpackage.PackageIndexAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +36,7 @@ import java.util.Map;
  */
 public class PackageIndexActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testUpdate() throws Exception {
         PackageIndexAction pia = new PackageIndexAction();
         ActionHelper ah = new ActionHelper();

@@ -298,7 +298,7 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="test" depends="jar" description="Run unit tests">
+  <target name="test-legacy" depends="jar" description="Run unit tests">
     <mkdir dir="${tests.results.dir}" />
 
     <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
@@ -332,6 +332,49 @@
       </fileset>
       <report format="frames" todir="${tests.results.dir}/html"/>
     </junitreport>
+  </target>
+
+  <target
+      name="test"
+      description="Run unit tests"
+      depends="refresh-branding-jar, jar"
+      >
+    <mkdir dir="${tests.results.dir}" />
+
+    <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
+    <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
+    <echo message="Running tests including:" />
+    <echo message="${tests.includes.text}" />
+    <echo message="and excluding:" />
+    <echo message="${tests.excludes.text}" />
+
+    <!-- Once all CI containers are using ant 1.10+ we can add the printSummary="true" parameter
+         Before it outputs useless over-verbose Junit5 summary for each test summary for each test summary for each test... -->
+    <junitlauncher>
+	    <classpath>
+            <fileset dir="/usr/share/java/junit5/">
+                <include name="**/junit-platform-*.jar" />
+                <include name="**/junit-jupiter-*.jar" />
+            </fileset>
+        </classpath>
+
+        <classpath refid="managertestjars" />
+
+        <testclasses
+                outputdir="${tests.results.dir}"
+                failureProperty="junit_failed">
+            <fork>
+                <sysproperty key="rhn-home" value="." />
+                <sysproperty key="java.awt.headless" value="true" />
+                <sysproperty key="log4j.threshold" value="true" />
+                <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
+                <jvmarg value="-ea" />
+            </fork>
+            <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
+            <listener type="legacy-brief" sendSysOut="true"/>
+            <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
+        </testclasses>
+    </junitlauncher>
   </target>
 
   <target name="test-pr" depends="test-report" description="Run unit tests for Pull Requests">

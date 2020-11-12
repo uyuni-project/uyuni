@@ -13,9 +13,13 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.satellite;
+package com.redhat.rhn.manager.satellite.test;
 
 import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -26,12 +30,16 @@ import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
+import com.redhat.rhn.manager.satellite.UpgradeCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +56,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     private Path legacyStatesBackupDirectory;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         createTask(UpgradeCommand.UPGRADE_CUSTOM_STATES);
@@ -55,6 +64,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         assertTaskDoesNotExist(UpgradeCommand.UPGRADE_CUSTOM_STATES);
@@ -65,6 +75,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      * Tests that when various tasks are queued, they are also cleaned up after the
      * upgrade process.
      */
+    @Test
     public void testMultipleTasksDone() {
         createTask(UpgradeCommand.UPGRADE_KS_PROFILES);
 
@@ -79,6 +90,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStates() throws IOException {
         ConfigChannelSaltManager.getInstance().setBaseDirPath(tmpSaltRoot.toAbsolutePath().toString());
 
@@ -122,6 +134,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testMultipleTasksInQueue() throws IOException {
         // create one task here, another one is created in setUp
         createTask(UpgradeCommand.UPGRADE_CUSTOM_STATES);
@@ -134,6 +147,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesContentExistsInDb() throws IOException {
         ConfigChannel stateChannel = createTestStateChannel();
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -163,6 +177,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesMoreRevisions() throws IOException {
         ConfigChannel stateChannel = createTestStateChannel();
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -194,6 +209,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesNormalChannelSkipped() throws IOException {
         ConfigChannel normalChannel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.normal());
         ConfigFile configFile = normalChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -225,6 +241,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesMissingFile() {
         ConfigChannel stateChannel = createTestStateChannel();
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -248,6 +265,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testBackupAndCleanup() throws IOException {
         assertTrue(legacyStatesBackupDirectory.toFile().list().length == 0);
 

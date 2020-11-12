@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
@@ -21,11 +24,14 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * CustomDataKeyTest
  */
 public class CustomDataKeyTest extends RhnBaseTestCase {
 
+    @Test
     public void testCustomDataKey() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         CustomDataKey key = createTestCustomDataKey(user);

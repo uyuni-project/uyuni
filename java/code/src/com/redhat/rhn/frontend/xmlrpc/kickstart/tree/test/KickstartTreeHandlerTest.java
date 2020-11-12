@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.tree.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -27,6 +32,8 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.tree.KickstartTreeHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.util.List;
 
@@ -38,6 +45,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
     private KickstartTreeHandler handler = new KickstartTreeHandler();
     private KickstartHandler ksHandler = new KickstartHandler();
 
+    @Test
     public void testListKickstartableTrees() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -57,6 +65,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         assertTrue(found);
     }
 
+    @Test
     public void testCreateKickstartableTree() throws Exception {
         String label = TestUtils.randomString();
         List trees = KickstartFactory.
@@ -73,6 +82,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
                 lookupAccessibleTreesByOrg(admin.getOrg()).size());
     }
 
+    @Test
     public void testEditKickstartableTree() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -89,6 +99,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         assertNotNull(testTree.getInstallType());
     }
 
+    @Test
     public void testRenameKickstartableTree() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -98,6 +109,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         assertEquals(newLabel, testTree.getLabel());
     }
 
+    @Test
     public void testDeleteKickstartableTree() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
@@ -107,6 +119,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         assertNull(KickstartFactory.lookupKickstartTreeByLabel(label, admin.getOrg()));
     }
 
+    @Test
     public void testDeleteTreeAndProfiles() throws Exception {
 
         KickstartData ks  = KickstartDataTest.createKickstartWithProfile(admin);
@@ -134,6 +147,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         assertTrue(ksProfiles.size() < numKsProfiles);
     }
 
+    @Test
     public void testListTreeTypes() throws Exception {
         List types = handler.listInstallTypes(admin);
         assertNotNull(types);

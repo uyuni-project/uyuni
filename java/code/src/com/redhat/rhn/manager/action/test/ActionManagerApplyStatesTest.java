@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.manager.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
@@ -23,6 +29,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +49,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyStates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -77,6 +86,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyStatesHighstate() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -106,6 +116,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyStatesHighstateTest() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -134,6 +145,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyHighstate() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -160,6 +172,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyHighstateTest() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();

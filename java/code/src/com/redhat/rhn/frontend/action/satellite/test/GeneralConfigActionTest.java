@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -22,6 +26,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,12 +39,14 @@ import java.util.Map;
 public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
     private static final String TEST_CONFIG_BOOLEAN = ConfigDefaults.DISCONNECTED;
 
+    @Test
     public void testTestValue() {
 
         assertTrue(GeneralConfigAction.ALLOWED_CONFIGS.
                 contains(TEST_CONFIG_BOOLEAN));
     }
 
+    @Test
     public void testNonSubmit() throws Exception {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -70,6 +77,7 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
         }
     }
 
+    @Test
     public void testSubmit() throws Exception {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);

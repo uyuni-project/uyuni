@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -57,8 +63,11 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,6 +82,7 @@ import java.util.Set;
 /**
  * SystemConfigHandlerTest
  */
+@ExtendWith(JUnit5Mockery.class)
 public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private SaltApi saltApi = new TestSaltApi();
@@ -84,12 +94,14 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
             sshMinionBootstrapper
     );
     private ServerConfigHandler handler = new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper);
-    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+
+    @RegisterExtension
+    protected final Mockery mockContext = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }};
 
-
+    @Test
     public void testDeployConfiguration() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
@@ -171,6 +183,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testConfigChannels() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
@@ -317,6 +330,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 paths, lookLocal).get(0)));
     }
 
+    @Test
     public void testLookupFileInfoNoData() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         List<String> paths = new LinkedList<>();
@@ -333,6 +347,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                                                     server, local);
     }
 
+    @Test
     public void testAddPath() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
@@ -379,6 +394,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testListFiles() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
@@ -425,6 +441,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testRemovePaths() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
@@ -442,6 +459,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testScheduleApplyConfigChannel() throws Exception {
         Server testServer = MinionServerFactoryTest.createTestMinionServer(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
@@ -469,10 +487,10 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     private ServerConfigHandler getMockedHandler() throws Exception {
-        TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
+        TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
         ServerConfigHandler serverConfigHandler = new ServerConfigHandler(taskomaticMock, xmlRpcSystemHelper);
 
-        MOCK_CONTEXT.checking(new Expectations() {{
+        mockContext.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 

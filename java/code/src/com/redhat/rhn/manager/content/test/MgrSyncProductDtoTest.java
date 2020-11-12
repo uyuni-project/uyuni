@@ -14,22 +14,25 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 
 import com.suse.mgrsync.MgrSyncStatus;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 /**
  * Tests {@link MgrSyncProductDto}.
  */
-public class MgrSyncProductDtoTest extends TestCase {
+public class MgrSyncProductDtoTest  {
 
     /** The product under test. */
     private MgrSyncProductDto product;
@@ -39,9 +42,9 @@ public class MgrSyncProductDtoTest extends TestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
+
 
         baseChannel = new MgrSyncChannelDto("BaseChannel", "basechannel", "This is the base Channel",
                 "This is the base Channel", true, false,
@@ -61,6 +64,7 @@ public class MgrSyncProductDtoTest extends TestCase {
      *
      * @throws Exception if anything goes bad
      */
+    @Test
     public void testGetStatus() throws Exception {
         assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
 

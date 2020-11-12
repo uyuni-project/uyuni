@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.webapp.RhnServletListener;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CreateUserActionTest - Test the CreateUserAction
@@ -30,6 +35,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
 
     private static RhnServletListener rl;
 
+    @Test
     public void testMessageQueueRegistration() {
         rl = new RhnServletListener();
         rl.contextInitialized(null);
@@ -47,6 +53,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         MessageQueue.stopMessaging();
     }
 
+    @Test
     public void testNewUserIntoOrgSatellite() throws Exception {
 
 

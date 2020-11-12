@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.ssm.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
@@ -30,6 +35,9 @@ import com.redhat.rhn.manager.ssm.SsmOperationStatus;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -45,12 +53,13 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     private RhnSet serverSet;
     private String serverSetLabel;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         ssmUser = UserTestUtils.findNewUser("ssmuser", "ssmorg");
         serverSetLabel = populateRhnSet();
     }
 
+    @Test
     public void testCreateAndAllOperations() throws Exception {
         // Test
         SsmOperationManager.createOperation(ssmUser, "Test operation", serverSetLabel);
@@ -63,6 +72,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testCreateAndAllOperations2() throws Exception {
         long operationId = SsmOperationManager.createOperation(ssmUser,
                                             "Test testCreateAndAllOperations2 ", null);
@@ -76,6 +86,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         assertEquals(1, result.size());
     }
 
+    @Test
     public void testCreateCompleteAndInProgressOperations() throws Exception {
         // Test
         long completeMeId =
@@ -104,6 +115,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testCreateAndFindOperation() throws Exception {
         // Test
         long operationId =
@@ -122,6 +134,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         assertNotNull(operation.getModified());
     }
 
+    @Test
     public void testFindNonExistentOperation() {
         // Test
         OperationDetailsDto result = SsmOperationManager.
@@ -131,6 +144,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         assertNull(result);
     }
 
+    @Test
     public void testFindServerDataForOperation() throws Exception {
         // Setup
         long operationId =
@@ -149,6 +163,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         assertNull(serverData.getNote());
     }
 
+    @Test
     public void testAssociateServersWithOperation() throws Exception {
         // Setup
 
@@ -186,6 +201,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if there is an error running the test
      */
+    @Test
     public void testAssociateServersWithOperationMultipleSets() throws Exception {
         // Setup
 
@@ -233,6 +249,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
      *
      * @throws Exception if there is an error running the test
      */
+    @Test
     public void testAssociateServersWithOperationDuplicateServer() throws Exception {
         // Setup
 
@@ -278,6 +295,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
      * @throws Exception when things go wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testAssociateServersWithFailedOperation() throws Exception {
         //   Pass null label so no servers are associated
         long operationId =

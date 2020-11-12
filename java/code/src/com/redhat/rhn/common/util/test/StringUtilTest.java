@@ -15,36 +15,41 @@
 
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.StringUtil;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
+public class StringUtilTest  {
 
-public class StringUtilTest extends TestCase {
-    public StringUtilTest(final String name) {
-        super(name);
-    }
-
+    @Test
     public void testNoChange() {
         String str = "foobar";
         assertEquals(str, StringUtil.beanify(str));
     }
 
+    @Test
     public void testRemoveWhitespace() {
         String str = "foo_bar";
         assertEquals("fooBar", StringUtil.beanify(str));
     }
 
+    @Test
     public void testSmartString() {
         assertEquals(1, StringUtil.smartStringToInt("1"));
         assertEquals(2, StringUtil.smartStringToInt("invalidstring", 2));
         assertEquals(3, StringUtil.smartStringToInt("4blah", 3));
     }
 
+    @Test
     public void testMapReplace() {
         Map<String, String> replace = new HashMap<>();
         replace.put("k0", "v0");
@@ -55,6 +60,7 @@ public class StringUtilTest extends TestCase {
         assertEquals("foo v0 v1", StringUtil.replaceTags("foo <k0 /> <k1 />", replace));
     }
 
+    @Test
     public void testStringToList() {
         String listme = "A B C D E F G";
         List<String> testme = StringUtil.stringToList(listme);
@@ -62,6 +68,7 @@ public class StringUtilTest extends TestCase {
         assertTrue(testme.contains("G"));
     }
 
+    @Test
     public void testRandomPasswdShort() throws Exception {
         try {
             StringUtil.makeRandomPassword(4);
@@ -83,6 +90,7 @@ public class StringUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testRandomPassword() {
         String passwd = StringUtil.makeRandomPassword(16);
         assertEquals(16, passwd.length());
@@ -95,12 +103,14 @@ public class StringUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetClassName() {
         String expected = "StringUtilTest";
         assertEquals(expected,
             StringUtil.getClassNameNoPackage(this.getClass()));
     }
 
+    @Test
     public void testHtmlifyString() {
         String testMe = null;
         testMe = StringUtil.htmlifyText(testMe);
@@ -157,6 +167,7 @@ public class StringUtilTest extends TestCase {
 
     }
 
+    @Test
     public void testJoin() {
         String testString;
 
@@ -181,6 +192,7 @@ public class StringUtilTest extends TestCase {
         assertEquals("One...Two...Three...Many", testString);
     }
 
+    @Test
     public void testCategorizeTime3() {
         long oneWeek = (1000 * 60 * 60 * 24 * 7);
         long oneDay = (1000 * 60 * 60 * 24);
@@ -264,6 +276,7 @@ public class StringUtilTest extends TestCase {
         assertEquals("600 minutes from now", result);
     }
 
+    @Test
     public void testCategorizeTime2() {
         long oneWeek = (1000 * 60 * 60 * 24 * 7);
         long oneDay = (1000 * 60 * 60 * 24);
@@ -319,6 +332,7 @@ public class StringUtilTest extends TestCase {
         assertEquals("25 days ago", result);
     }
 
+    @Test
     public void testCategorizeTimeWeekAndYear() {
         long oneDay = (1000 * 60 * 60 * 24);
         long oneWeek = oneDay * 7;
@@ -366,12 +380,14 @@ public class StringUtilTest extends TestCase {
     }
 
 
+    @Test
     public void testWebTolinux() {
         String webstr = "abc\r\ndef\r\n";
         String lstr = "abc\ndef\n";
         assertEquals(lstr, StringUtil.webToLinux(webstr));
     }
 
+    @Test
     public void testDeBeanifyString() {
         String camel = "someBeanFieldNameWithCamelCase";
         String returned = StringUtil.debeanify(camel);
@@ -380,6 +396,7 @@ public class StringUtilTest extends TestCase {
 
     }
 
+    @Test
     public void testToPlainText() {
         String inp = "<p>You donot have enough entitlements for <strong>" +
                     "<a href=\"http://www.redhat.com\">xyz system</a> </strong>.</p>";
@@ -389,6 +406,7 @@ public class StringUtilTest extends TestCase {
         assertEquals(expected, StringUtil.toPlainText(inp));
     }
 
+    @Test
     public void testAddPath() {
         String expected = "/tmp/foo/bar.txt";
         assertEquals(expected, StringUtil.addPath("/tmp/foo", "bar.txt"));

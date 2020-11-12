@@ -17,19 +17,22 @@ package com.redhat.rhn.frontend.taglibs.list.test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.jmock.Expectations.returnValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.taglibs.list.ListCommand;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 
 import org.jmock.Expectations;
 import org.jmock.api.Action;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.Writer;
 import java.util.List;
@@ -49,8 +52,8 @@ public class ListTagTest extends MockObjectTestCase {
 
     private String listName = "testDataListName";
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         RhnBaseTestCase.disableLocalizationServiceLogging();
         final List dataList = CSVWriterTest.getTestListOfMaps();
@@ -80,6 +83,7 @@ public class ListTagTest extends MockObjectTestCase {
      * Tests normal conditions for ListTag.
      * @throws Exception something bad happened
      */
+    @Test
     public void testRegularRun() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(req).getRequestURI();

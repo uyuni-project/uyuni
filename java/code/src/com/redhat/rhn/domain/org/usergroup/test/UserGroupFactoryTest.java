@@ -15,11 +15,15 @@
 
 package com.redhat.rhn.domain.org.usergroup.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /** JUnit test case for the UserGroup
  *  class.
@@ -34,6 +38,7 @@ public class UserGroupFactoryTest extends RhnBaseTestCase {
     * usage of anything related to a UserGroup
     * @throws Exception something bad happened
     */
+    @Test
     public void testGetUserGroup() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         UserGroup ugid = org1.getUserGroup(RoleFactory.ORG_ADMIN);

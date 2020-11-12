@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
@@ -35,13 +37,14 @@ import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
 import java.util.Date;
 
-import junit.framework.Assert;
-
 /**
  * ConfigTestUtils
  * @version $Rev 95653 $
  */
-public class ConfigTestUtils extends Assert {
+public class ConfigTestUtils  {
+
+    private ConfigTestUtils() {
+    }
 
     /**
      * Creates a test configuration channel and saves it to the database

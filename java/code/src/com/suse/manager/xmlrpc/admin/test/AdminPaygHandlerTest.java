@@ -14,6 +14,12 @@
  */
 package com.suse.manager.xmlrpc.admin.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
@@ -33,37 +39,49 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@ExtendWith(JUnit5Mockery.class)
 public class AdminPaygHandlerTest extends BaseHandlerTestCase {
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    private AdminPaygHandler handler;
+    private TaskomaticApi taskoApiMock;
+
+    @RegisterExtension
+    protected final JUnit5Mockery context = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
-    private static AdminPaygHandler handler;
-    private static final TaskomaticApi TASKO_API_MOCK;
-
-    static {
-        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        TASKO_API_MOCK = CONTEXT.mock(TaskomaticApi.class);
-        handler = new AdminPaygHandler(TASKO_API_MOCK);
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        taskoApiMock = context.mock(TaskomaticApi.class);
+        handler = new AdminPaygHandler(taskoApiMock);
     }
 
-    protected void tearDown() throws Exception {
+    @Override
+    @AfterEach
+    public void tearDown() throws Exception {
         super.tearDown();
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         HibernateFactory.commitTransaction();
     }
 
+    @Test
     public void testListRoleCheck() {
         try {
             handler.list(regular);
@@ -79,9 +97,10 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateRoleCheck() throws TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
-            { never(TASKO_API_MOCK).scheduleSinglePaygUpdate(with(any(PaygSshData.class))); }
+        context.checking(new Expectations() {
+            { never(taskoApiMock).scheduleSinglePaygUpdate(with(any(PaygSshData.class))); }
         });
         try {
             handler.create(regular, null, null, null, null, null, null, null);
@@ -97,9 +116,10 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetDetailsRoleCheck() throws TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
-            { never(TASKO_API_MOCK).scheduleSinglePaygUpdate(with(any(PaygSshData.class))); }
+        context.checking(new Expectations() {
+            { never(taskoApiMock).scheduleSinglePaygUpdate(with(any(PaygSshData.class))); }
         });
         try {
             handler.setDetails(regular, null, null);
@@ -115,6 +135,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testDeleteRoleCheck() {
         try {
             handler.delete(regular, null);
@@ -130,10 +151,11 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreate() throws TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
+        context.checking(new Expectations() {
             {
-                oneOf(TASKO_API_MOCK)
+                oneOf(taskoApiMock)
                         .scheduleSinglePaygUpdate(with(any(PaygSshData.class)));
             }
         });
@@ -152,13 +174,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertEquals(payg.get().getStatus(), PaygSshData.Status.P);
         assertNullBastion(payg.get());
 
-        CONTEXT.assertIsSatisfied();
+        context.assertIsSatisfied();
     }
 
+    @Test
     public void testCreateFull() throws TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
+        context.checking(new Expectations() {
             {
-                oneOf(TASKO_API_MOCK)
+                oneOf(taskoApiMock)
                         .scheduleSinglePaygUpdate(with(any(PaygSshData.class)));
             }
         });
@@ -185,13 +208,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertEquals(payg.get().getBastionKeyPassword(), "b_key_pass");
         assertEquals(payg.get().getStatus(), PaygSshData.Status.P);
         assertNull(payg.get().getErrorMessage());
-        CONTEXT.assertIsSatisfied();
+        context.assertIsSatisfied();
     }
 
+    @Test
     public void testUpdate1() throws TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
+        context.checking(new Expectations() {
             {
-                oneOf(TASKO_API_MOCK)
+                oneOf(taskoApiMock)
                         .scheduleSinglePaygUpdate(with(any(PaygSshData.class)));
             }
         });
@@ -229,12 +253,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertEquals(payg.get().getBastionKeyPassword(), "bastion_keyPassword_");
         assertEquals(payg.get().getStatus(), PaygSshData.Status.P);
         assertNull(payg.get().getErrorMessage());
-        CONTEXT.assertIsSatisfied();
+        context.assertIsSatisfied();
     }
+
+    @Test
     public void testUpdate2() throws TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
+        context.checking(new Expectations() {
             {
-                oneOf(TASKO_API_MOCK)
+                oneOf(taskoApiMock)
                         .scheduleSinglePaygUpdate(with(any(PaygSshData.class)));
             }
         });
@@ -260,12 +286,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertEquals(payg.get().getBastionKeyPassword(), "bastionKeyPassword");
         assertEquals(payg.get().getStatus(), PaygSshData.Status.P);
         assertNull(payg.get().getErrorMessage());
-        CONTEXT.assertIsSatisfied();
+        context.assertIsSatisfied();
     }
+
+    @Test
     public void testUpdate3() throws TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
+        context.checking(new Expectations() {
             {
-                oneOf(TASKO_API_MOCK)
+                oneOf(taskoApiMock)
                         .scheduleSinglePaygUpdate(with(any(PaygSshData.class)));
             }
         });
@@ -296,9 +324,10 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertNull(payg.get().getErrorMessage());
         assertNullBastion(payg.get());
 
-        CONTEXT.assertIsSatisfied();
+        context.assertIsSatisfied();
     }
 
+    @Test
     public void testList() throws TaskomaticApiException {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(true, "_1"));
         PaygSshDataFactory.savePaygSshData(createPaygSshData(true, "_2"));
@@ -308,6 +337,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertEquals(data.size(), 3);
     }
 
+    @Test
     public void testGetDetails() throws TaskomaticApiException {
         PaygSshData paygData = createPaygSshData(true, "");
         PaygSshDataFactory.savePaygSshData(paygData);
@@ -328,6 +358,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertEquals(paygData.getBastionKeyPassword(), data.getBastionKeyPassword());
     }
 
+    @Test
     public void testDelete1() {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_1"));
         PaygSshData paygData = createPaygSshData(true, "");
@@ -340,6 +371,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertEquals(PaygSshDataFactory.lookupPaygSshData().size(), 1);
     }
 
+    @Test
     public void testDelete() {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_1"));
         PaygSshData paygData = createPaygSshData(true, "");

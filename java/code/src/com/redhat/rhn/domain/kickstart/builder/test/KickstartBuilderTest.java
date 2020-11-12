@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.kickstart.builder.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -37,6 +43,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,6 +54,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     private String kickstartFileContents;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
@@ -57,6 +67,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         return new KickstartParser(kickstartFileContents);
     }
 
+    @Test
     public void testCreate() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -72,6 +83,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     }
 
     //
+    @Test
     public void testDepricatedAnacondCommands() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -111,6 +123,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testDirector() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         assertEquals(27, parser.getOptionLines().size());
@@ -120,6 +133,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals(0, parser.getPostScriptLines().size());
     }
 
+    @Test
     public void testBuildCommands() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         KickstartBuilder builder = new KickstartBuilder(user);
@@ -149,6 +163,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testKickstartRawData() throws Exception {
 
 
@@ -169,6 +184,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertNotNull(data);
     }
 
+    @Test
     public void testEncryptRootpw() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
@@ -182,6 +198,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertTrue(rootpw.getArguments().startsWith("--iscrypted $5$"));
     }
 
+    @Test
     public void testBuildPackages() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -200,6 +217,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals(6, ksData.getKsPackages().size());
     }
 
+    @Test
     public void testBuidEmptyPackages() throws Exception {
         // No idea if this is valid or not but I see no reason why the builder shouldn't
         // be ready for it:
@@ -210,6 +228,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals(0, ksData.getKsPackages().size());
     }
 
+    @Test
     public void testBuildPreScripts() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         KickstartBuilder builder = new KickstartBuilder(user);
@@ -225,6 +244,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals("Y", script.getChroot());
     }
 
+    @Test
     public void testBuildPreScriptWithInterpreter() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -238,6 +258,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals("/usr/bin/python", script.getInterpreter());
     }
 
+    @Test
     public void testBuildPreScriptNewlines() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -253,6 +274,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals("a\nb", script.getDataContents());
     }
 
+    @Test
     public void testBuildPreScriptWithMissingInterpreter() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -269,6 +291,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testBuildMultiplePreScripts() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -284,6 +307,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals(2, ksData.getScripts().size());
     }
 
+    @Test
     public void testBuidPreScriptWithNochroot() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -301,6 +325,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testBuildPostScriptWithNochroot() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -316,6 +341,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals("N", script.getChroot());
     }
 
+    @Test
     public void testBuildScriptWithEmptyLines() throws Exception {
         KickstartBuilder builder = new KickstartBuilder(user);
 
@@ -326,6 +352,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals(0, ksData.getScripts().size());
     }
 
+    @Test
     public void testConstruct() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         KickstartBuilder builder = new KickstartBuilder(user);
@@ -342,6 +369,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertEquals(KickstartScript.TYPE_PRE, preScript.getScriptType());
     }
 
+    @Test
     public void testConstructWithExistingLabel() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         KickstartBuilder builder = new KickstartBuilder(user);
@@ -361,6 +389,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testConstructWithInvaidVirtType() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         KickstartBuilder builder = new KickstartBuilder(user);
@@ -376,6 +405,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testConstructUpgradeKickstart() throws Exception {
         KickstartParser parser = createKickstartParser("upgrade.ks");
         KickstartBuilder builder = new KickstartBuilder(user);
@@ -389,6 +419,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertNull(data.getCommand("install"));
     }
 
+    @Test
     public void testImportUseDefautDownloadLocation() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         KickstartBuilder builder = new KickstartBuilder(user);

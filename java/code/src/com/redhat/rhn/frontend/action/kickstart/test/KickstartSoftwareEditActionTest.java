@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -23,6 +26,8 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.util.LabelValueBean;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
@@ -37,11 +42,13 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/kickstart/KickstartSoftwareEdit");
     }
 
+    @Test
     public void testSetupExecute() throws Exception {
         Channel child = ChannelTestUtils.createChildChannel(user,
                 ksdata.getTree().getChannel());
@@ -65,6 +72,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
                 getAttribute(KickstartSoftwareEditAction.CHANNELS));
     }
 
+    @Test
     public void testSubmitExecute() throws Exception {
         KickstartWizardHelper wcmd = new KickstartWizardHelper(user);
         wcmd.createCommand("url",

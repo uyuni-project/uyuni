@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -21,6 +24,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -29,6 +33,7 @@ import java.util.List;
  */
 public class KickstartCommandNameTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testCommandName() throws Exception {
 
         String query = "KickstartCommandName.listAdvancedOptions";

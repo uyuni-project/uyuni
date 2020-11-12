@@ -14,22 +14,26 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.manager.audit.AuditChannelInfo;
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link CVEAuditSystem}.
  *
  */
-public class CVEAuditSystemTest extends TestCase {
+public class CVEAuditSystemTest  {
 
     /**
      * Make sure that the set of channels is working as expected.
      */
+    @Test
     public void testChannels() {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(0L);
         system.addChannel(new AuditChannelInfo(1L, "foo", "f", 0L));
@@ -47,6 +51,7 @@ public class CVEAuditSystemTest extends TestCase {
     /**
      * Make sure that the set of erratas is working as expected.
      */
+    @Test
     public void testErratas() {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(0L);
         system.addErrata(new ErrataIdAdvisoryPair(1L, "foo"));

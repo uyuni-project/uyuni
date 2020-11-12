@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -22,6 +24,8 @@ import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 
@@ -33,6 +37,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class SubmittedTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testRender() throws Exception {
         SubmittedTag tag = new SubmittedTag();
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();

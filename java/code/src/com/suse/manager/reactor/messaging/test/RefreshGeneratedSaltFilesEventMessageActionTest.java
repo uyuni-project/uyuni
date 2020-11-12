@@ -16,6 +16,8 @@ package com.suse.manager.reactor.messaging.test;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -32,6 +34,9 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageA
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,16 +50,20 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
     private Path tmpFileRoot;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         tmpFileRoot = Files.createTempDirectory("refgensalt");
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
+        super.tearDown();
         FileUtils.deleteDirectory(tmpFileRoot.toFile());
     }
 
+    @Test
     public void testDoExecute() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         // create a group to make sure we have at least one
@@ -78,6 +87,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         checkAssertions(action);
     }
 
+    @Test
     public void testDoExecuteNoCustomDir() throws Exception {
         // no /srv/susemanager/salt/custom
         Files.deleteIfExists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));

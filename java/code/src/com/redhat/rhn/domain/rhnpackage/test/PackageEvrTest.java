@@ -15,12 +15,18 @@
 
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.Test;
+
 public class PackageEvrTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testToUniversalEvrString() {
         PackageEvr evr1 = PackageEvrFactoryTest.createTestPackageEvr("1", "2.3.4", "5", PackageType.RPM);
         PackageEvr evr2 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.2", "X", PackageType.RPM);
@@ -43,6 +49,7 @@ public class PackageEvrTest extends BaseTestCaseWithUser {
      *   - 1:2-3-4-5
      *
      */
+    @Test
     public void testParseDebianEvr() {
 
         PackageEvr evr;
@@ -78,6 +85,7 @@ public class PackageEvrTest extends BaseTestCaseWithUser {
         assertEquals("5", evr.getRelease());
     }
 
+    @Test
     public void testParseRpmEvr() {
         PackageEvr evr;
 

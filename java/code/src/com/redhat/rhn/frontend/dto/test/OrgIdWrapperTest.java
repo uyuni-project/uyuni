@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.frontend.dto.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  * OrgIdWrapperTest
  */
-public class OrgIdWrapperTest extends TestCase {
+public class OrgIdWrapperTest  {
 
+    @Test
     public void testWrapper() {
         Long l = 1000L;
         OrgIdWrapper oiw = new OrgIdWrapper();

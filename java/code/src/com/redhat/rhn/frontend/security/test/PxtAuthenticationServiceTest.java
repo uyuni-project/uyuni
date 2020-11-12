@@ -14,10 +14,15 @@
  */
 package com.redhat.rhn.frontend.security.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.jmock.Expectations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 
@@ -35,11 +40,8 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
 
     private PxtAuthenticationService service;
 
-    public PxtAuthenticationServiceTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         super.setUp();
         service = new PxtAuthenticationServiceStub();
         service.setPxtSessionDelegate(getPxtDelegate());
@@ -87,36 +89,42 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         assertTrue(service.validate(getRequest(), getResponse()));
     }
 
+    @Test
     public final void testValidateFailsWhenPxtSessionKeyIsInvalid() {
         setupPxtDelegate(false, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
+    @Test
     public final void testValidateFailsWhenPxtSessionExpired() {
         setupPxtDelegate(true, true, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
+    @Test
     public final void testValidateFailsWhenWebUserIdIsNull() {
         setupPxtDelegate(true, false, null);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
+    @Test
     public final void testValidateSucceedsWhenRequestURIUnprotected() {
         setupPxtDelegate(false, false, 1234L);
         setupGetRequestURI("/rhn/manager/login");
         assertTrue(service.validate(getRequest(), getResponse()));
     }
 
+    @Test
     public final void testValidateSucceeds() {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateSucceedsTest();
     }
 
+    @Test
     public final void testInvalidate() {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
@@ -155,6 +163,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         } });
     }
 
+    @Test
     public final void testRedirectoToLoginForwardsRequest() throws Exception {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
@@ -191,6 +200,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
     /**
      * @throws Exception something bad happened
      */
+    @Test
     public final void testRedirectToLoginSetsURLBounceRequestAttribute() throws Exception {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");

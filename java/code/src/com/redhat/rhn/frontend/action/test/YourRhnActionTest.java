@@ -14,14 +14,19 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 
 public class YourRhnActionTest extends RhnMockStrutsTestCase {
 
 
 
+    @Test
     public void testExecute() {
 
         setRequestPathInfo("/YourRhn");

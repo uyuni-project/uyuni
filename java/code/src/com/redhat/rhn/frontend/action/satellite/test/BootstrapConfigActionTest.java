@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -23,6 +25,8 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * BootstrapConfigActionTest
@@ -34,6 +38,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
@@ -43,6 +48,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
                 TestConfigureBootstrapCommand.class.getName());
     }
 
+    @Test
     public void testNonSubmitExecute() throws Exception {
         String expectedHostname = Config.get().getString(ConfigDefaults.JABBER_SERVER);
         if (expectedHostname == null) {
@@ -72,6 +78,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testSubmitExecute() throws Exception {
 
         String expectedHostname = Config.get().getString(ConfigDefaults.JABBER_SERVER);

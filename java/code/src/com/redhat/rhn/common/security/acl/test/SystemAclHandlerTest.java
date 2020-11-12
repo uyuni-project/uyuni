@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.common.security.acl.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.security.acl.SystemAclHandler;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -27,6 +30,9 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +43,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     private Server srvr;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         srvr = ServerFactoryTest.createTestServer(user);
@@ -45,6 +52,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
                 SystemManager.CAP_CONFIGFILES_BASE64_ENC, version);
     }
 
+    @Test
     public void testClientCapable() {
         SystemAclHandler sah = new SystemAclHandler();
 
@@ -63,6 +71,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
         assertFalse(rc);
     }
 
+    @Test
     public void testSystemHasKickstartSession() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         SystemAclHandler sah = new SystemAclHandler();

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -29,12 +32,15 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ErrataConfirmSetupActionTest - test ErrataConfirmSetupAction setting
  * up the information in the request for the pageview
  */
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
 
         // Create Errata

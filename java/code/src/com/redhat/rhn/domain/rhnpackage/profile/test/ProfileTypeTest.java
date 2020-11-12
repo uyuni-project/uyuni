@@ -14,11 +14,17 @@
  */
 package com.redhat.rhn.domain.rhnpackage.profile.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 /**
  * ProfileTypeTest
@@ -29,6 +35,7 @@ public class ProfileTypeTest extends RhnBaseTestCase {
      * Test Equals method
      * @throws Exception something bad happened
      */
+    @Test
     public void testEquals() throws Exception {
         ProfileType ptype1 = lookupByLabel("normal");
         ProfileType ptype2 = lookupByLabel("normal");
@@ -51,6 +58,7 @@ public class ProfileTypeTest extends RhnBaseTestCase {
      * we're not going to the db twice
      * @throws Exception something bad happened
      */
+    @Test
     public void testFindByLabel() throws Exception {
         ProfileType r1 = lookupByLabel("normal");
         ProfileType r2 = lookupByLabel("normal");

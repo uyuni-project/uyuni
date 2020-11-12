@@ -31,11 +31,14 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * UnsubscribeActionTest
  */
 public class UnsubscribeActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         //give the user config admin status
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);

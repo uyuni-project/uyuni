@@ -15,6 +15,12 @@
 package com.suse.manager.webui.controllers.admin.handlers.test;
 
 import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -38,19 +44,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
-import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 public class PaygApiControllerTest extends BaseControllerTestCase {
-
-    private final Mockery CONTEXT = new JUnit3Mockery() {{
-        setThreadingPolicy(new Synchroniser());
-    }};
 
     private TaskomaticApi taskomaticMock;
     private static final Gson GSON = new GsonBuilder().create();
@@ -58,23 +60,21 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     private PaygApiContoller PaygApiContoller;
     private User satAdmin;
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         clearDb();
 
         satAdmin = UserTestUtils.createSatAdminInOrgOne();
 
-        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        taskomaticMock = context.mock(TaskomaticApi.class);
         PaygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticMock));
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         clearDb();
@@ -100,6 +100,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         return paygSshData;
     }
 
+    @Test
     public void testRemovePermitionCheck() throws Exception {
         try {
             PaygSshData paygInfo = createPaygSshData();
@@ -113,6 +114,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         }
     }
 
+    @Test
     public void testRemove() throws Exception {
         PaygSshData paygInfo = createPaygSshData();
         String json = PaygApiContoller.removePaygInstance(
@@ -125,6 +127,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         assertNull(resultJson.getErrors());
     }
 
+    @Test
     public void testUpdatePaygPermitionCheck() {
         try {
             PaygSshData paygInfo = createPaygSshData();
@@ -138,6 +141,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         }
     }
 
+    @Test
     public void testUpdatePayg1() throws UnsupportedEncodingException {
         PaygSshData paygInfo = createPaygSshData();
         String dataJson = PaygApiContoller.updatePayg(
@@ -150,8 +154,9 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         assertEquals(returnData.getMessages().size(), 1);
     }
 
+    @Test
     public void testUpdatePayg2() throws UnsupportedEncodingException, TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
+        context.checking(new Expectations() {
             {
                 oneOf(taskomaticMock)
                         .scheduleSinglePaygUpdate(with(any(PaygSshData.class)));
@@ -187,10 +192,11 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         assertEquals(properties.getBastionKey(), returnData.getData().getProperties().getBastionKey());
         assertEquals(properties.getBastionKeyPassword(), returnData.getData().getProperties().getBastionKeyPassword());
 
-        CONTEXT.assertIsSatisfied();
+        context.assertIsSatisfied();
     }
 
 
+    @Test
     public void testCreatePaygPermitionCheck() {
         try {
             PaygApiContoller.createPayg(
@@ -203,8 +209,9 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         }
     }
 
+    @Test
     public void testCreate() throws UnsupportedEncodingException, TaskomaticApiException {
-        CONTEXT.checking(new Expectations() {
+        context.checking(new Expectations() {
             {
                 oneOf(taskomaticMock)
                         .scheduleSinglePaygUpdate(with(any(PaygSshData.class)));
@@ -241,6 +248,6 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         assertEquals(properties.getBastionKey(), dbPropertiesOpt.get().getBastionKey());
         assertEquals(properties.getBastionKeyPassword(), dbPropertiesOpt.get().getBastionKeyPassword());
 
-        CONTEXT.assertIsSatisfied();
+        context.assertIsSatisfied();
     }
 }

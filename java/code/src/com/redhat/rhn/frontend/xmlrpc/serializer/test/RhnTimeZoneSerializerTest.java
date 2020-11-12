@@ -14,33 +14,40 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.frontend.xmlrpc.serializer.RhnTimeZoneSerializer;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * RhnTimeZoneSerializerTest
  */
-public class RhnTimeZoneSerializerTest extends TestCase {
+public class RhnTimeZoneSerializerTest  {
 
     private RhnTimeZoneSerializer serializer;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
+
         serializer = new RhnTimeZoneSerializer();
     }
 
+    @Test
     public void testGetSupportedClass() {
         assertEquals(RhnTimeZone.class, serializer.getSupportedClass());
     }
 
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
         RhnTimeZone tz = new RhnTimeZone();
         tz.setOlsonName("(GMT-0500) United States (Indiana)");

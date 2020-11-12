@@ -22,16 +22,18 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.GREATEREQ;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.validate;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link FilterCriteria}
  */
-public class FilterCriteriaTest extends TestCase {
+public class FilterCriteriaTest  {
 
+    @Test
     public void testLegalValidation() {
         validate(PACKAGE, CONTAINS, "name");
         validate(PACKAGE, EQUALS, "nevr");
@@ -40,6 +42,7 @@ public class FilterCriteriaTest extends TestCase {
         validate(ERRATUM, GREATEREQ, "issue_date");
     }
 
+    @Test
     public void testIllegalValidation() {
         try {
             validate(PACKAGE, CONTAINS, "nonsense");

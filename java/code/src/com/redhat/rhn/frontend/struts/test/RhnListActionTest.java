@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -27,6 +31,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +46,7 @@ public class RhnListActionTest extends RhnBaseTestCase {
      * Test to make sure we check for the right filter value string
      * @throws Exception something bad happened
      */
+    @Test
     public void testFilterValue() throws Exception {
         TestListAction tla = new TestListAction();
         ActionHelper sah = new ActionHelper();

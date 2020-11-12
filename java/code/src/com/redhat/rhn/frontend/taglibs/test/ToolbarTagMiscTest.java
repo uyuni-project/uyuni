@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
+
 import javax.servlet.jsp.JspException;
 
 /**
@@ -36,6 +41,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         tt.setAclMixins(BooleanAclHandler.class.getName());
     }
 
+    @Test
     public void testMiscNoAcl() {
         try {
             // setup mock objects
@@ -54,6 +60,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testMiscWithMissingText() {
         try {
             // setup mock objects
@@ -70,6 +77,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCreateAclMultipleMixinsMultipleAcls() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -91,6 +99,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCreateAclMultipleAclsSingleMixin() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -111,6 +120,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCreateAclValidAclInvalidMixin() {
         boolean flag = false;
         try {
@@ -133,6 +143,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testMiscAcl() {
 
         try {
@@ -152,6 +163,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testMiscWithMissingUrl() {
         try {
             // setup mock objects
@@ -168,6 +180,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testMiscWithMissingImg() {
         try {
             // setup mock objects

@@ -14,16 +14,21 @@
  */
 package com.redhat.rhn.domain.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * MultiOrgTest
  */
 public class MultiOrgTest extends RhnBaseTestCase {
 
+    @Test
     public void testAddMultiOrg() throws Exception {
         User user = UserTestUtils.findNewUser("test-morg", "testorg-morg", true);
 

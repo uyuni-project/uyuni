@@ -15,15 +15,21 @@
 
 package com.redhat.rhn.manager.kickstart.tree.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the {@link com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation} class
  */
 public class TreeDeleteOperationTest extends TreeOperationTestBase {
 
+    @Test
     public void testDelete() throws Exception {
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);

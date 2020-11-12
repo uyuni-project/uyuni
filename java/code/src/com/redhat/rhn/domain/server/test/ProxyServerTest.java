@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -22,8 +26,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 public class ProxyServerTest extends RhnBaseTestCase {
 
+    @Test
     public void testProxyServer() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -32,7 +39,7 @@ public class ProxyServerTest extends RhnBaseTestCase {
                 ServerFactoryTest.TYPE_SERVER_PROXY);
         //flushAndEvict(server);
         Server s = ServerFactory.lookupById(server.getId());
-        assertNotNull("Server not found", s);
+        assertNotNull(s, "Server not found");
         assertFalse(s.isSatellite());
         assertTrue(s.isProxy());
     }

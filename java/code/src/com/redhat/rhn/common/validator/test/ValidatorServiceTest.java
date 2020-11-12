@@ -14,10 +14,17 @@
  */
 package com.redhat.rhn.common.validator.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.validator.Validator;
 import com.redhat.rhn.common.validator.ValidatorService;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -28,11 +35,13 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
 
     private Validator validator;
 
+    @BeforeEach
     public void setUp() throws Exception {
         disableLocalizationServiceLogging();
         validator = Validator.getInstance(TestUtils.findTestData("TestObject.xsd"));
     }
 
+    @Test
     public void testValidateObject() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
@@ -55,6 +64,7 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
      * in the same directory.
      * @throws Exception something bad happened
      */
+    @Test
     public void testValidateObjectNoValidator() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
@@ -73,6 +83,7 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testInvalidObject() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("somevaluelkjajsjlfdlkjaslkjdf0980934098234");
@@ -86,7 +97,8 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         // TODO Auto-generated method stub
         super.tearDown();
         enableLocalizationServiceLogging();

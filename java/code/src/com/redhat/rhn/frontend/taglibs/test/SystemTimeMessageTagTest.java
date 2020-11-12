@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -26,6 +30,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.mockobjects.servlet.MockJspWriter;
 import com.mockobjects.servlet.MockPageContext;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 import javax.servlet.jsp.JspException;
@@ -36,6 +42,7 @@ import javax.servlet.jsp.JspWriter;
  */
 public class SystemTimeMessageTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testDoEndTag() throws Exception {
         SystemTimeMessageTag tag = new SystemTimeMessageTag();
         CustomPageContext cpc = new CustomPageContext();

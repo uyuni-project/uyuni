@@ -14,15 +14,21 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartTreeTypeTest
  */
 public class KickstartTreeTypeTest extends RhnBaseTestCase {
 
+    @Test
     public void testKsTreeType() throws Exception {
         Long testid = 1L;
         String query = "KickstartTreeType.findById";

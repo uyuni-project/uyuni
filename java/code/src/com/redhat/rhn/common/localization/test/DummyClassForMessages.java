@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.common.localization.test;
 
-
-
 /**
  * Test class for use with {@link com.redhat.rhn.common.localization.test.MessagesTest}.
  */

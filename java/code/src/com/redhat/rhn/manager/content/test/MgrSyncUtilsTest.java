@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
@@ -102,7 +104,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
     }
 
     public void testurlToFSPathLegacy() throws Exception {
@@ -136,7 +138,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s/download.nvidia.com/suse/sle12sp4", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
     }
 
     public void testurlToFSPathLegacyQuoteNormalize2() throws Exception {
@@ -150,6 +152,6 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
         assertContains(opath.toString(), expected.toString());
-        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
+        assertFalse(opath.toString().contains("%"), "Decoding error: " + opath.toString());
     }
 }

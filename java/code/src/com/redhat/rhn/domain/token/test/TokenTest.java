@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.token.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -34,6 +40,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +54,7 @@ public class TokenTest extends RhnBaseTestCase {
      * Simple test to check Token creation and the equals method.
      * @throws Exception something bad happened
      */
+    @Test
     public void testEquals() throws Exception {
         Token token1 = createTestToken();
         Token token2 = new Token();
@@ -66,6 +74,7 @@ public class TokenTest extends RhnBaseTestCase {
         assertEquals(token1.getEntitlements().size(), token2.getEntitlements().size());
     }
 
+    @Test
     public void testLookupByServer() throws Exception {
         Token t = createTestToken();
         Server s = t.getServer();
@@ -73,6 +82,7 @@ public class TokenTest extends RhnBaseTestCase {
         assertNotNull(TokenFactory.listByServer(s));
     }
 
+    @Test
     public void testRemoveToken() throws Exception {
         Token t = createTestToken();
         Long id = t.getId();
@@ -81,6 +91,7 @@ public class TokenTest extends RhnBaseTestCase {
         assertNull(TokenFactory.lookupById(id));
     }
 
+    @Test
     public void testChannel() throws Exception {
         Token t = createTestToken();
         Channel c = ChannelFactoryTest.createTestChannel(t.getCreator());
@@ -92,6 +103,7 @@ public class TokenTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testConfigChannels() throws Exception {
         Token t = createTestToken();
         User user = UserTestUtils.createUser("testuser1", t.getOrg().getId());

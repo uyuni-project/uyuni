@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Bug;
@@ -29,6 +35,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,6 +46,7 @@ import java.util.Iterator;
  */
 public class ErrataTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testNotificationQueue() throws Exception {
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -60,6 +69,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * add and store bugs.
      * @throws Exception something bad happened
      */
+    @Test
     public void testBugs() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
@@ -93,6 +103,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * can add and store keywords.
      * @throws Exception something bad happened
      */
+    @Test
     public void testKeywords() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         assertTrue(errata instanceof Errata);
@@ -109,6 +120,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * Test the packages set in
      * @throws Exception something bad happened
      */
+    @Test
     public void testPackages() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         assertTrue(errata instanceof Errata);
@@ -119,6 +131,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         ErrataFactory.save(errata);
     }
 
+    @Test
     public void testAddChannelsToErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(
                 user.getOrg().getId());
@@ -159,7 +172,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
             assertTrue(f1.getChannels() == null || f1.getChannels().size() == 0);
             matched = true;
         }
-        assertTrue("didnt match the erratafile", matched);
+        assertTrue(matched, "didnt match the erratafile");
     }
 
 
@@ -167,6 +180,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * Test bean methods of Errata class
      * @throws Exception something bad happened
      */
+    @Test
     public void testBeanMethodsPublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         assertTrue(err instanceof Errata);

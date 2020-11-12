@@ -14,28 +14,35 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.xmlrpc.serializer.BigDecimalSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.PackageMetadataSerializer;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
-public class PackageMetadataSerializerTest extends TestCase {
+public class PackageMetadataSerializerTest  {
     private XmlRpcSerializer builtin;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
+
         builtin = new XmlRpcSerializer();
         builtin.addCustomSerializer(new BigDecimalSerializer());
     }
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
 
         PackageMetadataSerializer os = new PackageMetadataSerializer();

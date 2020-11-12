@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -25,6 +26,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,8 +39,8 @@ import java.util.List;
 public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         action = new PreservationListDeleteSubmitAction();
     }
 
@@ -45,6 +48,7 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
      * Test that we forward to confirm
      * @throws Exception if test fails
      */
+    @Test
     public void testForwardToConfirm() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action, "delete");
@@ -76,6 +80,7 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
      * Test that we forward to confirm
      * @throws Exception if test fails
      */
+    @Test
     public void testNothingSeleted() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);

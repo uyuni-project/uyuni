@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 
 
@@ -28,6 +30,7 @@ import java.util.Date;
  */
 public class ProvisionVirtualInstanceCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testKickstartPackageName() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,

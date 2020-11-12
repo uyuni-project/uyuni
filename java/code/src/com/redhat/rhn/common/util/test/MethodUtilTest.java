@@ -15,11 +15,17 @@
 
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.util.MethodNotFoundException;
 import com.redhat.rhn.common.util.MethodNotStaticException;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 public class MethodUtilTest extends RhnBaseTestCase {
 
@@ -49,6 +55,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
         return TEST_STRING + b;
     }
 
+    @Test
     public void testInvokeStatic() throws Exception {
         String teststr = (String)MethodUtil.
                                  invokeStaticMethod(MethodUtilTest.class,
@@ -57,6 +64,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
         assertEquals(TEST_STRING + 8, teststr);
     }
 
+    @Test
     public void testInvokeNonStatic() throws Exception {
         try {
             MethodUtil.invokeStaticMethod(MethodUtilTest.class,
@@ -69,18 +77,21 @@ public class MethodUtilTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testCallMethod() throws Exception {
         String teststr = (String)MethodUtil.callMethod(this, "nonStaticMethod",
                                                 new Object[] {1});
         assertEquals(TEST_STRING + 1, teststr);
     }
 
+    @Test
     public void testCallMethod2Params() throws Exception {
         String teststr = (String)MethodUtil.callMethod(this, "nonStaticMethod",
                                  new Object[] {1, 2});
         assertEquals(TEST_STRING + 1 + " " + 2, teststr);
     }
 
+    @Test
     public void testCallMethodDoesntExist() throws Exception {
         try {
             MethodUtil.callMethod(this, "nonStaticMethod",
@@ -97,6 +108,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testCallMethodWithTranslate() throws Exception {
         String teststr = (String)MethodUtil.callMethod(this,
                 "nonStaticMethodWithTranslatedParameter",
@@ -104,6 +116,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
         assertEquals(TEST_STRING + true, teststr);
     }
 
+    @Test
     public void testCallNewMethod() {
         assertNotNull(MethodUtil.getClassFromConfig("java.lang.Object"));
         assertNotNull(MethodUtil.getClassFromConfig(

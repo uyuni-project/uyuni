@@ -14,11 +14,16 @@
  */
 package com.suse.manager.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 
 import com.suse.manager.errata.AlmaLinuxErrataParser;
 import com.suse.manager.errata.ErrataParsingException;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -32,6 +37,7 @@ public class AlmaLinuxErrataParserTest extends BaseErrataTestCase {
     /**
      * Test to ensure correct parsing of the url and the id in a valid case.
      */
+    @Test
     public void testCanBuildValidLinkAndId() throws ErrataParsingException {
 
         final AlmaLinuxErrataParser parser = new AlmaLinuxErrataParser();
@@ -48,6 +54,7 @@ public class AlmaLinuxErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the advisory code is null.
      */
+    @Test
     public void testThrowsExceptionWhenAdvisoryIsNotAvailable() {
         final AlmaLinuxErrataParser parser = new AlmaLinuxErrataParser();
         final Errata errata = createErrata(null, ErrataFactory.ERRATA_TYPE_SECURITY,

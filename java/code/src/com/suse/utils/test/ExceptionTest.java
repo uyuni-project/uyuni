@@ -14,11 +14,16 @@
  */
 package com.suse.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import com.suse.utils.Exceptions;
 
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -27,6 +32,7 @@ public class ExceptionTest extends RhnBaseTestCase {
 
     private static final Logger LOGGER = Logger.getLogger(ExceptionTest.class);
 
+    @Test
     public void testCanReturnEmptyWhenEverythingIsOk() {
 
         final Optional<? extends Exception> result = Exceptions.handleByReturning(() -> LOGGER.info("This is fine."));
@@ -34,6 +40,7 @@ public class ExceptionTest extends RhnBaseTestCase {
         assertTrue(result.isEmpty());
     }
 
+    @Test
     public void testCanReturnExceptionThrown() {
 
         final Optional<? extends Exception> result = Exceptions.handleByReturning(() -> {
@@ -45,6 +52,7 @@ public class ExceptionTest extends RhnBaseTestCase {
         assertEquals("This is NOT fine.", result.get().getMessage());
     }
 
+    @Test
     public void testCanWrapExceptionIntoRuntime() {
         try {
             Exceptions.handleByWrapping(() -> {
@@ -60,6 +68,7 @@ public class ExceptionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testCanDoesNotThrowExceptionWhenExecutionIsOk() {
         try {
             Exceptions.handleByWrapping(() -> LOGGER.info("This is fine."));

@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -27,6 +32,7 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +48,7 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
      * Tests the execution of this Cobbler command.
      * @throws Exception if unforeseen problems arise
      */
+    @Test
     public void testStore() throws Exception {
         // create a pre-existing system, profile and distro to test they have
         // been replaced

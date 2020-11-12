@@ -14,21 +14,30 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.EnvironmentFilter;
 
 import org.apache.struts.Globals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * EnvironmentFilterTest
  */
 public class EnvironmentFilterTest extends BaseFilterTst {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.request.setRequestURL("https://rhn.webdev.redhat.com/rhn/manager/login");
     }
 
+    @Test
     public void testNonSSLUrls() throws Exception {
 
         EnvironmentFilter filter = new EnvironmentFilter();
@@ -60,6 +69,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         assertNull(response.getRedirect());
     }
 
+    @Test
     public void testAddAMessage() throws Exception {
         Config c = Config.get();
         EnvironmentFilter filter = new EnvironmentFilter();

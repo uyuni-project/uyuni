@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.profile.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -31,6 +33,9 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Set;
 
 /**
@@ -39,6 +44,7 @@ import java.util.Set;
  */
 public class SyncActionsTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testSyncSystemsSubmit() throws Exception {
 
         UserTestUtils.addManagement(user.getOrg());
@@ -103,7 +109,8 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
                 startsWith("/systems/details/packages/profiles/MissingPackages.do"));
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         super.tearDown();
         // We committed stuff - need to remove it all again
         OrgFactory.deleteOrg(user.getOrg().getId(), user);

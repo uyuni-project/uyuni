@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.StateChange;
@@ -29,6 +31,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -42,6 +45,7 @@ public class EnableConfirmSetupActionTest extends RhnBaseTestCase {
      * Expecting to return a "enabled" ActionForward.
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecute() throws Exception {
         EnableConfirmSetupAction action = new EnableConfirmSetupAction();
         ActionHelper ah = new ActionHelper();

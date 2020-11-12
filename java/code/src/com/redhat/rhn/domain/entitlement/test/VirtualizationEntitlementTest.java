@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -34,6 +37,8 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +66,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
@@ -71,6 +77,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         systemEntitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);

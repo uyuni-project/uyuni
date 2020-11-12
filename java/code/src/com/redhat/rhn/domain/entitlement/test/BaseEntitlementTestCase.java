@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.entitlement.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -33,6 +37,9 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * BaseEntitlementTestCase
  */
@@ -51,16 +58,19 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
     );
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         createEntitlement();
     }
 
+    @Test
     public void testLabel() {
         assertEquals(getLabel(), ent.getLabel());
     }
 
 
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
@@ -72,6 +82,7 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
         assertTrue(foreign.getValidAddonEntitlementsForServer().size() == 0);
     }
 
+    @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");

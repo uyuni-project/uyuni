@@ -15,12 +15,15 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class ModuleTest extends TestCase {
+public class ModuleTest  {
 
+    @Test
     public void testGetFullName() {
         Module module = new Module("mymodule", "mystream");
         assertEquals("mymodule:mystream", module.getFullName());

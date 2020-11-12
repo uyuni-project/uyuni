@@ -19,12 +19,16 @@ import com.redhat.rhn.taskomatic.task.PackageCleanup;
 import com.redhat.rhn.taskomatic.task.RhnJob;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.sql.Statement;
 
 public class PackageCleanupTest extends RhnBaseTestCase {
 
-    protected void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             try (Statement statement = connection.createStatement()) {
                 statement.execute("INSERT INTO rhnPackageFileDeleteQueue(path) " +
@@ -35,6 +39,7 @@ public class PackageCleanupTest extends RhnBaseTestCase {
         new File("/tmp/test-pkg-delete-me.rpm").createNewFile();
     }
 
+    @Test
     public void testPackageCleanup() throws Exception {
         RhnJob task = new PackageCleanup();
         task.execute(null);

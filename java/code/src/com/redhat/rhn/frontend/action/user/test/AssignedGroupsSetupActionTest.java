@@ -14,16 +14,20 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.Test;
 
 /**
  * AssignedGroupsSetupActionTest
  */
 public class AssignedGroupsSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         setRequestPathInfo("/users/AssignedSystemGroups");
         addRequestParameter("availableGroups", "someGroups");

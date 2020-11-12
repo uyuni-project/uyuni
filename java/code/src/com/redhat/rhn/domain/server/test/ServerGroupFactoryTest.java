@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -25,6 +30,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.test.TestSaltApi;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -34,6 +42,7 @@ import java.util.HashSet;
 public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     private ManagedServerGroup managedGroup;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         managedGroup = ServerGroupFactory.create(
@@ -41,6 +50,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
                             ServerGroupTestUtils.DESCRIPTION,
                             user.getOrg());
     }
+    @Test
     public void testCreate() throws Exception {
         String name = ServerGroupTestUtils.NAME;
         String description = ServerGroupTestUtils.DESCRIPTION;
@@ -63,6 +73,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testSave() throws Exception {
         ServerGroupTest.createTestServerGroup(user.getOrg(), ServerConstants
                 .getServerGroupTypeEnterpriseEntitled());
@@ -72,6 +83,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(sg);
     }
 
+    @Test
     public void testLookup() throws Exception {
         TestUtils.flushAndEvict(managedGroup);
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),
@@ -82,6 +94,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         assertEquals(managedGroup, sg2);
     }
 
+    @Test
     public void testListNoAssociatedAdmins() throws Exception {
         TestUtils.flushAndEvict(managedGroup);
         Collection groups = ServerGroupFactory.listNoAdminGroups(managedGroup.getOrg());
@@ -95,6 +108,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         assertEquals(new HashSet(groups), new HashSet(groups1));
     }
 
+    @Test
     public void testRemove() throws Exception {
         ServerGroupFactory.remove(new TestSaltApi(), managedGroup);
         TestUtils.flushAndEvict(managedGroup);
@@ -103,6 +117,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         assertNull(sg1);
     }
 
+    @Test
     public void testListAdministrators() {
 
     }

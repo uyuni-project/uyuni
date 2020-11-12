@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.ssm.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.PowerManagementAction;
@@ -24,6 +26,8 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +47,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
@@ -71,6 +76,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * Tests creating Cobbler system records with a chosen profile from SSM.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/ssm/provisioning/PowerManagementConfiguration");
         request.setMethod(HttpServletRequestSimulator.POST);

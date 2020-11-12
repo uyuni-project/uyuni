@@ -14,15 +14,21 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ArchTypeTest
  */
 public class ArchTypeTest extends RhnBaseTestCase {
 
+    @Test
     public void testArchType() throws Exception {
 
         Long testid = 1L;

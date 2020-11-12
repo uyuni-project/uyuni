@@ -15,6 +15,12 @@
 
 package com.redhat.rhn.domain.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -35,6 +41,8 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -46,6 +54,7 @@ import java.util.Set;
  */
 public class OrgFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testOrgTrust() throws Exception {
         Org org = createTestOrg();
         Org trusted = createTestOrg();
@@ -69,18 +78,21 @@ public class OrgFactoryTest extends RhnBaseTestCase {
      * Simple test illustrating how roles work. Note that the channel_admin role
      * is implied for an org admin iff the org has the channel_admin role.
      */
+    @Test
     public void testAddRole() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         assertTrue(user.hasRole(RoleFactory.CHANNEL_ADMIN));
     }
 
+    @Test
     public void testLookupById() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertNotNull(org1);
         assertTrue(org1.getId() > 0);
     }
 
+    @Test
     public void testCommitOrg() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String changedName = "OrgFactoryTest testCommitOrg " + TestUtils.randomString();
@@ -92,6 +104,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         assertEquals(changedName, org2.getName());
     }
 
+    @Test
     public void testStagingContent() throws Exception {
         Org org1 = createTestOrg();
         boolean staging = org1.getOrgConfig().isStagingContentEnabled();
@@ -104,6 +117,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         assertEquals(!staging, org2.getOrgConfig().isStagingContentEnabled());
     }
 
+    @Test
     public void testOrgPillars() throws Exception {
         Org org = createTestOrg();
 
@@ -145,6 +159,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         return org1;
     }
 
+    @Test
     public void testCreateOrg() throws Exception {
         Org org1 = createTestOrg();
         Org org2 = OrgFactory.lookupById(org1.getId());
@@ -152,6 +167,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         assertNotNull(org2.getOwnedChannels());
     }
 
+    @Test
     public void testOrgDefautRegistrationToken() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg", true);
         Org orig = user.getOrg();
@@ -186,16 +202,19 @@ public class OrgFactoryTest extends RhnBaseTestCase {
      * Test to see if the Org returns list of UserGroup IDs
      * @throws Exception something bad happened
      */
+    @Test
     public void testGetRoles() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertNotNull(org1.getRoles());
         assertTrue(org1.hasRole(RoleFactory.ORG_ADMIN));
     }
 
+    @Test
     public void testLookupSatOrg() {
         assertNotNull(OrgFactory.getSatelliteOrg());
     }
 
+    @Test
     public void testCustomDataKeys() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Org org = user.getOrg();
@@ -226,6 +245,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         assertNull(key2);
     }
 
+    @Test
     public void testLookupOrgsWithServersInFamily() throws Exception {
         Server s = ServerTestUtils.createTestSystem();
         Channel chan = s.getChannels().iterator().next();
@@ -235,18 +255,21 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         assertEquals(1, orgs.size());
     }
 
+    @Test
     public void testGetOrgCount() throws Exception {
         ServerTestUtils.createTestSystem();
         long totalOrgs = OrgFactory.getTotalOrgCount();
         assertTrue(totalOrgs > 0);
     }
 
+    @Test
     public void testLookupAllOrgs() throws Exception {
         ServerTestUtils.createTestSystem();
         List<Org> totalOrgs = OrgFactory.lookupAllOrgs();
         assertTrue(totalOrgs.size() > 0);
     }
 
+    @Test
     public void testClmSyncPatchesConfig() throws Exception {
         Org org = createTestOrg();
 

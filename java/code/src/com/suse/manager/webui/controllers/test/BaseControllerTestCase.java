@@ -12,15 +12,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.test;
-
-import com.redhat.rhn.domain.role.RoleFactory;
+package com.suse.manager.webui.controllers.test; import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import com.suse.manager.webui.utils.SparkTestUtils;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
@@ -42,6 +41,7 @@ public class BaseControllerTestCase extends JMockBaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

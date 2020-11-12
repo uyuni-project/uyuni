@@ -14,9 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @version $Revision$
@@ -25,6 +30,7 @@ public class ScheduleRemovePackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/ssm/PackageRemoveSchedule");
@@ -33,6 +39,7 @@ public class ScheduleRemovePackagesActionTest extends RhnMockStrutsTestCase {
         utils = new SsmActionTestUtils(user);
     }
 
+    @Test
     public void testNonDispatch() throws Exception {
         // Setup
         utils.initSsmEnvironment();

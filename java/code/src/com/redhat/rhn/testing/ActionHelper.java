@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -29,13 +32,11 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.Locale;
 
-import junit.framework.Assert;
-
 /**
  * ActionHelper - abstract base class that can be used to setup
  * tests to verify our struts Actions.
  */
-public class ActionHelper extends Assert {
+public class ActionHelper  {
 
     private ActionMapping mapping;
     private ActionForward success;

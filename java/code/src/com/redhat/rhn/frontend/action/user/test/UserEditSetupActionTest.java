@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.Role;
@@ -28,6 +33,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +44,7 @@ import java.util.List;
  */
 public class UserEditSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         UserEditSetupAction action = new UserEditSetupAction();
         ActionHelper sah = new ActionHelper();
@@ -91,6 +99,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testNoParamExecute() throws Exception {
         UserEditSetupAction action = new UserEditSetupAction();
         ActionHelper sah = new ActionHelper();

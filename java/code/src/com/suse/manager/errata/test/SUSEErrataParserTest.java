@@ -14,11 +14,16 @@
  */
 package com.suse.manager.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 
 import com.suse.manager.errata.ErrataParsingException;
 import com.suse.manager.errata.SUSEErrataParser;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -32,6 +37,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test to ensure correct parsing of the url and the id in a valid case.
      */
+    @Test
     public void testCanBuildValidLinkAndId() throws ErrataParsingException {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -48,6 +54,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test to verify the required leading zeros are added
      */
+    @Test
     public void testAddsLeadingZeroWhenIdIsLessThanFourDigits() throws ErrataParsingException {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -64,6 +71,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the issue date is null.
      */
+    @Test
     public void testThrowsExceptionWhenIssueDateIsNull() {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -81,6 +89,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the advisory id is not a valid number
      */
+    @Test
     public void testThrowsExceptionWhenUnableToParseAdvisoryId() {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -99,6 +108,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the format of the advisory code is not expected.
      */
+    @Test
     public void testThrowsExceptionWhenAdvisoryIsNotInTheExpectedFormat() {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -117,6 +127,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the release number is not valid
      */
+    @Test
     public void testThrowsExceptionWhenReleaseIsInvalid() {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -135,6 +146,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the type of advisory is not valid.
      */
+    @Test
     public void testThrowsExceptionWhenTypeIsInvalid() {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -153,6 +165,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the type of advisory is null.
      */
+    @Test
     public void testThrowsExceptionWhenTypeIsNull() {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -171,6 +184,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the advisory is too old to correctly generate a link
      */
+    @Test
     public void testCanParseFirstValidIssueDate() throws ErrataParsingException {
 
         final SUSEErrataParser parser = new SUSEErrataParser();
@@ -188,6 +202,7 @@ public class SUSEErrataParserTest extends BaseErrataTestCase {
     /**
      * Test the behaviour when the advisory is too old to correctly generate a link
      */
+    @Test
     public void testThrowsExceptionWhenAdvisoryIsTooOld() {
 
         final SUSEErrataParser parser = new SUSEErrataParser();

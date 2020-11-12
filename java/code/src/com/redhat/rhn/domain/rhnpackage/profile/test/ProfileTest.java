@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.rhnpackage.profile.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -30,6 +36,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -44,6 +51,7 @@ public class ProfileTest extends RhnBaseTestCase {
      * Test the Equals method of Profile
      * @throws Exception something bad happened
      */
+    @Test
     public void testProfileEquals() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -102,7 +110,8 @@ public class ProfileTest extends RhnBaseTestCase {
         return p;
     }
 
-    public static void testCompatibleServer() throws Exception {
+    @Test
+    public void testCompatibleServer() throws Exception {
         // create a profile
         // create a channel
         // create a server
@@ -122,11 +131,10 @@ public class ProfileTest extends RhnBaseTestCase {
         qry.setLong("sid", server.getId());
         qry.setLong("org_id", user.getOrg().getId());
         List list = qry.list();
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         for (Object o : list) {
-            assertEquals("Contains non Profile objects",
-                    Profile.class, o.getClass());
+            assertEquals(Profile.class, o.getClass(), "Contains non Profile objects");
         }
     }
 }

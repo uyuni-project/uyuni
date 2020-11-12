@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -30,6 +32,9 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
 import java.util.Iterator;
 
@@ -38,11 +43,13 @@ import java.util.Iterator;
  */
 public class SystemListSetupActionTest extends RhnMockStrutsTestCase {
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemList");
     }
 
+    @Test
     public void testPerformExecute() throws Exception {
         ServerFactoryTest.createTestServer(user, true);
         actionPerform();

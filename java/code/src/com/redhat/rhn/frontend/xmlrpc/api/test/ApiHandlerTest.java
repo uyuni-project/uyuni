@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.api.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
@@ -21,8 +23,11 @@ import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.XmlRpcTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 public class ApiHandlerTest extends RhnBaseTestCase {
 
+    @Test
     public void testSystemVersion() {
         HandlerFactory factory = XmlRpcTestUtils.getTestHandlerFactory();
         ApiHandler handler = new ApiHandler(factory);
@@ -35,6 +40,7 @@ public class ApiHandlerTest extends RhnBaseTestCase {
         assertEquals(version, handler.systemVersion());
     }
 
+    @Test
     public void testGetVersion() {
         HandlerFactory factory = XmlRpcTestUtils.getTestHandlerFactory();
         ApiHandler handler = new ApiHandler(factory);

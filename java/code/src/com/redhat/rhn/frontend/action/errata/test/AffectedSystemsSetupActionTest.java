@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -21,27 +23,34 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * AffectedSystemsSetupActionTest
  */
 public class AffectedSystemsSetupActionTest extends RhnMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/errata/details/SystemsAffected");
 
     }
+    @Test
     public void testBadParams() {
         actionPerform();
         assertBadParamException();
     }
 
+    @Test
     public void testInvalidParams() {
         addRequestParameter("eid", "-99999");
         actionPerform();
         assertLookupException();
     }
 
+    @Test
     public void testNormalCase() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         addRequestParameter("eid", e.getId().toString());

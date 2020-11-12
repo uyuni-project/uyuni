@@ -14,13 +14,17 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ManagedServerGroupSerializer;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -32,12 +36,13 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
 
     private XmlRpcSerializer serializer;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         serializer = new XmlRpcSerializer();
     }
 
+    @Test
     public void testSerialize() throws Exception {
         ManagedServerGroupSerializer sgs = new ManagedServerGroupSerializer();
         final Long id = 10L;
@@ -75,7 +80,6 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
 
     /**
      * Quick method to assert a property is property constructed bean
-     * @param map the map obtained by mapifying a bean
      * @param name the key name
      * @param value the  value.
      */
@@ -90,11 +94,10 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
 
         String msg = "Cannot find property with tag [" + nameTag + "]" +
                                 " in bean [" + beanOut + "]";
-        assertTrue(msg, beanOut.contains(nameTag));
+        assertTrue(beanOut.contains(nameTag), msg);
 
         msg = "Cannot find property value with Value-> [" + valueTag + "]" +
                                                    " in bean [" + beanOut + "]";
-        assertTrue(msg, beanOut.contains(valueTag));
-
+        assertTrue(beanOut.contains(valueTag), msg);
     }
 }

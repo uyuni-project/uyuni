@@ -14,9 +14,20 @@
  */
 package com.redhat.rhn.domain.rhnset.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -27,28 +38,32 @@ public class RhnSetTest extends RhnBaseTestCase {
     private static final String[] TEST_ELEMS = {"100", "150", "300", "175", "35"};
     private RhnSetImpl set;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() throws Exception {
         set = new RhnSetImpl();
         set.sync();
     }
 
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         super.tearDown();
         set = null;
     }
 
+    @Test
     public void testUserId() {
         Long id = 10L;
         set.setUserId(id);
         assertEquals(id, set.getUserId());
     }
 
+    @Test
     public void testLabel() {
         set.setLabel("set_label");
         assertEquals("set_label", set.getLabel());
     }
 
+    @Test
     public void testElement() {
         Long num = 10L;
         set.addElement(num, null);
@@ -101,6 +116,7 @@ public class RhnSetTest extends RhnBaseTestCase {
         assertEquals("label", set.getLabel());
     }
 
+    @Test
     public void testGetElementValues() {
         set.addElement(100L);
         set.addElement(101L);
@@ -111,6 +127,7 @@ public class RhnSetTest extends RhnBaseTestCase {
         assertTrue(values.contains(101L));
     }
 
+    @Test
     public void testAddElements() {
         set.addElements(TEST_ELEMS);
 
@@ -130,6 +147,7 @@ public class RhnSetTest extends RhnBaseTestCase {
         assertAddRemove(8, 0);
     }
 
+    @Test
     public void testRemoveElements() {
         String[] removeElems = {"100", "300"};
 
@@ -143,6 +161,7 @@ public class RhnSetTest extends RhnBaseTestCase {
         assertAddRemove(3, 0);
     }
 
+    @Test
     public void testMark() {
         set.addElements(TEST_ELEMS);
         set.sync();
@@ -157,6 +176,7 @@ public class RhnSetTest extends RhnBaseTestCase {
         assertAddRemove(0, 0);
     }
 
+    @Test
     public void testNullAddElements() {
         // make sure we don't cause a NullPointerException
         try {
@@ -180,6 +200,7 @@ public class RhnSetTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testNullRemoveElements() {
         try {
             set.removeElements(null);

@@ -14,17 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ChannelAddFilesActionTest
  */
 public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testUpload() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -37,6 +42,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getParameter("ccid"));
     }
 
+    @Test
     public void testImport() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -49,6 +55,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getParameter("ccid"));
     }
 
+    @Test
     public void testCreate() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

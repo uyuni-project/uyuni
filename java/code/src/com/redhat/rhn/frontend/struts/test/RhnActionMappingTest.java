@@ -14,14 +14,19 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.frontend.struts.RhnActionMapping;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * RhnActionMappingTest
  */
 public class RhnActionMappingTest extends RhnBaseTestCase {
 
+    @Test
     public void testAclMapping() {
         //represents what some fool may put into struts-config
         String aclstring = ",,foo ,, , bar   ,baz";

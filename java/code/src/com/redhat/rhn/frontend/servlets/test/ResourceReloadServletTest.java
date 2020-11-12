@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.ResourceReloadServlet;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import com.mockobjects.servlet.MockServletOutputStream;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
-
-import java.io.IOException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +41,8 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     private HttpServletResponse response;
     private ServletOutputStream output;
 
-    public void setUp() throws IOException {
+    @BeforeEach
+    public void setUp() throws Exception {
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         output = new MockServletOutputStream();
@@ -51,6 +55,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testDoGet() throws Exception {
         ResourceReloadServlet servlet = new ResourceReloadServlet();
         boolean orig = Config.get().getBoolean("java.development_environment");
@@ -62,7 +67,8 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
                 Boolean.valueOf(orig).toString());
     }
 
-    public void tearDown() {
+    @AfterEach
+    public void tearDown() throws Exception {
         request = null;
         response = null;
     }

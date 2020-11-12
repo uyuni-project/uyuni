@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -28,11 +31,14 @@ import com.redhat.rhn.manager.kickstart.test.KickstartScheduleCommandTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * CancelKickstartTest - test to verify that we cancel kickstarts and the actions correctly.
  */
 public class CancelKickstartTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testCanceledActions() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
         KickstartData k = KickstartDataTest.

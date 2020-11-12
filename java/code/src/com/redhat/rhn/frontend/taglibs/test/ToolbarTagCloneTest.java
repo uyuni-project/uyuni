@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Test;
+
 import javax.servlet.jsp.JspException;
 
 /**
@@ -34,6 +38,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         tt.setAclMixins(BooleanAclHandler.class.getName());
     }
 
+    @Test
     public void testCloneNoAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -47,6 +52,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCloneWithMissingType() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -57,6 +63,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\">" +
@@ -73,6 +80,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreateAclMultipleAclsSingleMixin() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\">" +
@@ -87,6 +95,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCreateAclValidAclInvalidMixin() {
         boolean flag = false;
         try {
@@ -108,6 +117,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testCloneAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
@@ -120,6 +130,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         verifyTag(output);
     }
 
+    @Test
     public void testCloneWithMissingUrl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +

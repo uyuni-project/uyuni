@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
@@ -21,6 +25,9 @@ import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.test.KickstartSessionTest;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -35,11 +42,13 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     private KickstartUrlHelper helper;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         helper = new KickstartUrlHelper(ksdata, "spacewalk.example.com");
     }
 
+    @Test
     public void testGetKickstartFileUrl() {
         String expected = "http://spacewalk.example.com/" +
             "ks/cfg/org/" + ksdata.getOrg().getId() + "/label/" +
@@ -47,6 +56,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         assertEquals(expected, helper.getKickstartFileUrl());
     }
 
+    @Test
     public void testGetKickstartFileUrlBase() {
         String expected = "http://spacewalk.example.com/" +
                 "ks/cfg/org/" + ksdata.getOrg().getId();
@@ -54,6 +64,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
 
     }
 
+    @Test
     public void testGetKickstartFileUrlIpRange() {
         String expected = "http://spacewalk.example.com/" +
             "ks/cfg/org/" + ksdata.getOrg().getId() + "/mode/ip_range";
@@ -61,6 +72,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
 
     }
 
+    @Test
     public void testGetKickstartOrgDefaultUrl() {
         String expected = "http://spacewalk.example.com/" +
             "ks/cfg/org/" + ksdata.getOrg().getId() + "/org_default";
@@ -68,6 +80,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         assertEquals(expected, helper.getKickstartOrgDefaultUrl());
     }
 
+    @Test
     public void testGetKickstartMediaPath() {
         String expected = null;
         Long orgId = ksdata.getKickstartDefaults().getKstree().getOrgId();
@@ -82,6 +95,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
        assertEquals(expected, helper.getKickstartMediaPath());
     }
 
+    @Test
     public void testGetKickstartMediaUrl() {
         Long orgId = ksdata.getKickstartDefaults().getKstree().getOrgId();
         String expected = "http://spacewalk.example.com" + KickstartUrlHelper.KS_DIST;
@@ -98,6 +112,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     }
 
 
+    @Test
     public void testGetCobblerMediaUrl() throws Exception {
         helper = new KickstartUrlHelper(ksdata);
         String expected = "http://" +
@@ -107,6 +122,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         assertEquals(expected, helper.getCobblerMediaUrl());
     }
 
+    @Test
     public void testGetCobblerMediaUrlBase() throws Exception {
         helper = new KickstartUrlHelper(ksdata);
         String expected = "http://" +
@@ -115,6 +131,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         assertEquals(expected, helper.getCobblerMediaUrlBase());
     }
 
+    @Test
     public void testGetKickstartMediaSessionUrl() throws Exception {
         // /ks/dist/session/35x45fed383beaeb31a184166b4c1040633/ks-f9-x86_64
         KickstartSession session =
@@ -140,6 +157,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     }
 
 
+    @Test
     public void testGetKickstartMediaSessionPath() throws Exception {
         // /ks/dist/session/35x45fed383beaeb31a184166b4c1040633/ks-f9-x86_64
         KickstartSession session =

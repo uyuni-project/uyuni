@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -24,6 +29,9 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * CompletedSystemsSetupActionTest
  */
@@ -31,6 +39,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
     private CompletedSystemsSetupAction action;
     private ActionHelper sah;
 
+    @BeforeEach
     public void setUp() throws Exception {
         action = new CompletedSystemsSetupAction();
         sah = new ActionHelper();
@@ -38,6 +47,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
         sah.setupClampListBounds();
     }
 
+    @Test
     public void testPerformExecute() throws Exception {
         Action a1 = ActionFactoryTest.createAction(sah.getUser(),
                 ActionFactory.TYPE_REBOOT);
@@ -58,6 +68,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
         assertEquals(actionId, a2.getId());
     }
 
+    @Test
     public void testBadParameterException() throws Exception {
         sah.getRequest().setupAddParameter("aid", (String)null);
         try {
@@ -69,6 +80,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLookupException() throws Exception {
         sah.getRequest().setupAddParameter("aid", "-99");
 
