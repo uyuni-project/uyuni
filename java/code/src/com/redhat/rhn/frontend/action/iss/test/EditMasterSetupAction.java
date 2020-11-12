@@ -15,12 +15,15 @@
 package com.redhat.rhn.frontend.action.iss.test;
 
 
+import org.junit.Before;
+
 /**
  * IssMapOrgsActionTest
  * @version $Rev: 1 $
  */
 public class EditMasterSetupAction extends BaseIssTestAction {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         addRequestParameter("id", masterDto.getId().toString());

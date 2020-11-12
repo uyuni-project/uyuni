@@ -45,11 +45,15 @@ import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
+import org.junit.Before;
 public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
+    // todo not migrated!!!!!!!!!!!!!
     private ImageProfileHandler handler = new ImageProfileHandler();
 
-    @Override public void setUp() throws Exception {
+    @Override
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }

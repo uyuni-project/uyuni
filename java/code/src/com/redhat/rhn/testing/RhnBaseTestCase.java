@@ -69,7 +69,7 @@ public abstract class RhnBaseTestCase extends Assert {
      * @see HibernateFactory#closeSession()
      */
     @After
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         TestCaseHelper.tearDownHelper(); // todo fkobzik - check if this is called
     }
 
