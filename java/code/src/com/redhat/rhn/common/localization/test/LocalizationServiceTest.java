@@ -41,13 +41,6 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
 
     private LocalizationService ls;
 
-    /** Constructor
-     * @param name test name
-     */
-    public LocalizationServiceTest(final String name) {
-        super(name);
-    }
-
     /**
      * sets up the test
      */

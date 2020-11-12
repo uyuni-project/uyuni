@@ -44,13 +44,6 @@ public class AclTest extends RhnBaseTestCase {
     private Map context = null;
     private MockAclHandler handler = null;
 
-    /** Constructor
-     * @param name test name
-     */
-    public AclTest(final String name) {
-        super(name);
-    }
-
     /** Sets up the acl, handler, and context objects. */
     @Before
     public void setUp() throws Exception {

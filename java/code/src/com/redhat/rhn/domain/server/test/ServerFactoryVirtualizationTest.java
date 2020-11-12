@@ -35,13 +35,6 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
     private VirtualInstanceManufacturer virtualInstanceFactory;
     private User user;
 
-    /**
-     * @param name the name
-     */
-    public ServerFactoryVirtualizationTest(String name) {
-        super(name);
-    }
-
     @Before
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",

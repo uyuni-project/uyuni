@@ -91,13 +91,6 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         }
     }
 
-    /**
-     * @param name the name
-     */
-    public VirtualInstanceFactoryTest(String name) {
-        super(name);
-    }
-
     @Test
     public void testSaveUnregisteredGuestAndLoadById() throws Exception {
         VirtualInstance guest = builder.createUnregisteredGuest()

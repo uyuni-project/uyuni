@@ -37,10 +37,6 @@ import java.util.List;
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
     private static Logger log = Logger.getLogger(TestFactoryWrapperTest.class);
 
-    public TestFactoryWrapperTest(String name) {
-        super(name);
-    }
-
     @Before
     public void setUp() {
         HibernateFactory.createSessionFactory();

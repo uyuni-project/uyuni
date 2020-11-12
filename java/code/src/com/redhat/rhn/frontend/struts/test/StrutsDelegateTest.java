@@ -35,13 +35,6 @@ public class StrutsDelegateTest extends Assert {
     }
 
     /**
-     * @param name The name of the TestCase
-     */
-    public StrutsDelegateTest(String name) {
-
-    }
-
-    /**
      *
      */
     public final void testForwardParams() {

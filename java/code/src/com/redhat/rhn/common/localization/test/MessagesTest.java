@@ -39,13 +39,6 @@ public class MessagesTest extends RhnBaseTestCase {
     private Class clazz;
     private Locale locale;
 
-    /** Constructor
-     * @param name test name
-     */
-    public MessagesTest(final String name) {
-        super(name);
-    }
-
     /**
      * sets up the test
      */
