@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link SCCRequestFactory}
  */
-public class SCCRequestFactoryTest extends Assert {
+public class SCCRequestFactoryTest  {
 
     // Headers to be verified
     private static final String TEST_SCHEME = "https";

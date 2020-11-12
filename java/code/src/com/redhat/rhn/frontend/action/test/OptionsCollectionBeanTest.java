@@ -24,7 +24,7 @@ import org.junit.Assert;
  * OptionsCollectionBean
  * @version $Rev$
  */
-public class OptionsCollectionBeanTest extends Assert {
+public class OptionsCollectionBeanTest  {
 
     @Test
     public void testGettersSetters() {

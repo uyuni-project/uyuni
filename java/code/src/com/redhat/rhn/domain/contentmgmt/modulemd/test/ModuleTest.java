@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-public class ModuleTest extends Assert {
+public class ModuleTest  {
 
     @Test
     public void testGetFullName() {

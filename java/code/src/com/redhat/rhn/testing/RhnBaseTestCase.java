@@ -46,7 +46,7 @@ import junit.framework.TestCase;
  * test to similuate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase extends Assert {
+public abstract class RhnBaseTestCase  {
 
     /**
      * Default Constructor

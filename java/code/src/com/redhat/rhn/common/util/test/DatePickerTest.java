@@ -33,7 +33,7 @@ import org.junit.Assert;
  * DatePickerTest
  * @version $Rev$
  */
-public class DatePickerTest extends Assert {
+public class DatePickerTest  {
 
     private static final TimeZone TZ = TimeZone.getTimeZone("America/Los_Angeles");
 

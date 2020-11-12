@@ -29,7 +29,7 @@ import java.io.Writer;
 /**
  * PinnedSubscriptionSerializer test
  */
-public class PinnedSubscriptionSerializerTest extends Assert {
+public class PinnedSubscriptionSerializerTest  {
 
     /**
      * Simple PinnedSubscription serialization test

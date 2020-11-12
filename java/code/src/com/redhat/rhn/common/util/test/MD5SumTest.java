@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
  * @author mmccune
  *
  */
-public class MD5SumTest extends Assert {
+public class MD5SumTest  {
 
     @Test
     public void testMD5Sum() throws Exception {

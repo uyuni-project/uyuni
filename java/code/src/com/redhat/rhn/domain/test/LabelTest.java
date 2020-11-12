@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
  * LabelTest
  * @version $Rev$
  */
-public class LabelTest extends Assert {
+public class LabelTest  {
 
     class BeerLabel extends Label {
         private String beerLabel;

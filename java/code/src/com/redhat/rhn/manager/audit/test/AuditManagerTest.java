@@ -26,7 +26,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 
-public class AuditManagerTest extends Assert {
+public class AuditManagerTest  {
 
 
     @Test

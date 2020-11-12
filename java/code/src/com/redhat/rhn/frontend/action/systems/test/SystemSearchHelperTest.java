@@ -35,7 +35,7 @@ import org.junit.Assert;
  * @author ggainey
  *
  */
-public class SystemSearchHelperTest extends Assert {
+public class SystemSearchHelperTest  {
 
     // LABEL;SCORE;PROFILE-NAME;SID
     // SCORE==-1 => null-score

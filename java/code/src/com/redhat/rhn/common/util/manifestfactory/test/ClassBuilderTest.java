@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 
-public class ClassBuilderTest extends Assert {
+public class ClassBuilderTest  {
 
     private ClassBuilder builder;
 

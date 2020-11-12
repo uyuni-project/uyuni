@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
  * AuthenticationServiceFactoryTest
  * @version $Rev$
  */
-public class AuthenticationServiceFactoryTest extends Assert {
+public class AuthenticationServiceFactoryTest  {
 
     private class AuthenticationServiceFactoryStub extends AuthenticationServiceFactory {
 

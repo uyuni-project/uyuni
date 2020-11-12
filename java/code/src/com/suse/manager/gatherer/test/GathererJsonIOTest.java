@@ -40,7 +40,7 @@ import org.junit.Assert;
 /**
  * Tests for {@link GathererJsonIO}
  */
-public class GathererJsonIOTest extends Assert {
+public class GathererJsonIOTest  {
 
     private static final String MODULELIST = "modulelist.json";
     private static final String GATHEREROUT = "exampleGathererOutput.json";

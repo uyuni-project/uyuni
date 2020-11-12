@@ -41,7 +41,7 @@ import simple.http.Response;
 /**
  * Integrational unit tests for {@link HttpClientAdapter}.
  */
-public class HttpClientAdapterTest extends Assert {
+public class HttpClientAdapterTest  {
 
     // Mock server for reuse
     private static final HttpServerMock SERVER_MOCK = new HttpServerMock();

@@ -23,7 +23,7 @@ import org.junit.Assert;
 /**
  * Test for SparkTestUtils.
  */
-public class SparkTestUtilsTest extends Assert {
+public class SparkTestUtilsTest  {
 
     /**
      * Test substituting variables in a URI.

@@ -44,7 +44,7 @@ import simple.http.Response;
 /**
  * Tests for {@link SCCClient} methods.
  */
-public class SCCClientTest extends Assert {
+public class SCCClientTest  {
 
     /**
      * Test for {@link SCCWebClient#listProducts()}.

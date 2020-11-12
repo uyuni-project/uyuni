@@ -31,7 +31,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ExceptionsWrapperTest extends Assert {
+public class ExceptionsWrapperTest  {
 
     private static final Logger LOG = Logger.getLogger(ExceptionsWrapperTest.class);
     private static final String EXCEPTION_TRANSLATOR =

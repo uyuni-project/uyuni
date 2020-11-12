@@ -24,7 +24,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.util.Map;
 import java.util.Optional;
 
-public class FormulaFactoryTest extends Assert {
+public class FormulaFactoryTest  {
 
     @Test
     public void testGetValueByPath() {

@@ -15,15 +15,14 @@
 
 package com.redhat.rhn.common.finder.test;
 
-import java.util.List;
-
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-public class JarFinderTest extends Assert {
+import java.util.List;
+
+public class JarFinderTest {
 
     // NOTE: Test is dependent on knowing things like "How many classes are in jarfile X"
     // When "X" changes, the test FAILS.

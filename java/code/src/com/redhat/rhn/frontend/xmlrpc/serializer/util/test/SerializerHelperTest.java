@@ -29,7 +29,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * SimpleSerializerTest
  * @version $Rev$
  */
-public class SerializerHelperTest extends Assert {
+public class SerializerHelperTest  {
 
     @Test
     public void testSerialize() throws Exception {

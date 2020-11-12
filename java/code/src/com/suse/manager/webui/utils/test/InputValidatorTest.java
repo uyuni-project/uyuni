@@ -33,7 +33,7 @@ import org.junit.Assert;
 /**
  * Tests for the InputValidator.
  */
-public class InputValidatorTest extends Assert {
+public class InputValidatorTest  {
 
     private static final String HOST_ERROR_MESSAGE = "Invalid host name.";
     private static final String USER_ERROR_MESSAGE = "Non-valid user. Allowed characters" +

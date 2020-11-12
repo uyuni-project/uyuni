@@ -27,7 +27,7 @@ import org.junit.Assert;
 /**
  * Test for {@link com.suse.manager.reactor.utils.ValueMap}
  */
-public class ValueMapTest extends Assert {
+public class ValueMapTest  {
 
     @Test
     public void testGetValueAsMaxLengthString() {

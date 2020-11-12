@@ -31,7 +31,7 @@ import java.util.Map;
  * RpmVersionComparatorTest
  * @version $Rev$
  */
-public class RpmVersionComparatorTest extends Assert {
+public class RpmVersionComparatorTest  {
 
     private RpmVersionComparator cmp;
 

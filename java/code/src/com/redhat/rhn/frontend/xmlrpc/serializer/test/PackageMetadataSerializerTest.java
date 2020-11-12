@@ -31,7 +31,7 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
-public class PackageMetadataSerializerTest extends Assert {
+public class PackageMetadataSerializerTest  {
     private XmlRpcSerializer builtin;
 
     @BeforeEach

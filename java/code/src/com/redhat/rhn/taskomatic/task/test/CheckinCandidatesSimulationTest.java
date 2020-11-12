@@ -36,7 +36,7 @@ import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
  *    check in timestamps should rather cover all categories (hours).
  * 3. At maximum 22% of all systems will check in during one hour (see maxPercentage).
  */
-public class CheckinCandidatesSimulationTest extends Assert {
+public class CheckinCandidatesSimulationTest  {
 
     // This is a value from rhn.conf
     private int thresholdDays = 1;

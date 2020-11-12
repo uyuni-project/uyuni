@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
  * OrgIdWrapperTest
  * @version $Rev$
  */
-public class OrgIdWrapperTest extends Assert {
+public class OrgIdWrapperTest  {
 
     @Test
     public void testWrapper() {

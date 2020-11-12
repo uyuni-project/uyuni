@@ -36,7 +36,7 @@ import junit.framework.Assert;
  * tests to verify our struts Actions.
  * @version $Rev$
  */
-public class ActionHelper extends Assert {
+public class ActionHelper  {
 
     private ActionMapping mapping;
     private ActionForward success;

@@ -33,7 +33,7 @@ import junit.framework.Assert;
 /**
  * A class that allows us to easily create test users.
  */
-public class UserTestUtils extends Assert {
+public class UserTestUtils  {
     // static class
     private UserTestUtils() { }
 

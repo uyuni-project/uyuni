@@ -26,7 +26,7 @@ import junit.framework.Assert;
  * ServletTestUtils
  * @version $Rev$
  */
-public class ServletTestUtils extends Assert {
+public class ServletTestUtils  {
 
     /**
      * Asserts that two query strings are equal. Order of parameters is not checked. A query

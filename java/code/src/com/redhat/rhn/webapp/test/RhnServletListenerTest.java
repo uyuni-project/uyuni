@@ -23,7 +23,7 @@ import org.junit.Assert;
  * RhnServletListenerTest
  * @version $Rev$
  */
-public class RhnServletListenerTest extends Assert {
+public class RhnServletListenerTest  {
 
     @Test
     public void testListenerStartup() {

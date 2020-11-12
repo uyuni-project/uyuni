@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link MgrSyncProductDto}.
  */
-public class MgrSyncProductDtoTest extends Assert {
+public class MgrSyncProductDtoTest  {
 
     /** The product under test. */
     private MgrSyncProductDto product;

@@ -12,7 +12,7 @@ import java.util.Optional;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-public class VirtualizationPoolCreateActionSourceTest extends Assert {
+public class VirtualizationPoolCreateActionSourceTest  {
 
     @Test
     public void testNfsDir() {

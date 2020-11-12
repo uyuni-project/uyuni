@@ -26,7 +26,7 @@ import com.redhat.rhn.common.util.StringUtil;
 
 import org.junit.Assert;
 
-public class StringUtilTest extends Assert {
+public class StringUtilTest  {
 
     @Test
     public void testNoChange() {

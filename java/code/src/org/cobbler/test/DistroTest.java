@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
  * @author paji
  *
  */
-public class DistroTest extends Assert {
+public class DistroTest  {
    private CobblerConnection client;
 
    public void setUpXX() throws Exception {

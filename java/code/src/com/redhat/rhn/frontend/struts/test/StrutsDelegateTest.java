@@ -29,7 +29,7 @@ import org.junit.Assert;
  * StrutsDelegateImplTest
  * @version $Rev$
  */
-public class StrutsDelegateTest extends Assert {
+public class StrutsDelegateTest  {
 
     private class StrutsDelegateStub extends StrutsDelegate {
     }

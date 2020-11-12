@@ -48,7 +48,7 @@ import org.junit.jupiter.api.Test;
  * test.  Didn't want to check it into our release branch.
  * @version $Rev$
  */
-public class SatScrubberTest extends Assert {
+public class SatScrubberTest  {
 
     private User orgAdmin;
     private static Logger log = Logger.getLogger(SatScrubberTest.class);

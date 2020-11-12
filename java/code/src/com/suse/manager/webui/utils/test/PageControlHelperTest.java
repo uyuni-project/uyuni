@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PageControlHelperTest extends Assert {
+public class PageControlHelperTest  {
 
     private static final String REQUEST_URL = "https://pagecontrol.test";
 

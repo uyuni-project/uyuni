@@ -32,7 +32,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * RhnTimeZoneSerializerTest
  * @version $Rev$
  */
-public class RhnTimeZoneSerializerTest extends Assert {
+public class RhnTimeZoneSerializerTest  {
 
     private RhnTimeZoneSerializer serializer;
 

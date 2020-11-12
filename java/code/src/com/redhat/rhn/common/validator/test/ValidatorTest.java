@@ -31,7 +31,7 @@ import org.junit.Assert;
  * ValidatorTest
  * @version $Rev$
  */
-public class ValidatorTest extends Assert {
+public class ValidatorTest  {
 
     private Validator validator;
 

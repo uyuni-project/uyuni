@@ -24,7 +24,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 import java.io.StringWriter;
 import java.io.Writer;
 
-public class SUSEInstalledProductSerializerTest extends Assert {
+public class SUSEInstalledProductSerializerTest  {
 
     @Test
     public void testSerialize() throws Exception {

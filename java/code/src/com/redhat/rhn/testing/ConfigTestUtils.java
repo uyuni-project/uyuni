@@ -39,7 +39,7 @@ import junit.framework.Assert;
  * ConfigTestUtils
  * @version $Rev 95653 $
  */
-public class ConfigTestUtils extends Assert {
+public class ConfigTestUtils  {
 
     /**
      * Creates a test configuration channel and saves it to the database

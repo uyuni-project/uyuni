@@ -32,7 +32,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * ConfigChannelTypeSerializer
  * @version $Rev$
  */
-public class ConfigChannelTypeSerializerTest extends Assert {
+public class ConfigChannelTypeSerializerTest  {
     @Test
     public void testSerialize() throws XmlRpcException, IOException {
         ConfigChannelTypeSerializer ccts = new ConfigChannelTypeSerializer();

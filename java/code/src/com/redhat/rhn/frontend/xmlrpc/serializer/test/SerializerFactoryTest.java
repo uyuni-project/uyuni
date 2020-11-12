@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 
-public class SerializerFactoryTest extends Assert {
+public class SerializerFactoryTest  {
 
     private SerializerFactory factory = null;
 

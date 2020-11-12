@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 import org.junit.Assert;
 
-public class PoolDefinitionTest extends Assert {
+public class PoolDefinitionTest  {
 
     @Test
     public void testParseRbd() {

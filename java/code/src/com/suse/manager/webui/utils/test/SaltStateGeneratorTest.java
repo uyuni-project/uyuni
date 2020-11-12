@@ -31,7 +31,7 @@ import org.yaml.snakeyaml.Yaml;
 /**
  * Test for SparkTestUtils.
  */
-public class SaltStateGeneratorTest extends Assert {
+public class SaltStateGeneratorTest  {
     private SaltStateGenerator generator;
     private StringWriter writer;
     private Yaml yaml;

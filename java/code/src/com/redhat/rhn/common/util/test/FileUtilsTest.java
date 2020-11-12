@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author mmccune
  */
-public class FileUtilsTest extends Assert {
+public class FileUtilsTest  {
 
     @Test
     public void testReadWrite() throws Exception {

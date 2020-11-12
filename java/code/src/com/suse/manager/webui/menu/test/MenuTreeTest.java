@@ -32,7 +32,7 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.junit.Assert;
 
-public class MenuTreeTest extends Assert {
+public class MenuTreeTest  {
 
     @Test
     public void testActiveNode() {

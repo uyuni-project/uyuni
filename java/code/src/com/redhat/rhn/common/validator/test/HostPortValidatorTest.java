@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test class for the {@link HostPortValidator}.
  */
-public class HostPortValidatorTest extends Assert {
+public class HostPortValidatorTest  {
 
     @Test
     public void testIPv4() {

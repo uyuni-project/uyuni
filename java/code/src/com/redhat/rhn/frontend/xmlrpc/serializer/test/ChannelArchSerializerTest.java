@@ -28,7 +28,7 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
-public class ChannelArchSerializerTest extends Assert {
+public class ChannelArchSerializerTest  {
 
     @Test
     public void testSerialize() throws XmlRpcException, IOException {

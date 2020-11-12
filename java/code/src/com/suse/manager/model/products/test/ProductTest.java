@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests Product.
  */
-public class ProductTest extends Assert {
+public class ProductTest  {
 
     /**
      * Tests the method isProvided().

@@ -29,7 +29,7 @@ import com.suse.utils.Json;
 
 import org.junit.Assert;
 
-public class SaltUtilsTest extends Assert {
+public class SaltUtilsTest  {
 
     @Test
     public void testPackageToKey() throws Exception {

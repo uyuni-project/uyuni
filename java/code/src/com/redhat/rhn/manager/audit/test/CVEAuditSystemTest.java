@@ -28,7 +28,7 @@ import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
  *
  * @version $Rev$
  */
-public class CVEAuditSystemTest extends Assert {
+public class CVEAuditSystemTest  {
 
     /**
      * Make sure that the set of channels is working as expected.

@@ -31,7 +31,7 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.validate;
 /**
  * Tests for {@link FilterCriteria}
  */
-public class FilterCriteriaTest extends Assert {
+public class FilterCriteriaTest  {
 
     @Test
     public void testLegalValidation() {

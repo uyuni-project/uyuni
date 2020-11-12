@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
  * TimeUtilsTest is the test class for TimeUtils.
  * @version $Rev$
  */
-public class TimeUtilsTest extends Assert {
+public class TimeUtilsTest  {
 
     @Test
     public void testCurrentTimeSeconds() {

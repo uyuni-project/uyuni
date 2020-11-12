@@ -42,7 +42,7 @@ import net.fortuna.ical4j.model.Calendar;
 /**
  * Tests focusing on maintenance windows computation
  */
-public class IcalUtilsTest extends Assert {
+public class IcalUtilsTest  {
 
     private IcalUtils icalUtils = new IcalUtils();
 
