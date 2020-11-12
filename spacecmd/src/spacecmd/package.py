@@ -175,7 +175,7 @@ def do_package_search(self, args, doreturn=False):
 
 
 def help_package_remove(self):
-    print(_('package_remove: Remove a package from Satellite'))
+    print(_('package_remove: Remove a package from Spacewalk'))
     print(_('usage: package_remove PACKAGE ...'))
 
 
