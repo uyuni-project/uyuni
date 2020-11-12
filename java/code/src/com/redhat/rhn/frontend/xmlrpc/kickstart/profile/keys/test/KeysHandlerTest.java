@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -33,6 +35,7 @@ public class KeysHandlerTest extends BaseHandlerTestCase {
     private KeysHandler handler = new KeysHandler();
     private ActivationKeyManager manager = ActivationKeyManager.getInstance();
 
+    @Test
     public void testGetActivationKeys() throws Exception {
 
         // setup test ...
@@ -70,6 +73,7 @@ public class KeysHandlerTest extends BaseHandlerTestCase {
         assertFalse(found3);
     }
 
+    @Test
     public void testAddActivationKey() throws Exception {
 
         // setup test ...
@@ -105,6 +109,7 @@ public class KeysHandlerTest extends BaseHandlerTestCase {
         assertTrue(found2);
     }
 
+    @Test
     public void testRemoveActivationKey() throws Exception {
 
         // setup test ...

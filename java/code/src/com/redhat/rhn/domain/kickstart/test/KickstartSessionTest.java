@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
@@ -42,6 +45,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     private KickstartSession ksession;
     private Server s;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -55,6 +59,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(ksession);
     }
 
+    @Test
     public void testIdsForSS() throws Exception {
         assertNotNull(KickstartFactory.SESSION_STATE_CREATED.getId());
         assertNotNull(KickstartFactory.SESSION_STATE_COMPLETE.getId());
@@ -63,6 +68,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testKickstartDataTest() throws Exception {
 
         KickstartSession ks2 = KickstartFactory.
@@ -72,6 +78,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         assertNotNull(ks2.getServerProfile());
     }
 
+    @Test
     public void testLookupByServer() throws Exception {
 
         KickstartSession lookedUp = KickstartFactory.
@@ -80,6 +87,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testLookupAllForServerAndFail() throws Exception {
 
         KickstartSession session2 = createKickstartSession(s, k, user);
@@ -96,6 +104,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testHistory() throws Exception {
         ksession = addHistory(ksession);
         Thread.sleep(2000);
@@ -111,6 +120,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         assertTrue(ksession.getMostRecentHistory().startsWith("FAILED"));
     }
 
+    @Test
     public void testGetUrl() {
         String url = ksession.getUrl("xmlrpc.rhn.webdev.redhat.com", new Date());
         assertNotNull(url);

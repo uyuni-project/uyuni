@@ -14,11 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 public class PackageSearchActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testFilter() throws Exception {
         setRequestPathInfo("/channels/software/Search");
         addRequestParameter(RequestContext.FILTER_STRING, "zzzzz");

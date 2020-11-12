@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -39,7 +42,8 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         user = UserTestUtils.findNewUser("testUser",
@@ -47,6 +51,7 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         virtualInstanceFactory = new VirtualInstanceManufacturer(user);
     }
 
+    @Test
     public void testAddGuestToHostAndSaveHost() throws Exception {
         VirtualInstance virtualInstance =
                 virtualInstanceFactory.newRegisteredGuestWithHost();
@@ -63,6 +68,7 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         assertEquals(retInstance.getHostSystem(), retrievedHost);
     }
 
+    @Test
     public void testUpdateGuestAndSaveHost() throws Exception {
         // testUpdateGuest() tests updating an already persistent guest. In order to do
         // this, we need to:
@@ -94,6 +100,7 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         assertTrue(retrievedHost.getGuests().contains(virtualInstance));
     }
 
+    @Test
     public void testSaveAndRetrieveGuestServerWithoutAHost() throws Exception {
         // There is a case in which it is possible to have a registered guest without
         // having its host registered. This is a test for this case.
@@ -112,6 +119,7 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         assertEquals(virtualInstance, retrievedGuest.getVirtualInstance());
     }
 
+    @Test
     public void testSaveAndRetrieveGuestWithAHost() throws Exception {
         VirtualInstance virtualInstance =
                 virtualInstanceFactory.newRegisteredGuestWithHost();
@@ -131,6 +139,7 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         assertEquals(host, retrievedHost);
     }
 
+    @Test
     public void testUpdateGuestWithoutAHost() throws Exception {
         VirtualInstance virtualInstance =
                 virtualInstanceFactory.newRegisteredGuestWithoutHost();

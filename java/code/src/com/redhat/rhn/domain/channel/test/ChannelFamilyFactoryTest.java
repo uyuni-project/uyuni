@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
@@ -32,6 +34,7 @@ import java.util.List;
  */
 public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testChannelFamilyFactory() throws Exception {
         ChannelFamily cfam = createTestChannelFamily();
         ChannelFamily cfam2 = ChannelFamilyFactory.lookupById(cfam.getId());
@@ -48,6 +51,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         assertNull(ChannelFamilyFactory.lookupById(id));
     }
 
+    @Test
     public void testLookupByLabel() throws Exception {
         ChannelFamily cfam = createTestChannelFamily();
         ChannelFamily cfam2 = ChannelFamilyFactory.lookupByLabel(cfam.getLabel(),
@@ -56,6 +60,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         assertEquals(cfam.getId(), cfam2.getId());
     }
 
+    @Test
     public void testLookupByLabelLike() throws Exception {
         ChannelFamily cfam = createTestChannelFamily();
         List cfams = ChannelFamilyFactory.lookupByLabelLike(cfam.getLabel(),
@@ -65,6 +70,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testVerifyOrgFamily() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

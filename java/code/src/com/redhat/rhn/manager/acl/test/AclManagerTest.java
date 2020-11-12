@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.acl.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -27,6 +29,7 @@ import com.mockobjects.servlet.MockHttpServletRequest;
  */
 public class AclManagerTest extends RhnBaseTestCase {
 
+    @Test
     public void testHasAcl() {
 
         MockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();

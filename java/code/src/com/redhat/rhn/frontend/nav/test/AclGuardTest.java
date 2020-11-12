@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.common.security.acl.AclHandler;
@@ -43,6 +45,7 @@ public class AclGuardTest extends RhnBaseTestCase {
     private final ClusterManager clusterManager = new ClusterManager(
             saltApi, systemQuery, serverGroupManager, formulaManager);
 
+    @Test
     public void testNoAclDefined() {
         NavNode node = new NavNode();
         AclFactory aclFactory = new AclFactory(new Access(clusterManager));
@@ -51,12 +54,14 @@ public class AclGuardTest extends RhnBaseTestCase {
         assertTrue(rc);
     }
 
+    @Test
     public void testNullNodeDefined() {
         AclGuard aclGuard = new AclGuard(new HashMap(), new AclFactory(new Access(clusterManager)));
         boolean rc = aclGuard.canRender(null, 0);
         assertTrue(rc);
     }
 
+    @Test
     public void testAclDefinedFailsRender() {
         NavNode node = new NavNode();
         node.setAcl("false_test()");
@@ -66,6 +71,7 @@ public class AclGuardTest extends RhnBaseTestCase {
         assertFalse(rc);
     }
 
+    @Test
     public void testAclDefinedShouldRender() {
         NavNode node = new NavNode();
         node.setAcl("true_test()");

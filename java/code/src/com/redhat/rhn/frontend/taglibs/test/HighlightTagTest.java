@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.taglibs.HighlightTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
@@ -30,6 +32,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class HighlightTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testDoEndTag() throws Exception {
 
         HighlightTag ht = new HighlightTag();

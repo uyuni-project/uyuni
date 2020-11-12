@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.AddressesAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -26,6 +28,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class AddressesActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         AddressesAction action =
             new AddressesAction();
@@ -41,6 +44,7 @@ public class AddressesActionTest extends RhnBaseTestCase {
         assertNotNull(sah.getRequest().getAttribute(RhnHelper.TARGET_USER));
     }
 
+    @Test
     public void testNoParamExecute() throws Exception {
         AddressesAction action = new AddressesAction();
         ActionHelper sah = new ActionHelper();
@@ -59,6 +63,7 @@ public class AddressesActionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testExecuteWithLoggedInUserNoAddress() throws Exception {
         AddressesAction action =
             new AddressesAction();

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.ssm.test;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
@@ -40,11 +43,13 @@ import java.util.List;
  */
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         // Override so the base class' tearDown doesn't rollback the transaction;
         // for this class we want the data to be persisted and remain there
     }
 
+    @Test
     public void testDummy() {
         // Stub to have at least one test when all of the actual populate ones are
         // disabled so JUnit doesn't complain

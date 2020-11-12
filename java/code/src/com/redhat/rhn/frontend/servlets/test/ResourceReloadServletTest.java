@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.ResourceReloadServlet;
@@ -38,6 +42,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     private HttpServletResponse response;
     private ServletOutputStream output;
 
+    @Before
     public void setUp() throws IOException {
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -51,6 +56,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testDoGet() throws Exception {
         ResourceReloadServlet servlet = new ResourceReloadServlet();
         boolean orig = Config.get().getBoolean("java.development_environment");
@@ -62,6 +68,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
                 Boolean.valueOf(orig).toString());
     }
 
+    @After
     public void tearDown() {
         request = null;
         response = null;

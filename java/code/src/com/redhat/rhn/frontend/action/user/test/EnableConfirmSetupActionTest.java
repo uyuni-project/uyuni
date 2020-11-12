@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.StateChange;
@@ -43,6 +45,7 @@ public class EnableConfirmSetupActionTest extends RhnBaseTestCase {
      * Expecting to return a "enabled" ActionForward.
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecute() throws Exception {
         EnableConfirmSetupAction action = new EnableConfirmSetupAction();
         ActionHelper ah = new ActionHelper();

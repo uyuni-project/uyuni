@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -31,6 +33,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
 
 
 
+    @Test
     public void testFindProfileForIpAddress() throws Exception {
 
         KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
@@ -64,6 +67,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
      * Test with  'eth1' instead of eth0
      * @throws Exception something bad happened
      */
+    @Test
     public void testFindProfileForIpAddressEth1() throws Exception {
 
         KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
@@ -105,6 +109,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
      * Test where 'eth0' doesn't match anything, but there should be a default
      *  Kickstart set;
      */
+    @Test
     public void testFindProfileForIpAddressDefault() throws Exception {
 
         KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
@@ -142,6 +147,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
     /*
      * Test where 'eth0' doesn't match anything, resulting in NULL
      */
+    @Test
     public void testFindProfileForIpAddressNull() throws Exception {
 
         KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
@@ -175,6 +181,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
     /**
      * Simple test for the auto-installation files error detection heuristics.
      */
+    @Test
     public void testErrorDetectionHeuristicsSimple() {
         assertTrue(KickstartManager.tryDetectErrors("Traceback (most recent call last):" +
                 "more content goes here."));

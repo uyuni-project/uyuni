@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.test ;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -61,6 +64,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -78,6 +82,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         } });
     }
 
+    @Test
     public void testCreateAction() throws UnsupportedEncodingException {
         Long orgId = user.getOrg().getId();
 
@@ -95,6 +100,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         assertEquals(user.getLogin(), action.get("creatorLogin"));
     }
 
+    @Test
     public void testCreateActionSameName() throws UnsupportedEncodingException {
         Long orgId = user.getOrg().getId();
 
@@ -111,6 +117,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         }
     }
 
+    @Test
     public void testUpdateAction() throws UnsupportedEncodingException {
         var org = OrgFactory.createOrg();
         org.setName("test org: " + TestUtils.randomString());

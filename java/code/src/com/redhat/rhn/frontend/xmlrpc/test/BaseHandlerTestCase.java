@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.test;
+import org.junit.Before;
 
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
@@ -54,6 +55,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
             new MinionPillarFileManager(new MinionGeneralPillarGenerator());
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         admin = UserTestUtils.createUserInOrgOne();

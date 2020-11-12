@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.util.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.xmlrpc.util.MapBuilder;
@@ -31,6 +34,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
     private MapBuilder builder;
     private TestBean bean;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         builder = new MapBuilder();
@@ -60,6 +64,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
      * Test the case where includes and excludes are null
      * @throws Exception if bean utils has trouble processing the bean.
      */
+    @Test
     public void testBaseCase() throws Exception {
         Map map = builder.mapify(bean);
         Map properties = BeanUtils.describe(bean);
@@ -70,6 +75,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testIncludes() {
         builder.include("fieldA");
         builder.include("fieldWierdo");
@@ -82,6 +88,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
         assertMethod(map, "fieldC", "", false);
     }
 
+    @Test
     public void testExcludes() {
         builder.exclude("fieldA");
         builder.exclude("fieldWierdo");
@@ -95,6 +102,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
         assertMethod(map, "fieldWierdo", "", false);
     }
 
+    @Test
     public void testCombo() {
         builder.include("fieldA");
         builder.exclude("fieldA");

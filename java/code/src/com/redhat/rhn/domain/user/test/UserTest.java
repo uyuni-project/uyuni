@@ -14,6 +14,10 @@
  */
 
 package com.redhat.rhn.domain.user.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -42,7 +46,8 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
         super.setUp();
     }
@@ -50,7 +55,8 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
         super.tearDown();
     }
@@ -59,6 +65,7 @@ public class UserTest extends RhnBaseTestCase {
      *  Test to make sure that we can set the login on a newly created
      *  user.
     */
+    @Test
     public void testSetLogin() {
         User usr = UserFactory.createUser();
         usr.setLogin("testLogin");
@@ -71,6 +78,7 @@ public class UserTest extends RhnBaseTestCase {
     * because the password changed.
     * @throws Exception something bad happened
     */
+    @Test
     public void testAuthenticateTrue() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -83,6 +91,7 @@ public class UserTest extends RhnBaseTestCase {
     * in that we actually fail the authenticate method
     * @throws Exception something bad happened
     */
+    @Test
     public void testAuthenticateFail() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -95,6 +104,7 @@ public class UserTest extends RhnBaseTestCase {
     * is bad, test that so that it doesn't happen again.
     * @throws Exception something bad happened
     */
+    @Test
     public void testLookupSameUserTwice() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -108,6 +118,7 @@ public class UserTest extends RhnBaseTestCase {
     * Check to make sure we can add an Address to a User.
     * @throws Exception something bad happened
     */
+    @Test
     public void testAddAddress() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -117,6 +128,7 @@ public class UserTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testBeanMethods() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -192,6 +204,7 @@ public class UserTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testSystemGroupMethods() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -205,6 +218,7 @@ public class UserTest extends RhnBaseTestCase {
         assertNotNull(usr.getDefaultSystemGroupIds());
     }
 
+    @Test
     public void testGetRoles() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -233,6 +247,7 @@ public class UserTest extends RhnBaseTestCase {
      * a boatload of setup that needs root access
      * @see #testAuthenticateTrue
      */
+    @Test
     public void testPamAuthenticationFails() {
         String oldValue = Config.get().setString("web.pam_auth_service", "login");
         try {
@@ -249,6 +264,7 @@ public class UserTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testServerPerms() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

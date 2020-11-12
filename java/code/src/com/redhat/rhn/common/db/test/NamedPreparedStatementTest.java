@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.db.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.BindVariableNotFoundException;
 import com.redhat.rhn.common.db.NamedPreparedStatement;
@@ -76,16 +80,19 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                      "FROM FOOBAR";
 
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         session = HibernateFactory.getSession();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         session = null;
         super.tearDown();
     }
 
+    @Test
     public void testColonInQuotes() throws Exception {
         String jdbcQuery;
         Map pMap = new HashMap();
@@ -98,6 +105,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         assertTrue(pMap.isEmpty());
     }
 
+    @Test
     public void testCreateSQL() throws Exception {
         String jdbcQuery;
         Map pMap = new HashMap();
@@ -112,6 +120,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         assertEquals(1, ((Integer)lst.get(0)).intValue());
     }
 
+    @Test
     public void testPrepare() throws Exception {
         String jdbcQuery;
         Map pMap = new HashMap();
@@ -128,6 +137,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         session.doWork(c -> c.prepareStatement(jdbcQuery));
     }
 
+    @Test
     public void testTwoBindPrepare() throws Exception {
         List lst;
         String jdbcQuery;
@@ -151,6 +161,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
         session.doWork(c -> c.prepareStatement(jdbcQuery));
     }
 
+    @Test
     public void testNotFoundBindParam() throws Exception {
         Map<String, List<Integer>> pMap = new HashMap<String, List<Integer>>();
 

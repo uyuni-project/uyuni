@@ -14,6 +14,8 @@
  */
 package com.suse.manager.utils.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -24,10 +26,11 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.utils.Json;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
-public class SaltUtilsTest extends TestCase {
+public class SaltUtilsTest extends Assert {
 
+    @Test
     public void testPackageToKey() throws Exception {
         // atom package, openSUSE style, from database
         var atomName = new PackageName();

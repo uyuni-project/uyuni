@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.kickstart.cobbler.test.CobblerSnippetTest;
@@ -29,6 +31,7 @@ import java.util.List;
  * @version $Rev$
  */
 public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
+    @Test
     public void testPerms() throws Exception {
         try {
             CobblerSnippetLister.getInstance().list(user);
@@ -39,6 +42,7 @@ public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testList() throws Exception {
         user.addPermanentRole(RoleFactory.CONFIG_ADMIN);
         CobblerSnippet snip = CobblerSnippetTest.readOnly();

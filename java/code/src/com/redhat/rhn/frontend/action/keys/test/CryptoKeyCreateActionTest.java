@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.keys.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -28,11 +31,13 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
 
+    @Before
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
         super.setUp();
     }
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/keys/CryptoKeyCreate");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.FALSE.toString());
@@ -41,6 +46,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
         assertNotNull(request.getAttribute(CryptoKeyCreateAction.TYPES));
     }
 
+    @Test
     public void testCreateSubmit() throws Exception {
         setRequestPathInfo("/keys/CryptoKeyCreate");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());
@@ -54,6 +60,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
         verifyActionErrors(keys);
     }
 
+    @Test
     public void testEdit() throws Exception {
         setRequestPathInfo("/keys/CryptoKeyEdit");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());

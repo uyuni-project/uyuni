@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.taglibs.ColumnTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
@@ -34,6 +36,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class ColumnTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testConstructor() {
         ColumnTag ct = new ColumnTag();
         assertNotNull(ct);
@@ -48,6 +51,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         assertNull(ct.getArg0());
     }
 
+    @Test
     public void testCopyConstructor() {
         ColumnTag ct = new ColumnTag();
         ct.setHeader("header");
@@ -62,6 +66,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         assertEquals(ct, copy);
     }
 
+    @Test
     public void testEquals() {
         ColumnTag ct = new ColumnTag();
         ct.setHeader("header");
@@ -87,6 +92,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         assertTrue(ct1.equals(ct));
     }
 
+    @Test
     public void testSettersGetters() {
         ColumnTag ct = new ColumnTag();
         ct.setHeader("header");
@@ -109,6 +115,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         assertNull(ct.getParent());
     }
 
+    @Test
     public void testFindListDisplay() {
         ColumnTag ct = new ColumnTag();
         ct.setParent(new ListDisplayTag());
@@ -125,6 +132,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         assertNull(ct3.findListDisplay());
     }
 
+    @Test
     public void testDoStartTag() throws JspException {
         disableLocalizationServiceLogging();
         ListDisplayTag ldt = new ListDisplayTag();

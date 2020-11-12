@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -28,6 +30,7 @@ public class SnippetHandlerTest extends BaseHandlerTestCase {
 
     private SnippetHandler handler = new SnippetHandler();
 
+    @Test
     public void testListAll() {
         deleteAllSnippets();
         List old = handler.listAll(admin);
@@ -37,6 +40,7 @@ public class SnippetHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testListCustom() {
         deleteAllSnippets();
         assertTrue(handler.listCustom(admin).isEmpty());
@@ -45,12 +49,14 @@ public class SnippetHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testCreateOrUpdate() {
         deleteAllSnippets();
         handler.createOrUpdate(admin, "foobar", "My Little foobar");
         assertTrue(handler.listCustom(admin).get(0).getName().equals("foobar"));
     }
 
+    @Test
     public void testDelete() {
         deleteAllSnippets();
         handler.createOrUpdate(admin, "foobar", "My Little foobar");

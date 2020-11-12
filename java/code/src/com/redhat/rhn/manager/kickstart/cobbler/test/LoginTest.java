@@ -14,12 +14,15 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 
 public class LoginTest extends RhnBaseTestCase {
 
+    @Test
     public void testLogin() throws Exception {
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         assertNotNull(cmd.login("testUserHUbHd7j8HEVjg", "password"));

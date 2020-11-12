@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +38,14 @@ import com.redhat.rhn.testing.TagTestUtils;
  */
 public class ListTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testConstructor() {
         ListTag lt = new ListTag();
         assertNotNull(lt);
         assertNull(lt.getPageList());
     }
 
+    @Test
     public void testLegends() throws Exception {
         ListTag lt = new ListTag();
 
@@ -74,6 +78,7 @@ public class ListTagTest extends RhnBaseTestCase {
         assertEquals("yankee,hotel,foxtrot", pc.getRequest().getAttribute("legends"));
     }
 
+    @Test
     public void testTagNoOutput() throws Exception {
         ListTag lt = new ListTag();
         DataResult dr = new DataResult(new ArrayList());
@@ -96,6 +101,7 @@ public class ListTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testTagOutput() throws Exception {
         ListTag lt = new ListTag();
 
@@ -126,6 +132,7 @@ public class ListTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testNullPageList() throws Exception {
         ListTag lt = new ListTag();
 

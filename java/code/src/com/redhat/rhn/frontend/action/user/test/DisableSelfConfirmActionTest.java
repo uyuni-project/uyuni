@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.DisableSelfConfirmAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -29,6 +31,7 @@ import org.apache.struts.action.ActionForward;
  */
 public class DisableSelfConfirmActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         DisableSelfConfirmAction action = new DisableSelfConfirmAction();
         ActionHelper ah = new ActionHelper();

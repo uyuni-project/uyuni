@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -24,6 +26,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 public class ChannelFilesListSetupTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecuteNoFiles() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

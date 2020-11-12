@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.state.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -49,6 +51,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testLatestPackageStatesEmpty() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         assertFalse(StateFactory.latestPackageStates(server).isPresent());
@@ -59,6 +62,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testLatestPackageStates() throws Exception {
         // Create test packages and a server
         Package pkg1 = PackageTest.createTestPackage(user.getOrg());
@@ -102,6 +106,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      * Test assigning a state
      * @throws Exception
      */
+    @Test
     public void testAssignConfigChannelsToServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ServerStateRevision serverState = new ServerStateRevision();
@@ -137,6 +142,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      * Test removing a state
      * @throws Exception
      */
+    @Test
     public void testRemoveAssignedStatesFromServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ServerStateRevision serverState = new ServerStateRevision();
@@ -169,6 +175,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertTrue(serverState.getConfigChannels().contains(channel2));
     }
 
+    @Test
     public void testServerGroupConfigChannels() {
         ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
                 TestUtils.randomString(), "desc", user.getOrg());
@@ -191,6 +198,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertTrue(groupRevision.getConfigChannels().stream().anyMatch(s -> s.getId().equals(channel2.getId())));
     }
 
+    @Test
     public void testOrgConfigChannels() {
 
         ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Foo", "foo");
@@ -211,6 +219,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertTrue(orgRevision.getConfigChannels().stream().anyMatch(s -> s.getId().equals(channel2.getId())));
     }
 
+    @Test
     public void testLatestServerGroupConfigChannels() throws Exception {
         ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
                 TestUtils.randomString(), "desc", user.getOrg());
@@ -247,6 +256,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
                 .findFirst().isPresent());
     }
 
+    @Test
     public void testLatestOrgConfigChannels() {
         // create revision 1
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "First", "first");
@@ -280,6 +290,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testLatestConfigChannels() throws Exception {
         // Create revision 1
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -318,6 +329,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
                 .anyMatch(s -> "test-channel-3".equals(s.getLabel())));
     }
 
+    @Test
     public void testLatestStateRevisionsByConfigChannel() throws Exception {
         ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Test Channel 1", "test-channel-1");

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -68,6 +71,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -97,6 +101,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertNotNull(cmd.getKickstartSession());
     }
 
+    @Test
     public void testCommandActKey() throws Exception {
         Server otherServer = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -115,6 +120,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
      * box has an i386 basechannel but seems to be 64bit hardware.
      * @throws Exception something bad happened
      */
+    @Test
     public void testProfileArches() throws Exception {
         KickstartData x86ks = KickstartDataTest.
                 createKickstartWithChannel(user.getOrg());
@@ -150,6 +156,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
 
     }
 
+    @Test
     public void testCommandExisting() throws Exception {
         profileType = KickstartScheduleCommand.TARGET_PROFILE_TYPE_EXISTING;
         KickstartScheduleCommand cmd = testCommandExecution(
@@ -158,10 +165,12 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertNotNull(cmd.getCreatedProfile());
     }
 
+    @Test
     public void testCommandNoProfileSynch() throws Exception {
         testCommandExecution(server, ksdata, profileType, otherServerId, profileId);
     }
 
+    @Test
     public void testCommandProxyKs() throws Exception {
         KickstartScheduleCommand cmd = testCommandExecution(server,
                 ksdata, profileType, otherServerId, profileId);
@@ -171,6 +180,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertNull(cmd.store());
     }
 
+    @Test
     public void testGetProxies() throws Exception {
         KickstartScheduleCommand cmd = testCommandExecution(server,
                 ksdata, profileType, otherServerId, profileId);
@@ -179,6 +189,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertEquals(0, SystemManager.listProxies(user.getOrg()).size());
     }
 
+    @Test
     public void testCommandPackageProfile() throws Exception {
         profileType = KickstartScheduleCommand.TARGET_PROFILE_TYPE_PACKAGE;
         String desc = "test profile " + TestUtils.randomString();
@@ -201,6 +212,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         }
     }
 
+    @Test
     public void testScheduleKs() throws Exception {
 
         FileList list1 = KickstartDataTest.createFileList1(user.getOrg());
@@ -221,12 +233,14 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 getFileLists().size() == 1);
     }
 
+    @Test
     public void testKickstartProfiles() throws Exception {
         KickstartScheduleCommand cmd = new
                 KickstartScheduleCommand(this.server.getId(), this.user);
         assertNotNull(cmd.getKickstartProfiles());
     }
 
+    @Test
     public void testKickstartPackageName() {
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_4));
@@ -239,6 +253,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
 
     }
 
+    @Test
     public void testSameChannels() throws Exception {
         for (int i = 0; i < 5; i++) {
             Channel c = ChannelFactoryTest.createTestChannel(server.getCreator());

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.common.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.frontend.action.common.TinyUrlAction;
@@ -21,7 +23,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 import java.util.Date;
 
-import junit.framework.AssertionFailedError;
+
 
 /**
  * TinyUrlActionTest
@@ -29,6 +31,7 @@ import junit.framework.AssertionFailedError;
  */
 public class TinyUrlActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testTinyUrl() throws Exception {
         setRequestPathInfo("/ty/TinyUrl");
         TinyUrl url = CommonFactory.createTinyUrl(
@@ -40,13 +43,14 @@ public class TinyUrlActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getAttribute("ksurl"));
     }
 
+    @Test
     public void testEmptyTinyUrl() throws Exception {
         setRequestPathInfo("/ty/TinyUrl");
         try {
             actionPerform();
             fail("We should have gotten a 404.");
         }
-        catch (AssertionFailedError afe) {
+        catch (AssertionError afe) {
             // NOOP
         }
     }

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.util.manifestfactory.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.util.manifestfactory.ClassBuilder;
@@ -20,16 +23,18 @@ import com.redhat.rhn.common.util.manifestfactory.ClassBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 
-public class ClassBuilderTest extends TestCase {
+public class ClassBuilderTest extends Assert {
 
     private ClassBuilder builder;
 
+    @Before
     public void setUp() {
         builder = new ClassBuilder(null, "testclass-manifest.xml");
     }
+    @Test
     public void testCreateObject() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("classname", "java.lang.String");
@@ -38,6 +43,7 @@ public class ClassBuilderTest extends TestCase {
         assertEquals(String.class, s.getClass());
     }
 
+    @Test
     public void testNullClassname() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("classname", null);
@@ -50,6 +56,7 @@ public class ClassBuilderTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreationException() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("classname", "bet.you.cant.find.Me");
@@ -62,6 +69,7 @@ public class ClassBuilderTest extends TestCase {
         }
     }
 
+    @Test
     public void testManifestFilename() {
         assertEquals("/testclass-manifest.xml", builder.getManifestFilename());
     }

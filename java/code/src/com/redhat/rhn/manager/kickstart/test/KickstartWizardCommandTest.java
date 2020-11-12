@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -37,6 +39,7 @@ import java.util.List;
  */
 public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testWizTrees() throws Exception {
 
         Channel c = ChannelFactoryTest.createBaseChannel(user);
@@ -71,6 +74,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
     // create a default KickstartSession that is used for
     // bare metal/PXE installs and that there is a default key
     // associated with it.
+    @Test
     public void testStore() throws Exception {
 
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());

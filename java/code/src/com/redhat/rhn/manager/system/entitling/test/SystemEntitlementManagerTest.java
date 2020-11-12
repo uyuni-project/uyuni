@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.entitling.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 
@@ -49,6 +52,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -66,6 +70,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
      * Tests adding and removing entitlement on a server
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testEntitleServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -121,6 +126,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
     }
 
+    @Test
     public void testEntitleVirtForGuest() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         User user = host.getCreator();
@@ -136,6 +142,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(guest.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
 
+    @Test
     public void testVirtualEntitleServer() throws Exception {
         // User and server
         User user = UserTestUtils.findNewUser("testUser",

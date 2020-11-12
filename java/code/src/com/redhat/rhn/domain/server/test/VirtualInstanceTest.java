@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -37,11 +40,13 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
 
     private Sequence idSequence;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         idSequence = new Sequence();
     }
 
+    @Test
     public void testIsRegisteredGuest() {
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setGuestSystem(ServerFactory.createServer());
@@ -49,10 +54,12 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
         assertTrue(virtualInstance.isRegisteredGuest());
     }
 
+    @Test
     public void testIsNotRegisteredGuest() {
         assertFalse(new VirtualInstance().isRegisteredGuest());
     }
 
+    @Test
     public void testEqualsAndHashCode() throws Exception {
         Server host = ServerTestUtils.createTestSystem();
         Server guest = ServerTestUtils.createTestSystem();
@@ -73,6 +80,7 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
         return virtualInstance;
     }
 
+    @Test
     public void testGetNullInfo() {
         VirtualInstance instance = new GuestStub(idSequence.nextLong());
         instance.getName();

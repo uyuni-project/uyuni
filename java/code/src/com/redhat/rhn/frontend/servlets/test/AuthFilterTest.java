@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
 
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.servlets.AuthFilter;
@@ -47,7 +48,8 @@ public class AuthFilterTest extends MockObjectTestCase {
 
     private AuthenticationService mockAuthService;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         filter = new AuthFilterStub();

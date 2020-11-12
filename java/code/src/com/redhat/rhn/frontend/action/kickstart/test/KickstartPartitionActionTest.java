@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -32,6 +35,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     private KickstartData ksdata;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -40,6 +44,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }
 
+    @Test
     public void testPopulatePartition() throws Exception {
         setRequestPathInfo("/kickstart/KickstartPartitionEdit");
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
@@ -49,6 +54,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(formval.length() > 0);
     }
 
+    @Test
     public void testCleanSubmit() throws Exception {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +
@@ -72,6 +78,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testMultipleSwapsSubmit() throws Exception {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +

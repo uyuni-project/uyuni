@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.formula.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
@@ -73,6 +77,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public FormulaManagerTest() { }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -86,6 +91,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(metadataDir.toFile());
@@ -97,6 +103,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
 
+    @Test
     public void testValidContents() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
@@ -113,6 +120,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Validate the input data(invalid) with the definition of formula
      * @throws Exception
      */
+    @Test
     public void testInValidContents() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
@@ -135,6 +143,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test the saved group formula data
      * @throws Exception
      */
+    @Test
     public void testSaveGroupFormulaData() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
@@ -156,6 +165,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test the enable formula method
      * @throws Exception if the formula cannot be enabled
      */
+    @Test
     public void testEnableFormula() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
@@ -175,6 +185,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test the saved server formula data
      * @throws Exception
      */
+    @Test
     public void testSaveServerFormulaData() throws Exception {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
@@ -197,6 +208,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      * Test if unauthorized user can save formula data
      * @throws Exception
      */
+    @Test
     public void testSaveServerFormulaDataForUnAuthorized() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
@@ -212,6 +224,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGetCombinedFormulaDataForSystems() throws Exception {
         // minion with only group formulas
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);

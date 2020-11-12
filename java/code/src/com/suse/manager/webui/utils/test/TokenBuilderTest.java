@@ -1,5 +1,7 @@
 package com.suse.manager.webui.utils.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -16,6 +18,7 @@ import java.util.Arrays;
  */
 public class TokenBuilderTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testGetKey() {
         String secret = DigestUtils.sha256Hex(TestUtils.randomString());
         Key key = TokenBuilder.getKeyForSecret(secret);
@@ -23,6 +26,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         assertEquals(32, key.getEncoded().length);
     }
 
+    @Test
     public void testGetKeyConvert() {
         String secret = DigestUtils.sha256Hex("0123456789abcd");
         Key key = TokenBuilder.getKeyForSecret(secret);
@@ -31,6 +35,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
                 82, -84, -119, -99, 20, -82, 114, -21, 38, 65, 25, -50, 88, 44, -8}, key.getEncoded()));
     }
 
+    @Test
     public void testExpectsHexSecret() {
         try {
             // randomString() len is 13
@@ -41,6 +46,7 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDefaultExpiresInAYear() throws Exception {
         TokenBuilder tokenBuilder = new TokenBuilder();
         tokenBuilder.useServerSecret();

@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import org.junit.Test;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -36,6 +38,7 @@ import com.redhat.rhn.testing.TestUtils;
 public class IssMasterSerializerTest extends MockObjectTestCase {
     private String[] masterOrgNames = {"masterOrg1", "masterOrg2", "masterOrg3"};
 
+    @Test
     public void testMasterSerialize() throws XmlRpcException, IOException {
         IssMasterSerializer os = new IssMasterSerializer();
         IssMaster master = setUpMaster();
@@ -54,6 +57,7 @@ public class IssMasterSerializerTest extends MockObjectTestCase {
         assertTrue(result.contains(">" + (master.getCaCert()) + "<"));
     }
 
+    @Test
     public void testMasterOrgSerialize() throws XmlRpcException, IOException {
         IssMasterOrgSerializer os = new IssMasterOrgSerializer();
         IssMaster master = setUpMaster();

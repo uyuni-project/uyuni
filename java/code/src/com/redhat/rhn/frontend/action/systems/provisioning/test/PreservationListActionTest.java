@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -29,6 +31,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class PreservationListActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

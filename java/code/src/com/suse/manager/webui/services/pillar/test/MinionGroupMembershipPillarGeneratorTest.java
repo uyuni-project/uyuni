@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.pillar.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -42,12 +45,14 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
 public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
+    @Test
     public void testGenerateGroupMemebershipsPillarData() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 

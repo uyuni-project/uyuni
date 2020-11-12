@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.org.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -32,6 +34,7 @@ public class OrgManagerTest extends RhnBaseTestCase {
      * TestOrgsInsat
      * @throws Exception if error
      */
+    @Test
     public void testOrgsInSat() throws Exception {
 
         User user = UserTestUtils.findNewUser("test-morg", "testorg-foo", true);

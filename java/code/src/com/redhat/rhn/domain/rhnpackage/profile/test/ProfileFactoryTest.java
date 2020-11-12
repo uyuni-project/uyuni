@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.profile.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -38,12 +40,14 @@ import java.util.List;
  */
 public class ProfileFactoryTest  extends RhnBaseTestCase {
 
+    @Test
     public void testCreateProfile() {
         Profile p = ProfileFactory.createProfile(ProfileFactory.TYPE_NORMAL);
         assertNotNull(p);
         assertEquals(ProfileFactory.TYPE_NORMAL, p.getProfileType());
     }
 
+    @Test
     public void testLookupByLabel() {
         ProfileType pt = ProfileFactory.lookupByLabel("normal");
         assertNotNull("ProfileType is null", pt);
@@ -53,6 +57,7 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         assertNull("Found a ProfileType labeled foo", pt);
     }
 
+    @Test
     public void testCompatibleWithServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -74,6 +79,7 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLookupById() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -86,6 +92,7 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         assertEquals(p, p1);
     }
 
+    @Test
     public void testFindByNameAndOrgId() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

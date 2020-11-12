@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.util.http.test;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
@@ -31,14 +34,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import simple.http.Request;
 import simple.http.Response;
 
 /**
  * Integrational unit tests for {@link HttpClientAdapter}.
  */
-public class HttpClientAdapterTest extends TestCase {
+public class HttpClientAdapterTest extends Assert {
 
     // Mock server for reuse
     private static final HttpServerMock SERVER_MOCK = new HttpServerMock();
@@ -58,6 +61,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test for executeRequest(): an authenticated GET request.
      * @throws Exception in case there is a problem
      */
+    @Test
     public void testGetRequestAuthenticated() throws Exception {
         Callable<Integer> requester = new Callable<Integer>() {
             @Override
@@ -80,6 +84,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test for executeRequest(): an authenticated GET request via a proxy.
      * @throws Exception in case there is a problem
      */
+    @Test
     public void testGetRequestViaProxy() throws Exception {
         // Configure proxy
         ProxySettingsDto proxySettings = new ProxySettingsDto();
@@ -158,6 +163,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test the logic in HttpClientAdapter.useProxyFor().
      * @throws Exception in case of a problem
      */
+    @Test
     public void testUseProxyFor() throws Exception {
         // Configure "no_proxy"
         setNoProxy("example.com, false.com");
@@ -193,6 +199,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test the logic in HttpClientAdapter.useProxyFor(): "no_proxy" contains "*".
      * @throws Exception in case of a problem
      */
+    @Test
     public void testUseProxyForAsterisk() throws Exception {
         // Configure "no_proxy" cotaining an asterisk
         setNoProxy("example.com, *");
@@ -209,6 +216,7 @@ public class HttpClientAdapterTest extends TestCase {
      * Test the logic in HttpClientAdapter.useProxyFor(): "no_proxy" is empty.
      * @throws Exception in case of a problem
      */
+    @Test
     public void testUseProxyForEmpty() throws Exception {
         // Configure "no_proxy" cotaining an asterisk
         setNoProxy("");
@@ -227,9 +235,9 @@ public class HttpClientAdapterTest extends TestCase {
     /* (non-Javadoc)
      * @see junit.framework.TestCase#tearDown()
      */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
+
 
         // Clear proxy settings
         ProxySettingsDto proxySettings = new ProxySettingsDto();

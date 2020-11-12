@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
@@ -23,6 +25,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 public class KickstartIpCommandTest extends RhnBaseTestCase {
 
     //place holder after refactoring
+    @Test
     public void testFoo() {
         assertTrue(true);
     }

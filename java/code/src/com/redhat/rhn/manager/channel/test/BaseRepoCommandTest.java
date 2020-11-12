@@ -9,6 +9,9 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 package com.redhat.rhn.manager.channel.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
@@ -30,6 +33,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
     private int label_count = 0;
     private User user = null;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
@@ -38,6 +42,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
         ccc = new CreateRepoCommand(org);
     }
 
+    @Test
     public void testVerifyUrlInput() {
 
         // Url must begin with a valid protocol (http, https, ftp, ...),

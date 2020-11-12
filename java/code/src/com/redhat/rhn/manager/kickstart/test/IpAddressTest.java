@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -23,6 +25,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class IpAddressTest extends RhnBaseTestCase {
 
+    @Test
     public void testIp() throws Exception {
 
         long [] ip = { 192 , 168 , 1 , 1 };

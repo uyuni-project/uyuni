@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -38,6 +40,7 @@ import java.util.Date;
  */
 public class ConfigRevisionActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testBeanMethods() {
         ConfigRevisionAction cra = new ConfigRevisionAction();
         Date now = new Date();
@@ -76,6 +79,7 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
      * Test fetching a ConfigRevisionAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupConfigRevision() throws Exception {
         User user = UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName()));

@@ -14,6 +14,8 @@
  */
 package com.suse.scc.client.test;
 
+import org.junit.Test;
+
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCRequestFactory;
 
@@ -22,12 +24,12 @@ import org.apache.http.client.methods.HttpRequestBase;
 
 import java.net.URI;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * Tests {@link SCCRequestFactory}
  */
-public class SCCRequestFactoryTest extends TestCase {
+public class SCCRequestFactoryTest extends Assert {
 
     // Headers to be verified
     private static final String TEST_SCHEME = "https";
@@ -41,6 +43,7 @@ public class SCCRequestFactoryTest extends TestCase {
      * Tests initRequest(): Init a request to SCC and check it for correctness.
      * @throws Exception in case anything goes wrong
      */
+    @Test
     public void testInitRequest() throws Exception {
         SCCConfig config = new SCCConfig(new URI(TEST_SCHEME + "://" + TEST_HOST),
                 "user", "pass", TEST_UUID, null, SCCConfig.DEFAULT_LOGGING_DIR);

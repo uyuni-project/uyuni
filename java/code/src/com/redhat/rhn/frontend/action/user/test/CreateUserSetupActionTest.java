@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.CreateUserSetupAction;
@@ -27,6 +29,7 @@ import com.redhat.rhn.testing.RhnMockDynaActionForm;
  */
 public class CreateUserSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         CreateUserSetupAction action = new CreateUserSetupAction();
         ActionHelper sah = new ActionHelper();

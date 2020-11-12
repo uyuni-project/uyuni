@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
@@ -28,6 +30,7 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
      * Tests getProxySettings().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProxySettings() throws Exception {
         ProxySettingsDto proxy = new ProxySettingsDto();
         proxy.setHostname("proxy.foobar.com");

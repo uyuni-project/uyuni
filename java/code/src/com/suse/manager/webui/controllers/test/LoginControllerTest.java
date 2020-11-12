@@ -1,4 +1,7 @@
 package com.suse.manager.webui.controllers.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -27,10 +30,12 @@ import spark.routematch.RouteMatch;
 public class LoginControllerTest extends BaseControllerTestCase {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
     }
 
+    @Test
     public void testUrlBounce() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
 
@@ -55,6 +60,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
     }
 
+    @Test
     public void testLoginWithSSO() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
 
@@ -74,6 +80,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertNotNull(result); // redirect to the SSO login page
     }
 
+    @Test
     public void testUrlBounceNotAuthenticated() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
 
@@ -96,6 +103,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
     }
 
+    @Test
     public void testLoginOK() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Map<String, String> params = new HashMap<>();
@@ -111,6 +119,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertTrue(result.isSuccess());
     }
 
+    @Test
     public void testLoginKO() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Map<String, String> params = new HashMap<>();
@@ -127,6 +136,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertEquals("error.invalid_login", String.join("", result.getMessages()));
     }
 
+    @Test
     public void testLoginWithEmptyPassword() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Map<String, String> params = new HashMap<>();
@@ -143,6 +153,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertEquals("error.invalid_login", String.join("", result.getMessages()));
     }
 
+    @Test
     public void testLoginWithEmptyUsername() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Map<String, String> params = new HashMap<>();
@@ -159,6 +170,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertEquals("error.invalid_login", String.join("", result.getMessages()));
     }
 
+    @Test
     public void testLoginWithInvalidUsername() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Map<String, String> params = new HashMap<>();
@@ -175,6 +187,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertEquals("error.invalid_login", String.join("", result.getMessages()));
     }
 
+    @Test
     public void testLoginWithDisabledUsername() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         User u = UserTestUtils.findNewUser("testUser",

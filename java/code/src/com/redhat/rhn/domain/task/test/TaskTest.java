@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.task.Task;
@@ -32,6 +34,7 @@ import java.util.List;
  */
 public class TaskTest extends RhnBaseTestCase {
 
+    @Test
     public void testTask() throws Exception {
 
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
@@ -64,6 +67,7 @@ public class TaskTest extends RhnBaseTestCase {
         assertFalse("t2 should not be equal to t3", t2.equals(t3));
     }
 
+    @Test
     public void testLookupNameLike() throws Exception {
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();

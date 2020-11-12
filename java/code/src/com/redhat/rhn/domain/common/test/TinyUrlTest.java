@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -28,6 +30,7 @@ import java.util.TimeZone;
  */
 public class TinyUrlTest extends RhnBaseTestCase {
 
+    @Test
     public void testCreate() throws Exception {
         TinyUrl url = CommonFactory.createTinyUrl(
                 "/rhn/kickstart/ks-rhel-i386-as-4-u2", new Date());
@@ -37,6 +40,7 @@ public class TinyUrlTest extends RhnBaseTestCase {
         assertNotNull(url.getToken());
     }
 
+    @Test
     public void testComputeUrl() throws Exception {
         TinyUrl url = CommonFactory.createTinyUrl(
                 "/rhn/kickstart/ks-rhel-i386-as-4-u2", new Date());
@@ -46,6 +50,7 @@ public class TinyUrlTest extends RhnBaseTestCase {
         assertEquals(expected, path);
     }
 
+    @Test
     public void testComputeTinyPath() {
         TinyUrl url = CommonFactory.createTinyUrl(
                 "/rhn/kickstart/ks-rhel-i386-as-4-u2", new Date());
@@ -53,6 +58,7 @@ public class TinyUrlTest extends RhnBaseTestCase {
         assertEquals(expected, url.computeTinyPath());
     }
 
+    @Test
     public void testDateMath() {
         TimeZone defaulttz = TimeZone.getDefault();
         Calendar pcal = Calendar.getInstance();

@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.db.datasource.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +40,7 @@ public class DataListTest extends RhnBaseTestCase {
     private String db_sufix;
     private String db_user;
 
+    @Before
     public void setUp() {
         db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
@@ -47,18 +52,21 @@ public class DataListTest extends RhnBaseTestCase {
         elabParams.put("user_name", db_user);
     }
 
+    @After
     public void tearDown() {
         hsm = null;
         params = null;
         elabParams = null;
     }
 
+    @Test
     public void testElaborate() {
         DataList list = getList();
         list.iterator();
         assertTrue(hsm.isElaborated());
     }
 
+    @Test
     public void testSubList() {
         //work it like a list
         DataList list = getList();
@@ -75,6 +83,7 @@ public class DataListTest extends RhnBaseTestCase {
         assertTrue(hsm.isElaborated());
     }
 
+    @Test
     public void testElaborateOnce() {
         //at first, nothing is elaborated
         List list = getList();

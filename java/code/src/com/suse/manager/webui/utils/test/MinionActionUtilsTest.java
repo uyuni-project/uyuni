@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils.test;
 
+import org.junit.Test;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -47,6 +49,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     /**
      * Verify script is deleted in case all servers are finished (COMPLETED or FAILED).
      */
+    @Test
     public void testCleanupScriptActions() throws Exception {
 
         FormulaManager formulaManager = new FormulaManager(saltApi);
@@ -80,6 +83,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     /**
      * Verify script is deleted in case no Action is there at all.
      */
+    @Test
     public void testCleanupScriptWithoutAction() throws Exception {
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager();
@@ -104,6 +108,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     /**
      * Verify script is not deleted as long as not all servers have finished (e.g. PICKED_UP).
      */
+    @Test
     public void testCleanupScriptActionsPickedUp() throws Exception {
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager();

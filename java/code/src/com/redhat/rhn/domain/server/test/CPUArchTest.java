@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -30,6 +32,7 @@ public class CPUArchTest extends RhnBaseTestCase {
      * is only going to the db once.
      * @throws Exception HibernateException
      */
+    @Test
     public void testCPUArch() throws Exception {
 
         String testname = "sun4u";

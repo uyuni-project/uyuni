@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -37,6 +39,7 @@ import javax.servlet.jsp.JspWriter;
  */
 public class SystemTimeMessageTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testDoEndTag() throws Exception {
         SystemTimeMessageTag tag = new SystemTimeMessageTag();
         CustomPageContext cpc = new CustomPageContext();

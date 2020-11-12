@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -67,6 +70,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemEntitlementsSubmit");
@@ -136,6 +140,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testAddVirtForManagement() throws Exception {
         testAddOnVirt(EntitlementManager.VIRTUALIZATION_ENTITLED,
                 EntitlementManager.VIRTUALIZATION,

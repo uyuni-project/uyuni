@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -27,6 +29,7 @@ import com.redhat.rhn.manager.kickstart.KickstartPackageProfileCommand;
  */
 public class KickstartPackageProfileCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testProfileCommand() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartData k = KickstartDataTest.createKickstartWithProfile(user);

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -46,6 +48,7 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
      * @throws Exception if something bad happens
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testSave() throws Exception {
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         user = new RequestContext(request).getCurrentUser();

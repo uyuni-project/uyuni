@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigFileNameAssociation;
@@ -27,6 +29,7 @@ import java.util.Set;
 
 public class ConfigUploadActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testLookup() throws Exception {
         //create the action
         User user = UserTestUtils.findNewUser("bob", "ibm");

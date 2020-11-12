@@ -14,6 +14,8 @@
  */
 
 package com.redhat.rhn.common.util.manifestfactory.test;
+
+import org.junit.Test;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -31,6 +33,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
 
     private boolean threadsFail = false;
 
+    @Test
     public void testFactory() throws Exception {
         String s = (String)PrimitiveFactory.getObject("string-object-foo");
         assertEquals("Foo", s);
@@ -43,12 +46,14 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
         assertTrue(l.get(0) instanceof java.lang.String);
     }
 
+    @Test
     public void testFactorySingleton() throws Exception {
         String foo1 = (String)PrimitiveFactory.getObject("string-object-foo");
         String foo2 = (String)PrimitiveFactory.getObject("string-object-foo");
         assertSame(foo1, foo2);
     }
 
+    @Test
     public void testMultiThreadedStartup() throws Exception {
         PrimitiveFactory.initFactory();
         for (int i = 0; i < 100; i++) {

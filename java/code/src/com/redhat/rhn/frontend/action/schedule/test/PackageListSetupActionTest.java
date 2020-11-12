@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
@@ -30,6 +32,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class PackageListSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testPeformExecute() throws Exception {
 
         setRequestPathInfo("/schedule/PackageList");
@@ -47,6 +50,7 @@ public class PackageListSetupActionTest extends RhnMockStrutsTestCase {
         assertNotNull(getRequest().getAttribute("actionname"));
     }
 
+    @Test
    public void testPerformExecuteBad() {
        setRequestPathInfo("/schedule/PackageList");
 
@@ -56,6 +60,7 @@ public class PackageListSetupActionTest extends RhnMockStrutsTestCase {
    }
 
 
+    @Test
    public void testPerformExecuteBad2() {
         setRequestPathInfo("/schedule/PackageList");
         addRequestParameter("aid", "-99999");

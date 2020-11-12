@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.common.util.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.ExportWriter;
@@ -32,17 +35,20 @@ import java.util.Map;
  */
 public class CSVWriterTest extends RhnBaseTestCase {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         disableLocalizationServiceLogging();
     }
 
 
+    @Test
     public void testMimeType() {
         ExportWriter writer = new CSVWriter(new StringWriter());
         assertEquals("text/csv", writer.getMimeType());
     }
 
+    @Test
     public void testListOutput() throws Exception {
         ExportWriter writer = new CSVWriter(new StringWriter());
         List values = new LinkedList();
@@ -55,6 +61,7 @@ public class CSVWriterTest extends RhnBaseTestCase {
         assertEquals("val1,val2,val3,val4\n", writer.getContents());
     }
 
+    @Test
     public void testListofMaps() throws Exception {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
@@ -82,6 +89,7 @@ public class CSVWriterTest extends RhnBaseTestCase {
                 endsWith("cval1-9,cval2-9,cval3-9,\n"));
     }
 
+    @Test
     public void testListofDtos() throws Exception {
 
         ExportWriter writer = new CSVWriter(new StringWriter());

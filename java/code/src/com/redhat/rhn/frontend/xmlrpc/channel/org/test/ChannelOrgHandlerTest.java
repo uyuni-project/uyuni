@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.org.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -37,12 +40,14 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
     private ChannelOrgHandler handler = new ChannelOrgHandler();
     private OrgHandler orgHandler = new OrgHandler();
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
         TestUtils.saveAndFlush(admin);
     }
 
+    @Test
     public void testList() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -89,6 +94,7 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundOrg3);
     }
 
+    @Test
     public void testEnableAccess() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -120,6 +126,7 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
         assertTrue(channel.getTrustedOrgs().contains(org3));
     }
 
+    @Test
     public void testDisableAccess() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);

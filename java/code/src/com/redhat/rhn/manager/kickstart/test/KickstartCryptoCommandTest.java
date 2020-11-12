@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
@@ -28,6 +30,7 @@ import java.util.List;
  */
 public class KickstartCryptoCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testCommand() {
         KickstartCryptoKeyCommand cmd =
             new KickstartCryptoKeyCommand(ksdata.getId(), user);

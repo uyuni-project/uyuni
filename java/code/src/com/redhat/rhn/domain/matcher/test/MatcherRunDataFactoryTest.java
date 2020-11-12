@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.matcher.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
@@ -13,6 +15,7 @@ public class MatcherRunDataFactoryTest extends RhnBaseTestCase {
     /**
      * Tests updating the MatcherRunData and fetching it back from the db.
      */
+    @Test
     public void testUpdateAndGet() {
         MatcherRunData data = new MatcherRunData();
         data.setInput("input");
@@ -34,6 +37,7 @@ public class MatcherRunDataFactoryTest extends RhnBaseTestCase {
     /**
      * Tests that two subsequent updates don't produce multiple values in the db.
      */
+    @Test
     public void testMultiUpdate() {
         MatcherRunDataFactory.updateData(new MatcherRunData());
         HibernateFactory.getSession().flush();
@@ -48,6 +52,7 @@ public class MatcherRunDataFactoryTest extends RhnBaseTestCase {
      * Tests retrieval when the data hasn't been stored yet. In this case we assume
      * <code>null</code>.
      */
+    @Test
     public void testEmpty() {
         assertNull(MatcherRunDataFactory.getSingle());
     }

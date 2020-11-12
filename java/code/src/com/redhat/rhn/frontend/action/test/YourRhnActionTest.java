@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import org.junit.Test;
+
 
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
@@ -22,6 +24,7 @@ public class YourRhnActionTest extends RhnMockStrutsTestCase {
 
 
 
+    @Test
     public void testExecute() {
 
         setRequestPathInfo("/YourRhn");

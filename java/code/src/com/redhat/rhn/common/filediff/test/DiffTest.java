@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.filediff.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.filediff.ChangeHunk;
 import com.redhat.rhn.common.filediff.Diff;
 import com.redhat.rhn.common.filediff.Hunk;
@@ -26,6 +28,7 @@ import java.util.List;
 
 public class DiffTest extends RhnBaseTestCase {
 
+    @Test
     public void testDiff() {
         String[] testOld = {"one", "two", "three", "four"};
         String[] testNew = {"one", "too", "three", "for"};
@@ -45,6 +48,7 @@ public class DiffTest extends RhnBaseTestCase {
         checkDiff(testOld2, testNew2, testTypes2);
     }
 
+    @Test
     public void testEmptyFiles() {
         String[] testOld = new String[0];
         String[] testNew = new String[0];

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -32,6 +34,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class DeleteConfirmActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
 
         UnpublishedDeleteConfirmAction action = new UnpublishedDeleteConfirmAction();

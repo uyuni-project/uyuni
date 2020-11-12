@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.kubernetes.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -49,6 +52,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
     private KubernetesManager manager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -65,6 +69,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
      * Basic tests
      * @throws Exception
      */
+    @Test
     public void testGetContainersUsage() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.basic.json");
 
@@ -93,6 +98,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                 getMatchingContainers(imgInfo, usages).filter(c -> "other".equals(c.getPodNamespace())).count());
     }
 
+    @Test
     public void testGetContainersUsageWithoutDockerPullable() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.caasp4.json");
 
@@ -123,6 +129,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
      * Containers have two different versions of the same image.
      * @throws Exception
      */
+    @Test
     public void testGetContainersUsageMultipleVersions() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.multiple_versions.json");
 
@@ -154,6 +161,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
      * Two clusters running the same image in different versions.
      * @throws Exception
      */
+    @Test
     public void testGetContainersUsageMultipleClusters() throws Exception {
         expectGetAllContainers("/srv/salt/kubeconfig1", "local-context", "get_all_containers.cluster1.json");
         expectGetAllContainers("/srv/salt/kubeconfig2", "local-context", "get_all_containers.cluster2.json");
@@ -196,6 +204,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
      * Both :latest should be matched, one by Repo Digest and the other one by repo/name:tag. :v1 should not be matched.
      * @throws Exception
      */
+    @Test
     public void testGetContainersUsageExternalBuild() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.external_build.json");
         createVirtHostManager();
@@ -225,6 +234,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
      * Test with inactive containers (i.e. container id null)
      * @throws Exception
      */
+    @Test
     public void testGetContainersUsageInactiveContainers() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.inactive_containers.json");
 

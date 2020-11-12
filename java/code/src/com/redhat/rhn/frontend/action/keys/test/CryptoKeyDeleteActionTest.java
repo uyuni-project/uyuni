@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.keys.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.frontend.action.keys.BaseCryptoKeyEditAction;
 import com.redhat.rhn.frontend.action.keys.CryptoKeyDeleteAction;
@@ -30,6 +32,7 @@ public class CryptoKeyDeleteActionTest extends RhnPostMockStrutsTestCase {
 
     private CreateCryptoKeyCommand cmd;
 
+    @Test
     public void testExecute() throws Exception {
         cmd = new CreateCryptoKeyCommand(user.getOrg());
         CryptoKeyCommandTest testObj = new CryptoKeyCommandTest();
@@ -41,6 +44,7 @@ public class CryptoKeyDeleteActionTest extends RhnPostMockStrutsTestCase {
         assertNotNull(request.getAttribute(BaseCryptoKeyEditAction.KEY));
     }
 
+    @Test
     public void testDeleteSubmit() throws Exception {
         cmd = new CreateCryptoKeyCommand(user.getOrg());
         CryptoKeyCommandTest testObj = new CryptoKeyCommandTest();

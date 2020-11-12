@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.errata.PublishedOnlyException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -47,6 +49,7 @@ import java.util.Iterator;
  */
 public class ErrataTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testNotificationQueue() throws Exception {
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
@@ -80,6 +83,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * add and store bugs.
      * @throws Exception something bad happened
      */
+    @Test
     public void testBugs() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
 
@@ -112,6 +116,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * Test unpublished bugs
      * @throws Exception something bad happened
      */
+    @Test
     public void testBugsUnpublished() throws Exception {
         Errata errata = ErrataFactoryTest
                 .createTestUnpublishedErrata(user.getOrg().getId());
@@ -138,12 +143,14 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     //published
+    @Test
     public void testPublishedKeywords() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         assertTrue(errata instanceof PublishedErrata);
         runKeywordsTest(errata, user);
     }
     //unpublished
+    @Test
     public void testUnpublishedKeywords() throws Exception {
         Errata errata = ErrataFactoryTest
                 .createTestUnpublishedErrata(user.getOrg().getId());
@@ -165,12 +172,14 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     //published
+    @Test
     public void testPublishedPackage() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         assertTrue(errata instanceof PublishedErrata);
         runPackageTest(errata, user);
     }
     //unpublished
+    @Test
     public void testUnpublishedPackage() throws Exception {
         Errata errata = ErrataFactoryTest
                 .createTestUnpublishedErrata(user.getOrg().getId());
@@ -178,6 +187,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         runPackageTest(errata, user);
     }
 
+    @Test
     public void testAddChannelsToErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestPublishedErrata(
                 user.getOrg().getId());
@@ -236,6 +246,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     //published
+    @Test
     public void testBeanMethodsPublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         assertTrue(err instanceof PublishedErrata);
@@ -243,6 +254,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         runBeanMethodsTest(err, 1);
     }
     //unpublished
+    @Test
     public void testBeanMethodsUnpublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         assertTrue(err instanceof UnpublishedErrata);

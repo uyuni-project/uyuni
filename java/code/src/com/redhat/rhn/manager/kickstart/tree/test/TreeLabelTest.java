@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.tree.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -30,6 +32,7 @@ import java.util.regex.Pattern;
  */
 public class TreeLabelTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testValidLabel() {
         // ^([0-9A-Za-z@.]{1,255})$
         // ^([1-zA-Z0-1@.\s]{1,255})$
@@ -71,6 +74,7 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testValidateLabel() throws Exception {
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(

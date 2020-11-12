@@ -14,13 +14,15 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
 
@@ -34,7 +36,7 @@ import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
  *    check in timestamps should rather cover all categories (hours).
  * 3. At maximum 22% of all systems will check in during one hour (see maxPercentage).
  */
-public class CheckinCandidatesSimulationTest extends TestCase {
+public class CheckinCandidatesSimulationTest extends Assert {
 
     // This is a value from rhn.conf
     private int thresholdDays = 1;
@@ -61,6 +63,7 @@ public class CheckinCandidatesSimulationTest extends TestCase {
     /**
      * Run a simulation and assert certain constraints.
      */
+    @Test
     public void testCheckinSimulation() {
         // Data structure to hold the results
         HashMap<Integer, List<Integer>> results = new HashMap<Integer, List<Integer>>();

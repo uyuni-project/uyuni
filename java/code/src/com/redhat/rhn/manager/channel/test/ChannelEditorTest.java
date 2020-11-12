@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -35,6 +37,7 @@ import java.util.List;
  */
 public class ChannelEditorTest extends RhnBaseTestCase {
 
+    @Test
     public void testAddRemovePackages() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.org.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
@@ -27,6 +29,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class CustomDataKeyTest extends RhnBaseTestCase {
 
+    @Test
     public void testCustomDataKey() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         CustomDataKey key = createTestCustomDataKey(user);

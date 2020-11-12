@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -54,6 +56,7 @@ import java.util.List;
 
 public class KickstartListerTest extends BaseTestCaseWithUser {
 
+    @Test
    public void testKickstartsInOrg() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         DataResult dr = KickstartLister.getInstance().kickstartsInOrg(k.getOrg(), null);
@@ -67,6 +70,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         assertFalse(row.isOrgDefault());
    }
 
+    @Test
    public void testListKeys() throws Exception {
        Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
        CryptoKey key = CryptoTest.createTestKey(o);
@@ -78,6 +82,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        assertTrue(dr.get(0) instanceof CryptoKeyDto);
    }
 
+    @Test
    public void testListFiles() throws Exception {
        Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
        FileList f = FileListTest.createTestFileList(o);
@@ -89,6 +94,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        assertTrue(dr.size() > 0);
    }
 
+    @Test
     public void testGetActivationKeysInOrg() throws Exception {
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
@@ -101,6 +107,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         assertEquals(1, result.size());
     }
 
+    @Test
     public void testGetBootstrapActivationKeysInOrg() throws Exception {
         ActivationKey activationKey =
                 ActivationKeyFactory.createNewKey(user, null,
@@ -115,6 +122,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         assertEquals(0, result.size());
     }
 
+    @Test
     public void testGetActiveActivationKeysInOrg() throws Exception {
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
@@ -129,6 +137,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         assertEquals(1, result.size());
     }
 
+    @Test
     public void testGetBootstrapActiveActivationKeysInOrg() throws Exception {
         ActivationKey activationKey =
                 ActivationKeyFactory.createNewKey(user, null,
@@ -145,6 +154,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         assertEquals(0, result.size());
     }
 
+    @Test
     public void testListCobblerProfiles() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
         Distro distro = new Distro.Builder()

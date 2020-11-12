@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.XmlMessageResources;
 import com.redhat.rhn.frontend.struts.XmlMessageResourcesFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -26,6 +28,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class XmlMessageResourcesTest extends RhnBaseTestCase {
 
+    @Test
     public void testGetFactory() {
         XmlMessageResources msg = (XmlMessageResources)
             XmlMessageResourcesFactory.createFactory().createResources(null);

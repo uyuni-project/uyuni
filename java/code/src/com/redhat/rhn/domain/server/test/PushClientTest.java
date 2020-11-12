@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -37,6 +39,7 @@ public class PushClientTest extends RhnBaseTestCase {
      * Simple test to exercise codepaths in PushClient class
      * @throws Exception something bad happened
      */
+    @Test
     public void testPushClient() throws Exception {
         PushClient pc1 = createTestPushClient();
         PushClient pc2 = new PushClient();

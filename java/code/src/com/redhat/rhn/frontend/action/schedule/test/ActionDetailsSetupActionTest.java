@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -28,6 +30,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class ActionDetailsSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         ActionDetailsSetupAction action = new ActionDetailsSetupAction();
         ActionHelper sah = new ActionHelper();

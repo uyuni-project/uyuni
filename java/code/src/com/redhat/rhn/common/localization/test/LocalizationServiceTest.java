@@ -14,6 +14,10 @@
  */
 
 package com.redhat.rhn.common.localization.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -47,6 +51,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * sets up the test
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         ls = LocalizationService.getInstance();
@@ -56,6 +61,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * test that makes sure we can instantiate the service
      */
+    @Test
     public void testGetInstance() {
         assertNotNull("LocalizationService is null", ls);
 
@@ -64,7 +70,8 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
         super.tearDown();
     }
@@ -73,6 +80,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * test a standard non-parameterized message call
      */
+    @Test
     public void testGetMessageNoParams() {
         String received = ls.getMessage("testMessage");
         assertTrue("Message not valid", isMessageValid(received));
@@ -83,6 +91,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * test a standard non-parameterized message call
      */
+    @Test
     public void testGetMessageOneParams() {
         String expected = "this is a test of the LocalizationService";
         String received = ls.getMessage("testMessage.oneparam", "LocalizationService");
@@ -92,6 +101,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * test a standard non-parameterized message call
      */
+    @Test
     public void testGetMessagesMultipleFiles() {
         assertTrue("Message not valid", isMessageValid(
                 ls.getMessage("testMessage")));
@@ -101,6 +111,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
 
     /** Test forcing a call with a null locale
     */
+    @Test
     public void testGetMessageNoLocale() {
         String message = ls.getMessage("testMessage", (Locale) null);
         assertTrue(isMessageValid(message));
@@ -108,6 +119,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
 
     /** Test calling with the parent of en_US, en
     */
+    @Test
     public void testGetMessageNonDefaultLocale() {
         String message = ls.getMessage("testMessage", new Locale("en"));
         assertTrue(isMessageValid(message));
@@ -115,6 +127,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
         assertTrue(isMessageValid(message));
     }
 
+    @Test
     public void testGetMessages() {
         String[] keys = new String[3];
         keys[0] = "testMessage";
@@ -126,6 +139,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testHasMessage() {
         assertFalse(ls.hasMessage("somefakemessage" + TestUtils.randomString()));
     }
@@ -134,6 +148,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
     * Test getting debug message
     */
+    @Test
     public void testGetDebugMessage() {
         assertTrue("Message not valid", isMessageValid(
                       ls.getDebugMessage("testMessage")));
@@ -143,6 +158,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
      * test a standard non-parameterized message with
      * spaces in the key.  Currently this doesn't work.
      */
+    @Test
     public void testGetMessageWithSpacesInKey() {
         assertTrue("Message not valid", isMessageValid(
                       ls.getMessage("cant have spaces")));
@@ -151,6 +167,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * test to exercise looking up an invalid message
      */
+    @Test
     public void testGetInvalidMessage() {
         assertFalse("Didn't fetch an invalid message (we want to, in this test)",
                       isMessageValid(ls.getMessage("no message with this key")));
@@ -176,6 +193,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     * Test formatDate
     * @throws Exception something bad happened
     */
+    @Test
     public void testFormatDate() throws Exception {
         String date = ls.formatDate(new Date(), Locale.GERMAN);
         assertNotNull(date);
@@ -219,6 +237,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
     * Test formatNumber
     */
+    @Test
     public void testFormatNumber() {
         String number = ls.formatNumber(10000L, Locale.GERMAN);
         assertNotNull(number);
@@ -236,6 +255,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
     * Test the alphabet and digit functions
     */
+    @Test
     public void testGetAlphabet() {
         assertTrue(ls.getAlphabet().contains("A"));
         assertTrue(ls.getAlphabet().contains("Z"));
@@ -244,6 +264,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
     * Test the alphabet and digit functions
     */
+    @Test
     public void testGetDigits() {
         assertTrue(ls.getDigits().contains("1"));
         assertTrue(ls.getDigits().contains("5"));
@@ -253,6 +274,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
     * Test the prefix and country functions
     */
+    @Test
     public void testGetCountriesPrefixes() {
         assertNotNull(ls.availableCountries().get("Peru"));
         assertTrue(ls.availablePrefixes().size() > 0);
@@ -260,6 +282,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
 
     /** Test to make sure debug mode works
      */
+    @Test
     public void testDebugMessage() {
         TestUtils.enableLocalizationDebugMode();
         String received = ls.getMessage("testMessage");
@@ -270,6 +293,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
         TestUtils.disableLocalizationDebugMode();
     }
 
+    @Test
     public void testSupportedLocales() {
         List locales = ls.getSupportedLocales();
         assertTrue(locales.size() > 0);
@@ -277,6 +301,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
         assertTrue(ls.isLocaleSupported(Locale.TAIWAN));
     }
 
+    @Test
     public void testNullMessage() {
         String nullmsg = ls.getMessage(null);
         assertNotNull(nullmsg);
@@ -290,6 +315,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
         return !value.startsWith("**") || !value.endsWith("**");
     }
 
+    @Test
     public void testPlainText() {
         String expected = "You do not have enough entitlements for" +
                                     " 5 systems (http://www.redhat.com).";

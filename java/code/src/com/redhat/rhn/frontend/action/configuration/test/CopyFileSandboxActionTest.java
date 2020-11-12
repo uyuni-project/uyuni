@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -25,6 +27,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 public class CopyFileSandboxActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -29,6 +31,7 @@ public class PackageEvrFactoryTest extends RhnBaseTestCase {
      * PackageEvrs and write them to the db.
      * @throws Exception Exception
      */
+    @Test
     public void testCreate() throws Exception {
 
        PackageEvr evr = createTestPackageEvr();

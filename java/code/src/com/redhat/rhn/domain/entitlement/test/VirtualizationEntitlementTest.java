@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -58,6 +60,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
@@ -68,6 +71,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         systemEntitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);

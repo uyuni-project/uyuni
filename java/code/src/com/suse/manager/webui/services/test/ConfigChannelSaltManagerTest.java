@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.services.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -33,6 +35,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testFileInInitSls() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
@@ -60,6 +63,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testDirectoryInInitSls() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addDirToChannel(channel);
@@ -84,6 +88,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testSymlinkInInitSls() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addSymlinkToChannel(channel);
@@ -105,6 +110,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      *
      * @throws  java.lang.Exception if anything goes wrong
      */
+    @Test
     public void testGetSaltUriForConfigFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigFile file = ConfigChannelSaltManagerTestUtils
@@ -120,6 +126,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         assertEquals(expectedUri, saltUri);
     }
 
+    @Test
     public void testGetSaltBaseUriForChannel() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         String saltUri = ConfigChannelSaltManager.getInstance().getSaltBaseUriForChannel(channel);

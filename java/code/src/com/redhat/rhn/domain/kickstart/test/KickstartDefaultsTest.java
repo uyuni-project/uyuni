@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -27,6 +29,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
  */
 public class KickstartDefaultsTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testVirtFields() throws Exception {
         KickstartData ksdata = KickstartTestHelper.createTestKickStart(user);
         KickstartDefaults ksdefaults = ksdata.getKickstartDefaults();

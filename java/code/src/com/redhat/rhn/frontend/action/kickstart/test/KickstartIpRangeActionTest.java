@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -38,6 +41,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     protected KickstartIpRange ip1;
     protected KickstartIpRange ip2;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
@@ -47,6 +51,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }
 
+    @Test
     public void testRange() throws Exception {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
 
@@ -75,6 +80,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         assertEquals(2, ksdata.getIps().size());
     }
 
+    @Test
     public void testNoRange() throws Exception {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
         actionPerform();
@@ -82,6 +88,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         assertEquals(0, ksdata.getIps().size());
     }
 
+    @Test
     public void testSubmit() throws Exception {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.TRUE.toString());
@@ -99,6 +106,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         verifyActionMessages(keys);
     }
 
+    @Test
     public void testValidateFailure() throws Exception {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.TRUE.toString());
@@ -116,6 +124,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         verifyActionErrors(keys);
     }
 
+    @Test
     public void testConflictFailure() throws Exception {
 
         long [] range1 = {192, 168, 2, 1};
@@ -152,6 +161,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         verifyActionErrors(keys);
     }
 
+    @Test
     public void testDeleteSuccess() throws Exception {
         long [] range1 = {192, 168, 3, 1};
         long [] range2 = {192, 168, 3, 9};
@@ -180,6 +190,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         verifyActionMessages(keys);
     }
 
+    @Test
     public void testDeleteFailure() throws Exception {
         long [] range1 = {192, 168, 4, 1};
         long [] range2 = {192, 168, 4, 9};

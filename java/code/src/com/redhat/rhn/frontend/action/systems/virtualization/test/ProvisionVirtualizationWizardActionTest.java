@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.virtualization.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
@@ -56,7 +59,7 @@ import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
-import junit.framework.AssertionFailedError;
+
 
 /**
  * ProvisionVirtualizationWizardActionTest
@@ -78,6 +81,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/virtualization/ProvisionVirtualizationWizard");
@@ -107,11 +111,13 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         addRequestParameter(RequestContext.SID, s.getId().toString());
     }
 
+    @Test
     public void testStepOne() throws Exception {
         actionPerform();
         verifyNoActionErrors();
     }
 
+    @Test
     public void testStepTwo() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithProfile(user);
         ProfileManagerTest.createProfileWithServer(user);
@@ -156,7 +162,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         try {
             verifyActionMessage("kickstart.schedule.noprofiles");
         }
-        catch (AssertionFailedError e) {
+        catch (AssertionError e) {
             verifyActionMessages(new String[] {"kickstart.schedule.noprofiles",
                     "system.virtualization.help"});
         }
@@ -218,10 +224,12 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
     }
 
 
+    @Test
     public void testStepThreeWithProxy() throws Exception {
          executeStepThree(true);
     }
 
+    @Test
     public void testStepThreeNoProxy() throws Exception {
         executeStepThree(false);
     }

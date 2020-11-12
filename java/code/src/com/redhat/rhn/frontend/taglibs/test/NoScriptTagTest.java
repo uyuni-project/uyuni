@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.NoScriptTag;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;
@@ -35,6 +37,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class NoScriptTagTest  extends RhnBaseTestCase {
 
+    @Test
     public void testRender() throws Exception {
         NoScriptTag tag = new NoScriptTag();
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();

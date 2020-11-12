@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.satellite.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -42,11 +45,13 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
     }
 
+    @Test
     public void testCreateCommand() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -99,6 +104,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testRemoveEntries() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -135,6 +141,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertEquals(0, cmd.getKeysToBeUpdated().size());
     }
 
+    @Test
     public void testUpdateHostname() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -149,6 +156,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testMountPoint() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
@@ -165,6 +173,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
                 Config.get().getString(ConfigDefaults.KICKSTART_MOUNT_POINT));
     }
 
+    @Test
     public void testRoles() throws Exception {
 
         user.removePermanentRole(RoleFactory.SAT_ADMIN);

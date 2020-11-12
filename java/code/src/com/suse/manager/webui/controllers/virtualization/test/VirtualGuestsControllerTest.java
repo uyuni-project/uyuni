@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.virtualization.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -80,6 +83,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      */
     @SuppressWarnings("unchecked")
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -146,6 +150,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      * @throws Exception if anything unexpected happens during the test
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testData() throws Exception {
         int size = host.getGuests().size();
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[size]);
@@ -175,6 +180,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testStateChangeAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -205,6 +211,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testSetVcpuAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -235,6 +242,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testSetVcpuInvalidAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -258,6 +266,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testSetMemMultiAction() throws Exception {
 
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[host.getGuests().size()]);
@@ -303,6 +312,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testGetGuest() throws Exception {
         String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
@@ -364,6 +374,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
+    @Test
     public void testGetDomainsCapabilities() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("[\"ide\", \"fdc\", \"scsi\", \"virtio\", \"usb\"]", "[\"ide\", \"fdc\", \"scsi\", \"usb\"]");

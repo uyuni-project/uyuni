@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -38,11 +41,13 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class SystemListSetupActionTest extends RhnMockStrutsTestCase {
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemList");
     }
 
+    @Test
     public void testPerformExecute() throws Exception {
         ServerFactoryTest.createTestServer(user, true);
         actionPerform();

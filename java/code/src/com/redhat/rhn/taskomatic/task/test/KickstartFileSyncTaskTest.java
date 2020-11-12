@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -33,6 +35,7 @@ public class KickstartFileSyncTaskTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testTask() throws Exception {
 
         User user = UserTestUtils.createUserInOrgOne();

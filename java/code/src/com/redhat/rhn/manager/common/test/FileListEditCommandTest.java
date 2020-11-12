@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.common.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.test.FileListTest;
@@ -38,6 +40,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
         cmd.store();
     }
 
+    @Test
     public void testBaseFileListEditCommand() throws Exception {
         setupKey(new CreateFileListCommand(user));
         int version = 1;
@@ -68,6 +71,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testCreateCommand() throws Exception {
         setupKey(new CreateFileListCommand(user));
         FileList list = cmd.getFileList();
@@ -86,6 +90,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testEdit() throws Exception {
         FileList list = FileListTest.createTestFileList(user.getOrg());
         CommonFactory.saveFileList(list);

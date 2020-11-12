@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -34,6 +36,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
 
     private FilePreservationListHandler handler = new FilePreservationListHandler();
 
+    @Test
     public void testListAll() throws Exception {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
@@ -64,6 +67,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
         assertTrue(found);
     }
 
+    @Test
     public void testCreate() throws Exception {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
@@ -85,6 +89,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, entryCreated.getFileNames().size());
     }
 
+    @Test
     public void testDelete() throws Exception {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
@@ -105,6 +110,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
         assertNull(entryDeleted);
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         // Setup
         FileList fileList = createFileList();

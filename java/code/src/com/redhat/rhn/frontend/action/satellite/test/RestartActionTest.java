@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.satellite.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -31,6 +34,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
@@ -42,6 +46,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testExecuteNoSubmit() throws Exception {
 
         actionPerform();
@@ -49,6 +54,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
         assertFalse(((Boolean) form.get(RestartAction.RESTART)).booleanValue());
     }
 
+    @Test
     public void testExecuteSubmitTrue() throws Exception {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
@@ -59,6 +65,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
                     equals(Boolean.TRUE.toString())));
     }
 
+    @Test
     public void testExecuteSubmitFalse() throws Exception {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
@@ -69,6 +76,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
                     equals(Boolean.FALSE.toString())));
     }
 
+    @Test
     public void testExecuteRefresh() throws Exception {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());

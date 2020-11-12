@@ -17,6 +17,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.mockobjects.servlet.MockHttpServletRequest;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -41,6 +43,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     /**
      * Tests readActionChain().
      */
+    @Test
     public void testReadActionChain() {
         ActionChain chain = ActionChainFactory.createActionChain(TestUtils.randomString(),
             user);
@@ -72,6 +75,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     /**
      * Tests prepopulateActionChains().
      */
+    @Test
     public void testPrepopulateActionChains() {
         List<ActionChain> actionChains = new LinkedList<ActionChain>();
         for (int i = 0; i < 10; i++) {

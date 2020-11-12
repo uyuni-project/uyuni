@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.action.virtualization.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateActionSource;
 
 import com.suse.manager.virtualization.PoolSourceDevice;
@@ -9,10 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
-public class VirtualizationPoolCreateActionSourceTest extends TestCase {
+public class VirtualizationPoolCreateActionSourceTest extends Assert {
 
+    @Test
     public void testNfsDir() {
         VirtualizationPoolCreateActionSource src = new VirtualizationPoolCreateActionSource();
         src.setDir("/var/lib/libvirt/images");
@@ -32,6 +35,7 @@ public class VirtualizationPoolCreateActionSourceTest extends TestCase {
         assertEquals("localhost", src2.getHosts().get(0));
     }
 
+    @Test
     public void testDevice() {
         VirtualizationPoolCreateActionSource src = new VirtualizationPoolCreateActionSource();
         List<PoolSourceDevice> devices = new ArrayList<>();

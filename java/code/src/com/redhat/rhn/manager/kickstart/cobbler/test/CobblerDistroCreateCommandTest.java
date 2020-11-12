@@ -1,4 +1,7 @@
 package com.redhat.rhn.manager.kickstart.cobbler.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
@@ -21,6 +24,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         tree = ksdata.getTree();
@@ -33,6 +37,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroCreate() throws Exception {
         CobblerDistroCreateCommand cmd = new
             CobblerDistroCreateCommand(tree, user);
@@ -47,6 +52,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroCreateXenCreated() throws Exception {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 
@@ -65,6 +71,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroCreateXenNotCreated() throws Exception {
         CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
 

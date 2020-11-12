@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -24,6 +26,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class OverviewActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testOverview() throws Exception {
         UserTestUtils.addManagement(user.getOrg());
         setRequestPathInfo("/systems/Overview");

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.pillar.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
@@ -57,6 +60,7 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             new MinionPillarFileManager(new MinionVirtualizationPillarGenerator());
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         minionVirtualizationPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
@@ -119,6 +123,7 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
         );
     }
 
+    @Test
     public void testGenerateVirtualizationPillarDataVirt() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         systemEntitlementManager.addEntitlementToServer(minion, EntitlementManager.VIRTUALIZATION);
@@ -148,6 +153,7 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
     }
 
 
+    @Test
     public void testGenerateVirtualizationPillarDataNoVirt() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 

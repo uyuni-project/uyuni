@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.list.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.frontend.action.CSVDownloadAction;
@@ -43,6 +47,7 @@ public class CSVTagTest extends MockObjectTestCase {
 
     private String listName = "testDataListName";
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -78,6 +83,7 @@ public class CSVTagTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testCreateRequestParameters() throws Exception {
         boolean stat = false;
         csv.setExportColumns("column1,column2,column3");
@@ -98,6 +104,7 @@ public class CSVTagTest extends MockObjectTestCase {
      * requesting URL.
      * @throws Exception something bad happened
      */
+    @Test
     public void testExport() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(context).getOut();
@@ -115,7 +122,8 @@ public class CSVTagTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
         RhnBaseTestCase.enableLocalizationServiceLogging();
     }

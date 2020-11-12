@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.user.User;
@@ -35,6 +37,7 @@ public class NoteTest extends RhnBaseTestCase {
      * Test Note creation and equals method
      * @throws Exception something bad happened
      */
+    @Test
     public void testEquals() throws Exception {
         Note note1 = createTestNote();
         Note note2 = new Note();

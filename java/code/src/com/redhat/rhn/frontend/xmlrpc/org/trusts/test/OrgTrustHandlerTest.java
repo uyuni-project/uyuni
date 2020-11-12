@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.org.trusts.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -48,12 +51,14 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
     private OrgTrustHandler handler = new OrgTrustHandler();
     private OrgHandler orgHandler = new OrgHandler();
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
         TestUtils.saveAndFlush(admin);
     }
 
+    @Test
     public void testOrgTrusts() throws Exception {
         Org org2 = createOrg();
         Org org3 = createOrg();
@@ -70,6 +75,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertFalse(isTrusted(org2, org3));
     }
 
+    @Test
     public void testListOrgs() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -110,6 +116,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundOrg3);
     }
 
+    @Test
     public void testListChannelsProvided() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -143,6 +150,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundChannel);
     }
 
+    @Test
     public void testListChannelsConsumed() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -174,6 +182,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundChannel);
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -219,6 +228,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         return org;
     }
 
+    @Test
     public void testBaseTrusts() throws Exception {
         Org org1 = createOrg();
         Org org2 = createOrg();
@@ -234,6 +244,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertFalse(isTrusted(org1, org2));
     }
 
+    @Test
     public void testListAffectedSystems() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         c.setAccess("public");

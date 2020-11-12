@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
@@ -25,6 +27,7 @@ public class NestedTransactionFactoryTest extends RhnBaseTestCase {
 
     private static final long EXP_TIME = 60 * 60 * 1000;
 
+    @Test
     public void testRollback() throws HibernateException {
         WebSession s = createWebSession();
         HibernateFactory.rollbackTransaction();
@@ -33,6 +36,7 @@ public class NestedTransactionFactoryTest extends RhnBaseTestCase {
         assertNotExists(s);
     }
 
+    @Test
     public void testCommit() throws HibernateException {
         WebSession s = createWebSession();
         HibernateFactory.commitTransaction();
@@ -40,6 +44,7 @@ public class NestedTransactionFactoryTest extends RhnBaseTestCase {
         assertExists(s);
     }
 
+    @Test
     public void testSeqRollbackCommit() throws HibernateException {
         WebSession s1 = createWebSession();
         HibernateFactory.rollbackTransaction();
@@ -52,6 +57,7 @@ public class NestedTransactionFactoryTest extends RhnBaseTestCase {
         assertExists(s2);
     }
 
+    @Test
     public void testSeqCommitRollback() throws HibernateException {
         WebSession s1 = createWebSession();
         HibernateFactory.commitTransaction();

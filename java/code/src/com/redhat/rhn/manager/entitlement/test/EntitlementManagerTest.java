@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.entitlement.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -23,6 +25,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class EntitlementManagerTest extends RhnBaseTestCase {
 
+    @Test
     public void testGetEntitlementByName() {
         assertNull(EntitlementManager.getByName(null));
         assertNull(EntitlementManager.getByName("foo"));

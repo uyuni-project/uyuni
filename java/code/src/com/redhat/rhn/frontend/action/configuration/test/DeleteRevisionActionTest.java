@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -27,6 +29,7 @@ public class DeleteRevisionActionTest extends RhnMockStrutsTestCase {
 
     // Mostly an existence proof. I wish it was easier to construct more useful
     // struts cases...
+    @Test
     public void testExecute() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

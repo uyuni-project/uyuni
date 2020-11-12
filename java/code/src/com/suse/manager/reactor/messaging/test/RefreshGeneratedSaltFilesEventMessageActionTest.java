@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,16 +47,19 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
     private Path tmpFileRoot;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         tmpFileRoot = Files.createTempDirectory("refgensalt");
     }
 
     @Override
+    @After
     public void tearDown() throws Exception {
         FileUtils.deleteDirectory(tmpFileRoot.toFile());
     }
 
+    @Test
     public void testDoExecute() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         // create a group to make sure we have at least one
@@ -76,6 +83,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         checkAssertions(action);
     }
 
+    @Test
     public void testDoExecuteNoCustomDir() throws Exception {
         // no /srv/susemanager/salt/custom
         Files.deleteIfExists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));

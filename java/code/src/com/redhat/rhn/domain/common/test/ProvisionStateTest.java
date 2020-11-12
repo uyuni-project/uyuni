@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -26,6 +28,7 @@ import java.util.Date;
  */
 public class ProvisionStateTest extends RhnBaseTestCase {
 
+    @Test
     public void testProvisionState() throws Exception {
 
         ProvisionState p = new ProvisionState();

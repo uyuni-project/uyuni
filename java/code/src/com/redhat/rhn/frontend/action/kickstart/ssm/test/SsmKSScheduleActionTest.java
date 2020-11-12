@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.ssm.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -48,6 +50,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      * Tests creating Cobbler system records with a chosen profile from SSM.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testCreateSystemRecordsByProfile() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         Distro distro = new Distro.Builder()
@@ -86,6 +89,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      * Tests creating Cobbler system records by IP range from SSM.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testCreateSystemRecordsByIp() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
 
@@ -131,6 +135,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      * Tests a corner condition in which a profile does not exist.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testCreateSystemRecordsWithoutProfile() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         Server server = ServerTestUtils.createTestSystem(user);
@@ -155,6 +160,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      * Tests a corner condition in which an existing kickstart is present.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testCreateSystemRecordsWithExistingKickstart() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
 

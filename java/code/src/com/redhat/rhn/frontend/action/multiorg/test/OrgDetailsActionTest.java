@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.multiorg.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
@@ -25,6 +27,7 @@ import org.apache.struts.action.DynaActionForm;
  */
 public class OrgDetailsActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);

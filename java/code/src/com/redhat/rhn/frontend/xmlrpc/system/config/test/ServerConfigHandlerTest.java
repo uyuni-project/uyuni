@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.config.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -89,6 +91,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }};
 
 
+    @Test
     public void testDeployConfiguration() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
@@ -170,6 +173,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testConfigChannels() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
@@ -316,6 +320,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 paths, lookLocal).get(0)));
     }
 
+    @Test
     public void testLookupFileInfoNoData() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         List<String> paths = new LinkedList<String>();
@@ -332,6 +337,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                                                     server, local);
     }
 
+    @Test
     public void testAddPath() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
@@ -378,6 +384,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testListFiles() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
@@ -424,6 +431,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testRemovePaths() throws Exception {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
@@ -441,6 +449,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testScheduleApplyConfigChannel() throws Exception {
         Server testServer = MinionServerFactoryTest.createTestMinionServer(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -35,6 +37,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
      * Tests a new user
      *
      */
+    @Test
     public void testNewUser() {
         // There should be NO HIDDEN PANE attached  to the user.
         assertTrue(user.getHiddenPanes().isEmpty());
@@ -66,6 +69,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
      * Tests the Add and Remove of Panes to the user.
      *
      */
+    @Test
     public void testAddRemovePane() {
         List hiddenPanes = addPanes();
 

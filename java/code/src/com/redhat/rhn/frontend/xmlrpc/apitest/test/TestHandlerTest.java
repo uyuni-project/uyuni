@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.apitest.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.xmlrpc.apitest.TestHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
@@ -26,6 +28,7 @@ import java.util.Map;
  */
 public class TestHandlerTest extends BaseHandlerTestCase {
 
+    @Test
     public void testAddition() {
         TestHandler th = new TestHandler();
         int[] numbers = {1, 2, 3, 4, 5, 6};
@@ -37,11 +40,13 @@ public class TestHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, th.addition(numbers));
     }
 
+    @Test
     public void testEnvIsSatellite() {
         TestHandler th = new TestHandler();
         assertEquals(1, th.envIsSatellite());
     }
 
+    @Test
     public void testHashChecking() {
         TestHandler th = new TestHandler();
         Map map = th.hashChecking(new HashMap());
@@ -49,6 +54,7 @@ public class TestHandlerTest extends BaseHandlerTestCase {
         assertEquals("baz", map.get("foobar"));
     }
 
+    @Test
     public void testMultiplication() {
         TestHandler th = new TestHandler();
         int[] numbers = {1, 2, 3, 4, 5, 6};
@@ -60,6 +66,7 @@ public class TestHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, th.multiplication(numbers));
     }
 
+    @Test
     public void testSingleIdentityFunction() {
         TestHandler th = new TestHandler();
         String foo = "foobar";

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -32,6 +34,7 @@ import org.apache.struts.action.Action;
  */
 public class VisibleSystemsListActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testSelectAll() throws Exception {
         Action action = new VisibleSystemsListAction();
         ActionHelper ah = new ActionHelper();

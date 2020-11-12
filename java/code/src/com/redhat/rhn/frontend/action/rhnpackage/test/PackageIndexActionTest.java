@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -33,6 +35,7 @@ import java.util.Map;
  */
 public class PackageIndexActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testUpdate() throws Exception {
         PackageIndexAction pia = new PackageIndexAction();
         ActionHelper ah = new ActionHelper();

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.errata.cache.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -50,6 +52,7 @@ import java.util.Map;
  */
 public class ErrataCacheManagerTest extends RhnBaseTestCase {
 
+    @Test
     public void testCount() {
         // setup the test
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
@@ -61,6 +64,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         assertEquals(3, cnt);
     }
 
+    @Test
     public void testDeleteErrataCacheQueue() {
         // setup the test
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
@@ -86,6 +90,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         return oid;
     }
 
+    @Test
     public void testInsertNeededCache() throws Exception {
 
         // create a lot of stuff to test this simple insert.
@@ -160,6 +165,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         return retval;
     }
 
+    @Test
     public void testDeleteNeededCache() throws Exception {
         // create a lot of stuff to test this simple insert.
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
@@ -221,6 +227,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         return server;
     }
 
+    @Test
     public void testInsertNeededErrataCache() throws Exception {
         // create a lot of stuff to test this simple insert.
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
@@ -254,6 +261,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         });
     }
 
+    @Test
     public void testDeleteNeededErrataCache() throws Exception {
         // create a lot of stuff to test this simple insert.
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
@@ -295,6 +303,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         });
     }
 
+    @Test
     public void testPackagesNeedingUpdates() throws Exception {
         // create a lot of stuff to test this simple insert.
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
@@ -327,6 +336,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testAllServerIdsForOrg() throws Exception {
         // create a lot of stuff to test this simple insert.
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());

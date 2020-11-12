@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.security.acl.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.security.acl.SystemAclHandler;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -37,6 +40,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     private Server srvr;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         srvr = ServerFactoryTest.createTestServer(user);
@@ -45,6 +49,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
                 SystemManager.CAP_CONFIGFILES_BASE64_ENC, version);
     }
 
+    @Test
     public void testClientCapable() {
         SystemAclHandler sah = new SystemAclHandler();
 
@@ -63,6 +68,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
         assertFalse(rc);
     }
 
+    @Test
     public void testSystemHasKickstartSession() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         SystemAclHandler sah = new SystemAclHandler();

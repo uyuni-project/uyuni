@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.configuration.channel.ChannelOverviewAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
@@ -33,6 +35,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
      * Test StringsToActionErrors
      * @throws Exception something bad happened
      */
+    @Test
      public void testValidatorErrorToActionMessages() throws Exception {
         ValidatorError[] errors = new ValidatorError[3];
         errors[0] = new ValidatorError("error 1", "someval");
@@ -43,6 +46,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
         assertTrue(am.size() == 3);
      }
 
+    @Test
      public void testValidateDynaActionFormPathed() throws Exception {
          ChannelOverviewAction coa = new ChannelOverviewAction();
          RhnMockDynaActionForm form = new RhnMockDynaActionForm();
@@ -60,6 +64,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
                          "validation/channelOverviewForm.xsd").isEmpty());
      }
 
+    @Test
      public void testFailedValidation() throws Exception {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         RhnValidationHelper.setFailedValidation(request);

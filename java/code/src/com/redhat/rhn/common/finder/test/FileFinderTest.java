@@ -14,6 +14,8 @@
  */
 
 package com.redhat.rhn.common.finder.test;
+
+import org.junit.Test;
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -22,11 +24,13 @@ import java.util.List;
 
 public class FileFinderTest extends RhnBaseTestCase {
 
+    @Test
     public void testGetFinder() throws Exception {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder.test");
         assertNotNull(f);
     }
 
+    @Test
     public void testFindFiles() throws Exception {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder.test");
         assertNotNull(f);
@@ -37,6 +41,7 @@ public class FileFinderTest extends RhnBaseTestCase {
         assertEquals(2, result.size());
     }
 
+    @Test
     public void testFindFilesSubDir() throws Exception {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder");
         assertNotNull(f);
@@ -45,6 +50,7 @@ public class FileFinderTest extends RhnBaseTestCase {
         assertEquals(6, result.size());
     }
 
+    @Test
     public void testFindExcluding() throws Exception {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder");
         assertNotNull(f);

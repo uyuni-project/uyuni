@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -40,6 +43,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
     private final String DIALOG_NAV = "com.redhat.rhn.frontend.nav.DialognavRenderer";
     private NavDialogMenuTag nmt;
 
+    @Before
     public void setUp() throws Exception {
         nmt = new NavDialogMenuTag();
         try {
@@ -54,6 +58,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testExceptionHandling() {
         TagTestHelper tth = TagTestUtils.setupTagTest(nmt, url);
 
@@ -70,6 +75,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testIOExceptionHandling() {
         TagTestHelper tth = TagTestUtils.setupTagTest(nmt, url);
 
@@ -90,6 +96,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testTagOutput() {
         TagTestHelper tth = TagTestUtils.setupTagTest(nmt, url);
 
@@ -126,26 +133,31 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
                "</div>\n";
     }
 
+    @Test
     public void testSetMaxdepth() {
         nmt.setMaxdepth(10);
         assertEquals(10, nmt.getMaxdepth());
     }
 
+    @Test
     public void testsetMindepth() {
         nmt.setMindepth(10);
         assertEquals(10, nmt.getMindepth());
     }
 
+    @Test
     public void testSetDefinition() {
         nmt.setDefinition("foo");
         assertEquals("foo", nmt.getDefinition());
     }
 
+    @Test
     public void testSetRenderer() {
         nmt.setRenderer("foo");
         assertEquals("foo", nmt.getRenderer());
     }
 
+    @Test
     public void testDefaultMaxDepth() {
         assertEquals(Integer.MAX_VALUE, nmt.getMaxdepth());
     }

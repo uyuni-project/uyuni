@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.user.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -33,6 +36,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
 
     private UpdateUserCommand command;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
@@ -40,6 +44,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         command = new UpdateUserCommand(user);
     }
 
+    @Test
     public void testLongNames() {
         int maxPassword = UserDefaults.get().getMaxPasswordLength();
         int emailLength = UserDefaults.get().getMaxEmailLength();
@@ -63,6 +68,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testPartialUpdate() {
         command.setEmail("50cent@pimpville.com");
         command.setFirstNames("beetle juice");
@@ -72,6 +78,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         assertEquals("beetle juice", user.getFirstNames());
     }
 
+    @Test
     public void testInvalidEmail() {
         command.setPassword("validP@a$$word");
 
@@ -85,6 +92,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         assertCommandThrows(IllegalArgumentException.class, command);
     }
 
+    @Test
     public void testInvalidPassword() {
         command.setEmail("jesusr@redhat.com");
 
@@ -104,6 +112,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         assertCommandThrows(IllegalArgumentException.class, command);
     }
 
+    @Test
     public void testNullPassword() {
         try {
             command.setPassword(null);
@@ -113,6 +122,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testValidEmail() {
         command.setPassword("valid_password");
 
@@ -121,6 +131,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         assertEmail("jmrodri@transam", command);
     }
 
+    @Test
     public void testValidPassword() {
         command.setEmail("jesusr@redhat.com");
         // = maxlen
@@ -140,6 +151,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         assertPassword("Th1$_i5-V@Lid", command);
     }
 
+    @Test
     public void testPrefix() {
         command.setPrefix("Miss");
         User user = command.updateUser();
@@ -187,6 +199,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testValidatePasswordHasTabCharacter() throws Exception {
         command.setEmail("bilbo@baggins.com");
         command.setPassword("aaaaa\tb");
@@ -200,6 +213,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testValidatePasswordHasNewlineCharacter() throws Exception {
         command.setEmail("bilbo@baggins.com");
         command.setPassword("aaaaa\nb");

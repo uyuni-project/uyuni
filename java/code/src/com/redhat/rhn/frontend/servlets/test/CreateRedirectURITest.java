@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
 
 import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
@@ -65,7 +66,8 @@ public class CreateRedirectURITest extends MockObjectTestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         mockRequest = mock(HttpServletRequest.class);

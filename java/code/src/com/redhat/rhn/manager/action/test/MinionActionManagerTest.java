@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.action.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -106,6 +109,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -115,6 +119,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * Test package install with staging when inside the staging window
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPackageInstallWithStagingInsideWindow() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
@@ -164,6 +169,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * Test package install with staging before entering the staging window
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPackageInstallWithStagingBeforeWindow() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -216,6 +222,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * is already passed (there will be no staging)
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPackageInstallWithStagingAfterWindow() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -265,6 +272,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * is after the action execution
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPackageInstallWithStagingBeforeWindowExceedingDuration()
         throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -316,6 +324,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * should not be called).
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPackageInstallWithoutStaging() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -364,6 +373,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * Test Action chain package install with staging when inside the staging window
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testChainPackageInstallWithStagingInsideWindow() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -410,6 +420,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * Test patch/errata install with staging when inside the staging window
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPatchInstallWithStagingInsideWindow() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         final String updateTag = "SLE-SERVER";
@@ -468,6 +479,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * Test patch/errata install with staging before entering the staging window
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPatchInstallWithStagingBeforeWindow() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         final String updateTag = "SLE-SERVER";
@@ -527,6 +539,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * is after the action execution
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPatchInstallWithStagingBeforeWindowExceedingDuration()
         throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
@@ -590,6 +603,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPatchInstallWithStagingAfterWindow() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
@@ -655,6 +669,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * Test patch/errata install without staging
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testPatchInstallWithoutStaging() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         final String updateTag = "SLE-SERVER";
@@ -710,6 +725,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      * Test scheduled time of staging jobs (must be before execution)
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testStagingJobsScheduleTime() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -762,6 +778,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testStagingJobsScheduleTimeOutsideWindow() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -814,6 +831,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testNoStagingJobsWhenImmediateExecution() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -866,6 +884,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testNoStagingJobsWhenWindowStartEqualsFinish() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -919,6 +938,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testNoStagingJobsWhenWindowIsZeroAdvance() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -971,6 +991,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testNoStagingJobsWhenWindowIsZeroLength() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -1023,6 +1044,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception when Taskomatic service is down
      */
+    @Test
     public void testNoStagingJobsWhenTraditionalClient() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 

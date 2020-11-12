@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -31,11 +34,13 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
     }
 
+    @Test
     public void testPreCreate() throws Exception {
         // Lets zero out the scripts
         ksdata.getScripts().clear();
@@ -61,6 +66,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         assertTrue(ksdata.getScripts().size() > 0);
     }
 
+    @Test
     public void testPreEdit() throws Exception {
         KickstartScript kss = ksdata.getScripts().iterator().next();
         String language = "/usr/bin/perl";
@@ -77,6 +83,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         assertTrue(ksdata.getScripts().size() > 0);
     }
 
+    @Test
     public void testScriptDelete() throws Exception {
 
         KickstartScript kss = ksdata.getScripts().iterator().next();

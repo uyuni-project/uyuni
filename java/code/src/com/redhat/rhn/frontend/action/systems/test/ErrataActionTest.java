@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -37,6 +39,7 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
  * @version $Rev$
  */
 public class ErrataActionTest extends RhnPostMockStrutsTestCase {
+    @Test
     public void testEmptySelection() throws Exception {
         String pathInfo = "/systems/details/ErrataList";
         setRequestPathInfo(pathInfo);
@@ -53,6 +56,7 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         String pathInfo = "/systems/details/ErrataList";
         setRequestPathInfo(pathInfo);

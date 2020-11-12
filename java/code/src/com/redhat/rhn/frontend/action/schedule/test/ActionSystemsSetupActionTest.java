@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -36,6 +38,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPeformExecute() throws Exception {
         ActionSystemsSetupAction action = new InProgressSystemsSetupAction();
         ActionHelper sah = new ActionHelper();

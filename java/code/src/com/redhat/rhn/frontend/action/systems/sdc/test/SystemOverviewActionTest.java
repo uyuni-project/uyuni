@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
@@ -68,6 +71,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/Overview");
@@ -78,11 +82,13 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         request.addParameter("sid", s.getId().toString());
     }
 
+    @Test
     public void testSystemStatusNoErrata() throws Exception {
         actionPerform();
         assertEquals(Boolean.FALSE, request.getAttribute("hasUpdates"));
     }
 
+    @Test
     public void testSystemStatusWithErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
@@ -101,6 +107,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         assertEquals(Boolean.TRUE, request.getAttribute("hasUpdates"));
     }
 
+    @Test
     public void testSystemInactive() throws Exception {
         s.getServerInfo().setCheckin(new Date(1));
         TestUtils.saveAndFlush(s);
@@ -108,6 +115,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         assertEquals(request.getAttribute("systemInactive"), Boolean.TRUE);
     }
 
+    @Test
     public void testSystemActive() throws Exception {
         Calendar pcal = Calendar.getInstance();
         pcal.setTime(new Timestamp(System.currentTimeMillis()));
@@ -119,17 +127,20 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         assertEquals(request.getAttribute("systemInactive"), Boolean.FALSE);
     }
 
+    @Test
     public void testSystemUnentitled() throws Exception {
        systemEntitlementManager.removeAllServerEntitlements(s);
        actionPerform();
        assertEquals(request.getAttribute("unentitled"), Boolean.TRUE);
     }
 
+    @Test
     public void testSystemEntitled() throws Exception {
         actionPerform();
         assertEquals(request.getAttribute("unentitled"), Boolean.FALSE);
     }
 
+    @Test
     public void testLockSystem() throws Exception {
         request.addParameter("lock", "1");
         actionPerform();
@@ -137,6 +148,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         assertNotNull(s.getLock());
     }
 
+    @Test
     public void testUnlockSystem() throws Exception {
         SystemManager.lockServer(user, s, "test reason");
         request.addParameter("lock", "0");
@@ -145,6 +157,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         assertNull(s.getLock());
     }
 
+    @Test
     public void testActivateSatelliteApplet() throws Exception {
 
         request.addParameter("applet", "1");
@@ -152,6 +165,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         verifyActionMessage("sdc.details.overview.applet.scheduled");
     }
 
+    @Test
     public void testLivePatchVersion() throws Exception {
         String kernelLiveVersion = "kgraft_patch_2_1_1";
         MinionServer m = MinionServerFactoryTest.createTestMinionServer(user);
@@ -164,6 +178,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         assertEquals(kernelLiveVersion, request.getAttribute("kernelLiveVersion"));
     }
 
+    @Test
     public void testModularRepositoryMessage() throws Exception {
         actionPerform();
         verifyNoActionErrors();

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.client.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -23,6 +25,7 @@ import java.io.StringReader;
 
 public class ClientCertificateDigesterTest extends RhnBaseTestCase {
 
+    @Test
     public void testBuildSystemIdStream() throws Exception {
         ClientCertificate cert = ClientCertificateDigester.buildCertificate(
                     TestUtils.findTestData("systemid.xml").openStream());
@@ -33,6 +36,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
     }
 
+    @Test
     public void testBuildSystemIdReader() throws Exception {
         String data = TestUtils.readAll(TestUtils.findTestData("systemid.xml"));
         StringReader rdr = new StringReader(data);
@@ -45,6 +49,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
     }
 
+    @Test
     public void testGetValueByName() throws Exception {
         ClientCertificate cert = ClientCertificateDigester.buildCertificate(
                 TestUtils.findTestData("systemid.xml").openStream());
@@ -69,6 +74,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         assertNull(cert.getValueByName("invalid name"));
     }
 
+    @Test
     public void testGetValuesByName() throws Exception {
         ClientCertificate cert = ClientCertificateDigester.buildCertificate(
                 TestUtils.findTestData("systemid.xml").openStream());

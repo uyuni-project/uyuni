@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.session.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.domain.session.WebSession;
@@ -49,6 +51,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertEquals(0, s.getExpires());
     }
 
+    @Test
     public void testId() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         assertNull(s.getId());
@@ -57,12 +60,14 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testCreateSession() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
     }
 
+    @Test
     public void testExpired() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
@@ -73,6 +78,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertTrue(s.isExpired());
     }
 
+    @Test
     public void testNotExpired() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
@@ -83,6 +89,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertFalse(s.isExpired());
     }
 
+    @Test
     public void testSetUserId() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
@@ -132,6 +139,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testUnifiedCreate() throws Exception {
         User u = UserTestUtils.findNewUser("sessionTest", "SessionTestOrg");
         WebSession s = SessionManager.makeSession(u.getId(), (long) EXP_TIME);
@@ -142,6 +150,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertEquals(u.getId(), s2.getUser().getId());
     }
 
+    @Test
     public void testCommitAndRetreive() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
@@ -160,6 +169,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertEquals(userId, s2.getUser().getId());
     }
 
+    @Test
     public void testCommitAndRetreiveNullUser() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
@@ -177,6 +187,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertEquals(expTime, s2.getExpires());
     }
 
+    @Test
     public void testGetKey() {
         WebSession s = WebSessionFactory.createSession();
         //Try with an invalid session id (null)
@@ -199,6 +210,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertTrue(StringUtils.isNumeric(id));
     }
 
+    @Test
     public void testLookupExpired() throws Exception {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);

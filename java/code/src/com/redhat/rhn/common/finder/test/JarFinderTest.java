@@ -14,14 +14,16 @@
  */
 
 package com.redhat.rhn.common.finder.test;
+
+import org.junit.Test;
 import java.util.List;
 
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
-public class JarFinderTest extends TestCase {
+public class JarFinderTest extends Assert {
 
     // NOTE: Test is dependent on knowing things like "How many classes are in jarfile X"
     // When "X" changes, the test FAILS.
@@ -35,11 +37,13 @@ public class JarFinderTest extends TestCase {
     private static final int NUM_CLASSES_IN_TESTJAR = 343;
     private static final int NUM_SUBDIRS_IN_TESTJAR = 343;
 
+    @Test
     public void testGetFinder() throws Exception {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);
     }
 
+    @Test
     public void testFindFiles() throws Exception {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);
@@ -48,6 +52,7 @@ public class JarFinderTest extends TestCase {
         assertEquals(NUM_CLASSES_IN_TESTJAR, result.size());
     }
 
+    @Test
     public void testFindFilesSubDir() throws Exception {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);
@@ -56,6 +61,7 @@ public class JarFinderTest extends TestCase {
         assertEquals(NUM_SUBDIRS_IN_TESTJAR, result.size());
     }
 
+    @Test
     public void testFindFilesExcluding() throws Exception {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);

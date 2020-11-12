@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.recurringactions.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
@@ -24,6 +26,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
 
     private static final String CRON_EXPR = "0 * * * * ?";
 
+    @Test
     public void testListMinionRecurringActions() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -35,6 +38,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
     }
 
+    @Test
     public void testListMultipleMinionRecurringActions() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -53,6 +57,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(Set.of(action, action2), actualSet);
     }
 
+    @Test
     public void testListGroupRecurringActions() {
         var action = new GroupRecurringAction();
         var group = ServerGroupTestUtils.createManaged(user);
@@ -65,6 +70,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(List.of(action), RecurringActionFactory.listGroupRecurringActions(group.getId()));
     }
 
+    @Test
     public void testListOrgRecurringActions() {
         var action = new OrgRecurringAction();
         var org = OrgFactory.createOrg();
@@ -80,6 +86,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(List.of(action), RecurringActionFactory.listOrgRecurringActions(org.getId()));
     }
 
+    @Test
     public void testListAllActions() throws Exception {
         var minionAction = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -115,6 +122,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(expectedActions, actualActions);
     }
 
+    @Test
     public void testMinionActionTaskomaticPrefixComputation() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -125,6 +133,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
     }
 
+    @Test
     public void testGroupActionTaskomaticPrefixComputation() throws Exception {
         var action = new GroupRecurringAction();
         var group = ServerGroupTestUtils.createManaged(user);
@@ -135,6 +144,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
     }
 
+    @Test
     public void testOrgActionTaskomaticPrefixComputation() throws Exception {
         var action = new OrgRecurringAction();
         action.setName("action name 1");
@@ -144,10 +154,12 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
     }
 
+    @Test
     public void testLookupRecurringActionByScheduleNameNoMatch() throws Exception {
         assertTrue(RecurringActionFactory.lookupByJobName("recurring-action-987654321").isEmpty());
     }
 
+    @Test
     public void testLookupRecurringActionByScheduleName() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -161,6 +173,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
                 RecurringActionFactory.lookupByJobName("recurring-action-" + action.getId()).orElseThrow());
     }
 
+    @Test
     public void testMultipleActionsWithSameName() throws Exception {
         try {
             var orgAction = new OrgRecurringAction();
@@ -192,6 +205,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDeleteRecurringAction() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -207,6 +221,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertTrue(RecurringActionFactory.listMinionRecurringActions(minion.getId()).isEmpty());
     }
 
+    @Test
     public void testLookupEqualEntity() throws Exception {
         String name = "already-existing-action";
         var action = new MinionRecurringAction();
@@ -226,6 +241,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(orgAction.getId(), RecurringActionFactory.lookupEqualEntityId(orgAction).get());
     }
 
+    @Test
     public void testLookupEqualActionObject() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -243,6 +259,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(action.getId(), RecurringActionFactory.lookupEqualEntityId(action2).get());
     }
 
+    @Test
     public void testLookupNotEqualActionObject() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);

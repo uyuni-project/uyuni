@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.utils.salt.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
@@ -35,6 +38,7 @@ import static java.util.Optional.of;
 public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -44,6 +48,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
      * Tests parsing {@link ImageDeployedEvent}.
      * "Happy path" scenario.
      */
+    @Test
     public void testParse() {
         Event event = mock(Event.class);
         String machineId = "12345";
@@ -68,6 +73,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests parsing event with unmatching tag.
      */
+    @Test
     public void testParseNotMatchingTag() {
         Event event = mock(Event.class);
         context().checking(new Expectations() {{
@@ -80,6 +86,7 @@ public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests parsing event with unmatching tag.
      */
+    @Test
     public void testParseNoGrains() {
         Event event = mock(Event.class);
         context().checking(new Expectations() {{

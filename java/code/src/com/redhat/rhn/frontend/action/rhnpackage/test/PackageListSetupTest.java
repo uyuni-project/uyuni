@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -29,6 +31,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class PackageListSetupTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);

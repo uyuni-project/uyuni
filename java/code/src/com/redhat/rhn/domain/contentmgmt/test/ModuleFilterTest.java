@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
@@ -31,12 +34,14 @@ public class ModuleFilterTest extends BaseTestCaseWithUser {
     private ContentManager contentManager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();
         UserTestUtils.addUserRole(user, ORG_ADMIN);
     }
 
+    @Test
     public void testGetModule() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule");
         ModuleFilter filter =

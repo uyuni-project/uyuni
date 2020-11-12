@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.distupgrade.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
@@ -77,6 +80,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     }};
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -90,6 +94,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetProductBaseChannelDto() throws Exception {
         // Create SUSE product and channel product
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -124,6 +129,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test getTargetProductSets(): No target product found.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetTargetProductSetsEmpty() throws Exception {
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
@@ -139,6 +145,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertTrue(targetProductSets.isEmpty());
     }
 
+    @Test
     public void testGetTargetProductSetsEmptyWithTarget() throws Exception {
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
@@ -166,6 +173,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test getTargetProductSets(): No target product found.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetTargetProductSetsEmptyWithAddon() throws Exception {
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
@@ -187,6 +195,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test getTargetProductSets(): target products are actually found (base + addon).
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetTargetProductSets() throws Exception {
         Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
@@ -310,6 +319,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test getTargetProductSets(): target products are actually found (base + addon).
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetTargetProductSetsOnISSSlave() throws Exception {
         // setup a Slave by defining its master
         IssMaster master = new IssMaster();
@@ -431,6 +441,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGetTargetProductSetsMissingChannel() throws Exception {
         Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
@@ -557,6 +568,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for performServerChecks(): capability "distupgrade.upgrade" is missing.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCapabilityMissing() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         try {
@@ -573,6 +585,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for performServerChecks(): "zypp-plugin-spacewalk" is not installed.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testZyppPluginNotInstalled() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
@@ -590,6 +603,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for performServerChecks(): a dist upgrade action is already scheduled.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistUpgradeScheduled() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
@@ -629,6 +643,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for performChannelChecks(): More than one base channel given for dist upgrade
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testMoreThanOneBaseChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
@@ -651,6 +666,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for performChannelChecks(): No base channel given for dist upgrade
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testNoBaseChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
@@ -675,6 +691,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for performChannelChecks(): Channel has incompatible base channel
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testIncompatibleBaseChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
@@ -702,6 +719,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for scheduleDistUpgrade().
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testScheduleDistUpgrade() throws Exception {
         Channel subscribedChannel = ChannelFactoryTest.createTestChannel(user);
         List<Channel> subscribedChannels = new ArrayList<Channel>(
@@ -776,6 +794,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetTargetProductSetsLTSScase() throws Exception {
         Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products

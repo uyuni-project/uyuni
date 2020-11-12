@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -28,6 +31,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         // TODO Auto-generated method stub
         super.setUp();
@@ -35,6 +39,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         cmd.createCommand("selinux", "--permissive", ksdata);
     }
 
+    @Test
     public void testDisplay() throws Exception {
 
         // Create a kickstart and the ranges so the list
@@ -44,6 +49,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
      }
 
+    @Test
     public void testEditSELinux() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("selinuxMode", "enforcing");
@@ -55,6 +61,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyFormValue("selinuxMode", "enforcing");
     }
 
+    @Test
     public void testEditRootPasswordErr() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("rootPassword", "blahblah");
@@ -65,6 +72,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyActionErrors(errMessages);
     }
 
+    @Test
     public void testEditRootPasswordSuccess() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("selinuxMode", "permissive");
@@ -75,6 +83,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
     }
 
+    @Test
     public void testEditNetworkSuccess() throws Exception {
         setupForEdit(ksdata);
         addRequestParameter("selinuxMode", "permissive");
@@ -85,6 +94,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
     }
 
+    @Test
     public void testRHEL3Execute() throws Exception {
         ksdata.getKickstartDefaults().getKstree().
             setInstallType(KickstartFactory.
@@ -103,6 +113,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
     }
 
+    @Test
     public void testRHEL4Execute() throws Exception {
         ksdata.getKickstartDefaults().getKstree().
         setInstallType(KickstartFactory.

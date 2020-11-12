@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -45,6 +47,7 @@ public class PackageActionTest extends RhnBaseTestCase {
      * Test fetching a PackageAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupPackageAction() throws Exception {
 
         Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
@@ -93,6 +96,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testCreatePackageUpdateAction() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -118,6 +122,7 @@ public class PackageActionTest extends RhnBaseTestCase {
         assertEquals(sameAction.getId(), testAction.getId());
     }
 
+    @Test
     public void testCreatePackageUpdateActionWithName() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -142,6 +147,7 @@ public class PackageActionTest extends RhnBaseTestCase {
         assertEquals(sameAction.getId(), testAction.getId());
     }
 
+    @Test
     public void testCreatePackageRemoveAction() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

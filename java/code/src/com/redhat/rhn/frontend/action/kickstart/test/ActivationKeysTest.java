@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -32,6 +34,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class ActivationKeysTest extends BaseKickstartEditTestCase {
 
+    @Test
     public void testSetupExecute() throws Exception {
         addKeysToKickstartData(user, ksdata);
         setRequestPathInfo("/kickstart/ActivationKeys");
@@ -40,6 +43,7 @@ public class ActivationKeysTest extends BaseKickstartEditTestCase {
 
     }
 
+    @Test
     public void testSubmit() throws Exception {
         addDispatchCall(ActivationKeysSubmitAction.UPDATE_METHOD);
         addKeysToKickstartData(user, ksdata);

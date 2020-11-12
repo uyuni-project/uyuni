@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.listview.ListControl;
@@ -40,6 +42,7 @@ public class RhnUnpagedListActionTest extends RhnBaseTestCase {
      * Test to make sure we check for the right filter value string
      * @throws Exception something bad happened
      */
+    @Test
     public void testFilterValue() throws Exception {
         TestListAction tla = new TestListAction();
         ActionHelper sah = new ActionHelper();

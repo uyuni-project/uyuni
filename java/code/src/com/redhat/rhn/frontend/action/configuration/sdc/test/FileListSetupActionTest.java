@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.sdc.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -65,16 +67,19 @@ public class FileListSetupActionTest extends RhnMockStrutsTestCase {
         assertEquals(expectedSize, dr.size());
     }
 
+    @Test
     public void testDeploy() throws Exception {
         doTheTest("/systems/details/configuration/DeployFile",
                             SystemManager.CAP_CONFIGFILES_DEPLOY);
     }
 
+    @Test
     public void testDiff() throws Exception {
         doTheTest("/systems/details/configuration/DiffFile",
                                 SystemManager.CAP_CONFIGFILES_DIFF);
     }
 
+    @Test
     public void testImport() throws Exception {
         doTheTest("/systems/details/configuration/addfiles/ImportFile",
                                     SystemManager.CAP_CONFIGFILES_UPLOAD);

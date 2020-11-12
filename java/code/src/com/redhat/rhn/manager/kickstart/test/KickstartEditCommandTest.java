@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -25,6 +27,7 @@ import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
  */
 public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testKickstartEditCommand() throws Exception {
 
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
@@ -42,6 +45,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
         assertEquals(command.getLabel(), k2.getLabel());
     }
 
+    @Test
     public void testKickstartLabel() throws Exception {
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
         command.setLabel("shaggy-ks-rhel4");
@@ -49,6 +53,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
         assertEquals(ksdata.getLabel(), command.getLabel());
     }
 
+    @Test
     public void testOrgDefault() throws Exception {
         assertFalse(ksdata.isOrgDefault().booleanValue());
         KickstartData k1 = KickstartDataTest.createKickstartWithChannel(user.getOrg());

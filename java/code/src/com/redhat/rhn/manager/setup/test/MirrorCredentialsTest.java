@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -25,6 +27,7 @@ public class MirrorCredentialsTest extends RhnBaseTestCase {
     /**
      * Tests MirrorCredentialsDto.equals()
      */
+    @Test
     public void testEquality() {
         MirrorCredentialsDto mc1 = new MirrorCredentialsDto("user1", "pw1");
         MirrorCredentialsDto mc2 = new MirrorCredentialsDto("user1", "pw1");

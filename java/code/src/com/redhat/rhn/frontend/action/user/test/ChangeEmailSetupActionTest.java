@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.ChangeEmailSetupAction;
@@ -30,6 +32,7 @@ import org.apache.struts.action.ActionForward;
  */
 public class ChangeEmailSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testChangeEmailSetupAction() throws Exception {
         ChangeEmailSetupAction action = new ChangeEmailSetupAction();
         ActionHelper sah = new ActionHelper();

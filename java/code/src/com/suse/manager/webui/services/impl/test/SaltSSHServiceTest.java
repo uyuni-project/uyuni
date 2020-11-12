@@ -1,4 +1,7 @@
 package com.suse.manager.webui.services.impl.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -16,6 +19,7 @@ import java.util.Optional;
 public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -23,11 +27,13 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("ssh_push_sudo_user", "mgruser");
     }
 
+    @Test
     public void testProxyCommandNoProxy() {
         Optional<String> res = SaltSSHService.sshProxyCommandOption(Collections.emptyList(), "ssh-push", "minion");
         assertFalse(res.isPresent());
     }
 
+    @Test
     public void testProxyCommandSSHPush1Proxy() {
         Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1"), "ssh-push", "minion");
         assertTrue(res.isPresent());
@@ -37,6 +43,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
                 res.get());
     }
 
+    @Test
     public void testProxyCommandSSHPushTunnel1Proxy() {
         Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1"), "ssh-push-tunnel", "minion");
         assertTrue(res.isPresent());
@@ -48,6 +55,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
                 res.get());
     }
 
+    @Test
     public void testProxyCommandSSHPush2Proxies() {
         Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1", "proxy2"), "ssh-push", "minion");
         assertTrue(res.isPresent());
@@ -58,6 +66,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
                 res.get());
     }
 
+    @Test
     public void testProxyCommandSSHPushTunnel2Proxies() {
         Optional<String> res = SaltSSHService.sshProxyCommandOption(Arrays.asList("proxy1", "proxy2"), "ssh-push-tunnel", "minion");
         assertTrue(res.isPresent());

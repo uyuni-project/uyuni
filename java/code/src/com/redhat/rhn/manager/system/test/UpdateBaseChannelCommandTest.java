@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -34,6 +36,7 @@ import java.util.Set;
  * @version $Rev$
  */
 public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
+    @Test
     public void testChannelPreservation() throws Exception {
         ProductName pn = ChannelFactoryTest.createProductName();
         Channel parent = ChannelFactoryTest.createBaseChannel(user);

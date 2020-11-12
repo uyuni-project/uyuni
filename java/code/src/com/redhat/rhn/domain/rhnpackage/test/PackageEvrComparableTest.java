@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,18 +30,21 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class PackageEvrComparableTest extends RhnBaseTestCase {
 
+    @Test
     public void testEquality() {
         compare(0, "0-0-0", "0-0-0");
         compare(0, "null-0-0", "0-0-0");
         compare(0, "null-0-0", "null-0-0");
     }
 
+    @Test
     public void testFailure() {
         failure("0-null-0", IllegalStateException.class);
         failure("0-0-null", NullPointerException.class);
         failure("X-0-null", NumberFormatException.class);
     }
 
+    @Test
     public void testDifference() {
         compare(-1, "1-1-1", "2-5-7");
         compare(-1, "1-5-7", "2-5-7");

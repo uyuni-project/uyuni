@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.packages.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -47,6 +49,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
     private final PackagesHandler handler = new PackagesHandler();
 
+    @Test
     public void testGetDetails() throws Exception {
 
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
@@ -66,6 +69,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testListFiles() throws Exception {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
@@ -81,6 +85,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         //we should do some more exhaustive testing of this method.
     }
 
+    @Test
     public void testListProvidingErrata() throws Exception {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
@@ -90,6 +95,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, result.length);
     }
 
+    @Test
     public void testListProvidingChannels() throws Exception {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
@@ -100,6 +106,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, result.length);
     }
 
+    @Test
     public void testListDependencies() throws Exception {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
@@ -248,12 +255,14 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
                 .findFirst().orElseThrow();
     }
 
+    @Test
     public void testRemovePackage() throws Exception {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         handler.removePackage(admin, pkg.getId().intValue());
     }
 
+    @Test
     public void testRemovePackageSource() throws Exception {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
@@ -263,6 +272,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testFindByNevra() throws Exception {
         Package p = PackageTest.createTestPackage(admin.getOrg());
 
@@ -278,6 +288,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         assertEquals(p, newP.get(0));
     }
 
+    @Test
     public void testListSourcePackages() throws Exception {
         User user = UserTestUtils.createUser("testUser", regular.getOrg().getId());
         Object[] result1 = handler.listSourcePackages(user);

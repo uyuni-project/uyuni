@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.action.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
@@ -41,6 +43,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyStates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -77,6 +80,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyStatesHighstate() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -106,6 +110,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyStatesHighstateTest() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -134,6 +139,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyHighstate() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
@@ -160,6 +166,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testScheduleApplyHighstateTest() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();

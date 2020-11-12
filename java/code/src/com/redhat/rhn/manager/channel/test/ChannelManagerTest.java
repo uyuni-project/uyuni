@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -100,15 +102,19 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }};
     private static TaskomaticApi taskomaticApi;
 
+    @Test
     public void testAllDownloadsTree() throws Exception {
     }
 
+    @Test
     public void testListDownloadCategories() {
     }
 
+    @Test
     public void testListDownloadImages() {
     }
 
+    @Test
     public void testAddRemoveSubscribeRole() throws Exception {
         User admin = UserTestUtils.createUser("adminUser", user.getOrg().getId());
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -124,6 +130,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertFalse(ChannelManager.verifyChannelSubscribe(user, channel.getId()));
     }
 
+    @Test
     public void testChannelsInOrg() throws Exception {
         // get an org
         Org org = OrgFactory.lookupById(UserTestUtils.createOrg("channelTestOrg"));
@@ -138,6 +145,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr); //should be at least one item in there
     }
 
+    @Test
     public void testChannelsForUser() throws Exception {
         ChannelFactoryTest.createTestChannel(user);
         List<String> channels = ChannelManager.channelsForUser(user);
@@ -147,6 +155,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testVendorChannelTree() throws Exception {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -158,6 +167,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
    public void testMyChannelTree() throws Exception {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -170,6 +180,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
    public void testPopularChannelTree() throws Exception {
        Server server = ServerFactoryTest.createTestServer(user, true);
        ServerFactory.save(server);
@@ -190,6 +201,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
    }
 
 
+    @Test
     public void testAllChannelTree() throws Exception {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -202,6 +214,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
     public void testOrphanedChannelTree() throws Exception {
         user = UserTestUtils.createUserInOrgOne();
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -221,11 +234,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
     public void testOwnedChannelsTree() throws Exception {
         assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.findNewUser()).isEmpty());
         assertNotEmpty(ChannelManager.ownedChannelsTree(user));
     }
 
+    @Test
     public void testRetiredChannelTree() throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setEndOfLife(new Date(System.currentTimeMillis() - 1000000));
@@ -239,6 +254,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
     public void testAccessibleChannels() throws Exception {
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
@@ -253,11 +269,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertFalse(dr.isEmpty());
     }
 
+    @Test
     public void testChannelArches() {
         // for a more detailed test see ChannelFactoryTest
         assertNotNull(ChannelManager.getChannelArchitectures());
     }
 
+    @Test
     public void testUpdateSystemsChannelsInfo() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
 
@@ -276,6 +294,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertTrue(actionId.isPresent());
     }
 
+    @Test
     public void testDeleteChannel() throws Exception {
         // thanks mmccune for the tip
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
@@ -288,6 +307,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNull(reload(c));
     }
 
+    @Test
     public void testDeleteClonedChannel() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
@@ -303,6 +323,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNull(reload(cClone2));
     }
 
+    @Test
     public void testDeleteChannelWithClones() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
@@ -325,6 +346,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDeleteChannelException() throws Exception {
         try {
             ChannelManager.deleteChannel(user, "jesusr-channel-test");
@@ -334,9 +356,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testLatestPackages() {
     }
 
+    @Test
     public void testListErrata() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -378,6 +402,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertTrue(found);
     }
 
+    @Test
     public void testPackagesLike() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user);
         Channel c = ChannelFactoryTest.createTestChannel(user);
@@ -390,6 +415,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 "some-test-package"));
     }
 
+    @Test
     public void testBaseChannelsForSystem() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
 
@@ -414,6 +440,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         return rcm;
     }
 
+    @Test
     public void testLookupDefaultReleaseChannelMap() throws Exception {
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
         String version = "5Server";
@@ -427,6 +454,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(release, rcm.getRelease());
     }
 
+    @Test
     public void testBaseChannelsForSystemIncludesEus() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         String version = "5Server";
@@ -454,6 +482,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertTrue(channels.size() >= 2);
     }
 
+    @Test
     public void testListBaseEusChannelsByVersionReleaseAndChannelArch() throws Exception {
         String version = "5Server";
 
@@ -498,6 +527,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertFalse(returnedIds.contains(rhel4.getId()));
     }
 
+    @Test
     public void testLookupLatestEusChannelForRhel5() throws Exception {
         String el5version = "5Server";
         String release500 = "5.0.0";
@@ -525,6 +555,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     // Test the problem with string version comparisons is being handled:
+    @Test
     public void testLookupLatestEusChannelForRhel5WeirdVersionCompare() throws Exception {
         String el5version = "5Server";
         String release5310 = "5.3.10.0"; // should appear as most recent
@@ -547,6 +578,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(rhel5310Chan.getId().longValue(), channel.getId().longValue());
     }
 
+    @Test
     public void testLookupLatestEusChannelForRhelVersionNoneFound() throws Exception {
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
@@ -564,6 +596,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNull(channel);
     }
 
+    @Test
     public void testEusReleaseCmpRhel4() {
         EusReleaseComparator comparator = new EusReleaseComparator("4AS");
         assertEquals(0, comparator.compare("4.6", "4"));
@@ -574,6 +607,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(-1, comparator.compare("8.7", "10.10"));
     }
 
+    @Test
     public void testEusReleaseCmpRhel5() {
         EusReleaseComparator comparator = new EusReleaseComparator("5Server");
         assertEquals(0, comparator.compare("5.3.0.1", "5.3.0.5"));
@@ -586,6 +620,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(-1, comparator.compare("5.0.9.0", "5.0.10.0"));
     }
 
+    @Test
     public void testGetToolsChannel() throws Exception {
         Channel base = ChannelTestUtils.createTestChannel(user);
         Channel tools = ChannelTestUtils.createChildChannel(user, base);
@@ -596,6 +631,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(tools.getId(), lookup.getId());
     }
 
+    @Test
     public void testGetToolsChannelNoneFound() throws Exception {
         Channel base = ChannelTestUtils.createTestChannel(user);
 
@@ -603,6 +639,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNull(lookup);
     }
 
+    @Test
     public void testChildrenAvailableToSet() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
@@ -613,6 +650,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertTrue(childChannels.size() == 0);
     }
 
+    @Test
     public void testGetChannelVersion() throws Exception {
         Channel c = ChannelTestUtils.createTestChannel(user);
         ChannelTestUtils.addDistMapToChannel(c);
@@ -621,6 +659,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(ChannelVersion.LEGACY, versions.iterator().next());
     }
 
+    @Test
     public void testSubscribeToChildChannelWithPackageName() throws Exception {
         UserTestUtils.addVirtualization(user.getOrg());
         Server s = ServerTestUtils.createTestSystem(user);
@@ -635,6 +674,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 s, ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME));
     }
 
+    @Test
     public void testSubscribeToChildChannelWithPackageNameMultipleResults()
         throws Exception {
 
@@ -658,6 +698,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(channelCountBefore, s.getChannels().size());
     }
 
+    @Test
     public void testSubscribeToChildChannelWithPackageNameMultipleResultsAlreadySubbed()
         throws Exception {
 
@@ -682,6 +723,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testsubscribeToChildChannelByOSProduct() throws Exception {
         UserTestUtils.addVirtualization(user.getOrg());
         Server s = ServerTestUtils.createTestSystem(user);
@@ -693,6 +735,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testBaseChannelsInSet() throws Exception {
         // Get ourselves a system
         Server s = ServerTestUtils.createTestSystem(user);
@@ -714,6 +757,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertTrue(spc.getSystemCount() == 1);
     }
 
+    @Test
     public void testListCompatibleBaseChannels() throws Exception {
         // Testing this is going to be a pain with our existing infrastructure
 
@@ -751,6 +795,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertTrue(foundCustom);
     }
 
+    @Test
     public void testNormalizeRhelReleaseForMapping() {
         assertEquals("4", ChannelManager.normalizeRhelReleaseForMapping("4AS", "4.6"));
         assertEquals("4", ChannelManager.normalizeRhelReleaseForMapping("4AS", "4.6.9"));
@@ -762,6 +807,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         "5.0.0.9"));
     }
 
+    @Test
     public void testFindCompatibleChildrenByOriginalChannel() throws Exception {
         // look for a cloned channel
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
@@ -805,6 +851,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(child2, children.values().iterator().next());
     }
 
+    @Test
     public void testFindCompatibleChildrenByParentProduct() throws Exception {
         ProductName pn = ChannelFactoryTest.createProductName();
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
@@ -837,6 +884,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testLookupDistChannelMap() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         ProductName pn = new ProductName();
@@ -854,6 +902,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(c.getId(), dcm.getChannel().getId());
     }
 
+    @Test
     public void testListCompatiblePackageArches() {
         String[] arches = {"channel-ia32", "channel-x86_64"};
         List<String> parches = ChannelManager.listCompatiblePackageArches(arches);
@@ -861,6 +910,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testRemoveErrata() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         List<Errata> errataList = new ArrayList<Errata>();
@@ -882,6 +932,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertFalse(c.getErratas().contains(eids));
     }
 
+    @Test
     public void testListErrataPackages() throws Exception {
 
         Channel c = ChannelFactoryTest.createBaseChannel(user);
@@ -913,6 +964,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testListErrataNeedingResync() throws Exception {
 
         user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
@@ -940,6 +992,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testListErrataPackagesForResync() throws Exception {
 
         user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);

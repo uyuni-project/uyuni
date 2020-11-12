@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.UserPrefSetupAction;
@@ -31,6 +33,7 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testPerformExecute() throws Exception {
         UserPrefSetupAction action = new UserPrefSetupAction();
         ActionHelper sah = new ActionHelper();
@@ -47,6 +50,7 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testNoParamExecute() throws Exception {
         UserPrefSetupAction action = new UserPrefSetupAction();
         ActionHelper sah = new ActionHelper();

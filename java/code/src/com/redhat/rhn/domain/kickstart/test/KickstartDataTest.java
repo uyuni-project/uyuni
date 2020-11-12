@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -125,6 +127,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testKickstartDataTest() throws Exception {
         KickstartData k = createTestKickstartData(user.getOrg());
         assertNotNull(k);
@@ -153,12 +156,14 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testProfile() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartData k = createKickstartWithProfile(user);
         assertNotNull(k.getKickstartDefaults().getProfile());
     }
 
+    @Test
     public void testFileWrite() throws Exception {
 
         // Example for reading/writing file found:
@@ -187,6 +192,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testLookupByLabel() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartData k = createKickstartWithProfile(user);
@@ -194,6 +200,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 user.getOrg().getId()));
     }
 
+    @Test
     public void testLookupDefault() throws Exception {
         if (KickstartFactory.lookupOrgDefault(user.getOrg()) != null) {
             KickstartData orgdef = KickstartFactory.lookupOrgDefault(user.getOrg());
@@ -232,6 +239,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         cmd.createCommand(name, args, owner);
     }
 
+    @Test
     public void testInstallType() throws Exception {
 
         List types = KickstartFactory.lookupKickstartInstallTypes();
@@ -270,6 +278,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertNotNull(k2.getKickstartDefaults());
     }
 
+    @Test
     public void testDeleteKickstartData() throws Exception {
         KickstartData ksd = createKickstartWithOptions(user.getOrg());
         assertNotNull(ksd);
@@ -290,6 +299,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testChildChannels() throws Exception {
         KickstartData ksdata = createTestKickstartData(user.getOrg());
         ksdata.setKickstartDefaults(createDefaults(ksdata, user));
@@ -583,6 +593,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         return list3;
     }
 
+    @Test
     public void testPreserveFileLists() throws Exception {
         Org org = UserTestUtils.findNewOrg(TestStatics.TESTORG);
 
@@ -603,6 +614,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertEquals(0, kickstart.getPreserveFileLists().size());
     }
 
+    @Test
     public void testCommands() throws Exception {
         KickstartData k = createKickstartWithOptions(user.getOrg());
 
@@ -616,6 +628,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertEquals(2, k2.getOptions().size()); // url and command from k creation
     }
 
+    @Test
     public void testDeepCopy() throws Exception {
         // Setup the object for testing.
         KickstartData k = createKickstartWithOptions(user.getOrg());
@@ -669,6 +682,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     }
 
     // Test to make sure
+    @Test
     public void testDeepCopyEmptySets() throws Exception {
         KickstartData k = createKickstartWithChannel(user.getOrg());
 
@@ -696,6 +710,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     }
     */
 
+    @Test
     public void testISRhelRevMethods() throws Exception {
 
         KickstartData k = createKickstartWithChannel(user.getOrg());
@@ -713,6 +728,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertFalse(k.isRhel5());
     }
 
+    @Test
     public void testDefaultBridge() throws Exception {
         KickstartData k = createKickstartWithChannel(user.getOrg());
         k.getKickstartDefaults().setVirtualizationType(

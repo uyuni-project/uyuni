@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -36,6 +39,7 @@ import java.util.List;
 public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         action = new PreservationListDeleteSubmitAction();
@@ -45,6 +49,7 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
      * Test that we forward to confirm
      * @throws Exception if test fails
      */
+    @Test
     public void testForwardToConfirm() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action, "delete");
@@ -76,6 +81,7 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
      * Test that we forward to confirm
      * @throws Exception if test fails
      */
+    @Test
     public void testNothingSeleted() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);

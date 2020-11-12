@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -30,6 +32,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 public class KickstartFileDownloadCommandTest extends
         BaseKickstartCommandTestCase {
 
+    @Test
     public void testDownload() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(user);

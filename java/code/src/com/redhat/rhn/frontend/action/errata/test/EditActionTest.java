@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -41,6 +43,7 @@ import java.util.Map;
  */
 public class EditActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testUpdateErrata() throws Exception {
         EditAction action = new EditAction();
 
@@ -140,6 +143,7 @@ public class EditActionTest extends RhnBaseTestCase {
         assertEquals(1, edited.getBugs().size());
     }
 
+    @Test
     public void testSetupExecute() throws Exception {
         EditAction action = new EditAction();
 

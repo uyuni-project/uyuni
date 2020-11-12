@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -26,6 +28,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
  */
 public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testKickstartLocaleCommand() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 
@@ -42,6 +45,7 @@ public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
         assertEquals("America/New_York", tz2);
     }
 
+    @Test
     public void testKickstartLocaleCommandWithUtc() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 

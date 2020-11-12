@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.search.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
 /**
@@ -29,6 +31,7 @@ public class SystemSearchHandlerTest extends BaseHandlerTestCase {
      * empty test to act as a place holder
      * @throws Exception something bad happened
      */
+    @Test
     public void testDummy() throws Exception {
         assertTrue(true);
     }

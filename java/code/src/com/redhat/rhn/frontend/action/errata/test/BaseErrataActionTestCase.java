@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
@@ -35,6 +37,7 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
      * place.  No DB action occurs.
      * @throws Exception if test fails
      */
+    @Test
     public void testDeleteErrataConfirmPage() throws Exception {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(getAction(), "delete");
@@ -48,6 +51,7 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
         assertEquals("path?lower=10", testforward.getPath());
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(getAction());

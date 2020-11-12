@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.model.maintenance.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
@@ -38,6 +41,7 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
     private ScheduleFactory scheduleFactory;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.calendarFactory = new CalendarFactory();
@@ -47,6 +51,7 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
     /**
      * Test listing all calendars with their schedules
      */
+    @Test
     public void testListCalendarsWithSchedules() {
         MaintenanceCalendar calendarNoSchedule = new MaintenanceCalendar();
         calendarNoSchedule.setLabel("my-calendar-no-schedule");

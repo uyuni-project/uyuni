@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.manager.action.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static java.util.Collections.singletonList;
 
@@ -51,6 +54,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -60,6 +64,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      * Tests schedulePackageUpgrades().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testSchedulePackageUpgrades() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -89,6 +94,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      * Tests scheduleErrataUpdates().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testScheduleErrataUpdates() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 

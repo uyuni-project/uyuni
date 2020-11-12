@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.channel.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.user.User;
@@ -32,6 +35,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
     private int label_count = 0;
     private User user = null;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         ccc = new CreateChannelCommand();
@@ -42,6 +46,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
         ccc.setSummary("empty summary"); // valid summary
         // label and name get set in the test methods as appropriate.
     }
+    @Test
     public void testVerifyChannelName() {
 
         // channel names at least 6 chars
@@ -123,6 +128,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testVerifyChannelLabel() {
 
         // channel names at least 6 chars

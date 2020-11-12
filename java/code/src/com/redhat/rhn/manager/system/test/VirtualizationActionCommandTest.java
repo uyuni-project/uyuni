@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -29,6 +31,7 @@ import java.util.Date;
  * @version $Rev$
  */
 public class VirtualizationActionCommandTest extends BaseTestCaseWithUser {
+    @Test
     public void testLookupActionLabel() throws Exception {
 
         assertEquals(ActionFactory.TYPE_VIRTUALIZATION_START,
@@ -44,6 +47,7 @@ public class VirtualizationActionCommandTest extends BaseTestCaseWithUser {
                 VirtualizationActionCommand.lookupActionType("running", "suspend"));
     }
 
+    @Test
     public void testScheduleCommandSimple() throws Exception {
 
         this.user.addPermanentRole(RoleFactory.ORG_ADMIN);

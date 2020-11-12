@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.PackageActionFormatter;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -32,6 +34,7 @@ public class PackageActionFormatterTest extends BaseTestCaseWithUser {
      * Tests getRelatedObjectDescription().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetRelatedObjectDescription() throws Exception {
         PackageAction action = (PackageAction) ActionFactoryTest.createAction(user,
             ActionFactory.TYPE_PACKAGES_UPDATE);

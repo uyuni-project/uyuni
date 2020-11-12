@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.services.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.SHA256Crypt;
@@ -33,7 +36,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -58,6 +61,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
     private ConfigChannelSaltManager manager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.manager = ConfigChannelSaltManager.getInstance();
@@ -67,6 +71,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         TestUtils.saveAndFlush(user);
     }
 
+    @Test
     public void testCreateAndRemoveChannel() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
@@ -79,6 +84,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         assertFalse(initSls.getParentFile().exists());
     }
 
+    @Test
     public void testRemoveAssignedChannel() throws Exception {
         ConfigChannel channel1 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel1);
@@ -102,6 +108,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         }
     }
 
+    @Test
     public void testCreatedBinaryFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigFile fl = ConfigTestUtils.createConfigFile(channel);
@@ -125,6 +132,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         assertFalse(createdFile.getParentFile().exists());
     }
 
+    @Test
     public void testRenameChannelLabel() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
@@ -143,6 +151,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         initSlsAssertions(newInitSls);
     }
 
+    @Test
     public void testRemoveFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigRevision configRevision =
@@ -162,6 +171,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         assertFalse(configFileOnDisk.exists());
     }
 
+    @Test
     public void testUpdateRevision() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigRevision configRevision =

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
@@ -23,6 +25,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class ToolbarTagBasicTest extends BaseTestToolbarTag {
 
+    @Test
     public void testHelpUrl() {
 
         try {
@@ -51,6 +54,7 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testNoImgUrl() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\"><div class=\"" +
@@ -70,6 +74,7 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testImgUrl() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\"><div class=\"" +
@@ -90,6 +95,7 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testNoBase() {
         try {
             tt.setImg("/img/rhn-icon-preferences.gif");
@@ -104,6 +110,7 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
         }
     }
 
+    @Test
     public void testNoHelpUrl() {
         try {
             // make sure we don't generate a messed up help url if

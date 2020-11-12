@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +38,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class ErrataSearchActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
 
         ErrataSearchAction action = new ErrataSearchAction();

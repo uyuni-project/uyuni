@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.taskomatic.task.DailySummary;
@@ -29,6 +31,7 @@ import java.util.Map;
  */
 public class DailySummaryTest extends RhnBaseTestCase {
 
+    @Test
     public void testDequeueOrg() {
         WriteMode clear = ModeFactory.getWriteMode("test_queries",
             "delete_from_daily_summary_queue");
@@ -50,10 +53,12 @@ public class DailySummaryTest extends RhnBaseTestCase {
         assertEquals(1, rows);
     }
 
+    @Test
     public void testGetAwolServers() {
         return;
     }
 
+    @Test
     public void testGetActionInfo() {
         return;
     }
@@ -70,6 +75,7 @@ public class DailySummaryTest extends RhnBaseTestCase {
         return;
     }
 
+    @Test
     public void testQueueOrgEmails() {
         return;
     }

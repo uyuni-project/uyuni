@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.tree.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -27,6 +29,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class TreeEditOperationTest extends TreeOperationTestBase {
 
+    @Test
     public void testEdit() throws Exception {
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(ChannelFactoryTest.createTestChannel(user));
@@ -41,6 +44,7 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         assertEquals(nlabel, tree.getLabel());
     }
 
+    @Test
     public void testInvalidEdit() throws Exception {
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(ChannelFactoryTest.createTestChannel(user));

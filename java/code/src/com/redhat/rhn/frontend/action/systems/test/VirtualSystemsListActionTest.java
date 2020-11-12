@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
@@ -22,6 +24,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class VirtualSystemsListActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/VirtualList");
         actionPerform();

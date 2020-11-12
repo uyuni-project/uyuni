@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
@@ -30,6 +32,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
 
     private static RhnServletListener rl;
 
+    @Test
     public void testMessageQueueRegistration() {
         rl = new RhnServletListener();
         rl.contextInitialized(null);
@@ -47,6 +50,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         MessageQueue.stopMessaging();
     }
 
+    @Test
     public void testNewUserIntoOrgSatellite() throws Exception {
 
 

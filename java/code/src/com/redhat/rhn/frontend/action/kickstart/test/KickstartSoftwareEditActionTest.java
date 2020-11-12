@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -37,11 +40,13 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/kickstart/KickstartSoftwareEdit");
     }
 
+    @Test
     public void testSetupExecute() throws Exception {
         Channel child = ChannelTestUtils.createChildChannel(user,
                 ksdata.getTree().getChannel());
@@ -65,6 +70,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
                 getAttribute(KickstartSoftwareEditAction.CHANNELS));
     }
 
+    @Test
     public void testSubmitExecute() throws Exception {
         KickstartWizardHelper wcmd = new KickstartWizardHelper(user);
         wcmd.createCommand("url",

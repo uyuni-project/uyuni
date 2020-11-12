@@ -1,4 +1,7 @@
 package com.redhat.rhn.manager.recurringactions.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION;
@@ -54,6 +57,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
     }
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -61,6 +65,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         anotherUser = UserTestUtils.createUser("anotherUser", anotherOrg.getId());
     }
 
+    @Test
     public void testCreateMinionRecurringActions() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -86,6 +91,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
     }
 
+    @Test
     public void testCreateGroupRecurringActions() throws Exception {
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
@@ -113,6 +119,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(RecurringActionFactory.listGroupRecurringActions(group.getId()));
     }
 
+    @Test
     public void testCreateOrgRecurringActions() throws Exception {
         var org = user.getOrg();
 
@@ -138,6 +145,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(RecurringActionFactory.listOrgRecurringActions(org.getId()));
     }
 
+    @Test
     public void testCreateOrgActionCrossOrg() throws Exception {
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
@@ -163,6 +171,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateOrgActionNoOrg() {
         try {
             // let's try to create an action for a nonexisting org
@@ -174,6 +183,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testListMinionRecurringActions() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         var action = new MinionRecurringAction();
@@ -194,6 +204,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testListGroupRecurringActions() {
         ServerGroupManager manager = new ServerGroupManager();
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
@@ -216,6 +227,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testListOrgRecurringAction() {
         var action = new OrgRecurringAction();
         action.setOrg(user.getOrg());
@@ -234,6 +246,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testUpdateAction() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -259,6 +272,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         assertEquals(newCronExpr, sameAction2.getCronExpr());
     }
 
+    @Test
     public void testDeleteAction() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -286,6 +300,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         assertTrue(RecurringActionFactory.listMinionRecurringActions(recurringAction.getId()).isEmpty());
     }
 
+    @Test
     public void testCreateActionsWithSameName() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -310,6 +325,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateActionsWithSameNameDifferentEntity() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         var minion2 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -334,6 +350,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateActionWithInvalidCron() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         var invalidCron = "SOMETHING INVALID";

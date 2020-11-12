@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
@@ -63,6 +66,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/Edit");
@@ -79,6 +83,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter("sid", s.getId().toString());
     }
 
+    @Test
     public void testBasicFormSubmission() throws Exception {
         request.addParameter(SystemDetailsEditAction.NAME, "Augustus");
         request.addParameter(SystemDetailsEditAction.DESCRIPTION, "First Emperor");
@@ -105,6 +110,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertEquals("Imperial PC Rack", s.getLocation().getRack());
     }
 
+    @Test
     public void testInvalidFormSubmission() throws Exception {
         String originalName = s.getName();
         request.addParameter(SystemDetailsEditAction.NAME, "ha");
@@ -115,6 +121,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertEquals(originalName, s.getName());
     }
 
+    @Test
     public void testBaseEntitlementListForEntitledSystem() throws Exception {
         actionPerform();
         verifyForward(RhnHelper.DEFAULT_FORWARD);
@@ -137,6 +144,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(unentitledValueFound);
     }
 
+    @Test
     public void testAddonEntitlemntsList() throws Exception {
         actionPerform();
         Object addonsAtt =
@@ -146,6 +154,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertFalse(addons.isEmpty());
     }
 
+    @Test
     public void testBaseEntitlementListForUnetitledSystem() throws Exception {
         systemEntitlementManager.removeAllServerEntitlements(s);
         TestUtils.saveAndFlush(s);
@@ -170,6 +179,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(unentitledValueFound);
     }
 
+    @Test
     public void testAddEntitlement() throws Exception {
         //add the base entitlement to the request to make sure we can
         // process both base and addon.  See BZ 229448
@@ -186,6 +196,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(s.getAddOnEntitlements().contains(EntitlementManager.VIRTUALIZATION));
     }
 
+    @Test
     public void testSetBaseEntitlement() throws Exception {
         UserTestUtils.addManagement(user.getOrg());
         Long id = s.getId();
@@ -203,6 +214,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
     }
 
+    @Test
     public void testUnentitle() throws Exception {
         request.addParameter(SystemDetailsEditAction.NAME, s.getName());
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
@@ -216,6 +228,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
 
+    @Test
     public void testCheckboxesTrue() throws Exception {
         Iterator i = s.getValidAddonEntitlementsForServer().iterator();
 
@@ -253,6 +266,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         assertEquals("Y", s.getAutoUpdate());
     }
 
+    @Test
     public void testCheckboxesFalse() throws Exception {
         Iterator i = s.getValidAddonEntitlementsForServer().iterator();
 

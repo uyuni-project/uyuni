@@ -1,5 +1,7 @@
 package com.redhat.rhn.taskomatic.task.gatherer.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,6 +28,7 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
      * corresponding VirtualInstances are created.
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testLinking() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData("gatherer.out.json").getPath());
         Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);

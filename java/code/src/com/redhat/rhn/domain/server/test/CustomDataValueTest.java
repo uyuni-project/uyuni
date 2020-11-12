@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.server.CustomDataValue;
@@ -29,6 +31,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class CustomDataValueTest extends RhnBaseTestCase {
 
+    @Test
     public void testCustomDataValue() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Server server = ServerFactoryTest.createTestServer(user);

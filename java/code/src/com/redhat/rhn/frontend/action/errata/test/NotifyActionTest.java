@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -39,6 +41,7 @@ import org.apache.struts.action.ActionMapping;
  */
 public class NotifyActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testNotifyAction() throws Exception {
         NotifyAction action = new NotifyAction();
 

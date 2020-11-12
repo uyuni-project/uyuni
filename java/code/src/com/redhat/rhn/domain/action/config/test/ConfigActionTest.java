@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -28,6 +30,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class ConfigActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testCreate() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

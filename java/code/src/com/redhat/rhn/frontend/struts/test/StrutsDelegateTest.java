@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
@@ -21,13 +23,13 @@ import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.DynaActionForm;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * StrutsDelegateImplTest
  * @version $Rev$
  */
-public class StrutsDelegateTest extends TestCase {
+public class StrutsDelegateTest extends Assert {
 
     private class StrutsDelegateStub extends StrutsDelegate {
     }
@@ -36,7 +38,7 @@ public class StrutsDelegateTest extends TestCase {
      * @param name The name of the TestCase
      */
     public StrutsDelegateTest(String name) {
-        super(name);
+
     }
 
     /**
@@ -55,6 +57,7 @@ public class StrutsDelegateTest extends TestCase {
     /**
      *
      */
+    @Test
     public void testGetTextAreaValue() {
         String value = "asdf\r\nasdfwerwer\rasdf\n\radsfhjhhasdf";
         DynaActionForm form = new RhnMockDynaActionForm();

@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.entitlement.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.entitlement.OSImageBuildHostEntitlement;
@@ -45,6 +47,7 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         traditional.setOs("SLES");
@@ -69,6 +72,7 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServerWithGrains() {
         // Nothing to test
     }

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -33,6 +35,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class CancelKickstartTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testCanceledActions() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
         KickstartData k = KickstartDataTest.

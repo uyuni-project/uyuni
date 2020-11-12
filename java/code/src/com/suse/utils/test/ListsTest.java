@@ -14,19 +14,23 @@
  */
 package com.suse.utils.test;
 
+import org.junit.Test;
+
 import com.suse.utils.Lists;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ListsTest extends TestCase {
+public class ListsTest extends Assert {
 
+    @Test
    public void testEmpty() {
        assertTrue(Lists.combinations(Collections.emptyList()).isEmpty());
    }
 
+    @Test
    public void testCombinations() {
       assertTrue(
           Lists.combinations(Arrays.asList(
@@ -51,6 +55,7 @@ public class ListsTest extends TestCase {
       );
    }
 
+    @Test
    public void testCombination() {
        List<List<Integer>> combinations = Lists.combinations(Arrays.asList(
                Arrays.asList(1, 2),

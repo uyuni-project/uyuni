@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -42,6 +44,7 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
      * Tests the execution of this Cobbler command.
      * @throws Exception if unforeseen problems arise
      */
+    @Test
     public void testStore() throws Exception {
         // create a pre-existing system, profile and distro to test they have
         // been replaced

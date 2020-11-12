@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.cobbler.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
@@ -30,6 +32,7 @@ import java.io.File;
  */
 public class CobblerSnippetTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testReadOnly() throws Exception {
        String contents = TestUtils.randomString();
        String path = CobblerSnippet.getCobblerSnippetsDir() +
@@ -58,6 +61,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
        }
    }
 
+    @Test
     public void testEditable() throws Exception {
         String contents = TestUtils.randomString();
         String name = TestUtils.randomString();
@@ -90,6 +94,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
         assertFalse(snip.getPath().exists());
     }
 
+    @Test
     public void testIllegalCreates() throws Exception {
         String contents = TestUtils.randomString();
         String name = TestUtils.randomString() + "/HoHO";

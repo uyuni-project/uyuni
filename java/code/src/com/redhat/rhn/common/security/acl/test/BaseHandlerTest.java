@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.security.acl.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.security.acl.BaseHandler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -25,11 +28,13 @@ public class BaseHandlerTest extends RhnBaseTestCase {
 
     private TestHandler th;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         th = new TestHandler();
     }
 
+    @Test
     public void testMutlivaluedStringArray() {
         String[] s = { "10", "20" };
         Long rc = th.getAsLong(s);
@@ -37,6 +42,7 @@ public class BaseHandlerTest extends RhnBaseTestCase {
         assertEquals(Long.valueOf(10), rc);
     }
 
+    @Test
     public void testSingleStringArray() {
         String[] s = { "20" };
         Long rc = th.getAsLong(s);
@@ -44,17 +50,20 @@ public class BaseHandlerTest extends RhnBaseTestCase {
         assertEquals(Long.valueOf(20), rc);
     }
 
+    @Test
     public void testString() {
         Long rc = th.getAsLong("20");
         assertNotNull(rc);
         assertEquals(Long.valueOf(20), rc);
     }
 
+    @Test
     public void testNull() {
         Long rc = th.getAsLong(null);
         assertNull(rc);
     }
 
+    @Test
     public void testUnparsable() {
         try {
             th.getAsLong("foobar");
@@ -74,6 +83,7 @@ public class BaseHandlerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLongParam() {
         Long param = 10L;
         Long rc = th.getAsLong(param);

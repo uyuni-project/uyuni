@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -151,12 +154,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     );
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         server = createTestServer(user);
         assertNotNull(server.getId());
     }
 
+    @Test
     public void testListConfigEnabledSystems() throws Exception {
         //Only Config Admins can use this manager function.
         //Making the user a config admin will also automatically
@@ -171,6 +176,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(systems.contains(s));
     }
 
+    @Test
     public void testServerGroupMembers() throws Exception {
         Server s = createTestServer(user);
         assertNotNull(s.getEntitledGroups());
@@ -196,6 +202,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, testServer.getChannels().size());
     }
 
+    @Test
     public void testCustomDataValues() throws Exception {
         Org org = user.getOrg();
         Server testServer = createTestServer(user);
@@ -228,17 +235,20 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testServerLookup() {
         assertNull(ServerFactory.lookupByIdAndOrg(-1234L, user.getOrg()));
         assertNotNull(ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg()));
     }
 
+    @Test
     public void testServerArchLookup() {
         assertNull(ServerFactory.lookupServerArchByLabel("8dafs8320921kfgbzz"));
         assertNotNull(ServerFactory.lookupServerArchByLabel("i386-redhat-linux"));
     }
 
+    @Test
     public void testServerGroupType() throws Exception {
         //let's hope nobody calls their server group this
         assertNull(ServerFactory.lookupServerGroupTypeByLabel("8dafs8320921kfgbzz"));
@@ -247,6 +257,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled().getLabel()));
     }
 
+    @Test
     public void testCreateServer() throws Exception {
         Server newS = createTestServer(user);
         newS.getNetworkInterfaces().clear();
@@ -283,6 +294,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Test editing a server group.
      * @throws Exception something bad happened
      */
+    @Test
     public void testServerGroups() throws Exception {
         Long id = server.getId();
 
@@ -315,6 +327,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testAddOrRemoveServersToOrFromGroup() throws Exception {
         User user1 = UserTestUtils.findNewUser("userForAddingServers1", "orgForAddingServers1" +
                 this.getClass().getSimpleName());
@@ -406,6 +419,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(serverGroup.getCurrentMembers().longValue(), 1L);
     }
 
+    @Test
     public void testAddRemove() throws Exception {
 
         //Test adding/removing server from group
@@ -434,6 +448,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testAddNoteToServer() throws Exception {
         Set notes = server.getNotes();
         assertNotNull(notes);
@@ -463,6 +478,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(3, notes.size());
     }
 
+    @Test
     public void testAddDeviceToServer() throws Exception {
 
         Set devs = server.getDevices();
@@ -497,6 +513,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, devs.size());
     }
 
+    @Test
     public void testAddingRamToServer() throws Exception {
         server.setRam(1024);
         assertEquals(1024, server.getRam());
@@ -515,6 +532,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(256, server2.getSwap());
     }
 
+    @Test
     public void testAddingDmiToServer() throws Exception {
 
         Dmi dmi = new Dmi();
@@ -544,6 +562,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Test making two Servers.
      * @throws Exception something bad happened
      */
+    @Test
     public void testTwoServers() throws Exception {
         Server s1 = createTestServer(user);
         Server s2 = createTestServer(user);
@@ -551,6 +570,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(s2);
     }
 
+    @Test
     public void testGetChildChannels() throws Exception {
         Server s1 = ServerTestUtils.createTestSystem(user);
         assertTrue(s1.getChildChannels().isEmpty());
@@ -574,6 +594,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Test that server does not have a specific entitlement.
      * @throws Exception something bad happened
      */
+    @Test
     public void testServerDoesNotHaveSpecificEntitlement() throws Exception {
 
         // The default test server should not have a virtualization entitlement.
@@ -803,6 +824,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     // This may be busted , can comment out
+    @Test
     public void testCompatibleWithServer() throws Exception {
         /*
          * here we create a user as an org admin.
@@ -843,6 +865,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue("Didn't get back the expected values", found);
     }
 
+    @Test
     public void testListAdministrators() throws Exception {
 
         //The org admin user
@@ -905,6 +928,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
          assertFalse(containsNonGroupAdmin);
       }
 
+    @Test
     public void testGetServerHistory() throws Exception {
 
         Server serverTest = ServerFactoryTest.createTestServer(user);
@@ -981,6 +1005,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testUnsubscribeFromAllChannels() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         ChannelFactoryTest.createBaseChannel(user);
@@ -993,6 +1018,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, server.getChannels().size());
     }
 
+    @Test
     public void testSet() throws Exception {
         Server serverIn = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -1013,6 +1039,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testListSnapshotsForServer() throws Exception {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
@@ -1027,6 +1054,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertContains(snap.getGroups(), grp);
     }
 
+    @Test
     public void testLookupSnapshotById() throws Exception {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
@@ -1037,6 +1065,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testDeleteSnapshot() throws Exception {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
@@ -1049,6 +1078,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testGetSnapshotTags() throws Exception {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
@@ -1072,6 +1102,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertContains(tags, tag);
     }
 
+    @Test
     public void testErrataAction() throws Exception {
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
 
@@ -1154,6 +1185,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testlistNewestPkgsForServerErrata() throws Exception {
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
         PackageName p2Name = PackageNameTest.createTestPackageName("testPackage2-" + TestUtils.randomString());
@@ -1246,6 +1278,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(p1v3.getPackageEvr().toString(), packages.get(p1v3.getPackageName().getName()));
     }
 
+    @Test
     public void testListErrataNamesForServer() throws Exception {
         Set<Long> serverIds = new HashSet<Long>();
         Set<Long> errataIds = new HashSet<Long>();
@@ -1279,6 +1312,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false, false));
     }
 
+    @Test
     public void testListErrataNamesForServerSLE11() throws Exception {
         Set<Long> serverIds = new HashSet<Long>();
         Set<Long> errataIds = new HashSet<Long>();
@@ -1317,6 +1351,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Tests assignment of a server path to a minion.
      * @throws Exception - if anything goes wrong.
      */
+    @Test
     public void testAddRemoveServerPath() throws Exception {
         Server minion = ServerTestUtils.createTestSystem();
         Server proxy = ServerTestUtils.createTestSystem();
@@ -1344,6 +1379,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * set.
      * @throws Exception - if anything goes wrong.
      */
+    @Test
     public void testNestedProxyPosition() throws Exception {
         Server proxiedProxy = ServerTestUtils.createTestSystem();
         Server proxy = ServerTestUtils.createTestSystem();
@@ -1389,6 +1425,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * in rhnServer.
      * @throws Exception - if anything goes wrong.
      */
+    @Test
     public void testLookupProxyServer() throws Exception {
         Server s = createTestServer(user,
                 false,
@@ -1411,6 +1448,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * in rhnServer.
      * @throws Exception - if anything goes wrong.
      */
+    @Test
     public void testLookupProxyServerWithSimpleName() throws Exception {
         Server s = createTestServer(user,
                 false,
@@ -1429,6 +1467,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
     }
 
+    @Test
     public void testFindServersInSetByChannel() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel parent = ChannelFactoryTest.createTestChannel(user);
@@ -1453,6 +1492,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testFilterSystemsWithMaintOnlyActions() throws Exception {
         Server systemWith = MinionServerFactoryTest.createTestMinionServer(user);
         Server systemWithout = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1478,6 +1518,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testSetMaintenanceWindowToSystems() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         MaintenanceSchedule schedule = new MaintenanceManager().createSchedule(

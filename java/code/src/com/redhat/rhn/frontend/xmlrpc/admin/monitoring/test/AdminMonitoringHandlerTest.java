@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.admin.monitoring.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -27,6 +29,7 @@ import java.util.function.BiFunction;
 
 public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
 
+    @Test
     public void testGetStatus() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -49,6 +52,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
         assertEquals("enabled", res.get("self_monitoring"));
     }
 
+    @Test
     public void testEnable() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -71,6 +75,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
         assertEquals("enabled:restart_needed", res.get("self_monitoring"));
     }
 
+    @Test
     public void testDisable() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -93,6 +98,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
         assertEquals("disabled:restart_needed", res.get("self_monitoring"));
     }
 
+    @Test
     public void testRoleCheck() {
         AdminMonitoringHandler handler = new AdminMonitoringHandler();
 

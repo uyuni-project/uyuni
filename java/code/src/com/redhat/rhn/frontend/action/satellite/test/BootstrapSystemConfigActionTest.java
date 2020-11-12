@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.satellite.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.action.satellite.BootstrapSystemConfigAction;
@@ -33,6 +36,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
@@ -44,6 +48,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
      * Tests disabling and enabling bootstrap discovery.
      * @throws Exception if things go wrong
      */
+    @Test
     public void testDisableEnableBootstrapDiscovery() throws Exception {
         actionPerform();
 
@@ -89,6 +94,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
      * Test enabling bootstrap from a different Org.
      * @throws Exception if things go wrong
      */
+    @Test
     public void testBootstrapDifferentOrg() throws Exception {
         addRequestParameter(BootstrapSystemConfigAction.DISABLE, "submitted");
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());

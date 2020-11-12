@@ -15,6 +15,8 @@
 
 package com.suse.manager.gatherer.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -33,16 +35,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * Tests for {@link GathererJsonIO}
  */
-public class GathererJsonIOTest extends TestCase {
+public class GathererJsonIOTest extends Assert {
 
     private static final String MODULELIST = "modulelist.json";
     private static final String GATHEREROUT = "exampleGathererOutput.json";
 
+    @Test
     public void testReadGathererModules() throws Exception {
         String json =
                 FileUtils.readStringFromFile(TestUtils.findTestData(MODULELIST).getPath());
@@ -75,6 +78,7 @@ public class GathererJsonIOTest extends TestCase {
         }
     }
 
+    @Test
     public void testVHMtoJson() throws Exception {
         Credentials creds = CredentialsFactory.createVHMCredentials();
         creds.setUsername("tux");
@@ -111,6 +115,7 @@ public class GathererJsonIOTest extends TestCase {
         assertTrue(s.contains("\"module\": \"VMware\""));
     }
 
+    @Test
     public void testReadGathererOutput() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
         Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);
@@ -135,6 +140,7 @@ public class GathererJsonIOTest extends TestCase {
         assertEquals(Collections.emptyMap(), h.getOptionalVmData());
     }
 
+    @Test
     public void testReadGathererOutputWithVmAddiotnalData() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
         Map<String, Map<String, HostJson>> hosts = new GathererJsonIO().readHosts(json);

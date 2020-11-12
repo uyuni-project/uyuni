@@ -14,12 +14,15 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.CompressionUtil;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 
 public class CompressionUtilTest extends RhnBaseTestCase {
 
+    @Test
     public void testCompress() {
         String toComp = "<xml> my foo xml</xml>";
         byte[] gzip = CompressionUtil.gzipCompress(toComp);

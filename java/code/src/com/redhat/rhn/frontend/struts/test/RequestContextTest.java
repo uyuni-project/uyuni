@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -138,6 +140,7 @@ public class RequestContextTest extends MockObjectTestCase {
     /**
      * @throws Exception if an error occurs
      */
+    @Test
     public void testbuildPageLink() throws Exception {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setupAddParameter("someparam", "value");

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
@@ -36,6 +39,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         server = ServerTestUtils.createTestSystem(user);
@@ -59,6 +63,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     }
 
 
+    @Test
     public void testExecute() throws Exception {
 
         actionPerform();
@@ -85,6 +90,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testConfirmUpdateBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.edit.confirm_update_base");
         Channel newBase = ChannelTestUtils.createBaseChannel(user);
@@ -99,6 +105,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getAttribute(SystemChannelsAction.NEW_BASE_CHANNEL));
     }
 
+    @Test
     public void testUpdateBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.confirmNewBase.modifyBaseSoftwareChannel");
         Channel newBase = ChannelTestUtils.createBaseChannel(user);
@@ -111,6 +118,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testUpdateNoBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.confirmNewBase.modifyBaseSoftwareChannel");
         addRequestParameter(SystemChannelsAction.NEW_BASE_CHANNEL_ID, "-1");
@@ -121,6 +129,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testUpdateChildChannels() throws Exception {
         addDispatchCall("sdc.channels.edit.update_sub");
 

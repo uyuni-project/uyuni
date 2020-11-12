@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -29,6 +31,7 @@ import java.util.LinkedHashSet;
  */
 public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testClone() throws Exception {
         KickstartCloneCommand cmd = new KickstartCloneCommand(ksdata.getId(), user,
                 "someNewLabel [" + TestUtils.randomString() + "]");

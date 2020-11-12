@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -30,6 +33,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
     protected KickstartData ksdata;
     protected KickstartData ksdataOptions;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
@@ -41,12 +45,14 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartOptionsEdit");
         actionPerform();
         assertNotNull(request.getAttribute(KickstartAdvancedOptionsAction.OPTIONS));
     }
 
+    @Test
     public void testSubmit() throws Exception {
         setRequestPathInfo("/kickstart/KickstartOptionsEdit");
         addRequestParameter(KickstartAdvancedOptionsAction.SUBMITTED,
@@ -99,6 +105,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
      * parent set. Page is loaded that has a ksdata with options already
      * set. The reqeste params will replace the existing option set
      */
+    @Test
     public void testReplaceSubmit() throws Exception {
         setRequestPathInfo("/kickstart/KickstartOptionsEdit");
         addRequestParameter(KickstartAdvancedOptionsAction.SUBMITTED,

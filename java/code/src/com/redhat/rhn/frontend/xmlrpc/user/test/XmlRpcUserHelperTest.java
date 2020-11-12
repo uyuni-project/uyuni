@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
@@ -21,12 +23,14 @@ import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 
 public class XmlRpcUserHelperTest extends BaseHandlerTestCase {
 
+    @Test
     public void testGetInstance() {
         Object o = XmlRpcUserHelper.getInstance();
         assertNotNull(o);
         assertEquals(XmlRpcUserHelper.class, o.getClass());
     }
 
+    @Test
     public void testLookupTargetUser() {
         User u = XmlRpcUserHelper.getInstance().lookupTargetUser(admin, admin.getLogin());
         assertEquals(admin, u);

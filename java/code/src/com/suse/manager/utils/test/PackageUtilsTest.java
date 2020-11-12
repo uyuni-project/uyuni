@@ -14,6 +14,8 @@
  */
 package com.suse.manager.utils.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -24,6 +26,7 @@ import com.suse.manager.webui.controllers.DownloadController.PkgInfo;
 
 public class PackageUtilsTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testIsType() throws Exception {
         Package pkgRpm = PackageTest.createTestPackage(user.getOrg());
         pkgRpm.setPackageArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
@@ -52,6 +55,7 @@ public class PackageUtilsTest extends BaseTestCaseWithUser {
      *   - 1:2-3-4-5
      *
      */
+    @Test
     public void testParseDebianEvr() {
 
         PackageEvr evr;
@@ -87,6 +91,7 @@ public class PackageUtilsTest extends BaseTestCaseWithUser {
         assertEquals("5", evr.getRelease());
     }
 
+    @Test
     public void testParseRpmEvr() {
         PackageEvr evr;
 

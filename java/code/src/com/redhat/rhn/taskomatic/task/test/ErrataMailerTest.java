@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -28,6 +30,7 @@ import java.util.Map;
 
 public class ErrataMailerTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testErrataMailer() throws Exception {
         final Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         final Channel c = ChannelFactoryTest.createBaseChannel(user);

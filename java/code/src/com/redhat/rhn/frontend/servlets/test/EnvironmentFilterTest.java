@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -26,11 +29,13 @@ import org.apache.struts.Globals;
  */
 public class EnvironmentFilterTest extends BaseFilterTst {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.request.setRequestURL("http://rhn.webdev.redhat.com/rhn/manager/login");
     }
 
+    @Test
     public void testNonSSLUrls() throws Exception {
 
         EnvironmentFilter filter = new EnvironmentFilter();
@@ -70,6 +75,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         assertNull(response.getRedirect());
     }
 
+    @Test
     public void testAddAMessage() throws Exception {
         Config c = Config.get();
         boolean origValue = ConfigDefaults.get().isSSLAvailable();

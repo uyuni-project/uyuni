@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.user.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
@@ -30,12 +33,14 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
     private CreateUserCommand command;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         command = new CreateUserCommand();
         assertNotNull(command.getUser());
     }
 
+    @Test
     public void testLongNames() {
         int maxLogin = UserDefaults.get().getMaxUserLength();
         int maxPassword = UserDefaults.get().getMaxPasswordLength();
@@ -69,6 +74,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testValidate() {
         String invalidLogin = "";
         String validLogin   = TestUtils.randomString();
@@ -104,6 +110,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         assertEquals(0, errors.length);
     }
 
+    @Test
     public void testStore() {
         Org org = UserTestUtils.findNewOrg("testorg");
 
@@ -130,6 +137,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         assertEquals(PageSizeDecorator.getDefaultPageSize(), result.getPageSize());
     }
 
+    @Test
     public void testUsernameValidation() {
         // setup stuff required for command
         command.setEmail("validemail@mycompany.com");
@@ -180,6 +188,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testValidatePasswordHasTabCharacter() throws Exception {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
@@ -189,6 +198,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         assertEquals(1, errors.length);
     }
 
+    @Test
     public void testValidatePasswordHasNewlineCharacter() throws Exception {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");

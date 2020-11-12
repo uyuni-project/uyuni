@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
+import org.junit.Test;
+
 import static java.util.Optional.empty;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -72,6 +74,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                 "https://bugzilla.redhat.com/show_bug.cgi?id=" + longIn);
     }
 
+    @Test
     public void testPublish() throws Exception {
         Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
@@ -119,6 +122,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testPublishToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
@@ -157,6 +161,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCreateAndLookupVendorAndUserErrata() throws Exception {
         //create user published errata
         Errata userPublishedErrata = createTestPublishedErrata(user.getOrg().getId());
@@ -223,6 +228,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(erratas.stream().allMatch(e -> e instanceof PublishedErrata));
     }
 
+    @Test
     public void testCreateAndLookupErrata() throws Exception {
         //published
         Errata published = createTestPublishedErrata(user.getOrg().getId());
@@ -251,6 +257,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(unpubid, errata.getId());
     }
 
+    @Test
     public void testCreateAndLookupErrataNullOrg() throws Exception {
         //create a published errata with null Org
         Errata published = createTestPublishedErrata(null);
@@ -284,12 +291,14 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(unpubid, errata.getId());
     }
 
+    @Test
     public void testLastModified() throws Exception {
         Errata published = createTestPublishedErrata(user.getOrg().getId());
         published = reload(published);
         assertNotNull(published.getLastModified());
     }
 
+    @Test
     public void testBugs() throws Exception {
         //test unpublished
         Errata e = createTestUnpublishedErrata(user.getOrg().getId());
@@ -304,6 +313,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, e.getBugs().size());
     }
 
+    @Test
     public void testFiles() throws Exception {
         //test unpublished
         Errata e = createTestUnpublishedErrata(user.getOrg().getId());
@@ -453,6 +463,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setSeverity(s);
     }
 
+    @Test
     public void testCreateClone() throws Exception {
 
        Errata published = createTestPublishedErrata(user.getOrg().getId());
@@ -510,6 +521,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(clone.getOriginal().equals(published));
     }
 
+    @Test
     public void testListErrataChannelPackages() {
         try {
             Channel chan = ChannelTestUtils.createBaseChannel(user);
@@ -540,6 +552,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListErrataByChannel() throws Exception {
         Channel chan = ChannelTestUtils.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getId());

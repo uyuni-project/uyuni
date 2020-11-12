@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -64,6 +67,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
@@ -84,6 +88,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      *
      * @throws Exception exception if test fails
      */
+    @Test
     public void testUpdateEntitledUser() throws Exception {
         ServerFactoryTest.createTestServer(user);
         executeTests();
@@ -98,6 +103,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 baseEntitlementCounts.get(EntitlementManager.MANAGEMENT.getLabel()));
     }
 
+    @Test
     public void testVirtualizationType() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -124,6 +130,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 addonEntitlementCounts.get(EntitlementManager.VIRTUALIZATION.getLabel()));
     }
 
+    @Test
     public void testContainerBuildHostType() throws Exception {
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -145,6 +152,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 addonEntitlementCounts.get(EntitlementManager.CONTAINER_BUILD_HOST.getLabel()));
     }
 
+    @Test
     public void testOSImageBuildHostType() throws Exception {
         context.checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
@@ -180,6 +188,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      *
      * @throws Exception exception if test fails
      */
+    @Test
     public void testManagementEntitledUser() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -197,6 +206,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      *
      *
      */
+    @Test
     public void testNoEntitlements() {
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
@@ -216,6 +226,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      *
      * @throws Exception exception if test fails
      */
+    @Test
     public void testEntitlementCountMessage() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());

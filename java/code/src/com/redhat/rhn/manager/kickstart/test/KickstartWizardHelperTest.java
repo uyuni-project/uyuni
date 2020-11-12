@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
@@ -28,6 +30,7 @@ import java.util.List;
  */
 public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testVirtTypes() {
         KickstartWizardHelper helper = new KickstartWizardHelper(user);
         String origConfig = Config.get().getString(ConfigDefaults.PRODUCT_NAME);

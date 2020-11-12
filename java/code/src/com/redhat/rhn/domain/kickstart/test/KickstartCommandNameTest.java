@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -30,6 +32,7 @@ import java.util.List;
  */
 public class KickstartCommandNameTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testCommandName() throws Exception {
 
         String query = "KickstartCommandName.listAdvancedOptions";

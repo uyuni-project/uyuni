@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.xmlrpc.serializer.OrgSerializer;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -30,6 +32,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 public class OrgSerializerTest extends MockObjectTestCase {
 
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
         OrgSerializer os = new OrgSerializer();
 

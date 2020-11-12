@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.formula.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
@@ -53,6 +57,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     public FormulaMonitoringManagerTest() { }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         metadataDir = Files.createTempDirectory("metadata");
@@ -62,6 +67,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(metadataDir.toFile());
@@ -71,6 +77,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
      * Test the conditions in FormulaMonitoringManager.isMonitoringCleanupNeeded().
      * @throws Exception
      */
+    @Test
     public void testIsMonitoringCleanupNeeded() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());

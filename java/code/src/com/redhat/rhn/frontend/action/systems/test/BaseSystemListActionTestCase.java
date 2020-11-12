@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -32,6 +34,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
 
+    @Test
     public void testAddOne() throws Exception {
         BaseSystemListAction action = createAction();
         ActionHelper ah = new ActionHelper();
@@ -56,6 +59,7 @@ public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
         RhnSetActionTest.verifyRhnSetData(ah.getUser(), RhnSetDecl.SYSTEMS, 1);
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         BaseSystemListAction action = createAction();
         ActionHelper ah = new ActionHelper();

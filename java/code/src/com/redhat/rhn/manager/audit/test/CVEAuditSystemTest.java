@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
@@ -26,11 +28,12 @@ import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
  *
  * @version $Rev$
  */
-public class CVEAuditSystemTest extends TestCase {
+public class CVEAuditSystemTest extends Assert {
 
     /**
      * Make sure that the set of channels is working as expected.
      */
+    @Test
     public void testChannels() {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(0L);
         system.addChannel(new ChannelIdNameLabelTriple(1L, "foo", "f"));
@@ -48,6 +51,7 @@ public class CVEAuditSystemTest extends TestCase {
     /**
      * Make sure that the set of erratas is working as expected.
      */
+    @Test
     public void testErratas() {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(0L);
         system.addErrata(new ErrataIdAdvisoryPair(1L, "foo"));

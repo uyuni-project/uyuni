@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -25,6 +27,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/details/ErrataConfirm");
 

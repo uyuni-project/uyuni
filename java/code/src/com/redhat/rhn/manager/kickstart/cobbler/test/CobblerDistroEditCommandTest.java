@@ -1,4 +1,7 @@
 package com.redhat.rhn.manager.kickstart.cobbler.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroEditCommand;
@@ -23,6 +26,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      * @throws Exception if anything goes wrong
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -37,6 +41,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDistroEdit() throws Exception {
         CobblerDistroEditCommand cmd = new
             CobblerDistroEditCommand(sourceTree, user);
@@ -54,6 +59,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testParaDistroRecreateXenDistroOnEdit() throws Exception {
         // remove the distro
         Distro xen = Distro.lookupById(connection, sourceTree.getCobblerXenId());
@@ -76,6 +82,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testParaDistroXenDistroRemovedOnEdit() throws Exception {
         // verify it's there
         assertNotNull(Distro.lookupById(connection, sourceTree.getCobblerXenId()));
@@ -97,6 +104,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testParaDistroEditIdStaysSameOnEdit() throws Exception {
         String xenIdBefore = sourceTree.getCobblerXenId();
 

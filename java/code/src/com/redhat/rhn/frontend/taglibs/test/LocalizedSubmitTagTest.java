@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.taglibs.LocalizedSubmitTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
@@ -30,6 +32,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class LocalizedSubmitTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testTagOutputDefault() {
         LocalizedSubmitTag ltag = new LocalizedSubmitTag();
         ltag.setValueKey("none.message");
@@ -55,6 +58,7 @@ public class LocalizedSubmitTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testTagOutputWithStyle() {
         LocalizedSubmitTag ltag = new LocalizedSubmitTag();
         ltag.setValueKey("none.message");

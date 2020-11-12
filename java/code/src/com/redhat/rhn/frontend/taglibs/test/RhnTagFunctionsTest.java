@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.taglibs.RhnTagFunctions;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -25,15 +28,18 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class RhnTagFunctionsTest extends RhnBaseTestCase {
 
+    @Before
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
         super.setUp();
     }
 
+    @Test
     public void testConfig() {
         assertNotNull(RhnTagFunctions.getConfig("web.version"));
     }
 
+    @Test
     public void testLocalize() {
         assertNotNull(RhnTagFunctions.localizedValue("test.string"));
         assertNotNull(RhnTagFunctions.localizedValue("test.string", "asdf|asdf"));

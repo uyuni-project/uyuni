@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
+import org.junit.After;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
@@ -57,7 +59,8 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         manager = new PxtCookieManager();
@@ -77,7 +80,8 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         } });
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 

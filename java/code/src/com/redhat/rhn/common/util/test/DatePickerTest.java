@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.DatePicker;
 
 import java.text.ParseException;
@@ -25,16 +27,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * DatePickerTest
  * @version $Rev$
  */
-public class DatePickerTest extends TestCase {
+public class DatePickerTest extends Assert {
 
     private static final TimeZone TZ = TimeZone.getTimeZone("America/Los_Angeles");
 
+    @Test
     public void testDateFormat() {
         DatePicker p = makePicker(Locale.ENGLISH);
         assertTrue(p.isLatin());
@@ -45,6 +48,7 @@ public class DatePickerTest extends TestCase {
         assertTrue(p.isDayBeforeMonth());
     }
 
+    @Test
     public void testSetDate() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
@@ -57,6 +61,7 @@ public class DatePickerTest extends TestCase {
         assertEquals(33, p.getMinute());
     }
 
+    @Test
     public void testPositiveRange() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH, DatePicker.YEAR_RANGE_POSITIVE);
         Date d = parseDate("2005-08-03T15:33");
@@ -70,6 +75,7 @@ public class DatePickerTest extends TestCase {
     }
 
 
+    @Test
     public void testReadWriteFromMap() throws ParseException {
         Map form = new HashMap();
         DatePicker p = makePicker(Locale.ENGLISH);
@@ -82,6 +88,7 @@ public class DatePickerTest extends TestCase {
         assertEquals(d, p.getDate());
     }
 
+    @Test
     public void testBadDate() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
@@ -90,6 +97,7 @@ public class DatePickerTest extends TestCase {
         assertNull(p.getDate());
     }
 
+    @Test
     public void testBadField() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");

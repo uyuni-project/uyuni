@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -44,6 +47,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
     private KickstartRawData ksdata;
     private final String fileContents = "test kickstart file\n";
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -54,6 +58,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testLookupAndSaveKickstartRawData() throws Exception {
 
         ksdata.setData(fileContents);
@@ -77,6 +82,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
         assertEquals(fileContents, checker.getData());
     }
 
+    @Test
     public void testDeepCopy() throws Exception {
         ksdata.setData(fileContents);
         CobblerProfileCreateCommand cmd = new CobblerProfileCreateCommand(ksdata);
@@ -94,6 +100,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
         assertEquals(clone.getData(), ksdata.getData());
     }
 
+    @Test
     public void testEditActualFile() throws Exception {
         String newContents = TestUtils.randomString() + "\n";
         FileUtils.writeStringToFile(newContents, ksdata.getCobblerFileName());
@@ -101,6 +108,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
         assertEquals(newContents, ksdata.getData());
     }
 
+    @Test
     public void testEditExisting() throws Exception {
         String newContents = TestUtils.randomString() + "\n";
         ksdata.setData(newContents);

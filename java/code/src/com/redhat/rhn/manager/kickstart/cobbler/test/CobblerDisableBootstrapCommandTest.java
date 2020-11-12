@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDisableBootstrapCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerEnableBootstrapCommand;
@@ -39,6 +41,7 @@ public class CobblerDisableBootstrapCommandTest extends BaseTestCaseWithUser {
      * Tests the execution of this Cobbler command.
      * @throws Exception if unforeseen problems arise
      */
+    @Test
     public void testStore() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
 

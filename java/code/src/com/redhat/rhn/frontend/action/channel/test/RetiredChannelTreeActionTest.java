@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -36,6 +38,7 @@ import java.util.Date;
  */
 public class RetiredChannelTreeActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         RetiredChannelTreeAction action = new RetiredChannelTreeAction() {
             protected DataResult<ChannelTreeNode> getDataResult(User user, ListControl lc) {

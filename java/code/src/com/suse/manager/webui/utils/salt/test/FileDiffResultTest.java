@@ -1,5 +1,7 @@
 package com.suse.manager.webui.utils.salt.test;
 
+import org.junit.Test;
+
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -11,6 +13,7 @@ import java.util.Optional;
 
 public class FileDiffResultTest extends JMockBaseTestCaseWithUser  {
     static final String JSON_FILE_DIFF_RESPONSE = "dummy_files_diff_res.json";
+    @Test
     public void testFileDiffResult() throws Exception {
         String jsonResult = TestUtils.readAll(TestUtils.findTestData(JSON_FILE_DIFF_RESPONSE));
         TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<Map<String, FilesDiffResult>>() { };

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -29,7 +32,8 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
     private RhnMockHttpServletRequest mockRequest;
     private RhnHttpServletRequest request;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new MockHttpSession());
@@ -40,6 +44,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testNoHeaders() throws Exception {
         mockRequest.setupServerName("localhost");
         mockRequest.setupGetServerPort(8080);
@@ -51,6 +56,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverrideServerName() throws Exception {
         mockRequest.setupServerName("localhost");
         mockRequest.setupGetServerPort(8080);
@@ -63,6 +69,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testNoOverrideSecure() throws Exception {
         mockRequest.setupIsSecure(false);
         assertFalse(request.isSecure());
@@ -72,6 +79,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverrideSecureHosted() throws Exception {
 
         mockRequest.setupIsSecure(false);
@@ -85,6 +93,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testOverrideSecureSat() throws Exception {
         return;
     }

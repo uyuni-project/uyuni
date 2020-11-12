@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.utils.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.google.gson.JsonPrimitive;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -46,6 +49,7 @@ import java.util.Optional;
 public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         bootstrapper = new RegularMinionBootstrapper(saltServiceMock, saltServiceMock);
@@ -57,6 +61,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testKeysDeletedAfterFailure() throws Exception {
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
@@ -89,18 +94,21 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         assertFalse(bootstrap.isSuccess());
     }
 
+    @Test
     public void testIncompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
+    @Test
     public void testIncompatibleActivationKeysTunnel() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
+    @Test
     public void testCompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));

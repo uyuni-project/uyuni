@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.UserPrefAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -42,6 +44,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testPerformExecute() throws Exception {
         UserPrefAction action = new UserPrefAction();
 

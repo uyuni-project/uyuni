@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
@@ -38,6 +41,7 @@ public class SessionFilterTest extends MockObjectTestCase {
     private HttpServletResponse response;
     private FilterChain chain;
 
+    @Before
     public void setUp() throws IOException, ServletException {
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -48,6 +52,7 @@ public class SessionFilterTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testDoFilter() throws Exception {
         SessionFilter filter = new SessionFilter();
         Session sess = HibernateFactory.getSession();

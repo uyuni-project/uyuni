@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.org.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.SystemMigrationFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -33,6 +35,7 @@ import java.util.List;
  */
 public class SystemMigrationFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testSystemMigrationFactory() throws Exception {
 
         // Setup

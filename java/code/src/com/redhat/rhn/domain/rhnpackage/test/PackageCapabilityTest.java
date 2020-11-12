@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -31,6 +33,7 @@ public class PackageCapabilityTest extends RhnBaseTestCase {
      * PackageCapabilities and write them to the db.
      * @throws Exception something bad happened
      */
+    @Test
     public void testPackageCapability() throws Exception {
 
         PackageCapability p = createTestCapability();

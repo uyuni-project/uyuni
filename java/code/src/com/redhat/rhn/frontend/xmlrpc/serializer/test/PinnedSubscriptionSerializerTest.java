@@ -15,9 +15,11 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.frontend.xmlrpc.serializer.PinnedSubscriptionSerializer;
-import junit.framework.TestCase;
+import org.junit.Assert;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;
@@ -27,12 +29,13 @@ import java.io.Writer;
 /**
  * PinnedSubscriptionSerializer test
  */
-public class PinnedSubscriptionSerializerTest extends TestCase {
+public class PinnedSubscriptionSerializerTest extends Assert {
 
     /**
      * Simple PinnedSubscription serialization test
      * @throws IOException - if anything goes wrong
      */
+    @Test
     public void testSerialize() throws IOException {
         PinnedSubscriptionSerializer serializer = new PinnedSubscriptionSerializer();
         Writer output = new StringWriter();

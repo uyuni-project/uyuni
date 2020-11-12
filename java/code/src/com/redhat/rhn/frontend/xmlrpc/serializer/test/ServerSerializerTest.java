@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -33,6 +35,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
      * Test server of type Normal without machine Id
      * @throws Exception
      */
+    @Test
     public void testSerializeNormalServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -49,6 +52,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
      * Test server of type salt minion.
      * @throws Exception
      */
+    @Test
     public void testSerializeMinion() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(), ServerFactoryTest.TYPE_SERVER_MINION);
@@ -64,6 +68,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
      * Test server of type Normal with machine Id
      * @throws Exception
      */
+    @Test
     public void testSerializeNormalServerWithMachineId() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());

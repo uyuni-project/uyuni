@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.setup.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
@@ -34,6 +38,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Test findMirrorCredentials().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testFindAllMirrorCreds() throws Exception {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
@@ -49,6 +54,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Test findMirrorCredentials() sort order.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testFindMirrorCredentialsSortOrder() throws Exception {
         // Store some credentials
         storeTestCredentials();
@@ -79,6 +85,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Test findMirrorCredentials(long).
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testFindMirrorCredsById() throws Exception {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
@@ -92,6 +99,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Test deleteMirrorCredentials().
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testDeleteCredentials() throws Exception {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
@@ -108,6 +116,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Test makePrimaryCredentials()
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testMakePrimaryCredentials() throws Exception {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
@@ -133,6 +142,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         credsManager = new MirrorCredentialsManager();
@@ -142,7 +152,8 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
 
         // Tear down the manager class instance

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -71,6 +74,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         MockConnection.clear();
@@ -83,6 +87,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testExecuteNewSystemsDefault() throws Exception {
 
         Server server = ServerFactoryTest.createTestServer(user, true);
@@ -116,6 +121,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testExecuteSaveNewSystem() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -161,6 +167,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testExecuteReadSavedSystem() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -199,6 +206,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * Tests overwriting the configuration of an existing system.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testExecuteOverwriteExistingSystem() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -242,6 +250,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * Tests powering on a system.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testPowerOn() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -265,6 +274,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * Tests powering off a system.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testPowerOff() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -288,6 +298,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * Tests powering off and on a system.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testReboot() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -311,6 +322,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * Tests retrieving the status of a system.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetStatus() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 

@@ -1,4 +1,5 @@
 package com.redhat.rhn.manager.kickstart.cobbler.test;
+import org.junit.Before;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -22,6 +23,7 @@ public class CobblerCommandTestBase extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

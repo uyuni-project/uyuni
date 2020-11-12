@@ -13,24 +13,29 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 
-public class SerializerFactoryTest extends TestCase {
+public class SerializerFactoryTest extends Assert {
 
     private SerializerFactory factory = null;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
+
         factory = new SerializerFactory();
     }
 
+    @Test
     public void testFactory() {
         List serializers = factory.getSerializers();
         assertNotNull(serializers);

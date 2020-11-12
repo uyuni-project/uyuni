@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction;
@@ -25,6 +27,7 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
 
     private final String KICKSTART_ID = "ksid";
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartDelete");
         addRequestParameter(KickstartDetailsEditAction.COMMENTS, "test comment");
@@ -34,6 +37,7 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
+    @Test
     public void testSubmit() throws Exception {
         setRequestPathInfo("/kickstart/KickstartDelete");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED,

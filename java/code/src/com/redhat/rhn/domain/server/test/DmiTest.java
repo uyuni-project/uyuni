@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.Server;
@@ -38,6 +40,7 @@ public class DmiTest extends RhnBaseTestCase {
     public static final String ASSET = "(board: CNR780A1K11) (system: 23N7011)";
     public static final String BOARD = "MSI";
 
+    @Test
     public void testServerDmi() throws Exception {
         Dmi dmi = createTestDmi();
 

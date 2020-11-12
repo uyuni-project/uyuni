@@ -14,6 +14,10 @@
  */
 
 package com.redhat.rhn.manager.user.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,6 +80,7 @@ public class UserManagerTest extends RhnBaseTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.users = new HashSet<User>();
@@ -85,6 +90,7 @@ public class UserManagerTest extends RhnBaseTestCase {
      * {@inheritDoc}
      */
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
 
@@ -102,6 +108,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         committed = true;
     }
 
+    @Test
     public void testGrantServerGroupPermission() throws Exception {
         //Group and user have the same org, so should be possible to grant permits
         User user = UserTestUtils.findNewUser("user_1", "org_1");
@@ -207,6 +214,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testRevokeServerGroupPermission() throws Exception {
         User user = UserTestUtils.findNewUser("user_test_revoke", "org_test_revoke");
         this.users.add(user);
@@ -261,6 +269,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(userGroups.isEmpty());
     }
 
+    @Test
     public void testListRolesAssignable() throws Exception {
         User user = UserTestUtils.findNewUser();
         assertTrue(UserManager.listRolesAssignableBy(user).isEmpty());
@@ -278,6 +287,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testVerifyPackageAccess() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
@@ -287,6 +297,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         // available to all users in that org.
     }
 
+    @Test
     public void testLookup() {
         User admin = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -333,6 +344,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals(regular.getLogin(), test.getLogin());
     }
 
+    @Test
     public void testUserDisableEnable() {
         //Create test users
         User org1admin = UserTestUtils.createUser("orgAdmin1",
@@ -469,6 +481,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         UserTestUtils.assertNotOrgAdmin(usr);
     }
 
+    @Test
     public void testUsersInOrg() {
         int numTotal = 1;
         int numDisabled = 0;
@@ -527,6 +540,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testLookupUserOrgBoundaries() {
         User usr1 = UserTestUtils.findNewUser("testUser", "testOrg1", true);
         User usr2 = UserTestUtils.findNewUser("testUser", "testOrg2");
@@ -544,6 +558,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals(usr3, UserManager.lookupUser(usr1, usr3.getLogin()));
 
     }
+    @Test
     public void testStoreUser() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -554,6 +569,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals("something@changed.redhat.com", u2.getEmail());
     }
 
+    @Test
     public void testGetSystemGroups() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -564,6 +580,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertNotNull(UserManager.getSystemGroups(usr, pc));
     }
 
+    @Test
     public void testGetTimeZoneId() {
         RhnTimeZone tz = UserManager.getTimeZone(UserManager
                 .getTimeZone("Indian/Maldives").getTimeZoneId());
@@ -574,6 +591,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertNull(tz2);
     }
 
+    @Test
     public void testGetTimeZoneOlson() {
         RhnTimeZone tz = UserManager.getTimeZone("America/New_York");
         assertNotNull(tz);
@@ -583,6 +601,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertNull(tz2);
     }
 
+    @Test
     public void testGetTimeZoneDefault() {
         RhnTimeZone tz = UserManager.getDefaultTimeZone();
         assertNotNull(tz);
@@ -590,6 +609,7 @@ public class UserManagerTest extends RhnBaseTestCase {
                 .getTimeZone().getRawOffset());
     }
 
+    @Test
     public void testLookupTimeZoneAll() {
         List<RhnTimeZone> lst = UserManager.lookupAllTimeZones();
         assertTrue(lst.size() > 30);
@@ -605,6 +625,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals(UserManager.getTimeZone("Europe/Paris"), lst.get(lst.size() - 1));
     }
 
+    @Test
    public void testUsersInSet() throws Exception {
        User user = UserTestUtils.findNewUser("testUser",
                "testOrg" + this.getClass().getSimpleName());
@@ -629,6 +650,7 @@ public class UserManagerTest extends RhnBaseTestCase {
        assertNotNull(m.getUserLogin());
    }
 
+    @Test
    public void testLookupServerPreferenceValue() throws Exception {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);
@@ -659,6 +681,7 @@ public class UserManagerTest extends RhnBaseTestCase {
                                                                .RECEIVE_NOTIFICATIONS));
    }
 
+    @Test
    public void testVisibleSystemsAsDtoFromList() throws Exception {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);
@@ -672,6 +695,7 @@ public class UserManagerTest extends RhnBaseTestCase {
        assertTrue(dr.size() >= 1);
    }
 
+    @Test
    public void testSystemSearchResults() throws Exception {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);

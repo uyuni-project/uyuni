@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -31,6 +33,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
     public static final String FWD_SUCCESS = "/configuration/ChannelOverview.do?ccid=";
     public static final String FWD_ERROR = "/WEB-INF/pages/configuration/channel/channelcreate.jsp";
 
+    @Test
     public void testExecuteNoFiles() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -50,6 +53,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
         assertTrue(request.getAttribute("summary") instanceof ChannelSummary);
     }
 
+    @Test
     public void testCreateChannelWithValidLabel() {
         ConfigChannel channel = doCreateChannelAction("channel1");
         assertNotNull(channel);
@@ -58,6 +62,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
         assertTrue(forwardPath.startsWith(FWD_SUCCESS));
     }
 
+    @Test
     public void testCreateChannelWithDotsInLabel() {
         ConfigChannel channel = doCreateChannelAction("channel.with.dots");
         assertNull(channel);
@@ -66,6 +71,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
         assertTrue(forwardPath.startsWith(FWD_ERROR));
     }
 
+    @Test
     public void testCreateChannelWithSpacesInLabel() {
         ConfigChannel channel = doCreateChannelAction("invalid_channel_123 with spaces");
         assertNull(channel);

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -47,6 +49,7 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
      * A dummy test until the other two are fixed.
      * @throws Exception something bad happened
      */
+    @Test
     public void testDummy() throws Exception {
         assertEquals(42, 42);
     }

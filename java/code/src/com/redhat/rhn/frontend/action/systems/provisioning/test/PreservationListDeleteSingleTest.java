@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.test.FileListTest;
@@ -30,6 +32,7 @@ import java.util.List;
  */
 public class PreservationListDeleteSingleTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testForwardToDelete() throws Exception {
         setRequestPathInfo(
                 "/systems/provisioning/preservation/PreservationListDeleteSingle");

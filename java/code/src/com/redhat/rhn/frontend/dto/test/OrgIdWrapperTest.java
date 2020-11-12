@@ -14,16 +14,19 @@
  */
 package com.redhat.rhn.frontend.dto.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * OrgIdWrapperTest
  * @version $Rev$
  */
-public class OrgIdWrapperTest extends TestCase {
+public class OrgIdWrapperTest extends Assert {
 
+    @Test
     public void testWrapper() {
         Long l = 1000L;
         OrgIdWrapper oiw = new OrgIdWrapper();

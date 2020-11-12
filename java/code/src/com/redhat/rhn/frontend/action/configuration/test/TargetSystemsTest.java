@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.context.Context;
@@ -30,6 +32,7 @@ import java.util.TimeZone;
  */
 public class TargetSystemsTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

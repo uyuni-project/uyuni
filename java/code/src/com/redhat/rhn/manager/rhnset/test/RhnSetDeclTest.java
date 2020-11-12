@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.rhnset.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -38,16 +42,19 @@ public class RhnSetDeclTest extends RhnBaseTestCase {
 
     private User user;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 
+    @Test
     public void testGetUnownedSystems() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);

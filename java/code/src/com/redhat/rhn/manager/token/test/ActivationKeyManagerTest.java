@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.token.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -47,10 +50,12 @@ import java.util.Set;
 public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     private ActivationKeyManager manager;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         manager = ActivationKeyManager.getInstance();
     }
+    @Test
     public void testDelete() throws Exception {
         user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         ActivationKey key = manager.createNewActivationKey(user, "Test");
@@ -66,6 +71,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
          // great!.. Exception for null lookpu is controvoersial but convenient..
         }
     }
+    @Test
     public void testDeployConfig() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
 
@@ -84,6 +90,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertFalse(key.getChannels().isEmpty());
         assertFalse(key.getPackages().isEmpty());
     }
+    @Test
     public void testConfigPermissions() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
         ActivationKey key = createActivationKey();
@@ -104,6 +111,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertTrue(key.getConfigChannelsFor(user).contains(cc));
     }
 
+    @Test
     public void testLookup() {
         //first lets just check on permissions...
         user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
@@ -139,6 +147,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertEquals(user.getOrg(), temp.getOrg());
     }
 
+    @Test
     public void testCreatePermissions() throws Exception {
         ActivationKey key;
         //test permissions
@@ -174,6 +183,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCreate() throws Exception {
         user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         String note = "Test";
@@ -220,6 +230,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         return  manager.createNewActivationKey(user, TestUtils.randomString());
     }
 
+    @Test
     public void testVirtEnt() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
         UserTestUtils.addVirtualization(user.getOrg());
@@ -245,6 +256,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
                                                     pkg.getPackageName().getName());
     }
 
+    @Test
     public void testFindAll() throws Exception{
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
@@ -254,6 +266,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, activationKeys.size());
     }
 
+    @Test
     public void testFindAllBootstrap() throws Exception{
         ActivationKey activationKey = ActivationKeyFactory.createNewKey(user, null, "ak- " +
             TestUtils.randomString(), "", 1L, null, true);
@@ -264,6 +277,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, activationKeys.size());
     }
 
+    @Test
     public void testFindBootstrap() throws Exception{
         ActivationKey activationKey = ActivationKeyFactory.createNewKey(user, null, "ak- " +
             TestUtils.randomString(), "", 1L, null, true);

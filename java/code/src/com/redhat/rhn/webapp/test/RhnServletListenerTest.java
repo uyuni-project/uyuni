@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.webapp.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.webapp.RhnServletListener;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * RhnServletListenerTest
  * @version $Rev$
  */
-public class RhnServletListenerTest extends TestCase {
+public class RhnServletListenerTest extends Assert {
 
+    @Test
     public void testListenerStartup() {
         RhnServletListener rl = new RhnServletListener();
         // Test startup

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.access.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -30,6 +32,7 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
 
     private ChannelAccessHandler handler = new ChannelAccessHandler();
 
+    @Test
     public void testEnableUserRestrictions() throws Exception {
 
         // setup
@@ -52,6 +55,7 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         assertFalse(channel.isGloballySubscribable(admin.getOrg()));
     }
 
+    @Test
     public void testDisableUserRestrictions() throws Exception {
 
         // setup
@@ -74,6 +78,7 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         assertTrue(channel.isGloballySubscribable(admin.getOrg()));
     }
 
+    @Test
     public void testGetOrgSharing() throws Exception {
 
         // setup
@@ -93,6 +98,7 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         assertEquals(Channel.PUBLIC, result);
     }
 
+    @Test
     public void testSetOrgSharing() throws Exception {
 
         // setup
@@ -114,6 +120,7 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         assertEquals(Channel.PROTECTED, channel.getAccess());
     }
 
+    @Test
     public void testSetOrgSharingInvalidAccess() throws Exception {
 
         // setup

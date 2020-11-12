@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.schedule.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
@@ -32,6 +35,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
     private CompletedSystemsSetupAction action;
     private ActionHelper sah;
 
+    @Before
     public void setUp() throws Exception {
         action = new CompletedSystemsSetupAction();
         sah = new ActionHelper();
@@ -39,6 +43,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
         sah.setupClampListBounds();
     }
 
+    @Test
     public void testPerformExecute() throws Exception {
         Action a1 = ActionFactoryTest.createAction(sah.getUser(),
                 ActionFactory.TYPE_REBOOT);
@@ -59,6 +64,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
         assertEquals(actionId, a2.getId());
     }
 
+    @Test
     public void testBadParameterException() throws Exception {
         sah.getRequest().setupAddParameter("aid", (String)null);
         try {
@@ -70,6 +76,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLookupException() throws Exception {
         sah.getRequest().setupAddParameter("aid", "-99");
 

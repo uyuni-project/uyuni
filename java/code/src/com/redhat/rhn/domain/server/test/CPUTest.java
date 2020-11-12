@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -34,6 +36,7 @@ public class CPUTest extends RhnBaseTestCase {
     public static final String MHZ = "500";
     public static final long MHZ_NUMERIC = 500;
 
+    @Test
     public void testCreateLookup() throws Exception {
         CPU unit = createTestCpu();
         User user = UserTestUtils.findNewUser("testUser",

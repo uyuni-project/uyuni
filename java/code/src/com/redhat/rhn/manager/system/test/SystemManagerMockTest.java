@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.channel.AccessToken;
@@ -46,6 +49,7 @@ import java.util.Optional;
 public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
@@ -54,6 +58,7 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
         MockConnection.clear();
     }
 
+    @Test
     public void testRemovingServerInvalidatesTokens() throws Exception {
         Config.get().setString(
             "server.secret_key",

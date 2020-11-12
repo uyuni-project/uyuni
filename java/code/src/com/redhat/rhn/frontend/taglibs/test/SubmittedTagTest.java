@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -34,6 +36,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class SubmittedTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testRender() throws Exception {
         SubmittedTag tag = new SubmittedTag();
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();

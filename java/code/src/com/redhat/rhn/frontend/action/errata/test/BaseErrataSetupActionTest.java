@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -37,6 +39,7 @@ import org.apache.struts.action.ActionMapping;
  */
 public class BaseErrataSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         BaseErrataSetupAction action = new BaseErrataSetupAction();
 

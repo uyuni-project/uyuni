@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.store.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
@@ -31,6 +33,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
 
     private ImageStoreHandler handler = new ImageStoreHandler();
 
+    @Test
     public void testListImageStoreTypes() throws Exception {
         List<ImageStoreType> types = handler.listImageStoreTypes(admin);
         assertFalse("No image store types found", types.isEmpty());
@@ -38,6 +41,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertTrue(types.stream().anyMatch(t -> t.equals(ImageStoreFactory.TYPE_OS_IMAGE)));
     }
 
+    @Test
     public void testCreateImageStore() throws Exception {
         int ret = handler.create(admin, "registry.mgr", "registry.domain.top",
                 ImageStoreFactory.TYPE_REGISTRY.getLabel(), null);
@@ -51,6 +55,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertNull("no credentials expected", store.getCreds());
     }
 
+    @Test
     public void testGetImageStore() throws Exception {
         int ret = handler.create(admin, "registry.mgr", "registry.domain.top",
                 ImageStoreFactory.TYPE_REGISTRY.getLabel(), null);
@@ -72,6 +77,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertNull("no credentials expected", store.getCreds());
     }
 
+    @Test
     public void testDeleteImageStore() throws Exception {
         int ret = handler.create(admin, "registry.mgr", "registry.domain.top",
                 ImageStoreFactory.TYPE_REGISTRY.getLabel(), null);
@@ -91,6 +97,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertFalse(true);
     }
 
+    @Test
     public void testSetImageStore() throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("username", "admin");
