@@ -801,7 +801,7 @@ if [ $USING_SSL -eq 1 ] ; then
     fi
 
     function updateCertificates() {
-        if [ -d /etc/pki/ca-trust/source/anchors ]; then
+        if [ -d /etc/pki/ca-trust/source/anchors  -a -x /usr/bin/update-ca-trust ]; then
             TRUST_DIR=/etc/pki/ca-trust/source/anchors
         elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
             # SLE 12
