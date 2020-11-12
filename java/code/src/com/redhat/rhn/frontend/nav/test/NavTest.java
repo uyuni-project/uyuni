@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.nav.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -40,7 +40,7 @@ public class NavTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
     }

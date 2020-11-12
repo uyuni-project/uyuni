@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.test ;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -64,7 +64,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     }
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.tree.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -32,7 +32,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
     private RhnMockHttpServletRequest mockRequest;
     private RhnHttpServletRequest request;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         mockRequest = new RhnMockHttpServletRequest();

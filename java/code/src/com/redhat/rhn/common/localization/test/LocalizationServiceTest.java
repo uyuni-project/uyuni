@@ -14,10 +14,10 @@
  */
 
 package com.redhat.rhn.common.localization.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -44,7 +44,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * sets up the test
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         ls = LocalizationService.getInstance();
         TestUtils.disableLocalizationLogging();
@@ -62,7 +62,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
         super.tearDown();

@@ -1,7 +1,7 @@
 package com.redhat.rhn.manager.audit.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

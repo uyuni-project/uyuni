@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import org.junit.Assert;

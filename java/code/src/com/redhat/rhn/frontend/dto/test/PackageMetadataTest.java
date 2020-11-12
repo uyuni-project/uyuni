@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.dto.test;
-import org.junit.Before;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.testing.RhnBaseTestCase;

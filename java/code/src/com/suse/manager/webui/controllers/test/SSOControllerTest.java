@@ -1,7 +1,7 @@
 package com.suse.manager.webui.controllers.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import spark.Request;
 
 public class SSOControllerTest extends BaseControllerTestCase {
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Map<String, Object> samlData = new HashMap<>();

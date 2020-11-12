@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;

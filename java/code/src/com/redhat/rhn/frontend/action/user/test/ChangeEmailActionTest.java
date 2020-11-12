@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.frontend.action.user.ChangeEmailAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ChangeEmailActionTest

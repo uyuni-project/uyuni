@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.manager.action.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Collections.singletonList;
 
@@ -54,7 +54,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.server.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.user.User;
@@ -24,6 +22,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 

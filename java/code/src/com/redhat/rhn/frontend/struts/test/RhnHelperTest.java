@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;

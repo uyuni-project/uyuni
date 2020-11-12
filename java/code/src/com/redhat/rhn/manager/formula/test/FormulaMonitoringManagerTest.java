@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.formula.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
@@ -57,7 +57,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     public FormulaMonitoringManagerTest() { }
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         metadataDir = Files.createTempDirectory("metadata");
@@ -67,7 +67,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(metadataDir.toFile());

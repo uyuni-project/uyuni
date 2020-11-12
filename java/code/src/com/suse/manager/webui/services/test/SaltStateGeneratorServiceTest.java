@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
@@ -57,7 +57,7 @@ import java.util.Map;
 public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",

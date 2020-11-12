@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.crypto.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;

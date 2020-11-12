@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
@@ -24,6 +22,8 @@ import com.redhat.rhn.manager.kickstart.KickstartOptionsCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartDetailsCommandTest - test for KickstartDetailsCommand

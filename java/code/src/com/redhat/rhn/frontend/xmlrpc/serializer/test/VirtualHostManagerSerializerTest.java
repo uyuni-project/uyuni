@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
@@ -42,7 +42,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         manager = new VirtualHostManager();

@@ -14,10 +14,9 @@
  */
 
 package com.redhat.rhn.domain.user.test;
-import org.junit.Before;
-import org.junit.After;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -46,7 +45,7 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
     }
@@ -54,7 +53,7 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
         super.tearDown();

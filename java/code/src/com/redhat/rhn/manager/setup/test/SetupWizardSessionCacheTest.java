@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.SetupWizardSessionCache;

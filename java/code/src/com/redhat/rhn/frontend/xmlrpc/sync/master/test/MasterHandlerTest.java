@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.sync.master.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
     private String[] masterOrgNames = {"masterOrg01", "masterOrg02", "masterOrg03"};
     private String masterName;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         masterName = "testMaster" + TestUtils.randomString();

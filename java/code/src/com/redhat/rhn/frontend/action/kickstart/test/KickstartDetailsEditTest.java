@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction;
 import com.redhat.rhn.frontend.action.kickstart.KickstartFileDownloadAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartDetailsEditTest

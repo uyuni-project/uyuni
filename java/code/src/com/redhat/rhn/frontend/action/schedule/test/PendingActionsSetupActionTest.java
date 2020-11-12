@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.schedule.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -38,7 +38,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/schedule/PendingActions");

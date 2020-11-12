@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.kubernetes.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -52,7 +52,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
     private KubernetesManager manager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

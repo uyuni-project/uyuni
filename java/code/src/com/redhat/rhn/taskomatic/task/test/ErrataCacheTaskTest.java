@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.taskomatic.task.ErrataCacheTask;
 import com.redhat.rhn.testing.RhnBaseTestCase;

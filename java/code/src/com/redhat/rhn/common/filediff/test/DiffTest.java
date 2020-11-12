@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.filediff.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.filediff.ChangeHunk;
 import com.redhat.rhn.common.filediff.Diff;

@@ -1,7 +1,7 @@
 package com.suse.manager.webui.controllers.utils.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         bootstrapper = new SSHMinionBootstrapper(saltServiceMock, saltServiceMock);

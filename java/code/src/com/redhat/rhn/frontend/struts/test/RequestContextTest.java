@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -40,14 +40,6 @@ import spark.routematch.RouteMatch;
  * RequestContextTest
  */
 public class RequestContextTest extends MockObjectTestCase {
-
-    /**
-     *
-     * @param name Name of the TestCase
-     */
-    public RequestContextTest(String name) {
-        super(name);
-    }
 
     /**
      * @throws Exception if an error occurs

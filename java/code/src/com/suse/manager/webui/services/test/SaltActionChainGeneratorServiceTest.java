@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.services.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTIONCHAIN_SLS_FOLDER;
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;

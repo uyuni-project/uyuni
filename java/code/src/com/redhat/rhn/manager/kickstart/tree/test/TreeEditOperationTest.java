@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.manager.kickstart.tree.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.manager.kickstart.tree.TreeEditOperation;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * TreeEditCommandTest

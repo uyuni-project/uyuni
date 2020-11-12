@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.subscriptionmatching.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
@@ -61,7 +61,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         processor = new SubscriptionMatchProcessor();

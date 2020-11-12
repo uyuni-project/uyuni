@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -27,6 +25,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockJspWriter;
 import com.mockobjects.servlet.MockPageContext;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 

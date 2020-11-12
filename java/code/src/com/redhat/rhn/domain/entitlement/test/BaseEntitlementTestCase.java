@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.entitlement.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
@@ -51,7 +51,7 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
     );
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         createEntitlement();

@@ -53,10 +53,10 @@ import com.mockobjects.servlet.MockHttpServletResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     private static String originalMountPoint;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeAll() {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
@@ -106,7 +106,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -148,7 +148,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         if (originalMountPoint != null) {

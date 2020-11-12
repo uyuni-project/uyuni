@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link MirrorCredentialsDto}.

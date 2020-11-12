@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.org.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -45,7 +45,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -75,7 +74,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     );
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

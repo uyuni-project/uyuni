@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.utils.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -56,7 +56,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     protected AbstractMinionBootstrapper bootstrapper;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

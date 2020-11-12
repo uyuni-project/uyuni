@@ -1,7 +1,7 @@
 package com.redhat.rhn.manager.system.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -46,7 +46,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     private User user;
     private Server server;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

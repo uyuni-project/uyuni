@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.sshpush.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -81,10 +81,10 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SystemSummary sshPushSystemMock;
     private SaltSSHService saltSSHServiceMock;
     private SystemInfo sampleSystemInfo;
-    
+
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -125,7 +125,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         SSHPushWorkerSalt worker = successWorker(new TestSystemQuery(), saltApi);
 
         context().checking(new Expectations() {{
-           
+
             oneOf(sshPushSystemMock).getId();
             will(returnValue(minion.getId()));
 
@@ -137,8 +137,8 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
                     with(any(MinionList.class)));
             will(returnValue(systemInfoMap));
-            
-            
+
+
         }});
 
         worker.setParentQueue(mockQueue());
@@ -270,7 +270,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             allowing(saltSSHServiceMock).callSyncSSH(with(any(LocalCall.class)),
                     with(any(MinionList.class)));
             will(returnValue(systemInfoMap));
-            
+
         }});
 
         worker.setParentQueue(mockQueue());

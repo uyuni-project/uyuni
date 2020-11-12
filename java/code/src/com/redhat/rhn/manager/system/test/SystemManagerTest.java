@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
@@ -169,7 +169,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     private SystemManager systemManager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
@@ -204,7 +204,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         try {

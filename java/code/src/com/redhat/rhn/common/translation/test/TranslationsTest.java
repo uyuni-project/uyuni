@@ -15,10 +15,10 @@
 
 package com.redhat.rhn.common.translation.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -57,7 +57,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     private User userNotOrgOne;
     private String userKey;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         userNotOrgOne = UserTestUtils.findNewUser();

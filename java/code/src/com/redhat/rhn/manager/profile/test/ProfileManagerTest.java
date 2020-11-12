@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.profile.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -60,7 +60,7 @@ import java.util.Set;
  */
 public class ProfileManagerTest extends BaseTestCaseWithUser {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.validator.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.validator.Constraint;
 import com.redhat.rhn.common.validator.DataConverter;
@@ -35,7 +35,7 @@ public class ValidatorTest extends Assert {
 
     private Validator validator;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
         validator = Validator.getInstance(TestUtils.findTestData("TestObject.xsd"));
@@ -44,7 +44,7 @@ public class ValidatorTest extends Assert {
     /**
      * {@inheritDoc}
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
 

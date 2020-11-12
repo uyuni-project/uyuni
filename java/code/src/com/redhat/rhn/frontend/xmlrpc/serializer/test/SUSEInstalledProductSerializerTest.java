@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.xmlrpc.serializer.SUSEInstalledProductSerializer;
 import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.StringWriter;

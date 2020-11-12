@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -29,6 +27,8 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.List;

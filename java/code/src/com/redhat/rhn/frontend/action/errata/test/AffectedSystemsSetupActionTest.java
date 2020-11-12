@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.errata.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.errata.Errata;
@@ -32,7 +32,7 @@ import java.util.Iterator;
  */
 public class AffectedSystemsSetupActionTest extends RhnMockStrutsTestCase {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/errata/details/SystemsAffected");

@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.ssm.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -35,6 +33,7 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.Test;
 
 import servletunit.HttpServletRequestSimulator;
 

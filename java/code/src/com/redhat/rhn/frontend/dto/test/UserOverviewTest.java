@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.dto.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -30,7 +30,7 @@ public class UserOverviewTest extends RhnBaseTestCase {
     /*
      * @see RhnBaseTestCase#setUp()
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         uo = new UserOverview();
     }

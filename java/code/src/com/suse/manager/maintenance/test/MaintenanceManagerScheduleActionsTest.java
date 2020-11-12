@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.maintenance.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.SINGLE;
@@ -66,7 +66,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     private static final String KDE_ICS = "maintenance-windows-kde.ics";
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

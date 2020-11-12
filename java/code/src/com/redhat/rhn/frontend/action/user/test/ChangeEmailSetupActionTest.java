@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.ChangeEmailSetupAction;
@@ -25,6 +23,7 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 /**
  * ChangeEmailSetupActionTest

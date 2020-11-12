@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.keys.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -31,7 +30,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
         super.setUp();

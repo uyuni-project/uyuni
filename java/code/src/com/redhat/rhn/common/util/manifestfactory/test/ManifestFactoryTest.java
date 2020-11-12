@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.common.util.manifestfactory.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 

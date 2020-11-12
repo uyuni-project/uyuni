@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
@@ -27,7 +27,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 public class HandlerFactoryTest extends RhnBaseTestCase {
     private HandlerFactory factory = null;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         factory = HandlerFactory.getDefaultHandlerFactory();
     }

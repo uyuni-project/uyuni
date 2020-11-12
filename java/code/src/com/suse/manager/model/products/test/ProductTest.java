@@ -14,8 +14,6 @@
  */
 package com.suse.manager.model.products.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 
 import com.suse.manager.model.products.Channel;
@@ -27,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests Product.

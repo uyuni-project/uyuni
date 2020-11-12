@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.common.client.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 

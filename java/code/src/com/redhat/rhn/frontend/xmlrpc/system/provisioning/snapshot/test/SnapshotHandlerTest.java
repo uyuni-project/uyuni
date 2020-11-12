@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageNevra;

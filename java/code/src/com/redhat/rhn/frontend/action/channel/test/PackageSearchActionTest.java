@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.channel.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 public class PackageSearchActionTest extends RhnMockStrutsTestCase {
 

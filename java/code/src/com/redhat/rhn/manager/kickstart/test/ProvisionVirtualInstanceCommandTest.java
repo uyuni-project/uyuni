@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 

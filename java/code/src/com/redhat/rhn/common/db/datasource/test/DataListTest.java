@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.db.datasource.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ public class DataListTest extends RhnBaseTestCase {
     private String db_sufix;
     private String db_user;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
@@ -52,7 +52,7 @@ public class DataListTest extends RhnBaseTestCase {
         elabParams.put("user_name", db_user);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         hsm = null;
         params = null;

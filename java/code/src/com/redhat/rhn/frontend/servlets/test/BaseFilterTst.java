@@ -25,7 +25,7 @@ import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.mockobjects.servlet.MockFilterChain;
 import com.mockobjects.servlet.MockHttpSession;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * AuthFilterTest
@@ -38,7 +38,7 @@ public abstract class BaseFilterTst extends RhnBaseTestCase {
     protected RhnMockHttpServletResponse response;
     protected MockFilterChain chain;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         request = new RhnMockHttpServletRequest();
         session = new RhnMockHttpSession();

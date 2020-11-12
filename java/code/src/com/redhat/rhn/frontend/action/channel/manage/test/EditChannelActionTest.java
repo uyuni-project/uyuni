@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.channel.manage.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * EditChannelActionTest

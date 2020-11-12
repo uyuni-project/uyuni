@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -33,6 +31,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.commons.lang3.time.DateUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Optional;
@@ -45,7 +44,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
     private int thresholdMax;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.thresholdMax =  Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD) * 86400;

@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.ssm.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -48,7 +47,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     private RhnSet serverSet;
     private String serverSetLabel;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         ssmUser = UserTestUtils.findNewUser("ssmuser", "ssmorg");
         serverSetLabel = populateRhnSet();

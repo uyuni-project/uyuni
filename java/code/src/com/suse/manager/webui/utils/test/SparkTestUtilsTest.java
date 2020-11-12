@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.utils.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.suse.manager.webui.utils.SparkTestUtils;
 import org.junit.Assert;

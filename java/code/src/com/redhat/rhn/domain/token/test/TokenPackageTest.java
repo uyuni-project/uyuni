@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.token.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -34,7 +33,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class TokenPackageTest extends BaseTestCaseWithUser {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

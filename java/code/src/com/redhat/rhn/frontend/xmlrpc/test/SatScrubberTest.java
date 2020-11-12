@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.test;
-import org.junit.After;
-
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -42,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 /**
  * SatScrubberTest - this test actually cleans up old junit created test data.
@@ -201,7 +200,7 @@ public class SatScrubberTest extends Assert {
      * @see TestCase#tearDown()
      * @see HibernateFactory#closeSession()
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
 
         TestCaseHelper.tearDownHelper();

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -41,7 +41,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     protected KickstartIpRange ip1;
     protected KickstartIpRange ip2;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());

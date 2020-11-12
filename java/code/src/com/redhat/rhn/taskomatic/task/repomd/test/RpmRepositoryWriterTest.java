@@ -13,10 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.repomd.test;
-import org.junit.Before;
-import org.junit.After;
-
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -35,6 +33,7 @@ import com.redhat.rhn.taskomatic.task.repomd.RpmRepositoryWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,7 +48,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
     private Path mountPointDir;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         mountPointDir = Files.createTempDirectory("rpmrepotest");
@@ -184,7 +183,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(mountPointDir.toFile());

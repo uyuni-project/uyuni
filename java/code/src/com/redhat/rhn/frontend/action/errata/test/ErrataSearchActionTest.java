@@ -14,13 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import org.junit.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;

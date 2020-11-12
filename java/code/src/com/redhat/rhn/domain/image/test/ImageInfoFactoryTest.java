@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.domain.image.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
@@ -98,7 +98,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     );
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

@@ -14,9 +14,7 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.recurringaction.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
@@ -36,6 +34,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +57,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

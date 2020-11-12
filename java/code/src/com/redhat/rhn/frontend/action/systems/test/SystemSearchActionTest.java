@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.apache.struts.action.DynaActionForm;
 
@@ -36,7 +36,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
 
     private Server s;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/Search");

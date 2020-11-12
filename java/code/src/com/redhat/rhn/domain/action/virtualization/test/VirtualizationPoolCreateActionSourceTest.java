@@ -1,7 +1,5 @@
 package com.redhat.rhn.domain.action.virtualization.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateActionSource;
 
 import com.suse.manager.virtualization.PoolSourceDevice;
@@ -12,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 public class VirtualizationPoolCreateActionSourceTest extends Assert {
 

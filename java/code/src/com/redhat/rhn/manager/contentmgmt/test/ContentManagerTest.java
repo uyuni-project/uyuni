@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.manager.contentmgmt.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
@@ -82,7 +82,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     private ContentManager contentManager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();

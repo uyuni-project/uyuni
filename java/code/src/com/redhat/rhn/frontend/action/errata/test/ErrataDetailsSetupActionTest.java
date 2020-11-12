@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.frontend.action.errata.ErrataDetailsSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ErrataDetailsSetupActionTest

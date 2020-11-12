@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.security.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 
@@ -54,7 +54,7 @@ public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTe
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -30,7 +30,7 @@ public class BaseKickstartEditTestCase extends RhnPostMockStrutsTestCase {
 
     protected KickstartData ksdata;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);

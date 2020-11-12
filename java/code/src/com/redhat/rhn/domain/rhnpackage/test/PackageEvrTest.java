@@ -15,11 +15,11 @@
 
 package com.redhat.rhn.domain.rhnpackage.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 public class PackageEvrTest extends BaseTestCaseWithUser {
 

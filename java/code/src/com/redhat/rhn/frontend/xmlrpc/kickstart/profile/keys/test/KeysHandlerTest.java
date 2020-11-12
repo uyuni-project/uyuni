@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;

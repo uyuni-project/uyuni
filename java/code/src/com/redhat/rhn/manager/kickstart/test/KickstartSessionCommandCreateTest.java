@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -28,6 +26,8 @@ import com.redhat.rhn.frontend.action.kickstart.test.ActivationKeysTest;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartSessionCommandCreateTest

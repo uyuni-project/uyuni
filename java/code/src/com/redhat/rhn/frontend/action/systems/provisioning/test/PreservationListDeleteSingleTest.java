@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;

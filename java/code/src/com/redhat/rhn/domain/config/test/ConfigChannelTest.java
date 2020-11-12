@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.domain.config.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ConfigChannelTest

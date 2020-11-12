@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;

@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 public class KickstartEditPackagesTest extends RhnPostMockStrutsTestCase {
 

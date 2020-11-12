@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.common.conf.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -35,7 +35,7 @@ public class ConfigTest extends RhnBaseTestCase {
     static final String TEST_CONF_LOCATION = "/usr/share/rhn/unit-tests/";
     private Config c;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         c = new Config();
 

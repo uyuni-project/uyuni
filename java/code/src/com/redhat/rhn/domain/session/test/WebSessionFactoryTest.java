@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.session.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.session.InvalidSessionIdException;

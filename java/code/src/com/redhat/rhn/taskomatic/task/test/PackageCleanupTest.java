@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.PackageCleanup;
@@ -27,7 +27,7 @@ import java.sql.Statement;
 
 public class PackageCleanupTest extends RhnBaseTestCase {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             try (Statement statement = connection.createStatement()) {

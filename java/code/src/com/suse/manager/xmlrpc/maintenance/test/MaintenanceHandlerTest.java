@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.suse.manager.xmlrpc.maintenance.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -53,7 +52,7 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
     private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }

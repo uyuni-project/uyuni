@@ -44,8 +44,8 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 
@@ -74,7 +74,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemEntitlementsSubmit");
@@ -174,8 +174,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
      *
      * @throws Exception on server init failure
      */
-    @Test
-    public void testAddOnVirt(String selectKey,
+    private void testAddOnVirt(String selectKey,
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             )  throws Exception {

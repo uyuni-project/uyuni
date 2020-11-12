@@ -14,14 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
 

@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
@@ -33,6 +31,7 @@ import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 /**
  * EditAddressSubmitActionSubmitTest

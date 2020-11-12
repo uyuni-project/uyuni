@@ -14,10 +14,9 @@
  */
 package com.suse.utils.test;
 
-import org.junit.Test;
-
 import com.suse.utils.Lists;
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;

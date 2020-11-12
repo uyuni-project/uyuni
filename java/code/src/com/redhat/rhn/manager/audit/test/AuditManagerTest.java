@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.dto.AuditMachineDto;
@@ -25,6 +23,7 @@ import com.redhat.rhn.testing.TestUtils;
 import java.io.File;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 
 public class AuditManagerTest extends Assert {

@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
-import org.junit.Test;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -24,6 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.Test;
 
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;

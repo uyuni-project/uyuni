@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;

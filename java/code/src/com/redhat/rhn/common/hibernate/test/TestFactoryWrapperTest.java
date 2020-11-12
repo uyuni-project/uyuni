@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.test.TestInterface;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.log4j.Logger;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -37,7 +37,7 @@ import java.util.List;
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
     private static Logger log = Logger.getLogger(TestFactoryWrapperTest.class);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         HibernateFactory.createSessionFactory();
     }
@@ -147,7 +147,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void oneTimeSetup() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -192,7 +192,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         });
     }
 
-    @AfterClass
+    @AfterAll
     public static void oneTimeTeardown() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;

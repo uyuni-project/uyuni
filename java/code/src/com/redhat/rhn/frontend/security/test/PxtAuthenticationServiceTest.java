@@ -13,13 +13,13 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.security.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.jmock.Expectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 
@@ -37,11 +37,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
 
     private PxtAuthenticationService service;
 
-    public PxtAuthenticationServiceTest(String name) {
-        super(name);
-    }
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         service = new PxtAuthenticationServiceStub();

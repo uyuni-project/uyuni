@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.frontend.action.user.AddressesAction;
@@ -43,7 +43,7 @@ public class AddressTagTest extends RhnBaseTestCase {
      * Called once per test method.
      * @throws Exception if an error occurs during setup.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         sah = new ActionHelper();
         sah.setUpAction(new AddressesAction());

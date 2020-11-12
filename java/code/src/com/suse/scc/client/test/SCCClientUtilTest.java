@@ -14,7 +14,7 @@
  */
 package com.suse.scc.client.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.testing.TestUtils;
 

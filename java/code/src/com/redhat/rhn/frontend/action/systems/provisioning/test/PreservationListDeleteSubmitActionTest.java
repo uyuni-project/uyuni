@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -28,6 +26,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +38,7 @@ import java.util.List;
 public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
     private Action action = null;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         action = new PreservationListDeleteSubmitAction();
     }

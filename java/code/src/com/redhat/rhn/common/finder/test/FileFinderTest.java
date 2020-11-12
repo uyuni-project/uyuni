@@ -15,10 +15,11 @@
 
 package com.redhat.rhn.common.finder.test;
 
-import org.junit.Test;
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

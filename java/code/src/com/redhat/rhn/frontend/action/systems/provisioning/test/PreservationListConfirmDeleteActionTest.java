@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -44,7 +44,7 @@ import java.util.Iterator;
 public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
     private Action action = null;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         action = new PreservationListConfirmDeleteAction();
     }

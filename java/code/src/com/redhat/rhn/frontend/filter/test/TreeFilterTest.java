@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.filter.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.filter.TreeFilter;
@@ -35,7 +34,7 @@ public class TreeFilterTest extends RhnBaseTestCase {
     private TreeFilter filter;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         main = populate();
         filter = new TreeFilter();

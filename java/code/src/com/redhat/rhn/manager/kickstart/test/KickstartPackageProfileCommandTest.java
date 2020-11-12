@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.kickstart.KickstartPackageProfileCommand;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartPackageProfileCommandTest

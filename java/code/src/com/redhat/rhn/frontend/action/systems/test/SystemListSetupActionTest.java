@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -41,7 +41,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class SystemListSetupActionTest extends RhnMockStrutsTestCase {
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemList");

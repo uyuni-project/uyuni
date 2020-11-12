@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 
@@ -23,6 +21,8 @@ import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.Test;
 
 /**
  * Test the compare() method in PackageEvr

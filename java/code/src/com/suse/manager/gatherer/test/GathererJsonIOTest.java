@@ -15,7 +15,7 @@
 
 package com.suse.manager.gatherer.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.credentials.Credentials;

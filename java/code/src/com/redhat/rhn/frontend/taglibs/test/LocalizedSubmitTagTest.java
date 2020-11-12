@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.taglibs.LocalizedSubmitTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;
+
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;

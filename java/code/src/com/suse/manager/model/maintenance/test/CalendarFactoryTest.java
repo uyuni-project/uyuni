@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.model.maintenance.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-
 /**
  * Test For {@link CalendarFactory}
  */
@@ -41,7 +39,7 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
     private ScheduleFactory scheduleFactory;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.calendarFactory = new CalendarFactory();

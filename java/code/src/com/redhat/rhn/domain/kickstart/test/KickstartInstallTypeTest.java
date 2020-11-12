@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.testing.RhnBaseTestCase;

@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -23,6 +21,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

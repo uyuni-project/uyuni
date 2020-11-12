@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.configuration.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 import com.redhat.rhn.testing.RhnBaseTestCase;

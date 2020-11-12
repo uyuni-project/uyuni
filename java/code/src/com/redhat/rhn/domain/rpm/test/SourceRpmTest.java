@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.domain.rpm.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * SourceRpmTest

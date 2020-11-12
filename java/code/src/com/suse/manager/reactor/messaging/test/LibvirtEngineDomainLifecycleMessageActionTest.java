@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -49,6 +47,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.States;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -76,7 +75,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     @Override
     @SuppressWarnings("unchecked")
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

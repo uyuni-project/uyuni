@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.taglibs.RequireTag;
@@ -37,13 +37,13 @@ public class RequireTagTest extends RhnBaseTestCase {
     private RequireTag rt;
     private TagTestHelper tth;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         rt = new RequireTag();
         tth = TagTestUtils.setupTagTest(rt, null);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         rt = null;
         tth = null;

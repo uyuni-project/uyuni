@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.rhnpackage.profile.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -32,6 +30,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.List;

@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.taskomatic.task.ErrataMailer;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.LinkedList;

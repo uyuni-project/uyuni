@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
@@ -21,7 +21,7 @@ import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URLEncoder;
 import java.util.Vector;
@@ -59,15 +59,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
 
     private HttpServletRequest mockRequest;
 
-    /**
-     *
-     * @param name TestCase name
-     */
-    public CreateRedirectURITest(String name) {
-        super(name);
-    }
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

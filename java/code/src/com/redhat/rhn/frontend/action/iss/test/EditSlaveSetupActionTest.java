@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.iss.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -29,7 +29,7 @@ public class EditSlaveSetupActionTest extends BaseIssTestAction {
     public void testExecute() throws Exception {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         addRequestParameter("sid", slaveDto.getId().toString());

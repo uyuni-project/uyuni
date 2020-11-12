@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.webui.services.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.SHA256Crypt;
@@ -61,7 +61,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
     private ConfigChannelSaltManager manager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.manager = ConfigChannelSaltManager.getInstance();
@@ -127,7 +127,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         Checksum fileChecksum =  ChecksumFactory.
                 safeCreate(SHA256Crypt.sha256Hex(IOUtils.toByteArray(new FileInputStream(createdFile))),"sha256");
         assertEquals(contentsChecksum, fileChecksum);
-        
+
         ConfigurationManager.getInstance().deleteConfigChannel(user, channel);
         assertFalse(createdFile.getParentFile().exists());
     }

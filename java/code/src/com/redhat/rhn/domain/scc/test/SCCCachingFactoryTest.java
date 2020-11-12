@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.scc.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
@@ -107,7 +107,7 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         SCCCachingFactory.clearRepositories();
     }

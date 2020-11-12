@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.manager.acl.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * AclManagerTest

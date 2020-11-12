@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.webapp.RhnServletListener;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CreateUserActionTest - Test the CreateUserAction

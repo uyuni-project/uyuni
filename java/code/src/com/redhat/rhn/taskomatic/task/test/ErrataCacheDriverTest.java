@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.task.Task;
@@ -24,6 +22,7 @@ import com.redhat.rhn.taskomatic.task.errata.ErrataCacheDriver;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ErrataCacheDriver class.

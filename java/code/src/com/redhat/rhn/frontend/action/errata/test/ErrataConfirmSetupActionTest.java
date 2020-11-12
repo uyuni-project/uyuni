@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -30,6 +28,8 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ErrataConfirmSetupActionTest - test ErrataConfirmSetupAction setting

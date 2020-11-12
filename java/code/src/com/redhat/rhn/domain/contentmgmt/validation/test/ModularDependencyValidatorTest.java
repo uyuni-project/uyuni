@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
 import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
@@ -31,7 +31,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
     private static final String ENTITY_FILTERS = "filters";
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         validator = new ModularDependencyValidator(new MockModulemdApi());

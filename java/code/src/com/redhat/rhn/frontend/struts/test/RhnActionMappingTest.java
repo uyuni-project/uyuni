@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.struts.RhnActionMapping;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * RhnActionMappingTest

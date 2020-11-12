@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.user.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
@@ -33,7 +33,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
     private CreateUserCommand command;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         command = new CreateUserCommand();
         assertNotNull(command.getUser());

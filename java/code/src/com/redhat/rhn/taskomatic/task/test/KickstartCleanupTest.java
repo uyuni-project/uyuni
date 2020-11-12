@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -38,13 +36,14 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Statement;
 import java.util.Date;
 
 public class KickstartCleanupTest extends RhnBaseTestCase {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         verifyDatasourceConfig();
     }

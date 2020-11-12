@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.image.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
@@ -70,13 +70,13 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;
@@ -103,7 +103,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     );
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

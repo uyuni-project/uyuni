@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.manager.visualization.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.stream.Collectors.toList;
 
@@ -62,7 +62,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }

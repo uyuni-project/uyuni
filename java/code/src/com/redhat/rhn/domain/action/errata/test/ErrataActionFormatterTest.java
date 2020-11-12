@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.action.errata.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.errata.ErrataActionFormatter;
@@ -24,6 +22,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ErrataActionFormatter.

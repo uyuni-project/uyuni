@@ -14,7 +14,7 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
@@ -54,7 +54,7 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
     }
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

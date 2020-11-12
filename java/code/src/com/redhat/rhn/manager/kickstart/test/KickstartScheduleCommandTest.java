@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.kickstart.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -72,7 +72,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

@@ -24,8 +24,8 @@ import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerat
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,7 +49,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
@@ -67,7 +67,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
      * {@inheritDoc}
      */
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
 

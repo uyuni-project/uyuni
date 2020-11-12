@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigChannelTypeSerializer;
 
@@ -24,6 +22,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 

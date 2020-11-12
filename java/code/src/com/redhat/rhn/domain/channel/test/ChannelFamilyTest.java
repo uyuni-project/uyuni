@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -24,6 +22,8 @@ import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 

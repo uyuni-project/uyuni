@@ -13,14 +13,14 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.servlets.AuthFilter;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 import javax.servlet.FilterChain;
@@ -49,7 +49,7 @@ public class AuthFilterTest extends MockObjectTestCase {
 
     private AuthenticationService mockAuthService;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

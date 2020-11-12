@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.system.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -26,6 +24,8 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;

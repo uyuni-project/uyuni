@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.config.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Date;

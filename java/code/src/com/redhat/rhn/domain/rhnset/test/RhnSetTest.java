@@ -13,10 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.rhnset.test;
-import org.junit.Before;
-import org.junit.After;
-
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
@@ -33,13 +32,13 @@ public class RhnSetTest extends RhnBaseTestCase {
     private static final String[] TEST_ELEMS = {"100", "150", "300", "175", "35"};
     private RhnSetImpl set;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         set = new RhnSetImpl();
         set.sync();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         set = null;

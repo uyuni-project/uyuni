@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.webui.utils.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltStateGenerator;
@@ -36,7 +36,7 @@ public class SaltStateGeneratorTest extends Assert {
     private StringWriter writer;
     private Yaml yaml;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         this.writer = new StringWriter();
         this.generator = new SaltStateGenerator(this.writer);

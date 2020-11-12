@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.services.impl.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.suse.manager.webui.services.impl.MonitoringService;

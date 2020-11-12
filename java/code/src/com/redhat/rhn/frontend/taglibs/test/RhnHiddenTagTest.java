@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
@@ -37,7 +37,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     private RhnHiddenTag ht;
     private MockJspWriter out;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ht = new RhnHiddenTag();
         tth = new TagTestHelper(ht);
@@ -46,7 +46,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() {
         ht = null;
         tth = null;

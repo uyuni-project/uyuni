@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.server.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.server.CustomDataValue;
@@ -24,6 +22,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CustomDataValueTest

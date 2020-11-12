@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.util.manifestfactory.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.util.manifestfactory.ClassBuilder;
@@ -24,13 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 
 public class ClassBuilderTest extends Assert {
 
     private ClassBuilder builder;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         builder = new ClassBuilder(null, "testclass-manifest.xml");
     }

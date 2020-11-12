@@ -14,10 +14,10 @@
  */
 
 package com.redhat.rhn.manager.user.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +79,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         this.users = new HashSet<User>();
     }
@@ -88,7 +88,7 @@ public class UserManagerTest extends RhnBaseTestCase {
      * {@inheritDoc}
      */
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
 

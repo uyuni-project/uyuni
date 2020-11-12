@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.ssm.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -27,6 +25,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.Test;
 
 import servletunit.HttpServletRequestSimulator;
 
@@ -46,7 +45,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());

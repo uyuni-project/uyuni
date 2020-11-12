@@ -17,9 +17,9 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.chain.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -93,7 +93,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     @SuppressWarnings("deprecation")
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

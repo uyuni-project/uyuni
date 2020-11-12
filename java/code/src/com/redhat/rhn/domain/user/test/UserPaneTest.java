@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.user.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.UserFactory;

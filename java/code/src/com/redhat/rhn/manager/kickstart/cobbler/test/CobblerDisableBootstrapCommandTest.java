@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDisableBootstrapCommand;

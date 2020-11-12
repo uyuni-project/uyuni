@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Optional.empty;
 

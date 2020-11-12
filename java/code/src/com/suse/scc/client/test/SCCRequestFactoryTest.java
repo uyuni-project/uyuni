@@ -14,8 +14,6 @@
  */
 package com.suse.scc.client.test;
 
-import org.junit.Test;
-
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCRequestFactory;
 
@@ -25,6 +23,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import java.net.URI;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link SCCRequestFactory}

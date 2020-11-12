@@ -15,10 +15,10 @@
 
 package com.redhat.rhn.frontend.listview.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 public class PageControlTest extends RhnBaseTestCase {
 

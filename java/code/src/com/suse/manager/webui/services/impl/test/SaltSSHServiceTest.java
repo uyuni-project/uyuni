@@ -1,13 +1,12 @@
 package com.suse.manager.webui.services.impl.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +18,7 @@ import java.util.Optional;
 public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

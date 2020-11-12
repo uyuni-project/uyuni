@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.action.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -35,7 +35,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
 
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

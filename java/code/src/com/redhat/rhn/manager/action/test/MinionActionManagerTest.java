@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.action.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -109,7 +109,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

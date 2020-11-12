@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.rhnpackage.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;

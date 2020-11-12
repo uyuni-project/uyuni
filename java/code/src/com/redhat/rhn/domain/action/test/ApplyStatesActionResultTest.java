@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.action.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -25,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
-
+import org.junit.jupiter.api.Test;
 
 
 /**

@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.manager.entitlement.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * EntitlementManagerTest

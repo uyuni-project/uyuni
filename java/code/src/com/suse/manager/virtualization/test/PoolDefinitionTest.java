@@ -14,7 +14,7 @@
  */
 package com.suse.manager.virtualization.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.suse.manager.virtualization.PoolDefinition;
 

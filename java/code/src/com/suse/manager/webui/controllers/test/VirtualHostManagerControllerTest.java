@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -86,7 +86,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

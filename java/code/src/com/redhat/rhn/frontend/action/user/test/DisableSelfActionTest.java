@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.action.user.DisableSelfAction;
 import com.redhat.rhn.testing.ActionHelper;

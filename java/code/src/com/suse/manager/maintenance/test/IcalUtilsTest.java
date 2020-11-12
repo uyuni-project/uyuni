@@ -14,9 +14,7 @@
  */
 
 package com.suse.manager.maintenance.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -37,6 +35,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+
 import net.fortuna.ical4j.model.Calendar;
 
 /**
@@ -53,7 +53,7 @@ public class IcalUtilsTest extends Assert {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
 

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.kickstart.cobbler.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorException;

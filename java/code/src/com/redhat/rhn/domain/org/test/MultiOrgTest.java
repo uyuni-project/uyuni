@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.domain.org.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * MultiOrgTest

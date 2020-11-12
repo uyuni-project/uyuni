@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.webapp.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.webapp.RhnServletListener;
 import org.junit.Assert;

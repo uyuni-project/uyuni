@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -43,7 +43,7 @@ public class BaseControllerTestCase extends JMockBaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

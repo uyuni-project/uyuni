@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.NoScriptTag;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;
@@ -25,6 +23,8 @@ import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestUtils;
 
 import com.mockobjects.helpers.TagTestHelper;
+
+import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 

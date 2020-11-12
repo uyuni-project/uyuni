@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.ssm.test;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         // Override so the base class' tearDown doesn't rollback the transaction;
         // for this class we want the data to be persisted and remain there

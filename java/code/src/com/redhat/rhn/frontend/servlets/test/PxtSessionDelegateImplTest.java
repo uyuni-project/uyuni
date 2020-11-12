@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
@@ -103,13 +103,6 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
 
     private PxtCookieManager pxtCookieManager;
 
-    /**
-     * @param name test name
-     */
-    public PxtSessionDelegateImplTest(String name) {
-        super(name);
-    }
-
     private HttpServletRequest getRequest() {
         return mockRequest;
     }
@@ -144,7 +137,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.common.util.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.ExportWriter;
@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class CSVWriterTest extends RhnBaseTestCase {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         disableLocalizationServiceLogging();
     }

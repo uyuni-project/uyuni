@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;

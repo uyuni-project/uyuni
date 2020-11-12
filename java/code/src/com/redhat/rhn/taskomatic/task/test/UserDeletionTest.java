@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import org.junit.Test;
-
 
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 public class UserDeletionTest extends RhnBaseTestCase {
 

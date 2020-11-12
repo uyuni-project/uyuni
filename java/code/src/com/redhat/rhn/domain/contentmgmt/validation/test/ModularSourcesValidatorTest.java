@@ -1,7 +1,7 @@
 package com.redhat.rhn.domain.contentmgmt.validation.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
 
@@ -17,7 +17,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
     private final String MSG_NOMODULARSOURCES = loc.getMessage("contentmanagement.validation.nomodularsources");
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         validator = new ModularSourcesValidator();

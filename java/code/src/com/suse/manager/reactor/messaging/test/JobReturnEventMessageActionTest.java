@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -154,7 +154,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

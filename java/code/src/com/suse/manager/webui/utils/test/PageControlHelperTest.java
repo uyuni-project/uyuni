@@ -1,6 +1,6 @@
 package com.suse.manager.webui.utils.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.listview.PageControl;

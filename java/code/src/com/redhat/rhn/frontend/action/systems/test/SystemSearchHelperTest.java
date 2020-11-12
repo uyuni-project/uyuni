@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class SystemSearchHelperTest extends Assert {
     protected SystemSearchHelper.SearchResultScoreComparator cmp;
     protected SystemSearchHelper.SearchResultScoreComparator nullCmp;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         dtos = new HashMap<String, SystemOverview>();

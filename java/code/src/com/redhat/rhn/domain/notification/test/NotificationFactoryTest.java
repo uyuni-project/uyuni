@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Collections;

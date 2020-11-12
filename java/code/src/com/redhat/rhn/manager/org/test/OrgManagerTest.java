@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.org.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.domain.org.Org;

@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.domain.server.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.SatelliteServer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 public class SatelliteServerTest extends RhnBaseTestCase {
 

@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.webui.services.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -38,7 +38,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
     private ConfigChannelSaltManager manager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.manager = ConfigChannelSaltManager.getInstance();

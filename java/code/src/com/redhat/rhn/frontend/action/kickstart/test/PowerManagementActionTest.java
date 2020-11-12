@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -74,7 +74,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         MockConnection.clear();

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.token.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.token.ActivationKey;

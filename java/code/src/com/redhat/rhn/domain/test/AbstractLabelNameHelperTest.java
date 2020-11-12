@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.domain.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * AbstractLabelNameHelperTest

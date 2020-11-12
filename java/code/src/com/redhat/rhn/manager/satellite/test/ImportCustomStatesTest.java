@@ -29,9 +29,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     private Path legacyStatesBackupDirectory;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         createTask(UpgradeCommand.UPGRADE_CUSTOM_STATES);
@@ -58,7 +58,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         assertTaskDoesNotExist(UpgradeCommand.UPGRADE_CUSTOM_STATES);

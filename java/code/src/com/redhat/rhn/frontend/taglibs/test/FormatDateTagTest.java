@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;

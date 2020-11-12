@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 
 public class LoginTest extends RhnBaseTestCase {

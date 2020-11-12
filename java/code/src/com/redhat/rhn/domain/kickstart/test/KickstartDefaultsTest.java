@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.frontend.action.kickstart.test.KickstartTestHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 
 /**

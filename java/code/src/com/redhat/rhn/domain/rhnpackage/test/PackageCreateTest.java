@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Vector;

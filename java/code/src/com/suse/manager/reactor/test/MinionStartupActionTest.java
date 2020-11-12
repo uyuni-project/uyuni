@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -27,6 +25,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link MinionStartEventMessageAction}.
@@ -35,9 +34,9 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
 
     private static final String MINION_ID = "suma3pg.vagrant.local";
     private SaltService saltServiceMock;
-   
+
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -45,7 +44,7 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
     }
 
-   
+
     @Test
     public void testStarupEventFired() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -57,5 +56,5 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
         // On minion start up apply state via mocked SaltService
         MinionStartEventMessageAction action = new MinionStartEventMessageAction(saltServiceMock);
         action.execute(new MinionStartEventMessage(MINION_ID));
-    }   
+    }
 }

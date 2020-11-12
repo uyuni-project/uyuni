@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.EditAddressSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * EditAddressActionTest

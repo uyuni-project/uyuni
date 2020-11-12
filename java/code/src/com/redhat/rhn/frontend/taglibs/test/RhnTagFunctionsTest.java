@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.taglibs.RhnTagFunctions;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -28,7 +28,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class RhnTagFunctionsTest extends RhnBaseTestCase {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
     }

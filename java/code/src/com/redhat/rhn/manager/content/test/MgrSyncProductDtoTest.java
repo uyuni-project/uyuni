@@ -1,7 +1,5 @@
 package com.redhat.rhn.manager.content.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -14,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link MgrSyncProductDto}.
@@ -28,7 +27,7 @@ public class MgrSyncProductDtoTest extends Assert {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
 

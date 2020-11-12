@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -36,6 +34,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 /**
  * DeleteBugActionTest

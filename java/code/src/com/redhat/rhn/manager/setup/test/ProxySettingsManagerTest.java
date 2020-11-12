@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link ProxySettingsManager}.

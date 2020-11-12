@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.domain.action.cluster.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -32,6 +30,8 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.model.clusters.Cluster;
+
+import org.junit.jupiter.api.Test;
 
 public class ClusterActionTest extends JMockBaseTestCaseWithUser {
 

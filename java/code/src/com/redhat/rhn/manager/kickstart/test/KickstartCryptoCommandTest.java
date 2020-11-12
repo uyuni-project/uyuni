@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
 import com.redhat.rhn.manager.kickstart.KickstartCryptoKeyCommand;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;

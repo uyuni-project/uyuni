@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.security.acl.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.security.acl.SystemAclHandler;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -40,7 +40,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     private Server srvr;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         srvr = ServerFactoryTest.createTestServer(user);

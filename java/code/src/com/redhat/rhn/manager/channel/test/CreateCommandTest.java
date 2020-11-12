@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.channel.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.user.User;
@@ -35,7 +35,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
     private int label_count = 0;
     private User user = null;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         ccc = new CreateChannelCommand();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.entitling.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 
@@ -52,7 +52,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

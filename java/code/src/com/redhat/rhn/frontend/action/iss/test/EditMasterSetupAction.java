@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.action.iss.test;
 
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * IssMapOrgsActionTest
@@ -24,7 +24,7 @@ import org.junit.Test;
  */
 public class EditMasterSetupAction extends BaseIssTestAction {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         addRequestParameter("id", masterDto.getId().toString());

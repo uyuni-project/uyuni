@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
 
@@ -23,6 +21,7 @@ import com.mockobjects.servlet.MockFilterChain;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 

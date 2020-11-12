@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.token.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -50,7 +50,7 @@ import java.util.Set;
 public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     private ActivationKeyManager manager;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         manager = ActivationKeyManager.getInstance();

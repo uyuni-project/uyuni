@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.util.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -35,13 +35,13 @@ public class RpmVersionComparatorTest extends Assert {
 
     private RpmVersionComparator cmp;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         cmp = new RpmVersionComparator();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         cmp = null;
 

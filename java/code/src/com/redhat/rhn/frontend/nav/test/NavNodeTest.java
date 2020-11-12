@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.nav.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -35,7 +35,7 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     private NavNode node;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         node = new NavNode();
         TestUtils.disableLocalizationLogging();
@@ -168,7 +168,7 @@ public class NavNodeTest extends RhnBaseTestCase {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() {
         node = null;
     }

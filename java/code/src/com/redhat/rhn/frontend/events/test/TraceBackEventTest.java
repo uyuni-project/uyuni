@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.events.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
@@ -43,7 +43,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         mailer = new MockMail();
     }

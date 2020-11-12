@@ -14,7 +14,7 @@
  */
 package com.suse.manager.reactor.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.suse.manager.reactor.utils.ValueMap;
 

@@ -14,11 +14,10 @@
  */
 package com.redhat.rhn.common.validator.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.validator.HostPortValidator;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for the {@link HostPortValidator}.

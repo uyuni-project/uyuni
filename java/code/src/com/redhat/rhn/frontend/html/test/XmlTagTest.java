@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.html.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.html.XmlTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;

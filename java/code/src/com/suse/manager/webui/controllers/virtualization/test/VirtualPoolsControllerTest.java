@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.virtualization.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 
@@ -49,7 +49,6 @@ import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 
 import com.google.gson.Gson;
@@ -79,7 +78,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

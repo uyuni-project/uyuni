@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
@@ -29,6 +27,8 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.HashSet;

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;

@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,14 +47,14 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
     private Path tmpFileRoot;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         tmpFileRoot = Files.createTempDirectory("refgensalt");
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         FileUtils.deleteDirectory(tmpFileRoot.toFile());
     }

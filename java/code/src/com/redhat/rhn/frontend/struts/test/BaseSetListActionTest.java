@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.struts.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.test.CSVWriterTest;
@@ -42,7 +42,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         tla = new TestSetupListAction();
         sah = new ActionHelper();

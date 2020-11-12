@@ -14,7 +14,7 @@
  */
 package com.suse.scc.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;

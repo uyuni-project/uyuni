@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.pillar.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -27,6 +25,7 @@ import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -45,7 +44,7 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
 public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",

@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.custominfo.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 

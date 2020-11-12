@@ -13,11 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -45,7 +44,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     private ServerGroupManager manager;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         manager = new ServerGroupManager();

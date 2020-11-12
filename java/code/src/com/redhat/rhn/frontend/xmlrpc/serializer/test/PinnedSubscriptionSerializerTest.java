@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.frontend.xmlrpc.serializer.PinnedSubscriptionSerializer;

@@ -14,10 +14,10 @@
  */
 
 package com.redhat.rhn.common.security.acl.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclHandler;
@@ -45,7 +45,7 @@ public class AclTest extends RhnBaseTestCase {
     private MockAclHandler handler = null;
 
     /** Sets up the acl, handler, and context objects. */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         acl = new Acl();
         context = new HashMap();
@@ -55,7 +55,7 @@ public class AclTest extends RhnBaseTestCase {
     }
 
     /** Tears down the acl, handler, and context objects. */
-    @After
+    @AfterEach
     public void tearDown() {
         acl = null;
         context = null;

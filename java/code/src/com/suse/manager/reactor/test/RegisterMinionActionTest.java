@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
@@ -247,7 +247,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     };
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -263,7 +263,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(metadataDirOfficial.toFile());

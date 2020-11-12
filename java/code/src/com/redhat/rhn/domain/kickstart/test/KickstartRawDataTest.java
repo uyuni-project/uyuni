@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.kickstart.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -47,7 +47,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
     private KickstartRawData ksdata;
     private final String fileContents = "test kickstart file\n";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

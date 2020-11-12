@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.product.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;

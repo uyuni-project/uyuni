@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.keys.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
@@ -24,6 +22,8 @@ import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CryptoKeysListSetupActionTest

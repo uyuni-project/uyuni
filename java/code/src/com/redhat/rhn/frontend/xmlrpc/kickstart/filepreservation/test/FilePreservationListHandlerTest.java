@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -23,6 +21,8 @@ import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

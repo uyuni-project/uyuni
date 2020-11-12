@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.translation.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.user.User;

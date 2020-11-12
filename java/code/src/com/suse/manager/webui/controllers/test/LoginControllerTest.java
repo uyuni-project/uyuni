@@ -1,7 +1,7 @@
 package com.suse.manager.webui.controllers.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -30,7 +30,7 @@ import spark.routematch.RouteMatch;
 public class LoginControllerTest extends BaseControllerTestCase {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }

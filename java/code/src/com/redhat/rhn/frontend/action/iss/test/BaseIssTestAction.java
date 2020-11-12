@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
 
@@ -30,7 +30,7 @@ public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
     protected IssSlave slaveDto;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         String masterName = "testMaster" + TestUtils.randomString();

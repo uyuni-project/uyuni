@@ -9,9 +9,9 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 package com.redhat.rhn.manager.channel.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
@@ -33,7 +33,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
     private int label_count = 0;
     private User user = null;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         user = UserTestUtils.createUser("testUser", oid);

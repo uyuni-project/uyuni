@@ -15,11 +15,11 @@
 
 package com.redhat.rhn.manager.kickstart.tree.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the {@link com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation} class

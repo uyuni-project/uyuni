@@ -15,14 +15,13 @@
 
 package org.cobbler.test;
 
-import org.junit.Test;
-
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
 import java.util.HashMap;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 
 /**

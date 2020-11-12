@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.proxy.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.server.ServerFactory.createServerPaths;
 import static java.lang.Math.toIntExact;

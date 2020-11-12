@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.keys.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -27,6 +25,7 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

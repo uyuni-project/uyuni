@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.security.acl.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.acl.Access;
@@ -75,7 +75,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     );
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         acl = new Acl();

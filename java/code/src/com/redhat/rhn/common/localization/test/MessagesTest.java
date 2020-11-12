@@ -14,10 +14,10 @@
  */
 
 package com.redhat.rhn.common.localization.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.localization.XmlMessages;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -42,7 +42,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * sets up the test
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         getMessage = "Get this";
         germanMessage = "Ich bin ein Berliner";
@@ -60,7 +60,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /*
      * @see junit.framework.TestCase#tearDown()
      */
-    @After
+    @AfterEach
     public void tearDown() {
         getMessage = null;
         oneArg = null;

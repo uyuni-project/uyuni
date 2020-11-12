@@ -13,11 +13,10 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -79,7 +78,7 @@ import java.util.stream.Collectors;
 public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -271,7 +270,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                             minion1.getMinionId(), Arrays.asList(action1_1.getId() + "", action1_2.getId() + ""),
                             minion2.getMinionId(), Arrays.asList(action2_1.getId() + "", action2_2.getId() + "")))));
                 }
-               
+
             }
         });
 
@@ -289,7 +288,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
                 saltUtils);
         minionActionUtils.cleanupMinionActionChains();
-        
+
         if (!MinionActionUtils.POSTGRES) {
             assertActionCompleted(action1_1);
             assertActionCompleted(action1_2);

@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.virtualization.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -41,7 +39,6 @@ import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 
 import com.google.gson.Gson;
@@ -51,6 +48,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.hamcrest.collection.IsMapContaining;
 import org.jmock.Expectations;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +66,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.org.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
@@ -57,7 +57,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     private ChannelFamily channelFamily = null;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -123,7 +123,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
             // expected
         }
     }
-    
+
     @Test
     public void testContentStagingSettings() {
         Org testOrg = createOrg();

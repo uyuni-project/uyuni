@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand;
@@ -29,6 +27,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.test.MockConnection;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests Cobbler command to manage power on a system.

@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.channel.AccessToken;
@@ -38,6 +36,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -49,7 +48,7 @@ import java.util.Optional;
 public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),

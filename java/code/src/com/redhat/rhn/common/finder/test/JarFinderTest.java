@@ -15,13 +15,13 @@
 
 package com.redhat.rhn.common.finder.test;
 
-import org.junit.Test;
 import java.util.List;
 
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 public class JarFinderTest extends Assert {
 

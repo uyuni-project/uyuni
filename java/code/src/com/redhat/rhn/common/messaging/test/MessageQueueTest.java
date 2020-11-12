@@ -14,10 +14,10 @@
  */
 
 package com.redhat.rhn.common.messaging.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.apache.log4j.Logger;
 
@@ -31,7 +31,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     private static Logger logger = Logger.getLogger(MessageQueueTest.class);
     protected User user;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         logger.debug("setUp - start");
         Config.get().setString("web.mailer_class",
@@ -42,7 +42,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         logger.debug("tearDown - start");
         TestAction.deRegisterAction();

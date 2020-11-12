@@ -1,11 +1,11 @@
 package com.redhat.rhn.common.db.datasource.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 public class ModeFactoryTest extends RhnJmockBaseTestCase {
 

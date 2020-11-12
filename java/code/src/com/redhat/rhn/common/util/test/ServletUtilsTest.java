@@ -14,9 +14,7 @@
  */
 
 package com.redhat.rhn.common.util.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -24,6 +22,7 @@ import com.redhat.rhn.testing.ServletTestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -50,7 +49,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     private String param2Name;
     private String param2Value;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.pillar.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
@@ -50,7 +50,7 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             new MinionPillarFileManager(new MinionVirtualizationPillarGenerator());
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         minionVirtualizationPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());

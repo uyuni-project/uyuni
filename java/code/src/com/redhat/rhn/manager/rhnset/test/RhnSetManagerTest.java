@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.rhnset.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
@@ -38,13 +38,13 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     private static final String TEST_USER_NAME = "automated_test_user_jesusr";
     private static final String TEST_ORG_NAME = "automated_test_org_jesusr";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME);
         cleanup = new TestSetCleanup();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         userId = null;
         cleanup = null;

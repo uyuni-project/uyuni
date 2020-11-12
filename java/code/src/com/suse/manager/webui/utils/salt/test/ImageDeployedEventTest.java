@@ -14,9 +14,9 @@
  */
 
 package com.suse.manager.webui.utils.salt.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
@@ -38,7 +38,7 @@ import static java.util.Optional.of;
 public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

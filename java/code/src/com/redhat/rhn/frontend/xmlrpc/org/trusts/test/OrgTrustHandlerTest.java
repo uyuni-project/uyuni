@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.org.trusts.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -51,7 +51,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
     private OrgTrustHandler handler = new OrgTrustHandler();
     private OrgHandler orgHandler = new OrgHandler();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);

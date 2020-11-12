@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -40,7 +40,7 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
 
     private Sequence idSequence;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         idSequence = new Sequence();
     }

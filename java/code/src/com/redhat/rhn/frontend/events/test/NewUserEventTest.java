@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.events.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -42,7 +42,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         mailer = new MockMail();
     }

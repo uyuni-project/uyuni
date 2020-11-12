@@ -13,14 +13,14 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.security.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -46,7 +46,7 @@ public class AuthenticationServiceFactoryTest extends Assert {
 
     private AuthenticationServiceFactoryStub factory;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         factory = new AuthenticationServiceFactoryStub();
     }

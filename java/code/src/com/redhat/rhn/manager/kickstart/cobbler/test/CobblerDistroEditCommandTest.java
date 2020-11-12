@@ -1,7 +1,5 @@
 package com.redhat.rhn.manager.kickstart.cobbler.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroEditCommand;
@@ -9,6 +7,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.TestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
@@ -26,7 +25,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      * @throws Exception if anything goes wrong
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

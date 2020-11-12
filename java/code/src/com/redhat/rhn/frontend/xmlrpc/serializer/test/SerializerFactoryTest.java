@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 
@@ -23,13 +21,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 
 public class SerializerFactoryTest extends Assert {
 
     private SerializerFactory factory = null;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         factory = new SerializerFactory();

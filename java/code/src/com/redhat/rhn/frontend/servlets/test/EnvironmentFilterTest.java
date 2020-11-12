@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.EnvironmentFilter;
@@ -27,7 +27,7 @@ import org.apache.struts.Globals;
  */
 public class EnvironmentFilterTest extends BaseFilterTst {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.request.setRequestURL("https://rhn.webdev.redhat.com/rhn/manager/login");

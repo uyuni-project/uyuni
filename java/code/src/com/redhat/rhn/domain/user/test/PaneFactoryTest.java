@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.domain.user.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.rhnpackage.profile.test;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -108,7 +108,7 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
                 startsWith("/systems/details/packages/profiles/MissingPackages.do"));
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         // We committed stuff - need to remove it all again

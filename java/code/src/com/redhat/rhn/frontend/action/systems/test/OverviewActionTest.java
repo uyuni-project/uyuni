@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 
 /**

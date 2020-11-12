@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.HashMap;

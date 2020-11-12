@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.schedule.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
@@ -35,7 +35,7 @@ public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
     private CompletedSystemsSetupAction action;
     private ActionHelper sah;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         action = new CompletedSystemsSetupAction();
         sah = new ActionHelper();

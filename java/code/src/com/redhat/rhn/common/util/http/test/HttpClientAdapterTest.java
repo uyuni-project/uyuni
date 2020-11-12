@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.util.http.test;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
@@ -235,7 +235,7 @@ public class HttpClientAdapterTest extends Assert {
     /* (non-Javadoc)
      * @see junit.framework.TestCase#tearDown()
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
 
 

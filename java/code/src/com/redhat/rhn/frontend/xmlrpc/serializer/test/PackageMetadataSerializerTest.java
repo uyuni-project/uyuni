@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
@@ -27,6 +25,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -34,7 +34,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class PackageMetadataSerializerTest extends Assert {
     private XmlRpcSerializer builtin;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         builtin = new XmlRpcSerializer();

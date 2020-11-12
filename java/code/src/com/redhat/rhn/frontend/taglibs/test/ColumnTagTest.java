@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.frontend.taglibs.ColumnTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
@@ -26,6 +24,8 @@ import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockHttpServletRequest;
 import com.mockobjects.servlet.MockJspWriter;
 import com.mockobjects.servlet.MockPageContext;
+
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;

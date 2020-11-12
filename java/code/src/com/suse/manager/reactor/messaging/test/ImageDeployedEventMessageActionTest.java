@@ -1,7 +1,7 @@
 package com.suse.manager.reactor.messaging.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
 
@@ -65,7 +65,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     private TaskomaticApi taskomaticMock;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

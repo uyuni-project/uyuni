@@ -15,14 +15,14 @@
 
 package com.redhat.rhn.manager.channel.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 

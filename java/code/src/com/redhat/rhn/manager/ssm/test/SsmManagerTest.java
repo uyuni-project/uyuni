@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.manager.ssm.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -79,7 +79,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
     private TaskomaticApi taskomaticMock;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         // Create a SUSE product and channel products

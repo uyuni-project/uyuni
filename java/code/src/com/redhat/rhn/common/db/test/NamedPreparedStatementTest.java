@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.db.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.BindVariableNotFoundException;
 import com.redhat.rhn.common.db.NamedPreparedStatement;
@@ -80,12 +80,12 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                      "FROM FOOBAR";
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         session = HibernateFactory.getSession();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         session = null;
         super.tearDown();

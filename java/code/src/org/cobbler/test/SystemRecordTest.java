@@ -14,9 +14,9 @@
  */
 
 package org.cobbler.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -47,7 +47,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
      * Sets up a connection and system.
      * @throws Exception in case anything goes wrong
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());

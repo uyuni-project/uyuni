@@ -1,7 +1,7 @@
 package com.suse.manager.reactor.messaging.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -41,7 +41,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
     private BatchStartedEventMessageAction messageAction;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.messageAction = new BatchStartedEventMessageAction();

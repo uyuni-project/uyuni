@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -31,6 +29,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ActionSystemsSetupActionTest

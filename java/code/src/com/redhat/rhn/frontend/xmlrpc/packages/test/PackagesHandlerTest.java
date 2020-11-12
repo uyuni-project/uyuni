@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.packages.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -40,6 +38,8 @@ import com.redhat.rhn.frontend.xmlrpc.packages.PackagesHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;

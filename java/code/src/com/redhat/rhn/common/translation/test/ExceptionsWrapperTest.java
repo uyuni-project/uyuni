@@ -22,10 +22,10 @@ import com.redhat.rhn.common.translation.ExceptionConstants;
 import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 
 import org.apache.log4j.Logger;
-import org.junit.AfterClass;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -161,7 +161,7 @@ public class ExceptionsWrapperTest extends Assert {
         });
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void oneTimeSetup() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -186,7 +186,7 @@ public class ExceptionsWrapperTest extends Assert {
         });
     }
 
-    @AfterClass
+    @AfterAll
     public static void oneTimeTeardown() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;

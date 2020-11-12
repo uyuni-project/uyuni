@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.frontend.xmlrpc.serializer.RhnTimeZoneSerializer;
@@ -36,7 +36,7 @@ public class RhnTimeZoneSerializerTest extends Assert {
 
     private RhnTimeZoneSerializer serializer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         serializer = new RhnTimeZoneSerializer();

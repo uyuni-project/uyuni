@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.errata.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
@@ -97,7 +97,7 @@ import java.util.stream.Collectors;
 public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

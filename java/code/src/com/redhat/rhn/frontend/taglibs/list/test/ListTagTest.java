@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.taglibs.list.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.domain.session.WebSession;
@@ -52,7 +52,7 @@ public class ListTagTest extends MockObjectTestCase {
 
     private String listName = "testDataListName";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

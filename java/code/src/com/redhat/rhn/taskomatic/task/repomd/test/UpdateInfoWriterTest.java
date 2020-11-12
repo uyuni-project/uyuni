@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.repomd.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import static com.redhat.rhn.domain.errata.test.ErrataFactoryTest.createTestErrata;
@@ -42,7 +42,7 @@ import java.io.StringWriter;
  */
 public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }

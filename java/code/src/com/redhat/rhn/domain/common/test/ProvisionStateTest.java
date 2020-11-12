@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.common.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.testing.RhnBaseTestCase;

@@ -15,13 +15,13 @@
 
 package com.redhat.rhn.domain.org.usergroup.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /** JUnit test case for the UserGroup
  *  class.

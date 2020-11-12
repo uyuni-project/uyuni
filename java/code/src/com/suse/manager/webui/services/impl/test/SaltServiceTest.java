@@ -1,8 +1,8 @@
 package com.suse.manager.webui.services.impl.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -10,8 +10,6 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -34,7 +32,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     private Path tempDir;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -107,7 +105,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() {
         try {
             Files.deleteIfExists(tempDir);

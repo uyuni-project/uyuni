@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.db.datasource.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -32,6 +32,7 @@ import java.util.Random;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -325,7 +326,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     }
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = connection.createStatement();
@@ -352,7 +353,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;

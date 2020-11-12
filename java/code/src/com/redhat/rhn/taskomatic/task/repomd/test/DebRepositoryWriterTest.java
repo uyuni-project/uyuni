@@ -14,10 +14,8 @@
  */
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
-import org.junit.Before;
-import org.junit.After;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -30,6 +28,7 @@ import com.redhat.rhn.taskomatic.task.repomd.DebRepositoryWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     private Path tmpDir;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         tmpDir = Files.createTempDirectory("debPkgWriterTest");
@@ -96,7 +95,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 //        System.out.println(releaseContent);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(tmpDir.toFile());

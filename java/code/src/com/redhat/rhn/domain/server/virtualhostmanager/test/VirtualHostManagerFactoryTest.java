@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.domain.server.virtualhostmanager.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -45,7 +45,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         factory = VirtualHostManagerFactory.getInstance();

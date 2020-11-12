@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.configuration.channel.ChannelOverviewAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
@@ -24,6 +22,7 @@ import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
+import org.junit.jupiter.api.Test;
 
 /**
  * RhnHelperTest - test our RhnHelper class

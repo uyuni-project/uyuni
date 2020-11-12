@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.context.Context;
@@ -23,6 +21,8 @@ import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;

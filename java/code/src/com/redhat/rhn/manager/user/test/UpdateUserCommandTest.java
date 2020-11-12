@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.user.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -36,7 +36,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
 
     private UpdateUserCommand command;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         User user = UserTestUtils.createUser("testUser", oid);

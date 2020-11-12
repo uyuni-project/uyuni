@@ -14,10 +14,10 @@
  */
 
 package org.cobbler.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -54,7 +54,7 @@ public class ImageTest extends BaseTestCaseWithUser {
      * Sets up a connection and image.
      * @throws Exception in case anything goes wrong
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         MockConnection.clear();
@@ -67,7 +67,7 @@ public class ImageTest extends BaseTestCaseWithUser {
      * Removes the image created by setUp().
      * @throws Exception in case anything goes wrong
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         assertTrue(image.remove());
         super.tearDown();

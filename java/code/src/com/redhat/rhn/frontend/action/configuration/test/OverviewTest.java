@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -24,6 +22,8 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 

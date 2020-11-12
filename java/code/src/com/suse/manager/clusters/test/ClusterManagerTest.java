@@ -14,9 +14,7 @@
  */
 
 package com.suse.manager.clusters.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
@@ -34,6 +32,7 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.utils.Json;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class ClusterManagerTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         saltServiceMock = context().mock(SaltService.class);

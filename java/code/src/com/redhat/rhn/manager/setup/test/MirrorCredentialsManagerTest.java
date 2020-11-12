@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.setup.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
@@ -142,7 +142,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         credsManager = new MirrorCredentialsManager();
@@ -152,7 +152,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
 

@@ -14,10 +14,10 @@
  */
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.Channel;
@@ -40,7 +40,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
     private String prefix;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         prefix = Files.createTempDirectory("debreleasewriter").toAbsolutePath().toString() + File.separator;
@@ -98,7 +98,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         org.apache.commons.io.FileUtils.deleteDirectory(new File(prefix));

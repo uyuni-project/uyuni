@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -35,7 +35,7 @@ import java.util.HashSet;
 public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     private ManagedServerGroup managedGroup;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         managedGroup = ServerGroupFactory.create(

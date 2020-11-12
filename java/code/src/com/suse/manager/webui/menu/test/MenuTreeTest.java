@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.menu.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;

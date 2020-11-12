@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.errata.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
@@ -70,7 +70,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     private User user;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         // TODO Auto-generated method stub
         super.setUp();

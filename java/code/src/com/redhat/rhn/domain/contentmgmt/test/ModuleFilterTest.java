@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
@@ -34,7 +34,7 @@ public class ModuleFilterTest extends BaseTestCaseWithUser {
     private ContentManager contentManager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();

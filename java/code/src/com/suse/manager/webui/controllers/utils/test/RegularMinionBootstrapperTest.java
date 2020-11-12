@@ -14,9 +14,7 @@
  */
 
 package com.suse.manager.webui.controllers.utils.test;
-import org.junit.Before;
-
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.google.gson.JsonPrimitive;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -36,6 +34,7 @@ import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 import org.jmock.Expectations;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,7 +48,7 @@ import java.util.Optional;
 public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         bootstrapper = new RegularMinionBootstrapper(saltServiceMock, saltServiceMock);

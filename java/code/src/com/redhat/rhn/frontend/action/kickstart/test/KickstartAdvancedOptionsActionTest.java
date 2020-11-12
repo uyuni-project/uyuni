@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -33,7 +33,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
     protected KickstartData ksdata;
     protected KickstartData ksdataOptions;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());

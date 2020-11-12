@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.domain.user.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -50,7 +50,7 @@ import java.util.TimeZone;
 public class UserFactoryTest extends RhnBaseTestCase {
     private UserFactory factory;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         factory = UserFactory.getInstance();
     }

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.activationkey.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
@@ -86,7 +86,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     private Channel baseChannel;
     private String baseChannelLabel;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         baseChannel = ChannelTestUtils.createBaseChannel(admin);

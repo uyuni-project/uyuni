@@ -27,7 +27,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Assert;
 
 import java.io.File;
@@ -60,7 +60,7 @@ public abstract class RhnBaseTestCase extends Assert {
      * @see TestCase#tearDown()
      * @see HibernateFactory#closeSession()
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         TestCaseHelper.tearDownHelper();
     }

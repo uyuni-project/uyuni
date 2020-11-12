@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -43,7 +43,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
     private final String DIALOG_NAV = "com.redhat.rhn.frontend.nav.DialognavRenderer";
     private NavDialogMenuTag nmt;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         nmt = new NavDialogMenuTag();
         try {

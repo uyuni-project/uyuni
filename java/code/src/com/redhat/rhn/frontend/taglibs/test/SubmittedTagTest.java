@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;

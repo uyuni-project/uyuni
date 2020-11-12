@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -34,7 +34,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -54,7 +54,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private GuestBuilder builder;
     SystemEntitlementManager systemEntitlementManager;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         virtualInstanceDAO = new VirtualInstanceFactory();
         user = UserTestUtils.findNewUser("testUser",

@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.integration.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.frontend.integration.IntegrationService;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 

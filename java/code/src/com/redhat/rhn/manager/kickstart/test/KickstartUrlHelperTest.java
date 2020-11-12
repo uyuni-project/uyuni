@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.kickstart.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -38,7 +38,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     private KickstartUrlHelper helper;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         helper = new KickstartUrlHelper(ksdata, "spacewalk.example.com");

@@ -14,14 +14,13 @@
  */
 package com.redhat.rhn.common.util.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 
 /**

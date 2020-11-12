@@ -13,10 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.list.test;
-import org.junit.Before;
-import org.junit.After;
-
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.frontend.action.CSVDownloadAction;
@@ -28,6 +26,7 @@ import com.redhat.rhn.testing.RhnMockJspWriter;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class CSVTagTest extends MockObjectTestCase {
 
     private String listName = "testDataListName";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -122,7 +121,7 @@ public class CSVTagTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         RhnBaseTestCase.enableLocalizationServiceLogging();

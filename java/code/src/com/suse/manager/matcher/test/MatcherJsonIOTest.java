@@ -1,7 +1,7 @@
 package com.suse.manager.matcher.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Collections.singleton;
 
@@ -37,7 +37,6 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
@@ -81,7 +80,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

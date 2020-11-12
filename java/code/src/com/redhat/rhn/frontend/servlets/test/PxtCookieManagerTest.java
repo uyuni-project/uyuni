@@ -13,15 +13,15 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.manager.session.SessionManager;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -45,13 +45,6 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
 
     private Long pxtSessionId;
 
-    /**
-     * @param name the test case name
-     */
-    public PxtCookieManagerTest(String name) {
-        super(name);
-    }
-
     private HttpServletRequest getRequest() {
         return mockRequest;
     }
@@ -59,7 +52,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -80,7 +73,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         } });
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
     }

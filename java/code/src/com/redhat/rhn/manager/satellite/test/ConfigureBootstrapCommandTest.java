@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.manager.satellite.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.satellite.ConfigureBootstrapCommand;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * ConfigureBootstrapCommandTest - test for ConfigureBootstrapCommand

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.maintenance.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.SINGLE;
@@ -74,7 +74,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     private static final String EXCHANGE_MULTI2_ICS = "maintenance-windows-multi-exchange-2.ics";
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

@@ -13,9 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -32,7 +32,7 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/ssm/PackageVerify");

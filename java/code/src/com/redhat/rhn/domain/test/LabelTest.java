@@ -14,12 +14,11 @@
  */
 package com.redhat.rhn.domain.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.Label;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 
 /**

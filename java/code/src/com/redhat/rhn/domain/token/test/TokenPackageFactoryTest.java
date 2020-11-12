@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.token.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -24,6 +22,8 @@ import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.token.TokenPackageFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

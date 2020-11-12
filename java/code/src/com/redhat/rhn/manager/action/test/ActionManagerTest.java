@@ -14,9 +14,9 @@
  */
 
 package com.redhat.rhn.manager.action.test;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
@@ -152,7 +152,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }};
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

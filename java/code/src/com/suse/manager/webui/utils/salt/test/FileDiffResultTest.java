@@ -1,6 +1,6 @@
 package com.suse.manager.webui.utils.salt.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;

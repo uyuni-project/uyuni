@@ -13,10 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.ResourceReloadServlet;
@@ -42,7 +42,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     private HttpServletResponse response;
     private ServletOutputStream output;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -68,7 +68,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
                 Boolean.valueOf(orig).toString());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         request = null;
         response = null;

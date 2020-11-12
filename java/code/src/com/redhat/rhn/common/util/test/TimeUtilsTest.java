@@ -14,11 +14,10 @@
  */
 package com.redhat.rhn.common.util.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.common.util.TimeUtils;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 /**
  * TimeUtilsTest is the test class for TimeUtils.

@@ -14,14 +14,13 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -39,12 +38,12 @@ import javax.servlet.http.HttpServletResponse;
 
 public class XmlRpcServletTest extends MockObjectTestCase {
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         HibernateFactory.closeSession();
         super.tearDown();

@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
-import org.junit.Test;
-
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -24,6 +22,8 @@ import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.Set;
