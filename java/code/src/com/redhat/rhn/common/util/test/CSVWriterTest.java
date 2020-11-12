@@ -37,7 +37,6 @@ public class CSVWriterTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         disableLocalizationServiceLogging();
     }
 

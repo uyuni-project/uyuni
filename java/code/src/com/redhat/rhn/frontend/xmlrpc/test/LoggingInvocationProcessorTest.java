@@ -41,7 +41,6 @@ public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         lip = new LoggingInvocationProcessor();
         writer = new StringWriter();
     }

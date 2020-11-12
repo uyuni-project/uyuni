@@ -54,10 +54,8 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected MinionPillarFileManager minionGeneralPillarFileManager =
             new MinionPillarFileManager(new MinionGeneralPillarGenerator());
 
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         admin = UserTestUtils.createUserInOrgOne();
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(admin);

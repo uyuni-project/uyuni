@@ -56,8 +56,6 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-
         virtualInstanceDAO = new VirtualInstanceFactory();
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

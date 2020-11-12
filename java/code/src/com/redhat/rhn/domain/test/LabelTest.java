@@ -47,13 +47,6 @@ public class LabelTest extends Assert {
     }
 
     /**
-     * @param name the name
-     */
-    public LabelTest(String name) {
-
-    }
-
-    /**
      * Test method for {@link com.redhat.rhn.domain.Label#equals(java.lang.Object)}.
      */
     @Test

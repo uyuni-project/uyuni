@@ -79,10 +79,8 @@ public class UserManagerTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         this.users = new HashSet<User>();
     }
 

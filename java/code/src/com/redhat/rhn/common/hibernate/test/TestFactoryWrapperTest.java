@@ -140,7 +140,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLotsOfTransactions() throws Exception {
+    public void testLotsOfTransactions() {
 
         for (int i = 0; i < 20; i++) {
             SelectMode m = ModeFactory.getMode("test_queries", "get_test_users");
@@ -152,7 +152,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @BeforeClass
-    public static void oneTimeSetup() throws Exception {
+    public static void oneTimeSetup() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

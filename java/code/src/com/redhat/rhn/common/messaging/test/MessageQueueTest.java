@@ -33,7 +33,6 @@ public class MessageQueueTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         logger.debug("setUp - start");
         Config.get().setString("web.mailer_class",
                 MockMail.class.getName());

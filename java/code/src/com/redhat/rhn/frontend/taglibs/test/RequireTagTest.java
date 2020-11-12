@@ -39,7 +39,6 @@ public class RequireTagTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         rt = new RequireTag();
         tth = TagTestUtils.setupTagTest(rt, null);
     }

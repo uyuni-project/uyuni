@@ -70,14 +70,6 @@ public class SystemSearchHelperTest extends Assert {
     protected SystemSearchHelper.SearchResultScoreComparator cmp;
     protected SystemSearchHelper.SearchResultScoreComparator nullCmp;
 
-    public SystemSearchHelperTest() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public SystemSearchHelperTest(String name) {
-
-    }
-
     @Before
     public void setUp() throws Exception {
 

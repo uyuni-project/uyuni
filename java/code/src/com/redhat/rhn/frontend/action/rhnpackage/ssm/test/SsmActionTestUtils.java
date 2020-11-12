@@ -36,7 +36,7 @@ import junit.framework.TestCase;
 /**
  * @version $Revision$
  */
-public class SsmActionTestUtils extends TestCase {
+public class SsmActionTestUtils {
 
     private User user;
 

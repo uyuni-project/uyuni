@@ -27,6 +27,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.junit.After;
+import org.junit.Assert;
 
 import java.io.File;
 import java.io.Serializable;
@@ -44,14 +46,13 @@ import junit.framework.TestCase;
  * test to similuate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase extends TestCase {
+public abstract class RhnBaseTestCase extends Assert {
 
     /**
      * Constructs a TestCase with the given name.
      * @param name Name of TestCase.
      */
     public RhnBaseTestCase(String name) {
-        super(name);
     }
 
     /**
@@ -63,21 +64,13 @@ public abstract class RhnBaseTestCase extends TestCase {
     }
 
     /**
-     * Called once per test method.
-     * @throws Exception if an error occurs during setup.
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /**
      * Tears down the fixture, and closes the HibernateSession.
      * @see TestCase#tearDown()
      * @see HibernateFactory#closeSession()
      */
+    @After
     protected void tearDown() throws Exception {
-        super.tearDown();
-        TestCaseHelper.tearDownHelper();
+        TestCaseHelper.tearDownHelper(); // todo fkobzik - check if this is called
     }
 
     /**

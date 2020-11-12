@@ -82,7 +82,6 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         session = HibernateFactory.getSession();
     }
 

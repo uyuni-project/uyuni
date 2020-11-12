@@ -53,7 +53,6 @@ public class RhnSetActionTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         action = new TestAction();
     }
 

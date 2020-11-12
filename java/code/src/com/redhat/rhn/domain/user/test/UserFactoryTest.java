@@ -50,10 +50,8 @@ import java.util.TimeZone;
 public class UserFactoryTest extends RhnBaseTestCase {
     private UserFactory factory;
 
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         factory = UserFactory.getInstance();
     }
 

@@ -29,7 +29,6 @@ public class HandlerFactoryTest extends RhnBaseTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         factory = HandlerFactory.getDefaultHandlerFactory();
     }
 

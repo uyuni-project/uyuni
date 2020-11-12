@@ -49,7 +49,6 @@ public class UserTest extends RhnBaseTestCase {
     @Before
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
-        super.setUp();
     }
 
     /**

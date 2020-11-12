@@ -107,10 +107,8 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         SCCCachingFactory.clearRepositories();
     }
 }

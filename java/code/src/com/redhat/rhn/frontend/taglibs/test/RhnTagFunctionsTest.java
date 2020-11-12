@@ -31,7 +31,6 @@ public class RhnTagFunctionsTest extends RhnBaseTestCase {
     @Before
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
-        super.setUp();
     }
 
     @Test
