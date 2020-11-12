@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  *
@@ -50,10 +51,12 @@ public class AuthenticationServiceFactoryTest extends Assert {
         factory = new AuthenticationServiceFactoryStub();
     }
 
+    @Test
     public final void testGetInstance() {
         assertNotNull(AuthenticationServiceFactory.getInstance());
     }
 
+    @Test
     public final void testGetAuthenticationServiceWhenInSatelliteMode() {
         factory.setSatellite(true);
 

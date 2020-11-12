@@ -13,9 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
-import org.junit.Before;
-
-import org.junit.Test;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -38,10 +35,17 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Iterator;
 
@@ -170,7 +174,8 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
      *
      * @throws Exception on server init failure
      */
-    private void testAddOnVirt(String selectKey,
+    @Test
+    public void testAddOnVirt(String selectKey,
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             )  throws Exception {

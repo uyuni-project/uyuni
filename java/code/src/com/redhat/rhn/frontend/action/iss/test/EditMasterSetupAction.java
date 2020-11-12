@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.iss.test;
 
 
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  * IssMapOrgsActionTest
@@ -29,6 +30,7 @@ public class EditMasterSetupAction extends BaseIssTestAction {
         addRequestParameter("id", masterDto.getId().toString());
     }
 
+    @Test
     public void testEditSlave() {
         doPerform(true);
         verifyFormValue("id", masterDto.getId());

@@ -22,6 +22,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.Before;
+import org.junit.Test;
 
 public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
 
@@ -47,10 +48,12 @@ public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
         slaveDto = (IssSlave) IssFactory.reload(slaveDto);
     }
 
+    @Test
     public void testPermission() throws Exception {
         permissionCheck();
     }
 
+    @Test
     public void testList() throws Exception {
         if (getListName() == null) {
             return;

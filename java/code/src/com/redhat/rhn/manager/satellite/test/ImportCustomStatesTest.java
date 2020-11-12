@@ -45,7 +45,6 @@ import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY
 /**
  * Tests importing the legacy custom states contents into the custom channels.
  */
-// todo not migrated!!!!!!!!!!!!!
 public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
     private Path legacyStatesBackupDirectory;
@@ -70,6 +69,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      * Tests that when various tasks are queued, they are also cleaned up after the
      * upgrade process.
      */
+    @Test
     public void testMultipleTasksDone() {
         createTask(UpgradeCommand.UPGRADE_KS_PROFILES);
 
@@ -84,6 +84,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStates() throws IOException {
         ConfigChannelSaltManager.getInstance().setBaseDirPath(tmpSaltRoot.toAbsolutePath().toString());
 
@@ -127,6 +128,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testMultipleTasksInQueue() throws IOException {
         // create one task here, another one is created in setUp
         createTask(UpgradeCommand.UPGRADE_CUSTOM_STATES);
@@ -139,6 +141,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesContentExistsInDb() throws IOException {
         ConfigChannel stateChannel = createTestStateChannel();
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -168,6 +171,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesMoreRevisions() throws IOException {
         ConfigChannel stateChannel = createTestStateChannel();
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -199,6 +203,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesNormalChannelSkipped() throws IOException {
         ConfigChannel normalChannel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.normal());
         ConfigFile configFile = normalChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -230,6 +235,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testProcessCustomStatesMissingFile() {
         ConfigChannel stateChannel = createTestStateChannel();
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
@@ -253,6 +259,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      *
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testBackupAndCleanup() throws IOException {
         assertTrue(legacyStatesBackupDirectory.toFile().list().length == 0);
 

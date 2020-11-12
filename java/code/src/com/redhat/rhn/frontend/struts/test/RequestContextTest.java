@@ -52,6 +52,7 @@ public class RequestContextTest extends MockObjectTestCase {
     /**
      * @throws Exception if an error occurs
      */
+    @Test
     public final void testGetLoggedInUser() throws Exception {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
 

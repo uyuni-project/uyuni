@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.Test;
 
 import java.net.URLEncoder;
 import java.util.Vector;
@@ -80,6 +81,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
     /**
      * @throws Exception something bad happened
      */
+    @Test
     public final void testExecuteWhenRequestHasNoParams() throws Exception {
       context().checking(new Expectations() { {
           allowing(mockRequest).getParameterNames();
@@ -97,6 +99,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
     /**
      * @throws Exception something bad happened
      */
+    @Test
     public final void testExecuteWhenRequestHasParams() throws Exception {
         final String paramName = "foo";
         final String paramValue = "param value = bar#$%!";
@@ -122,6 +125,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
         assertEquals(expected, redirectURI);
     }
 
+    @Test
     public final void testExecuteWhenRedirectURIExceedsMaxLength() throws Exception {
         final String url = StringUtils.rightPad("/YourRhn.do",
                 (int)CreateRedirectURI.MAX_URL_LENGTH + 1, "x");

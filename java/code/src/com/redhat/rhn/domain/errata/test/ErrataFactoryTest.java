@@ -287,7 +287,9 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         m.executeUpdate(params);
     }
 
-    public static void testLookupByOriginal() throws Exception {
+    @Test
+    public void testLookupByOriginal() throws Exception {
+
         Long orgId = UserTestUtils.createOrg("testOrgLookupByOriginal");
         Org org = OrgFactory.lookupById(orgId);
         Errata testErrata = createTestErrata(orgId);

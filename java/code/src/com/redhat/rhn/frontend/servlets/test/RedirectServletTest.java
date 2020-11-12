@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.security.RedirectServlet;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -83,6 +84,7 @@ public class RedirectServletTest extends MockObjectTestCase {
         return mockResponse;
     }
 
+    @Test
     public final void testDoGet() throws Exception {
         context().checking(new Expectations() { {
            oneOf(mockResponse).sendRedirect("https://" + serverName + redirectURI);
@@ -93,6 +95,7 @@ public class RedirectServletTest extends MockObjectTestCase {
         redirect.doGet(getRequest(), getResponse());
     }
 
+    @Test
     public final void testDoGetWithQueryString() throws Exception {
         final String queryString = encode("myparam") + "=" + encode("neo is the one!");
 

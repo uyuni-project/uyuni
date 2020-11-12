@@ -25,6 +25,8 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.Test;
+
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
@@ -34,6 +36,7 @@ import java.util.List;
 public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
 
+    @Test
     public final void testVisibilityForNoRoles() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
@@ -44,6 +47,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
     }
 
+    @Test
     public final void testVisibilityForWrongRoles() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
@@ -54,6 +58,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, UserNotificationFactory.listAllByUser(user).size());
     }
 
+    @Test
     public final void testUpdateReadFlag() {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
@@ -78,6 +83,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
     }
 
+    @Test
     public final void testDeleteNotificationMessagesBefore() {
         // Clean up all notifications that might be present
         if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {
@@ -100,6 +106,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
     }
 
+    @Test
     public final void testDeleteNotificationMessages() {
         // Clean up all notifications that might be present
         if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {

@@ -21,6 +21,7 @@ import com.redhat.rhn.manager.session.SessionManager;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.Test;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -84,6 +85,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         super.tearDown();
     }
 
+    @Test
     public final void testGetPxtCookieWhenPxtCookieIsNotPresent() {
         final Cookie[] cookies = new Cookie[] {
                 new Cookie("cookie-1", "one"),
@@ -98,6 +100,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertNull(manager.getPxtCookie(getRequest()));
     }
 
+    @Test
     public final void testGetPxtCookieWhenNoCookiesPresent() {
         context().checking(new Expectations() { {
             allowing(mockRequest).getCookies();
@@ -107,6 +110,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertNull(manager.getPxtCookie(getRequest()));
     }
 
+    @Test
     public final void testGetPxtCookieWhenPxtCookieIsPresentWithoutPxtPersonalities() {
         final Cookie[] cookies = new Cookie[] {
                 new Cookie("cookie-1", "one"),
@@ -123,12 +127,14 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(cookies[1], manager.getPxtCookie(getRequest()));
     }
 
+    @Test
     public final void testCreatePxtCookieSetsNameWithoutPxtPersonalities() {
         Cookie pxtCookie = manager.createPxtCookie(pxtSessionId, getRequest(), TIMEOUT);
 
         assertEquals(PxtCookieManager.PXT_SESSION_COOKIE_NAME, pxtCookie.getName());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsValue() {
         String expected = pxtSessionId + "x" +
             SessionManager.generateSessionKey(pxtSessionId.toString());
@@ -138,6 +144,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(expected, pxtCookie.getValue());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsPath() {
         String expected = "/";
 
@@ -146,6 +153,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(expected, pxtCookie.getPath());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsMaxAge() {
         int expected = TIMEOUT;
 
@@ -154,6 +162,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(expected, pxtCookie.getMaxAge());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsSecure() {
         Cookie pxtCookie = manager.createPxtCookie(pxtSessionId, getRequest(), TIMEOUT);
 

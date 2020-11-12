@@ -76,6 +76,7 @@ import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.List;
@@ -109,6 +110,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 
+    @Test
     public final void testImportImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
@@ -146,6 +148,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertTrue(ret > 0);
     }
 
+    @Test
     public final void testScheduleContainerImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
@@ -167,6 +170,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
     }
 
+    @Test
     public final void testScheduleOSImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         SaltService saltServiceMock = CONTEXT.mock(SaltService.class);
@@ -203,6 +207,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
     }
 
+    @Test
     public final void testListImages() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         createImageInfo("myimage", "1.0.0", store, admin);
@@ -212,6 +217,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, listInfo.size());
     }
 
+    @Test
     public final void testGetImageDetails() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
@@ -220,6 +226,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(inf1.getVersion(), imageOverview.getVersion());
     }
 
+    @Test
     public final void testGetRelevantErrata() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(admin);
         Set<Channel> errataChannels = new HashSet<>();
@@ -248,6 +255,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(e.getId().intValue(), errata.getId().intValue());
     }
 
+    @Test
     public final void testGetPackages() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
@@ -260,6 +268,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, result.size());
     }
 
+    @Test
     public final void testGetCustomValues() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);

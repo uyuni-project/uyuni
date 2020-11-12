@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.jmock.Expectations;
+import org.junit.Test;
 
 import java.util.Vector;
 
@@ -89,36 +90,42 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         assertTrue(service.validate(getRequest(), getResponse()));
     }
 
+    @Test
     public final void testValidateFailsWhenPxtSessionKeyIsInvalid() {
         setupPxtDelegate(false, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
+    @Test
     public final void testValidateFailsWhenPxtSessionExpired() {
         setupPxtDelegate(true, true, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
+    @Test
     public final void testValidateFailsWhenWebUserIdIsNull() {
         setupPxtDelegate(true, false, null);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
+    @Test
     public final void testValidateSucceedsWhenRequestURIUnprotected() {
         setupPxtDelegate(false, false, 1234L);
         setupGetRequestURI("/rhn/manager/login");
         assertTrue(service.validate(getRequest(), getResponse()));
     }
 
+    @Test
     public final void testValidateSucceeds() {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
         runValidateSucceedsTest();
     }
 
+    @Test
     public final void testInvalidate() {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
@@ -157,6 +164,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         } });
     }
 
+    @Test
     public final void testRedirectoToLoginForwardsRequest() throws Exception {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
@@ -193,6 +201,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
     /**
      * @throws Exception something bad happened
      */
+    @Test
     public final void testRedirectToLoginSetsURLBounceRequestAttribute() throws Exception {
         setupPxtDelegate(true, false, 1234L);
         setupGetRequestURI("/rhn/YourRhn.do");
