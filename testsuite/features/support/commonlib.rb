@@ -209,3 +209,10 @@ def repository_exist?(repo)
   repo_list = repo_xmlrpc.repo_list
   repo_list.include? repo
 end
+
+def generate_repository_name(repo_url)
+  repo_name = repo_url.strip
+  repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
+  repo_name
+end
