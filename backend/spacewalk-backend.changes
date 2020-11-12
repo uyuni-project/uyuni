@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 12 09:59:39 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.35-1
 - ISS: Differentiate packages with same nevra but different checksum in the same channel (bsc#1178195)
 - fix unique machine_id detection (bsc#1176074)
 
