@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.common.util.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.AttributeCopyRule;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -27,6 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class AttributeCopyRuleTest extends RhnBaseTestCase {
+    @Test
     public void testCopy() throws Exception {
         Digester digester = new Digester();
         digester.setValidating(false);

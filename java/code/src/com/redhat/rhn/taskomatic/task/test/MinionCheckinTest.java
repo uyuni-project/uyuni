@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -42,6 +45,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
     private int thresholdMax;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.thresholdMax =  Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD) * 86400;
@@ -54,6 +58,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testExecuteOnActiveMinions() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setMinionId("minion1");
@@ -86,6 +91,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testExecuteOnInactiveMinions() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setMinionId("minion1");

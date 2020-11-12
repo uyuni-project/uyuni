@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
@@ -31,6 +33,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
 /**
  * @throws Exception something bad happened
  */
+    @Test
     public void testExecute() throws Exception {
 
         WebSession s = WebSessionFactory.createSession();

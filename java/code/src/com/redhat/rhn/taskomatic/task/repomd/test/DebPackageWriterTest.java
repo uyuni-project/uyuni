@@ -14,6 +14,10 @@
  */
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -42,11 +46,13 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
     private Path tmpDir;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         tmpDir = Files.createTempDirectory("debPkgWriterTest");
     }
 
+    @Test
     public void testWritePackages() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(user);
 
@@ -149,6 +155,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(tmpDir.toFile());

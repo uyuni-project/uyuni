@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -29,6 +31,7 @@ import java.util.Set;
  */
 public class ServerSnapshotTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testRollbackGroups() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
 

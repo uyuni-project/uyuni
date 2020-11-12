@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.test;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -38,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * SatScrubberTest - this test actually cleans up old junit created test data.
@@ -46,7 +49,7 @@ import junit.framework.TestCase;
  * test.  Didn't want to check it into our release branch.
  * @version $Rev$
  */
-public class SatScrubberTest extends TestCase {
+public class SatScrubberTest extends Assert {
 
     private User orgAdmin;
     private static Logger log = Logger.getLogger(SatScrubberTest.class);
@@ -55,6 +58,7 @@ public class SatScrubberTest extends TestCase {
     // Arg - this is completely bogus.  Even if we wanted to do what this does, this is NOT
     // the way to do it.  Disable until I decide whether we do it better, or just delete
     // the test.
+    @Test
     public void testNothing() throws Exception {
         cleanupKickstarts();
         cleanupChannels();
@@ -197,9 +201,9 @@ public class SatScrubberTest extends TestCase {
      * @see TestCase#tearDown()
      * @see HibernateFactory#closeSession()
      */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
+
         TestCaseHelper.tearDownHelper();
     }
 

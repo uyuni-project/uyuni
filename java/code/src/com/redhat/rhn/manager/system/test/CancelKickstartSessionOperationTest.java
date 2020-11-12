@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -34,6 +36,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testOperation() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());

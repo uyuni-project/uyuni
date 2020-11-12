@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.taglibs.RequireTag;
@@ -33,17 +37,20 @@ public class RequireTagTest extends RhnBaseTestCase {
     private RequireTag rt;
     private TagTestHelper tth;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         rt = new RequireTag();
         tth = TagTestUtils.setupTagTest(rt, null);
     }
 
+    @After
     public void tearDown() {
         rt = null;
         tth = null;
     }
 
+    @Test
     public void testInvalidAcl() {
 
         try {
@@ -60,6 +67,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testNullAcl() {
         boolean flag = false;
 
@@ -80,6 +88,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testEmptyAcl() {
         boolean flag = false;
 
@@ -100,6 +109,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testMixin() {
 
         boolean flag = false;
@@ -119,6 +129,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testMultipleMixinsMultipleAcls() {
         try {
             rt.setMixins(MockOneAclHandler.class.getName() + "," +
@@ -135,6 +146,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testMultipleAclsSingleMixin() {
         try {
             rt.setAcl("first_true_acl(); second_true_acl()");
@@ -150,6 +162,7 @@ public class RequireTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testValidAclInvalidMixin() {
         boolean flag = false;
         try {

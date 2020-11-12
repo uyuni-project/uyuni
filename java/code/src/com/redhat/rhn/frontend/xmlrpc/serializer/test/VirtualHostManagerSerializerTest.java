@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
@@ -39,6 +42,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         manager = new VirtualHostManager();
@@ -51,6 +55,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * Minimal test
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testSimple() throws IOException {
         VirtualHostManagerSerializer serializer = new VirtualHostManagerSerializer();
         Writer output = new StringWriter();
@@ -69,6 +74,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * Test serializing VirtualHostManager with credentials
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testWithCreds() throws IOException {
         Credentials creds = new Credentials();
         creds.setUsername("Somebody");
@@ -91,6 +97,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * Test serializing VirtualHostManager with configs
      * @throws IOException if anything goes wrong
      */
+    @Test
     public void testWithConfigs() throws IOException {
         Set<VirtualHostManagerConfig> configs = new HashSet<>();
         VirtualHostManagerConfig config = new VirtualHostManagerConfig();

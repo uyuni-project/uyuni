@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.dto.AuditMachineDto;
@@ -22,12 +24,13 @@ import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 
-public class AuditManagerTest extends TestCase {
+public class AuditManagerTest extends Assert {
 
 
+    @Test
     public void testGetMachines() throws Exception {
         String testdir =  "/tmp/sw-audit-test";
         String machinename = TestUtils.randomString();

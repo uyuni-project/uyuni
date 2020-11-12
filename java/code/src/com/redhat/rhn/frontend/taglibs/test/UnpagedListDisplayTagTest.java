@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.test.CSVWriterTest;
@@ -46,6 +50,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     private PageContext context;
     private RhnMockJspWriter writer;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -72,6 +77,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testTitle() throws JspException {
         context().checking(new Expectations() { {
             atLeast(1).of(context).popBody();
@@ -95,11 +101,13 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
         RhnBaseTestCase.enableLocalizationServiceLogging();
     }
 
+    @Test
     public void testTag() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(context).popBody();
@@ -121,6 +129,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         assertEquals(tagval, Tag.EVAL_PAGE);
     }
 
+    @Test
     public void testExport() throws Exception {
         RhnMockServletOutputStream out = new RhnMockServletOutputStream();
         context().checking(new Expectations() { {

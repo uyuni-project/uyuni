@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
@@ -118,6 +121,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private TaskomaticApi taskomaticMock;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -162,6 +166,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         return service;
     }
 
+    @Test
     public void testPackageUpdate() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         List<MinionServer> mins = new ArrayList<>();
@@ -203,6 +208,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         RhnBaseTestCase.assertNotEmpty(result.values());
     }
 
+    @Test
     public void testPackageRemoveDebian() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
@@ -246,6 +252,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals("1.0.0", resultPkg.get(2));
     }
 
+    @Test
     public void testPackageUpdateDebian() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
@@ -304,6 +311,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals("1:1.2-1ubuntu1", resultP2.get(2));
     }
 
+    @Test
     public void testDeployFiles() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -342,6 +350,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(result.size(), 3);
     }
 
+    @Test
     public void testVirtActions() throws Exception {
         MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
@@ -366,6 +375,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testVirtForceoff() throws Exception {
         MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
@@ -381,6 +391,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertStateApplyWithPillar("virt.statechange", "domain_state", "powered_off", saltCall);
     }
 
+    @Test
     public void testVirtReset() throws Exception {
         MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
@@ -411,6 +422,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testExecuteActionChain() throws Exception {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
@@ -501,6 +513,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         saltServerActionService.executeActionChain(actionChain.getId());
     }
 
+    @Test
     public void testSubscribeChannels() throws Exception {
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
@@ -587,6 +600,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSkipActionComplex() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
@@ -634,6 +648,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDontExecuteCompletedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
@@ -675,6 +690,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDontExecuteFailedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
@@ -694,6 +710,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDontExecuteActionWhenPrerequisiteFailed() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
@@ -723,6 +740,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testExecuteActionSuccess() throws Exception {
         successWorker();
 
@@ -742,6 +760,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testActionFailedOnEmptyResult() throws Exception {
         // expect salt returning empty result
 
@@ -768,6 +787,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testActionFailedOnException() throws Exception {
         // expect salt returning empty result
 
@@ -797,6 +817,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testRebootActionIsPickedUp() throws Exception {
         successWorker();
         SaltApi saltApi = new TestSaltApi() {
@@ -829,6 +850,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSkipActionWhenPrerequisiteQueued() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService saltServerActionService = countSaltActionCalls(counter);
@@ -852,6 +874,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, counter.get());
     }
 
+    @Test
     public void testExectueSSHAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);

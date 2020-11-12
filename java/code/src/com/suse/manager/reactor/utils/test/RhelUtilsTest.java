@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.utils.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -68,11 +71,13 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testParseReleaseFileRedHat() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(PLAIN_REDHAT_RELEASE);
         assertTrue(os.isPresent());
@@ -82,6 +87,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Santiago", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileRES() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(RES_REDHAT_RELEASE);
         assertTrue(os.isPresent());
@@ -91,6 +97,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Santiago", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileCentos() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(CENTOS_REDHAT_RELEASE);
         assertTrue(os.isPresent());
@@ -100,6 +107,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Core", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileOracle() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ORACLE_RELEASE);
         assertTrue(os.isPresent());
@@ -109,6 +117,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("", os.get().getRelease());
     }
 
+    @Test
     public void testParseReleaseFileNonMatching() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile("GarbageOS 1.0 (Trash can)");
         assertFalse(os.isPresent());
@@ -144,6 +153,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testDetectRhelProductRES() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_res.json",
                 minionServer -> {
@@ -160,6 +170,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testDetectCentOSProductRES() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos2.json",
                 minionServer -> {
@@ -176,6 +187,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testDetectRhelProductRHEL() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rhel.json",
                 null,
@@ -187,6 +199,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testDetectRhelProductCentos() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos.json",
                 null,
@@ -198,6 +211,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testDetectRhelProductOracle() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_oracle.json",
                 null,

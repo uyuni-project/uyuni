@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.virtualization.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 
@@ -76,6 +79,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -128,6 +132,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Paris"));
     }
 
+    @Test
     public void testData() {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.data(getRequestWithCsrf(
@@ -148,6 +153,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertEquals(Long.valueOf(6591508480L), pool1.getFree());
     }
 
+    @Test
     public void testGetCapabilities() {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.getCapabilities(getRequestWithCsrf(
@@ -162,6 +168,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(pType.getOptions().getVolume().getTargetFormatType().contains("cloop"));
     }
 
+    @Test
     public void testRefresh() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolRefresh(
@@ -196,6 +203,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("pool1", actionsIds.get("pool1")).matches(model));
     }
 
+    @Test
     public void testStart() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolStart(
@@ -218,6 +226,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
+    @Test
     public void testStop() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolStop(
@@ -240,6 +249,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
+    @Test
     public void testDelete() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolDelete(
@@ -263,6 +273,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
+    @Test
     public void testVolumeDelete() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.volumeDelete(

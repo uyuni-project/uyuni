@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -76,6 +79,7 @@ import java.util.stream.Collectors;
 public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -86,6 +90,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testMinionActionCleanup() throws Exception {
         // Prepare test objects: minion servers, products and action
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -185,6 +190,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         return jsonParser.parse(eventString);
     }
 
+    @Test
     public void testMinionActionChainCleanupAllCompleted() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);

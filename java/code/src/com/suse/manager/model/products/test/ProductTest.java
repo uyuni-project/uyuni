@@ -14,6 +14,8 @@
  */
 package com.suse.manager.model.products.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 
 import com.suse.manager.model.products.Channel;
@@ -24,16 +26,17 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * Tests Product.
  */
-public class ProductTest extends TestCase {
+public class ProductTest extends Assert {
 
     /**
      * Tests the method isProvided().
      */
+    @Test
     public void testIsProvided() {
         SetupWizardProductDto nonSynchronizingProduct = new SetupWizardProductDto(
                 "x86_46",
@@ -77,6 +80,7 @@ public class ProductTest extends TestCase {
     /**
      * Test compareTo().
      */
+    @Test
     public void testCompareTo() {
         List<SetupWizardProductDto> products = new LinkedList<SetupWizardProductDto>();
 

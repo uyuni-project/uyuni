@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.db.test;
 
+import org.junit.Test;
+
 import java.util.Calendar;
 import java.util.Iterator;
 
@@ -28,12 +30,14 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testToken() throws Exception {
         String tok = ResetPasswordFactory.generatePasswordToken(user);
         assertNotNull(tok);
         assertEquals(40, tok.length());
     }
 
+    @Test
     public void testDirectCreate() {
         ResetPassword rp = new ResetPassword(user.getId(),
                         ResetPasswordFactory.generatePasswordToken(user));
@@ -44,6 +48,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertTrue(!rp.isExpired());
     }
 
+    @Test
     public void testExpired() {
         ResetPassword rp = new ResetPassword(user.getId(),
                         ResetPasswordFactory.generatePasswordToken(user));
@@ -68,6 +73,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertTrue(rp.isExpired());
     }
 
+    @Test
     public void testFactoryCreate() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         assertNotNull(rp);
@@ -77,11 +83,13 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertTrue(rp.isValid());
     }
 
+    @Test
     public void testNoToken() {
         ResetPassword rp = ResetPasswordFactory.lookupByToken("Thistokencannotexist");
         assertNull(rp);
     }
 
+    @Test
     public void testRecoverAndDelete() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         ResetPassword found = ResetPasswordFactory.lookupByToken(rp.getToken());
@@ -93,6 +101,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, rmv);
     }
 
+    @Test
     public void testInvalidateOne() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         assertNotNull(rp);
@@ -101,6 +110,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertTrue(!found.isValid());
     }
 
+    @Test
     public void testInvalidate() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         assertNotNull(rp);
@@ -132,6 +142,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertEquals(3, rmvd);
     }
 
+    @Test
     public void testFindErrors() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         assertNotNull(rp);

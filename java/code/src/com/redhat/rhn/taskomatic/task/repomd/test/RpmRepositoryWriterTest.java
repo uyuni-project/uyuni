@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.repomd.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -45,11 +49,13 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
     private Path mountPointDir;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         mountPointDir = Files.createTempDirectory("rpmrepotest");
     }
 
+    @Test
     public void testPagination() throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
@@ -71,6 +77,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testWriteRepomdFiles() throws Exception {
         RpmRepositoryWriter writer = new RpmRepositoryWriter("rhn/repodata", mountPointDir.toAbsolutePath().toString());
 
@@ -177,6 +184,7 @@ public class RpmRepositoryWriterTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(mountPointDir.toFile());

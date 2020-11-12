@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.translation.test;
+import org.junit.Before;
+import org.junit.After;
 
 import com.redhat.rhn.common.db.ConstraintViolationException;
 import com.redhat.rhn.common.db.WrappedSQLException;
@@ -28,20 +30,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+import org.junit.Assert;
+// FIXME include in TestSuite @RunWith(Suite.class)@Suite.SuiteClasses(...)
 
-public class ExceptionsWrapperTest extends TestCase {
+public class ExceptionsWrapperTest extends Assert {
 
     private static final Logger LOG = Logger.getLogger(ExceptionsWrapperTest.class);
     private static final String EXCEPTION_TRANSLATOR =
         "com.redhat.rhn.common.translation.ExceptionTranslator";
 
     public ExceptionsWrapperTest(String name) {
-        super(name);
+
     }
 
+    @Test
     public void testConstraintViolation() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -71,6 +74,7 @@ public class ExceptionsWrapperTest extends TestCase {
         });
     }
 
+    @Test
     public void testNamedConstraint() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -102,6 +106,7 @@ public class ExceptionsWrapperTest extends TestCase {
         });
     }
 
+    @Test
     public void testNotReplaced() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -130,6 +135,7 @@ public class ExceptionsWrapperTest extends TestCase {
 
     // Make sure that there are no StackTraceElements from
     // com.redhat.rhn.common.translation
+    @Test
     public void testStackElements() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -166,11 +172,13 @@ public class ExceptionsWrapperTest extends TestCase {
         TestSuite suite = new TestSuite(ExceptionsWrapperTest.class);
 
         return new TestSetup(suite) {
-            protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
                 oneTimeSetup();
             }
 
-            protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
                 oneTimeTeardown();
             }
         };

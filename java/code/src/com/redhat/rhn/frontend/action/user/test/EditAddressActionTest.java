@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
@@ -110,6 +112,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         assertEquals(user.getAddress1(), newAddr1);
     }
 
+    @Test
     public void testPerformExecuteNewAddressFailure() throws Exception {
         setUpFailure();
         // Creating a user automatically creates a MARKETING address, so as long
@@ -124,6 +127,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testPerformExecuteNewAddressSuccess() throws Exception {
         setUpSuccess();
         // Creating a user automatically creates a MARKETING address, so as long

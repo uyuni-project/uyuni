@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.menu.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.manager.formula.FormulaManager;
@@ -28,13 +30,11 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+import org.junit.Assert;
 
-import java.util.List;
+public class MenuTreeTest extends Assert {
 
-import junit.framework.TestCase;
-
-public class MenuTreeTest extends TestCase {
-
+    @Test
     public void testActiveNode() {
         // the requested url
         String url = "/rhn/account/UserDetails.do";
@@ -57,6 +57,7 @@ public class MenuTreeTest extends TestCase {
         assertFalse(activeNode.getLabel().equalsIgnoreCase("Home"));
     }
 
+    @Test
     public void testBestActiveDir() {
         // the requested url
         String url = "/rhn/errata/manage/Create.do";
@@ -110,6 +111,7 @@ public class MenuTreeTest extends TestCase {
     /**
      * Test the correct functionality of {@link MenuItemList} regarding visibility.
      */
+    @Test
     public void testVisibility() {
         MenuItem home = new MenuItem("Home");
         MenuItem systems = new MenuItem("Systems").withVisibility(true);

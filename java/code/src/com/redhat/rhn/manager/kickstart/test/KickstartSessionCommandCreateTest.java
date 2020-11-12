@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -33,6 +35,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class KickstartSessionCommandCreateTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testCreate() throws Exception {
         // We want to add a activation key to the kickstart data to validate
         // that we get both a one-time-key and the actual key associated with the KS

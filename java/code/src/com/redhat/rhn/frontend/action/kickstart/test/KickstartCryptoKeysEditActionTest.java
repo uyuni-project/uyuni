@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -32,6 +35,7 @@ public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         key = CryptoTest.createTestKey(user.getOrg());
@@ -39,12 +43,14 @@ public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase
         TestUtils.flushAndEvict(key);
     }
 
+    @Test
     public void testSetupExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartCryptoKeysList");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
+    @Test
     public void testSubmitExecute() throws Exception {
         addSelectedItem(key.getId());
         addDispatchCall(KickstartCryptoKeysSubmitAction.UPDATE_METHOD);

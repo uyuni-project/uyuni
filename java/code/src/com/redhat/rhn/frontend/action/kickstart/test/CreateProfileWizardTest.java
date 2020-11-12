@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -39,6 +42,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     private String label;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         label = TestUtils.randomString();
@@ -59,6 +63,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testNoTreesOrChannels() throws Exception {
         setRequestPathInfo("/kickstart/CreateProfileWizard");
         actionPerform();
@@ -75,6 +80,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testRhel3() throws Exception {
         Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree tree = KickstartableTreeTest.
@@ -102,6 +108,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         assertNull(ksdata.getCommand("selinux"));
     }
 
+    @Test
     public void testSuccess() throws Exception {
 
         Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
@@ -146,6 +153,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         verifyKSCommandsDefaults(label);
     }
 
+    @Test
     public void testFtpDownload() throws Exception {
         Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree tree = KickstartableTreeTest.
@@ -167,6 +175,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
     }
 
 
+    @Test
     public void testLabelValidation() {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/CreateProfileWizard");
@@ -176,6 +185,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         verifyForward("first");
     }
 
+    @Test
     public void testKsTreeIdValidation() {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/CreateProfileWizard");
@@ -185,6 +195,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         verifyForward("first");
     }
 
+    @Test
     public void testDownloadValidation() throws Exception {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/CreateProfileWizard");
@@ -201,6 +212,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         verifyForward("second");
     }
 
+    @Test
     public void testUserDownloadValidation() throws Exception {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/CreateProfileWizard");
@@ -232,6 +244,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     }
 
+    @Test
     public void testRootPasswordValidation() {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/CreateProfileWizard");
@@ -244,6 +257,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         verifyForward("third");
     }
 
+    @Test
     public void testRootPasswordConfirmValidation() {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/CreateProfileWizard");
@@ -256,6 +270,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         verifyForward("third");
     }
 
+    @Test
     public void testLabelAlreadyExists() throws Exception {
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
         String[] array = new String[1];

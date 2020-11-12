@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
@@ -23,19 +26,21 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
-public class PackageMetadataSerializerTest extends TestCase {
+public class PackageMetadataSerializerTest extends Assert {
     private XmlRpcSerializer builtin;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
+
         builtin = new XmlRpcSerializer();
         builtin.addCustomSerializer(new BigDecimalSerializer());
     }
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
 
         PackageMetadataSerializer os = new PackageMetadataSerializer();

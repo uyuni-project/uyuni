@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.sdc.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -28,6 +30,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class ChannelListActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         //Create a config channel and a server
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());

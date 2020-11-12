@@ -14,19 +14,22 @@
  */
 package com.suse.manager.reactor.test;
 
+import org.junit.Test;
+
 import com.suse.manager.reactor.utils.ValueMap;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * Test for {@link com.suse.manager.reactor.utils.ValueMap}
  */
-public class ValueMapTest extends TestCase {
+public class ValueMapTest extends Assert {
 
+    @Test
     public void testGetValueAsMaxLengthString() {
 
         Map<String, Object> map = new HashMap<>();
@@ -41,6 +44,7 @@ public class ValueMapTest extends TestCase {
         assertEquals("", vmap.getValueAsString(null, 1));
     }
 
+    @Test
     public void testGetValueAsCollection() {
         Map<String, Object> map = new HashMap<>();
         map.put("list", Arrays.asList("one"));

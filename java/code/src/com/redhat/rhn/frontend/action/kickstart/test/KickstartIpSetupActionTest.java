@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
@@ -31,6 +33,7 @@ import java.util.Date;
  */
 public class KickstartIpSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testKickstartIpList() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

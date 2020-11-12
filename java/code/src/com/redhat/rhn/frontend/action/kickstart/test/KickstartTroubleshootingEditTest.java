@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTroubleshootingEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -25,12 +27,14 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase {
 
+    @Test
     public void testSetupExecute() throws Exception {
         setRequestPathInfo("/kickstart/TroubleshootingEdit");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
+    @Test
     public void testSubmitStandard() throws Exception {
         addDispatchCall(KickstartTroubleshootingEditAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/TroubleshootingEdit");
@@ -44,6 +48,7 @@ public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase 
         assertEquals("grub", this.ksdata.getBootloaderType());
     }
 
+    @Test
     public void testSubmitAdvanced() throws Exception {
         addDispatchCall(KickstartTroubleshootingEditAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/TroubleshootingEdit");

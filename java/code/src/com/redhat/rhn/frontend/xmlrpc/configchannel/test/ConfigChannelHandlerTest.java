@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.configchannel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -67,6 +69,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     private static final String NAME = "NAME" + TestUtils.randomString();
     private static final String DESCRIPTION = "DESCRIPTION" + TestUtils.randomString();
 
+    @Test
     public void testCreate() {
         try {
             handler.create(regular, LABEL, NAME, DESCRIPTION);
@@ -93,6 +96,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateStateChannel() {
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
@@ -105,6 +109,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testUpdate() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         String newName = NAME + TestUtils.randomString();
@@ -136,6 +141,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListGlobal() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
         ConfigTestUtils.giveUserChanAccess(regular, cc);
@@ -143,6 +149,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(contains(cc, list));
     }
 
+    @Test
     public void testLookupGlobal() throws Exception {
         List<String> channelLabels = new LinkedList<String>();
         List<ConfigChannel> channels = new LinkedList<ConfigChannel>();
@@ -159,6 +166,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(channels, list);
     }
 
+    @Test
     public void testGetDetailsByLabel() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
 
@@ -169,6 +177,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(channel, cc);
     }
 
+    @Test
     public void testGetDetailsById() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
 
@@ -179,6 +188,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(channel, cc);
     }
 
+    @Test
     public void testDelete() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> labels = new LinkedList<String>();
@@ -195,6 +205,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
      }
 
+    @Test
     public void testUpdateInitSls() {
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
@@ -302,6 +313,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertRev(rev, rev.getConfigFile().getConfigFileName().getPath(), cc);
     }
 
+    @Test
     public void testAddPath() throws Exception {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
@@ -348,6 +360,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                 path + TestUtils.randomString(), cc, "root:root");
     }
 
+    @Test
     public void testAddPathStateChannel() throws Exception {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
 
@@ -413,6 +426,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testListFiles() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
@@ -453,6 +467,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testRemovePaths() throws Exception {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> paths = new LinkedList<String>();
@@ -465,6 +480,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, files.size());
     }
 
+    @Test
     public void testScheduleFileComparisons() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
@@ -499,6 +515,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                 ((ScheduledAction)dr.get(0)).getId().intValue()));
     }
 
+    @Test
     public void testChannelExists() {
         handler.create(admin, LABEL, NAME, DESCRIPTION);
 
@@ -510,6 +527,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testDeployAllSystems()  throws Exception {
         // Create  global config channels
         List<ConfigChannel> gccList = new ArrayList<>();

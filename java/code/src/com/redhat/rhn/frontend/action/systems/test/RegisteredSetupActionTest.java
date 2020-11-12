@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -33,12 +36,14 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
  */
 public class RegisteredSetupActionTest extends RhnPostMockStrutsTestCase {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/Registered");
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }
 
+    @Test
     public void testExecute() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());

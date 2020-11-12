@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.Modules;
@@ -29,6 +31,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testNoParentOnClone() throws Exception {
         Channel originalBase = ChannelTestUtils.createBaseChannel(user);
         Channel originalChild = ChannelTestUtils.createChildChannel(user, originalBase);

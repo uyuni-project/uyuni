@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.rhnpackage.profile.test;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -39,6 +42,7 @@ import java.util.Set;
  */
 public class SyncActionsTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testSyncSystemsSubmit() throws Exception {
 
         UserTestUtils.addManagement(user.getOrg());
@@ -104,7 +108,8 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
                 startsWith("/systems/details/packages/profiles/MissingPackages.do"));
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
         // We committed stuff - need to remove it all again
         OrgFactory.deleteOrg(user.getOrg().getId(), user);

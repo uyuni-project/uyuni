@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.virtualization.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -65,6 +68,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -102,6 +106,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Paris"));
     }
 
+    @Test
     public void testData() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(
@@ -117,6 +122,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertEquals("860e49a3-d227-4105-95ca-d19dc8f0c8b6", net1.getUuid());
     }
 
+    @Test
     public void testStart() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.start(
@@ -140,6 +146,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
+    @Test
     public void testStop() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.stop(
@@ -163,6 +170,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 
+    @Test
     public void testDelete() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.delete(

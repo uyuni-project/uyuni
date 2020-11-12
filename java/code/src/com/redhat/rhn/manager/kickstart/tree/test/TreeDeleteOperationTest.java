@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.kickstart.tree.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation;
@@ -24,6 +26,7 @@ import com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation;
  */
 public class TreeDeleteOperationTest extends TreeOperationTestBase {
 
+    @Test
     public void testDelete() throws Exception {
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);

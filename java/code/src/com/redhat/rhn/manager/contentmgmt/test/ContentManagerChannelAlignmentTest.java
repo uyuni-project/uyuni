@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.manager.contentmgmt.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
@@ -77,6 +80,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();
@@ -102,6 +106,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testAlignEntities() throws Exception {
         // let's add a package to the target. it should be removed after aligning
         tgtChannel.getPackages().add(PackageTest.createTestPackage(user.getOrg()));
@@ -125,6 +130,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testNewestPackagesCacheRefreshed() throws Exception {
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
 
@@ -150,6 +156,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testNewestPackagesCacheRefreshedWithFilter() throws Exception {
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
         Package pack3 = PackageTest.createTestPackage(user.getOrg());
@@ -187,6 +194,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testServerNeededCacheRefreshed() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         // server will have an older package installed -> after the alignment, the rhnServerNeededCache
@@ -205,6 +213,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testServerNeededCacheAddedNoErrata() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
@@ -228,6 +237,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testServerNeededCacheRemovedNoErrata() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         // we want to test the cache update when channel with no errata is used
@@ -262,6 +272,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws if anything goes wrong
      */
+    @Test
     public void testServerNeededCacheWithFilters() throws Exception {
         // setup
         Package pack1 = PackageTest.createTestPackage(user.getOrg());
@@ -315,6 +326,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testServerNeededCacheErrataWithFilters() throws Exception {
         // setup
         Package pack1 = PackageTest.createTestPackage(user.getOrg());
@@ -374,6 +386,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testErrataRemoved() throws Exception {
         // this errata is in the target channel and is supposed to be removed after align
         Errata toRemove = ErrataFactoryTest.createTestErrata(user.getOrg().getId());;
@@ -390,6 +403,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     /**
      * Test filtering out errata after channel alignment
      */
+    @Test
     public void testErrataFilters() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter filter = contentManager.createFilter("test-filter-123", DENY, ERRATUM, criteria, user);
@@ -411,6 +425,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testErrataFiltersComplex() throws Exception {
         Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
         Channel tgtChan = ChannelFactoryTest.createTestChannel(user, false);
@@ -449,6 +464,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     }
 
     // nothing exciting, allow filter should have no effect
+    @Test
     public void testSimpleAllowFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pkg.getNameEvra());
         ContentFilter filter = contentManager.createFilter("filter123", ALLOW, PACKAGE, criteria, user);
@@ -461,6 +477,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     /**
      * Test combination of ALLOW and DENY filter on a package
      */
+    @Test
     public void testAllowDenyFilters() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", pkg.getNameEvra());
         ContentFilter denyFilter = contentManager.createFilter("denyfilter123", DENY, PACKAGE, criteria, user);
@@ -478,6 +495,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     /**
      * Test combination of ALLOW and DENY filter on an erratum
      */
+    @Test
     public void testAllowDenyFiltersErrata() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
         ContentFilter denyFilter = contentManager.createFilter("denyfilter123", DENY, ERRATUM, criteria, user);
@@ -502,6 +520,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testAllowDenyFiltersErrata2() throws Exception {
         Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
 
@@ -540,6 +559,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPackagesRemovedOnErratumRemoval() throws Exception {
         // we assume version 1.0.0
         assertEquals("1.0.0", pkg.getPackageEvr().getVersion());

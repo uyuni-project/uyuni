@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.packages.provider.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageKey;
 import com.redhat.rhn.domain.rhnpackage.PackageProvider;
@@ -30,6 +32,7 @@ public class PackagesProviderHandlerTest extends BaseHandlerTestCase {
     private PackagesProviderHandler handler = new PackagesProviderHandler();
 
 
+    @Test
     public void testListKeys() throws Exception {
         String name = RandomStringUtils.randomAlphabetic(5);
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -51,6 +54,7 @@ public class PackagesProviderHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testList() throws Exception {
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
         String name = RandomStringUtils.randomAlphabetic(5);
@@ -65,6 +69,7 @@ public class PackagesProviderHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testAddKey() throws Exception {
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
 

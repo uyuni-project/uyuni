@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -31,6 +33,7 @@ import java.util.Map;
 
 public class TaskManagerTest extends JMockBaseTestCaseWithUser {
 
+    @Test
     public void testGetChannelPackageExtraTags() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(user);
 

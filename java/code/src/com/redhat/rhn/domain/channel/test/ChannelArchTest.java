@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -32,6 +34,7 @@ import java.util.Set;
  */
 public class ChannelArchTest extends RhnBaseTestCase {
 
+    @Test
     public void testChannelArch() throws Exception {
         Long testid = 500L;
         String query = "ChannelArch.findById";
@@ -41,11 +44,13 @@ public class ChannelArchTest extends RhnBaseTestCase {
         assertEquals(ca.getLabel(), ca2.getLabel());
     }
 
+    @Test
     public void testChannelArchByLabel() throws Exception {
         ChannelArch x86Arch = ChannelFactory.lookupArchByName("IA-32");
         assertNotNull(x86Arch);
     }
 
+    @Test
     public void testCompatibleServerArches() {
         ChannelArch ca = ChannelFactory.lookupArchByName("IA-32");
         Set arches = ca.getCompatibleServerArches();
@@ -57,6 +62,7 @@ public class ChannelArchTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testIsCompatible() {
         ChannelArch ca = ChannelFactory.lookupArchByName("x86_64");
         ServerArch amd64 = ServerFactory.lookupServerArchByLabel("amd64-redhat-linux");
@@ -66,6 +72,7 @@ public class ChannelArchTest extends RhnBaseTestCase {
         assertFalse(ca.isCompatible(s390));
     }
 
+    @Test
     public void testIsCompatibleForPackages() {
         ChannelArch ca = ChannelFactory.lookupArchByName("IA-32");
         PackageArch i386 = PackageFactory.lookupPackageArchByLabel("i386");

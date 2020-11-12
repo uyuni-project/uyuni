@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
@@ -22,6 +24,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class SummaryPopulationTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() {
         assertTrue(true);
 

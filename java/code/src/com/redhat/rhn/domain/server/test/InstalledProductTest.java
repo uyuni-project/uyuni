@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -30,6 +32,7 @@ import java.util.Set;
 
 public class InstalledProductTest extends RhnBaseTestCase {
 
+    @Test
     public void testInstalledProduct() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProducts();
 

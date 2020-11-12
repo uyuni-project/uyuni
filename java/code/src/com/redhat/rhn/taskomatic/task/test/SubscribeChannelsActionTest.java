@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.taskomatic.task.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -53,11 +56,13 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testSubscribeChannels_minions() throws Exception {
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());

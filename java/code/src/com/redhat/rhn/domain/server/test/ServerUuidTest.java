@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerUuid;
 import com.redhat.rhn.domain.user.User;
@@ -35,6 +37,7 @@ public class ServerUuidTest extends RhnBaseTestCase {
      * Simple test to exercise codepaths in ServerUuid class
      * @throws Exception something bad happened
      */
+    @Test
     public void testServerUuid() throws Exception {
         ServerUuid su1 = createTestServerUuid();
         ServerUuid su2 = new ServerUuid();

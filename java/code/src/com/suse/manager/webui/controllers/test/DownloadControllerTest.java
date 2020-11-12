@@ -14,6 +14,8 @@
  */
 
 package com.suse.manager.webui.controllers.test;
+import org.junit.Before;
+import org.junit.After;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -68,7 +70,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import junit.extensions.TestSetup;
-import junit.framework.Test;
+import org.junit.Test;
+// FIXME include in TestSuite @RunWith(Suite.class)@Suite.SuiteClasses(...)
 import junit.framework.TestSuite;
 import spark.Request;
 import spark.RequestResponseFactory;
@@ -103,7 +106,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public static Test suite() {
         TestSuite suite = new TestSuite(DownloadControllerTest.class);
         TestSetup wrapper = new TestSetup(suite) {
-            protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
                 // Config class keeps the config files sorted by a TreeSet with a File
                 // comparator, which makes it sometimes override the test rhn.conf with
                 // the defaults, nullifying server.secret_key.
@@ -120,6 +124,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -161,6 +166,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         if (originalMountPoint != null) {
@@ -235,6 +241,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * Tests download without a token.
      */
+    @Test
     public void testDownloadWithoutToken() {
         Request request = getMockRequestWithParams(new HashMap<>());
 
@@ -250,6 +257,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * Test download with an invalid token parameter.
      */
+    @Test
     public void testDownloadWithInvalidToken() {
         Map<String, String> params = new HashMap<>();
         params.put("invalid-token-should-return-403", "");
@@ -267,6 +275,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     /**
      * Test download with an invalid token parameter, but token checking disabled.
      */
+    @Test
     public void testDownloadPackageWithDisabledTokenChecking() {
         Map<String, String> params = new HashMap<>();
         params.put("invalid-token-should-be-ignored", "");
@@ -289,6 +298,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * Test download with an invalid token parameter, but token checking disabled.
      * @throws IOException in case of unexpected exceptions
      */
+    @Test
     public void testDownloadMetadataWithDisabledTokenChecking() throws IOException {
         Map<String, String> params = new HashMap<>();
         params.put("invalid-token-should-be-ignored", "");
@@ -339,6 +349,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testTwoTokens() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
@@ -364,6 +375,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testTokenDifferentChannel() throws Exception {
         // The added token is for a different channel
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
@@ -393,6 +405,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testTokenWrongOrg() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId() + 1);
         tokenBuilder.useServerSecret();
@@ -420,6 +433,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testTokenNotValid() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         testMinionServer.getChannels().add(channel);
@@ -449,6 +463,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCorrectChannelWithTokenInUrl() throws Exception {
         testCorrectChannel((tokenChannel) -> {
             Map<String, String> params = new HashMap<>();
@@ -463,6 +478,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCorrectChannelWithTokenInHeader() throws Exception {
         testCorrectChannel((tokenChannel) -> {
             Map<String, String> headers = new HashMap<>();
@@ -471,6 +487,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testDownloadDebPackage() throws Exception {
         testCorrectChannel(() -> debPackageFile, (tokenChannel) -> {
             Map<String, String> headers = new HashMap<>();
@@ -479,6 +496,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testParseDebPackageVersion() throws Exception {
         testCorrectChannel(() -> debPackageFile2, (tokenChannel) -> {
             Map<String, String> headers = new HashMap<>();
@@ -522,6 +540,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testCorrectOrg() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
@@ -548,6 +567,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testExpiredToken() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
@@ -575,6 +595,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDownloadComps() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
@@ -625,6 +646,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testDownloadModules() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
@@ -671,6 +693,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testParseDebPkgFilename1() {
         DownloadController.PkgInfo pkg =
                 DownloadController.parsePackageFileName(
@@ -682,6 +705,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         assertEquals("amd64-deb", pkg.getArch());
     }
 
+    @Test
     public void testParseDebPkgFilename2() {
         DownloadController.PkgInfo pkg =
                 DownloadController.parsePackageFileName(
@@ -693,6 +717,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         assertEquals("amd64-deb", pkg.getArch());
     }
 
+    @Test
     public void testParseDebPkgFilename3() {
         DownloadController.PkgInfo pkg =
                 DownloadController.parsePackageFileName(

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.preferences.locale.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.frontend.xmlrpc.InvalidLocaleCodeException;
@@ -26,6 +28,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
 
     private PreferencesLocaleHandler handler = new PreferencesLocaleHandler();
 
+    @Test
     public void testListTimeZone() {
         Object[] tzs = handler.listTimeZones();
         assertNotNull(tzs);
@@ -33,6 +36,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         assertEquals(RhnTimeZone.class, tzs[0].getClass());
     }
 
+    @Test
     public void testSetTimeZoneInvalidId() {
         try {
             handler.setTimeZone(admin, admin.getLogin(), 0);
@@ -43,6 +47,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetTimeZone() {
         Object[] tzs = handler.listTimeZones();
         assertNotNull(tzs);
@@ -57,6 +62,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         assertEquals(tz.getTimeZoneId(), usersTz.getTimeZoneId());
     }
 
+    @Test
     public void testListLocales() {
         Object[] o = handler.listLocales();
         assertNotNull(o);
@@ -65,6 +71,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         assertEquals(locales.length, o.length);
     }
 
+    @Test
     public void testSetLocaleInvalidLocale() {
         try {
             handler.setLocale(admin, admin.getLogin(), "rd_NK");
@@ -83,6 +90,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetLocale() {
         String l = admin.getPreferredLocale();
         assertNull(l);

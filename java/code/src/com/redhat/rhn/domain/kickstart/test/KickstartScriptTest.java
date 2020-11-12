@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
@@ -34,6 +36,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
     public static final byte[] DATA = "echo \"hello world\"".getBytes();
 
     /*
+    @Test
     public void testRevision() throws Exception {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartScript script = KickstartScriptTest.createPost(ksdata);
@@ -51,6 +54,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         assertNotNull(lookedUp);
     }*/
 
+    @Test
     public void testScript() throws Exception {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartFactory.saveKickstartData(ksdata);
@@ -68,6 +72,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         assertEquals(4, ksdata.getScripts().size());
     }
 
+    @Test
     public void testMultiplePreScripts() throws Exception {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartScript kss1 = createPre(ksdata);
@@ -80,6 +85,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         assertTrue(kss1.getPosition().longValue() < kss2.getPosition().longValue());
     }
 
+    @Test
     public void testLargeScript() throws Exception {
         String largeString = RandomStringUtils.randomAscii(4000);
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());

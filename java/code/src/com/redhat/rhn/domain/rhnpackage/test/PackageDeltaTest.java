@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -28,6 +30,7 @@ public class PackageDeltaTest extends RhnBaseTestCase {
      * PackageDeltas and write them to the db.
      * @throws Exception Exception
      */
+    @Test
     public void testPackageDelta() throws Exception {
         PackageDelta p = new PackageDelta();
         p.setLabel("Test Label " + TestUtils.randomString());

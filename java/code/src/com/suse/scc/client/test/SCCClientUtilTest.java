@@ -14,6 +14,8 @@
  */
 package com.suse.scc.client.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.scc.client.SCCClientUtils;
@@ -47,6 +49,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
      * Tests {@link SCCClientUtils#getLogFilename}
      * @throws URISyntaxException if URI syntax is wrong
      */
+    @Test
     public void testFilenameFromURI() throws URISyntaxException {
         URI uri = new URI(TEST_URI);
         String actual = SCCClientUtils.getLogFilename(uri, TEST_USER_NAME);
@@ -58,6 +61,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
      * @throws IOException if anything goes wrong
      * @throws URISyntaxException if URI has wrong syntax
      */
+    @Test
     public void testGetLoggingReader() throws IOException, URISyntaxException {
         URI uri = new URI(TEST_URI);
 

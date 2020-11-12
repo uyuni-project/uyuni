@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.image.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
@@ -18,6 +20,7 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testPermanentOsImageStoreExists() {
         Optional<ImageStore> osImgStoreOpt =
                 ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", user.getOrg());
@@ -49,6 +52,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testLookupStoreType() throws Exception {
         ImageStoreType stype = ImageStoreFactory.lookupStoreTypeByLabel("registry").get();
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, stype);
@@ -59,6 +63,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertFalse(ImageStoreFactory.lookupStoreTypeByLabel("non-existent-label").isPresent());
     }
 
+    @Test
     public void testListImageStore() throws Exception {
         ImageStore store = createImageStore("mystore", user);
         List<ImageStore> list = ImageStoreFactory.listImageStores(user.getOrg());
@@ -79,6 +84,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertEquals(creds, resultStore.getCreds());
     }
 
+    @Test
     public void testListByTypeLabelAndOrg() throws Exception {
         Credentials creds = createCredentials();
         ImageStore store = createImageStore("mystore", creds, user);
@@ -107,6 +113,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, iList.size());
     }
 
+    @Test
     public void testLookupById() throws Exception {
         ImageStore store = createImageStore("mystore", user);
 
@@ -120,6 +127,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertFalse(lookup.isPresent());
     }
 
+    @Test
     public void testLookupByIdAndOrg() throws Exception {
         ImageStore store = createImageStore("mystore", user);
 
@@ -138,6 +146,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertFalse(lookup.isPresent());
     }
 
+    @Test
     public void testLookupByIdsAndOrg() throws Exception {
         ImageStore store1 = createImageStore("mystore1", user);
         ImageStore store2 = createImageStore("mystore2", user);
@@ -170,6 +179,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertEquals(store1, lookup.get(0));
     }
 
+    @Test
     public void testLookupImageStore() throws Exception {
         ImageStore store = createImageStore("mystore", user);
 
@@ -186,6 +196,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertFalse(ImageStoreFactory.lookupBylabelAndOrg("myregistry", org).isPresent());
     }
 
+    @Test
     public void testDelete() {
         ImageStore store = createImageStore("mystore", user);
         assertTrue(ImageStoreFactory.lookupBylabelAndOrg("mystore", user.getOrg())

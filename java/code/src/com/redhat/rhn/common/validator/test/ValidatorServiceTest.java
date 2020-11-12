@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.validator.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.validator.Validator;
 import com.redhat.rhn.common.validator.ValidatorService;
@@ -29,11 +33,13 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
 
     private Validator validator;
 
+    @Before
     public void setUp() throws Exception {
         disableLocalizationServiceLogging();
         validator = Validator.getInstance(TestUtils.findTestData("TestObject.xsd"));
     }
 
+    @Test
     public void testValidateObject() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
@@ -56,6 +62,7 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
      * in the same directory.
      * @throws Exception something bad happened
      */
+    @Test
     public void testValidateObjectNoValidator() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("somevalue");
@@ -74,6 +81,7 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testInvalidObject() throws Exception {
         TestObject to = new TestObject();
         to.setStringField("somevaluelkjajsjlfdlkjaslkjdf0980934098234");
@@ -87,7 +95,8 @@ public class ValidatorServiceTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         // TODO Auto-generated method stub
         super.tearDown();
         enableLocalizationServiceLogging();

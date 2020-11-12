@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.clusters.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
@@ -48,12 +51,14 @@ public class ClusterManagerTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         saltServiceMock = context().mock(SaltService.class);
         formulaManagerMock = context().mock(FormulaManager.class);
     }
 
+    @Test
     public void testGetUpgradePlan() throws Exception {
 
         MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -26,6 +28,7 @@ import java.util.TimeZone;
 public class RhnTimeZoneTest extends RhnBaseTestCase {
    private RhnTimeZone tz;
 
+    @Test
    public void testBeanMethods() {
        tz = new RhnTimeZone();
        RhnTimeZone tz2 = new RhnTimeZone();

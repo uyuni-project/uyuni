@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -42,6 +44,7 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
     private ContentManager manager = new ContentManager(new MockModulemdApi());
     private ContentManagementHandler handler = new ContentManagementHandler(manager);
 
+    @Test
     public void testCreateModuleFilter() {
         Map<String, Object> filterCriteria = new HashMap<>();
         filterCriteria.put("matcher", "equals");
@@ -64,6 +67,7 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
     /**
      * Filter rule is not applicable for module filters. The "rule" argument should be ignored.
      */
+    @Test
     public void testModuleFilterRule() {
         Map<String, Object> filterCriteria = new HashMap<>();
         filterCriteria.put("matcher", "equals");
@@ -82,6 +86,7 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
     /**
      * Test if the project is built successfully with valid module filters
      */
+    @Test
     public void testBuildWithModuleFilters() throws Exception {
         Channel channel = MockModulemdApi.createModularTestChannel(admin);
 
@@ -101,6 +106,7 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
     /**
      * Test if the project is validated correctly before build
      */
+    @Test
     public void testBuildWithUnmatchingModuleFilters() throws Exception {
         Channel channel = MockModulemdApi.createModularTestChannel(admin);
 
@@ -131,6 +137,7 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
     /**
      * Test if the project is validated correctly before promote
      */
+    @Test
     public void testPromoteWithUnmatchingModuleFilters() throws Exception {
         Channel channel = MockModulemdApi.createModularTestChannel(admin);
 

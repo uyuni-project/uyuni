@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -23,6 +25,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class AbstractLabelNameHelperTest extends RhnBaseTestCase {
 
+    @Test
     public void testEquals() {
         AbstractLabelNameHelper h1 = new AbstractLabelNameHelper();
         AbstractLabelNameHelper h2 = null;

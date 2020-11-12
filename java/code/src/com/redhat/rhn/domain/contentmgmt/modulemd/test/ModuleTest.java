@@ -15,11 +15,14 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
-public class ModuleTest extends TestCase {
+public class ModuleTest extends Assert {
 
+    @Test
     public void testGetFullName() {
         Module module = new Module("mymodule", "mystream");
         assertEquals("mymodule:mystream", module.getFullName());

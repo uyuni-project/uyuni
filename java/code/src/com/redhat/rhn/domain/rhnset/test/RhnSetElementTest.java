@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnset.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -23,6 +25,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class RhnSetElementTest extends RhnBaseTestCase {
 
+    @Test
     public void testDefaultCtor() {
         RhnSetElement rse = new RhnSetElement();
         assertNotNull(rse);
@@ -32,6 +35,7 @@ public class RhnSetElementTest extends RhnBaseTestCase {
         assertNull(rse.getElementTwo());
     }
 
+    @Test
     public void testArgCtorWithNulls() {
         RhnSetElement rse = new RhnSetElement(null, null, null, null);
         assertNotNull(rse);
@@ -41,6 +45,7 @@ public class RhnSetElementTest extends RhnBaseTestCase {
         assertNull(rse.getElementTwo());
     }
 
+    @Test
     public void testTwoArgCtor() {
         Long id = 10L;
         Long elem = 400L;
@@ -53,6 +58,7 @@ public class RhnSetElementTest extends RhnBaseTestCase {
         assertEquals(elem, rse.getElementTwo());
     }
 
+    @Test
     public void testThreeArgCtor() {
         Long id = 10L;
         Long elem = 400L;
@@ -66,6 +72,7 @@ public class RhnSetElementTest extends RhnBaseTestCase {
         assertEquals(elem, rse.getElementThree());
     }
 
+    @Test
     public void testBeanProperties() {
         Long id = 10L;
         Long elem = 400L;
@@ -97,6 +104,7 @@ public class RhnSetElementTest extends RhnBaseTestCase {
         assertNull(rse.getElementThree());
     }
 
+    @Test
     public void testEquals() {
         Long uid = 42L;
         Long elem = 3131L;
@@ -142,6 +150,7 @@ public class RhnSetElementTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testStringConstructor() {
         Long uid = 42L;
         String label = "testEquals label";

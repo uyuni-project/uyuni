@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
@@ -30,12 +32,14 @@ import java.util.List;
  * @version $Rev$
  */
 public class PageSizeDecoratorTest extends RhnBaseTestCase {
+    @Test
     public void testDefaultPageSizes() {
         assertFalse(PageSizeDecorator.getPageSizes().isEmpty());
         assertTrue(PageSizeDecorator.getPageSizes().
                 contains(PageSizeDecorator.getDefaultPageSize()));
     }
 
+    @Test
     public void testConfigPageSizes() {
         List<Integer> custom = new LinkedList<Integer>();
         custom.add(4);

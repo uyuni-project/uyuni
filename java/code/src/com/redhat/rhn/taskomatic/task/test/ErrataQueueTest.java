@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
@@ -27,6 +29,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 public class ErrataQueueTest extends BaseTestCaseWithUser {
 
     // We can run this now that mmccune made ErrataQueue perform OK.
+    @Test
     public void testErrataQueue() throws Exception {
 
         ErrataQueue eq = new ErrataQueue();

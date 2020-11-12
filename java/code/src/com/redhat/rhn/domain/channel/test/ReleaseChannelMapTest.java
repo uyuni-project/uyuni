@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -30,6 +32,7 @@ public class ReleaseChannelMapTest extends BaseTestCaseWithUser {
     private final String VERSION = "5Server";
     private final String RELEASE = "5.0.0";
 
+    @Test
     public void testCreate() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         ReleaseChannelMap rcm = new ReleaseChannelMap();

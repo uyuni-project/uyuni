@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.html.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.html.HiddenInputTag;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.html.SubmitImageInputTag;
@@ -27,6 +29,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 
 public class HtmlTagTest extends RhnBaseTestCase {
+    @Test
     public void testTagMaking() throws Exception {
         HtmlTag a = new HtmlTag("a");
         a.addBody("text");
@@ -39,6 +42,7 @@ public class HtmlTagTest extends RhnBaseTestCase {
         assertEquals("<img src=\"url\" />", i.render());
     }
 
+    @Test
     public void testChildTags() throws Exception {
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", "url");
@@ -49,6 +53,7 @@ public class HtmlTagTest extends RhnBaseTestCase {
         assertEquals("<a href=\"url\"><img src=\"foo.gif\" /></a>", a.render());
     }
 
+    @Test
     public void testChildTagAndBody() throws Exception {
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", "url");
@@ -60,11 +65,13 @@ public class HtmlTagTest extends RhnBaseTestCase {
         assertEquals("<a href=\"url\">Preferences<img src=\"foo.gif\" /></a>", a.render());
     }
 
+    @Test
     public void testHasBody() {
         HtmlTag a = new HtmlTag("a");
         assertFalse(a.hasBody());
     }
 
+    @Test
     public void testTextInputTag() {
         TextInputTag i = new TextInputTag();
         i.setName("testing");
@@ -76,6 +83,7 @@ public class HtmlTagTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testHiddenInputTag() {
         HiddenInputTag i = new HiddenInputTag();
         i.setName("testing");
@@ -84,6 +92,7 @@ public class HtmlTagTest extends RhnBaseTestCase {
             i.render());
     }
 
+    @Test
     public void testSubmitImageInputTag() {
         SubmitImageInputTag i = new SubmitImageInputTag();
         i.setName("testing");
@@ -94,6 +103,7 @@ public class HtmlTagTest extends RhnBaseTestCase {
            i.render());
     }
 
+    @Test
     public void testRemoveAttribute() {
         HtmlTag td = new HtmlTag("td");
         td.setAttribute("class", "sidebar");

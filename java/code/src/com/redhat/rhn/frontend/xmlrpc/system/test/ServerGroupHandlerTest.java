@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -63,6 +65,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();
 
+    @Test
     public void testCreate() {
         handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
@@ -85,6 +88,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testUpdate() {
 
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
@@ -102,6 +106,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(group.getDescription(), newDescription);
     }
 
+    @Test
     public void testListAdministrators() {
         regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup group = handler.create(regular, NAME, DESCRIPTION);
@@ -120,6 +125,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddRemoveAdmins() {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
@@ -187,6 +193,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListGroupsWithNoAssociatedAdmins() {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         ServerGroup group1 = handler.create(admin, NAME + "1",
@@ -209,6 +216,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertTrue(groups.contains(group2));
     }
 
+    @Test
     public void testDelete() {
         handler.create(admin, NAME, DESCRIPTION);
         handler.delete(admin, NAME);
@@ -221,6 +229,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddRemoveSystems() throws Exception {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
@@ -257,6 +266,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertFalse(actual.contains(server1));
     }
 
+    @Test
     public void testRemoveNonExistentServer() throws Exception {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         List<Long> systems = new ArrayList<Long>();
@@ -272,6 +282,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListAllGroups() throws Exception {
         int preSize = handler.listAllGroups(admin).size();
 
@@ -281,6 +292,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, groups.size() - preSize);
     }
 
+    @Test
     public void testGetDetailsById() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin,
@@ -288,6 +300,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(sg, group);
     }
 
+    @Test
     public void testGetDetailsByName() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin, group.getName());
@@ -295,6 +308,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testGetDetailsByUnknownId() throws Exception {
         boolean exceptCaught = false;
         int badValue = -80;
@@ -307,6 +321,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertTrue(exceptCaught);
     }
 
+    @Test
     public void testGetDetailsByUnknownName() throws Exception {
         boolean exceptCaught = false;
         String badName = new String("intentionalBadName123456789");
@@ -320,6 +335,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testListInactiveServersInGroup() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         Server server = ServerTestUtils.createTestSystem(admin);
@@ -342,6 +358,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(server.getId().toString(), list.get(0).toString());
     }
 
+    @Test
     public void testListActiveServersInGroup() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         Server server = ServerTestUtils.createTestSystem(admin);

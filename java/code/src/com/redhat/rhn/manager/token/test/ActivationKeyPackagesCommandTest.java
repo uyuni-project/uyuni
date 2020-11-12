@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.token.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.TokenPackage;
@@ -29,6 +31,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testPopulatePackages() throws Exception {
 
         // setup
@@ -62,6 +65,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
 
 
     }
+    @Test
     public void testParseAndUpdate() throws Exception {
 
         // setup

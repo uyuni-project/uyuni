@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.frontend.action.user.ChangeEmailAction;
 import com.redhat.rhn.testing.ActionHelper;
@@ -28,6 +30,7 @@ public class ChangeEmailActionTest extends RhnBaseTestCase {
 
     private MockMail mailer = new MockMail();
 
+    @Test
     public void testPerformExecute() throws Exception {
 
         mailer.setExpectedSendCount(2);

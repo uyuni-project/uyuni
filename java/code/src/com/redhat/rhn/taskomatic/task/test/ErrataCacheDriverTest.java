@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.task.Task;
@@ -33,6 +35,7 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of a problem
      */
+    @Test
     public void testGetCandidates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ErrataManager.insertErrataCacheTask(server);

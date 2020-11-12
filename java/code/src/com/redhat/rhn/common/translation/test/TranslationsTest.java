@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.common.translation.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -24,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TranslationsTest extends RhnBaseTestCase {
+    @Test
     public void testNoTranslator() throws Exception {
         try {
             // Try a translation that should be impossible.  This should make
@@ -37,6 +40,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testlongDateTranslation() throws Exception {
 
         long current = System.currentTimeMillis();
@@ -45,6 +49,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         assertEquals(new Date(current), translated);
     }
 
+    @Test
     public void testFailedTranslation() throws Exception {
         try {
             TestTranslations.convert("hmmm", java.lang.Integer.class);
@@ -56,6 +61,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testPrivateTranslator() throws Exception {
         try {
             TestTranslations.convert(1, java.lang.Long.class);
@@ -66,6 +72,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testListToString() {
         List list = new ArrayList();
         list.add(10);

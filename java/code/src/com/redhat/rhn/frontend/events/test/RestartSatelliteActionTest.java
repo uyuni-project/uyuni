@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.events.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -26,6 +28,7 @@ public class RestartSatelliteActionTest extends BaseTestCaseWithUser {
 
     private TestRestartCommand command;
 
+    @Test
     public void testAction() throws Exception {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         command = new TestRestartCommand(user);

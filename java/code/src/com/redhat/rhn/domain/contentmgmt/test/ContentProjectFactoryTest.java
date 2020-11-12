@@ -15,6 +15,9 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -63,11 +66,13 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     private ContentManager contentManager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();
     }
 
+    @Test
     public void testCreateEnvironments() {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -119,6 +124,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(empty(), fourth.getNextEnvironmentOpt());
     }
 
+    @Test
     public void testRemoveEnvironments() {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -164,6 +170,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      * Test removing a single environment and check that the reference
      * to the first environment of the project is updated
      */
+    @Test
     public void testRemoveSingleEnvironment() {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -182,6 +189,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testComputeEnvironmentStatus() throws Exception {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -237,6 +245,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests saving a ContentProject and listing it from the DB.
      */
+    @Test
     public void testSaveAndList() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -261,6 +270,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     /**
      * Tests a Content Project lookup when different Orgs are involved
      */
+    @Test
     public void testLookupCrossOrg() {
         Org org1 = user.getOrg();
         ContentProject cp1 = new ContentProject("cplabel", "cpname", "cpdesc", org1);
@@ -283,6 +293,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertFalse(fromDb2.isPresent());
     }
 
+    @Test
     public void testListEnvironments() {
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -319,6 +330,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -352,6 +364,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      * Test saving environment target by channel label
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testEnvironmentTargetByChannelLabel() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -369,6 +382,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test saving Content Project history entries
      */
+    @Test
     public void testProjectHistory() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -406,6 +420,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     /**
      * Test looking up Source by label
      */
+    @Test
     public void testSourceTypeLookup() {
         assertEquals(SW_CHANNEL, lookupByLabel("software"));
 
@@ -423,6 +438,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testProjectSourceState() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -447,6 +463,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLookupProjectLeader() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -483,6 +500,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLookupEnvironmentTargets() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -518,6 +536,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLookupNonExistingEnvironmentTargetById() throws Exception {
         assertFalse(ContentProjectFactory.lookupSwEnvironmentTargetById(123321L).isPresent());
     }
@@ -527,6 +546,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLookupEnvironmentTargetById() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -546,6 +566,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPurgeSwTarget() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -600,6 +621,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListFilterProjects() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
@@ -615,6 +637,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertTrue(ContentProjectFactory.listFilterProjects(filter).isEmpty());
     }
 
+    @Test
     public void testFailStaleTargets() {
         // let's test all possible statuses
         Map<EnvironmentTarget.Status, EnvironmentTarget> tgtsByStatus = Arrays.stream(EnvironmentTarget.Status.values())
@@ -648,6 +671,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLookupClonesInProject() throws Exception {
         // create CLM objects
         ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());

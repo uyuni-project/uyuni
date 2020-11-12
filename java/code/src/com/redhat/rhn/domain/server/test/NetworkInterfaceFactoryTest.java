@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
@@ -30,6 +32,7 @@ public class NetworkInterfaceFactoryTest extends RhnBaseTestCase {
      * Tests retrieval of network interfaces by their hardware address
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testLookupNetInterfaceByHwAddress() throws Exception {
         String hwAddress = "aa:bb:cc:dd:ee:00";
         String hwAddressUppercase = hwAddress.toUpperCase();

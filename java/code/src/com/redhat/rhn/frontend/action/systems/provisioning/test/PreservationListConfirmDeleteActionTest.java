@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -41,11 +44,13 @@ import java.util.Iterator;
 public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         action = new PreservationListConfirmDeleteAction();
     }
 
+    @Test
     public void testExecute() throws Exception {
         String rhnsetLabel = "file_lists";
         ActionHelper ah = new ActionHelper();

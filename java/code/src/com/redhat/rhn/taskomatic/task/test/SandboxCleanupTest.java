@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.taskomatic.task.SandboxCleanup;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -27,6 +29,7 @@ public class SandboxCleanupTest extends RhnBaseTestCase {
      * Again, there isn't much to test here. SandboxCleanup simply runs a few stored procs.
      * Just want to make sure the code at least gets run in a test environment.
      */
+    @Test
     public void testExecute() throws Exception {
         //the default db user doesn't have access to do this in hosted
 

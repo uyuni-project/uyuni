@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.tree.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -46,12 +48,14 @@ import java.util.List;
  */
 public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
+    @Test
     public void testCreateNonSubmit() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
         ChannelFactoryTest.createTestChannel(user);
         executeNonSubmit("/kickstart/TreeCreate");
     }
 
+    @Test
     public void testCreateSubmit() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(user);
@@ -59,6 +63,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         verifyActionMessage("tree.create.success");
     }
 
+    @Test
     public void testCreateRefresh() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -143,6 +148,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         return rhel4BaseChan;
     }
 
+    @Test
     public void testEditSubmit() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);
@@ -155,6 +161,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         verifyActionMessage("tree.edit.success");
     }
 
+    @Test
     public void testEditNonSubmit() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);
@@ -212,6 +219,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         return newLabel;
     }
 
+    @Test
     public void testDeleteConfirm() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);
@@ -234,6 +242,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         verifyPageList(KickstartData.class);
     }
 
+    @Test
     public void testDeleteSubmit() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);

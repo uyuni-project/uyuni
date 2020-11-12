@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.scc.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
@@ -34,6 +37,7 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
     /**
      * Test if initially an empty list is returned.
      */
+    @Test
     public void testRepositoriesEmpty() {
         List<SCCRepository> repos = SCCCachingFactory.lookupRepositories();
         assertTrue(repos.isEmpty());
@@ -42,6 +46,7 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
     /**
      * Test repository insertion and lookup.
      */
+    @Test
     public void testRepositoriesInsertAndLookup() {
         SCCRepository repo0 = createTestRepo(0L);
         SCCRepository repo1 = createTestRepo(1L);
@@ -61,6 +66,7 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
     /**
      * Test refreshNeeded().
      */
+    @Test
     public void testRefreshNeeded() {
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
@@ -102,7 +108,8 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
      * {@inheritDoc}
      */
     @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         SCCCachingFactory.clearRepositories();
     }

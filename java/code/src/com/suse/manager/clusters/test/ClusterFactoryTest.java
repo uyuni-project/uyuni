@@ -15,6 +15,8 @@
 
 package com.suse.manager.clusters.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -26,6 +28,7 @@ import java.util.List;
 
 public class ClusterFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testFindAllClusters() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         Cluster cluster1 = ClusterActionTest.createTestCluster(user, server);

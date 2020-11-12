@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.Server;
@@ -42,6 +44,7 @@ public class LocationTest extends RhnBaseTestCase {
     public static final String STATE = "NC";
     public static final String COUNTRY = "USA";
 
+    @Test
     public void testLocation() throws Exception {
         Location loc1 = createTestLocation();
         Location loc2 = new Location();

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.product.test;
 
+import org.junit.Test;
+
 import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.createTestSUSEProduct;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 
@@ -33,6 +35,7 @@ public class SUSEProductFactoryTest extends BaseTestCaseWithUser {
      * Tests {@link SUSEProductFactory#removeAllExcept}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testRemoveAllExcept() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
 

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 
@@ -27,18 +29,21 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class PackageEvrComparableTest extends RhnBaseTestCase {
 
+    @Test
     public void testEquality() {
         compare(0, "0:0-0", "0:0-0");
         compare(0, "0-0", "0:0-0");
         compare(0, "0-0", "0-0");
     }
 
+    @Test
     public void testFailure() {
         failure(new PackageEvr("0", null, "0", PackageType.RPM), IllegalStateException.class);
         failure(new PackageEvr("0", "0", null, PackageType.RPM), NullPointerException.class);
         failure(new PackageEvr("X", "0", null, PackageType.RPM), NumberFormatException.class);
     }
 
+    @Test
     public void testDifference() {
         compare(-1, "1:1-1", "2:5-7");
         compare(-1, "1:5-7", "2:5-7");

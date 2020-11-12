@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -56,6 +58,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     /*
+    @Test
     public void testConvertProduct() throws Exception {
         // Setup some test data
         XMLChannel baseChannel = new XMLChannel();
@@ -115,6 +118,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusNotMirrored() throws Exception {
         SetupWizardProductDto product = createFakeProduct("...");
         SyncStatus status = getProductSyncStatus(product);
@@ -132,6 +136,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFailed() throws Exception {
         SetupWizardProductDto product = createFakeProduct("PPP");
         SyncStatus status = getProductSyncStatus(product);
@@ -144,6 +149,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFailedTasko() throws Exception {
         SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
@@ -158,6 +164,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFailedNoMetadata() throws Exception {
         SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
@@ -171,6 +178,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressScheduled() throws Exception {
         SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoSchedule(product);
@@ -185,6 +193,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressRescheduled() throws Exception {
         SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
@@ -199,6 +208,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressReady() throws Exception {
         SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_READY_TO_RUN);
@@ -212,6 +222,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testGetProductSyncStatusInProgressRunning() throws Exception {
         SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
@@ -226,6 +237,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetProductSyncStatusFinished() throws Exception {
         // Change default mount point for temporary repodata directory
         String oldMountPoint = Config.get().getString(

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +51,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class PackageTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testIsType() throws Exception {
         Package pkgRpm = PackageTest.createTestPackage(user.getOrg(),
                 PackageFactory.lookupPackageArchByLabel("x86_64"));
@@ -74,6 +77,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         assertNotNull(lookup.getBuildTime());
     }
 
+    @Test
     public void testFile() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -262,6 +266,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         cp.executeUpdate(params);
     }
 
+    @Test
     public void testGetNevraWithEpoch() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr("1", "2", "3", PackageType.RPM);
@@ -280,10 +285,12 @@ public class PackageTest extends BaseTestCaseWithUser {
         assertFalse(pkg.getNameEvra().equals(pkg.getNevraWithEpoch()));
     }
 
+    @Test
     public void testIsInChannel() {
         // TODO make this work on sate
     }
 
+    @Test
     public void testGetExtraTag() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
         pkg.getExtraTags().put(PackageManagerTest.createExtraTagKey("mytag"), "myvalue");

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -61,6 +63,7 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
     private static IpAddress max5 = new IpAddress(maxIp5);
 
 
+    @Test
     public void testRange() throws Exception {
 
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
@@ -89,6 +92,7 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
         assertEquals(1, s.size());
     }
 
+    @Test
     public void testSetTheory() throws Exception {
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
         IpAddressRange range1 = new IpAddressRange(min, max3, k.getId());

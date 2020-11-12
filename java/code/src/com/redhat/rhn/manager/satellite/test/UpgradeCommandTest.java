@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.satellite.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
@@ -27,6 +29,7 @@ import java.util.List;
 
 public class UpgradeCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testUpgradeProfiles() throws Exception {
         TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, 0L);
         List l = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);

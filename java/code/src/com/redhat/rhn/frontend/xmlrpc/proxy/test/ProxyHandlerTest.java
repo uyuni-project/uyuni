@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.proxy.test;
 
+import org.junit.Test;
+
 import static com.redhat.rhn.domain.server.ServerFactory.createServerPaths;
 import static java.lang.Math.toIntExact;
 
@@ -52,6 +54,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
             sshMinionBootstrapper
     );
 
+    @Test
     public void testDeactivateProxyWithReload() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -61,6 +64,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         assertFalse(server.isProxy());
     }
 
+    @Test
     public void testActivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
@@ -77,6 +81,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         assertEquals(1, rc);
     }
 
+    @Test
     public void testActivateSaltProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
@@ -93,6 +98,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         assertEquals(1, rc);
     }
 
+    @Test
     public void testDeactivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -120,10 +126,12 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         assertEquals(1, rc);
     }
 
+    @Test
     public void testLameTest() {
         assertNotNull(new ProxyHandler(xmlRpcSystemHelper));
     }
 
+    @Test
     public void testListProxyClients() throws Exception {
         // create user
         User user = UserTestUtils.findNewUser("testuser", "testorg");

@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.services.impl.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.suse.manager.webui.services.impl.MonitoringService;
 
@@ -24,6 +26,7 @@ import java.util.function.BiFunction;
 
 public class MonitoringServiceTest extends RhnJmockBaseTestCase {
 
+    @Test
     public void testGetStatusWithTaskomaticEnableNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -49,6 +52,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals(null, res.get().getMessages().get("self_monitoring"));
     }
 
+    @Test
     public void testGetStatusWithSelfMonitoringRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -73,6 +77,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals("restart", res.get().getMessages().get("self_monitoring"));
     }
 
+    @Test
     public void testGetStatusWithTaskomaticRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -96,6 +101,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals("restart", res.get().getMessages().get("taskomatic"));
     }
 
+    @Test
     public void testGetStatusNoMessage() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -120,6 +126,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals(null, res.get().getMessages().get("self_monitoring"));
     }
 
+    @Test
     public void testEnableWithTomcatRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {
@@ -143,6 +150,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
         assertEquals(null, res.get().getMessages().get("taskomatic"));
     }
 
+    @Test
     public void testDisableWithTaskomaticRestartNeeded() {
         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
                 (String cmd, Optional<String> pillar) -> {

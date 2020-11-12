@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
 
 import com.redhat.rhn.frontend.security.RedirectServlet;
 
@@ -49,7 +50,8 @@ public class RedirectServletTest extends MockObjectTestCase {
     private String requestURI;
     private String redirectURI;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         redirect = new RedirectServletStub();

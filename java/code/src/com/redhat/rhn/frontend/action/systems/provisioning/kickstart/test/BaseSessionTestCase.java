@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart.test;
+import org.junit.Before;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -41,6 +42,7 @@ public class BaseSessionTestCase extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
@@ -39,6 +41,7 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
      * Test the equals method for NetworkInterface.
      * @throws Exception something bad happened
      */
+    @Test
     public void testEquals() throws Exception {
         NetworkInterface netint1 = createTestNetworkInterface();
         NetworkInterface netint2 = new NetworkInterface();

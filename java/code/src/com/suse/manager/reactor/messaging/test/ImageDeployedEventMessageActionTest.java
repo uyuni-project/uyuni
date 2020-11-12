@@ -1,4 +1,7 @@
 package com.suse.manager.reactor.messaging.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static java.util.Arrays.asList;
 
@@ -62,6 +65,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     private TaskomaticApi taskomaticMock;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -105,6 +109,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
      * In this case we test that at the end of the Action, the minion has correct channels
      * (based on its product) assigned.
      */
+    @Test
     public void testChannelsAssigned() throws Exception {
         grains.put("machine_id", testMinion.getMachineId());
 
@@ -123,6 +128,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
      * In this case we test that at the end of the Action, the minion has correct channels
      * (based on its product) assigned. Old channel assignments will be overridden.
      */
+    @Test
     public void testBaseChannelChanged() throws Exception {
         grains.put("machine_id", testMinion.getMachineId());
 
@@ -146,6 +152,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     /**
      * machine_id grain is missing -> no channels should be assigned
      */
+    @Test
     public void testMachineIdMissing() {
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
         ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);

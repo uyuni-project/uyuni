@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.Bug;
@@ -40,6 +43,7 @@ import org.apache.struts.action.ActionMapping;
  */
 public class DeleteBugActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testDeleteBug() throws Exception {
         DeleteBugAction action = new DeleteBugAction();
 

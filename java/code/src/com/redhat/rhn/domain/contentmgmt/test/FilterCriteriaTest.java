@@ -15,8 +15,10 @@
 
 package com.redhat.rhn.domain.contentmgmt.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
@@ -29,8 +31,9 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.validate;
 /**
  * Tests for {@link FilterCriteria}
  */
-public class FilterCriteriaTest extends TestCase {
+public class FilterCriteriaTest extends Assert {
 
+    @Test
     public void testLegalValidation() {
         validate(PACKAGE, CONTAINS, "name");
         validate(PACKAGE, EQUALS, "nevr");
@@ -39,6 +42,7 @@ public class FilterCriteriaTest extends TestCase {
         validate(ERRATUM, GREATEREQ, "issue_date");
     }
 
+    @Test
     public void testIllegalValidation() {
         try {
             validate(PACKAGE, CONTAINS, "nonsense");

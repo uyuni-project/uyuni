@@ -14,6 +14,10 @@
  */
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.Channel;
@@ -36,16 +40,19 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
     private String prefix;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         prefix = Files.createTempDirectory("debreleasewriter").toAbsolutePath().toString() + File.separator;
     }
 
+    @Test
     public void testDateFormat() {
         ZonedDateTime time = ZonedDateTime.parse("2018-11-22T12:35:40+01:00[Europe/Madrid]");
         assertEquals("Thu, 22 Nov 2018 11:35:40 UTC", DebReleaseWriter.RFC822_DATE_FORMAT.format(time));
     }
 
+    @Test
     public void testGenerateRelease() throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setChannelArch(ChannelFactory.findArchByLabel("channel-ia64-deb"));
@@ -91,6 +98,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
         org.apache.commons.io.FileUtils.deleteDirectory(new File(prefix));

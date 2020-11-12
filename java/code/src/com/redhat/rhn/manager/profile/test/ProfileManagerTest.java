@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.profile.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -57,6 +60,7 @@ import java.util.Set;
  */
 public class ProfileManagerTest extends BaseTestCaseWithUser {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -65,6 +69,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         UserFactory.save(user);
     }
 
+    @Test
     public void testSyncSystems() throws Exception {
         Channel testChannel = ChannelFactoryTest.createTestChannel(user);
 
@@ -110,6 +115,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testCreateProfileFails() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -125,6 +131,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateProfile() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -138,6 +145,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertNotNull("Profile has no id", p.getId());
     }
 
+    @Test
     public void testCopyFrom() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -153,6 +161,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         ProfileManager.copyFrom(server, p);
     }
 
+    @Test
     public void testCompatibleWithServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -174,6 +183,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCompareServerToProfile() {
         Long sid = 1005385254L;
         Long prid = 4908L;
@@ -182,6 +192,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertNotNull("DataResult was null", dr);
     }
 
+    @Test
     public void testCompatibleWithChannel() throws Exception {
         Profile p = createProfileWithServer(user);
         DataResult<ProfileDto> dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
@@ -203,6 +214,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         "Profile test description");
     }
 
+    @Test
     public void testTwoVsOneKernelPackages()  {
         /*
          *     public static List comparePackageLists(DataResult profiles,
@@ -260,6 +272,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals("kernel-2.4.22-27.EL-bretm", pm.getOther().getEvr());
     }
 
+    @Test
     public void testDifferingVersionsofSamePackage() {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -297,6 +310,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals("kernel-2.4.21-27.EL", pm.getSystem().getEvr());
     }
 
+    @Test
     public void testDifferentVersionsOfSamePackageReverseOrder() {
         List<PackageListItem> b = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -334,6 +348,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals("kernel-2.4.21-27.EL", pm.getOther().getEvr());
     }
 
+    @Test
     public void testDifferingEpochsofSamePackage() {
         // this test will perform a package comparison between 2 packages where
         // the epochs in those packages vary, including null values
@@ -399,6 +414,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         return pli;
     }
 
+    @Test
     public void testMorePackagesInProfile() {
         List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(createItem("kernel-2.4.21-EL-mmccune", 500341));
@@ -415,6 +431,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testMorePackagesInSystem() {
         List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(createItem("kernel-2.4.23-EL-mmccune", 500341));
@@ -446,6 +463,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         return pli;
     }
 
+    @Test
      public void testIdenticalPackages() {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -479,6 +497,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, diff.size());
     }
 
+    @Test
     public void testVzlatkinTest() {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -595,6 +614,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testBz204345() throws Exception {
         // kernel-2.6.9-22.EL
         // kernel-2.6.9-42.0.2.EL
@@ -649,6 +669,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         // assertEquals("kernel-2.4.21-27.EL", pm.getSystem().getEvr());
     }
 
+    @Test
     public void testGetChildChannelsNeededForProfile() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
         Channel childChannel1 = ChannelTestUtils.createChildChannel(server.getCreator(),

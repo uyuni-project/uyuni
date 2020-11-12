@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -59,6 +61,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
      * Test fetching a Package with the logged in User
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupWithUser() throws Exception {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertNotNull(pkg.getOrg().getId());
@@ -72,11 +75,13 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         // Sat mode since there is only one Org.
     }
 
+    @Test
     public void testLookupPackageArchByLabel() {
         assertNull(PackageFactory.lookupPackageArchByLabel("biteme-arch"));
         assertNotNull(PackageFactory.lookupPackageArchByLabel("i386"));
     }
 
+    @Test
     public void testLookupByNameAndServer() throws Exception {
         Server testServer = ServerFactoryTest.createTestServer(user, true);
 
@@ -103,6 +108,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         assertEquals(testInstPack, pack);
     }
 
+    @Test
     public void testPackageSearch() {
         List<Long> pids = new ArrayList<Long>();
         pids.add(2125L);
@@ -117,6 +123,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(results);
     }
 
+    @Test
     public void testPackageDelete() throws Exception {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         Long id = pkg.getId();
@@ -130,6 +137,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
    public void testPackageSourceLookup() throws Exception {
        Package pack = PackageTest.createTestPackage(user.getOrg());
 
@@ -138,6 +146,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
    }
 
+    @Test
    public void testFindMissingProductPackageOnServer() throws Exception {
        Server testServer = ServerFactoryTest.createTestServer(user, true);
 
@@ -166,6 +175,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        assertEquals(testPackage.getNameEvra() ,missing.get(0).getNameEvra());
    }
 
+    @Test
     public void testFindMissingProductPackageNoPackageProfile() throws Exception {
         Server testServer = ServerFactoryTest.createTestServer(user, true);
 
@@ -191,6 +201,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, missing.size());
     }
 
+    @Test
    public void testInstalledProductPackage() throws Exception {
        Server testServer = ServerFactoryTest.createTestServer(user, true);
 
@@ -222,6 +233,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        assertEquals(0, missing.size());
    }
 
+    @Test
    public void testInstalledProductPackageProvidesOtherProduct() throws Exception {
        Server testServer = ServerFactoryTest.createTestServer(user, true);
 
@@ -273,6 +285,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        assertEquals(0, missing.size());
    }
 
+    @Test
    public void testInstalledProductPackageProvidesOtherProduct2() throws Exception {
        Server testServer = ServerFactoryTest.createTestServer(user, true);
 
@@ -324,6 +337,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        assertEquals(testPackage2.getNameEvra() ,missing.get(0).getNameEvra());
    }
 
+    @Test
    public void testCapabilities() throws Exception {
        Package pkg = PackageTest.createTestPackage(user.getOrg());
 

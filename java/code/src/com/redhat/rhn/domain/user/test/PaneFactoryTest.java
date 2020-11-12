@@ -14,12 +14,15 @@
  */
 package com.redhat.rhn.domain.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import java.util.Map;
 
 public class PaneFactoryTest extends RhnBaseTestCase  {
+    @Test
     public void testAllPanesRetireval() {
         Map panes = PaneFactory.getAllPanes();
         assertTrue(!panes.isEmpty());

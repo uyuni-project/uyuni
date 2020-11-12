@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
@@ -24,20 +27,24 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 public class HandlerFactoryTest extends RhnBaseTestCase {
     private HandlerFactory factory = null;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         factory = HandlerFactory.getDefaultHandlerFactory();
     }
 
+    @Test
     public void testHandlerFactoryNotFound() {
         assertTrue("handler should not exist.", factory.getHandler("NoHandler").isEmpty());
     }
 
+    @Test
     public void testHandlerFactory() {
         BaseHandler handler = factory.getHandler("channel").get();
         assertEquals(ChannelHandler.class, handler.getClass());
     }
 
+    @Test
     public void testDescendingClass() {
         BaseHandler handler = factory.getHandler("channel.software").get();
         assertNotNull(handler);

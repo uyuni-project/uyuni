@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction;
 import com.redhat.rhn.frontend.action.kickstart.KickstartFileDownloadAction;
@@ -25,6 +27,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
  */
 public class KickstartDetailsEditTest extends BaseKickstartEditTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartDetailsEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.FALSE.toString());
@@ -37,6 +40,7 @@ public class KickstartDetailsEditTest extends BaseKickstartEditTestCase {
         assertTrue(orgDefaultUrl.indexOf("/org_default") > 0);
     }
 
+    @Test
     public void testSubmit() throws Exception {
         setRequestPathInfo("/kickstart/KickstartDetailsEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.TRUE.toString());

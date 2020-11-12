@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.common.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -37,6 +39,7 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
     // I wanted to make sure we had a specific test class that was tied
     // to this baseclass since its complex and needs tests geared towards
     // it.
+    @Test
     public void testSelectAll() throws Exception {
 
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());

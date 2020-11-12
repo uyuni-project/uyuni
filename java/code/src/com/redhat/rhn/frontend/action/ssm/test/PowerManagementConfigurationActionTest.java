@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.ssm.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -43,6 +46,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
@@ -71,6 +75,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * Tests creating Cobbler system records with a chosen profile from SSM.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/ssm/provisioning/PowerManagementConfiguration");
         request.setMethod(HttpServletRequestSimulator.POST);

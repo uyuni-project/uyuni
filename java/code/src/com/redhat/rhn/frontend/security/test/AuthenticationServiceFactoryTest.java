@@ -13,19 +13,20 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.security.test;
+import org.junit.Before;
 
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  *
  * AuthenticationServiceFactoryTest
  * @version $Rev$
  */
-public class AuthenticationServiceFactoryTest extends TestCase {
+public class AuthenticationServiceFactoryTest extends Assert {
 
     private class AuthenticationServiceFactoryStub extends AuthenticationServiceFactory {
 
@@ -44,7 +45,8 @@ public class AuthenticationServiceFactoryTest extends TestCase {
 
     private AuthenticationServiceFactoryStub factory;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new AuthenticationServiceFactoryStub();
     }
 

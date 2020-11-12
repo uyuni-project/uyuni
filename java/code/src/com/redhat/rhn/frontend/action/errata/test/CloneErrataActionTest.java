@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.errata.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -32,12 +35,14 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class CloneErrataActionTest extends RhnMockStrutsTestCase {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/errata/manage/CloneErrata");
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }
 
+    @Test
     public void testEmptySet() throws Exception {
         RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
                                                           "clone_errata_list",
@@ -52,6 +57,7 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
         verifyActionMessage("emptyselectionerror");
     }
 
+    @Test
     public void testNonEmptySet() throws Exception {
 
         RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -25,6 +27,7 @@ import org.apache.struts.action.DynaActionForm;
  */
 public class AssignedGroupsSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         setRequestPathInfo("/users/AssignedSystemGroups");
         addRequestParameter("availableGroups", "someGroups");

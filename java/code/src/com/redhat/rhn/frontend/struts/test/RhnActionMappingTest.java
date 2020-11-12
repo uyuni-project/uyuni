@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RhnActionMapping;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -23,6 +25,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class RhnActionMappingTest extends RhnBaseTestCase {
 
+    @Test
     public void testAclMapping() {
         //represents what some fool may put into struts-config
         String aclstring = ",,foo ,, , bar   ,baz";

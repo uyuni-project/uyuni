@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.crypto.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -30,6 +32,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
 
     private static final String UTF8 = "UTF-8";
 
+    @Test
     public void testCryptoKey() throws Exception {
         CryptoKey key = createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
@@ -40,6 +43,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         assertEquals(key.getKeyString(), testString);
     }
 
+    @Test
     public void testBigKey() throws Exception {
         CryptoKey key = createTestKey(user.getOrg());
         assertNotNull(key);
@@ -55,6 +59,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
                 key.getKeyString());
     }
 
+    @Test
     public void testCryptoKeyKickstartAssoc() throws Exception {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         ksdata = addKeyToKickstart(ksdata);

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.repomd.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 
 import static com.redhat.rhn.domain.errata.test.ErrataFactoryTest.createTestErrata;
@@ -39,10 +42,12 @@ import java.io.StringWriter;
  */
 public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
     }
 
+    @Test
     public void testSUSEPatchNames() throws Exception {
 
         ChannelFamily channelFamily = createTestChannelFamily();

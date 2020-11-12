@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.errata.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
@@ -94,6 +97,7 @@ import java.util.stream.Collectors;
 public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -103,6 +107,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         return ErrataFactory.createBug(id, summary, "https://bugzilla.redhat.com/show_bug.cgi?id=" + id);
     }
 
+    @Test
     public void testStore() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -115,6 +120,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(e.getAdvisoryName(), e2.getAdvisoryName());
     }
 
+    @Test
     public void testCreate() {
         Errata e = new Errata();
         assertTrue(e instanceof Errata);
@@ -123,12 +129,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(b instanceof Bug);
     }
 
+    @Test
     public void testSearchByPackagesIds() throws Exception {
         searchByPackagesIdsHelper(
                 Optional.empty(),
                 (pids) -> ErrataManager.searchByPackageIds(pids));
     }
 
+    @Test
     public void testSearchByPackagesIdsInOrg() throws Exception {
         Channel channel = ChannelTestUtils.createTestChannel(user);
         searchByPackagesIdsHelper(
@@ -183,6 +191,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(e.getAdvisory(), eo.getAdvisory());
     }
 
+    @Test
     public void testSearch() throws Exception {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
@@ -218,6 +227,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, eos.size());
     }
 
+    @Test
     public void testRelevantErrataList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -228,6 +238,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(errata.size() >= 1);
     }
 
+    @Test
     public void testRelevantErrataByTypeList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -288,6 +299,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testSystemsAffected() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -307,6 +319,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(systems2.isEmpty());
     }
 
+    @Test
     public void testAdvisoryNameUnique() throws Exception {
         Errata e1 = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg("testOrg" +
                     this.getClass().getSimpleName()));
@@ -356,6 +369,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         fr.close();
     }
 
+    @Test
     public void testErrataInSet() throws Exception {
         User user = UserTestUtils.findNewUser();
 
@@ -376,6 +390,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCloneChannelErrata() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(user);
         final Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -406,6 +421,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrata() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -524,6 +540,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrataOnManagementStack() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -719,6 +736,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrataOnManagementStackForZypp() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -884,6 +902,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testApplyErrataNoSystems() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -908,6 +927,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testApplyErrataNoErrata() throws Exception {
         List<Long> errataIds = new ArrayList<Long>();
 
@@ -929,6 +949,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testApplyErrataNoErrataNoSystems() throws Exception {
         List<Long> errataIds = new ArrayList<Long>();
         List<Long> serverIds = new ArrayList<Long>();
@@ -947,6 +968,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testApplyErrataInapplicable() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -974,6 +996,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrataMultipleErrataYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -1070,6 +1093,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrataMultipleErrataMinions() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -1172,6 +1196,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrataMultipleManagementStackErrataMinions() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -1274,6 +1299,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrataMultipleErrataActionChain() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -1393,6 +1419,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testApplyErrataMultipleErrataActionChainYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -1503,6 +1530,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception the exception
      */
+    @Test
     public void testUpdateStackUpdateNeeded() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1560,6 +1588,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testTruncateErrataSimple() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1583,6 +1612,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testTruncateErrataCloned() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1611,6 +1641,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPackagesOnTruncateErrata() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());

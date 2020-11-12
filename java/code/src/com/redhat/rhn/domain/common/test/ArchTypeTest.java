@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -24,6 +26,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class ArchTypeTest extends RhnBaseTestCase {
 
+    @Test
     public void testArchType() throws Exception {
 
         Long testid = 1L;

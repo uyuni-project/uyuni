@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
@@ -33,6 +35,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class InProgressSystemsActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testSelectAll() throws Exception {
         InProgressSystemsAction action = new InProgressSystemsAction();
         ActionHelper ah = new ActionHelper();

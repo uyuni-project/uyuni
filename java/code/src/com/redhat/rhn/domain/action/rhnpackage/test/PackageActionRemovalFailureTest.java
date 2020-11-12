@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -41,6 +43,7 @@ import org.hibernate.Session;
  */
 public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
 
+    @Test
     public void testPackageActionRemovalFailure() throws Exception {
         User usr = UserTestUtils.createUser("testUser",
             UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.action.errata.CreateSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -24,6 +26,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class CreateSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
 
         CreateSetupAction action = new CreateSetupAction();

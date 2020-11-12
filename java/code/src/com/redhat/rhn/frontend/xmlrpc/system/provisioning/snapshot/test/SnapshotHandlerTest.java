@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageNevra;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -62,6 +64,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         return snap;
     }
 
+    @Test
     public void testListSnapshots() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
@@ -78,6 +81,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public  void testListSnapshotPackages() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
@@ -94,6 +98,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
          assertContains(list, packN);
     }
 
+    @Test
     public void testDeleteSnapshot() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
@@ -107,6 +112,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testDeleteSnapshots() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);

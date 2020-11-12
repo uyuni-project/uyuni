@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.security.acl.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.acl.Access;
@@ -72,12 +75,14 @@ public class AccessTest extends BaseTestCaseWithUser {
     );
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         acl = new Acl();
         acl.registerHandler(new Access(clusterManager));
     }
 
+    @Test
     public void testAccessNotFoundEntry() {
         Access access = new Access(clusterManager);
         String[] foo = {"FOO"};
@@ -85,6 +90,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertFalse(rc);
     }
 
+    @Test
     public void testAccessValidEntry() {
         Config c = Config.get();
         c.setBoolean("test.true", "true");
@@ -114,12 +120,14 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue("test.ON is false", access.aclIs(null, foo));
     }
 
+    @Test
     public void testAccessWithInvalidAcl() {
         Map context = new HashMap();
         boolean rc = acl.evalAcl(context, "is(foo)");
         assertFalse(rc);
     }
 
+    @Test
     public void testAccessWithValidAcl() {
         Config c = Config.get();
         c.setBoolean("test.true", "true");
@@ -141,6 +149,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue("test.ON is false", acl.evalAcl(context, "is(test.ON)"));
     }
 
+    @Test
     public void testForFalse() {
         Config c = Config.get();
         c.setBoolean("test.false", "false");
@@ -162,6 +171,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertFalse("test.OFF is true", acl.evalAcl(context, "is(test.OFF)"));
     }
 
+    @Test
     public void testUserRoleAcl() {
         Map context = new HashMap();
         User user = new MockUser();
@@ -171,6 +181,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue(rc);
     }
 
+    @Test
     public void testUserCanManageChannelAcl() {
         Map context = new HashMap();
         User user =  UserTestUtils.findNewUser("testUser",
@@ -181,6 +192,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue(rc);
     }
 
+    @Test
     public void testUserRoleAclFalse() {
         Map context = new HashMap();
         User user = new MockUser();
@@ -190,11 +202,13 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertFalse(rc);
     }
 
+    @Test
     public void testNeedsFirstUser() {
         boolean rc = acl.evalAcl(new HashMap(), "need_first_user()");
         assertFalse(rc);
     }
 
+    @Test
     public void testSystemFeature() throws Exception {
         Map context = new HashMap();
         User user = UserTestUtils.findNewUser("testUser",
@@ -208,6 +222,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertFalse(rc);
     }
 
+    @Test
     public void testAclSystemHasManagementEntitlement() throws Exception {
         Map context = new HashMap();
 
@@ -232,6 +247,7 @@ public class AccessTest extends BaseTestCaseWithUser {
      * Test ACL: system_has_salt_entitlement()
      * @throws Exception in case of an error
      */
+    @Test
     public void testAclSystemHasSaltEntitlement() throws Exception {
         Map<String, Object> context = new HashMap<>();
         User user = UserTestUtils.findNewUser("testUser",
@@ -261,6 +277,7 @@ public class AccessTest extends BaseTestCaseWithUser {
      * Test ACL: acl_system_is_bootstrap_minion_server()
      * @throws Exception in case of an error
      */
+    @Test
     public void testAclSystemIsBootstrapMinionServer() throws Exception {
         Map<String, Object> context = new HashMap<>();
         User user = UserTestUtils.findNewUser("testUser",
@@ -287,6 +304,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertFalse(acl.evalAcl(context, "system_is_bootstrap_minion_server()"));
     }
 
+    @Test
     public void testUnimplementedMethods() {
 
         String[] methods = { "user_authenticated()" };
@@ -296,6 +314,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGlobalConfigIsGone() {
         Map context = new HashMap();
         try {
@@ -307,6 +326,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCanAccessChannel() {
         try {
             Map context = new HashMap();
@@ -323,6 +343,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testFormvarExists() {
         Map context = new HashMap();
         assertFalse(acl.evalAcl(context, "formvar_exists(cid)"));
@@ -341,6 +362,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertFalse(rc);
     }
 
+    @Test
     public void testIsVirtual() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();

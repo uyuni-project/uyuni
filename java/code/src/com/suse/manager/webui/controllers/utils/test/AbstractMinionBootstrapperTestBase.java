@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.utils.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -53,6 +56,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     protected AbstractMinionBootstrapper bootstrapper;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -63,6 +67,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * Tests that the bootstrap fails when the keys for the host already exist.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testBootstrapFailsWhenKeysExist() throws Exception {
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
@@ -119,6 +124,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * Tests that the bootstrap fails when the system for the host already exist.
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testBootstrapFailsWhenMinionExists()
             throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -142,6 +148,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testBootstrapSuccess() throws Exception {
 
         Key.Pair keyPair = mockKeyPair();

@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -57,6 +59,7 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -75,6 +78,7 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
     }
 
     @Override
+    @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         Map<String, Object> grains = new HashMap<>();

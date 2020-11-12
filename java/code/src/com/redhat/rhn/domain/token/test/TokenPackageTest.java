@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.token.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -31,11 +34,13 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class TokenPackageTest extends BaseTestCaseWithUser {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
     }
 
+    @Test
     public void testTokenPackage() throws Exception {
 
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);

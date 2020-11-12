@@ -1,4 +1,7 @@
 package com.suse.manager.webui.controllers.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -17,6 +20,7 @@ import java.util.Optional;
 import spark.Request;
 
 public class SSOControllerTest extends BaseControllerTestCase {
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Map<String, Object> samlData = new HashMap<>();
@@ -44,11 +48,13 @@ public class SSOControllerTest extends BaseControllerTestCase {
         SSOController.setSsoConfig(Optional.of(settings));
     }
 
+    @Test
     public void testACSWithoutSSO() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         assertNull(SSOController.getACS(getRequestWithCsrf("/manager/sso/acs"), response));
     }
 
+    @Test
     public void testMetadataWithSSO() throws IOException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
         Request requestWithCsrf = getRequestWithCsrf("/manager/sso/metadata");
@@ -56,6 +62,7 @@ public class SSOControllerTest extends BaseControllerTestCase {
         assertTrue(response.raw().getOutputStream().toString().contains("entityID=\"https://localhost/metadata.jsp\""));
     }
 
+    @Test
     public void testMetadataWithoutSSO() throws IOException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Request requestWithCsrf = getRequestWithCsrf("/manager/sso/metadata");

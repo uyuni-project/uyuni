@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.taskomatic.task.ErrataCacheTask;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -36,6 +38,7 @@ public class ErrataCacheTaskTest extends RhnBaseTestCase {
         System.out.println("ErrataCacheTask took [" + sw.getTime() + "]");
     }
 
+    @Test
     public void testNothing() {
         assertTrue(true);
     }

@@ -17,6 +17,8 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -52,6 +54,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests createActionChain() and getActionChain().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testCreateActionChain() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -72,6 +75,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests delete().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testDelete() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -86,6 +90,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests getActionChains().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetActionChains() throws Exception {
         int previousSize = ActionChainFactory.getActionChains(user).size();
 
@@ -100,6 +105,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests getOrCreateActionChain().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetOrCreateActionChain() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.getActionChain(user, label);
@@ -116,6 +122,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests queueActionChainEntry().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testQueueActionChainEntry() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -156,6 +163,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests testGetActionChainEntry().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetActionChainEntry() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -176,6 +184,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests getActionChainEntryGroups().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetActionChainEntryGroups() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -216,6 +225,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         return orders;
     }
 
+    @Test
     public void testRemoveActionChainEntrySortGaps() throws Exception {
 
         ActionChain actionChain =
@@ -249,6 +259,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertEquals(result, getOrders(actionChain.getEntries()));
     }
 
+    @Test
     public void testRemoveActionChainEntry() throws Exception {
 
         ActionChain actionChain =
@@ -301,6 +312,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Test getActionChainEntries().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testGetActionChainEntries() throws Exception {
         ActionChain actionChain = ActionChainFactory.createActionChain(
             TestUtils.randomString(), user);
@@ -324,6 +336,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests schedule().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testSchedule() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -367,6 +380,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      * Tests that actionchains are only accessible to the user that created them
      * @throws Exception if something bad happens
      */
+    @Test
     public void testPermissions() throws Exception {
         Org otherOrg = UserTestUtils.createNewOrgFull("OtherOrg");
         User other = UserTestUtils.createUser("otherAdmin", otherOrg.getId());

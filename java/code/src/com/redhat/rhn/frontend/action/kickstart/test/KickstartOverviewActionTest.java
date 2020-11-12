@@ -14,11 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.action.kickstart.KickstartOverviewAction;
 
 public class KickstartOverviewActionTest extends BaseKickstartEditTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/KickstartOverview");
         actionPerform();

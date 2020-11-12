@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.sshpush.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -81,6 +84,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -103,6 +107,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUptimeUpdatedAfterReboot() throws Exception {
         minion.setLastBoot(1L); // last boot is long time in the past
         Action action = createRebootAction(
@@ -159,6 +164,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testOldRebootActionsAreCleanedUp() throws Exception {
         minion.setLastBoot(1L); // last boot is long time in the past
         // very old reboot action
@@ -221,6 +227,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.closeSession();
     }
 
+    @Test
     public void testSystemIsRebooting() throws Exception {
         // action to be picked up
         Action upcomingAction = createRebootAction(

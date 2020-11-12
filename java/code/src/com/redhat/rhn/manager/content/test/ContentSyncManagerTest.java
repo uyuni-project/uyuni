@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.content.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -100,6 +103,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String UPGRADE_PATHS_JSON = "upgrade_paths.json";
     private static final String UPGRADE_PATHS_EMPTY_JSON = JARPATH + "upgrade_paths_empty.json";
 
+    @Test
     public void testSubscriptionDeleteCaching() throws Exception {
 
         File upgradePathsJson = new File(
@@ -172,6 +176,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertNull(two);
     }
 
+    @Test
     public void testListSubscriptionsCaching() throws Exception {
         File subJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "sccdata/" + SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
@@ -253,6 +258,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testUpdateProducts()  throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, false);
 
@@ -280,6 +286,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testUpdateRepositories() throws Exception {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -428,6 +435,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDupIdSzenario9() throws Exception {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -492,38 +500,47 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertEquals(rhel6csIds, rhel7csIds);
     }
 
+    @Test
     public void testDupIdSzenario1() throws Exception {
         dupIdSzenario(false, true, false);
     }
 
+    @Test
     public void testDupIdSzenario2() throws Exception {
         dupIdSzenario(false, false, false);
     }
 
+    @Test
     public void testDupIdSzenario3() throws Exception {
         dupIdSzenario(true, true, false);
     }
 
+    @Test
     public void testDupIdSzenario4() throws Exception {
         dupIdSzenario(true, false, false);
     }
 
+    @Test
     public void testDupIdSzenario5() throws Exception {
         dupIdSzenario(false, true, true);
     }
 
+    @Test
     public void testDupIdSzenario6() throws Exception {
         dupIdSzenario(false, false, true);
     }
 
+    @Test
     public void testDupIdSzenario7() throws Exception {
         dupIdSzenario(true, true, true);
     }
 
+    @Test
     public void testDupIdSzenario8() throws Exception {
         dupIdSzenario(true, false, true);
     }
 
+    @Test
     public void testReleaseStageOverride() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
@@ -536,6 +553,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test if changes in SCC data result in updates of the channel data in the DB
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
@@ -602,6 +620,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test changes of the repo URL (result in change of the repository)
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannelsWithSimilarPath() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
@@ -677,6 +696,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#updateSUSEProducts} inserting a new product.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateSUSEProductsNew() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
@@ -718,6 +738,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#updateSUSEProducts} update a product.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateSUSEProductsUpdate() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
@@ -769,6 +790,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#getAvailableChannels}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testGetAvailableChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
@@ -795,6 +817,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for duplicates in {@link ContentSyncManager#getAvailableChannels} output.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testNoDupInGetAvailableChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/", true);
         HibernateFactory.getSession().flush();
@@ -875,6 +898,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#updateChannelFamilies} method, insert case.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannelFamiliesInsert() throws Exception {
         // Get test data and insert
         List<ChannelFamilyJson> channelFamilies = getChannelFamilies();
@@ -913,6 +937,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#updateChannelFamilies} method, update case.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateChannelFamiliesUpdate() throws Exception {
         // Get test data and insert
         int familynumbers = ChannelFamilyFactory.getAllChannelFamilies().size();
@@ -968,6 +993,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Update the upgrade paths test.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateUpgradePaths() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(JARPATH + UPGRADE_PATHS_JSON).getPath());
@@ -1080,6 +1106,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * There is an upgrade path in the DB and SCC deletes the "from" product.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpgradePathPredecessorDeleted() throws Exception {
         File upgradePathsEmptyJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
@@ -1145,6 +1172,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * An upgrade path between two products is removed while the products still exist.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpgradePathRemoved() throws Exception {
         File upgradePathsEmptyJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_EMPTY_JSON).getPath());
@@ -1208,6 +1236,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#listChannels}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
@@ -1253,6 +1282,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * filtering of unavailable products.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListProductsAvailability() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
@@ -1291,6 +1321,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Tests {@link ContentSyncManager#isRefreshNeeded}
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testIsRefreshNeeded() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
@@ -1327,6 +1358,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Tests {@link ContentSyncManager#isRefreshNeeded} when fromdir is configured
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testIsRefreshNeededFromDir() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
         HibernateFactory.getSession().flush();
@@ -1362,6 +1394,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test for {@link ContentSyncManager#addChannel}.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testAddChannel() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
         HibernateFactory.getSession().flush();
@@ -1415,6 +1448,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * using an URL pointing to an official SUSE server.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSetupSourceURLLocalFS() throws Exception {
         File reposJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + REPOS_JSON).getAbsolutePath()).getPath());
@@ -1511,6 +1545,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Tests changing from fromdir to SCC
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testSwitchFromdirToSCC() throws Exception {
         File reposJson = new File(TestUtils.findTestData(
                 new File(JARPATH,  "smallBase/" + REPOS_JSON).getAbsolutePath()).getPath());
@@ -1618,6 +1653,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * (ensures there is no regression wrt bsc#932052).
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testSUSEProductChannelUpdates() throws Exception {
         // Setup two products
         Channel channel = SUSEProductTestUtils.createTestVendorChannel();
@@ -1691,6 +1727,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testIsChannelOrLabelReserved() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, false);
         HibernateFactory.getSession().flush();
@@ -1707,6 +1744,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * without failing.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUpdateProductsMultipleTimes() throws Exception {
         File upgradePathsJson = new File(
                 TestUtils.findTestData(UPGRADE_PATHS_JSON).getPath());
@@ -1730,6 +1768,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * Test debian and repomd url building
      * @throws Exception
      */
+    @Test
     public void testBuildRepoFileUrl() throws Exception {
         SCCRepository debrepo = new SCCRepository();
         debrepo.setDistroTarget("amd64");
@@ -1755,6 +1794,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

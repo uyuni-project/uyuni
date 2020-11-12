@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -26,6 +28,7 @@ import java.sql.ResultSet;
 
 public class RamTest extends RhnBaseTestCase {
 
+    @Test
     public void testRam() throws Exception {
 
         User u = UserTestUtils.findNewUser("testUser",

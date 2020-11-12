@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -62,6 +64,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * Just here to prevent error about no test specified
      * @throws Exception
      */
+    @Test
     public void testNothing() throws Exception {
         assertTrue(true);
     }

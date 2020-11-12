@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.domain.entitlement.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
@@ -48,16 +51,19 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
     );
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         createEntitlement();
     }
 
+    @Test
     public void testLabel() {
         assertEquals(getLabel(), ent.getLabel());
     }
 
 
+    @Test
     public void testIsAllowedOnServer() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
@@ -69,6 +75,7 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
         assertTrue(foreign.getValidAddonEntitlementsForServer().size() == 0);
     }
 
+    @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");

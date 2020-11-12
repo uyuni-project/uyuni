@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -42,6 +45,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     private RhnMockHttpServletResponse response;
     private ResetLinkAction action;
 
+    @Test
     public void testPerformNoToken() {
         try {
             ActionForward rc = action.execute(mapping, form, request, response);
@@ -53,6 +57,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         assertTrue("Expected BadParameterException, didn't get one!", false);
     }
 
+    @Test
     public void testPerformInvalidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         ResetPasswordFactory.invalidateToken(rp.getToken());
@@ -66,6 +71,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         // so, no test here
     }
 
+    @Test
     public void testPerformValidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         request.setupAddParameter("token", rp.getToken());
@@ -74,6 +80,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         action = new ResetLinkAction();

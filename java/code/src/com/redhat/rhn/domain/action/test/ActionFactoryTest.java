@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.test.TimeUtilsTest;
 import com.redhat.rhn.domain.action.Action;
@@ -74,6 +76,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * Test fetching an Action
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookup() throws Exception {
 
         Action a = createAction(UserTestUtils.createUser("testUser", UserTestUtils
@@ -90,6 +93,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * Test fetching an Action
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupLastCompletedAction() throws Exception {
         final User user = UserTestUtils.createUser("testUser",
             UserTestUtils .createOrg("testOrg" + this.getClass().getSimpleName()));
@@ -120,6 +124,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * Test fetching an Action with the logged in User
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupWithLoggedInUser() throws Exception {
 
         User user1 = UserTestUtils.findNewUser("testUser",
@@ -138,6 +143,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * Test fetching a ScriptAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupScriptAction() throws Exception {
         Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName())),
@@ -157,6 +163,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * Test fetching a ScriptAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testSchedulerUser() throws Exception {
         User user1 = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -171,6 +178,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * Test fetching a ConfigRevisionAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupErrataAction() throws Exception {
         Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName())),
@@ -186,6 +194,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * Test fetching a DaemonConfigDetails
      * @throws Exception something bad happened
      */
+    @Test
     public void testLookupDaemonConfig() throws Exception {
         Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName())),
@@ -200,6 +209,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         assertNotNull(dca.getDaemonConfigDetails().getActionId());
     }
 
+    @Test
     public void testAddServerToAction() throws Exception {
         User usr = UserTestUtils.createUser("testUser",
                 UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
@@ -218,6 +228,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         assertTrue(sa.getServer().equals(s));
     }
 
+    @Test
     public void testLookupConfigRevisionAction() throws Exception {
         User usr = UserTestUtils.createUser("testUser",
             UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
@@ -250,6 +261,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testLookupConfigRevisionResult() throws Exception {
         User usr = UserTestUtils.createUser("testUser",
            UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
@@ -292,6 +304,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testRescheduleFailedServerActions() throws Exception {
 
         User user1 = UserTestUtils.findNewUser("testUser",
@@ -311,6 +324,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testRescheduleAllServerActions() throws Exception {
 
         User user1 = UserTestUtils.findNewUser("testUser",
@@ -333,6 +347,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testCreateAction() throws Exception {
         Action a = createAction(UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName())),
@@ -340,6 +355,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         assertNotNull(a);
     }
 
+    @Test
     public void testCheckActionArchType() throws Exception {
         Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName())),
@@ -347,6 +363,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         assertTrue(ActionFactory.checkActionArchType(newA, "verify"));
     }
 
+    @Test
     public void testUpdateServerActions() throws Exception {
         User user1 = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
         Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
@@ -38,6 +40,7 @@ import java.util.Set;
  */
 public class PackageActionDetailsTest extends RhnBaseTestCase {
 
+    @Test
     public void testBeanMethods() throws Exception {
         PackageActionDetails pad = new PackageActionDetails();
         Long id = 456L;
@@ -77,6 +80,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         assertTrue(action.equals(pad.getParentAction()));
     }
 
+    @Test
     public void testResultSetting() {
         PackageActionDetails pad = new PackageActionDetails();
         pad.setParentAction(new Action());
@@ -107,6 +111,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         assertEquals(results, pad.getResults());
     }
 
+    @Test
     public void testEquals() {
         PackageActionDetails pad = new PackageActionDetails();
         PackageActionDetails pad1 = new PackageActionDetails();

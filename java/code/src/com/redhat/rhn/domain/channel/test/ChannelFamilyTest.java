@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -30,6 +32,7 @@ import java.util.Set;
  */
 public class ChannelFamilyTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testChannelFamily() throws Exception {
 
         ChannelFamily cfam = ChannelFamilyFactory.

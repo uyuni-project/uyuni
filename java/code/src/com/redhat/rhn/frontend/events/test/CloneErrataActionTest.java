@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.events.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
 
@@ -48,6 +51,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         admin = UserTestUtils.createUserInOrgOne();
@@ -59,6 +63,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
      * Tests execute().
      * @throws Exception if something bad happens
      */
+    @Test
     public void testDoExecute() throws Exception {
         // setup a channel with an errata
         Channel original = ChannelFactoryTest.createTestChannel(admin);

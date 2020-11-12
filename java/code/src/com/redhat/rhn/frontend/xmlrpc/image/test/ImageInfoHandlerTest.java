@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.image.test;
+import org.junit.Before;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
@@ -101,6 +102,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     );
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

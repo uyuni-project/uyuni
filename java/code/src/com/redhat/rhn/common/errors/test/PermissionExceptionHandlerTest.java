@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.errors.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.PermissionExceptionHandler;
@@ -44,6 +48,7 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
 
     private TraceBackAction tba;
 
+    @Before
     public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
@@ -51,6 +56,7 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
         MessageQueue.startMessaging();
     }
 
+    @Test
     public void testExecute() throws Exception {
 
         /*
@@ -98,7 +104,8 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
         }
     }
 
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }

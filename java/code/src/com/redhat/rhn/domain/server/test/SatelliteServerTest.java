@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
@@ -22,6 +24,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 public class SatelliteServerTest extends RhnBaseTestCase {
 
+    @Test
     public void testSatServer() throws Exception {
         /* This test and class are pending removal...
         User user = UserTestUtils.findNewUser("testuser", "testorg");
@@ -39,6 +42,7 @@ public class SatelliteServerTest extends RhnBaseTestCase {
         */
     }
 
+    @Test
     public void testSetVersion() {
         SatelliteServer ss = new SatelliteServer();
         ss.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "4.1.0", "1", PackageType.RPM));

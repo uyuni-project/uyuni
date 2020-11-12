@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -40,6 +42,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testExecute() throws Exception {
         DeleteUserAction action = new DeleteUserAction();
         ActionForward forward;

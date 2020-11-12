@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -32,12 +35,14 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
 
     private XmlRpcSerializer serializer;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         serializer = new XmlRpcSerializer();
     }
 
+    @Test
     public void testSerialize() throws Exception {
         ManagedServerGroupSerializer sgs = new ManagedServerGroupSerializer();
         final Long id = 10L;

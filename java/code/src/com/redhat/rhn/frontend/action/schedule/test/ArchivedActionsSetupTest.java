@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.schedule.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
@@ -22,12 +25,14 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class ArchivedActionsSetupTest extends RhnMockStrutsTestCase {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/schedule/ArchivedActions");
     }
 
 
+    @Test
     public void testPerformExecute() throws Exception {
 
 

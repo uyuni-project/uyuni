@@ -1,4 +1,7 @@
 package com.redhat.rhn.manager.audit.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -31,11 +34,13 @@ import java.util.stream.Collectors;
 public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testXccdfEvalTransform_xccdf11() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
@@ -67,6 +72,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Default vanilla kernel hardening", result.getProfile().getTitle());
     }
 
+    @Test
     public void testXccdfEvalResume() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
@@ -231,6 +237,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 ));
     }
 
+    @Test
     public void testXccdfEvalTransform_xccdf12() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
@@ -287,6 +294,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(count, matchedRulesCount);
     }
 
+    @Test
     public void testXccdfEvalError() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);

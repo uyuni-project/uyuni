@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.maintenance.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -33,13 +36,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import net.fortuna.ical4j.model.Calendar;
 
 /**
  * Tests focusing on maintenance windows computation
  */
-public class IcalUtilsTest extends TestCase {
+public class IcalUtilsTest extends Assert {
 
     private IcalUtils icalUtils = new IcalUtils();
 
@@ -50,8 +53,9 @@ public class IcalUtilsTest extends TestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
+
 
         File ical = new File(TestUtils.findTestData(new File(TESTDATAPATH, GOOGLE_ICS).getAbsolutePath()).getPath());
         multiZonesCal = icalUtils.parseCalendar(new FileReader(ical)).get();
@@ -61,6 +65,7 @@ public class IcalUtilsTest extends TestCase {
      * Tests calculating upcoming windows from 2 different timezones.
      * Both of the test times represent same point in time, therefore the list of maint. windows should be equal.
      */
+    @Test
     public void testSameMomentDifferentTimezones() {
         ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-09T08:00:00-04:00"); // NY
         ZonedDateTime tokyoStart = ZonedDateTime.parse("2020-06-09T21:00:00+09:00"); // Japan (same moment in time!)
@@ -81,6 +86,7 @@ public class IcalUtilsTest extends TestCase {
      *
      * Since 11:00 in Sri Lanka equals to 1:30 in NY, we should see the maintenance window starting at 8:00 NY time.
      */
+    @Test
     public void testSameLocalTimeAhead() {
         ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-08T08:00:00-04:00"); // NY
 
@@ -102,6 +108,7 @@ public class IcalUtilsTest extends TestCase {
      * At 8:00 Tahitian time, the maintenance window starting at 8:00 and ending at 10:00 NY time is already over,
      * so we shouldn't see it in the list.
      */
+    @Test
     public void testSameLocalTimeBehind() {
         ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-08T08:00:00-04:00"); // NY
 
@@ -122,6 +129,7 @@ public class IcalUtilsTest extends TestCase {
     /**
      * Test rendering maintenance windows in MULTI calendar
      */
+    @Test
     public void testMultiScheduleFiltering() {
         ZonedDateTime datetime = ZonedDateTime.parse("2020-06-12T08:00:00-04:00");
 

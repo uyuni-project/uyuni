@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
@@ -54,12 +57,14 @@ import java.util.Map;
 public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
+    @Test
     public void testGenerateServerConfigState() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -94,6 +99,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel2)));
     }
 
+    @Test
     public void testRegenerateConfigStates() throws Exception {
         Server minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         Server minion2 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -156,6 +162,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel2)));
     }
 
+    @Test
     public void testImageSyncedPillar() throws Exception {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
 

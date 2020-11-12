@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.Role;
@@ -37,6 +39,7 @@ import java.util.List;
  */
 public class UserEditSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         UserEditSetupAction action = new UserEditSetupAction();
         ActionHelper sah = new ActionHelper();
@@ -91,6 +94,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testNoParamExecute() throws Exception {
         UserEditSetupAction action = new UserEditSetupAction();
         ActionHelper sah = new ActionHelper();

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
+import org.junit.Test;
+
 import static java.util.Optional.empty;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -56,6 +58,7 @@ import java.util.function.Function;
  */
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testAddToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
@@ -93,6 +96,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCreateAndLookupVendorAndUserErrata() throws Exception {
         Errata userErrata = createTestErrata(user.getOrg().getId());
         assertTrue(userErrata instanceof Errata);
@@ -137,6 +141,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(erratas.stream().allMatch(e -> e instanceof Errata));
     }
 
+    @Test
     public void testCreateAndLookupErrata() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
         assertTrue(testErrata instanceof Errata);
@@ -153,6 +158,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(pubname, errata.getAdvisoryName());
     }
 
+    @Test
     public void testCreateAndLookupErrataNullOrg() throws Exception {
         //create an errata with null Org
         Errata testErrata = createTestErrata(null);
@@ -174,12 +180,14 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertNull(errata);
     }
 
+    @Test
     public void testLastModified() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
         testErrata = reload(testErrata);
         assertNotNull(testErrata.getLastModified());
     }
 
+    @Test
     public void testBugs() throws Exception {
         var e = createTestErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
@@ -293,6 +301,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(clone.getOriginal().equals(testErrata));
     }
 
+    @Test
     public void testListErrataChannelPackages() {
         try {
             Channel chan = ChannelTestUtils.createBaseChannel(user);
@@ -323,6 +332,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListErrataByChannel() throws Exception {
         Channel chan = ChannelTestUtils.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getId());

@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.taglibs.list.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.domain.session.WebSession;
@@ -49,6 +52,7 @@ public class ListTagTest extends MockObjectTestCase {
 
     private String listName = "testDataListName";
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -80,6 +84,7 @@ public class ListTagTest extends MockObjectTestCase {
      * Tests normal conditions for ListTag.
      * @throws Exception something bad happened
      */
+    @Test
     public void testRegularRun() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(req).getRequestURI();

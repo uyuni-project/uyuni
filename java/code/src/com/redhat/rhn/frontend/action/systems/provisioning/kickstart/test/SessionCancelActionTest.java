@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
@@ -25,6 +27,7 @@ import servletunit.HttpServletRequestSimulator;
  */
 public class SessionCancelActionTest extends BaseSessionTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/details/kickstart/SessionCancel");
         actionPerform();
@@ -32,6 +35,7 @@ public class SessionCancelActionTest extends BaseSessionTestCase {
         assertNotNull(request.getAttribute(RequestContext.KICKSTART_SESSION));
     }
 
+    @Test
     public void testExecuteSubmit() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         setRequestPathInfo("/systems/details/kickstart/SessionCancel");

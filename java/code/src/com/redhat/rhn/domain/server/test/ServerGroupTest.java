@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -35,6 +37,7 @@ import org.hibernate.Session;
  */
 public class ServerGroupTest extends RhnBaseTestCase {
 
+    @Test
     public void testEquals() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testorg");
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(user);
@@ -83,6 +86,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
         return sg;
     }
 
+    @Test
     public void testGetServerGroupTypeFeatures() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertTrue(org1.getEntitledServerGroups().size() > 0);

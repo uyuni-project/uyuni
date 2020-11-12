@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 
@@ -23,6 +25,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class PackageNameOverviewActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testInChannels() {
         String[] arches = {"channel-ia32", "channel-ia64"};
         setRequestPathInfo("/software/packages/NameOverview");
@@ -35,6 +38,7 @@ public class PackageNameOverviewActionTest extends RhnMockStrutsTestCase {
                 "/WEB-INF/pages/software/packages/packagenameoverview.jsp"));
     }
 
+    @Test
     public void testSubscribedChannels() {
 
     }

@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.events.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
@@ -40,6 +43,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         mailer = new MockMail();
@@ -48,6 +52,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
     /**
      * test that makes sure we can instantiate the service
      */
+    @Test
     public void testToText() {
         TraceBackEvent evt = createTestEvent();
         String eventText = evt.toText();
@@ -65,6 +70,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertContains(eventText, "Exception");
     }
 
+    @Test
     public void testProtectPassword() {
         TraceBackEvent evt = createTestEventWithValue("password", "no-secret");
         mailer.setExpectedSendCount(1);
@@ -80,6 +86,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertTrue(body.indexOf("password: " + evt.getHashMarks()) > 0);
     }
 
+    @Test
     public void testNoPassword() {
         TraceBackEvent evt = createTestEventWithValue("passsword", "no-secret");
         mailer.setExpectedSendCount(1);
@@ -94,6 +101,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertFalse(body.indexOf("passsword: " + evt.getHashMarks()) > 0);
     }
 
+    @Test
     public void testToTextWithNulls() {
         TraceBackEvent evt = new TraceBackEvent();
         evt.setRequest(null);
@@ -105,6 +113,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         assertContains(eventText, "No request information");
     }
 
+    @Test
     public void testTraceBackAction() {
         TraceBackEvent evt = createTestEvent();
         mailer.setExpectedSendCount(1);

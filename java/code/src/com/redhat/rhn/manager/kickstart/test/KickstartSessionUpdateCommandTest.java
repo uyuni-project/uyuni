@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.test.KickstartSessionTest;
@@ -26,6 +28,7 @@ import com.redhat.rhn.manager.kickstart.KickstartSessionUpdateCommand;
  */
 public class KickstartSessionUpdateCommandTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testUpdateSession() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartSession session =

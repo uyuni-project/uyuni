@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -29,6 +31,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 public class PendingActionsDeleteConfirmActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testConfirmDeleteActions() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Server server = ServerFactoryTest.createTestServer(user, true);

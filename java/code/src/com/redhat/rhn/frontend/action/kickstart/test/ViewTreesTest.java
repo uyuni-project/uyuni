@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
@@ -24,6 +26,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class ViewTreesTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testTrees() throws Exception {
         KickstartableTreeTest.createTestKickstartableTree();
         setRequestPathInfo("/kickstart/ViewTrees");

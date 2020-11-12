@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.pillar.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -52,6 +55,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
     protected MinionPillarManager minionPillarManager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",
@@ -60,6 +64,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
                 Arrays.asList(this.minionGeneralPillarFileManager, this.minionGroupMembershipPillarFileManager));
     }
 
+    @Test
     public void testGeneratePillarForServer() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -133,6 +138,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testGeneratePillarForServerGPGCheckOn() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         Channel channel1 = ChannelTestUtils.createBaseChannel(user);
@@ -161,6 +167,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         assertEquals("1", (String) values.get("pkg_gpgcheck"));
     }
 
+    @Test
     public void testGeneratePillarForServerGPGCheckOff() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         Channel channel1 = ChannelTestUtils.createBaseChannel(user);
@@ -198,6 +205,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testGeneratePillarForProxyServer() throws Exception {
         // create a minion
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);

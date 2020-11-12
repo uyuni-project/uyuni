@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
@@ -36,6 +38,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
     /**
      * Tests getProxyStatus().
      */
+    @Test
     public void testProxyStatus() {
         SetupWizardSessionCache.storeProxyStatus(true, request);
         assertTrue(SetupWizardSessionCache.getProxyStatus(false, request));
@@ -46,6 +49,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
     /**
      * Tests getSubscriptions().
      */
+    @Test
     public void testGetSubscriptionsNull() {
         assertNull(SetupWizardSessionCache.getSubscriptions(creds, request));
     }
@@ -53,6 +57,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
     /**
      * Tests credentialsStatusUnknown().
      */
+    @Test
     public void testCredentialsStatusTrue() {
         assertTrue(SetupWizardSessionCache.credentialsStatusUnknown(creds, request));
     }
@@ -60,6 +65,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
     /**
      * Tests storeSubscriptions().
      */
+    @Test
     public void testCredentialsStatusFalse() {
         SetupWizardSessionCache.storeSubscriptions(subs, creds, request);
         assertFalse(SetupWizardSessionCache.credentialsStatusUnknown(creds, request));
@@ -80,6 +86,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
     /**
      * Tests clearSubscriptions().
      */
+    @Test
     public void testClearSubscriptions() {
         // Store subscriptions for different credentials
         SetupWizardSessionCache.storeSubscriptions(subs, creds, request);
@@ -101,6 +108,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
     /**
      * Tests clearAllSubscriptions().
      */
+    @Test
     public void testClearAllSubscriptions() {
         // Store subscriptions for different credentials
         SetupWizardSessionCache.storeSubscriptions(subs, creds, request);

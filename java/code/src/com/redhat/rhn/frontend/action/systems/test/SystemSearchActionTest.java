@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import org.apache.struts.action.DynaActionForm;
 
@@ -33,6 +36,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
 
     private Server s;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/Search");
@@ -100,6 +104,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         assertTrue(getMockResponse().getStatusCode() == 302);
     }
 
+    @Test
     public void testQueryWithoutResults() throws Exception {
     }
 
@@ -110,6 +115,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
      * beyond the SystemSearchAction.
      * @throws Exception something bad happened
      */
+    @Test
     public void testQueryWithBadParameter() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, s.getName());
@@ -119,6 +125,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         actionPerform();
     }
 
+    @Test
     public void testNoSubmit() throws Exception {
         actionPerform();
         DynaActionForm formIn = (DynaActionForm) getActionForm();
@@ -126,6 +133,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         assertNotNull(request.getAttribute(BaseSearchAction.VIEW_MODE));
     }
 
+    @Test
     public void testAlphaSubmitForNumericField() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, "abc");
@@ -137,6 +145,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
                 "packages.search.connection_error" });
     }
 
+    @Test
     public void testSmallAlphaSubmitForNumericField() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, "a");

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.dto.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -25,11 +28,13 @@ public class BooleanWrapperTest extends RhnBaseTestCase {
 
     private BooleanWrapper bw;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         bw = new BooleanWrapper();
     }
 
+    @Test
     public void testIntegerSet() {
         bw.setBool(1);
         assertTrue(bw.booleanValue());
@@ -52,6 +57,7 @@ public class BooleanWrapperTest extends RhnBaseTestCase {
         assertNull(bw.getBool());
     }
 
+    @Test
     public void testBooleanSet() {
         bw.setBool(Boolean.TRUE);
         assertTrue(bw.booleanValue());

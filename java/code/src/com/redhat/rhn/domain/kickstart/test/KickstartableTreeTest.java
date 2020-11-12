@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -87,6 +89,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         FileUtils.writeStringToFile("initrd", tree.getDefaultInitrdPaths()[0]);
     }
 
+    @Test
     public void testKickstartableTree() throws Exception {
         KickstartableTree k = createTestKickstartableTree();
         assertNotNull(k);
@@ -118,6 +121,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         assertNull(lookedUp.getOrgId());
     }
 
+    @Test
     public void testIsRhnTree() throws Exception {
         KickstartableTree k = createTestKickstartableTree();
         assertFalse(k.isRhnTree());
@@ -125,6 +129,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         assertTrue(k.isRhnTree());
     }
 
+    @Test
     public void testDownloadLocation() throws Exception {
         KickstartableTree k = createTestKickstartableTree();
         String expected = "/ks/dist/org/" + k.getOrg().getId() + "/" +
@@ -132,6 +137,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         assertEquals(expected, k.getDefaultDownloadLocation());
     }
 
+    @Test
     public void testKsDataByTree() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));
@@ -280,6 +286,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         return tree;
     }
 
+    @Test
     public void testSUSEStartupPaths() throws Exception {
         File ksRoot = new File("/media");
 
@@ -322,6 +329,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Tests listing candidates for the the cobbler backsync.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListCandidatesForBacksync() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));
@@ -334,6 +342,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Tests listing candidates for the the cobbler backsync when there are no candidates.
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListCandidatesForBacksyncNoSync() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));

@@ -14,6 +14,7 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
+import org.junit.Before;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
@@ -53,6 +54,7 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
     }
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.image.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -22,6 +24,7 @@ import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue
 
 public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testLookupById() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -35,6 +38,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertFalse(lookup.isPresent());
     }
 
+    @Test
     public void testLookupByIdAndOrg() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -55,6 +59,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertFalse(lookup.isPresent());
     }
 
+    @Test
     public void testLookupByIdsAndOrg() throws Exception {
         ImageStore store = createImageStore("mystore", user);
         ImageProfile p1 = createImageProfile("myprofile1", store, user);
@@ -88,6 +93,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertEquals(p1, lookup.get(0));
     }
 
+    @Test
     public void testLookupByLabelAndOrg() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -105,6 +111,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertFalse(ImageProfileFactory.lookupByLabelAndOrg("myprofile", org).isPresent());
     }
 
+    @Test
     public void testListImageProfiles() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);
@@ -114,6 +121,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertEquals(profile, list.get(0));
     }
 
+    @Test
     public void testProfileCustomData() throws Exception {
         ImageProfile profile =
                 createImageProfile("myprofile", createImageStore("mystore", user), user);

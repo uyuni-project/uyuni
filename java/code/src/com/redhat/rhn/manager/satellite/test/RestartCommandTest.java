@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.satellite.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.RestartCommand;
@@ -27,6 +29,7 @@ public class RestartCommandTest extends BaseTestCaseWithUser {
 
     private RestartCommand cmd;
 
+    @Test
     public void testCreateCommand() throws Exception {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         cmd = new RestartCommand(user) {

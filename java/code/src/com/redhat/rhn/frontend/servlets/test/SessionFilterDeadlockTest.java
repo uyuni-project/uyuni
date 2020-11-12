@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
 
@@ -34,6 +36,7 @@ import javax.servlet.ServletResponse;
  */
 public class SessionFilterDeadlockTest extends BaseFilterTst {
 
+    @Test
     public void testDeadlockFilter() throws Exception {
         // Make sure the chain blows up.
         chain = new MockFilterChain() {

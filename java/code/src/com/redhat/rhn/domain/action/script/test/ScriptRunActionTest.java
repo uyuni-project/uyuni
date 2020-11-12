@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.script.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
@@ -37,6 +39,7 @@ import java.util.GregorianCalendar;
  */
 public class ScriptRunActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testScriptAction() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -99,6 +102,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testScriptActionDetails() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

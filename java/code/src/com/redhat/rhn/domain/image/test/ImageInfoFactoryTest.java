@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.domain.image.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
@@ -95,6 +98,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     );
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -474,6 +478,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testLookupByIdsAndOrg() throws Exception {
         ImageStore store = createImageStore("mystore", user);
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);

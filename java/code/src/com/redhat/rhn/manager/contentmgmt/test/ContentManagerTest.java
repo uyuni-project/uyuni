@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.manager.contentmgmt.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
@@ -79,6 +82,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     private ContentManager contentManager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         contentManager = new ContentManager();
@@ -89,6 +93,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test creating & looking up Content Project
      */
+    @Test
     public void testLookupContentProject() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
         assertNotNull(cp.getId());
@@ -100,6 +105,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test creating & looking up nonexisting Content Project
      */
+    @Test
     public void testLookupNonexistingProject() {
         assertFalse(ContentManager.lookupProject("idontexist", user).isPresent());
     }
@@ -107,6 +113,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test creating & listing Content Projects
      */
+    @Test
     public void testListContentProjects() {
         ContentProject cp1 = contentManager.createProject("cplabel1", "cpname1", "description1", user);
         ContentProject cp2 = contentManager.createProject("cplabel2", "cpname2", "description2", user);
@@ -122,6 +129,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test multiple creating Content Project with same label
      */
+    @Test
     public void testMultipleCreateContentProject() {
         contentManager.createProject("cplabel", "cpname", "description", user);
         try {
@@ -136,6 +144,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test updating Content Project
      */
+    @Test
     public void testUpdateContentProject() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
         ContentProject updated = contentManager.updateProject(cp.getLabel(), of("new name"), of("new desc"), user);
@@ -149,6 +158,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test removing Content Project
      */
+    @Test
     public void testRemoveContentProject() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
         int entitiesAffected = contentManager.removeProject(cp.getLabel(), user);
@@ -160,6 +170,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests various operations performed by a user from different organization
      */
+    @Test
     public void testContentProjectCrossOrg() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
 
@@ -189,6 +200,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests permissions for Content Project CRUD
      */
+    @Test
     public void testContentProjectPermissions() {
         User guy = UserTestUtils.createUser("Regular user", user.getOrg().getId());
 
@@ -221,6 +233,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests creating, looking up and removing Environments in a Project
      */
+    @Test
     public void testContentEnvironmentLifecycle() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
 
@@ -245,6 +258,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testRemoveEnvironmentTargets() throws Exception {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
         ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
@@ -269,6 +283,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test behavior when appending a Content Environment behind non-existing Content Environment
      */
+    @Test
     public void testAddingEnvironmentAfterMismatchedPredecessor() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
         contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
@@ -287,6 +302,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPopulateNewEnvironment() throws Exception {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
 
@@ -309,6 +325,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test updating a Content Environment
      */
+    @Test
     public void testUpdateContentEnvironment() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
         contentManager
@@ -325,6 +342,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests permissions for Environment CRUD
      */
+    @Test
     public void testEnvironmentPermissions() {
         contentManager.createProject("cplabel", "cpname", "description", user);
         ContentEnvironment env =
@@ -362,6 +380,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testChangeProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -385,6 +404,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testAttachProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -401,6 +421,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testMultipleAttachProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -418,6 +439,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testAttachBuiltProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -439,6 +461,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testAttachDetachedProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -460,6 +483,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testAttachSourceMissingEntities() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -487,6 +511,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testDetachProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -505,6 +530,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testDetachAttachedProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -522,6 +548,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testMultipleDetachingProjectSource() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -542,6 +569,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testDeleteSourceChannel() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -559,6 +587,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testDeleteSourceProject() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -575,6 +604,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
                 .isEmpty());
     }
 
+    @Test
     public void testCreateAndListFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
@@ -588,6 +618,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(criteria, fromDb.getCriteria());
     }
 
+    @Test
     public void testLookupNonexistingFilter() {
         long id = -1234565L;
         // cleanup first
@@ -600,6 +631,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(ContentManager.lookupFilterById(id, user).isPresent());
     }
 
+    @Test
     public void testLookupFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
@@ -609,6 +641,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Rule.DENY, fromDb.getRule());
     }
 
+    @Test
     public void testLookupFilterNonAuthorizedUser() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
@@ -620,6 +653,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(ContentManager.listFilters(anotherAdmin).isEmpty());
     }
 
+    @Test
     public void testUpdateFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
@@ -631,6 +665,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(newCriteria, fromDb.getCriteria());
     }
 
+    @Test
     public void testRemoveFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
@@ -640,6 +675,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(ContentManager.lookupFilterById(id, user).isPresent());
     }
 
+    @Test
     public void testAttachFilter() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -660,6 +696,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(ContentProjectFilter.State.BUILT, fromDb.getProjectFilters().get(0).getState());
     }
 
+    @Test
     public void testDetachNoFilter() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -668,6 +705,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.detachFilter("cplabel", filter.getId(), user);
     }
 
+    @Test
     public void testDetachFilter() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -680,6 +718,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(fromDb.getProjectFilters().isEmpty());
     }
 
+    @Test
     public void testDetachBuiltFilter() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -697,6 +736,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test building project with no environments
      */
+    @Test
     public void testBuildProjectNoEnvs() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -712,6 +752,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test building project with no sources assigned
      */
+    @Test
     public void testBuildProjectNoSources() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -731,6 +772,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProject() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -797,6 +839,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProjectExistingChannel() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -818,6 +861,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProjectExistingChannelCrossOrg() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -845,6 +889,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProjectTwoUsers() throws Exception {
         User adminSameOrg = UserTestUtils.createUser("adminInSameOrg", user.getOrg().getId());
         adminSameOrg.addPermanentRole(ORG_ADMIN);
@@ -878,6 +923,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProjectHistoryAdded() throws Exception {
         User adminSameOrg = UserTestUtils.createUser("adminInSameOrg", user.getOrg().getId());
         adminSameOrg.addPermanentRole(ORG_ADMIN);
@@ -906,6 +952,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test building project having modular sources
      */
+    @Test
     public void testBuildProjectModularSources() throws Exception {
         Channel channel = MockModulemdApi.createModularTestChannel(user);
 
@@ -931,6 +978,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPromoteProject() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1004,6 +1052,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test promoting a project with no environments
      */
+    @Test
     public void testPromoteEmptyProject() {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1021,6 +1070,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testPromoteSingleEnv() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1042,6 +1092,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Tests promoting a project with single environment
      */
+    @Test
     public void testPromoteWithNoBuild() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1065,6 +1116,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProjectWithFilters() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1092,6 +1144,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProjectWithNevrFilters() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1115,6 +1168,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test building a project with AppStream filters
      */
+    @Test
     public void testBuildProjectWithModuleFilters() throws Exception {
         Channel channel = MockModulemdApi.createModularTestChannel(user);
 
@@ -1152,6 +1206,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test building with AppStream filters without any modular sources
      */
+    @Test
     public void testBuildProjectRegularSourcesModuleFilters() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1175,6 +1230,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildProjectWithNevraFilters() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1195,6 +1251,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
     }
 
+    @Test
     public void testBuildProjectWithErrataFilter() throws Exception {
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
@@ -1221,6 +1278,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildAlreadyBuildingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
@@ -1246,6 +1304,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testClonedChannelLinks() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
@@ -1305,6 +1364,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testClonedChannelLinksInEnvPath() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
@@ -1360,6 +1420,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFixingClonedChannelLinks() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
@@ -1393,6 +1454,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testFixingClonedChannelLinks2() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
@@ -1457,6 +1519,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPromotingBuildingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
@@ -1488,6 +1551,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPromotingPromotingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
@@ -1519,6 +1583,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testBuildPromoteInProgress() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);

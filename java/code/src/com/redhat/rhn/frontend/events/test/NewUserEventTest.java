@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.events.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -40,6 +43,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
     private MockMail mailer;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         mailer = new MockMail();
@@ -48,6 +52,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
     /**
      * test that makes sure we can instantiate the service
      */
+    @Test
     public void testToText() {
         NewUserEvent evt = createTestEvent();
         String eventText = evt.toText();
@@ -60,6 +65,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testAction() {
         NewUserEvent evt = createTestEvent();
         mailer.setExpectedSendCount(2);

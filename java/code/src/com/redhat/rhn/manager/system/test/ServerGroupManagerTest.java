@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -42,11 +45,13 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     private ServerGroupManager manager;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         manager = new ServerGroupManager();
     }
 
+    @Test
     public void testCreate() {
         try {
             manager.create(user, NAME, DESCRIPTION);
@@ -66,6 +71,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         assertEquals(DESCRIPTION, sg.getDescription());
     }
 
+    @Test
     public void testAccess() throws Exception {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
@@ -86,6 +92,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         assertTrue(manager.canAccess(orgAdmin, sg));
     }
 
+    @Test
     public void testRemove() throws Exception {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
@@ -132,6 +139,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testListNoAssociatedAdmins() throws Exception {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup sg = manager.create(user, NAME, DESCRIPTION);
@@ -158,6 +166,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testAddRemoveAdmins() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);

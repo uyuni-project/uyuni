@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.frontend.xmlrpc.serializer.RhnTimeZoneSerializer;
@@ -21,7 +24,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -29,19 +32,22 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * RhnTimeZoneSerializerTest
  * @version $Rev$
  */
-public class RhnTimeZoneSerializerTest extends TestCase {
+public class RhnTimeZoneSerializerTest extends Assert {
 
     private RhnTimeZoneSerializer serializer;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
+
         serializer = new RhnTimeZoneSerializer();
     }
 
+    @Test
     public void testGetSupportedClass() {
         assertEquals(RhnTimeZone.class, serializer.getSupportedClass());
     }
 
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
         RhnTimeZone tz = new RhnTimeZone();
         tz.setOlsonName("(GMT-0500) United States (Indiana)");

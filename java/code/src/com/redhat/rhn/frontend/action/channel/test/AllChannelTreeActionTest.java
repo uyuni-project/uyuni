@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.channel.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -35,6 +37,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 public class AllChannelTreeActionTest extends RhnBaseTestCase {
 
 
+    @Test
     public void testPerformExecute() throws Exception {
         AllChannelTreeAction action = new AllChannelTreeAction() {
             protected DataResult<ChannelTreeNode> getDataResult(User user, ListControl lc) {

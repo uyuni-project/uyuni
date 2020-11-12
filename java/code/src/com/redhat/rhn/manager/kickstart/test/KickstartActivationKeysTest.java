@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -36,6 +38,7 @@ import java.util.Iterator;
 
 public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
+    @Test
     public void testActivationKeysForKickstart() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
@@ -68,6 +71,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
     }
 
+    @Test
     public void testKickstartActivationKeysCommand() throws Exception {
 
         KickstartFactory.saveKickstartData(ksdata);

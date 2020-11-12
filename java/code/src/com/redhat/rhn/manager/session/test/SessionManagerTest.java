@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.session.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -33,6 +35,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 public class SessionManagerTest extends RhnBaseTestCase {
 
+    @Test
     public void testLifetimeValue() throws Exception {
         long lifetime = SessionManager.lifetimeValue();
         long duration = Long.parseLong(Config.get().getString(
@@ -40,6 +43,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertEquals(lifetime, duration);
     }
 
+    @Test
     public void testMakeSession() throws Exception {
         long expTime = SessionManager.lifetimeValue();
         User u = UserTestUtils.findNewUser("testUser",
@@ -50,6 +54,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertEquals(s.getExpires(), TimeUtils.currentTimeSeconds() + expTime);
     }
 
+    @Test
     public void testGenerateSessionKey() {
         String s = "12345678";
         String k1 = "";
@@ -59,6 +64,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertTrue(k1.equals(k2));
     }
 
+    @Test
     public void testMakeSecureParamNoTimestamp() {
         String s = "12345678";
         String param = SessionManager.makeSecureParamNoTimestamp(s);
@@ -72,6 +78,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
               SessionManager.isValidSecureParam(param));
     }
 
+    @Test
     public void testMakeSecureParamTimestamped() {
         String s = "12345678";
         String param = SessionManager.makeSecureParamTimestamped(s);
@@ -82,6 +89,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertTrue(SessionManager.isValidSecureParam(param));
     }
 
+    @Test
     public void testIsValidSecureParam() {
         String s = "12345678";
         String paramNTS = SessionManager.makeSecureParamNoTimestamp(s);
@@ -91,6 +99,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertFalse(SessionManager.isValidSecureParam(s));
     }
 
+    @Test
     public void testExtractSecureParam() {
         String s = "12345678";
         String paramTS = SessionManager.makeSecureParamTimestamped(s);
@@ -102,10 +111,12 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertTrue(SessionManager.extractSecureParam(paramNTS).equals(s));
     }
 
+    @Test
     public void testIsPxtSessionKeyValidWhenKeyIsNull() {
         assertFalse(SessionManager.isPxtSessionKeyValid(null));
     }
 
+    @Test
     public void testIsPxtSessionKeyValidWhenKeyIsValid() {
         String pxtSessionKey = generatePxtSessionKey();
 
@@ -116,6 +127,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
      * This test was created for
      * https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=206558
      */
+    @Test
     public void testIsPxtSessionKeyValidWhenKeyIsInvalid() {
         String pxtSessionKey = generatePxtSessionKey();
         pxtSessionKey = pxtSessionKey.replace('x', ':');
@@ -123,6 +135,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertFalse(SessionManager.isPxtSessionKeyValid(pxtSessionKey));
     }
 
+    @Test
     public void testIsPxtSessionKeyValidWhenSessionIdHijacked() {
         String pxtSessionKey = generatePxtSessionKey();
         String[] keyParts = pxtSessionKey.split("x");
@@ -143,6 +156,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         return id + "x" + generatedKey;
     }
 
+    @Test
     public void testLookupByEmptyKey() {
         try {
             SessionManager.lookupByKey("");
@@ -153,6 +167,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testLookupByKey() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
@@ -196,6 +211,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         assertEquals(0, s.getExpires());
     }
 
+    @Test
     public void testPurgeSession() throws Exception {
         long duration = 3600L;
         User u = UserTestUtils.findNewUser("testUser",

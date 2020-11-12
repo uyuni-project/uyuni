@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.manager.action.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
@@ -149,6 +152,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }};
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -157,6 +161,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testGetSystemGroups() throws Exception {
         ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
@@ -170,6 +175,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(dr.size() > 0);
     }
 
+    @Test
     public void testLookupAction() throws Exception {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         Long actionId = a1.getId();
@@ -183,6 +189,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(a2);
     }
 
+    @Test
     public void testActionsArchivedOnSystemDeleteUser() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
 
@@ -207,6 +214,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testActionsArchivedOnSystemDeleteAdmin() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user);
@@ -228,6 +236,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertServerActionCount(action, 0);
     }
 
+    @Test
     public void testFailedActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
@@ -244,6 +253,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
     public void testPendingActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
@@ -371,6 +381,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(expected, initialSize);
     }
 
+    @Test
     public void testSimpleCancelActions() throws Exception {
         Action parent = createActionWithServerActions(user, 1);
         List actionList = createActionList(user, new Action [] {parent});
@@ -382,6 +393,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertActionsForUser(user, 1); // shouldn't have been deleted
     }
 
+    @Test
     public void testSimpleCancelMinionActions() throws Exception {
         Action parent = createActionWithMinionServerActions(user, ActionFactory.STATUS_QUEUED, 3);
         List actionList = createActionList(user, new Action [] {parent});
@@ -421,6 +433,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
      * An action that is PICKEDUP should be set to FAILED when canceled, but COMPLETED or FAILED server actions should
      * not be affected of a cancellation (bsc#1098993).
      */
+    @Test
     public void testCancelMinionActionsMixedStatus() throws Exception {
         Action action = createActionWithMinionServerActions(user, ActionFactory.STATUS_PICKEDUP, 3);
 
@@ -448,6 +461,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertServerActionStatus(action, serverPickedUp, ActionFactory.STATUS_FAILED);
     }
 
+    @Test
     public void testSimpleCancelMixedActions() throws Exception {
         Action parent = createActionWithMinionServerActions(user, ActionFactory.STATUS_QUEUED, 4,
                 i -> {
@@ -499,6 +513,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         context().assertIsSatisfied();
     }
 
+    @Test
     public void testCancelActionWithChildren() throws Exception {
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
@@ -512,6 +527,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertActionsForUser(user, 2); // shouldn't have been deleted
     }
 
+    @Test
     public void testCancelActionWithMultipleServerActions() throws Exception {
         Action parent = createActionWithServerActions(user, 2);
         List<Action> actionList = Collections.singletonList(parent);
@@ -523,6 +539,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertActionsForUser(user, 1); // shouldn't have been deleted
     }
 
+    @Test
     public void testCancelActionWithParentFails() throws Exception {
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
@@ -538,6 +555,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testComplexHierarchy() throws Exception {
         Action parent1 = createActionWithServerActions(user, 3);
         for (int i = 0; i < 9; i++) {
@@ -563,6 +581,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testCancelKickstartAction() throws Exception {
         Session session = HibernateFactory.getSession();
         Action parentAction = createActionWithServerActions(user, 1);
@@ -599,6 +618,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("failed", ksSession.getState().getLabel());
     }
 
+    @Test
     public void testCompletedActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
@@ -615,6 +635,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
     public void testRecentlyScheduledActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
@@ -632,6 +653,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
+    @Test
     public void testLookupFailLookupAction() throws Exception {
         try {
             ActionManager.lookupAction(user, -1L);
@@ -642,6 +664,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testRescheduleAction() throws Exception {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
@@ -663,6 +686,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(sa.getRemainingTries().longValue() > 0);
     }
 
+    @Test
     public void testInProgressSystems() throws Exception {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
@@ -677,6 +701,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(as.getSecurityErrata());
     }
 
+    @Test
     public void testFailedSystems() throws Exception {
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
@@ -687,6 +712,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(ActionManager.failedSystems(user, a1, null).size() > 0);
     }
 
+    @Test
     public void testCreateErrataAction() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Action a = ActionManager.createErrataAction(user.getOrg(), errata);
@@ -698,6 +724,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(a.getActionType().equals(ActionFactory.TYPE_ERRATA));
     }
 
+    @Test
     public void testAddServerToAction() throws Exception {
         User usr = UserTestUtils.createUser("testUser",
                 UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
@@ -713,6 +740,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(sa.getServer().equals(s));
     }
 
+    @Test
     public void testSchedulePackageRemoval() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
         Server srvr = ServerFactoryTest.createTestServer(user, true);
@@ -736,6 +764,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(pa, pa1);
     }
 
+    @Test
     public void testSchedulePackageVerify() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
         Server srvr = ServerFactoryTest.createTestServer(user, true);
@@ -758,6 +787,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(pa, pa1);
     }
 
+    @Test
     public void testScheduleScriptRun() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
         Server srvr = ServerFactoryTest.createTestServer(user, true);
@@ -783,6 +813,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(sad, sad1);
     }
 
+    @Test
     public void testScheduleKickstart() throws Exception {
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         assertNotNull(srvr);
@@ -810,6 +841,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(kad, kad2);
     }
 
+    @Test
     public void testScheduleGuestKickstart() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server srvr = ServerFactoryTest.createTestServer(user, true);
@@ -864,6 +896,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @SuppressWarnings("rawtypes")
+    @Test
     public void testSchedulePackageDelta() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
 
@@ -901,6 +934,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, dr.size());
     }
 
+    @Test
     public void testScheduleSubscribeChannels() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
@@ -948,6 +982,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, action2.getServerActions().size());
     }
 
+    @Test
     public void testScheduleImageBuild() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);

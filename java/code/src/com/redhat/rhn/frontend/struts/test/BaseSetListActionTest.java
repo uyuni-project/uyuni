@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.struts.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.test.CSVWriterTest;
@@ -39,6 +42,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         tla = new TestSetupListAction();
         sah = new ActionHelper();
@@ -51,6 +55,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
      * Test to make sure we check for the right filter value string
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecute() throws Exception {
         sah.executeAction();
         assertNotNull(sah.getRequest().getAttribute("pageList"));
@@ -63,6 +68,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
      * Test to make sure we check for the right filter value string
      * @throws Exception something bad happened
      */
+    @Test
     public void testExport() throws Exception {
         // Need to fetch the 0 value one and put the 1 back in.
         sah.getRequest().getParameter(RequestContext.LIST_DISPLAY_EXPORT);

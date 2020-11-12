@@ -15,16 +15,19 @@
 
 package com.redhat.rhn.domain.formula.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.formula.FormulaFactory;
-import junit.framework.TestCase;
+import org.junit.Assert;
 import org.yaml.snakeyaml.Yaml;
 
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 
-public class FormulaFactoryTest extends TestCase {
+public class FormulaFactoryTest extends Assert {
 
+    @Test
     public void testGetValueByPath() {
         Map<String, Object> map = (Map<String, Object>)new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 
@@ -33,6 +36,7 @@ public class FormulaFactoryTest extends TestCase {
         assertEquals("I@caasp:management_node:true", val.get());
     }
 
+    @Test
     public void testGetValueByPath_WrongPath() {
         Map<String, Object> map = (Map<String, Object>)new Yaml().load(getClass().getResourceAsStream("provider-metadata.yml"));
 

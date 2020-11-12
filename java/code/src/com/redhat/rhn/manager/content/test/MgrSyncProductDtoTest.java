@@ -1,4 +1,7 @@
 package com.redhat.rhn.manager.content.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -10,12 +13,12 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * Tests {@link MgrSyncProductDto}.
  */
-public class MgrSyncProductDtoTest extends TestCase {
+public class MgrSyncProductDtoTest extends Assert {
 
     /** The product under test. */
     private MgrSyncProductDto product;
@@ -25,9 +28,9 @@ public class MgrSyncProductDtoTest extends TestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
+
 
         baseChannel = new MgrSyncChannelDto("BaseChannel", "basechannel", "This is the base Channel",
                 "This is the base Channel", true, false, Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
@@ -44,6 +47,7 @@ public class MgrSyncProductDtoTest extends TestCase {
      *
      * @throws Exception if anything goes bad
      */
+    @Test
     public void testGetStatus() throws Exception {
         assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
 

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.dto.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -27,11 +30,13 @@ public class UserOverviewTest extends RhnBaseTestCase {
     /*
      * @see RhnBaseTestCase#setUp()
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         uo = new UserOverview();
     }
 
+    @Test
     public void testHtmlEscapeOfLogin() {
         assertUserOverview("hello<sometext>user", "hello&lt;sometext&gt;user");
         assertUserOverview("jesusr_redhat", "jesusr_redhat");

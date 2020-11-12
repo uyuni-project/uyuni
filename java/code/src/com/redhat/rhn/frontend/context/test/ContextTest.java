@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.context.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -28,6 +30,7 @@ public class ContextTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testCreateContext() {
 
         Context ctx = Context.getCurrentContext();
@@ -42,6 +45,7 @@ public class ContextTest extends RhnBaseTestCase {
     /**
     * Check to make sure we can support having NULL for a context
     */
+    @Test
     public void testNullContext() {
         int originalHashcode = Context.getCurrentContext().hashCode();
         Context.freeCurrentContext();

@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.schedule.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -35,6 +38,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/schedule/PendingActions");
@@ -43,6 +47,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
 
+    @Test
     public void testPerformExecute() throws Exception {
 
 
@@ -53,6 +58,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testPerformSubmit() throws Exception {
 
 

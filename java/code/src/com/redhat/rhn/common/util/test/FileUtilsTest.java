@@ -14,19 +14,22 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 
 /**
  * @author mmccune
  */
-public class FileUtilsTest extends TestCase {
+public class FileUtilsTest extends Assert {
 
+    @Test
     public void testReadWrite() throws Exception {
         String path = "/tmp/" +
             System.currentTimeMillis() +
@@ -40,6 +43,7 @@ public class FileUtilsTest extends TestCase {
         assertEquals(contents, reread);
     }
 
+    @Test
     public void testGetBytesFromFile() throws Exception {
 
         File testFile = new File(TestUtils.findTestData("test.file").getFile());
@@ -49,6 +53,7 @@ public class FileUtilsTest extends TestCase {
         assertEquals(expect, received);
     }
 
+    @Test
     public void testGetTailOfFile() throws Exception {
         String tail = FileUtils.getTailOfFile(
                 TestUtils.findTestData("test.file").getPath(), 1);

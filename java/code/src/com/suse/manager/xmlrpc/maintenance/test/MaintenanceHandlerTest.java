@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.xmlrpc.maintenance.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -50,10 +53,12 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
     private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
     }
 
+    @Test
     public void testMultiScheduleUpdate() throws Exception {
         File icalExM1 = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  EXCHANGE_MULTI1_ICS).getAbsolutePath()).getPath());

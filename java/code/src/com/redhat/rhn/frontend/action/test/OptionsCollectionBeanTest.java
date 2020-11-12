@@ -14,16 +14,19 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.action.OptionsCollectionBean;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * OptionsCollectionBean
  * @version $Rev$
  */
-public class OptionsCollectionBeanTest extends TestCase {
+public class OptionsCollectionBeanTest extends Assert {
 
+    @Test
     public void testGettersSetters() {
         OptionsCollectionBean ocb = new OptionsCollectionBean("label", "value");
         assertEquals("label", ocb.getLabel());

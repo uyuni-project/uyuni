@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.kickstart.tree.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
@@ -24,6 +26,7 @@ import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
  */
 public class TreeCreateOperationTest extends TreeOperationTestBase {
 
+    @Test
     public void testCreate() throws Exception {
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);
@@ -50,14 +53,17 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         assertContains(cmd.getKernelOptions(), "self_update=0");
     }
 
+    @Test
     public void testPopulateKernelOptsForSuseBreed() throws Exception {
         testPopulateKernelOptsForSuse("suse");
     }
 
+    @Test
     public void testPopulateKernelOptsForSlesPrefix() throws Exception {
         testPopulateKernelOptsForSuse("sles12generic");
     }
 
+    @Test
     public void testCreateRhelistro() throws Exception {
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);
@@ -66,6 +72,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         assertNull(cmd.getKernelOptions());
     }
 
+    @Test
     public void testPopulateKernelOptsForRhel8() throws Exception {
         TreeCreateOperation cmd = new TreeCreateOperation(user);
         setTestTreeParams(cmd);

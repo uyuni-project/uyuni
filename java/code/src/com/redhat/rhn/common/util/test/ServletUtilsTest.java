@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.common.util.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -47,7 +50,8 @@ public class ServletUtilsTest extends MockObjectTestCase {
     private String param2Name;
     private String param2Value;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         mockRequest = mock(HttpServletRequest.class);
@@ -76,6 +80,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         return URLEncoder.encode(string, "UTF-8");
     }
 
+    @Test
     public void testRequestPath() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setRequestURL("http://localhost:8080/rhnjava/index.jsp");
@@ -83,6 +88,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/rhnjava/index.jsp", ServletUtils.getRequestPath(request));
     }
 
+    @Test
     public void testPathWithParams() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("a", new Object[] {1, 3});
@@ -100,6 +106,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals(expectedParams, actualParams);
     }
 
+    @Test
     public void testPathWithParamsValueUrlEncoding() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("key", "some; value&");
@@ -107,6 +114,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?key=some%3B+value%26", result);
     }
 
+    @Test
     public void testPathWithParamsNullValue() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("key", null);
@@ -114,6 +122,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo", result);
     }
 
+    @Test
     public void testPathWithParamsArrayValueUrlEncoding() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("key", new Object[] {"value;", "value&", "$", "normal"});
@@ -121,6 +130,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?key=value%3B&key=value%26&key=%24&key=normal", result);
     }
 
+    @Test
     public void testPathWithParamsListValue() {
         Map<String, Object> params = new HashMap<String, Object>();
         List<String> values = new ArrayList<String>();
@@ -134,6 +144,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
 
     }
 
+    @Test
     public void testPathWithParamsKeyUrlEncoding() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("a;", "somevalue");
@@ -141,6 +152,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?a%3B=somevalue", result);
     }
 
+    @Test
     public void testPathWithParamsKeyArrayUrlEncoding() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("a;", new Object[] {"1", "2", "3"});

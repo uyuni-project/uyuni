@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -31,6 +33,7 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/errata/details/ErrataConfirmSubmit");
         addDispatchCall("confirm.jsp.confirm");

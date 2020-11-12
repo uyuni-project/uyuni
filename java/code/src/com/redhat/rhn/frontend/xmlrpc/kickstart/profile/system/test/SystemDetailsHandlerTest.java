@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -54,6 +57,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     private User userNotOrgOne;
     private String userKey;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         userNotOrgOne = UserTestUtils.findNewUser();
@@ -62,6 +66,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testSELinux() throws Exception {
         KickstartData profile = createProfile();
 
@@ -86,6 +91,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testConfigMgmt() throws Exception {
         KickstartData profile = createProfile();
 
@@ -106,6 +112,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertFalse(configManaged);
     }
 
+    @Test
     public void testRemoteCommands() throws Exception {
         KickstartData profile = createProfile();
 
@@ -127,6 +134,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testGetLocale() throws Exception {
 
         KickstartData newProfile = createProfile();
@@ -150,6 +158,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(locale.get("useUtc"), Boolean.TRUE);
     }
 
+    @Test
     public void testSetLocale() throws Exception {
 
         KickstartData newProfile = createProfile();
@@ -192,6 +201,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         return createProfile(admin, adminKey);
     }
 
+    @Test
     public void testListKeys() throws Exception {
         // Setup
 
@@ -223,6 +233,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(key.getDescription(), foundKey.getDescription());
     }
 
+    @Test
     public void testListKeysNoKeys() throws Exception {
         // Setup
         KickstartData profile = createProfile(userNotOrgOne, userKey);
@@ -235,6 +246,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(associatedKeys.size(), 0);
     }
 
+    @Test
     public void testAddKeys() throws Exception {
         // Setup
 
@@ -268,6 +280,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(key.getDescription(), foundKey.getDescription());
     }
 
+    @Test
     public void testRemoveKeys() throws Exception {
 
         // Setup
@@ -305,6 +318,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(0, foundKeys.size());
     }
 
+    @Test
     public void testListFilePreservations() throws Exception {
 
         // Setup
@@ -330,6 +344,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(fileList.getFileNames(), foundFL.getFileNames());
     }
 
+    @Test
     public void testListFilePreservationsNone() throws Exception {
         // Setup
         KickstartData profile = createProfile();
@@ -343,6 +358,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(0, associatedFL.size());
     }
 
+    @Test
     public void testAddFilePreservations() throws Exception {
 
         // Setup
@@ -372,6 +388,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(fileList.getFileNames(), foundList.getFileNames());
     }
 
+    @Test
     public void testRemoveFilePreservations() throws Exception {
 
         // Setup
@@ -413,6 +430,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         return CommonFactory.lookupFileList("list1", admin.getOrg());
     }
 
+    @Test
     public void testRegistrationType() throws Exception {
         KickstartData profile = createProfile();
         handler.setRegistrationType(admin, profile.getLabel(),

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
@@ -30,6 +32,7 @@ import org.apache.struts.action.DynaActionForm;
  */
 public class RhnHelperTest extends RhnBaseTestCase {
 
+    @Test
     public void testEmptySelectionError() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         RhnHelper.handleEmptySelection(request);
@@ -43,6 +46,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testGetTextAreaValue() {
         String value = "asdf\r\nasdfwerwer\rasdf\n\radsfhjhhasdf";
         DynaActionForm form = new RhnMockDynaActionForm();
@@ -52,6 +56,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
         assertTrue(stripped.indexOf('\r') == -1);
     }
 
+    @Test
     public void testGetParameterWithSpecialCharacters() throws Exception {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setupQueryString("   ");

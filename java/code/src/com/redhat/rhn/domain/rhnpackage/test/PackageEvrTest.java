@@ -15,12 +15,15 @@
 
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 public class PackageEvrTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testToUniversalEvrString() {
         PackageEvr evr1 = PackageEvrFactoryTest.createTestPackageEvr("1", "2.3.4", "5", PackageType.RPM);
         PackageEvr evr2 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.2", "X", PackageType.RPM);

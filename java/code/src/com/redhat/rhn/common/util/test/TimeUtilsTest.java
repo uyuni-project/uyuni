@@ -14,16 +14,19 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.TimeUtils;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * TimeUtilsTest is the test class for TimeUtils.
  * @version $Rev$
  */
-public class TimeUtilsTest extends TestCase {
+public class TimeUtilsTest extends Assert {
 
+    @Test
     public void testCurrentTimeSeconds() {
         assertTrue(timeEquals((System.currentTimeMillis() / 1000),
                      TimeUtils.currentTimeSeconds()));

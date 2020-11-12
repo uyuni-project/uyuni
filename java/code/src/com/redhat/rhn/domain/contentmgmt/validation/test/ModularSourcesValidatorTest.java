@@ -1,4 +1,7 @@
 package com.redhat.rhn.domain.contentmgmt.validation.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
 
@@ -14,11 +17,13 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
     private final String MSG_NOMODULARSOURCES = loc.getMessage("contentmanagement.validation.nomodularsources");
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         validator = new ModularSourcesValidator();
     }
 
+    @Test
     public void testNoSourcesNoFilters() {
         assertTrue(project.getActiveSources().isEmpty());
         assertTrue(project.getActiveFilters().isEmpty());
@@ -27,6 +32,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(project).isEmpty());
     }
 
+    @Test
     public void testNonModularSourcesAndFilters() throws Exception {
         attachSource();
         attachFilter();
@@ -35,6 +41,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(project).isEmpty());
     }
 
+    @Test
     public void testModularSourcesWithModuleFilters() throws Exception {
         attachModularSource();
         attachModularFilter();
@@ -43,6 +50,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(project).isEmpty());
     }
 
+    @Test
     public void testModularSourcesWithNoModuleFilters() throws Exception {
         attachModularSource();
         assertSingleMessage(MSG_NOMODULEFILTERS, TYPE_INFO, ENTITY_SOURCES, validator.validate(project));
@@ -50,6 +58,7 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
         assertSingleMessage(MSG_NOMODULEFILTERS, TYPE_INFO, ENTITY_SOURCES, validator.validate(project));
     }
 
+    @Test
     public void testNonModularSourcesWithModuleFilters() throws Exception {
         attachSource();
         attachModularFilter();

@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.controllers.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -83,6 +86,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -104,6 +108,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test the list endpoint.
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testGet() {
         VirtualHostManager vhm = createVirtualHostManagerWithLabel("myVHM", user.getOrg());
         String json = (String)VirtualHostManagerController
@@ -121,6 +126,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test the show endpoint from a wrong organization.
      */
     @SuppressWarnings("unchecked")
+    @Test
     public void testGetWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "TestVHM_" + TestUtils.randomString(10);
@@ -136,6 +142,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     /**
      * Test create.
      */
+    @Test
     public void testCreate() {
         String label = "TestVHM_" + TestUtils.randomString(10);
         Map<String, String> queryParams = new HashMap<>();
@@ -169,6 +176,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test create a VHM with a missing cfg param.
      * Should result in an error.
      */
+    @Test
     public void testCreate_noCfgParam() {
         String label = "TestVHM_" + TestUtils.randomString(10);
         Map<String, String> queryParams = new HashMap<>();
@@ -187,6 +195,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     /**
      * Test delete.
      */
+    @Test
     public void testDelete() throws UnsupportedEncodingException {
         String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
@@ -200,6 +209,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     /**
      * Test the delete endpoint from a wrong organization.
      */
+    @Test
     public void testGetDeleteWrongOrg() throws UnsupportedEncodingException {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "TestVHM_" + TestUtils.randomString(10);

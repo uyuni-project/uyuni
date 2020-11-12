@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.integration.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.frontend.integration.IntegrationService;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -27,6 +29,7 @@ import java.util.Map;
  */
 public class IntegrationServiceTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testAuth() throws Exception {
         String login = "test-login-iservice";
         Map tokens = (Map) TestUtils.getPrivateField(IntegrationService.get(),

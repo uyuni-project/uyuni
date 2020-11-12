@@ -1,5 +1,7 @@
 package com.redhat.rhn.common.db.datasource.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -14,6 +16,7 @@ public class ModeFactoryTest extends RhnJmockBaseTestCase {
     private static final String DB_BACKEND = "db_backend";
     private static final String DB_BACKEND_POSTGRESQL = "postgresql";
 
+    @Test
     public void testGetWriteMode() {
         String dbBackend = Config.get().getString(DB_BACKEND);
 

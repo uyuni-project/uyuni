@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.ssm.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -60,6 +62,7 @@ public class ConfigListActionTest extends RhnMockStrutsTestCase {
         verifyPageList(ConfigFileNameDto.class);
     }
 
+    @Test
     public void testExecute() throws Exception {
         doTheTest("/systems/ssm/config/Diff");
         doTheTest("/systems/ssm/config/Deploy");

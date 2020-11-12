@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
+import org.junit.Test;
+
+import com.redhat.rhn.common.security.errata.PublishedOnlyException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -38,6 +41,7 @@ import java.util.Iterator;
  */
 public class ErrataTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testNotificationQueue() throws Exception {
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -60,6 +64,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * add and store bugs.
      * @throws Exception something bad happened
      */
+    @Test
     public void testBugs() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
@@ -119,6 +124,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         ErrataFactory.save(errata);
     }
 
+    @Test
     public void testAddChannelsToErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(
                 user.getOrg().getId());
@@ -167,6 +173,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * Test bean methods of Errata class
      * @throws Exception something bad happened
      */
+    @Test
     public void testBeanMethodsPublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         assertTrue(err instanceof Errata);

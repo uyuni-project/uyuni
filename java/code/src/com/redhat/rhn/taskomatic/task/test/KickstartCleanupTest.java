@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -41,11 +44,13 @@ import java.util.Date;
 
 public class KickstartCleanupTest extends RhnBaseTestCase {
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         verifyDatasourceConfig();
     }
 
+    @Test
     public void testHungKickstart() throws Exception {
 
         Session session = HibernateFactory.getSession();
@@ -66,6 +71,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         assertTrue(ksession.getState().getId().equals(failedState.getId()));
     }
 
+    @Test
     public void testAbandonedKickstart() throws Exception {
         Session session = HibernateFactory.getSession();
         KickstartSessionState failedState = lookupByLabel("failed");

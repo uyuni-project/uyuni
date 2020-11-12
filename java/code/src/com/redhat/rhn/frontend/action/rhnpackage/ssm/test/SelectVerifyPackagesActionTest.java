@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -29,6 +32,7 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/ssm/PackageVerify");
@@ -36,6 +40,7 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
         utils = new SsmActionTestUtils(user);
     }
 
+    @Test
     public void testNonDispatch() throws Exception {
         // Setup
         utils.initSsmEnvironment();
@@ -53,6 +58,7 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
         assertEquals(2, result.size());
     }
 
+    @Test
     public void testDispatch() throws Exception {
         // Setup
         utils.initSsmEnvironment();

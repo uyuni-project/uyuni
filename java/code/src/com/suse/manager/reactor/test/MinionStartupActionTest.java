@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -34,6 +37,7 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
    
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -42,6 +46,7 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
     }
 
    
+    @Test
     public void testStarupEventFired() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId(MINION_ID);

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.config.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -25,6 +27,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class ConfigChannelTest extends RhnBaseTestCase {
 
+    @Test
     public void testIsTypeMethods() {
         ConfigChannel cc = ConfigurationFactory.newConfigChannel();
         cc.setConfigChannelType(ConfigChannelType.local());

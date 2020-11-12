@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
  */
 public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testSave() throws Exception {
         PinnedSubscription subscription = new PinnedSubscription();
         subscription.setSubscriptionId(10L);
@@ -35,6 +38,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(subscription, subs.get(0));
     }
 
+    @Test
     public void testRemove() throws Exception {
         PinnedSubscription subscription = new PinnedSubscription();
         subscription.setSubscriptionId(10L);
@@ -47,6 +51,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
                 .isEmpty());
     }
 
+    @Test
     public void testCleanStalePins() throws Exception {
         PinnedSubscription subscription = new PinnedSubscription();
         subscription.setSubscriptionId(10L);
@@ -62,6 +67,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
                 .size());
     }
 
+    @Test
     public void testDontCleanGoodPins() throws Exception {
         Map<Long, SCCSubscription> subscriptionsBySccId = SCCCachingFactory.lookupSubscriptions()
                 .stream().collect(Collectors.toMap(s -> s.getSccId(), s -> s));

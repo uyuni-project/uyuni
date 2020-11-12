@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.custominfo.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
@@ -30,6 +32,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
 
     private CustomInfoHandler handler = new CustomInfoHandler();
 
+    @Test
     public void testCreateKey() throws Exception {
 
         // default setup already includes a custom key; therefore, let's
@@ -54,6 +57,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundKey);
     }
 
+    @Test
     public void testDeleteKey() throws Exception {
 
         // default setup already includes a custom key; therefore, let's
@@ -91,6 +95,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertFalse(foundKey);
     }
 
+    @Test
     public void testListAllKeys() throws Exception {
 
         // default setup already includes a custom key; therefore, we don't

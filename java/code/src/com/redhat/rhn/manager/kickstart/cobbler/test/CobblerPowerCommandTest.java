@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand;
@@ -37,6 +39,7 @@ public class CobblerPowerCommandTest extends BaseTestCaseWithUser {
      * Tests the execution of this Cobbler command.
      * @throws Exception if unforeseen problems arise
      */
+    @Test
     public void testStore() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
 

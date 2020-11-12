@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.profile.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -46,6 +48,7 @@ public class ProfileTest extends RhnBaseTestCase {
      * Test the Equals method of Profile
      * @throws Exception something bad happened
      */
+    @Test
     public void testProfileEquals() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

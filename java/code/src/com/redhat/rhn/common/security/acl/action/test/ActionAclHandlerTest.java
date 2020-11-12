@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.security.acl.action.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.acl.action.ActionAclHandler;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -30,6 +32,7 @@ import java.util.Map;
  */
 public class ActionAclHandlerTest extends RhnBaseTestCase {
 
+    @Test
     public void testAclGenericActionType() throws Exception {
         ActionAclHandler access = new ActionAclHandler();
         Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser(

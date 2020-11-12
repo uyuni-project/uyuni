@@ -1,4 +1,7 @@
 package com.suse.manager.reactor.messaging.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -38,12 +41,14 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
     private BatchStartedEventMessageAction messageAction;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.messageAction = new BatchStartedEventMessageAction();
         this.eventParser = new JsonParser<>(new TypeToken<Event>(){});
     }
 
+    @Test
     public void testExecute() throws Exception {
         // Create 2 minions
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);

@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.action.configuration.ssm.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
@@ -33,6 +35,7 @@ import java.util.List;
 
 public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testRequests() {
         // Assert invalid request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
@@ -45,6 +48,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         verifyForward(RhnHelper.DEFAULT_FORWARD);
     }
 
+    @Test
     public void testExecuteLowestPosition() throws Exception {
         /*
          * Add servers and channels
@@ -132,6 +136,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         assertEquals(srv3Expected, server3.getConfigChannelList());
     }
 
+    @Test
     public void testExecuteHighestPosition() throws Exception {
         /*
          * Add servers and channels
@@ -219,6 +224,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         assertEquals(srv3Expected, server3.getConfigChannelList());
     }
 
+    @Test
     public void testExecuteReplacePosition() throws Exception {
         /*
          * Add servers and channels

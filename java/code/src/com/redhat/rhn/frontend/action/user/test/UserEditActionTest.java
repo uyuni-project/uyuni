@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -43,6 +45,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
     /**
      * Test the SelfEditAction
      */
+    @Test
     public void testSelfEditAction() {
         SelfEditAction action = new SelfEditAction();
 
@@ -95,6 +98,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
      * Test the AdminUserEditAction
      * @throws Exception something bad happened
      */
+    @Test
     public void testAdminUserEdit() throws Exception {
         AdminUserEditAction action = new AdminUserEditAction();
 

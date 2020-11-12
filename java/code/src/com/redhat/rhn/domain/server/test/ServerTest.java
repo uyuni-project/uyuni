@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ClientCapability;
@@ -67,6 +69,7 @@ public class ServerTest extends BaseTestCaseWithUser {
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
+    @Test
     public void testIsInactive() throws Exception {
         Server s = ServerFactory.createServer();
         s.setServerInfo(new ServerInfo());
@@ -77,6 +80,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertFalse(s.isInactive());
     }
 
+    @Test
     public void testSetBaseEntitlement() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         systemUnentitler.removeAllServerEntitlements(s);
@@ -89,6 +93,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
     }
 
+    @Test
     public void testCapabilities() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(s.getId(),
@@ -104,6 +109,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertTrue(containsDeploy);
     }
 
+    @Test
     public void testRemoveCapability() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(s.getId(),
@@ -122,6 +128,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertEquals(1, s.getCapabilities().size());
     }
 
+    @Test
     public void testNetworkInterfaces() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         NetworkInterfaceTest.createTestNetworkInterface(s);
@@ -135,6 +142,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsContainerization()}.
      */
+    @Test
     public void testOsSupportsContainerization() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -146,6 +154,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsContainerization()}.
      */
+    @Test
     public void testOsDoesNotSupportsContainerization() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -158,6 +167,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
+    @Test
     public void testOsSupportsOSImageBuilding() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -170,6 +180,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsMonitoring()} for SLES.
      */
+    @Test
     public void testOsSupportsMonitoring() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -182,6 +193,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsMonitoring()} for Leap.
      */
+    @Test
     public void testOsSupportsMonitoringLeap() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -194,6 +206,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsMonitoring()} for Ubuntu.
      */
+    @Test
     public void testOsSupportsMonitoringUbuntu() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -206,6 +219,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 6.
      */
+    @Test
     public void testOsSupportsMonitoringRedHat6() throws Exception {
         MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -218,6 +232,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 7.
      */
+    @Test
     public void testOsSupportsMonitoringRedHat7() throws Exception {
         MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -230,6 +245,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 87.
      */
+    @Test
     public void testOsSupportsMonitoringRedHat8() throws Exception {
         MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -242,6 +258,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
+    @Test
     public void testOsDoesNotSupportsOSImageBuilding() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -254,6 +271,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     /**
      * Test for {@link Server#doesOsSupportsMonitoring()}.
      */
+    @Test
     public void testOsDoesNotSupportsMonitoring() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
@@ -263,6 +281,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertFalse(s.doesOsSupportsMonitoring());
     }
 
+    @Test
     public void testGetIpAddress() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         assertNull(s.getIpAddress());

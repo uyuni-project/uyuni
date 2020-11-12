@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageGroup;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -30,6 +32,7 @@ public class PackageGroupTest extends RhnBaseTestCase {
      * and write them to the db.
      * @throws Exception something bad happened
      */
+    @Test
     public void testPackageGroup() {
         PackageGroup p = createTestPackageGroup();
         assertNotNull(p);

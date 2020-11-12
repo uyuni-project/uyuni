@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
@@ -28,6 +30,7 @@ import java.util.Date;
  */
 public class KickstartIpTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testKickstartDataTest() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         assertNotNull(k);

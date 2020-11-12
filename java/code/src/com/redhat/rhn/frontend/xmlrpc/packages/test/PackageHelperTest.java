@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.packages.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.user.User;
@@ -32,6 +34,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
         assertEquals(value, map.get(key));
     }
 
+    @Test
     public void testPackageToMap() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
@@ -61,6 +64,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
         assertKey(map, "providing_channels", Collections.EMPTY_LIST);
     }
 
+    @Test
     public void testPackage2MapWithNulls() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());

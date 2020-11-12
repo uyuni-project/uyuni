@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.webui.services.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -35,6 +38,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
     private ConfigChannelSaltManager manager;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.manager = ConfigChannelSaltManager.getInstance();
@@ -46,6 +50,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testStoreConfigFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
@@ -69,6 +74,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testStoreConfigDir() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addDirToChannel(channel);
@@ -92,6 +98,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
      *
      * @throws Exception - if anything goes wrong
      */
+    @Test
     public void testStoreConfigSymlink() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigChannelSaltManagerTestUtils.addSymlinkToChannel(channel);

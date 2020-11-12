@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.satellite.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.satellite.ConfigureBootstrapCommand;
 import com.redhat.rhn.manager.satellite.Executor;
@@ -26,6 +28,7 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
 
     private ConfigureBootstrapCommand cmd;
 
+    @Test
     public void testCreateCommand() throws Exception {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         cmd = new ConfigureBootstrapCommand(user) {

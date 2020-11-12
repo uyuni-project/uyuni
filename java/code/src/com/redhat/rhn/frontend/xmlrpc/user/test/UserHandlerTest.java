@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.user.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -45,6 +47,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     private UserHandler handler = new UserHandler(new ServerGroupManager());
 
+    @Test
     public void testListUsers() throws Exception {
         //admin should be able to call list users, regular should not
         List result = handler.listUsers(admin);
@@ -61,6 +64,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListRoles() throws Exception {
         int regularRoles = regular.getRoles().size();
         int adminRoles = admin.getRoles().size();
@@ -76,6 +80,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(regularRoles, result.length);
     }
 
+    @Test
     public void testListAssignableRoles() throws Exception {
         assertTrue(handler.listAssignableRoles(admin).
                                     contains(RoleFactory.ORG_ADMIN.getLabel()));
@@ -86,6 +91,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         //admin looking up self
         Map result = handler.getDetails(admin, admin.getLogin());
@@ -112,6 +118,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testPasswordViaSetDetails() throws Exception {
         Map details = new HashMap();
         details.put("password", "");
@@ -125,6 +132,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetDetails() throws Exception {
 
         Map newDetails = new HashMap();
@@ -155,6 +163,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(newDetails.get("first_name"), regular.getFirstNames());
     }
 
+    @Test
     public void testAddRemoveRole() throws Exception {
         Set roles = regular.getRoles();
         assertEquals(0, roles.size());
@@ -212,6 +221,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testUsePamAuthentication() throws Exception {
         Integer one = 1;
         Integer zero = 0;
@@ -254,6 +264,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateWithManyUsernames() throws Exception {
         // We only need to run this test on satellite
 
@@ -282,6 +293,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         validUsername("/\\/\\ark");
     }
 
+    @Test
     public void testCreateDelete() throws Exception {
         // We only need to run this test on satellite
 
@@ -335,6 +347,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testDisableEnable() throws Exception {
         // We only need to run this test on satellite
 
@@ -356,6 +369,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testPrefixes() {
         Map details = new HashMap();
         details.put("prefix", "");
@@ -379,6 +393,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateUsingPamAuth() throws FaultException {
         // We only need to run this test on satellite
 
@@ -407,6 +422,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddDefaultSystemGroup() throws Exception {
         ServerGroupTestUtils.createManaged(regular);
         Object[] groups = handler.listAssignedSystemGroups(
@@ -425,6 +441,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, defGrps.length);
     }
 
+    @Test
     public void testAddDefaultSystemGroupsEmpty() throws FaultException {
 
         // pass in null
@@ -448,6 +465,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddDefaultSystemGroupWithInvalidParams() throws Exception {
         try {
             handler.addDefaultSystemGroup(admin, admin.getLogin(),
@@ -459,6 +477,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddDefaultSystemGroups() throws Exception {
         ServerGroupTestUtils.createManaged(regular);
         ServerGroupTestUtils.createManaged(regular);
@@ -483,6 +502,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, defGrps.length);
     }
 
+    @Test
     public void testListAssignedSystemGroups() throws Exception {
         ServerGroupTestUtils.createManaged(admin);
         Object[] groups = handler.listAssignedSystemGroups(
@@ -491,6 +511,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertTrue(groups.length > 0);
     }
 
+    @Test
     public void testListDefaultSystemGroups() throws Exception {
         ServerGroupTestUtils.createManaged(admin);
         Object[] groups = handler.listDefaultSystemGroups(
@@ -499,6 +520,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertFalse(groups.length > 0);
     }
 
+    @Test
     public void testAddAssignedSystemGroups() throws Exception {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg2 = ServerGroupTestUtils.createManaged(admin);
@@ -518,6 +540,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, groups.length);
     }
 
+    @Test
     public void testAddAssignedSystemGroupsWithInvalidGroup() throws Exception {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg2 = ServerGroupTestUtils.createManaged(admin);
@@ -544,6 +567,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, groups.length);
     }
 
+    @Test
     public void testAddAssignedSystemGroupsAndSetDefault() throws Exception {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg2 = ServerGroupTestUtils.createManaged(admin);
@@ -583,6 +607,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testAddAssignedSystemGroup() throws Exception {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(admin);
 
@@ -598,6 +623,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, groups.length);
     }
 
+    @Test
     public void testAddAssignedSystemGroupUserAlreadyHas() throws Exception {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(admin);
 
@@ -618,6 +644,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testAddAssignedSystemGroupNoSuchUser() throws Exception {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(admin);
 
@@ -631,6 +658,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddAssignedSystemGroupNoSuchGroup() throws Exception {
         try {
             handler.addAssignedSystemGroup(admin, regular.getLogin(),
@@ -642,6 +670,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testNullLoggedInTime() {
         assertNull(admin.getLastLoggedIn());
         try {
@@ -655,6 +684,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     // NOTE: This test will fail if you've never logged into the satellite
     // you're testing against.
+    @Test
     public void testLoggedInTime() throws Exception {
         String login = "newbie" + TestUtils.randomString();
         String password = "redhat";
@@ -667,6 +697,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(newbie.getLastLoggedIn(), d);
     }
 
+    @Test
     public void testRemoveDefaultSystemGroup() throws Exception {
         ServerGroupTestUtils.createManaged(regular);
         Object[] groups = handler.listAssignedSystemGroups(
@@ -688,6 +719,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                 admin, regular.getLogin(), ((ServerGroup)groups[0]).getName()));
     }
 
+    @Test
     public void testRemoveDefaultSystemGroupWithInvalidParams() throws Exception {
         try {
             handler.removeDefaultSystemGroup(admin, admin.getLogin(),
@@ -698,6 +730,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
             // expected exception
         }
     }
+    @Test
     public void testRemoveDefaultSystemGroupsEmpty() throws FaultException {
 
         // pass in null
@@ -724,6 +757,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testRemoveDefaultSystemGroups() throws Exception {
 
         // see if we have any default system groups first
@@ -761,6 +795,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testRemoveAssociatedSystemGroups() throws Exception {
 
         User testUser = UserTestUtils.createUser("ksdjkfjasdkfjasdfjoiwenv",
@@ -809,6 +844,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testRemoveAssignedSystemGroupsInvalidGroup() throws Exception {
 
         User testUser = UserTestUtils.createUser("ksdjkfjasdkfjasdfjoiwenv",
@@ -824,6 +860,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
          }
     }
 
+    @Test
     public void testRemoveAssignedSystemGroupsWithInvalidGroup() throws Exception {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg2 = ServerGroupTestUtils.createManaged(admin);
@@ -858,6 +895,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, groups.length);
     }
 
+    @Test
     public void testGetSetCreateDefaultSystemGroup() {
         boolean currentValue = handler.getCreateDefaultSystemGroup(admin);
         handler.setCreateDefaultSystemGroup(admin, !currentValue);

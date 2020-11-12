@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.errata.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -44,11 +47,13 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 public class AffectedSystemsActionTest extends MockObjectTestCase {
 
     @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testApply() throws Exception {
         AffectedSystemsAction action = new AffectedSystemsAction();
         final ActionForward forward = new ActionForward("test", "path", true);
@@ -102,6 +107,7 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         r.setupAddParameter("lower", "10");
     }
 
+    @Test
     public void testSelectAll() throws Exception {
         AffectedSystemsAction action = new AffectedSystemsAction();
         ActionHelper ah = new ActionHelper();

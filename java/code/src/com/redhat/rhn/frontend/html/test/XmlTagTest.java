@@ -14,16 +14,20 @@
  */
 package com.redhat.rhn.frontend.html.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.html.XmlTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 public class XmlTagTest extends RhnBaseTestCase {
 
+    @Test
     public void testSpaceBefore() {
         XmlTag xml = new XmlTag("foo", true);
         assertEquals("<foo />", xml.render());
     }
 
+    @Test
     public void testXmltag() {
         XmlTag xml = new XmlTag("foo");
         assertEquals("<foo/>", xml.render());

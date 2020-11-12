@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.security.acl.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
@@ -32,6 +34,7 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
  */
 public class AclFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testGetAcl() {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();

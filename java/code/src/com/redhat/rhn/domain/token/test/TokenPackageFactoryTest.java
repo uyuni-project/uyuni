@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.token.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -31,6 +33,7 @@ import java.util.List;
  */
 public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testLookupPackagesByToken() throws Exception {
 
         // setup
@@ -71,6 +74,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         assertEquals("cName", ((TokenPackage) array[2]).getPackageName().getName());
     }
 
+    @Test
     public void testLookupPackages() throws Exception {
 
         // setup
@@ -130,6 +134,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         assertTrue(foundPkg2);
     }
 
+    @Test
     public void testLookupPackage() throws Exception {
 
         // setup

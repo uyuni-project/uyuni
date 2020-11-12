@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -36,6 +38,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
 
         // Create Errata

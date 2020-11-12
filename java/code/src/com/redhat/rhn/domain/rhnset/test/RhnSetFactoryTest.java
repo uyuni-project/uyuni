@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnset.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
@@ -29,6 +31,7 @@ import java.util.Set;
  */
 public class RhnSetFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testConstructor() {
         Long id = 10L;
         RhnSet set = RhnSetFactory.createRhnSet(id, null, SetCleanup.NOOP);
@@ -41,6 +44,7 @@ public class RhnSetFactoryTest extends RhnBaseTestCase {
         assertNull(set.getLabel());
     }
 
+    @Test
     public void testBeanProperties() {
         Long num = 10L;
         RhnSet set = RhnSetFactory.createRhnSet(num, null, SetCleanup.NOOP);

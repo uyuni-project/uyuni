@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.errata.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
@@ -67,12 +70,14 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     private User user;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         // TODO Auto-generated method stub
         super.setUp();
         user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
     }
 
+    @Test
     public void testCloneAsOriginal() throws Exception {
         // clone a channel with its errata, and the errata's packages are NOT EMPTY
         Errata errata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
@@ -131,6 +136,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertTrue(clonedEmptyErrata.getPackages().isEmpty());
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
@@ -153,6 +159,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     /**
      * Do not fail in case orgId is null: it means errata is just a vendor one (bsc#1128228)
      */
+    @Test
     public void testGetVendorErrataDetails() throws Exception {
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         vendorErrata.setOrg(null);
@@ -166,6 +173,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      * but one with current user's orgId and one with orgId null (vendor org)
      * it returns the one with the user org over the vendor one.
      */
+    @Test
     public void testGetUserErrataOverVendorErrata() throws Exception {
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null);
         vendorErrata.setOrg(null);
@@ -177,6 +185,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals(details.get("id"), userErrata.getId());
     }
 
+    @Test
     public void testSetDetailsAdvRelAboveMax() throws Exception {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -192,6 +201,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetDetails() throws Exception {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -274,6 +284,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundKeyword2);
     }
 
+    @Test
     public void testListAffectedSystems() throws Exception {
         //no affected systems
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -322,6 +333,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
                 || ((Map)sys).get("id").equals(server2.getId())));
     }
 
+    @Test
     public void testBugzillaFixes() throws Exception {
         //unique errata, for user's org
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -379,6 +391,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals("This is a test summary for bug2", bugs.get(1002L));
     }
 
+    @Test
     public void testListKeywords() throws Exception {
         //unique errata, only for the user's org
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -424,6 +437,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals(allKeywords.size(), keywords.length);
     }
 
+    @Test
     public void testApplicableToChannels() throws Exception {
         //unique errata for user's org. No channels
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -483,6 +497,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
                 .anyMatch(chn2 ->((Map) chn1).get("id").equals(((Map) chn2).get("id")))));
     }
 
+    @Test
     public void testListCves() throws Exception {
         //unique errata for user's org
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -535,6 +550,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
                 .anyMatch(vendorCve -> cve.equals(vendorCve.getName()))));
     }
 
+    @Test
     public void testPackages() throws Exception {
         //unique errata for user's org
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -586,6 +602,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
                 .count(), 2);
     }
 
+    @Test
     public void testAddPackages() throws Exception {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -621,6 +638,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertTrue(found2);
     }
 
+    @Test
     public void testRemovePackages() throws Exception {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -656,10 +674,12 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertFalse(found2);
     }
 
+    @Test
     public void testCloneErrata() throws Exception {
         cloneErrataTest(false);
     }
 
+    @Test
     public void testCloneVendorErrata() throws Exception {
         cloneErrataTest(true);
     }
@@ -710,6 +730,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testCreate() throws Exception {
 
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
@@ -737,6 +758,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testDelete() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Errata check = ErrataManager.lookupErrata(errata.getId(), user);
@@ -763,6 +785,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("severity", "important");
     }
 
+    @Test
     public void testAdvisoryLength() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
 
@@ -790,6 +813,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAdvisoryReleaseAboveMax() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
@@ -817,6 +841,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAdvisoryReleaseAtMax() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
@@ -845,6 +870,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      * custom errata --> orgId != null
      * vendor errata --> orgId == null
      **/
+    @Test
     public void testPublishCustomErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
@@ -861,6 +887,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      * custom errata --> orgId != null
      * vendor errata --> orgId == null
      **/
+    @Test
     public void testPublishVendorErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         e.setOrg(null); // let the errata be a vendor one
@@ -873,6 +900,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals(e.getAdvisory(), published.getAdvisory());
     }
 
+    @Test
     public void testListByDate() throws Exception {
 
        Calendar cal = Calendar.getInstance();

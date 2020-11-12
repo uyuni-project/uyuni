@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.errors.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.BadParameterExceptionHandler;
@@ -44,6 +48,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
 
     private TraceBackAction tba;
 
+    @Before
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
@@ -52,6 +57,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
     }
 
 
+    @Test
     public void testExecute() throws Exception {
 
         /*
@@ -109,7 +115,8 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
         }
     }
 
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }

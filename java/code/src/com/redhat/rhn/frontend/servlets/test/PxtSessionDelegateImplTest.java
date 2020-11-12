@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
+import org.junit.Before;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -142,7 +143,8 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         mockRequest = mock(HttpServletRequest.class);

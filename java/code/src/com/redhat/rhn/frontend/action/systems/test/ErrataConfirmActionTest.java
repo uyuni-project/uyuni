@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.channel.Channel;
@@ -37,6 +40,7 @@ import java.util.TimeZone;
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/ErrataConfirm");
@@ -46,6 +50,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecuteConfirmed() throws Exception {
         Context ctx = Context.getCurrentContext();
         // DatePicker widget needs Context.getTimezone to return a non-null value
@@ -90,6 +95,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
      * Tests when an incomplete set of errata is passed into the action.
      * @throws Exception something bad happened
      */
+    @Test
     public void testExecuteIncomplete() throws Exception {
 
         Context ctx = Context.getCurrentContext();

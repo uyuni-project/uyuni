@@ -14,6 +14,8 @@
  */
 package com.suse.scc.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
@@ -35,18 +37,19 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import simple.http.Request;
 import simple.http.Response;
 
 /**
  * Tests for {@link SCCClient} methods.
  */
-public class SCCClientTest extends TestCase {
+public class SCCClientTest extends Assert {
 
     /**
      * Test for {@link SCCWebClient#listProducts()}.
      */
+    @Test
     public void testListProducts() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
@@ -110,6 +113,7 @@ public class SCCClientTest extends TestCase {
     /**
      * Test for {@link SCCWebClient#listRepositories()}.
      */
+    @Test
     public void testListRepositories() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
@@ -137,6 +141,7 @@ public class SCCClientTest extends TestCase {
     /**
      * Test for {@link SCCWebClient#listSubscriptions()}.
      */
+    @Test
     public void testListSubscriptions() throws Exception {
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();
@@ -204,6 +209,7 @@ public class SCCClientTest extends TestCase {
      * Test for {@link SCCWebClient#listRepositories()} but from the directory.
      * @throws java.lang.Exception
      */
+    @Test
     public void testListRepositoriesFromDirectory() throws Exception {
         File tmpDir = this.createTempDir();
         FileUtils.copyURLToFile(this.getClass().getResource(
@@ -232,6 +238,7 @@ public class SCCClientTest extends TestCase {
      * Test for SCC error responses.
      * @throws Exception if things go wrong
      */
+    @Test
     public void testErrorResponse() throws Exception {
         Responder errorResponder = new Responder() {
             @Override

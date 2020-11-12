@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
@@ -33,6 +36,7 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         server = ServerTestUtils.createTestSystem(user);
@@ -48,6 +52,7 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
     }
 
 
+    @Test
     public void testExecute() throws Exception {
 
         actionPerform();

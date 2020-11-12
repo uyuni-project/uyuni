@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.test.CSVWriterTest;
@@ -47,6 +51,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
     private PageContext pageContext;
     private RhnMockJspWriter writer;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -74,6 +79,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testTitle() throws JspException {
         context().checking(new Expectations() { {
             atLeast(1).of(pageContext).popBody();
@@ -112,11 +118,13 @@ public class ListDisplayTagTest extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
         RhnBaseTestCase.enableLocalizationServiceLogging();
     }
 
+    @Test
     public void testTag() throws Exception {
         ldt.setExportColumns("column1,column2,column3");
         context().checking(new Expectations() { {
@@ -151,6 +159,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         assertTrue(htmlOut.indexOf("Download CSV") > -1);
     }
 
+    @Test
     public void testExport() throws Exception {
         RhnMockServletOutputStream out = new RhnMockServletOutputStream();
         ldt.setExportColumns("column1,column2,column3");

@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.reactor.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.reactor.SaltEvent;
 import com.redhat.rhn.domain.reactor.SaltEventFactory;
@@ -38,6 +40,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     private static String INSERT_INTO_SUSE_SALT_EVENT_QUERY =
             "INSERT INTO suseSaltEvent (id, minion_id, data, queue) VALUES (:id, :minionId, :data, :queue)";
 
+    @Test
     public void testCountSaltEvents() {
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
@@ -78,6 +81,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
     }
 
+    @Test
     public void testPopSaltEvents() throws NoSuchAlgorithmException {
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
@@ -126,6 +130,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
     }
 
+    @Test
     public void testDeleteSaltEvents() {
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);

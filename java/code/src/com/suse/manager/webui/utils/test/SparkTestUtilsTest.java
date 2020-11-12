@@ -15,17 +15,20 @@
 
 package com.suse.manager.webui.utils.test;
 
+import org.junit.Test;
+
 import com.suse.manager.webui.utils.SparkTestUtils;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  * Test for SparkTestUtils.
  */
-public class SparkTestUtilsTest extends TestCase {
+public class SparkTestUtilsTest extends Assert {
 
     /**
      * Test substituting variables in a URI.
      */
+    @Test
     public void testSubstituteVariables() {
         String uri = "http://localhost:8080/:vhm/delete/:vhmlabel/";
         String expected = "http://localhost:8080/myVHM/delete/MyLabel/";
@@ -36,6 +39,7 @@ public class SparkTestUtilsTest extends TestCase {
     /**
      * Test substitute variables method with no substitutions.
      */
+    @Test
     public void testSubstituteVariablesNoSubs() {
         String uri = "http://localhost:8080/delete/";
         String expected = "http://localhost:8080/delete/";

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -24,6 +26,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 public class ProxyServerTest extends RhnBaseTestCase {
 
+    @Test
     public void testProxyServer() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

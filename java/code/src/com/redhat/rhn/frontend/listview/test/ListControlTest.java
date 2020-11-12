@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.listview.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -35,6 +37,7 @@ public class ListControlTest extends RhnBaseTestCase {
     /**
      * Test the basic functionality of PageControl
      */
+    @Test
     public void testPageControl() {
         ListControl lc = new PageControl();
         lc.setFilterColumn("TestFilterColumn");
@@ -49,6 +52,7 @@ public class ListControlTest extends RhnBaseTestCase {
     /**
      * Test the createIndex method of PageControl
      */
+    @Test
     public void testCreateIndex() {
         PageControl pc = new PageControl();
         pc.setIndexData(true);

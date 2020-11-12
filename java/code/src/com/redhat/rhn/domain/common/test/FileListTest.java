@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.common.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigFileName;
@@ -31,6 +33,7 @@ import java.util.Date;
  */
 public class FileListTest extends RhnBaseTestCase {
 
+    @Test
     public void testDeleteFileList() {
         Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
         FileList f = createTestFileList(o);
@@ -47,6 +50,7 @@ public class FileListTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testFileList() throws Exception {
         Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
         FileList f = createTestFileList(o);

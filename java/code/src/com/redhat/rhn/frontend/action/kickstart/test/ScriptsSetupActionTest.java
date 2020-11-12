@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -26,6 +28,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
  */
 public class ScriptsSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testKickstartList() throws Exception {
         // Create a kickstart and the defaults so the list
         // will return something.

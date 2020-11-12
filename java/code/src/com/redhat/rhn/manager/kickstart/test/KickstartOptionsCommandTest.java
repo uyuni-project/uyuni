@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
@@ -32,6 +34,7 @@ public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
     private RhnHttpServletRequest request;
     private RhnMockHttpServletRequest mockRequest;
 
+    @Test
     public void testKickstartOptionsCommand() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 

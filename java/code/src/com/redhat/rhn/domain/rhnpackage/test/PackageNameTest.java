@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -29,6 +31,7 @@ public class PackageNameTest extends RhnBaseTestCase {
      * PackageNames and write them to the db.
      * @throws Exception something bad happened
      */
+    @Test
     public void testPackageName() throws Exception {
         PackageName p = createTestPackageName();
         assertNotNull(p);

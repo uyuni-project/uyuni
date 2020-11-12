@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.iss.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 
 /**
@@ -22,14 +25,17 @@ package com.redhat.rhn.frontend.action.iss.test;
  */
 public class EditSlaveSetupActionTest extends BaseIssTestAction {
 
+    @Test
     public void testExecute() throws Exception {
     }
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         addRequestParameter("sid", slaveDto.getId().toString());
     }
 
+    @Test
     public void testEditSlave() {
         doPerform(true);
         verifyFormValue("id", slaveDto.getId());

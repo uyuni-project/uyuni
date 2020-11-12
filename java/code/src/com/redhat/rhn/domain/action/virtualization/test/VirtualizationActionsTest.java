@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.virtualization.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -48,6 +50,7 @@ import java.util.stream.Collectors;
 
 public class VirtualizationActionsTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testPackageInstall() throws Exception {
         Action a1 = ActionFactoryTest.createAction(user,
                 ActionFactory.TYPE_VIRTUALIZATION_GUEST_PACKAGE_INSTALL);
@@ -70,6 +73,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testDomainLifecycleActions() throws Exception {
         HashMap<ActionType, Class<? extends BaseVirtualizationGuestAction>> types = new HashMap<>();
         types.put(ActionFactory.TYPE_VIRTUALIZATION_DELETE, VirtualizationDeleteGuestAction.class);
@@ -90,6 +94,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDomainForceoff() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
         VirtualizationShutdownGuestAction va = (VirtualizationShutdownGuestAction)a;
@@ -104,6 +109,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertTrue(rebootAction.isForce());
     }
 
+    @Test
     public void testDomainReset() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
         VirtualizationRebootGuestAction va = (VirtualizationRebootGuestAction)a;
@@ -118,6 +124,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertTrue(rebootAction.isForce());
     }
 
+    @Test
     public void testSetMemory() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
         flushAndEvict(a);
@@ -129,6 +136,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertEquals(Integer.valueOf(1234), va.getMemory());
     }
 
+    @Test
     public void testSetVcpus() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
         flushAndEvict(a);
@@ -145,6 +153,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testCreateLookup() throws Exception {
         VirtualizationCreateGuestAction a1 = (VirtualizationCreateGuestAction)ActionFactoryTest
                 .createAction(user, ActionFactory.TYPE_VIRTUALIZATION_CREATE);
@@ -202,6 +211,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertEquals("net1", actual.getInterfaces().get(1).getSource());
     }
 
+    @Test
     public void testPoolCreate() throws Exception {
         VirtualizationPoolCreateAction a1 = (VirtualizationPoolCreateAction)ActionFactoryTest
                 .createAction(user, ActionFactory.TYPE_VIRTUALIZATION_POOL_CREATE);

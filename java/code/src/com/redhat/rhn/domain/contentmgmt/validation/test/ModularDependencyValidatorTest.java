@@ -14,6 +14,9 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
 import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
@@ -28,11 +31,13 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
     private static final String ENTITY_FILTERS = "filters";
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         validator = new ModularDependencyValidator(new MockModulemdApi());
     }
 
+    @Test
     public void testNonModularSources() throws Exception {
         attachSource();
         assertTrue(validator.validate(project).isEmpty());
@@ -40,6 +45,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(project).isEmpty());
     }
 
+    @Test
     public void testNoModuleFilters() throws Exception {
         attachModularSource();
         assertTrue(validator.validate(project).isEmpty());
@@ -47,6 +53,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(project).isEmpty());
     }
 
+    @Test
     public void testMatchingFilter() throws Exception {
         attachModularSource();
         attachModularFilter();
@@ -54,6 +61,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
         assertTrue(validator.validate(project).stream().allMatch(m -> TYPE_INFO.equals(m.getType())));
     }
 
+    @Test
     public void testNonMatchingFilter() throws Exception {
         attachModularSource();
         attachModularFilter("nonexistent:stream");
@@ -61,6 +69,7 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
                 TYPE_ERROR, ENTITY_FILTERS, validator.validate(project));
     }
 
+    @Test
     public void testConflictingFilters() throws Exception {
         attachModularSource();
         attachModularFilter("postgresql:10");

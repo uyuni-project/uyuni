@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -34,6 +37,7 @@ import java.util.List;
 public class PreservationListDeleteActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         action = new PreservationListDeleteAction();
@@ -43,6 +47,7 @@ public class PreservationListDeleteActionTest extends RhnBaseTestCase {
      * Test to make sure we delete the FileLists.
      * @throws Exception if test fails
      */
+    @Test
     public void testOperateOnSelectedSet() throws Exception {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action);

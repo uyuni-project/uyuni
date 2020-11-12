@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.satellite.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -34,6 +37,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
@@ -43,6 +47,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
                 TestConfigureBootstrapCommand.class.getName());
     }
 
+    @Test
     public void testNonSubmitExecute() throws Exception {
         String expectedHostname = Config.get().getString(ConfigDefaults.JABBER_SERVER);
         if (expectedHostname == null) {
@@ -72,6 +77,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testSubmitExecute() throws Exception {
 
         String expectedHostname = Config.get().getString(ConfigDefaults.JABBER_SERVER);

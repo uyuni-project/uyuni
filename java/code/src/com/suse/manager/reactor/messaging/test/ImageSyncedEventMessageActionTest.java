@@ -1,4 +1,7 @@
 package com.suse.manager.reactor.messaging.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static java.util.Arrays.asList;
 
@@ -36,6 +39,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
     private ManagedServerGroup testGroup1, testGroup2;
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -54,6 +58,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
      * In this case we test that at the end of the Action, the minion has correct channels
      * (based on its product) assigned.
      */
+    @Test
     public void testImageSyncedPillarCreated() throws Exception {
         JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<Event>() {});
         Event event = jsonParser.parse(

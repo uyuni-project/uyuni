@@ -14,6 +14,9 @@
  */
 
 package com.suse.manager.maintenance.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.SINGLE;
@@ -63,6 +66,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     private static final String KDE_ICS = "maintenance-windows-kde.ics";
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -83,6 +87,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
      * (= it's not in the maintenance mode)
      *
      */
+    @Test
     public void testScheduleHighstateNoMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
         assertTrue(ActionFactory.TYPE_APPLY_STATES.isMaintenancemodeOnly());
@@ -117,6 +122,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     /**
      * Tests scheduling a state apply outside maintenance window (= not in maintenance mode)
      */
+    @Test
     public void testScheduleHighstateOutsideMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
         assertTrue(ActionFactory.TYPE_APPLY_STATES.isMaintenancemodeOnly());
@@ -149,6 +155,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     /**
      * Tests scheduling a hardware refresh with no maintenance window (= system not in maintenance mode)
      */
+    @Test
     public void testScheduleHwRefreshNoMaintWindow() throws Exception {
         // this tests assumes that HW refresh is not a maintenance-mode-only action
         assertFalse(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.isMaintenancemodeOnly());
@@ -171,6 +178,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     /**
      * Tests scheduling a just a channel state (part of channel change which should be allowed)
      */
+    @Test
     public void testScheduleChannelChangeNoMaintWindow() throws Exception {
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());

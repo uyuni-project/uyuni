@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.security.test;
+import org.junit.Before;
 
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 
@@ -53,7 +54,8 @@ public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTe
     /**
      * {@inheritDoc}
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
 
         mockRequest = mock(HttpServletRequest.class);

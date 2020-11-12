@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.servlets.SetCharacterEncodingFilter;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ public class I18NFilterTest extends BaseFilterTst {
     /** Test the CheckCharSet functionality
      * @throws Exception if something fails
      */
+    @Test
     public void testCheckCharset() throws Exception {
 
         SetCharacterEncodingFilter filter = new SetCharacterEncodingFilter();

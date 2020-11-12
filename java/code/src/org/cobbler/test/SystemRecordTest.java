@@ -14,6 +14,9 @@
  */
 
 package org.cobbler.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -44,6 +47,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
      * Sets up a connection and system.
      * @throws Exception in case anything goes wrong
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
@@ -63,6 +67,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test power on.
      */
+    @Test
     public void testPowerOn() {
         assertTrue(system.powerOn());
     }
@@ -70,6 +75,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test power off.
      */
+    @Test
     public void testPowerOff() {
         assertTrue(system.powerOff());
     }
@@ -77,6 +83,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test reboot.
      */
+    @Test
     public void testReboot() {
         assertTrue(system.reboot());
     }
@@ -84,6 +91,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test status retrieval.
      */
+    @Test
     public void testGetPowerStatus() {
         assertTrue(system.getPowerStatus());
     }
@@ -91,6 +99,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for power type.
      */
+    @Test
     public void testSetGetPowerType() {
         String expected = TestUtils.randomString();
         system.setPowerType(expected);
@@ -101,6 +110,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for power address.
      */
+    @Test
     public void testSetGetPowerAddress() {
         String expected = TestUtils.randomString();
         system.setPowerAddress(expected);
@@ -111,6 +121,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for power username.
      */
+    @Test
     public void testSetGetPowerUsername() {
         String expected = TestUtils.randomString();
         system.setPowerUsername(expected);
@@ -121,6 +132,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for power password.
      */
+    @Test
     public void testSetGetPowerPassword() {
         String expected = TestUtils.randomString();
         system.setPowerPassword(expected);
@@ -131,6 +143,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for power id.
      */
+    @Test
     public void testSetGetPowerId() {
         String expected = TestUtils.randomString();
         system.setPowerId(expected);
@@ -141,6 +154,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
     /**
      * Test setter and getter for the associated image.
      */
+    @Test
     public void testSetGetImage() {
         Image expected = Image.create(connection, "test", Image.TYPE_ISO, "dummy.file");
         system.setImage(expected);

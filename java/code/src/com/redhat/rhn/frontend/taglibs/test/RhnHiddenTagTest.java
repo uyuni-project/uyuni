@@ -13,6 +13,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
+import org.junit.Before;
+import org.junit.After;
+
+import org.junit.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
@@ -34,6 +38,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     private MockJspWriter out;
 
     @Override
+    @Before
     public void setUp() {
         ht = new RhnHiddenTag();
         tth = new TagTestHelper(ht);
@@ -42,6 +47,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     }
 
     @Override
+    @After
     public void tearDown() {
         ht = null;
         tth = null;
@@ -54,6 +60,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
         out.verify();
     }
 
+    @Test
     public void testBasicTag() {
         String expected = "<input type=\"hidden\"" +
                           " name=\"test\"" +
@@ -70,6 +77,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testScriptInValue() {
         String expected = "<input type=\"hidden\"" +
                      " name=\"test\"" +
@@ -84,6 +92,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
       }
     }
 
+    @Test
     public void testTagWithId() {
         String expected = "<input type=\"hidden\"" +
                           " id=\"tid\"" +

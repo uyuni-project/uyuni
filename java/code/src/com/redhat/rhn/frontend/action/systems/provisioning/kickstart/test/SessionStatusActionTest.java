@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
@@ -22,6 +24,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
  */
 public class SessionStatusActionTest extends BaseSessionTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/systems/details/kickstart/SessionStatus");
         actionPerform();

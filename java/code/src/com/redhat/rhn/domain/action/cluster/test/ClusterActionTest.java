@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.action.cluster.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -33,6 +35,7 @@ import com.suse.manager.model.clusters.Cluster;
 
 public class ClusterActionTest extends JMockBaseTestCaseWithUser {
 
+    @Test
     public void testSaveClusterGroupRefreshNodesAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -54,6 +57,7 @@ public class ClusterActionTest extends JMockBaseTestCaseWithUser {
         assertNull(action);
     }
 
+    @Test
     public void testSaveClusterJoinNodeAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer toJoin1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -83,6 +87,7 @@ public class ClusterActionTest extends JMockBaseTestCaseWithUser {
         assertNull(action);
     }
 
+    @Test
     public void testSaveClusterRemoveNodeAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer toRemove = MinionServerFactoryTest.createTestMinionServer(user);

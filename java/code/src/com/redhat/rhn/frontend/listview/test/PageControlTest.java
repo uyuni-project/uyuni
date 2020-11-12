@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.listview.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -23,6 +25,7 @@ public class PageControlTest extends RhnBaseTestCase {
     /**
      * Test the basic functionality of PageControl
      */
+    @Test
     public void testPageControl() {
         PageControl pc = new PageControl();
         pc.setStart(5);
@@ -40,6 +43,7 @@ public class PageControlTest extends RhnBaseTestCase {
     /**
      * Test the exception case of setStart.
      */
+    @Test
     public void testIllegalArgument() {
         PageControl pc = new PageControl();
         boolean noexception = false;

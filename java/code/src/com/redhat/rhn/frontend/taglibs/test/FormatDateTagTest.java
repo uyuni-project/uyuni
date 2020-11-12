@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import org.junit.Test;
+
 import com.mockobjects.helpers.TagTestHelper;
 import com.mockobjects.servlet.MockJspWriter;
 import com.redhat.rhn.frontend.taglibs.FormatDateTag;
@@ -28,6 +30,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
      * Test tag output
      * @throws java.lang.Exception something bad happened
      */
+    @Test
     public void testTagOutput() throws Exception {
 
         FormatDateTag ht = new FormatDateTag();
@@ -50,6 +53,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testTagOutputNullValue() throws Exception {
 
         FormatDateTag ht = new FormatDateTag();

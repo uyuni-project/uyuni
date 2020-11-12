@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.security.test;
+import org.junit.Before;
 
 import com.redhat.rhn.frontend.security.PxtAuthenticationService;
 
@@ -39,7 +40,8 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         super(name);
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         service = new PxtAuthenticationServiceStub();
         service.setPxtSessionDelegate(getPxtDelegate());

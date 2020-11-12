@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.suse.manager.reactor.messaging.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -73,6 +76,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     @Override
     @SuppressWarnings("unchecked")
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -103,6 +107,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testNewGuestNoRestart() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("sles12sp2", "sles12sp2-new");
@@ -134,6 +139,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testNewGuestFirstReboot() throws Exception {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("sles12sp2", "sles12sp2-new");
@@ -160,6 +166,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testNewGuestFirstRebootAborted() throws Exception {
         States vmState = context().states("vm").startsAs("started");
 
@@ -192,6 +199,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testShutdownPersistent() throws Exception {
         expectGuestDefinition("sles12sp2",
                 "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", null);
@@ -212,6 +220,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testShutdownTransient() throws Exception {
         expectGuestDefinition("sles12sp2", null, null);
         context().checking(new Expectations(){ {
@@ -230,6 +239,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testUpdate() throws Exception {
         expectGuestDefinition("sles12sp2",
                 "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", null);

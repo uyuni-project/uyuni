@@ -13,6 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.kickstart.test;
+import org.junit.Before;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -25,6 +26,7 @@ public class BaseKickstartCommandTestCase extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         this.ksdata = KickstartDataTest.

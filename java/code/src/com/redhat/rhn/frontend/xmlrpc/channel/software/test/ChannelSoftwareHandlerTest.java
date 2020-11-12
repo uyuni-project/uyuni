@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.software.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -125,6 +128,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
      * {@inheritDoc}
      */
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -198,6 +202,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetGloballySubscribable() throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         assertTrue(channel.isGloballySubscribable(admin.getOrg()));
@@ -227,6 +232,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertTrue(channel.isGloballySubscribable(admin.getOrg()));
     }
 
+    @Test
     public void testSetUserSubscribable() throws Exception {
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         c1.setGloballySubscribable(false, admin.getOrg());
@@ -258,6 +264,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testIsUserSubscribable() throws Exception {
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         c1.setGloballySubscribable(false, admin.getOrg());
@@ -276,12 +283,14 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                 admin, c1.getLabel(), user.getLogin()));
     }
 
+    @Test
     public void testIsExisting() throws Exception {
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         assertTrue(handler.isExisting(admin, c1.getLabel()));
         assertFalse(handler.isExisting(admin, c1.getLabel() + UUID.randomUUID()));
     }
 
+    @Test
     public void testSetSystemChannelsBaseChannel() throws Exception {
 
         Channel base = ChannelFactoryTest.createTestChannel(admin);
@@ -330,6 +339,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testSetSystemChannels() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
 
@@ -404,6 +414,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListSystemChannels() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
 
@@ -433,6 +444,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListSubscribedSystems() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
 
@@ -466,6 +478,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListArches() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -474,6 +487,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertTrue(arches.size() > 0);
     }
 
+    @Test
     public void testListArchesPermissionError() {
         try {
             ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
@@ -486,6 +500,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testDeleteChannel() throws Exception {
         ChannelSoftwareHandler csh = getMockedHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -506,6 +521,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertNull(reload(c));
     }
 
+    @Test
     public void testDeleteClonedChannel() throws Exception {
         ChannelSoftwareHandler csh = getMockedHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -521,6 +537,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertNull(reload(cClone2));
     }
 
+    @Test
     public void testDeleteChannelWithClones() throws Exception {
         ChannelSoftwareHandler csh = getMockedHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -545,6 +562,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testIsGloballySubscribable() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -553,6 +571,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         // should be assertTrue
     }
 
+    @Test
     public void testIsGloballySubscribableNoSuchChannel() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -565,6 +584,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -579,6 +599,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelDetailsEquality(c, result);
     }
 
+    @Test
     public void testSetDetails() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -608,6 +629,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelDetailsEquality(c, result);
     }
 
+    @Test
    public void testGetChannelLastBuildById() throws Exception {
        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
        addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -647,6 +669,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(null, result.getParentChannel());
     }
 
+    @Test
     public void testCreate() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -665,6 +688,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertTrue(c.isGPGCheck());
     }
 
+    @Test
     public void testCreateWithGPGCheckDisabled() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -683,6 +707,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertFalse(c.isGPGCheck());
     }
 
+    @Test
     public void testCreateWithChecksum() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -701,6 +726,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(c.getChecksumTypeLabel(), "sha256");
     }
 
+    @Test
     public void testCreateUnauthUser() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         try {
@@ -723,6 +749,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCreateNullRequiredParams() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -770,6 +797,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testInvalidChannelNameAndLabel() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -820,6 +848,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetContactDetails() throws Exception {
 
         // setup
@@ -864,6 +893,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, secondList.length - iniailList.length);
     }
 
+    @Test
     public void testSubscribeSystem() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
         Channel baseChan = ChannelFactoryTest.createBaseChannel(admin);
@@ -893,6 +923,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testCloneAll() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(admin, false);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
@@ -922,6 +953,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertTrue(chan.isCloned());
     }
 
+    @Test
     public void testCloneWithOverrideGPGCheck() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(admin, false);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
@@ -954,6 +986,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
      * (The 2nd time it looks up the roles within handler.clone, it gets a
      *  shared resource error).
      */
+    @Test
     public void testCloneOriginal() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(admin);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
@@ -981,6 +1014,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testMergeTo() throws Exception {
 
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
@@ -1006,6 +1040,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(packTwo, list[0]);
     }
 
+    @Test
     public void testMergeErrata() throws Exception {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
@@ -1051,6 +1086,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(mergeResult.length, fromList.size());
     }
 
+    @Test
     public void testMergeAlreadyMergedErrata() throws Exception {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
@@ -1092,6 +1128,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, mergeResult.length);
     }
 
+    @Test
     public void testMergeErrataByDate() throws Exception {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
@@ -1144,6 +1181,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testListLatestPackages() throws Exception {
         Channel chan = ChannelFactoryTest.createTestChannel(admin);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
@@ -1178,6 +1216,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertTrue(list.size() == 1);
     }
 
+    @Test
     public void testUnsubscribeChildChannels() throws Exception {
         ChannelSoftwareHandler handler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
@@ -1219,6 +1258,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, sca.getDetails().getChannels().size());
     }
 
+    @Test
     public void testUnsubscribeBaseChannel() throws Exception {
         ChannelSoftwareHandler handler = getMockedHandler();
         ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());

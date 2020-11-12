@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.test.FileListTest;
@@ -28,6 +30,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
 
+    @Test
     public void testEditExecute() throws Exception {
         FileList list = FileListTest.createTestFileList(user.getOrg());
         CommonFactory.saveFileList(list);
@@ -46,12 +49,14 @@ public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
                 getAttribute(BasePreservationListEditAction.FILE_LIST));
     }
 
+    @Test
     public void testCreateSubmit() throws Exception {
         executeCreate(Boolean.TRUE);
         String[] msgs = {"preservation.key.success"};
         verifyActionMessages(msgs);
     }
 
+    @Test
     public void testCreateSetup() throws Exception {
         executeCreate(Boolean.FALSE);
     }

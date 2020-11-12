@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -28,6 +30,7 @@ public class ActionStatusTest extends RhnBaseTestCase {
      * Test Equals
      * @throws Exception something bad happened
      */
+    @Test
     public void testEquals() throws Exception {
         ActionStatus s1 = new ActionStatus();
         ActionStatus s2 = null;
@@ -48,6 +51,7 @@ public class ActionStatusTest extends RhnBaseTestCase {
      * we're not going to the db twice
      * @throws Exception something bad happened
      */
+    @Test
     public void testFindByLabel() throws Exception {
         ActionStatus r1 = ActionFactory.STATUS_COMPLETED;
         ActionStatus r2 = ActionFactory.STATUS_COMPLETED;

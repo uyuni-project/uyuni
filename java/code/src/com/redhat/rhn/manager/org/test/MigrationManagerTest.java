@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.org.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -72,6 +75,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     );
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 
@@ -105,6 +109,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
     }
 
+    @Test
     public void testMigrateSystemNotSatAdmin() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -117,6 +122,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testRemoveEntitlements() throws Exception {
         assertTrue(server.getEntitlements().size() > 0);
 
@@ -126,6 +132,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertTrue(server.getEntitlements().size() > 0);
     }
 
+    @Test
     public void testRemoveSystemGroups() throws Exception {
         assertTrue(server.getGuests().size() > 0);
         assertEquals(1, server.getManagedGroups().size());
@@ -140,6 +147,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, server.getManagedGroups().size());
     }
 
+    @Test
     public void testRemoveChannels() throws Exception {
 
         // verify that server was initially created w/channels
@@ -150,6 +158,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, server.getChannels().size());
     }
 
+    @Test
     public void testRemoveConfigChannels() throws Exception {
 
         ConfigChannel configChannel = ConfigTestUtils.createConfigChannel(origOrg);
@@ -165,6 +174,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, server2.getConfigChannelCount());
     }
 
+    @Test
     public void testUpdateAdminRelationships() throws Exception {
         for (User origOrgAdmin : origOrgAdmins) {
             assertTrue(origOrgAdmin.getServers().contains(server));
@@ -183,6 +193,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testMigrateServers() throws Exception {
 
         assertEquals(server.getOrg(), origOrg);
@@ -219,6 +230,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, s2Migrations.size());
     }
 
+    @Test
     public void testMigrateBootstrapServer() throws Exception {
         User origOrgAdmin = origOrgAdmins.iterator().next();
         Server bootstrapServer = ServerFactoryTest.createUnentitledTestServer(origOrgAdmin,

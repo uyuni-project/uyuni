@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -24,6 +26,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class KickstartInstallTypeTest extends RhnBaseTestCase {
 
+    @Test
     public void testKsInstallType() throws Exception {
         Long testid = 1L;
         String query = "KickstartInstallType.findById";

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Server;
@@ -35,6 +37,7 @@ public class DeviceTest extends RhnBaseTestCase {
     public static final String PROP_FOUR = "prop4";
     public static final String DRIVER = "Test Driver";
 
+    @Test
     public void testDevice() throws Exception {
         Device hd = createTestDevice();
 

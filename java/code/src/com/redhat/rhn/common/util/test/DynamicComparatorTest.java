@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import org.junit.Test;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DynamicComparator;
 import com.redhat.rhn.common.validator.test.TestObject;
@@ -27,6 +29,7 @@ import java.util.List;
 
 public class DynamicComparatorTest extends RhnJmockBaseTestCase {
 
+    @Test
     public void testComparatorMaps() {
         List list = generateRandomList();
         DynamicComparator comp = new DynamicComparator("stringField",

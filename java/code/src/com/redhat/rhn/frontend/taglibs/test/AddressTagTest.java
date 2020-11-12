@@ -13,6 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.taglibs.test;
+import org.junit.Before;
+
+import org.junit.Test;
 
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.frontend.action.user.AddressesAction;
@@ -40,7 +43,8 @@ public class AddressTagTest extends RhnBaseTestCase {
      * Called once per test method.
      * @throws Exception if an error occurs during setup.
      */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         sah = new ActionHelper();
         sah.setUpAction(new AddressesAction());
@@ -52,6 +56,7 @@ public class AddressTagTest extends RhnBaseTestCase {
      * Test tag output
      * @throws Exception something bad happened
      */
+    @Test
     public void testTagOutput() throws Exception {
 
         AddressTag addtg = new AddressTag();
@@ -74,6 +79,7 @@ public class AddressTagTest extends RhnBaseTestCase {
 
     /* Test rendering an empty Address
      */
+    @Test
     public void testEmptyAddress() throws Exception {
         AddressTag addtg = new AddressTag();
         TagTestHelper tth = TagTestUtils.setupTagTest(addtg, null, sah.getRequest());
