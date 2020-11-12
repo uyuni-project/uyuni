@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.common.db.datasource.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -28,6 +34,9 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -48,8 +57,9 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     private final Random random = new Random();
     private String db_sufix;
     private String db_user;
-    public AdvDataSourceTest(String name) {
-        super(name);
+
+    public AdvDataSourceTest() {
+        super();
         db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
     }
@@ -78,6 +88,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertEquals(1, res);
     }
 
+    @Test
     public void testMaxRows() {
         SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
         try {
@@ -97,6 +108,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     /**
      * Test for ModeFactory.getMode methods
      */
+    @Test
     public void testModes() {
         SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
         Map params = null;
@@ -144,6 +156,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertEquals("java.util.HashMap", obj.getClass().getName());
     }
 
+    @Test
     public void testInsert() throws Exception {
         insert("insert_test", 3);
         // Close our Session so we test to make sure it
@@ -152,6 +165,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         lookup("insert_test", 3, 1);
     }
 
+    @Test
     public void testDelete() throws Exception {
         // Take nothing for granted, make sure the data is there.
         insert("Blarg", 1);
@@ -165,6 +179,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         lookup("Blarg", 1, 0);
     }
 
+    @Test
     public void testUpdate() throws Exception {
         insert("update_test", 4);
 
@@ -184,6 +199,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
      * and re-use the existing internal transaction within the CommitableMode
      * @throws Exception something bad happened
      */
+    @Test
     public void testUpdateMultiple() throws Exception {
         insert("update_multi_test", 5);
 
@@ -202,12 +218,14 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         lookup("after_update_multi", 5, 1);
     }
 
+    @Test
     public void testGetCallable() throws Exception {
         CallableMode m = ModeFactory.getCallableMode("test_queries",
                                         "stored_procedure_jdbc_format");
         assertNotNull(m);
     }
 
+    @Test
     public void testCollectionCreate() {
         List ll = new LinkedList();
         for (int i = 0; i < 13; i++) {
@@ -220,6 +238,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testStoredProcedureJDBC() throws Exception {
         CallableMode m = ModeFactory.getCallableMode("test_queries",
                                         "stored_procedure_jdbc_format");
@@ -233,6 +252,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testStoredProcedureOracle() throws Exception {
         CallableMode m = ModeFactory.getCallableMode("test_queries",
                                         "stored_procedure_oracle_format");
@@ -245,6 +265,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertEquals(100, ((Long)row.get("arch")).intValue());
     }
 
+    @Test
     public void testInClause() {
         SelectMode m = ModeFactory.getMode("test_queries", "select_in");
         List params = new ArrayList();
@@ -256,6 +277,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertNotEmpty(result);
     }
 
+    @Test
     public void testStressedElaboration() throws Exception {
         int startId = 1000;
         int endId = startId + 1500;
@@ -273,6 +295,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testMaxRowsWithElaboration() throws Exception {
         int startId = 1000;
         int endId = startId + 50;
@@ -293,6 +316,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testSelectInWithParams() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries", "select_in_withparams");
         List inclause = new ArrayList();
@@ -307,8 +331,8 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     }
 
 
-    @Override
-    protected void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = connection.createStatement();
             try {
@@ -334,7 +358,8 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     }
 
     @Override
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -358,6 +383,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testFoo() {
         SelectMode mode = ModeFactory.getMode("Errata_queries",
                 "unscheduled_relevant_to_system");

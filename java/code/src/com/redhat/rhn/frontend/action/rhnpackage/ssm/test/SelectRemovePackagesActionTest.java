@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -22,6 +25,9 @@ import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * @version $Revision$
  */
@@ -29,6 +35,7 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/ssm/PackageRemove");
@@ -36,6 +43,7 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
         utils = new SsmActionTestUtils(user);
     }
 
+    @Test
     public void testNonDispatch() throws Exception {
         // Setup
         utils.initSsmEnvironment();
@@ -53,6 +61,7 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
         assertEquals(2, result.size());
     }
 
+    @Test
     public void testDispatch() throws Exception {
         // Setup
         utils.initSsmEnvironment();

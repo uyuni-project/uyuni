@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.domain.rhnpackage.profile.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -28,6 +33,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -36,21 +42,24 @@ import java.util.List;
  */
 public class ProfileFactoryTest  extends RhnBaseTestCase {
 
+    @Test
     public void testCreateProfile() {
         Profile p = ProfileFactory.createProfile(ProfileFactory.TYPE_NORMAL);
         assertNotNull(p);
         assertEquals(ProfileFactory.TYPE_NORMAL, p.getProfileType());
     }
 
+    @Test
     public void testLookupByLabel() {
         ProfileType pt = ProfileFactory.lookupByLabel("normal");
-        assertNotNull("ProfileType is null", pt);
-        assertEquals("Not equal to normal", ProfileFactory.TYPE_NORMAL, pt);
+        assertNotNull(pt, "ProfileType is null");
+        assertEquals(ProfileFactory.TYPE_NORMAL, pt, "Not equal to normal");
 
         pt = ProfileFactory.lookupByLabel("foo");
-        assertNull("Found a ProfileType labeled foo", pt);
+        assertNull(pt, "Found a ProfileType labeled foo");
     }
 
+    @Test
     public void testCompatibleWithServer() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -63,14 +72,14 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         session.flush();
 
         List<Profile> list = ProfileFactory.compatibleWithServer(server, user.getOrg());
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         for (Object o : list) {
-            assertEquals("List contains something other than Profiles",
-                    Profile.class, o.getClass());
+            assertEquals(Profile.class, o.getClass(), "List contains something other than Profiles");
         }
     }
 
+    @Test
     public void testLookupById() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -83,6 +92,7 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         assertEquals(p, p1);
     }
 
+    @Test
     public void testFindByNameAndOrgId() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

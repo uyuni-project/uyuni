@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.Server;
@@ -21,6 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +44,7 @@ public class DmiTest extends RhnBaseTestCase {
     public static final String ASSET = "(board: CNR780A1K11) (system: 23N7011)";
     public static final String BOARD = "MSI";
 
+    @Test
     public void testServerDmi() throws Exception {
         Dmi dmi = createTestDmi();
 

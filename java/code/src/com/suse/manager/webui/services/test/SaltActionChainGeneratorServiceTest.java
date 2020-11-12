@@ -19,6 +19,9 @@ import static com.suse.manager.webui.services.SaltActionChainGeneratorService.AC
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -35,6 +38,7 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -48,6 +52,7 @@ import java.util.TreeMap;
 
 public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testCreateActionChainSLSFilesOneChunk() throws Exception {
         String label = TestUtils.randomString();
 
@@ -116,6 +121,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 .toFile().exists());
     }
 
+    @Test
     public void testCreateActionChainSLSFilesTwoChunks() throws Exception {
         String label = TestUtils.randomString();
 
@@ -201,6 +207,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 "    -   name: state.apply\n").replaceAll("131", actionChain.getId() + ""), fileContent);
     }
 
+    @Test
     public void testCreateActionChainSLSFilesSaltUpgrade() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -286,6 +293,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "        -   salt-minion.x86_64: 2018.3.0-4.1\n"), fileContent);
     }
 
+    @Test
     public void testRemoveAllActionChainSLSFilesForMinion() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -374,6 +382,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         assertTrue(channels.exists());
     }
 
+    @Test
     public void testPkgInstallationSLSFiles() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
@@ -428,6 +437,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                 fileContent);
     }
 
+    @Test
     public void testParseActionChainStateId() throws Exception {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         Optional<SaltActionChainGeneratorService.ActionChainStateId> result = service.parseActionChainStateId(
@@ -446,6 +456,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
         assertFalse(result.isPresent());
     }
 
+    @Test
     public void testRemoveActionChainSLSFiles() throws Exception {
         String label = TestUtils.randomString();
 

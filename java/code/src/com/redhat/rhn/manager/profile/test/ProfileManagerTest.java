@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.manager.profile.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -43,6 +49,8 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +63,7 @@ import java.util.Set;
  */
 public class ProfileManagerTest extends BaseTestCaseWithUser {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -63,6 +72,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         UserFactory.save(user);
     }
 
+    @Test
     public void testSyncSystems() throws Exception {
         Channel testChannel = ChannelFactoryTest.createTestChannel(user);
 
@@ -107,6 +117,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testCreateProfileFails() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
@@ -122,6 +133,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCreateProfile() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -131,10 +143,11 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
-        assertNotNull("Profile is null", p);
-        assertNotNull("Profile has no id", p.getId());
+        assertNotNull(p, "Profile is null");
+        assertNotNull(p.getId(), "Profile has no id");
     }
 
+    @Test
     public void testCopyFrom() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -144,12 +157,13 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
-        assertNotNull("Profile is null", p);
-        assertNotNull("Profile has no id", p.getId());
+        assertNotNull(p, "Profile is null");
+        assertNotNull(p.getId(), "Profile has no id");
 
         ProfileManager.copyFrom(server, p);
     }
 
+    @Test
     public void testCompatibleWithServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -158,26 +172,27 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
-        assertNotNull("Profile is null", p);
-        assertNotNull("Profile has no id", p.getId());
+        assertNotNull(p, "Profile is null");
+        assertNotNull(p.getId(), "Profile has no id");
 
         List<Profile> list = ProfileManager.compatibleWithServer(server, user.getOrg());
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         for (Object o : list) {
-            assertEquals("List contains something other than Profiles",
-                    Profile.class, o.getClass());
+            assertEquals(Profile.class, o.getClass(), "List contains something other than Profiles");
         }
     }
 
+    @Test
     public void testCompareServerToProfile() {
         Long sid = 1005385254L;
         Long prid = 4908L;
         Long orgid = 4116748L;
         DataResult<PackageMetadata> dr = ProfileManager.compareServerToProfile(sid, prid, orgid, null);
-        assertNotNull("DataResult was null", dr);
+        assertNotNull(dr, "DataResult was null");
     }
 
+    @Test
     public void testCompatibleWithChannel() throws Exception {
         Profile p = createProfileWithServer(user);
         DataResult<ProfileDto> dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
@@ -199,6 +214,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         "Profile test description");
     }
 
+    @Test
     public void testTwoVsOneKernelPackages()  {
         /*
          *     public static List comparePackageLists(DataResult profiles,
@@ -256,6 +272,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals("kernel-2.4.22-27.EL-bretm", pm.getOther().getEvr());
     }
 
+    @Test
     public void testDifferingVersionsofSamePackage() {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -293,6 +310,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals("kernel-2.4.21-27.EL", pm.getSystem().getEvr());
     }
 
+    @Test
     public void testDifferentVersionsOfSamePackageReverseOrder() {
         List<PackageListItem> b = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -330,6 +348,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals("kernel-2.4.21-27.EL", pm.getOther().getEvr());
     }
 
+    @Test
     public void testDifferingEpochsofSamePackage() {
         // this test will perform a package comparison between 2 packages where
         // the epochs in those packages vary, including null values
@@ -395,6 +414,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         return pli;
     }
 
+    @Test
     public void testMorePackagesInProfile() {
         List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(createItem("kernel-2.4.21-EL-mmccune", 500341));
@@ -411,6 +431,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testMorePackagesInSystem() {
         List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(createItem("kernel-2.4.23-EL-mmccune", 500341));
@@ -442,6 +463,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         return pli;
     }
 
+    @Test
      public void testIdenticalPackages() {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -475,6 +497,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, diff.size());
     }
 
+    @Test
     public void testVzlatkinTest() {
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -591,6 +614,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testBz204345() throws Exception {
         // kernel-2.6.9-22.EL
         // kernel-2.6.9-42.0.2.EL
@@ -646,6 +670,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         // assertEquals("kernel-2.4.21-27.EL", pm.getSystem().getEvr());
     }
 
+    @Test
     public void testGetChildChannelsNeededForProfile() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
         Channel childChannel1 = ChannelTestUtils.createChildChannel(server.getCreator(),

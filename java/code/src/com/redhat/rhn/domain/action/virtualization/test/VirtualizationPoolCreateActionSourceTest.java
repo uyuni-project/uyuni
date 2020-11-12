@@ -14,19 +14,22 @@
  */
 package com.redhat.rhn.domain.action.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateActionSource;
 
 import com.suse.manager.virtualization.PoolSourceDevice;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import junit.framework.TestCase;
+public class VirtualizationPoolCreateActionSourceTest  {
 
-public class VirtualizationPoolCreateActionSourceTest extends TestCase {
-
+    @Test
     public void testNfsDir() {
         VirtualizationPoolCreateActionSource src = new VirtualizationPoolCreateActionSource();
         src.setDir("/var/lib/libvirt/images");
@@ -46,6 +49,7 @@ public class VirtualizationPoolCreateActionSourceTest extends TestCase {
         assertEquals("localhost", src2.getHosts().get(0));
     }
 
+    @Test
     public void testDevice() {
         VirtualizationPoolCreateActionSource src = new VirtualizationPoolCreateActionSource();
         List<PoolSourceDevice> devices = new ArrayList<>();

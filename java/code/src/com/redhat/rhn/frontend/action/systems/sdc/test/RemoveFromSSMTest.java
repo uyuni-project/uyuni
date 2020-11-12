@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -21,6 +24,9 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * SystemChannelsActionTest
@@ -33,6 +39,7 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         server = ServerTestUtils.createTestSystem(user);
@@ -48,6 +55,7 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
     }
 
 
+    @Test
     public void testExecute() throws Exception {
 
         actionPerform();

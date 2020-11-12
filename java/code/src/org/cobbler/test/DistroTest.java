@@ -15,19 +15,20 @@
 
 package org.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-
-import junit.framework.TestCase;
 
 
 /**
  * @author paji
  *
  */
-public class DistroTest extends TestCase {
+public class DistroTest  {
    private CobblerConnection client;
 
    public void setUpXX() throws Exception {
@@ -35,6 +36,7 @@ public class DistroTest extends TestCase {
                        "admin", "foo");
    }
 
+    @Test
    public void testFoo() {
      //no op to keep junit happy
    }

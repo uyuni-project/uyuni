@@ -20,6 +20,11 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -72,10 +77,13 @@ import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -87,9 +95,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 
+@ExtendWith(JUnit5Mockery.class)
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    @RegisterExtension
+    protected final JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
@@ -106,14 +116,14 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     );
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        if (saltApiMock == null) {
-            saltApiMock = CONTEXT.mock(TestSaltApi.class);
-        }
+        saltApiMock = CONTEXT.mock(TestSaltApi.class);
     }
 
+    @Test
     public final void testConvertChecksum() {
         //SHA1
         String sha1Str = DigestUtils.sha1Hex("mychecksum");
@@ -181,6 +191,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(chksum.getChecksum(), sha512Str);
     }
 
+    @Test
     public final void testList() throws Exception {
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
@@ -199,6 +210,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(img, img3);
     }
 
+    @Test
     public final void testListImageInfos() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -217,6 +229,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(img2, img);
     }
 
+    @Test
     public final void testListImageOverviews() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -241,6 +254,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getOrg(), overview.getOrg());
     }
 
+    @Test
     public final void testLookupById() {
         ImageInfo image = createImageInfo("myimage", "1.0.0", user);
 
@@ -248,6 +262,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(image, result);
     }
 
+    @Test
     public final void testLookupByIdAndOrg() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -262,6 +277,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
                 .isPresent());
     }
 
+    @Test
     public final void testLookupOverviewByIdAndOrg() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -278,6 +294,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
                 .lookupOverviewByIdAndOrg(image.getId(), foreignUser.getOrg()).isPresent());
     }
 
+    @Test
     public final void testLookupByName() {
         ImageStore store = ImageTestUtils.createImageStore("mystore", user);
         ImageStore anotherStore = ImageTestUtils.createImageStore("myotherstore", user);
@@ -301,6 +318,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
                 .lookupByName("myimage", "1.0.0", anotherStore.getId()).isPresent());
     }
 
+    @Test
     public final void testScheduleBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
@@ -404,6 +422,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, info.getChannels().size());
     }
 
+    @Test
     public final void testScheduleInspect() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
@@ -436,6 +455,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(info.getVersion(), details.getVersion());
     }
 
+    @Test
     public final void testScheduleImport() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
@@ -488,6 +508,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testLookupByIdsAndOrg() throws Exception {
         ImageStore store = createImageStore("mystore", user);
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
@@ -521,6 +542,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(img1, lookup.get(0));
     }
 
+    @Test
     public void testUpdateRevision() throws Exception {
         ImageStore store = createImageStore("mystore", user);
         ImageInfo img1 = createImageInfo("test", "1.0.0", user);
@@ -535,6 +557,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, img2.getRevisionNumber());
     }
 
+    @Test
     public void testDelete() throws Exception {
         CONTEXT.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
@@ -571,6 +594,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testDeltaImage() throws Exception {
         CONTEXT.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(

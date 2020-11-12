@@ -14,9 +14,14 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.frontend.taglibs.RhnTagFunctions;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -24,15 +29,17 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class RhnTagFunctionsTest extends RhnBaseTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
-        super.setUp();
     }
 
+    @Test
     public void testConfig() {
         assertNotNull(RhnTagFunctions.getConfig("web.version"));
     }
 
+    @Test
     public void testLocalize() {
         assertNotNull(RhnTagFunctions.localizedValue("test.string"));
         assertNotNull(RhnTagFunctions.localizedValue("test.string", "asdf|asdf"));

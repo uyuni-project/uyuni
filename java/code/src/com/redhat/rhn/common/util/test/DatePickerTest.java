@@ -14,7 +14,13 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.DatePicker;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,15 +31,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-
 /**
  * DatePickerTest
  */
-public class DatePickerTest extends TestCase {
+public class DatePickerTest  {
 
     private static final TimeZone TZ = TimeZone.getTimeZone("America/Los_Angeles");
 
+    @Test
     public void testDateFormat() {
         DatePicker p = makePicker(Locale.ENGLISH);
         assertTrue(p.isLatin());
@@ -44,6 +49,7 @@ public class DatePickerTest extends TestCase {
         assertTrue(p.isDayBeforeMonth());
     }
 
+    @Test
     public void testSetDate() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
@@ -56,6 +62,7 @@ public class DatePickerTest extends TestCase {
         assertEquals(33, p.getMinute());
     }
 
+    @Test
     public void testPositiveRange() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH, DatePicker.YEAR_RANGE_POSITIVE);
         Date d = parseDate("2005-08-03T15:33");
@@ -69,6 +76,7 @@ public class DatePickerTest extends TestCase {
     }
 
 
+    @Test
     public void testReadWriteFromMap() throws ParseException {
         Map form = new HashMap();
         DatePicker p = makePicker(Locale.ENGLISH);
@@ -78,9 +86,10 @@ public class DatePickerTest extends TestCase {
 
         p = makePicker(Locale.ENGLISH);
         p.readMap(form);
-        assertEquals(d, p.getDate());
+        Assertions.assertEquals(d, p.getDate());
     }
 
+    @Test
     public void testBadDate() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
@@ -89,6 +98,7 @@ public class DatePickerTest extends TestCase {
         assertNull(p.getDate());
     }
 
+    @Test
     public void testBadField() throws ParseException {
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
@@ -112,6 +122,6 @@ public class DatePickerTest extends TestCase {
     }
 
     private void assertEquals(int exp, Integer act) {
-        assertEquals(Integer.valueOf(exp), act);
+        Assertions.assertEquals(Integer.valueOf(exp), act);
     }
 }

@@ -14,17 +14,22 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.xmlrpc.serializer.SUSEInstalledProductSerializer;
 import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcSerializer;
 
-public class SUSEInstalledProductSerializerTest extends TestCase {
+public class SUSEInstalledProductSerializerTest  {
 
+    @Test
     public void testSerialize() throws Exception {
         SUSEInstalledProduct product = new SUSEInstalledProduct("sles", "12",
                 "x86_64", null, true, "SUSE Linux Enterprise Server 12");

@@ -14,11 +14,17 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.xmlrpc.util.MapBuilder;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -30,8 +36,8 @@ public class MapBuilderTest extends RhnBaseTestCase {
     private MapBuilder builder;
     private TestBean bean;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         builder = new MapBuilder();
         bean = new TestBean();
     }
@@ -45,20 +51,21 @@ public class MapBuilderTest extends RhnBaseTestCase {
      */
     private void assertMethod(Map map, String name, String value, boolean flag) {
         if (flag) {
-            assertTrue("Cannot find property with Name [" + name + "]" ,
-                                    map.containsKey(StringUtil.debeanify(name)));
+            assertTrue(map.containsKey(StringUtil.debeanify(name)),
+                                    "Cannot find property with Name [" + name + "]");
             assertEquals(value, map.get(StringUtil.debeanify(name)));
 
         }
         else {
-            assertFalse("COULD find property with Name [" + name + "]" ,
-                    map.containsKey(StringUtil.debeanify(name)));
+            assertFalse(map.containsKey(StringUtil.debeanify(name)),
+                    "COULD find property with Name [" + name + "]");
         }
     }
     /**
      * Test the case where includes and excludes are null
      * @throws Exception if bean utils has trouble processing the bean.
      */
+    @Test
     public void testBaseCase() throws Exception {
         Map map = builder.mapify(bean);
         Map properties = BeanUtils.describe(bean);
@@ -69,6 +76,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testIncludes() {
         builder.include("fieldA");
         builder.include("fieldWierdo");
@@ -81,6 +89,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
         assertMethod(map, "fieldC", "", false);
     }
 
+    @Test
     public void testExcludes() {
         builder.exclude("fieldA");
         builder.exclude("fieldWierdo");
@@ -94,6 +103,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
         assertMethod(map, "fieldWierdo", "", false);
     }
 
+    @Test
     public void testCombo() {
         builder.include("fieldA");
         builder.exclude("fieldA");

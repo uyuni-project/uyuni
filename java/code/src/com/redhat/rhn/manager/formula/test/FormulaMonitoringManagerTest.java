@@ -15,6 +15,9 @@
 package com.redhat.rhn.manager.formula.test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -32,6 +35,9 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,6 +65,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     public FormulaMonitoringManagerTest() { }
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         metadataDir = Files.createTempDirectory("metadata");
@@ -68,6 +75,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         FileUtils.deleteDirectory(metadataDir.toFile());
@@ -77,6 +85,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
      * Test the conditions in FormulaMonitoringManager.isMonitoringCleanupNeeded().
      * @throws Exception
      */
+    @Test
     public void testIsMonitoringCleanupNeeded() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());

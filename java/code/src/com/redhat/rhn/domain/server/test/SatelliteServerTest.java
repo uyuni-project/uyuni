@@ -14,14 +14,21 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.SatelliteServer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 public class SatelliteServerTest extends RhnBaseTestCase {
 
+    @Test
     public void testSatServer() throws Exception {
         /* This test and class are pending removal...
         User user = UserTestUtils.findNewUser("testuser", "testorg");
@@ -39,6 +46,7 @@ public class SatelliteServerTest extends RhnBaseTestCase {
         */
     }
 
+    @Test
     public void testSetVersion() {
         SatelliteServer ss = new SatelliteServer();
         ss.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "4.1.0", "1", PackageType.RPM));

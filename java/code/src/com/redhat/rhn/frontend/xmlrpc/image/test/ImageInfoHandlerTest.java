@@ -21,6 +21,9 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createKiwiImageProfile;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -75,8 +78,12 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -85,11 +92,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@ExtendWith(JUnit5Mockery.class)
 public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private ImageInfoHandler handler;
 
-    private Mockery context = new JUnit3Mockery() {{
+    @RegisterExtension
+    protected final Mockery context = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
@@ -98,6 +107,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -119,6 +129,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         }});
     }
 
+    @Test
     public final void testimportContainerImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
@@ -156,6 +167,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertTrue(ret > 0);
     }
 
+    @Test
     public final void testScheduleContainerImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
@@ -177,6 +189,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
     }
 
+    @Test
     public final void testScheduleOSImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
@@ -204,6 +217,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
     }
 
+    @Test
     public final void testListImages() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         createImageInfo("myimage", "1.0.0", store, admin);
@@ -213,6 +227,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, listInfo.size());
     }
 
+    @Test
     public final void testGetImageDetails() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
@@ -221,6 +236,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(inf1.getVersion(), imageOverview.getVersion());
     }
 
+    @Test
     public final void testGetRelevantErrata() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(admin);
         Set<Channel> errataChannels = new HashSet<>();
@@ -249,6 +265,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(e.getId().intValue(), errata.getId().intValue());
     }
 
+    @Test
     public final void testGetPackages() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
@@ -261,6 +278,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, result.size());
     }
 
+    @Test
     public final void testGetCustomValues() throws Exception {
         ImageStore store = createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);

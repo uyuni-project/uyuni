@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.listview.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -22,6 +25,8 @@ import com.redhat.rhn.frontend.listview.ListControl;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +39,7 @@ public class ListControlTest extends RhnBaseTestCase {
     /**
      * Test the basic functionality of PageControl
      */
+    @Test
     public void testPageControl() {
         ListControl lc = new PageControl();
         lc.setFilterColumn("TestFilterColumn");
@@ -48,6 +54,7 @@ public class ListControlTest extends RhnBaseTestCase {
     /**
      * Test the createIndex method of PageControl
      */
+    @Test
     public void testCreateIndex() {
         PageControl pc = new PageControl();
         pc.setIndexData(true);

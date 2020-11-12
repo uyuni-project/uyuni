@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.formula.Formula;
@@ -43,6 +49,8 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -66,6 +74,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();
 
+    @Test
     public void testCreate() {
         handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
@@ -88,6 +97,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testUpdate() {
 
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
@@ -105,6 +115,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(group.getDescription(), newDescription);
     }
 
+    @Test
     public void testListAdministrators() {
         regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup group = handler.create(regular, NAME, DESCRIPTION);
@@ -123,6 +134,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddRemoveAdmins() {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
@@ -190,6 +202,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListGroupsWithNoAssociatedAdmins() {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         ServerGroup group1 = handler.create(admin, NAME + "1",
@@ -212,6 +225,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertTrue(groups.contains(group2));
     }
 
+    @Test
     public void testDelete() {
         handler.create(admin, NAME, DESCRIPTION);
         handler.delete(admin, NAME);
@@ -224,6 +238,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testAddRemoveSystems() throws Exception {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
@@ -260,6 +275,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertFalse(actual.contains(server1));
     }
 
+    @Test
     public void testRemoveNonExistentServer() throws Exception {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         List<Long> systems = new ArrayList<>();
@@ -275,6 +291,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testListAllGroups() throws Exception {
         int preSize = handler.listAllGroups(admin).size();
 
@@ -284,6 +301,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, groups.size() - preSize);
     }
 
+    @Test
     public void testGetDetailsById() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin,
@@ -291,6 +309,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(sg, group);
     }
 
+    @Test
     public void testGetDetailsByName() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin, group.getName());
@@ -298,6 +317,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testGetDetailsByUnknownId() throws Exception {
         boolean exceptCaught = false;
         int badValue = -80;
@@ -310,6 +330,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertTrue(exceptCaught);
     }
 
+    @Test
     public void testGetDetailsByUnknownName() throws Exception {
         boolean exceptCaught = false;
         String badName = new String("intentionalBadName123456789");
@@ -323,6 +344,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
 
+    @Test
     public void testListInactiveServersInGroup() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         Server server = ServerTestUtils.createTestSystem(admin);
@@ -345,6 +367,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(server.getId().toString(), list.get(0).toString());
     }
 
+    @Test
     public void testListActiveServersInGroup() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         Server server = ServerTestUtils.createTestSystem(admin);
@@ -369,6 +392,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(server.getId().toString(), list.get(0).toString());
     }
 
+    @Test
     public void testSubscribeAndListAssignedConfigChannels() throws Exception {
         ConfigChannelHandler ccHandler = new ConfigChannelHandler();
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
@@ -397,6 +421,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertContains(assignedChannels2, cc2);
     }
 
+    @Test
     public void testSubscribeAndListAssignedConfigChannels2() throws Exception {
         ConfigChannelHandler ccHandler = new ConfigChannelHandler();
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
@@ -422,9 +447,10 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
         assertContains(assignedChannels1, cc1);
         assertContains(assignedChannels1, cc2);
-        assertTrue("Unexpected assigned channels", assignedChannels2.isEmpty());
+        assertTrue(assignedChannels2.isEmpty(), "Unexpected assigned channels");
     }
 
+    @Test
     public void testUnsubscribeConfigChannels() throws Exception {
         ConfigChannelHandler ccHandler = new ConfigChannelHandler();
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
@@ -452,17 +478,18 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.unsubscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1));
         assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
         assertContains(assignedChannels1, cc2);
-        assertFalse("Unexpected channel found", assignedChannels1.contains(cc1));
+        assertFalse(assignedChannels1.contains(cc1), "Unexpected channel found");
     }
 
     /*
      * Just check that we do not crash
      */
+    @Test
     public void testListAssignedFormulas() throws Exception {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
 
         List<Formula> assignedFormulas = handler.listAssignedFormuals(admin, group.getName());
 
-        assertTrue("Unexpected assigned formulas found", assignedFormulas.isEmpty());
+        assertTrue(assignedFormulas.isEmpty(), "Unexpected assigned formulas found");
     }
 }

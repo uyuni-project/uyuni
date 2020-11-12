@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand;
@@ -27,6 +30,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.test.MockConnection;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests Cobbler command to manage power on a system.
@@ -37,6 +41,7 @@ public class CobblerPowerCommandTest extends BaseTestCaseWithUser {
      * Tests the execution of this Cobbler command.
      * @throws Exception if unforeseen problems arise
      */
+    @Test
     public void testStore() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
 

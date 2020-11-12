@@ -22,6 +22,8 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+
 /**
  * KickstartDetailsEditTest
  */
@@ -29,6 +31,7 @@ public class BaseKickstartEditTestCase extends RhnPostMockStrutsTestCase {
 
     protected KickstartData ksdata;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);

@@ -14,9 +14,13 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.frontend.struts.XmlMessageResources;
 import com.redhat.rhn.frontend.struts.XmlMessageResourcesFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * XmlMessageResourcesTest - test the Struts compliant wrapper around our
@@ -25,6 +29,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class XmlMessageResourcesTest extends RhnBaseTestCase {
 
+    @Test
     public void testGetFactory() {
         XmlMessageResources msg = (XmlMessageResources)
             XmlMessageResourcesFactory.createFactory().createResources(null);

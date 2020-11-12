@@ -22,6 +22,11 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorBaseChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChannel;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -54,6 +59,8 @@ import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,6 +86,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
     private TaskomaticApi taskomaticMock;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         // Create a SUSE product and channel products
@@ -145,6 +153,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test compute change to default system channel for one server with base channel set.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesChangeBaseDefault1() throws Exception {
         Server server1 = ServerFactoryTest.createTestServer(user, true);
 
@@ -182,6 +191,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test compute change to default system channel for two servers with base channel set.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesChangeBaseDefault2() throws Exception {
         Channel parent = ChannelFactoryTest.createTestChannel(user);
         parent.setParentChannel(null);
@@ -222,6 +232,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test no base channel change for two servers.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesNoBaseChange() throws Exception {
         Channel parent = ChannelFactoryTest.createTestChannel(user);
         parent.setParentChannel(null);
@@ -264,6 +275,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test change to default for 1 server with base channel and 2 servers with no base channel.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesServersWithoutBase() throws Exception {
         Channel parent = ChannelFactoryTest.createTestChannel(user);
         parent.setParentChannel(null);
@@ -323,6 +335,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test change to default for 2 servers with no base channel.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesTwoServersWithoutBase() throws Exception {
         Server server1 = ServerFactoryTest.createTestServer(user, true);
         Server server2 = ServerFactoryTest.createTestServer(user, true);
@@ -362,6 +375,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test when an empty list of changes is supplied.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesNoChangePresent() throws Exception {
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
 
@@ -375,6 +389,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * cannot be guessed.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesBaseChangeNoGuess() throws Exception {
         Channel parent = ChannelFactoryTest.createTestChannel(user);
         parent.setParentChannel(null);
@@ -428,6 +443,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test change base channel explicitly for two servers.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesChangeBaseExplicit1() throws Exception {
         Channel parent = ChannelFactoryTest.createTestChannel(user);
         parent.setParentChannel(null);
@@ -472,6 +488,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * with a base channel.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesChangeExplicitAndDefault() throws Exception {
         Channel parent = ChannelFactoryTest.createTestChannel(user);
         parent.setParentChannel(null);
@@ -524,6 +541,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test compute explicit change of base channel when the new base is not compatible with the old one.
      * @throws Exception
      */
+    @Test
     public void testComputeAllowedChannelChangesIllegalChangeBaseExplicit() throws Exception {
         Channel parent = ChannelFactoryTest.createTestChannel(user);
 
@@ -560,6 +578,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test schedule change base and subscribe to one channel for two servers.
      * @throws Exception
      */
+    @Test
     public void testScheduleChannelChangesChangeDefaultBaseAndOneChildForTwoServers() throws Exception {
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -619,6 +638,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Test schedule change base and subscribe to one channel for two servers.
      * @throws Exception
      */
+    @Test
     public void testScheduleChannelChangesChangeDifferentDefaultBasesForTwoServers() throws Exception {
         context().checking(new Expectations() { {
             exactly(2).of(taskomaticMock)
@@ -718,6 +738,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Should fail with invalid_change.
      * @throws Exception
      */
+    @Test
     public void testScheduleChannelChangesChangeExplicitAndDefaultSameBaseForTwoServers() throws Exception {
         context().checking(new Expectations() { {
             never(taskomaticMock)
@@ -788,6 +809,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * to child channels for two servers.
      * @throws Exception
      */
+    @Test
     public void testScheduleChannelChangesChangeExplicitAndDefaultDifferentBasesForTwoServers() throws Exception {
         context().checking(new Expectations() { {
             exactly(2).of(taskomaticMock)
@@ -894,6 +916,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * and subscribe child channels.
      * @throws Exception
      */
+    @Test
     public void testScheduleChannelChangesChangeExplicitAndDefaultNoBasesForTwoServers() throws Exception {
         context().checking(new Expectations() { {
             exactly(2).of(taskomaticMock)
@@ -994,6 +1017,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Schedule an incompatible base channel change on a server that has a base channel.
      * @throws Exception
      */
+    @Test
     public void testScheduleChannelChangesWithIncompatibleBase() throws Exception {
         Org org2 = UserTestUtils.createNewOrgFull("anotherOrg");
 
@@ -1045,6 +1069,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      * Schedule an incompatible base channel change on a server that has a base channel.
      * @throws Exception
      */
+    @Test
     public void testScheduleChannelChangesWithIncompatibleBaseOnNoBaseServer() throws Exception {
         Org org2 = UserTestUtils.createNewOrgFull("anotherOrg");
 

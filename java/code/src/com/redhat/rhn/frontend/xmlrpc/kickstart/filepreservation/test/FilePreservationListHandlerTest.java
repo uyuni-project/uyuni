@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -21,6 +26,8 @@ import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +41,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
 
     private FilePreservationListHandler handler = new FilePreservationListHandler();
 
+    @Test
     public void testListAll() throws Exception {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
@@ -64,6 +72,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
         assertTrue(found);
     }
 
+    @Test
     public void testCreate() throws Exception {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
@@ -85,6 +94,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, entryCreated.getFileNames().size());
     }
 
+    @Test
     public void testDelete() throws Exception {
         // Setup
         KickstartLister lister = KickstartLister.getInstance();
@@ -105,6 +115,7 @@ public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
         assertNull(entryDeleted);
     }
 
+    @Test
     public void testGetDetails() throws Exception {
         // Setup
         FileList fileList = createFileList();

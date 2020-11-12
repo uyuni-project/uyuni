@@ -14,9 +14,14 @@
  */
 package com.redhat.rhn.manager.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.manager.org.CreateOrgCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author mmccune
@@ -24,6 +29,7 @@ import com.redhat.rhn.testing.TestUtils;
  */
 public class CreateOrgCommandTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testCreateOrg() throws Exception {
         CreateOrgCommand cmd = new CreateOrgCommand(
                 "newOrg" + TestUtils.randomString(),
@@ -36,6 +42,7 @@ public class CreateOrgCommandTest extends BaseTestCaseWithUser {
         assertNotNull(cmd.getNewOrg().getId());
     }
 
+    @Test
     public void testFailCreate() throws Exception {
         CreateOrgCommand cmd = new CreateOrgCommand(
                 "newOrg" + TestUtils.randomString(),

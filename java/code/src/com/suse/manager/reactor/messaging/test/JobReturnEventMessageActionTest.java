@@ -14,6 +14,14 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -99,6 +107,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.InputStreamReader;
@@ -139,6 +149,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -174,6 +185,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdate() throws Exception {
         // Prepare test objects: minion server, products and action
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -237,6 +249,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    @Test
     public void testApplyPackageDelta() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         assertEquals(0, minion.getPackages().size());
@@ -277,6 +290,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, minion.getPackages().size());
     }
 
+    @Test
     public void testApplyPackageDeltaWithDuplicates() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -295,6 +309,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("7.1", packages.get(0).getEvr().getRelease());
     }
 
+    @Test
     public void testsPackageDeltaFromStateApply() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         assertEquals(0, minion.getPackages().size());
@@ -324,6 +339,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateAllVersions() throws Exception {
         // set up minion, action and response: 6 packages installed
         // aaa_base, java, bash (x86_64 and i686), kernel-default (4.4.73-5.1 and 4.4.126-94.22.1)
@@ -393,6 +409,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateMultiple() throws Exception {
         // set up minion, action and response: 3 packages installed
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -465,6 +482,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(3, minion.getPackages().size());
     }
 
+    @Test
     public void testPackagesProfileUpdateLivePatching() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -512,6 +530,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateRhel7RES() throws Exception {
         RhelUtilsTest.createResChannel(user, "7");
         // Prepare test objects: minion server, products and action
@@ -579,6 +598,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateUbuntu() throws Exception {
         // Prepare test objects: minion server, products and action
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -637,6 +657,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testPackagesProfileUpdateDebian() throws Exception {
         // Prepare test objects: minion server, products and action
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -690,6 +711,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    @Test
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", (server) -> {
             assertNotNull(server);
@@ -705,6 +727,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateDockerNoDmiUdev()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.docker.json", (server) -> {
             assertNotNull(server);
@@ -719,6 +742,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateX86() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
             assertNotNull(server);
@@ -795,6 +819,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateGrainsFqdns() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.ppc64.json", (server) -> {
             assertNotNull(server);
@@ -802,6 +827,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateCustomFqdns() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.x86.custom.fqdns.json", (server) -> {
             assertNotNull(server);
@@ -813,6 +839,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateNetworkModuleFqdns() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
             assertNotNull(server);
@@ -820,6 +847,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdateX86LongCPUValues()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.cpulongval.x86.json", (server) -> {
             assertNotNull(server);
@@ -837,6 +865,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatePPC64()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.ppc64.json", (server) -> {
             assertNotNull(server);
@@ -891,6 +920,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testHardwareProfileUpdateScsiDevices()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.scsi.x86.json", (server) -> {
             assertNotNull(server);
@@ -904,6 +934,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatePrimaryIPv4Only()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4only.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -918,6 +949,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatePrimaryIPv4OnlyLocalhost()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4onlylocalhost.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -932,6 +964,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatetPrimaryIPv6Only()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv6only.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -945,6 +978,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileUpdatetPrimaryIPV4IPv6()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -957,6 +991,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileChangeNetworkIP()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json",
             (server) -> {
@@ -986,6 +1021,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
     }
 
+    @Test
     public void testHardwareProfileMultiIP()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.multi-ipv4.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -1003,6 +1039,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileNoNetworkIPChange()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json",
             (server) -> {
@@ -1031,6 +1068,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
     }
 
+    @Test
     public void testHardwareProfileUpdatePrimaryIPsEmptySSH()  throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -1061,6 +1099,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, server.getFqdns().size());
     }
 
+    @Test
     public void testHardwareProfileUpdateS390() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.s390.json", (server) -> {
             assertNotNull(server);
@@ -1157,6 +1196,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return server;
     }
 
+    @Test
     public void testHardwareProfileInfiniband()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.infiniband.json", (server) -> {
             Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -1167,11 +1207,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    @Test
     public void testHardwareProfileXenHost()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.xen-host.json",
-                (server) -> assertFalse("system should not be a virtual guest", server.isVirtualGuest()));
+                (server) -> assertFalse(server.isVirtualGuest(), "system should not be a virtual guest"));
     }
 
+    @Test
     public void testHardwareProfilePublicCloud()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.public_cloud.json", (server) -> {
             assertNotNull(server);
@@ -1224,6 +1266,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testUpdateServerAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("abcdefg.vagrant.local");
@@ -1267,6 +1310,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().assertIsSatisfied();
     }
 
+    @Test
     public void testOpenscap() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -1332,6 +1376,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * number are filled correctly.
      * @throws Exception
      */
+    @Test
     public void testContainerImageBuild()  throws Exception {
         String digest1 = "1111111111111111111111111111111111111111111111111111111111111111";
         String digest2 = "2222222222222222222222222222222222222222222222222222222222222222";
@@ -1402,6 +1447,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * Build and inspect two versions of the same image.
      * @throws Exception
      */
+    @Test
     public void testContainerImageBuildMultipleVersions()  throws Exception {
         String digest = "1111111111111111111111111111111111111111111111111111111111111111";
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
@@ -1466,6 +1512,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     /* Test container image import feature: imports an image and checks if image info has been populated.
      * @throws Exception
      */
+    @Test
     public void testContainerImageImport()  throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1578,6 +1625,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return imgInfo;
     }
 
+    @Test
     public void testKiwiImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1619,6 +1667,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
     }
 
+    @Test
     public void testKiwiImageInspect() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1680,6 +1729,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                    .findAny().isPresent());
     }
 
+    @Test
     public void testKiwiImageInspectCompressedImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1811,6 +1861,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return taskomaticApi;
     }
 
+    @Test
     public void testNoRegisterOnInexistentMinionReturnEvent() throws Exception {
         int initialMessageCount = MessageQueue.getMessageCount();
         // Setup an event message from file contents
@@ -1825,6 +1876,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(initialMessageCount, MessageQueue.getMessageCount());
     }
 
+    @Test
     public void testSubscribeChannelsActionSuccess() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
@@ -1886,6 +1938,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTokenChannel(minion, ch2);
     }
 
+    @Test
     public void testSubscribeChannelsActionNullTokens() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
@@ -1941,11 +1994,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     private void assertTokenChannel(MinionServer minion, Channel channel) {
-        assertTrue(channel.getLabel(), minion.getAccessTokens().stream()
+        assertTrue(minion.getAccessTokens().stream()
                 .filter(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel))
-                .findFirst().isPresent());
+                .findFirst().isPresent(), channel.getLabel());
     }
 
+    @Test
     public void testFailDependentServerActions() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         Action applyStateAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
@@ -1988,6 +2042,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("Prerequisite failed", runScriptSeverAction.getResultMsg());
     }
 
+    @Test
     public void testStateErrorResponse() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("demo-kvm1.tf.local");
@@ -2015,6 +2070,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getResultMsg().contains("default-broken pool is not defined"));
     }
 
+    @Test
     public void testActionChainResponse() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -2084,6 +2140,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new String(scriptResult.getOutput()));
     }
 
+    @Test
     public void testActionChainPackageRefreshNeeded() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -2117,9 +2174,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         //Verify that there are 2 actions scheduled, one apply state that we scheduled above and
         //2nd was because full package refresh was needed.
-        assertEquals("2 actions have been scheduled for server 1", 2, serversActions.size());
+        assertEquals(2, serversActions.size(), "2 actions have been scheduled for server 1");
     }
 
+    @Test
     public void testActionChainPackageRefreshNotNeeded() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -2152,9 +2210,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         //Verify that there is only one action scheduled, the apply state one that we scheduled above
-        assertEquals("2 actions have been scheduled for server 1", 1, serversActions.size());
+        assertEquals(1, serversActions.size(), "2 actions have been scheduled for server 1");
     }
 
+    @Test
     public void testMinionStartupResponse() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String runningKernel = minion.getRunningKernel();

@@ -14,11 +14,15 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.xmlrpc.serializer.OrgSerializer;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -30,6 +34,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 public class OrgSerializerTest extends MockObjectTestCase {
 
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
         OrgSerializer os = new OrgSerializer();
 

@@ -19,6 +19,9 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_D
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -38,6 +41,8 @@ import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -53,12 +58,14 @@ import java.util.Map;
 public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
+    @Test
     public void testGenerateServerConfigState() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -93,6 +100,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel2)));
     }
 
+    @Test
     public void testRegenerateConfigStates() throws Exception {
         Server minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         Server minion2 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -155,6 +163,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel2)));
     }
 
+    @Test
     public void testImageSyncedPillar() throws Exception {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
 

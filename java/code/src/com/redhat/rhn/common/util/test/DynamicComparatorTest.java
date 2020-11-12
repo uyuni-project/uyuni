@@ -14,11 +14,15 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DynamicComparator;
 import com.redhat.rhn.common.validator.test.TestObject;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,6 +30,7 @@ import java.util.List;
 
 public class DynamicComparatorTest extends RhnJmockBaseTestCase {
 
+    @Test
     public void testComparatorMaps() {
         List list = generateRandomList();
         DynamicComparator comp = new DynamicComparator("stringField",

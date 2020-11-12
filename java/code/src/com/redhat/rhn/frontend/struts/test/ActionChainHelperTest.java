@@ -17,6 +17,11 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -27,6 +32,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.mockobjects.servlet.MockHttpServletRequest;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.Test;
 import org.stringtree.json.JSONWriter;
 
 import java.util.HashMap;
@@ -42,6 +48,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     /**
      * Tests readActionChain().
      */
+    @Test
     public void testReadActionChain() {
         ActionChain chain = ActionChainFactory.createActionChain(TestUtils.randomString(),
             user);
@@ -73,6 +80,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     /**
      * Tests prepopulateActionChains().
      */
+    @Test
     public void testPrepopulateActionChains() {
         List<ActionChain> actionChains = new LinkedList<>();
         for (int i = 0; i < 10; i++) {

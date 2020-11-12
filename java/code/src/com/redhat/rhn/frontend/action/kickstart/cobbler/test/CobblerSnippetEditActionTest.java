@@ -16,12 +16,15 @@ package com.redhat.rhn.frontend.action.kickstart.cobbler.test;
 
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * CobblerSnippetListSetupTest
  * @version $Rev: 1 $
  */
 public class CobblerSnippetEditActionTest extends RhnMockStrutsTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         setRequestPathInfo("/kickstart/cobbler/CobblerSnippetEdit");
         addRequestParameter("name", "redhat_register");
@@ -30,6 +33,7 @@ public class CobblerSnippetEditActionTest extends RhnMockStrutsTestCase {
 
     /**
      * TODO: Right now this blows up with a permission denied.
+    @Test
     public void testSubmitExecute() throws Exception {
         setRequestPathInfo("/kickstart/cobbler/CobblerSnippetEdit");
         addRequestParameter("name", "redhat_register");
@@ -38,6 +42,7 @@ public class CobblerSnippetEditActionTest extends RhnMockStrutsTestCase {
     }
 
 
+    @Test
     public void testDelete() throws Exception {
         setRequestPathInfo("/kickstart/cobbler/CobblerSnippetDelete");
         addRequestParameter("name", "pre_install_network_config.rpmnew");

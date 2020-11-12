@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.DisableSelfConfirmAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -22,12 +25,14 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 /**
  * DisableSelfConfirmActionTest
  */
 public class DisableSelfConfirmActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         DisableSelfConfirmAction action = new DisableSelfConfirmAction();
         ActionHelper ah = new ActionHelper();

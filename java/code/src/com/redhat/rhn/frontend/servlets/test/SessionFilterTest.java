@@ -14,17 +14,21 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.hibernate.Session;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +41,8 @@ public class SessionFilterTest extends MockObjectTestCase {
     private HttpServletResponse response;
     private FilterChain chain;
 
-    public void setUp() throws IOException, ServletException {
+    @BeforeEach
+    public void setUp() throws Exception {
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         chain = mock(FilterChain.class);
@@ -47,6 +52,7 @@ public class SessionFilterTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testDoFilter() throws Exception {
         SessionFilter filter = new SessionFilter();
         Session sess = HibernateFactory.getSession();

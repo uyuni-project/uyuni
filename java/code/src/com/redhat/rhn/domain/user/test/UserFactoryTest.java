@@ -15,6 +15,12 @@
 
 package com.redhat.rhn.domain.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
@@ -35,6 +41,9 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -47,12 +56,12 @@ import java.util.TimeZone;
 public class UserFactoryTest extends RhnBaseTestCase {
     private UserFactory factory;
 
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         factory = UserFactory.getInstance();
     }
 
+    @Test
     public void testStateChanges() throws Exception {
 
         User orgAdmin = UserTestUtils.createUser("UFTOrgAdmin",
@@ -95,6 +104,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertTrue(usr.getStateChanges().size() == 2);
     }
 
+    @Test
     public void testStates() {
         State e = UserFactory.ENABLED;
         State d = UserFactory.DISABLED;
@@ -105,11 +115,13 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertEquals(d.getLabel(), "disabled");
     }
 
+    @Test
     public void testCreateAddress() {
         Address addr = UserFactory.createAddress();
         assertNotNull(addr);
     }
 
+    @Test
     public void testLookupById() throws Exception {
         Long id = UserTestUtils.createUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -118,6 +130,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertNotNull(usr.getFirstNames());
     }
 
+    @Test
     public void testLookupByIds() throws Exception {
         List<Long> idList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
@@ -131,6 +144,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertContains(userList.get(1).getLogin(), "testUserSecond");
     }
 
+    @Test
     public void testLookupByLogin() throws Exception {
         Long id = UserTestUtils.createUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -144,11 +158,13 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertNotNull(usrByLogin.getOrg());
     }
 
+    @Test
     public void testLookupNotExists() throws Exception {
         User usr = UserFactory.lookupById(-99999L);
         assertNull(usr);
     }
 
+    @Test
     public void testEmailA() {
         Long id = UserTestUtils.createUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -156,6 +172,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         UserFactory.save(usr);
     }
 
+    @Test
     public void testGetTimeZoneOlson() {
         RhnTimeZone tz = UserFactory.getTimeZone("America/Los_Angeles");
         assertNotNull(tz);
@@ -165,6 +182,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertNull(tz2);
     }
 
+    @Test
     public void testGetTimeZoneId() {
         RhnTimeZone tz = UserFactory.getTimeZone(UserFactory
                 .getTimeZone("America/Los_Angeles").getTimeZoneId());
@@ -175,12 +193,14 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertNull(tz2);
     }
 
+    @Test
     public void testGetTimeZoneDefault() {
         RhnTimeZone tz = UserFactory.getDefaultTimeZone();
         assertNotNull(tz);
         assertTrue(tz.getTimeZone().getRawOffset() == TimeZone.getDefault().getRawOffset());
     }
 
+    @Test
     public void testTimeZoneLookupAll() {
         List tzList = UserFactory.lookupAllTimeZones();
         // Total seems to fluctuate, check for 30+:
@@ -197,6 +217,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
                         getTimeZone().getRawOffset() > 0);
     }
 
+    @Test
     public void testCommitUser() throws Exception {
 
         Long id = UserTestUtils.createUser("testUser",
@@ -235,6 +256,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testLookupMultiple() throws Exception {
         int len = 3;
         String[] logins = new String[len];
@@ -251,6 +273,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testCreateNewUser() {
         /* This specifically DOESN'T use UserTestUtils.createUser(), because
          * I am testing how commitNewUser works.
@@ -293,6 +316,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertEquals("444 Castro", dbAddr.getAddress1());
     }
 
+    @Test
     public void testUserServerPreferenceLookup() throws Exception {
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                                               TestStatics.TESTORG + "UserFactoryTest");
@@ -319,6 +343,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testSetUserServerPreferenceTrue() throws Exception {
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                                               TestStatics.TESTORG + "UserFactoryTest");
@@ -350,11 +375,13 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testSatelliteHasUsers() {
         UserTestUtils.findNewUser("testUser", "testUserOrg", true);
         assertTrue(UserFactory.satelliteHasUsers());
     }
 
+    @Test
     public void testFindAllOrgAdmins() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "findAdminsOrg", true);
         User user2 = UserTestUtils.findNewUser("testUser2", "findAdminsOrg", true);

@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.UserPrefAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -28,6 +32,7 @@ import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.Test;
 
 /**
  * UserPrefActionTest
@@ -41,6 +46,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
      *
      * @throws Exception on server init failure
      */
+    @Test
     public void testPerformExecute() throws Exception {
         UserPrefAction action = new UserPrefAction();
 

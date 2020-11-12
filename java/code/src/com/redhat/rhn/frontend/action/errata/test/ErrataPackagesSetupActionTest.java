@@ -14,17 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.frontend.action.errata.ErrataPackagesSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * ErrataPackagesSetupActionTest
  */
 public class ErrataPackagesSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
 
         ErrataPackagesSetupAction action = new ErrataPackagesSetupAction();

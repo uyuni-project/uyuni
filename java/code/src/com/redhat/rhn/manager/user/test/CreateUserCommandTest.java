@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -26,16 +29,20 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public class CreateUserCommandTest extends RhnBaseTestCase {
 
     private CreateUserCommand command;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         command = new CreateUserCommand();
         assertNotNull(command.getUser());
     }
 
+    @Test
     public void testLongNames() {
         int maxLogin = UserDefaults.get().getMaxUserLength();
         int maxPassword = UserDefaults.get().getMaxPasswordLength();
@@ -69,6 +76,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     }
 
 
+    @Test
     public void testValidate() {
         String invalidLogin = "";
         String validLogin   = TestUtils.randomString();
@@ -104,6 +112,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         assertEquals(0, errors.length);
     }
 
+    @Test
     public void testStore() {
         Org org = UserTestUtils.findNewOrg("testorg");
 
@@ -130,6 +139,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         assertEquals(PageSizeDecorator.getDefaultPageSize(), result.getPageSize());
     }
 
+    @Test
     public void testUsernameValidation() {
         // setup stuff required for command
         command.setEmail("validemail@mycompany.com");
@@ -168,7 +178,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         cmd.setLogin(username);
         Object[] errors = cmd.validate();
         assertNotNull(errors);
-        assertEquals(username + " caused failure", 1, errors.length);
+        assertEquals(1, errors.length, username + " caused failure");
     }
 
     private void validUsername(String username, CreateUserCommand cmd) {
@@ -176,10 +186,11 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         cmd.setLogin(username);
         Object[] errors = cmd.validate();
         assertNotNull(errors);
-        assertEquals(username + " caused failure", 0, errors.length);
+        assertEquals(0, errors.length, username + " caused failure");
     }
 
 
+    @Test
     public void testValidatePasswordHasTabCharacter() throws Exception {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
@@ -189,6 +200,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         assertEquals(1, errors.length);
     }
 
+    @Test
     public void testValidatePasswordHasNewlineCharacter() throws Exception {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");

@@ -16,6 +16,8 @@
 package com.redhat.rhn.manager.visualization.test;
 
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -46,6 +48,9 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 
 import com.suse.manager.webui.services.test.TestSaltApi;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -61,6 +66,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      * {@inheritDoc}
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
     }
@@ -69,6 +75,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      * Basic test for proxy hierarchy
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testProxyHierarchy() throws Exception {
         Server proxy = createTestProxy();
         SystemManager.storeServer(proxy);
@@ -134,6 +141,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      * Test for virtualization hierarchy
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testVirtualizationHierarchy() throws Exception {
         Server host = ServerFactoryTest.createTestServer(user, true);
         VirtualInstance vi = new GuestBuilder(user).createGuest().build();
@@ -189,6 +197,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      *
      * @throws if anything goes wrong
      */
+    @Test
     public void testVirtualizationHierarchyNoUnknownVHM() throws Exception {
         Server host = ServerFactoryTest.createTestServer(user, true);
         VirtualInstance vi = new GuestBuilder(user).createGuest().build();
@@ -213,6 +222,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
     /**
      * Tests that "Unknown virtual host manager" is not present when there are no systems at all.
      */
+    @Test
     public void testEmptyVirtualizationHierarchyNoUnknownVHM() {
         List<Object> hierarchy = VisualizationManager.virtualizationHierarchy(user);
         assertEquals(1, hierarchy.size());
@@ -223,6 +233,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      * Test for retrieval of systems and groups
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testSystemsWithGroups() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, false);
@@ -249,6 +260,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      * Test for retrieval of systems and groups
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testPatchCountSystemsWithGroups() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);

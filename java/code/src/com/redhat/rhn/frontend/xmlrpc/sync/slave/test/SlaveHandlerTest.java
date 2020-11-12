@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.sync.slave.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.Org;
@@ -24,6 +30,9 @@ import com.redhat.rhn.frontend.xmlrpc.sync.slave.SlaveHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +41,14 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
     private SlaveHandler handler = new SlaveHandler();
     private String slaveName;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
         slaveName = "testSlave" + TestUtils.randomString();
     }
 
+    @Test
     public void testCreate() {
         // Make sure that non-sat-admin users cannot access
         try {
@@ -60,6 +71,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
         }
    }
 
+    @Test
     public void testUpdate() {
         IssSlave slave = handler.create(admin, slaveName, true, true);
 
@@ -90,6 +102,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testDelete() {
         IssSlave slave = handler.create(admin, slaveName, true, true);
         Long slaveId = slave.getId();
@@ -117,6 +130,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
         assertNull(mstr);
     }
 
+    @Test
     public void testGetSlave() {
         IssSlave slave = handler.create(admin, slaveName, true, true);
         Integer slaveId = slave.getId().intValue();
@@ -140,6 +154,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testGetAllowedOrgs() {
         IssSlave slave = handler.create(admin, slaveName, true, false);
 
@@ -165,6 +180,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testSetAllowedOrgs() {
         IssSlave slave = handler.create(admin, slaveName, true, false);
 

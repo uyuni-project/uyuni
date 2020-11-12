@@ -14,20 +14,25 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.dto.AuditMachineDto;
 import com.redhat.rhn.manager.audit.AuditManager;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 
-import junit.framework.TestCase;
+
+public class AuditManagerTest  {
 
 
-public class AuditManagerTest extends TestCase {
-
-
+    @Test
     public void testGetMachines() throws Exception {
         String testdir =  "/tmp/sw-audit-test";
         String machinename = TestUtils.randomString();

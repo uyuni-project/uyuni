@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.manager.configuration.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -64,8 +71,13 @@ import org.apache.commons.lang3.RandomUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,6 +90,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.stream.LongStream;
 
+@ExtendWith(JUnit5Mockery.class)
 public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
     private User user;
@@ -86,11 +99,13 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     private static final ConfigFileCount EXPECTED_COUNT =
                                     ConfigFileCount.create(3, 0, 1, 0);
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    @RegisterExtension
+    protected final Mockery context = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         //Create a user and an org
@@ -99,10 +114,11 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         pc.setStart(1);
         pc.setPageSize(20);
         cm = ConfigurationManager.getInstance();
-        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Override
+    @AfterEach
     public void tearDown() throws Exception {
         user = null;
         pc = null;
@@ -110,6 +126,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         super.tearDown();
     }
 
+    @Test
     public void testListSystemsForFileCopy() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -217,6 +234,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dto.getConfigRevisionId());
     }
 
+    @Test
     public void testListCurrentFiles() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -248,6 +266,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     /**
      * Tests listing files of a state config channel.
      */
+    @Test
     public void testListCurrentFilesSlsCase() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -277,6 +296,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, dr.getTotalSize());
     }
 
+    @Test
     public void testGlobalFileDeployInfo() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -414,6 +434,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testListGlobalChannels() throws Exception {
         //Create a config channel
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
@@ -433,6 +454,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, ((ConfigChannelDto)dr.get(0)).getSystemCount().intValue());
     }
 
+    @Test
     public void testListGlobalChannelsForSDC() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -452,6 +474,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertFalse(contains(cc, dr));
     }
 
+    @Test
     public void testListGlobalChannelsForActivationKeys() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
 
@@ -493,6 +516,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         return false;
     }
 
+    @Test
     public void testListManagedSystemsAndFiles() throws Exception {
         //Create a config file, along with a config channel
         ConfigFile cf = ConfigTestUtils.createConfigFile(user.getOrg());
@@ -525,6 +549,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, dto.getGlobalFileCount().intValue());
     }
 
+    @Test
     public void testListGlobalConfigFiles() throws Exception {
         //Create a config file,  and a config channel
         ConfigFile cf = ConfigTestUtils.createConfigFile(user.getOrg());
@@ -542,6 +567,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, ((ConfigFileDto)dr.get(0)).getSystemCount().intValue());
     }
 
+    @Test
     public void testListLocalConfigFiles() throws Exception {
         //Create a local Config Channel
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -570,6 +596,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertNotNull(((ConfigFileDto)dr.get(0)).getServerName());
     }
 
+    @Test
     public void testGetRecentlyModifiedConfigFiles() throws Exception {
         //Create a channel to put files in
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
@@ -606,6 +633,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertTrue(numToShow < numFiles);
     }
 
+    @Test
     public void testGetOverviewSummary() throws Exception {
         //Create a config channel
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
@@ -650,6 +678,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception something bad happened
      */
+    @Test
     public void testAvailableChannels() throws Exception {
         // Create a system
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
@@ -688,6 +717,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
      * @throws Exception under exceptional circumstances
      */
 
+    @Test
     public void testCountCentrallyManagedFiles() throws Exception {
         user.getOrg().addRole(RoleFactory.CONFIG_ADMIN);
         user.addPermanentRole(RoleFactory.CONFIG_ADMIN);
@@ -754,6 +784,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
      * @throws Exception under exceptional circumstances
      */
 
+    @Test
     public void testCountCentrallyDeployableFiles() throws Exception {
         Server s = makeServerForChannelCountTests();
         ConfigFileCount actual = cm.countCentrallyDeployablePaths(s, user);
@@ -799,6 +830,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
      * Counts the number of locally managed files... for a given server
      * @throws Exception if channel/server creation fails
      */
+    @Test
     public void testCountLocallyManagedFiles() throws Exception {
         Server s = makeServerForChannelCountTests();
 
@@ -841,6 +873,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
 
+    @Test
     public void testGetLocalDeploysTo() throws Exception {
         //Create a local config channel
         ConfigChannel lcc = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -858,6 +891,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, deploys.size());
     }
 
+    @Test
     public void testListSystemInfoForChannel() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -931,6 +965,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, dr.getTotalSize());
     }
 
+    @Test
     public void testChannelSubscriptions() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         Server s = ConfigTestUtils.giveUserChanAccess(user, cc);
@@ -943,6 +978,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, s.getConfigChannelCount());
     }
 
+    @Test
     public void testFilesNotInChannel() throws Exception {
         // Create two channels
         ConfigChannel cc1 = ConfigTestUtils.createConfigChannel(user.getOrg());
@@ -964,6 +1000,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(4, dr.getTotalSize());
     }
 
+    @Test
     public void testListSystemsNotInChannel() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -1030,14 +1067,15 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertTrue(2 <= dr.getTotalSize());
     }
 
+    @Test
     public void testDeployConfiguration() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
         ConfigurationManager mgr = ConfigurationManager.getInstance();
 
-        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+        TaskomaticApi taskomaticMock = context.mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
 
-        CONTEXT.checking(new Expectations() { {
+        context.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
@@ -1103,6 +1141,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testDeployFiles() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -1182,6 +1221,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(m.get("override"), 1L);
     }
 
+    @Test
     public void testListManagedFilePaths() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -1312,6 +1352,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testSandboxManagedFilePaths() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
@@ -1358,6 +1399,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
     public void testCopyFile() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -1427,6 +1469,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             throw new Exception("Valid Access not detected!.", ie);
         }
     }
+    @Test
     public void testChannelAccess() throws Exception {
         // Create a server we DON'T own - we shouldn't have channel access
         Server srv = ServerFactoryTest.createTestServer(user, false);
@@ -1477,6 +1520,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListCapableSystems() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         Server tradClient = ServerFactoryTest.createUnentitledTestServer(user, true,
@@ -1498,6 +1542,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testListCapableSystemsInSet() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         Server tradClient = ServerFactoryTest.createUnentitledTestServer(user, true,
@@ -1520,6 +1565,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     /**
      * Test method for determining if a channel is duplicated.
      */
+    @Test
     public void testIsNormalChannelDuplicated() {
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
@@ -1540,6 +1586,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     /**
      * Test method for determining if a channel is duplicated.
      */
+    @Test
     public void testIsLocalChannelDuplicated() {
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.local());

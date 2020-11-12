@@ -14,18 +14,23 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.ListTag;
 import com.redhat.rhn.frontend.taglibs.UnpagedListDisplayTag;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,8 +50,8 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     private PageContext context;
     private RhnMockJspWriter writer;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         RhnBaseTestCase.disableLocalizationServiceLogging();
 
@@ -71,6 +76,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public void testTitle() throws JspException {
         context().checking(new Expectations() { {
             atLeast(1).of(context).popBody();
@@ -91,14 +97,12 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         assertEquals(Tag.EVAL_PAGE, tagval);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    public void tearDown() throws Exception {
         RhnBaseTestCase.enableLocalizationServiceLogging();
     }
 
+    @Test
     public void testTag() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(context).popBody();
@@ -120,6 +124,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         assertEquals(tagval, Tag.EVAL_PAGE);
     }
 
+    @Test
     public void testExport() throws Exception {
         RhnMockServletOutputStream out = new RhnMockServletOutputStream();
         context().checking(new Expectations() { {

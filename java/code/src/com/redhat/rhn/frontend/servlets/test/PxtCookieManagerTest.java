@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.manager.session.SessionManager;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -41,23 +46,12 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
 
     private Long pxtSessionId;
 
-    /**
-     * @param name the test case name
-     */
-    public PxtCookieManagerTest(String name) {
-        super(name);
-    }
-
     private HttpServletRequest getRequest() {
         return mockRequest;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() throws Exception {
         manager = new PxtCookieManager();
 
         pxtSessionId = 2658447890L;
@@ -75,10 +69,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         } });
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public final void testGetPxtCookieWhenPxtCookieIsNotPresent() {
         final Cookie[] cookies = new Cookie[] {
                 new Cookie("cookie-1", "one"),
@@ -93,6 +84,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertNull(manager.getPxtCookie(getRequest()));
     }
 
+    @Test
     public final void testGetPxtCookieWhenNoCookiesPresent() {
         context().checking(new Expectations() { {
             allowing(mockRequest).getCookies();
@@ -102,6 +94,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertNull(manager.getPxtCookie(getRequest()));
     }
 
+    @Test
     public final void testGetPxtCookieWhenPxtCookieIsPresentWithoutPxtPersonalities() {
         final Cookie[] cookies = new Cookie[] {
                 new Cookie("cookie-1", "one"),
@@ -118,12 +111,14 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(cookies[1], manager.getPxtCookie(getRequest()));
     }
 
+    @Test
     public final void testCreatePxtCookieSetsNameWithoutPxtPersonalities() {
         Cookie pxtCookie = manager.createPxtCookie(pxtSessionId, getRequest(), TIMEOUT);
 
         assertEquals(PxtCookieManager.PXT_SESSION_COOKIE_NAME, pxtCookie.getName());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsValue() {
         String expected = pxtSessionId + "x" +
             SessionManager.generateSessionKey(pxtSessionId.toString());
@@ -133,6 +128,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(expected, pxtCookie.getValue());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsPath() {
         String expected = "/";
 
@@ -141,6 +137,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(expected, pxtCookie.getPath());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsMaxAge() {
         int expected = TIMEOUT;
 
@@ -149,6 +146,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
         assertEquals(expected, pxtCookie.getMaxAge());
     }
 
+    @Test
     public final void testCreatePxtCookieSetsSecure() {
         Cookie pxtCookie = manager.createPxtCookie(pxtSessionId, getRequest(), TIMEOUT);
 

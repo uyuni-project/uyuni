@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.channel.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
@@ -25,6 +27,9 @@ import com.redhat.rhn.manager.channel.repo.CreateRepoCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * BaseRepoCommandTest
  */
@@ -34,14 +39,15 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
     private int label_count = 0;
     private User user = null;
 
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         user = UserTestUtils.createUser("testUser", oid);
         Org org = user.getOrg();
         ccc = new CreateRepoCommand(org);
     }
 
+    @Test
     public void testVerifyUrlInput() {
 
         // Url must begin with a valid protocol (http, https, ftp, ...),
@@ -135,6 +141,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
     public void testRepoLabelInput() {
 
         // Repository label must contain only letters, hyphens, periods, underscores and numeral

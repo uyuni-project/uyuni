@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.manager.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -46,9 +49,12 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -56,19 +62,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@ExtendWith(JUnit5Mockery.class)
 public class AnsibleManagerTest extends BaseTestCaseWithUser {
-
-    private Mockery context;
 
     private SaltApi saltApi;
     private AnsibleManager ansibleManager;
 
+    @RegisterExtension
+    protected final JUnit5Mockery context = new JUnit5Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+    }};
+
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        context = new JUnit3Mockery() {{
-            setThreadingPolicy(new Synchroniser());
-        }};
         saltApi = context.mock(SaltApi.class);
         ansibleManager = new AnsibleManager(saltApi);
     }
@@ -78,6 +86,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testSaveAndLookupAnsiblePath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = new InventoryPath(minion);
@@ -94,6 +103,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testSaveAndLookupAnsiblePathNoPerms() throws Exception {
         User chuck = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
 
@@ -132,6 +142,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Test updating non existing ansible path
      */
+    @Test
     public void testUpdateNonExistingAnsiblePath() {
         try {
             AnsibleManager.updateAnsiblePath(-12345, "/tmp/test", user);
@@ -147,6 +158,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testUpdateAnsiblePath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
@@ -157,6 +169,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         assertEquals(path, updated);
     }
 
+    @Test
     public void testCreateAnsiblePathNormalSystem() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -174,6 +187,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testSaveAnsibleRelativePath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         try {
@@ -188,6 +202,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Tests fetching non existing playbook path
      */
+    @Test
     public void testFetchPlaybookInvalidPath() {
         try {
             ansibleManager.fetchPlaybookContents(-1234, "path/to/playbook", user);
@@ -201,6 +216,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Tests fetching playbook path using an absolute path
      */
+    @Test
     public void testFetchPlaybookAbsolutePath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
@@ -217,6 +233,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Tests fetching playbook contents
      */
+    @Test
     public void testFetchPlaybook() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
@@ -234,6 +251,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Tests fetching playbook contents
      */
+    @Test
     public void testFetchPlaybookSaltNoResult() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
@@ -257,6 +275,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testSchedulePlaybookBlankPath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         try {
@@ -274,6 +293,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testSchedulePlaybookNonexistingMinion() throws Exception {
         try {
             AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, false, false, new Date(),
@@ -290,6 +310,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testDiscoverPlaybooks() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
@@ -312,6 +333,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testDiscoverPlaybooksSaltError() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
@@ -335,6 +357,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testDiscoverPlaybooksNonExistingPath() throws Exception {
         try {
             ansibleManager.discoverPlaybooks(-1234, user);
@@ -350,6 +373,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testDiscoverPlaybooksInInventory() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
@@ -366,6 +390,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Test introspect inventory
      */
+    @Test
     public void testIntrospectInventory() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
@@ -387,6 +412,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Test introspect inventory
      */
+    @Test
     public void testIntrospectInventorySaltError() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
@@ -409,6 +435,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Test introspecting inventory in an non-existing path
      */
+    @Test
     public void testIntrospectInventoryNonExistingPath() {
         try {
             ansibleManager.introspectInventory(-1234, user);
@@ -424,6 +451,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception
      */
+    @Test
     public void testIntrospectInventoryInPlaybook() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);

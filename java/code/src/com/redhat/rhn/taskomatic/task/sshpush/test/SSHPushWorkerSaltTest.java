@@ -18,6 +18,9 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -53,6 +56,8 @@ import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.time.Instant;
@@ -78,6 +83,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -100,6 +106,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testUptimeUpdatedAfterReboot() throws Exception {
         minion.setLastBoot(1L); // last boot is long time in the past
         Action action = createRebootAction(
@@ -154,6 +161,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testOldRebootActionsAreCleanedUp() throws Exception {
         minion.setLastBoot(1L); // last boot is long time in the past
         // very old reboot action
@@ -216,6 +224,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.closeSession();
     }
 
+    @Test
     public void testSystemIsRebooting() throws Exception {
         // action to be picked up
         Action upcomingAction = createRebootAction(

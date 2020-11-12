@@ -14,20 +14,24 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ChannelArchSerializer;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
-public class ChannelArchSerializerTest extends TestCase {
+public class ChannelArchSerializerTest  {
 
+    @Test
     public void testSerialize() throws XmlRpcException, IOException {
         ChannelArchSerializer cas = new ChannelArchSerializer();
         ChannelArch ca = new ChannelArch();

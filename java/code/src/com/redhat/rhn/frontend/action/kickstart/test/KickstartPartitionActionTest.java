@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.frontend.action.kickstart.KickstartPartitionEditAction;
@@ -23,6 +27,8 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartPreActionTest
@@ -32,6 +38,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     private KickstartData ksdata;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -40,6 +47,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }
 
+    @Test
     public void testPopulatePartition() throws Exception {
         setRequestPathInfo("/kickstart/KickstartPartitionEdit");
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
@@ -49,6 +57,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(formval.length() > 0);
     }
 
+    @Test
     public void testCleanSubmit() throws Exception {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +
@@ -72,6 +81,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
 
     }
 
+    @Test
     public void testMultipleSwapsSubmit() throws Exception {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +

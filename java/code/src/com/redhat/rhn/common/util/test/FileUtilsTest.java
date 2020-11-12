@@ -14,19 +14,22 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import java.io.File;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import java.io.File;
 
 
 /**
  * @author mmccune
  */
-public class FileUtilsTest extends TestCase {
+public class FileUtilsTest  {
 
+    @Test
     public void testReadWrite() throws Exception {
         String path = "/tmp/" +
             System.currentTimeMillis() +
@@ -40,6 +43,7 @@ public class FileUtilsTest extends TestCase {
         assertEquals(contents, reread);
     }
 
+    @Test
     public void testGetBytesFromFile() throws Exception {
 
         File testFile = new File(TestUtils.findTestData("test.file").getFile());
@@ -49,6 +53,7 @@ public class FileUtilsTest extends TestCase {
         assertEquals(expect, received);
     }
 
+    @Test
     public void testGetTailOfFile() throws Exception {
         String tail = FileUtils.getTailOfFile(
                 TestUtils.findTestData("test.file").getPath(), 1);

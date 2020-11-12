@@ -23,6 +23,9 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -39,6 +42,9 @@ import com.redhat.rhn.manager.contentmgmt.DependencyResolutionResult;
 import com.redhat.rhn.manager.contentmgmt.DependencyResolver;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +57,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     private MockModulemdApi api;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
@@ -71,6 +78,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * Test the resolver with no filters
      * Should resolve an empty list.
      */
+    @Test
     public void testNoFilters() throws DependencyResolutionException {
         assertEquals(0, resolver.resolveFilters(emptyList()).getFilters().size());
     }
@@ -79,6 +87,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * Test package filter resolution
      * Since no dependency resolution is implemented for package filters, the resulting list must be unchanged.
      */
+    @Test
     public void testNoModuleFilters() throws DependencyResolutionException {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "mypkg");
         ContentFilter filter = contentManager.createFilter("mypkg-filter", DENY, PACKAGE, criteria, user);
@@ -93,6 +102,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * Test the resolver with both Module and Package filters
      * Package filters should be left untouched, where the module filter should be transformed into new package filters.
      */
+    @Test
     public void testMixedFilters() throws DependencyResolutionException {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:10");
         ContentFilter filter1 = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria1, user);
@@ -117,6 +127,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * Test the resolver with a non-matching filter
      * Should throw a DependencyResolutionException
      */
+    @Test
     public void testNonMatchingModuleFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:foo");
         ContentFilter filter = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria, user);
@@ -144,6 +155,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      *
      * @see DependencyResolver#resolveModularDependencies
      */
+    @Test
     public void testResolveModuleFilters() throws Exception {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:10");
         ContentFilter filter1 = contentManager.createFilter("postgresql-filter", ALLOW, MODULE, criteria1, user);
@@ -188,6 +200,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      *
      * In the sample data, perl 5.24 has 5.24.0 and 5.24.1 (update) packages.
      */
+    @Test
     public void testResolveModuleFiltersVersionUpdates() throws DependencyResolutionException {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
         ContentFilter filter = contentManager.createFilter("perl-filter", ALLOW, MODULE, criteria, user);
@@ -207,6 +220,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * regular package outside the module space. We should be able to allow serving this package from outside of the
      * module space.
      */
+    @Test
     public void testModuleFiltersForeignPackagesSelected() throws Exception {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
         ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, user);
@@ -227,6 +241,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      * regular package outside the module space. We should be able to filter this package out in case another stream
      * for the same module (e.g. perl-5.24) is selected to prevent conflicts.
      */
+    @Test
     public void testModuleFiltersForeignPackagesConflicting() throws Exception {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
         ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, user);
@@ -247,6 +262,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     /**
      * Test resolver with conflicting module filters
      */
+    @Test
     public void testConflictingStreams() {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
         ContentFilter filter1 = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1, user);

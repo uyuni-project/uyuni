@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.frontend.events.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.domain.user.User;
@@ -25,6 +28,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
 import com.mockobjects.servlet.MockHttpSession;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -40,15 +46,15 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         mailer = new MockMail();
     }
 
     /**
      * test that makes sure we can instantiate the service
      */
+    @Test
     public void testToText() {
         NewUserEvent evt = createTestEvent();
         String eventText = evt.toText();
@@ -61,6 +67,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testAction() {
         NewUserEvent evt = createTestEvent();
         mailer.setExpectedSendCount(2);

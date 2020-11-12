@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.domain.token.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.server.Server;
@@ -21,12 +24,15 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
 
 public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
 
 
+    @Test
     public void testListAssociatedKickstarts() throws Exception {
 
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
@@ -42,6 +48,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
 
     }
 
+    @Test
     public void testLookupByServer() throws Exception {
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
 
@@ -50,6 +57,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, activationKeys.size());
     }
 
+    @Test
     public void testLookupByServerBootstrap() throws Exception {
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
         activationKey.setBootstrap("Y");
@@ -59,6 +67,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, activationKeys.size());
     }
 
+    @Test
     public void testLookupByActivatedServer() throws Exception {
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
         Server server = activationKey.getServer();

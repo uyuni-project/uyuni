@@ -14,9 +14,15 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateImpl;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.TransformerUtils;
@@ -25,7 +31,8 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -100,13 +107,6 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
 
     private PxtCookieManager pxtCookieManager;
 
-    /**
-     * @param name test name
-     */
-    public PxtSessionDelegateImplTest(String name) {
-        super(name);
-    }
-
     private HttpServletRequest getRequest() {
         return mockRequest;
     }
@@ -138,12 +138,8 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         return pxtCookie;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() throws Exception {
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
         mockPxtSession = mock(WebSession.class);
@@ -168,6 +164,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public final void testLoadPxtSessionWhenPxtSessionIdIsNull() {
         setUpLoadPxtSession();
 
@@ -182,6 +179,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         pxtSessionDelegate.loadPxtSession(getRequest());
     }
 
+    @Test
     public final void testLoadPxtSessionWhenPxtSessionIdIsNotNull() {
         setUpLoadPxtSession();
 
@@ -200,6 +198,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         pxtSessionDelegate.loadPxtSession(getRequest());
     }
 
+    @Test
     public final void testLoadPxtSessionWhenPxtSessionIdIsInvalid() {
         setUpLoadPxtSession();
 
@@ -214,6 +213,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         pxtSessionDelegate.loadPxtSession(getRequest());
     }
 
+    @Test
     public final void testIsPxtSessionKeyValidWhenPxtCookieNotFound() {
         context().checking(new Expectations() { {
             allowing(mockRequest).getCookies();
@@ -223,6 +223,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         assertFalse(pxtSessionDelegate.isPxtSessionKeyValid(getRequest()));
     }
 
+    @Test
     public final void testIsPxtSessionKeyVaidWhenSessionKeyInvalid() {
         context().checking(new Expectations() { {
             allowing(mockRequest).getCookies();
@@ -232,6 +233,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         assertFalse(pxtSessionDelegate.isPxtSessionKeyValid(getRequest()));
     }
 
+    @Test
     public final void testIsPxtSessionKeyValidWhenPxtCookieFound() {
         context().checking(new Expectations() { {
             allowing(mockRequest).getCookies();
@@ -241,6 +243,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         assertTrue(pxtSessionDelegate.isPxtSessionKeyValid(getRequest()));
     }
 
+    @Test
     public final void testGetPxtSessionId() {
         final Cookie[] cookies = new Cookie[] {getPxtCookie()};
         context().checking(new Expectations() { {
@@ -251,6 +254,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         assertEquals(PXT_SESSION_ID, pxtSessionDelegate.getPxtSessionId(getRequest()));
     }
 
+    @Test
     public final void testGetPxtSessionIdWhenPxtCookieIsInvalid() {
         final Cookie[] cookies = new Cookie[] {getPxtCookieWithInvalidSessionKey()};
 
@@ -280,6 +284,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         } });
     }
 
+    @Test
     public final void testInvalidatePxtSessionSetsWebUserIdToNull() {
         setUpInvalidatePxtSession();
 
@@ -292,6 +297,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         pxtSessionDelegate.invalidatePxtSession(getRequest(), getResponse());
     }
 
+    @Test
     public final void testInvalidatePxtSessionSavesPxtSession() {
         setUpInvalidatePxtSession();
 
@@ -324,6 +330,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         return new ZeroMaxAgeCookieMatcher();
     }
 
+    @Test
     public final void testInvalidatePxtSessionDeletesPxtCookie() {
         setUpInvalidatePxtSession();
 

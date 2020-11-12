@@ -14,7 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.search.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * No unit-tests exist for SystemSearchHandler, reason being that to add usable test
@@ -29,6 +33,7 @@ public class SystemSearchHandlerTest extends BaseHandlerTestCase {
      * empty test to act as a place holder
      * @throws Exception something bad happened
      */
+    @Test
     public void testDummy() throws Exception {
         assertTrue(true);
     }

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
@@ -22,6 +25,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartScriptCreateActionTest
@@ -29,6 +33,7 @@ import org.apache.commons.lang3.RandomStringUtils;
  */
 public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         // Lets zero out the scripts
         ksdata = clearScripts(ksdata);
@@ -43,6 +48,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         assertNotNull(request.getAttribute(KickstartScriptCreateAction.TYPES));
     }
 
+    @Test
     public void testExecuteLargeValueSubmit() throws Exception {
         String contents = RandomStringUtils.randomAscii(400000);
         String name = RandomStringUtils.randomAscii(20);
@@ -74,6 +80,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         verifyActionMessages(successkeys);
     }
 
+    @Test
     public void testExecuteSubmit() throws Exception {
         // Lets zero out the scripts
         ksdata = clearScripts(ksdata);
@@ -104,6 +111,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         verifyForward("success");
     }
 
+    @Test
     public void testEditExecute() throws Exception {
         assertEquals(5, ksdata.getScripts().size());
         addRequestParameter(KickstartScriptCreateAction.SUBMITTED,
@@ -119,6 +127,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         assertNotNull(request.getAttribute(RequestContext.KICKSTART_SCRIPT_ID));
     }
 
+    @Test
     public void testEditExecuteSubmit() throws Exception {
         String contents = "some script value " + TestUtils.randomString();
         String language = "/usr/bin/perl";

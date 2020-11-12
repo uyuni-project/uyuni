@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
 
@@ -21,6 +23,7 @@ import com.mockobjects.servlet.MockFilterChain;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -34,6 +37,7 @@ import javax.servlet.ServletResponse;
  */
 public class SessionFilterDeadlockTest extends BaseFilterTst {
 
+    @Test
     public void testDeadlockFilter() throws Exception {
         // Make sure the chain blows up.
         chain = new MockFilterChain() {

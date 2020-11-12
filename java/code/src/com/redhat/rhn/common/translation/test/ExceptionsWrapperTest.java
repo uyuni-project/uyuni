@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.common.translation.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.db.ConstraintViolationException;
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -22,26 +27,21 @@ import com.redhat.rhn.common.translation.ExceptionConstants;
 import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class ExceptionsWrapperTest extends TestCase {
+public class ExceptionsWrapperTest  {
 
     private static final Logger LOG = Logger.getLogger(ExceptionsWrapperTest.class);
     private static final String EXCEPTION_TRANSLATOR =
         "com.redhat.rhn.common.translation.ExceptionTranslator";
 
-    public ExceptionsWrapperTest(String name) {
-        super(name);
-    }
-
+    @Test
     public void testConstraintViolation() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -71,6 +71,7 @@ public class ExceptionsWrapperTest extends TestCase {
         });
     }
 
+    @Test
     public void testNamedConstraint() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -102,6 +103,7 @@ public class ExceptionsWrapperTest extends TestCase {
         });
     }
 
+    @Test
     public void testNotReplaced() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -130,6 +132,7 @@ public class ExceptionsWrapperTest extends TestCase {
 
     // Make sure that there are no StackTraceElements from
     // com.redhat.rhn.common.translation
+    @Test
     public void testStackElements() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
@@ -162,21 +165,8 @@ public class ExceptionsWrapperTest extends TestCase {
         });
     }
 
-    public static Test suite() throws Exception {
-        TestSuite suite = new TestSuite(ExceptionsWrapperTest.class);
-
-        return new TestSetup(suite) {
-            protected void setUp() throws Exception {
-                oneTimeSetup();
-            }
-
-            protected void tearDown() throws Exception {
-                oneTimeTeardown();
-            }
-        };
-    }
-
-    protected static void oneTimeSetup() throws Exception {
+    @BeforeAll
+    public static void oneTimeSetup() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -200,7 +190,8 @@ public class ExceptionsWrapperTest extends TestCase {
         });
     }
 
-    protected static void oneTimeTeardown() throws Exception {
+    @AfterAll
+    public static void oneTimeTeardown() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

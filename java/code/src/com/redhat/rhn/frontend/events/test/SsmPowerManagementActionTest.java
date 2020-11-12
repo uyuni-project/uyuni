@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.events.test;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.action.ssm.test.PowerManagementConfigurationActionTest;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -29,6 +31,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.test.MockConnection;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +52,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
@@ -68,6 +73,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
      * Tests action execution.
      * @throws Exception if things go wrong
      */
+    @Test
     public void testAction() throws Exception {
         SsmPowerManagementAction action = new SsmPowerManagementAction();
         action.execute(new SsmPowerManagementEvent(user.getId(), systemOverviews,

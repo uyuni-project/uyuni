@@ -19,12 +19,14 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
+import org.junit.jupiter.api.Test;
 
 /**
  * DisableSelfActionTest
  */
 public class DisableSelfActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testExecute() throws Exception {
         DisableSelfAction action = new DisableSelfAction();
         ActionHelper ah = new ActionHelper();

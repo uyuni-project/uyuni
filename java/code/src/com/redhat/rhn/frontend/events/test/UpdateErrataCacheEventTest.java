@@ -20,8 +20,11 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.Test;
+
 public class UpdateErrataCacheEventTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testUpdateCache() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         for (int i = 0; i < 10; i++) {

@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.taskomatic.task.DailySummary;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +33,7 @@ import java.util.Map;
  */
 public class DailySummaryTest extends RhnBaseTestCase {
 
+    @Test
     public void testDequeueOrg() {
         WriteMode clear = ModeFactory.getWriteMode("test_queries",
             "delete_from_daily_summary_queue");
@@ -49,9 +55,11 @@ public class DailySummaryTest extends RhnBaseTestCase {
         assertEquals(1, rows);
     }
 
+    @Test
     public void testGetAwolServers() {
     }
 
+    @Test
     public void testGetActionInfo() {
     }
 
@@ -64,6 +72,7 @@ public class DailySummaryTest extends RhnBaseTestCase {
     public void aTestRenderActionMessage() {
     }
 
+    @Test
     public void testQueueOrgEmails() {
     }
 

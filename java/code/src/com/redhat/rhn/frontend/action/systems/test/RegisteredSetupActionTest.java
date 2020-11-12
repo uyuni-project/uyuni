@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -32,17 +35,22 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * RegisteredSetupActionTest
  */
 public class RegisteredSetupActionTest extends RhnPostMockStrutsTestCase {
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/Registered");
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }
 
+    @Test
     public void testExecute() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());

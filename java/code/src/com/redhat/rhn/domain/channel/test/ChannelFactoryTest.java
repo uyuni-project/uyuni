@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -38,6 +44,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +55,7 @@ import java.util.List;
  */
 public class ChannelFactoryTest extends RhnBaseTestCase {
 
+    @Test
     public void testChannelFactory() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testChannelFactory" + this.getClass().getSimpleName());
@@ -204,6 +213,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      * TODO: need to fix this test when we put errata management back in.
      * @throws Exception something bad happened
      */
+    @Test
     public void testChannelsWithClonableErrata() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -222,6 +232,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(channels.size() > 0);
     }
 
+    @Test
     public void testLookupByLabel() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Channel rh = createTestChannel(user);
@@ -246,6 +257,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         //Lookup a channel in a different org
     }
 
+    @Test
     public void testIsGloballySubscribable() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -253,11 +265,10 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(ChannelFactory.isGloballySubscribable(user.getOrg(), c));
     }
 
+    @Test
     public void testChannelArchByLabel() {
-        assertNull("Arch found for null label",
-                ChannelFactory.findArchByLabel(null));
-        assertNull("Arch found for invalid label",
-                ChannelFactory.findArchByLabel("some-invalid_arch_label"));
+        assertNull(ChannelFactory.findArchByLabel(null), "Arch found for null label");
+        assertNull(ChannelFactory.findArchByLabel("some-invalid_arch_label"), "Arch found for invalid label");
 
         ChannelArch ca = ChannelFactory.findArchByLabel("channel-x86_64");
         assertNotNull(ca);
@@ -265,6 +276,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals("x86_64", ca.getName());
     }
 
+    @Test
     public void testVerifyLabel() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -273,6 +285,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(ChannelFactory.doesChannelLabelExist(c.getLabel()));
     }
 
+    @Test
     public void testVerifyName() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -281,6 +294,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(ChannelFactory.doesChannelNameExist(c.getName()));
     }
 
+    @Test
     public void testKickstartableTreeChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -295,6 +309,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals(originalSize + 1, channels.size());
     }
 
+    @Test
     public void testKickstartableChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -328,6 +343,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(channels.contains(c2));
     }
 
+    @Test
     public void testPackageCount() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -382,6 +398,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         return clone;
     }
+    @Test
     public void testAccessibleChildChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -405,6 +422,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return pn;
     }
 
+    @Test
     public void testFindChannelArchesSyncdChannels() throws Exception {
         // ensure at least one channel is present
         User user = UserTestUtils.findNewUser("testuser", "testorg");
@@ -415,6 +433,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertNotEmpty(labels);
     }
 
+    @Test
     public void testListAllBaseChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -430,6 +449,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals(size + 1, channels.size());
     }
 
+    @Test
     public void testLookupPackageByFileName() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -462,11 +482,10 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     }
 
+    @Test
     public void testfindChecksumByLabel() {
-        assertNull("Checksum found for null label",
-                ChannelFactory.findChecksumTypeByLabel(null));
-        assertNull("Checksum found for invalid label",
-                ChannelFactory.findChecksumTypeByLabel("some-invalid_checksum"));
+        assertNull(ChannelFactory.findChecksumTypeByLabel(null), "Checksum found for null label");
+        assertNull(ChannelFactory.findChecksumTypeByLabel("some-invalid_checksum"), "Checksum found for invalid label");
 
         ChecksumType ct = ChannelFactory.findChecksumTypeByLabel("sha256");
         assertNotNull(ct);
@@ -482,6 +501,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      *
      * @throws Exception if anything goes wrong
      */
+    @Test
     public void testAccessibility() throws Exception {
         User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
         User user2 = UserTestUtils.createUser("testuser2", user1.getOrg().getId());
@@ -497,6 +517,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      * Test "ChannelFactory.findAllByUserOrderByChild"
      * @throws Exception
      */
+    @Test
     public void testFindAllByUserOrderByChild() throws Exception {
         User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
         User user2 = UserTestUtils.findNewUser("testuser2", "testorg2");

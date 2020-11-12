@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.sync.master.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
@@ -23,6 +30,9 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,12 +46,14 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
     private String[] masterOrgNames = {"masterOrg01", "masterOrg02", "masterOrg03"};
     private String masterName;
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         masterName = "testMaster" + TestUtils.randomString();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
     }
 
+    @Test
     public void testCreate() {
         // Make sure that non-sat-admin users cannot access
         try {
@@ -62,6 +74,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
    }
 
+    @Test
     public void testUpdate() {
         IssMaster master = handler.create(admin, masterName);
 
@@ -88,6 +101,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testCaCert() {
         IssMaster master = handler.create(admin, masterName);
         Integer mstrId = master.getId().intValue();
@@ -112,6 +126,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testMasterDefault() {
         String masterName1 = "testMaster" + TestUtils.randomString();
         String masterName2 = "testMaster" + TestUtils.randomString();
@@ -195,6 +210,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testDelete() {
         IssMaster master = handler.create(admin, masterName);
         Long mstrId = master.getId();
@@ -222,6 +238,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         assertNull(mstr);
     }
 
+    @Test
     public void testGetMaster() {
         IssMaster master = handler.create(admin, masterName);
         Integer mstrId = master.getId().intValue();
@@ -245,6 +262,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testGetMasterByLabel() {
         IssMaster master = handler.create(admin, masterName);
 
@@ -268,6 +286,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testGetMasterOrgs() {
         IssMaster master = handler.create(admin, masterName);
 
@@ -294,6 +313,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testMappedMasterOrgs() {
         IssMaster master = handler.create(admin, masterName);
         addOrgsTo(master, false);
@@ -340,6 +360,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testSetMasterOrgs() {
         IssMaster master = handler.create(admin, masterName);
 
@@ -400,6 +421,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    @Test
     public void testAddOrg() {
         IssMaster master = handler.create(admin, masterName);
         IssMasterOrg org = new IssMasterOrg();
@@ -434,6 +456,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public void testMapToLocal() {
         IssMaster master = new IssMaster();
         master.setLabel(masterName);

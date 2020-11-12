@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.domain.action.config.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigFileNameAssociation;
@@ -23,10 +27,13 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Set;
 
 public class ConfigUploadActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testLookup() throws Exception {
         //create the action
         User user = UserTestUtils.findNewUser("bob", "ibm");

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -22,12 +24,15 @@ import com.redhat.rhn.frontend.action.schedule.ActionDetailsSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * UserPrefSetupActionTest
  * @version $Rev: 1635 $
  */
 public class ActionDetailsSetupActionTest extends RhnBaseTestCase {
 
+    @Test
     public void testPerformExecute() throws Exception {
         ActionDetailsSetupAction action = new ActionDetailsSetupAction();
         ActionHelper sah = new ActionHelper();

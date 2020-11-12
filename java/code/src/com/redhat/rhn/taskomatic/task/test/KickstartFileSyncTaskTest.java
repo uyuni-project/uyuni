@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -26,6 +29,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.cobbler.Profile;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
@@ -33,6 +37,7 @@ public class KickstartFileSyncTaskTest extends RhnBaseTestCase {
 
 
 
+    @Test
     public void testTask() throws Exception {
 
         User user = UserTestUtils.createUserInOrgOne();

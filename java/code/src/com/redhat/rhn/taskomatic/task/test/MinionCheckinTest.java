@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -30,6 +33,8 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.commons.lang3.time.DateUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Optional;
@@ -42,6 +47,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
     private int thresholdMax;
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         this.thresholdMax =  Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD) * 86400;
@@ -54,6 +60,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testExecuteOnActiveMinions() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setMinionId("minion1");
@@ -86,6 +93,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
+    @Test
     public void testExecuteOnInactiveMinions() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setMinionId("minion1");

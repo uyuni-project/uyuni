@@ -14,12 +14,17 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +34,7 @@ import java.util.Set;
  */
 public class ServerSnapshotTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testRollbackGroups() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
 

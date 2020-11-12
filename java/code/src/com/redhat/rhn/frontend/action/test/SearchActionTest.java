@@ -14,8 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * SearchActionTest
@@ -23,11 +28,13 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 public class SearchActionTest extends RhnMockStrutsTestCase {
 
 
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/Search");
     }
 
+    @Test
     public void testSystemRedirect() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
@@ -36,6 +43,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
         assertTrue(getActualForward().startsWith("/systems/Search.do"));
     }
 
+    @Test
     public void testErrataRedirect() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
@@ -44,6 +52,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
         assertTrue(getActualForward().startsWith("/errata/Search.do"));
     }
 
+    @Test
     public void testPackageRedirect() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");
@@ -52,6 +61,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
         assertTrue(getActualForward().startsWith("/channels/software/Search.do"));
     }
 
+    @Test
     public void testFaultySubmit() throws Exception {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("search_string", "test search");

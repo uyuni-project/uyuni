@@ -15,6 +15,10 @@
 
 package com.redhat.rhn.manager.configuration.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -32,6 +36,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
+import org.junit.jupiter.api.Test;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -40,6 +46,7 @@ import java.util.List;
 
 public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
 
+    @Test
     public void testSubscribeChannels() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + server.getMachineId() + ".sls");
@@ -114,6 +121,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         assertTrue(revision2.getConfigChannels().stream().anyMatch(channel3::equals));
     }
 
+    @Test
     public void testUnsubscribeChannels() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);
@@ -187,6 +195,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         assertEquals(0, revision3.getConfigChannels().size());
     }
 
+    @Test
     public void testSetConfigChannels() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);

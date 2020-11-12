@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.controllers.utils.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -39,6 +41,8 @@ import com.suse.salt.netapi.utils.Xor;
 import com.google.gson.JsonPrimitive;
 
 import org.jmock.Expectations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,6 +56,7 @@ import java.util.Optional;
 public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         bootstrapper = new RegularMinionBootstrapper(saltServiceMock, saltServiceMock);
@@ -63,6 +68,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
      *
      * @throws Exception if something goes wrong
      */
+    @Test
     public void testKeysDeletedAfterFailure() throws Exception {
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
@@ -95,24 +101,28 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         assertFalse(bootstrap.isSuccess());
     }
 
+    @Test
     public void testIncompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
+    @Test
     public void testIncompatibleActivationKeysTunnel() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
+    @Test
     public void testCompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         super.testCompatibleActivationKeysBase(key);
     }
 
+    @Test
     public void testCompatibleActivationKeysAndReactivation() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server testServer = ServerFactoryTest.createTestServer(user);
