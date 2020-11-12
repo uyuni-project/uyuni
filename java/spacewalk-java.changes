@@ -1,3 +1,4 @@
+- TEST
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Remove expiration date from ics files (bsc#1177892)
 - Localize documentation links
