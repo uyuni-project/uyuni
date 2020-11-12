@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 12 10:02:44 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.25-1
 - Fix link to documentation in Admin -> Manager Configuration -> Monitoring (bsc#1176172)
 - Don't allow selecting spice for Xen PV and PVH guests
 
