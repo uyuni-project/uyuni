@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-09 14:50+0000\n"
+"PO-Revision-Date: 2020-11-12 16:32+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -166,7 +166,7 @@ msgstr ""
 #: ../html/src/components/config-channels.js:412
 #: ../html/src/manager/minion/packages/package-states.js:244
 msgid "Search"
-msgstr ""
+msgstr "Vyhledávání"
 
 #: ../html/src/components/config-channels.js:389
 #: ../html/src/manager/admin/config/monitoring-admin.js:43
