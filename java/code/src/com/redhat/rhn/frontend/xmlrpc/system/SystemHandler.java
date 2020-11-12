@@ -1512,8 +1512,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("package")
+     *      #array()
+     *          #struct("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
