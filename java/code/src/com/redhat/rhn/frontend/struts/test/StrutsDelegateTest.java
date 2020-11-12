@@ -37,6 +37,7 @@ public class StrutsDelegateTest extends Assert {
     /**
      *
      */
+    @Test
     public final void testForwardParams() {
         ActionForward success = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
 

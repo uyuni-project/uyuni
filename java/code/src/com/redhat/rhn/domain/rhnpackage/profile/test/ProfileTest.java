@@ -107,7 +107,8 @@ public class ProfileTest extends RhnBaseTestCase {
         return p;
     }
 
-    public static void testCompatibleServer() throws Exception {
+    @Test
+    public void testCompatibleServer() throws Exception {
         // create a profile
         // create a channel
         // create a server

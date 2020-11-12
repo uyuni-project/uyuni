@@ -22,6 +22,7 @@ import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ public class SaltMinionTestJson extends MockObjectTestCase {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public void testFromFingerprints() {
         Map<String, String> accepted = new HashMap<>();
         accepted.put("m1", "fingerprint1");

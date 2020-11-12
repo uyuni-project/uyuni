@@ -62,7 +62,7 @@ public abstract class RhnBaseTestCase extends Assert {
      */
     @After
     public void tearDown() throws Exception {
-        TestCaseHelper.tearDownHelper(); // todo fkobzik - check if this is called
+        TestCaseHelper.tearDownHelper();
     }
 
     /**

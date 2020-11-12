@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.servlets.AuthFilter;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.Test;
 
 import java.util.Vector;
 import javax.servlet.FilterChain;
@@ -105,6 +106,7 @@ public class AuthFilterTest extends MockObjectTestCase {
         return mockFilterChain;
     }
 
+    @Test
     public final void testDoFilterWhenAuthenticationSucceeds() throws Exception {
         context().checking(new Expectations() { {
             allowing(mockRequest).setAttribute(with("session"),
@@ -121,6 +123,7 @@ public class AuthFilterTest extends MockObjectTestCase {
         filter.doFilter(getRequest(), getResponse(), getFilterChain());
     }
 
+    @Test
     public final void testDoFilterWhenAuthenticationFails() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(mockAuthService).validate(with(any(HttpServletRequest.class)),
@@ -133,6 +136,7 @@ public class AuthFilterTest extends MockObjectTestCase {
         filter.doFilter(getRequest(), getResponse(), getFilterChain());
     }
 
+    @Test
     public final void testDoFilterWhenAuthServiceThrowsException() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(mockAuthService).validate(with(any(HttpServletRequest.class)),

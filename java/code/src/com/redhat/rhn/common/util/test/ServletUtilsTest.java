@@ -160,6 +160,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals("/foo?a%3B=1&a%3B=2&a%3B=3", result);
     }
 
+    @Test
     public final void testRequestParamsToQueryStringWithNoParams() throws Exception {
         context().checking(new Expectations() { {
             allowing(mockRequest).getParameterNames();
@@ -172,6 +173,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
         assertEquals(0, queryString.length());
     }
 
+    @Test
     public final void testRequestParamsToQueryStringWithParams() throws Exception {
         final Hashtable<String, String> parameterMap = createParameterMap();
         context().checking(new Expectations() { {

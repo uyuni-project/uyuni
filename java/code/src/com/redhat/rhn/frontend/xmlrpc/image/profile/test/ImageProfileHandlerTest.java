@@ -46,9 +46,10 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 import org.junit.Before;
+import org.junit.Test;
+
 public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
-    // todo not migrated!!!!!!!!!!!!!
     private ImageProfileHandler handler = new ImageProfileHandler();
 
     @Override
@@ -58,6 +59,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 
+    @Test
     public final void testListImageProfileTypes() throws Exception {
         List<String> types = handler.listImageProfileTypes(admin);
         assertEquals("Wrong number of image profile types found.", 2, types.size());
@@ -65,6 +67,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(types.stream().anyMatch(ImageProfile.TYPE_KIWI::equals));
     }
 
+    @Test
     public final void testGetDetailsDockerfile() throws Exception {
         ImageStore store = createImageStore("myregistry", admin);
         ActivationKey key = createActivationKey(admin);
@@ -89,6 +92,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals("/path/to/dockerfile", profile.asDockerfileProfile().get().getPath());
     }
 
+    @Test
     public final void testGetDetailsKiwi() throws Exception {
         ImageStore store = createImageStore("mystore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
         ActivationKey key = createActivationKey(admin);
@@ -105,6 +109,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals("/path/to/kiwiconfig", profile.asKiwiProfile().get().getPath());
     }
 
+    @Test
     public final void testListImageProfiles() throws Exception {
         createImageStore("myregistry", admin, ImageStoreFactory.TYPE_REGISTRY);
         createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
@@ -135,6 +140,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals("/path/to/kiwiconfig", p2.getPath());
     }
 
+    @Test
     public final void testCreateImageProfile() throws Exception {
         ImageStore store = createImageStore("myregistry", admin);
         int result = handler.create(admin, "newprofile", ImageProfile.TYPE_DOCKERFILE,
@@ -163,6 +169,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(key.getToken(), profile.getToken());
     }
 
+    @Test
     public final void testCreateImageProfileFailed() throws Exception {
         ActivationKey key = createActivationKey(admin);
         createImageProfile("existing-profile", createImageStore("myregistry", admin), admin);
@@ -301,6 +308,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
     public final void testDeleteProfile() {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
@@ -331,6 +339,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         catch (NoSuchImageProfileException ignore) { }
     }
 
+    @Test
     public final void testSetDetails() throws Exception {
         createImageStore("myregistry", admin);
         createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
@@ -445,6 +454,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertNull(profile.getToken());
     }
 
+    @Test
     public final void testGetCustomValues() {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
@@ -480,6 +490,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(values, results);
     }
 
+    @Test
     public final void testSetCustomDataValues() throws Exception {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
@@ -574,6 +585,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         });
     }
 
+    @Test
     public final void testDeleteCustomValues() {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,

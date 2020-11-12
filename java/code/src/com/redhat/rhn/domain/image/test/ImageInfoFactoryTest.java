@@ -104,6 +104,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
+    @Test
     public final void testConvertChecksum() {
         //SHA1
         String sha1Str = DigestUtils.sha1Hex("mychecksum");
@@ -171,6 +172,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(chksum.getChecksum(), sha512Str);
     }
 
+    @Test
     public final void testList() throws Exception {
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
@@ -189,6 +191,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(img, img3);
     }
 
+    @Test
     public final void testListImageInfos() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -207,6 +210,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(img2, img);
     }
 
+    @Test
     public final void testListImageOverviews() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -231,6 +235,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getOrg(), overview.getOrg());
     }
 
+    @Test
     public final void testLookupById() {
         ImageInfo image = createImageInfo("myimage", "1.0.0", user);
 
@@ -238,6 +243,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(image, result);
     }
 
+    @Test
     public final void testLookupByIdAndOrg() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -252,6 +258,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
                 .isPresent());
     }
 
+    @Test
     public final void testLookupOverviewByIdAndOrg() {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
@@ -268,6 +275,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
                 .lookupOverviewByIdAndOrg(image.getId(), foreignUser.getOrg()).isPresent());
     }
 
+    @Test
     public final void testLookupByName() {
         ImageStore store = ImageTestUtils.createImageStore("mystore", user);
         ImageStore anotherStore = ImageTestUtils.createImageStore("myotherstore", user);
@@ -291,6 +299,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
                 .lookupByName("myimage", "1.0.0", anotherStore.getId()).isPresent());
     }
 
+    @Test
     public final void testScheduleBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
@@ -394,6 +403,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, info.getChannels().size());
     }
 
+    @Test
     public final void testScheduleInspect() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
@@ -426,6 +436,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(info.getVersion(), details.getVersion());
     }
 
+    @Test
     public final void testScheduleImport() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
