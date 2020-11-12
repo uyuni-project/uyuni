@@ -49,17 +49,9 @@ import junit.framework.TestCase;
 public abstract class RhnBaseTestCase extends Assert {
 
     /**
-     * Constructs a TestCase with the given name.
-     * @param name Name of TestCase.
-     */
-    public RhnBaseTestCase(String name) {
-    }
-
-    /**
      * Default Constructor
      */
     public RhnBaseTestCase() {
-        super();
         MessageQueue.configureDefaultActions(new TestSystemQuery(), new TestSaltApi());
     }
 

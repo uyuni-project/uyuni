@@ -51,8 +51,9 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     private final Random random = new Random();
     private String db_sufix;
     private String db_user;
-    public AdvDataSourceTest(String name) {
-        super(name);
+
+    public AdvDataSourceTest() {
+        super();
         db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
     }
