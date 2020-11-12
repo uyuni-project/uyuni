@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 12 10:07:50 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.31-1
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Sync state modules when starting action chain execution (bsc#1177336)
 - Fix grub2 autoinstall kernel path (bsc#1178060)
