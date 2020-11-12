@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Nov 12 10:00:15 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.40-1
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Sync state modules when starting action chain execution (bsc#1177336)
 - Fix repo url of AppStream in generated RHEL/Centos 8 kickstart file (bsc#1175739)
