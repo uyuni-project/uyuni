@@ -1,3 +1,4 @@
+- Fix spacewalk-repo-sync to successfully manage and sync ULN repositories
 - fix errors in spacewalk-debug and align postgresql queries to new DB version
 - ISS: Differentiate packages with same nevra but different checksum in the same channel (bsc#1178195)
 - add 'allow_vendor_change' option to rhn clients for dist upgrades

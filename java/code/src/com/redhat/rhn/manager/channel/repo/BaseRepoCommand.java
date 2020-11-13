@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlInputException;
 
 import java.net.URL;
+import java.net.URI;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -219,9 +220,23 @@ public abstract class BaseRepoCommand {
         }
 
         if (this.url != null && this.type != null) {
-            final URL u;
             try {
-                u = new URL(this.url);
+                final URL u;
+                if (this.type.equals("uln")) {
+                    // URL for ULN repositories, i.a. uln:///uln_channel_label, are not
+                    // passing Java URL validation due unknown protocol. We fake the
+                    // protocol to "file" and run the validation for the rest of the URL.
+                    final URI uri = new URI(this.url);
+                    if (uri.getScheme().equals("uln")) {
+                       u = new URI("file", uri.getSchemeSpecificPart(), uri.getFragment()).toURL();
+                    }
+                    else {
+                        throw new InvalidRepoUrlInputException(url);
+                    }
+                }
+                else {
+                    u = new URL(this.url);
+                }
             }
             catch (Exception e) {
                 throw new InvalidRepoUrlInputException(url);
