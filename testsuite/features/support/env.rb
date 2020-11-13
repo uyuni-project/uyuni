@@ -22,6 +22,8 @@ require 'pp'
 # SimpleCov.start
 
 server = ENV['SERVER']
+$long_tests_enabled = !ENV['LONG_TESTS'].nil?
+puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -30,12 +32,11 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
 DEFAULT_TIMEOUT = 250
 
-# QAM test-suite will provide a json including all client repositories with format :
-# {"client_type" : { "salt" : "salt_repo" , "traditional" : "traditional_repo" }}
-mu_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'mu_repositories.json'
-if File.exist?(mu_repos_path)
-  mu_repos_file = File.read(mu_repos_path)
-  $mu_repositories = JSON.parse(mu_repos_file)
+# QAM test-suite will provide a json including all client repositories
+custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+if File.exist?(custom_repos_path)
+  custom_repos_file = File.read(custom_repos_path)
+  $custom_repositories = JSON.parse(custom_repos_file)
   Capybara.default_max_wait_time = 30
   DEFAULT_TIMEOUT = 1800
   $qam_test = true
@@ -301,6 +302,11 @@ end
 # do test only if the registry with authentication is available
 Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
+end
+
+# do test only if we want to run long tests
+Before('@long_test') do
+  skip_this_scenario unless $long_tests_enabled
 end
 
 # have more infos about the errors

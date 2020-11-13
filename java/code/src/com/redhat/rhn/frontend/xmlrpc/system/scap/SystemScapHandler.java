@@ -100,12 +100,12 @@ public class SystemScapHandler extends BaseHandler {
     }
 
     /**
-     * Delete OpenSCAP XCCDF Scan from the Spacewalk database.
+     * Delete OpenSCAP XCCDF Scan from the database.
      * @param loggedInUser The current user
      * @param xid The id of XCCDF scan.
      * @return a boolean indicating success of the operation.
      *
-     * @xmlrpc.doc Delete OpenSCAP XCCDF Scan from Spacewalk database. Note that
+     * @xmlrpc.doc Delete OpenSCAP XCCDF Scan from the #product() database. Note that
      * only those SCAP Scans can be deleted which have passed their retention period.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "Id of XCCDF scan (xid).")

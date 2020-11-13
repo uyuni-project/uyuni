@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleInfo;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleStreams;
@@ -106,7 +107,11 @@ public class MockModulemdApi extends ModulemdApi {
             }
         }
 
-        return new ModulePackagesResponse(getRpmApis(selectedModules), getPackages(selectedModules), null);
+        return new ModulePackagesResponse(getRpmApis(selectedModules), getPackages(selectedModules),
+                selectedModules.stream()
+                        .map(m -> new ModuleInfo(m.getName(), m.getStream(), "1000000001", "6789abcd", "x86_64"))
+                        .collect(Collectors.toList())
+        );
     }
 
     /**

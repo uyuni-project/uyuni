@@ -14,10 +14,6 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
@@ -29,6 +25,11 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -40,11 +41,11 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -144,23 +145,11 @@ public class JobReturnEventMessageAction implements MessageAction {
                 throw e;
             }
 
-            Optional<StateApplyResult<Ret<JsonElement>>> result = Optional.ofNullable(
-                    actionChainResult.get("mgrcompat_|-start_action_chain_|-mgractionchains.start_|-module_run"));
-            var entries = result.map(r -> r.getChanges())
-                    .map(c -> c.getRet())
-                    .map(r -> r.getAsJsonObject())
-                    .map(o -> o.entrySet())
-                    .map(set -> set.stream()
-                            .collect(Collectors.toMap(e -> e.getKey(),
-                                    e -> (StateApplyResult<Ret<JsonElement>>)Json.GSON.fromJson(e.getValue(),
-                                            new TypeToken<StateApplyResult<Ret<JsonElement>>>() { }.getType())
-                                    )))
-                    .orElse(Collections.emptyMap());
-
             handleActionChainResult(jobReturnEvent.getMinionId(),
                     jobReturnEvent.getJobId(),
-                    entries,
-                    Optional.empty(),
+                    jobReturnEvent.getData().getRetcode(),
+                    jobReturnEvent.getData().isSuccess(),
+                    actionChainResult,
                     stateResult -> false);
 
             boolean packageRefreshNeeded = actionChainResult.entrySet().stream()
@@ -212,23 +201,23 @@ public class JobReturnEventMessageAction implements MessageAction {
      *
      * @param minionId the minion id
      * @param jobId the job id
-     * @param entries job result
-     * @param firstChunkActionId id of the first action in the chunk
+     * @param retCode the ret code
+     * @param success whether result is successful or not
+     * @param actionChainResult job result
      * @param skipFunction function to check if a result should be skipped from handling
      */
     public static void handleActionChainResult(
-            String minionId, String jobId,
-            Map<String, StateApplyResult<Ret<JsonElement>>> entries,
-            Optional<Long> firstChunkActionId,
+            String minionId, String jobId, int retCode, boolean success,
+            Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
             Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
         int chunk = 1;
         Long retActionChainId = null;
         boolean actionChainFailed = false;
         List<Long> failedActionIds = new ArrayList<>();
-
-        for (var entry : entries.entrySet()) {
+        for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
             String key = entry.getKey();
             StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
+
             Optional<SaltActionChainGeneratorService.ActionChainStateId> stateId =
                     SaltActionChainGeneratorService.parseActionChainStateId(key);
             if (stateId.isPresent()) {
@@ -245,30 +234,17 @@ public class JobReturnEventMessageAction implements MessageAction {
                     // don't stop handling the result entries if there's a failed action
                     // the result entries are not returned in order
                 }
-                try {
-                    handleAction(actionId,
-                            minionId,
-                            actionStateApply.isResult() ? 0 : -1,
-                            actionStateApply.isResult(),
-                            jobId,
-                            actionStateApply.getChanges().getRet(),
-                            actionStateApply.getName());
-                }
-                catch (Exception e) {
-                    LOG.error("Error handling result of action " + actionId + " for minion " + minionId, e);
-                    actionChainFailed = true;
-                    failedActionIds.add(actionId);
-                }
+                handleAction(actionId,
+                        minionId,
+                        actionStateApply.isResult() ? 0 : -1,
+                        actionStateApply.isResult(),
+                        jobId,
+                        actionStateApply.getChanges().getRet(),
+                        actionStateApply.getName());
             }
             else if (!key.contains("schedule_next_chunk")) {
                 LOG.warn("Could not find action id in action chain state key: " + key);
             }
-        }
-        if (entries.isEmpty()) {
-            // if there are no entries we have no way of knowing which actions belonged to this action chain
-            // and set them to failed because the action chain is already gone from the db at this point
-            LOG.error("No action results found in response for minion " + minionId +
-                    ". Some actions will remain in pending.");
         }
 
         if (retActionChainId != null) {

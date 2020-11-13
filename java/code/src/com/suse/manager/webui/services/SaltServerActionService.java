@@ -117,6 +117,7 @@ import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -534,12 +535,8 @@ public class SaltServerActionService {
      */
     private void startActionChainExecution(ActionChain actionChain, Set<MinionSummary> targetMinions) {
         // prepare the start action chain call
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("action_chain_id", actionChain.getId());
-
         Map<Boolean, ? extends Collection<MinionSummary>> results =
-                callAsyncActionChainStart(State.apply(Arrays.asList("actionchains.start"),
-                        Optional.of(pillar)), targetMinions);
+                callAsyncActionChainStart(MgrActionChains.start(actionChain.getId()), targetMinions);
 
         results.get(false).forEach(minionSummary -> {
             LOG.warn("Failed to schedule action chain for minion: " +
@@ -703,9 +700,8 @@ public class SaltServerActionService {
                     failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
                     return false;
                 }
-                JobReturnEventMessageAction.handleActionChainResult(minionId, "",
+                JobReturnEventMessageAction.handleActionChainResult(minionId, "", 0, true,
                         actionChainResult,
-                        firstChunkActionId,
                         // skip reboot, needs special handling
                         stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
 
@@ -2099,9 +2095,10 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = systemQuery
-                    .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
-                    .get().getMinions();
+            List<String> results = Opt.fold(
+                    systemQuery.callAsync(call, new MinionList(minionIds), Optional.of(metadata)),
+                    () -> new ArrayList<String>(),
+                    l -> l.getMinions());
 
             result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));

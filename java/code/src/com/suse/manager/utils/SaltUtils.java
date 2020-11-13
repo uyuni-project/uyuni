@@ -67,6 +67,7 @@ import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -1298,10 +1299,10 @@ public class SaltUtils {
                         Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
                         Optional.of(pkg.getArch()), imageInfo));
                 if ("pxe".equals(ret.getImage().getType())) {
-                    String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(
-                            serverAction.getParentAction().getOrg());
+                    Org org = serverAction.getParentAction().getOrg();
+                    String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(org);
                     SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundle(),
-                            ret.getBootImage(), storeDirectory);
+                            ret.getBootImage(), storeDirectory, org);
                 }
             }
             else {

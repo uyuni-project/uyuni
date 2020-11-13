@@ -53,6 +53,10 @@
     <c:set var="currentLocale" value="${UserPreferenceUtils.getCurrentLocale(pageContext)}"/>
     <script>window.preferredLocale='${currentLocale}'</script>
 
+    <!-- expose user preferred documentation language to the application -->
+    <c:set var="docsLocale" value="${UserPreferenceUtils.getDocsLocale(pageContext)}"/>
+    <script>window.docsLocale='${docsLocale}'</script>
+
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
 

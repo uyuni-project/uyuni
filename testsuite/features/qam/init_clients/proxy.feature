@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -10,6 +10,9 @@ Feature: Setup SUSE Manager proxy
   In order to use a proxy and retail branch server with the SUSE manager server
   As the system administrator
   I want to register the proxy to the server and configure it also as branch server
+
+  Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
+    When I perform a full salt minion cleanup on "proxy"
 
   Scenario: Bootstrap the proxy as a Salt minion
     Given I am authorized

@@ -1,3 +1,7 @@
+- remove checks for obsolete packages
+- gather new configfiles
+- add more important informations
+
 -------------------------------------------------------------------
 Wed Jun 10 12:36:06 CEST 2020 - jgonzalez@suse.com
 

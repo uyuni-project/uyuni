@@ -65,6 +65,7 @@
             <form-property name="no_scrub" type="java.lang.String"
                             initial="desiredpassword, desiredpasswordConfirm"/>
             <form-property name="preferredLocale" type="java.lang.String" />
+            <form-property name="preferredDocsLocale" type="java.lang.String" />
             <form-property name="timezone" type="java.lang.Integer"/>
             <form-property name="readonly" type="java.lang.Boolean"/>
         </form-bean>
@@ -124,6 +125,7 @@
             <form-property name="mail" type="java.lang.Boolean"/>
             <form-property name="pagesize" type="java.lang.Integer"/>
             <form-property name="preferredLocale" type="java.lang.String" />
+            <form-property name="preferredDocsLocale" type="java.lang.String" />
             <form-property name="timezone" type="java.lang.Integer"/>
             <form-property name="theme" type="java.lang.String" />
             <form-property name="possiblePanes"

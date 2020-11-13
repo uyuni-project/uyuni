@@ -1,3 +1,17 @@
+- Report resolved module dependencies on CLM project details page
+- Allow creating custom ULN repositories with uln:// urls
+- Change message "Minion is down" to be more accurate
+- Localize documentation links
+- Temp: revert Sync state modules when starting action chain execution (bsc#1177336)
+- fix check for available products on ISS Slaves (bsc#1177184)
+- XMLRPC: Report architecture label in the list of installed packages (bsc#1176898)
+- get media.1/products for cloned channels (bsc#1178303)
+- calculate size to truncate a history message based on the htmlified version (bsc#1178503)
+- Make image pillar visible only in buildhost organization
+- Maintain list of synced images in pillar
+- Enable validation of Content Lifecycle Management entities in the XMLRPC API (bsc#1177706)
+- Fix the order of the arguments in the XMLRPC API doc for contentmanagement.buildProject (bsc#1177704)
+- Fix repo url of AppStream in generated RHEL/Centos 8 kickstart file (bsc#1175739)
 - log token verify errors and check for expired tokens
 - show only kernel options in advanced autoinstallation page when working with
   a salt minion (bsc#1177767)

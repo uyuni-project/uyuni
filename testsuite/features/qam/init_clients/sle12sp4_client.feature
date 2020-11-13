@@ -3,9 +3,9 @@
 
 @sle12sp4_client
 Feature: Bootstrap a SLES 12 SP4 traditional client
-  In order to register a traditional client to the SUSE Manager server
-  As the root user
-  I want to call rhnreg_ks
+
+  Scenario: Clean up sumaform leftovers on a SLES 12 SP4 traditional client
+    When I perform a full salt minion cleanup on "sle12sp4_client"
 
   Scenario: Register a SLES 12 SP4 traditional client
     When I bootstrap traditional client "sle12sp4_client" using bootstrap script with activation key "1-sle12sp4_client_key" from the proxy

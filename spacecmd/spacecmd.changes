@@ -1,7 +1,7 @@
+- Fix: make spacecmd build on Debian
 -------------------------------------------------------------------
 Thu Oct 22 10:39:51 CEST 2020 - jgonzalez@suse.com
 
-- version 4.1.8-1
 - Python3 fixes for errata in spacecmd (bsc#1169664)
 - Added support for i18n of user-facing strings
 - Python3 fix for sorted usage (bsc#1167907)
