@@ -271,11 +271,10 @@ class MLLibmodAPI:
         for m_name in self._proc._mod_index.get_module_names():
             mod = self._proc._mod_index.get_module(m_name)
             d_mod = mod.get_defaults()
-            if d_mod is not None:
-                mobj[m_name] = {
-                    "default": d_mod.get_default_stream(),
-                    "streams": d_mod.get_streams_with_default_profiles(),
-                }
+            mobj[m_name] = {
+                "default": d_mod.get_default_stream() if d_mod else None,
+                "streams": set([s.get_stream_name() for s in mod.get_all_streams()])
+            }
 
         modules["modules"] = mobj
         return modules
