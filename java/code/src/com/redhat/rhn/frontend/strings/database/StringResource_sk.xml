@@ -708,7 +708,7 @@
       </trans-unit>
       <trans-unit id="Critical Exit Status" xml:space="preserve">
         <source>Critical Exit Status</source>
-        <target/>
+        <target>Kritický stav ukončenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -722,7 +722,7 @@
       </trans-unit>
       <trans-unit id="Critical Filesystem Pct Used" xml:space="preserve">
         <source>Critical Filesystem Pct Used</source>
-        <target/>
+        <target>Kritické percento použitého súborového systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1163,7 +1163,7 @@
       </trans-unit>
       <trans-unit id="Filesystem" xml:space="preserve">
         <source>Filesystem</source>
-        <target/>
+        <target>Súborový systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1289,7 +1289,7 @@
       </trans-unit>
       <trans-unit id="OK Exit Status" xml:space="preserve">
         <source>OK Exit Status</source>
-        <target/>
+        <target>Stav ukončenia OK</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1800,7 +1800,7 @@
       </trans-unit>
       <trans-unit id="Warning Exit Status" xml:space="preserve">
         <source>Warning Exit Status</source>
-        <target/>
+        <target>Varovný stav ukončenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1814,7 +1814,7 @@
       </trans-unit>
       <trans-unit id="Warning Filesystem Pct Used" xml:space="preserve">
         <source>Warning Filesystem Pct Used</source>
-        <target/>
+        <target>Varovné percento použitého súborového systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2375,7 +2375,7 @@
       </trans-unit>
       <trans-unit id="metrics.Filesystem pct used" xml:space="preserve">
         <source>Filesystem pct used</source>
-        <target/>
+        <target>Percento použitého súborového systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3565,7 +3565,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.complete" xml:space="preserve">
           <source>Autoinstallation complete.</source>
-        <target/>
+        <target>Automatická inštalácia je dokončená.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
