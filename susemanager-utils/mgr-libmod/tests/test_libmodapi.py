@@ -147,4 +147,30 @@ class TestLibmodProc:
         assert '1.24' == selected['stream']
         assert 'b9186a2a' == selected['context']
 
-    #TODO: Add tests for other functions
+    def test_list_modules(self):
+        self.libmodapi.set_repodata(open("tests/data/list_modules.json", "r").read()).run()
+        result = self.libmodapi._result['list_modules']
+
+        # Assert total number of modules
+        assert 46 == len(result['modules'])
+
+        # Assert that every entry has 'default' and 'streams' fields
+        for key, value in result['modules'].items():
+            assert 'default' in value
+            assert 'streams' in value
+            # Assert that there are no duplicates in stream names
+            assert len(value['streams']) == len(set(value['streams']))
+
+        # Assert that the streams are correctly returned for a module
+        perl_module = result['modules']['perl']
+        assert '5.26' == perl_module['default']
+        assert not set(['5.24', '5.26']) ^ set(perl_module['streams'])
+
+    def test_list_packages(self):
+        self.libmodapi.set_repodata(open("tests/data/list_packages.json", "r").read()).run()
+        result = self.libmodapi._result['list_packages']['packages']
+
+        # Assert total number of packages
+        assert 1742 == len(result)
+        # Assert that no duplicates are reported
+        assert len(result) == len(set(result))
