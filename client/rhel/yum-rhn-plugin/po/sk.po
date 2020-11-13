@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-09-25 17:48+0000\n"
+"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"PO-Revision-Date: 2020-10-17 12:49+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
 "plugin/sk/>\n"
@@ -74,7 +74,7 @@ msgstr "Podpora kanálov {PRODUCT_NAME} bude zablokovaná."
 
 #: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."
-msgstr "Tento systém nie je prihlásený na odber žiadnych kanálov."
+msgstr "Tento systém nie je prihlásený k žiadnym kanálom."
 
 #: ../rhnplugin.py:145
 #, python-brace-format

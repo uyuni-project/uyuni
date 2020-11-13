@@ -1141,8 +1141,7 @@ public class SystemHandler extends BaseHandler {
      */
     private List<Map<String, Object>> packagesToCheck(Server server, String name)
             throws NoSuchPackageException {
-        DataResult<Map<String, Object>> installed =
-                SystemManager.installedPackages(server.getId(), false);
+        DataResult<Map<String, Object>> installed = SystemManager.installedPackages(server.getId());
 
         List<Map<String, Object>> toCheck = new ArrayList<Map<String, Object>>();
         // Get a list of packages with matching name
@@ -1233,8 +1232,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
-        DataResult<Map<String, Object>> packages =
-                SystemManager.installedPackages(server.getId(), false);
+        DataResult<Map<String, Object>> packages = SystemManager.installedPackages(server.getId());
 
         /*
          * Loop through the packages for this system and check each attribute. Use
@@ -1510,8 +1508,44 @@ public class SystemHandler extends BaseHandler {
 
     /**
      * List the installed packages for a given system.
-     * @xmlrpc.doc List the installed packages for a given system. The attribute
-     * installtime is returned since API version 10.10.
+     *
+     * @param loggedInUser The current user
+     * @param sid The id of the system in question
+     * @return Returns an array of maps representing the packages installed on a system
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found.
+     * @deprecated This is here for backwards compatibility: The method returns architecture name,
+     * whereas the other endpoints return/accept architecture label.
+     * Instead of this method, use listInstalledPackages preferably.
+     *
+     * @xmlrpc.doc List the installed packages for a given system. Usage of listInstalledPackages is preferred,
+     * as it returns architecture label (not name).
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *          #struct_begin("package")
+     *                 #prop("string", "name")
+     *                 #prop("string", "version")
+     *                 #prop("string", "release")
+     *                 #prop("string", "epoch")
+     *                 #prop_desc("string", "arch", "Architecture name")
+     *                 #prop_desc("date", "installtime", "returned only if known")
+     *          #struct_end()
+     *      #array_end()
+     */
+    @Deprecated
+    public List<Map<String, Object>> listPackages(User loggedInUser, Integer sid)
+            throws FaultException {
+        // Get the logged in user and server
+        Server server = lookupServer(loggedInUser, sid);
+
+        return SystemManager.installedPackages(server.getId());
+    }
+
+    /**
+     * List the installed packages for a given system.
+     *
      * @param loggedInUser The current user
      * @param sid The id of the system in question
      * @return Returns an array of maps representing the packages installed on a system
@@ -1528,17 +1562,16 @@ public class SystemHandler extends BaseHandler {
      *                 #prop("string", "version")
      *                 #prop("string", "release")
      *                 #prop("string", "epoch")
-     *                 #prop("string", "arch")
+     *                 #prop_desc("string", "arch", "architecture label")
      *                 #prop_desc("date", "installtime", "returned only if known")
      *          #struct_end()
      *      #array_end()
      */
-    public List<Map<String, Object>> listPackages(User loggedInUser, Integer sid)
+    public List<Map<String, Object>> listInstalledPackages(User loggedInUser, Integer sid)
             throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
-
-        return SystemManager.installedPackages(server.getId(), false);
+        return SystemManager.installedPackages(server.getId(), true);
     }
 
     /**
@@ -6692,6 +6725,7 @@ public class SystemHandler extends BaseHandler {
         return returnList;
     }
 
+
     /**
      * Schedule a Service Pack migration for a system. This call is the recommended and
      * supported way of migrating a system to the next Service Pack.
@@ -6720,14 +6754,53 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
-     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-            List<String> optionalChildChannels, boolean dryRun, Date earliest) {
-        return scheduleSPMigration(loggedInUser, sid, null, baseChannelLabel,
-                optionalChildChannels, dryRun, earliest);
+                                    List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+        return scheduleSPMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun, false, earliest);
     }
+
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack.
+     *
+     * This call automatically select the nearest possible migration target.
+     *
+     * It will automatically find all mandatory product channels below a given
+     * target base channel and subscribe the system accordingly. Any additional
+     * optional channels can be subscribed by providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+            List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliest) {
+        return scheduleSPMigration(loggedInUser, sid, null, baseChannelLabel,
+                optionalChildChannels, dryRun, allowVendorChange, earliest);
+    }
+
 
     /**
      * Schedule a Service Pack migration for a system. This call is the recommended and
@@ -6761,8 +6834,48 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+                                    String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                    Date earliest) {
+        return scheduleSPMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels, dryRun,
+                false, earliest);
+    }
+
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
             String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-            Date earliest) {
+            boolean allowVendorChange, Date earliest) {
         // Perform checks on the server
         Server server = null;
         try {
@@ -6848,7 +6961,7 @@ public class SystemHandler extends BaseHandler {
                         channelIDs.add(channel.getId());
                     }
                     return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                            targetProducts, channelIDs, dryRun, earliest);
+                            targetProducts, channelIDs, dryRun, allowVendorChange, earliest);
                 }
 
                 // Consider alternatives (cloned channel trees)
@@ -6858,7 +6971,7 @@ public class SystemHandler extends BaseHandler {
                     if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
                         channelIDs.addAll(alternatives.get(clonedBaseChannel));
                         return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                                targetProducts, channelIDs, dryRun, earliest);
+                                targetProducts, channelIDs, dryRun, allowVendorChange, earliest);
                     }
                 }
             }
@@ -6900,7 +7013,42 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
-            boolean dryRun, Date earliest) {
+                                    boolean dryRun, Date earliest) {
+        // for older calls that don't use vendor change
+        return scheduleDistUpgrade(loggedInUser, sid, channels, dryRun, false, earliest);
+    }
+
+    /**
+     * Schedule a dist upgrade for a system. This call takes a list of channel labels that
+     * the system will be subscribed to before performing the dist upgrade.
+     *
+     * Note: You can seriously damage your system with this call, use it only if you really
+     * know what you are doing! Make sure that the list of channel labels is complete and
+     * in any case do a dry run before scheduling an actual dist upgrade.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param channels labels of channels to subscribe to
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a dist upgrade for a system. This call takes a list of channel
+     * labels that the system will be subscribed to before performing the dist upgrade.
+     * Note: You can seriously damage your system with this call, use it only if you really
+     * know what you are doing! Make sure that the list of channel labels is complete and in
+     * any case do a dry run before scheduling an actual dist upgrade.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("string", "channels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
+            boolean dryRun, boolean allowVendorChange, Date earliest) {
         // Lookup the server and perform some checks
         Server server = null;
         try {
@@ -6915,7 +7063,7 @@ public class SystemHandler extends BaseHandler {
         try {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
             return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
-                    channelIDs, dryRun, earliest);
+                    channelIDs, dryRun, allowVendorChange, earliest);
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());

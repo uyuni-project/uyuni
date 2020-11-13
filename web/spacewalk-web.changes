@@ -1,3 +1,5 @@
+- Localize documentation links
+- Don't allow selecting spice for Xen PV and PVH guests
 - Allow creating a VM on Salt host using a cobbler profile
 - Show cluster upgrade plan in the upgrade UI
 - Enable to switch to multiple webUI theme

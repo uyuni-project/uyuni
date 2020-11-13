@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -97,6 +98,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String BASE_CHANNEL = "baseChannel";
     private static final String CHILD_CHANNELS = "childChannels";
     private static final String TARGET_PRODUCT_SELECTED = "targetProductSelected";
+    private static final String ALLOW_VENDOR_CHANGE = "allowVendorChange";
 
     // Message keys
     private static final String DISPATCH_DRYRUN = "spmigration.jsp.confirm.submit.dry-run";
@@ -178,6 +180,8 @@ public class SPMigrationAction extends RhnAction {
         boolean dryRun = false;
         boolean goBack = false;
         boolean targetProductSelectedEmpty = false;
+        boolean allowVendorChange = false;
+
         String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
 
         // Read form parameters if dispatching
@@ -190,6 +194,7 @@ public class SPMigrationAction extends RhnAction {
             targetAddonProducts = (Long[]) form.get(ADDON_PRODUCTS);
             targetBaseChannel = (Long) form.get(BASE_CHANNEL);
             targetChildChannels = (Long[]) form.get(CHILD_CHANNELS);
+            allowVendorChange = BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE));
 
             // Get additional flags
             if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
@@ -294,6 +299,7 @@ public class SPMigrationAction extends RhnAction {
             request.setAttribute(TARGET_PRODUCTS, targetProductSet);
             request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
+            request.setAttribute(ALLOW_VENDOR_CHANGE, allowVendorChange);
             // Put channel data
             Channel baseChannel = ChannelFactory.lookupByIdAndUser(targetBaseChannel, ctx.getCurrentUser());
             request.setAttribute(BASE_CHANNEL, baseChannel);
@@ -320,7 +326,7 @@ public class SPMigrationAction extends RhnAction {
             Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
             Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
-                    server, targetProductSet, channelIDs, dryRun, earliest);
+                    server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest);
 
             // Display a message to the user
             String product = targetProductSet.getBaseProduct().getFriendlyName();

@@ -9,7 +9,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I cleanup minion "sle_minion"
+    And I clean up the minion's cache on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Prepare the minion for SSH key authentication

@@ -7,7 +7,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-taskomatic"
-             helpUrl="/docs/reference/admin/task-engine-status.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/task-engine-status.html">
     <bean:message key="task.status.title"/>
   </rhn:toolbar>
 

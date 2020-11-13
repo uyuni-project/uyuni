@@ -462,6 +462,12 @@ When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
 end
 
+When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
+  if $product == product_version
+    step %(I #{select} "#{product}" as a product)
+  end
+end
+
 When(/^I wait until the tree item "([^"]+)" has no sub-list$/) do |item|
   repeat_until_timeout(message: "could still find a sub list for tree item #{item}") do
     xpath = "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-')]"
@@ -1151,32 +1157,32 @@ Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warni
   find(:xpath, item_xpath)
 end
 
-When(/^I create the MU repository for (salt|traditional) "([^"]*)" if necessary$/) do |client_type, client|
-  client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  repo_name = url = $mu_repositories[client][client_type].strip
-  repo_name.delete_prefix! "http://download.suse.de/ibs/SUSE:/Maintenance:/"
-  repo_name.delete_prefix! "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
-  if repository_exist? repo_name
-    puts "The MU repository #{repo_name} was already created, we will reuse it."
-  else
-    steps %(
+When(/^I create the MU repositories for "([^"]*)"$/) do |client|
+  repo_list = $mu_repositories[client]
+  repo_list.each do |_repo_name, repo_url|
+    unique_repo_name = generate_repository_name(repo_url)
+    if repository_exist? unique_repo_name
+      puts "The MU repository #{unique_repo_name} was already created, we will reuse it."
+    else
+      steps %(
       When I follow "Create Repository"
-      And I enter "#{repo_name}" as "label"
-      And I enter "#{url}" as "url"
+      And I enter "#{unique_repo_name}" as "label"
+      And I enter "#{repo_url.strip}" as "url"
       And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
       And I click on "Create Repository"
       Then I should see a "Repository created successfully" text
       And I should see "metadataSigned" as checked
     )
+    end
   end
 end
 
-When(/^I select the MU repository name for (salt|traditional) "([^"]*)" from the list$/) do |client_type, client|
-  client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  repo_name = url = $mu_repositories[client][client_type].strip
-  repo_name.delete_prefix! "http://download.suse.de/ibs/SUSE:/Maintenance:/"
-  repo_name.delete_prefix! "http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/"
-  step %(I check "#{repo_name}" in the list)
+When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
+  repo_list = $mu_repositories[client]
+  repo_list.each do |_repo_name, repo_url|
+    unique_repo_name = generate_repository_name(repo_url)
+    step %(I check "#{unique_repo_name}" in the list)
+  end
 end
 
 # content lifecycle steps

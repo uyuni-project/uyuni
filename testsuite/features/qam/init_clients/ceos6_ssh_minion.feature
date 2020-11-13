@@ -5,9 +5,12 @@
 #  2) subscribe it to a base channel for testing
 
 @ceos6_ssh_minion
-Feature: Bootstrap a SSH-managed CentOS 6 minion and do some basic operations on it
+Feature: Bootstrap a CentOS 6 Salt SSH minion
 
-  Scenario: Bootstrap a SSH-managed CentOS 6 minion
+  Scenario: Clean up sumaform leftovers on a CentOS 6 Salt SSH minion
+    When I perform a full salt minion cleanup on "ceos6_ssh_minion"
+
+  Scenario: Bootstrap a CentOS 6 Salt SSH minion
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
@@ -21,23 +24,19 @@ Feature: Bootstrap a SSH-managed CentOS 6 minion and do some basic operations on
     And I wait until onboarding is completed for "ceos6_ssh_minion"
 
 @proxy
-  Scenario: Check connection from SSH-managed CentOS 6 minion to proxy
+  Scenario: Check connection from CentOS 6 Salt SSH minion to proxy
     Given I am on the Systems overview page of this "ceos6_ssh_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
 @proxy
-  Scenario: Check registration on proxy of SSH-managed CentOS 6 minion
+  Scenario: Check registration on proxy of CentOS 6 Salt SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos6_ssh_minion" hostname
 
-  Scenario: Prepare a SSH-managed CentOS 6 minion
-    Given I am authorized
-    And I install all spacewalk client utils on "ceos6_ssh_minion"
-
-  Scenario: Check events history for failures on SSH-managed CentOS 6 minion
+  Scenario: Check events history for failures on CentOS 6 Salt SSH minion
     Given I am on the Systems overview page of this "ceos6_ssh_minion"
     Then I check for failed events on history event page

@@ -89,7 +89,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Marking server action as failed for server: " + minionId);
         }
-        sa.fail("Minion is down");
+        sa.fail("Minion is down or could not be contacted.");
         ActionFactory.save(sa);
     }
 

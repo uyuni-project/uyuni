@@ -4,12 +4,7 @@ set -e
 . "$pkgdatadir/grub-mkconfig_lib"
 
 rel_dirname=`make_system_path_relative_to_its_root /boot`
-if [ "x${SUSE_BTRFS_SNAPSHOT_BOOTING}" = "xtrue" ] &&
-   [ "x${GRUB_FS}" = "xbtrfs" ] ; then
-   rel_dirname="\${btrfs_subvol}$dirname"
-else
-   rel_dirname="$dirname"
-fi
+
 echo "menuentry \"{{ pillar.get('uyuni-reinstall-name') }}\" {"
 if [ -d /sys/firmware/efi ] && [ "x${GRUB_USE_LINUXEFI}" = "xtrue" ]; then
     echo "    linuxefi ${rel_dirname}/uyuni-reinstall-kernel {{ pillar.get('kopts') }}"

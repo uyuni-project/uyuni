@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-05-14 22:19+0000\n"
-"Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
+"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"PO-Revision-Date: 2020-10-23 16:49+0000\n"
+"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "yum-rhn-plugin/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -28,14 +28,14 @@ msgstr ""
 "X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnplugin.py:49
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error communicating with {PRODUCT_NAME} ."
-msgstr "Houve um erro ao tentar a comunicação com o RHN."
+msgstr "Houve um erro ao tentar a comunicação com o {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:64
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
-msgstr "O suporte para o Red Hat Satellite ou RHN Classic será desabilitado."
+msgstr "O suporte para o {PRODUCT_NAME} ou RHN Classic será desabilitado."
 
 #. If non-root notify user Spacewalk repo not accessible
 #: ../rhnplugin.py:71
@@ -47,10 +47,10 @@ msgstr ""
 "executar este comando como root para acessar os repositórios do Spacewalk."
 
 #: ../rhnplugin.py:87
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
 msgstr ""
-"Ocorreu um erro ao analisar as configurações do proxy do Red Hat Satellite."
+"Ocorreu um erro ao analisar as configurações do proxy do {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
@@ -61,42 +61,42 @@ msgid "Cleaning"
 msgstr "Limpando"
 
 #: ../rhnplugin.py:113
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Using list of {PRODUCT_NAME} repos from cache"
-msgstr "Usando lista de repositórios RHN do cache"
+msgstr "Usando lista de repositórios {PRODUCT_NAME} do cache"
 
 #: ../rhnplugin.py:129
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This system is not registered with RHN Classic or {PRODUCT_NAME}."
-msgstr "Este sistema não está registrado no RHN Classic ou Red Hat Satellite."
+msgstr "Este sistema não está registrado no RHN Classic ou {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
 msgstr "Você pode usar o rhn_register para registrar."
 
 #: ../rhnplugin.py:136
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} channel support will be disabled."
-msgstr "O suporte a canais do RHN será desabilitado."
+msgstr "O suporte a canais do {PRODUCT_NAME} será desabilitado."
 
 #: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."
 msgstr "Este sistema não está inscrito em nenhum canal."
 
 #: ../rhnplugin.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
 "could not be acquired."
 msgstr ""
-"Este sistema pode não estar registrado no RHN Classic ou Red Hat Satellite. "
-"O SystemId não pode ser adquirido."
+"Este sistema pode não estar registrado no RHN Classic ou {PRODUCT_NAME}. O "
+"SystemId não pode ser adquirido."
 
 #: ../rhnplugin.py:158
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
 msgstr ""
-"Este sistema está recebendo atualizações do RHN Classic ou Red Hat Satellite."
+"Este sistema está recebendo atualizações do RHN Classic ou {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
@@ -111,6 +111,7 @@ msgid "Please run rhn_register as root on this client"
 msgstr "Execute rhn_register como root neste cliente"
 
 #: ../rhnplugin.py:356
-#, fuzzy, python-format, python-brace-format
+#, python-format, python-brace-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
-msgstr "Informação de login necessária para o RHN não foi encontrada: %s"
+msgstr ""
+"Informação de login necessária para o {PRODUCT_NAME} não foi encontrada: %s"

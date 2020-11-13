@@ -319,7 +319,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("network", def.getInterfaces().get(0).getType());
         assertEquals("default", def.getInterfaces().get(0).getSource());
 
-        assertEquals(3, def.getDisks().size());
+        assertEquals(5, def.getDisks().size());
         assertEquals("file", def.getDisks().get(0).getType());
         assertEquals("disk", def.getDisks().get(0).getDevice());
         assertEquals("qcow2", def.getDisks().get(0).getFormat());
@@ -341,6 +341,22 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("virtio", def.getDisks().get(2).getBus());
         assertEquals("ses-pool", def.getDisks().get(2).getSource().get("pool"));
         assertEquals("test-vol", def.getDisks().get(2).getSource().get("volume"));
+
+        assertEquals("volume", def.getDisks().get(3).getType());
+        assertEquals("disk", def.getDisks().get(3).getDevice());
+        assertEquals("raw", def.getDisks().get(3).getFormat());
+        assertEquals("vdc", def.getDisks().get(3).getTarget());
+        assertEquals("virtio", def.getDisks().get(3).getBus());
+        assertEquals("iscsi-pool", def.getDisks().get(3).getSource().get("pool"));
+        assertEquals("unit:0:0:1", def.getDisks().get(3).getSource().get("volume"));
+
+        assertEquals("block", def.getDisks().get(4).getType());
+        assertEquals("disk", def.getDisks().get(4).getDevice());
+        assertEquals("raw", def.getDisks().get(4).getFormat());
+        assertEquals("vdd", def.getDisks().get(4).getTarget());
+        assertEquals("virtio", def.getDisks().get(4).getBus());
+        assertEquals("/dev/disk/by-path/pci-0000:00:0b.0-scsi-0:0:0:0",
+                def.getDisks().get(4).getSource().get("dev"));
     }
 
     /**

@@ -92,7 +92,7 @@
         <dependency org="suse" name="xalan-j2-serializer" rev="2.7.2" />
         <dependency org="suse" name="xerces-j2" rev="2.12.0" />
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
-        <dependency org="suse" name="velocity" rev="1.5" />
+        <dependency org="suse" name="velocity" rev="1.7" />
 
         <!-- Uncommend commons-lang only to generate the apidocs using manager-build.xml -->
         <!-- <dependency org="suse" name="commons-lang" rev="2.6" /> -->

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.menu;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
@@ -39,6 +40,7 @@ public class MenuTree {
 
     private final AclFactory aclFactory;
 
+
     /**
      * @param aclFactoryIn
      */
@@ -53,6 +55,7 @@ public class MenuTree {
      * @return the full menu tree as a List of {@link MenuItem}
      */
     public List<MenuItem> getMenuTree(PageContext pageContext) {
+        String docsLocale = GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(pageContext);
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         User user = new RequestContext(request).getCurrentUser();
         String url = request.getRequestURI();
@@ -278,6 +281,13 @@ public class MenuTree {
                 .addChild(new MenuItem("common.nav.overview").withPrimaryUrl("/rhn/configuration/Overview.do")
                     .withVisibility(adminRoles.get("config")))
                 .addChild(new MenuItem("config.nav.channels").withPrimaryUrl("/rhn/configuration/GlobalConfigChannelList.do")
+                        .withDir("/rhn/configuration/channel/")
+                        .withAltUrl("/rhn/configuration/ChannelCreate.do")
+                        .withAltUrl("/rhn/configuration/ChannelOverview.do")
+                        .withAltUrl("/rhn/configuration/ChannelFiles.do")
+                        .withAltUrl("/rhn/configuration/ChannelUploadFiles.do")
+                        .withAltUrl("/rhn/configuration/ChannelImportFiles.do")
+                        .withAltUrl("/rhn/configuration/ChannelCreateFiles.do")
                     .withVisibility(adminRoles.get("config")))
                 .addChild(new MenuItem("config.nav.files").withDir("/rhn/configuration/file")
                     .withVisibility(adminRoles.get("config"))
@@ -392,13 +402,13 @@ public class MenuTree {
             // Help
             nodes.add(new MenuItem("Help").withIcon("fa-book").withTarget("_blank")
                 .addChild(new MenuItem("Documentation_version", ConfigDefaults.get().getProductVersion())
-                    .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
+                    .withDocsUrl("index.html", docsLocale).withTarget("_blank"))
                 .addChild(new MenuItem("Release Notes").withTarget("_blank")
                         .addChild(new MenuItem("product_server")
-                            .withPrimaryUrl("/docs/release-notes/release-notes-server.html")
+                            .withDocsUrl("release-notes/release-notes-server.html", docsLocale)
                             .withTarget("_blank"))
                         .addChild(new MenuItem("product_proxy")
-                                .withPrimaryUrl("/docs/release-notes/release-notes-proxy.html")
+                                .withDocsUrl("release-notes/release-notes-proxy.html", docsLocale)
                                 .withTarget("_blank"))
                         )
                 .addChild(new MenuItem("API")
@@ -433,14 +443,14 @@ public class MenuTree {
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
                 .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/manager/login"))
                 .addChild(new MenuItem("Documentation_version", ConfigDefaults.get().getProductVersion())
-                    .withPrimaryUrl("/docs/index.html").withTarget("_blank"))
+                    .withDocsUrl("index.html", docsLocale).withTarget("_blank"))
                 .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))
                 .addChild(new MenuItem("Release Notes").withTarget("_blank")
                         .addChild(new MenuItem("product_server")
-                            .withPrimaryUrl("/docs/release-notes/release-notes-server.html")
+                            .withDocsUrl("release-notes/release-notes-server.html", docsLocale)
                             .withTarget("_blank"))
                         .addChild(new MenuItem("product_proxy")
-                                .withPrimaryUrl("/docs/release-notes/release-notes-proxy.html")
+                                .withDocsUrl("release-notes/release-notes-proxy.html", docsLocale)
                                 .withTarget("_blank"))
                         )
                 .addChild(new MenuItem("API")

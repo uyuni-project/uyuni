@@ -1,3 +1,25 @@
+- Allow creating custom ULN repositories with uln:// urls
+- Change message "Minion is down" to be more accurate
+- Revert: Sync state modules when starting action chain execution (bsc#1177336)
+- Remove expiration date from ics files (bsc#1177892)
+- Localize documentation links
+- fix check for available products on ISS Slaves (bsc#1177184)
+- XMLRPC: Report architecture label in the list of installed packages (bsc#1176898)
+- get media.1/products for cloned channels (bsc#1178303)
+- calculate size to truncate a history message based on the htmlified version (bsc#1178503)
+- Sync state modules when starting action chain execution (bsc#1177336)
+- Fix repo url of AppStream in generated RHEL/Centos 8 kickstart file (bsc#1175739)
+- Enable validation of Content Lifecycle Management entities in the XMLRPC API (bsc#1177706)
+- Fix the order of the arguments in the XMLRPC API doc for contentmanagement.buildProject (bsc#1177704)
+- Remove the deprecated "satellite" API namespace
+- Make image pillar visible only in buildhost organization
+- Maintain list of synced images in pillar
+- Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
+- log token verify errors and check for expired tokens
+- show only kernel options in advanced autoinstallation page when working with
+  a salt minion (bsc#1177767)
+- add new allowVendorChange flag for dist upgrades
+- Take pool and volume from Salt virt.vm_info for files and blocks disks (bsc#1175987)
 - Create VM on a Salt host using a cobbler profile
 - Show cluster upgrade plan in the upgrade UI
 - Fix action chain resuming when patches updating salt-minion don't cause service to be
@@ -18,6 +40,12 @@
 - Fix SP migration after dry run for cloned channels (bsc#1176307)
 - filter not available optional channels out
 - Fix: handle version comparison corner cases in Ubuntu packages
+
+-------------------------------------------------------------------
+Fri Nov 06 15:22:07 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Use correct eauth module and credentials for Salt SSH calls (bsc#1178319)
 
 -------------------------------------------------------------------
 Mon Sep 21 12:04:31 CEST 2020 - jgonzalez@suse.com

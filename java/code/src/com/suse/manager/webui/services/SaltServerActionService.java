@@ -1520,6 +1520,7 @@ public class SaltServerActionService {
         Map<String, Object> distupgrade = new HashMap<>();
         susemanager.put("distupgrade", distupgrade);
         distupgrade.put("dryrun", action.getDetails().isDryRun());
+        distupgrade.put("allowVendorChange", action.getDetails().isAllowVendorChange());
         distupgrade.put("channels", subbed.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
@@ -2136,9 +2137,10 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = saltApi
-                    .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
-                    .get().getMinions();
+            List<String> results = Opt.fold(
+                    saltApi.callAsync(call, new MinionList(minionIds), Optional.of(metadata)),
+                    () -> new ArrayList<String>(),
+                    l -> l.getMinions());
 
             result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));

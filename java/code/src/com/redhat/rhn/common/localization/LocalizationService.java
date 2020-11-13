@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.localization;
 
+import java.io.File;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -635,6 +636,24 @@ public class LocalizationService {
             }
         }
         Collections.sort(tmp);
+        return Collections.unmodifiableList(tmp);
+    }
+
+    /**
+     * Returns the list of installed documentation locales which is most likely a subset of
+     * all the supported locales
+     * @return list of installed documentation locales
+     */
+    public List<String> getInstalledDocsLocales() {
+        List<String> tmp = new LinkedList<String>();
+
+        // Get locales of installed documentations
+        File f = new File("/srv/www/htdocs/docs");
+        String[] locales = f.list();
+        if (locales != null) {
+            tmp.addAll(Arrays.asList(locales));
+            Collections.sort(tmp);
+        }
         return Collections.unmodifiableList(tmp);
     }
 

@@ -69,6 +69,10 @@ Feature: Sanity checks
     And it should be possible to reach the container profiles
     And it should be possible to reach the test suite profiles
 
+@server_http_proxy
+  Scenario: The HTTP proxy is working
+    Then it should be possible to use the HTTP proxy
+
 @auth_registry
   Scenario: The registry with authentication is healthy
     Then it should be possible to reach the authenticated registry

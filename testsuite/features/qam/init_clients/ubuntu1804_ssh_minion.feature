@@ -7,6 +7,9 @@
 @ubuntu1804_ssh_minion
 Feature: Bootstrap a SSH-managed Ubuntu 18.04 minion and do some basic operations on it
 
+  Scenario: Clean up sumaform leftovers on a 18.04 Salt SSH Minion
+    When I perform a full salt minion cleanup on "ubuntu1804_ssh_minion"
+
   Scenario: Bootstrap a SSH-managed Ubuntu 18.04 minion
     Given I am authorized
     When I go to the bootstrapping page

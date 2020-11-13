@@ -24,9 +24,8 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Given I am authorized
     When I enable SUSE Manager tools repositories on "ceos_client"
     And I enable repository "CentOS-Base" on this "ceos_client"
-    And I install package "hwdata m2crypto wget" on this "ceos_client"
-    And I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos_client"
-    And I install package "spacewalk-oscap scap-security-guide" on this "ceos_client"
+    And I install the traditional stack utils on "ceos_client"
+    And I install OpenSCAP centos dependencies on "ceos_client"
     And I register "ceos_client" as traditional client
     And I run "rhn-actions-control --enable-all" on "ceos_client"
 
@@ -100,6 +99,11 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I click on "Delete Profile"
     And I wait until I see "has been deleted." text
     Then "ceos_client" should not be registered
+
+@centos_minion
+  Scenario: Cleanup: delete the installed rpms on CentOS 7 traditional client
+    When I remove the traditional stack utils from "ceos_client"
+    And I remove OpenSCAP centos dependencies from "ceos_client"
 
 @centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after traditional client tests

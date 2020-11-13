@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-10-15 23:49+0000\n"
+"PO-Revision-Date: 2020-10-16 11:49+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/backend/it/"
 ">\n"
@@ -60,7 +60,7 @@ msgstr "Il tuo sistema non è presente nel database di {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
-msgstr ""
+msgstr "ISS disabilitato su questo server."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format

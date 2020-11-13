@@ -2127,11 +2127,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>注意：當勾選本方塊時，以上密碼欄並非必填；然而您還是可以填入密碼，這指在本使用者帳號的 PAM 認證功能停用運作。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
-        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/docs/administration/auth-methods.html"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>若要將衛星伺服器設為透過 LDAP、Kerberos，或其它基於網路的認證系統來進行認證的話，請參閱《&lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;安裝指南&lt;/a&gt;》，以獲得設定 PAM 的相關指示。</target>
+        <target>若要將衛星伺服器設為透過 LDAP、Kerberos，或其它基於網路的認證系統來進行認證的話，請參閱《&lt;a href={0}&gt;安裝指南&lt;/a&gt;》，以獲得設定 PAM 的相關指示。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly" xml:space="preserve">
         <source>Read-only API user:</source>
@@ -5520,12 +5520,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="provisioning.powermanagement.ipmi_note" xml:space="preserve">
-          <source>&lt;strong&gt;NOTE:&lt;/strong&gt; IPMI is the only power management type that has been tested and is supported, but others may work. To enable other power management types override the "java.power_management.types" option in rhn.conf.</source>
+          <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The power management types listed are tested and supported, but others may work. Check the documentation for more details.</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
           </context-group>
-          <target>&lt;strong&gt;請注意：&lt;/strong&gt; IPMI 乃唯一經過測試並且受支援的電源管理類型，不過可能也能使用其它類型。若要啟用其它電源管理類型，請將 rhn.conf 中的「java.power_management.types」選項置換掉。</target>
+          <target state="needs-adaptation">&lt;strong&gt;請注意：&lt;/strong&gt; IPMI 乃唯一經過測試並且受支援的電源管理類型，不過可能也能使用其它類型。若要啟用其它電源管理類型，請將 rhn.conf 中的「java.power_management.types」選項置換掉。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -11838,7 +11838,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -11994,7 +11994,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <source>
         File preservation lists are lists of files that will be restored to a system during a particular kickstart.
         You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
+        For more information refer to the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.
         The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
@@ -12134,7 +12134,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>建立 kickstart 檔案保留清單</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary" xml:space="preserve">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
@@ -22240,24 +22240,26 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <!--KS schedule pages -->
       <trans-unit id="kickstart.schedule.heading4.jsp" xml:space="preserve">
-          <source>Advanced Kickstart Configuration</source>
-          <target>進階 Kickstart 的設定</target>
+          <source>Advanced Autoinstallation Configuration</source>
+          <target state="needs-adaptation">進階 Kickstart 的設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
         </trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.distro" xml:space="preserve">
-          <source>As specified by Kickstart Distribution</source>
+          <source>As specified by the Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.profile" xml:space="preserve">
-          <source>As specified by Kickstart Profile</source>
+          <source>As specified by the Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="kickstart.schedule.kernel.options.custom.tip" xml:space="preserve">
           <source>If you would not like any kernel options, select '{0}' and leave the form field blank.</source>
           <target>若您不希望使用任何 kernel 選項，請選擇 '{0}'，並將表格欄位保留空白。</target>
@@ -22587,6 +22589,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>德文</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.en_US" xml:space="preserve">
+        <source>English</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+        <target>英文</target>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.lang.en" xml:space="preserve">
         <source>English</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
@@ -29450,6 +29459,24 @@ given channel.</source>
   </trans-unit>
         <trans-unit id="kickstart.powermanagement.system_not_found" xml:space="preserve">
         <source>System not found</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
+        <source>Style Theme</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.text.theme" xml:space="preserve">
+        <source>Please select your preferred theme style.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
+        <source>Allow Vendor Change</source>
       <target state="new" />
   </trans-unit>
       </body>

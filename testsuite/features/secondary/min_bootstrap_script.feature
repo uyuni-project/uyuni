@@ -15,7 +15,7 @@ Feature: Register a Salt minion via Bootstrap-script
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I cleanup minion "sle_minion"
+    And I clean up the minion's cache on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap the minion using the script

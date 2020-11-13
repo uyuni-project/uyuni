@@ -17,11 +17,13 @@ package com.redhat.rhn.frontend.taglibs;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 
+import javax.servlet.jsp.PageContext;
 
 /**
  * RhnTagFunctions - class to encapsulate the set of static methods that
@@ -194,5 +196,15 @@ public class RhnTagFunctions {
      */
     public static String escapeJS(String param) {
         return StringEscapeUtils.escapeEcmaScript(param);
+    }
+
+    /**
+     * Get the locale to use in the documentation
+     *
+     * @param pageContext the page context
+     * @return the locale to use
+     */
+    public static String getDocsLocale(PageContext pageContext) {
+        return GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(pageContext);
     }
 }

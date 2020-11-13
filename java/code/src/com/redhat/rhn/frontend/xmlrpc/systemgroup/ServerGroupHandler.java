@@ -93,7 +93,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @param add a boolean to associate  or dissociate admins from the group
      * @return 1 if the operation succeed 1 Exception other wise.
      *
-     * @xmlrpc.doc Add or remove administrators to/from the given group. Satellite and
+     * @xmlrpc.doc Add or remove administrators to/from the given group. #product() and
      * Organization administrators are granted access to groups within their organization
      * by default; therefore, users with those roles should not be included in the array
      * provided. Caller must be an organization administrator.

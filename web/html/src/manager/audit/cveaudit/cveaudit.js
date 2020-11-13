@@ -162,7 +162,7 @@ class CVEAudit extends React.Component {
   render() {
     return (
       <span>
-        <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="/docs/reference/audit/audit-cve-audit.html">
+        <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="reference/audit/audit-cve-audit.html">
           <Messages items={this.state.messages.map(msg => {
               return {severity: "warning", text: msg};
           })}/>

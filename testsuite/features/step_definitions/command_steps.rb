@@ -34,6 +34,12 @@ Then(/^it should be possible to reach the test packages$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
+Then(/^it should be possible to use the HTTP proxy$/) do
+  url = 'https://www.suse.com'
+  proxy = "suma:P4$$word@#{$server_http_proxy}"
+  $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
@@ -318,16 +324,12 @@ When(/^I execute spacewalk-debug on the server$/) do
   raise "Download debug file failed" unless code.zero?
 end
 
-Then(/^I get logfiles from "([^"]*)"$/) do |target|
-  node = get_target(target)
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/
-    node.run('zypper mr --enable os_pool_repo os_update_repo && zypper --non-interactive install tar')
+When(/^I extract the log files from all our active nodes$/) do
+  $nodes.each do |node|
+    next if node.nil?
+
+    extract_logs_from_node(node)
   end
-  node.run("journalctl > /var/log/messages && (tar cfvJP /tmp/#{target}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]])")
-  `mkdir logs` unless Dir.exist?('logs')
-  code = file_extract(node, "/tmp/#{target}-logs.tar.xz", "logs/#{target}-logs.tar.xz")
-  raise "Download log archive failed" unless code.zero?
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
@@ -768,8 +770,18 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
-When(/^I install all spacewalk client utils on "([^"]*)"$/) do |host|
-  step %(I install packages "#{SPACEWALK_UTILS_RPMS}" on this "#{host}")
+When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
+  step %(I #{action} packages "#{TRADITIONAL_STACK_RPMS}" #{where} this "#{host}")
+end
+
+When(/^I (install|remove) OpenSCAP (traditional|salt|centos) dependencies (on|from) "([^"]*)"$/) do |action, client_type, where, host|
+  if client_type == 'traditional'
+    step %(I #{action} packages "#{OPEN_SCAP_TRAD_DEPS}" #{where} this "#{host}")
+  elsif client_type == 'salt'
+    step %(I #{action} packages "#{OPEN_SCAP_SALT_DEPS}" #{where} this "#{host}")
+  else
+    step %(I #{action} packages "#{OPEN_SCAP_CENTOS_DEPS}" #{where} this "#{host}")
+  end
 end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -1168,7 +1180,8 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) di
     output, _code = node.run("virsh dumpxml #{vm}")
     tree = Nokogiri::XML(output)
     disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) && (x.xpath('target/@bus')[0].to_s == bus)
+      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
+        (x.xpath('target/@bus')[0].to_s == bus.downcase)
     end
     break if !disks.empty?
     sleep 3

@@ -234,8 +234,12 @@ end
 #
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
-  accept_alert do
-    step %(I click on "#{text}")
+  begin
+    accept_alert do
+      step %(I click on "#{text}")
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
   end
 end
 

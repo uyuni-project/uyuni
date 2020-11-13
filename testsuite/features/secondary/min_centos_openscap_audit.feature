@@ -10,10 +10,8 @@ Feature: openSCAP audit of CentOS Salt minion
   Scenario: Prepare the CentOS minion
     Given I am authorized
     When I enable SUSE Manager tools repositories on "ceos_minion"
-    And  I enable repository "CentOS-Base" on this "ceos_minion"
-    And  I install package "hwdata m2crypto wget" on this "ceos_minion"
-    And  I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos_minion"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos_minion"
+    And I enable repository "CentOS-Base" on this "ceos_minion"
+    And I install OpenSCAP centos dependencies on "ceos_minion"
 
 @centos_minion
   Scenario: Schedule an OpenSCAP audit job for the CentOS minion

@@ -7,7 +7,7 @@
 <html:html >
     <body>
 <rhn:toolbar base="h1" icon="header-errata"
-             helpUrl="/docs/reference/patches/clone-patches.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/patches/clone-patches.html">
         <bean:message key="cloneerrata.jsp.erratamanagement"/>
     </rhn:toolbar>
 

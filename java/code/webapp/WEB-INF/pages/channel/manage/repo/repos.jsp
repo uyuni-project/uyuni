@@ -10,7 +10,7 @@
                creationUrl="RepoCreate.do"
                creationType="repos"
                imgAlt="info.alt.img"
-               helpUrl="/docs/reference/software/manage-repositories.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/software/manage-repositories.html">
   <bean:message key="repos.jsp.header"/>
 </rhn:toolbar>
 <div class="page-summary">

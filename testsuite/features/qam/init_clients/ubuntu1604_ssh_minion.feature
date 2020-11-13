@@ -7,6 +7,9 @@
 @ubuntu1604_ssh_minion
 Feature: Bootstrap a SSH-managed Ubuntu 16.04 minion and do some basic operations on it
 
+  Scenario: Clean up sumaform leftovers on a Ubuntu 16.04 Salt SSH minion
+    When I perform a full salt minion cleanup on "ubuntu1604_ssh_minion"
+
   Scenario: Bootstrap a SSH-managed Ubuntu 16.04 minion
     Given I am authorized
     When I go to the bootstrapping page

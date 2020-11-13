@@ -68,7 +68,7 @@ const ListClusters = (props) => {
         <React.Fragment>
             <TopPanel title={t('Clusters')}
                 icon="spacewalk-icon-clusters" button={panelButtons}
-                helpUrl="/docs/reference/clusters/clusters-menu.html">
+                helpUrl="reference/clusters/clusters-menu.html">
                 <Table
                     data={props.clusters}
                     identifier={row => row.id}
