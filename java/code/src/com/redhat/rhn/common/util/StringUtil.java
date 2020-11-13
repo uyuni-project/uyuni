@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.util;
+package com.redhat.rhn.common.util; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;

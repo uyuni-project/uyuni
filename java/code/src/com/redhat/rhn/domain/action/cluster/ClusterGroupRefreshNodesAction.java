@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action.cluster;
+package com.redhat.rhn.domain.action.cluster; import static org.junit.jupiter.api.Assertions.*;
 
 public class ClusterGroupRefreshNodesAction extends BaseClusterAction {
 

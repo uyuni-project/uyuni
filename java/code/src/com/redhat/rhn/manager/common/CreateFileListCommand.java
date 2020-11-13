@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.manager.common;
+package com.redhat.rhn.manager.common; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.common.CommonFactory;

@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.common.db;
+package com.redhat.rhn.common.db; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Thrown if the named parameter you try to bind to isn't found in the prepared statement.

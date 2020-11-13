@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.renderers.setupwizard;
+package com.redhat.rhn.frontend.action.renderers.setupwizard; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;

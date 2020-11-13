@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.kickstart.tree.test;
+package com.redhat.rhn.manager.kickstart.tree.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;

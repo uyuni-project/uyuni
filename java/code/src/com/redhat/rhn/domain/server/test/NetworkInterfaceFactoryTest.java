@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.server.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
 

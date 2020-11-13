@@ -1,4 +1,4 @@
-package com.redhat.rhn.manager.audit.test;
+package com.redhat.rhn.manager.audit.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;

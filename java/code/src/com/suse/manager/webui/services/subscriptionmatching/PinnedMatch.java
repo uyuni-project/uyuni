@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.services.subscriptionmatching;
+package com.suse.manager.webui.services.subscriptionmatching; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * JSON representation of a pinned match for the matcher UI.

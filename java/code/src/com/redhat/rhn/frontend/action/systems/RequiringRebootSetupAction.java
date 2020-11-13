@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
-import org.apache.struts.action.ActionForm;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import org.apache.struts.action.ActionForm;
 
 /**
  * InactiveSetupAction

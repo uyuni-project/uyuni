@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.admin.monitoring.test;
+package com.redhat.rhn.frontend.xmlrpc.admin.monitoring.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

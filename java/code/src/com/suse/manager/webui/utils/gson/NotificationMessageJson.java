@@ -16,7 +16,6 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.notification.NotificationMessage;
-
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.strings.database;
+package com.redhat.rhn.frontend.strings.database; import static org.junit.jupiter.api.Assertions.*;
 
 
 

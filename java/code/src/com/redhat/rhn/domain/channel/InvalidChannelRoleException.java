@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.domain.channel;
+package com.redhat.rhn.domain.channel; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * User does not have appropriate channel role for given channel

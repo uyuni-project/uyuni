@@ -15,9 +15,8 @@
 
 package com.suse.manager.webui.services.impl.runner;
 
-import com.suse.salt.netapi.calls.RunnerCall;
-
 import com.google.gson.reflect.TypeToken;
+import com.suse.salt.netapi.calls.RunnerCall;
 
 import java.util.Map;
 import java.util.Optional;

@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;

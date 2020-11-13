@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.matcher;
+package com.suse.manager.matcher; import static org.junit.jupiter.api.Assertions.*;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;

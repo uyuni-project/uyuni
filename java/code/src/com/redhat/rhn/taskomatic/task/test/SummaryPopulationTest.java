@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * SummaryPopulationTest

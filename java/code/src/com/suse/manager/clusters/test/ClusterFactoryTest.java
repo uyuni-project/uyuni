@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.clusters.test;
+package com.suse.manager.clusters.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
 import com.redhat.rhn.domain.server.MinionServer;

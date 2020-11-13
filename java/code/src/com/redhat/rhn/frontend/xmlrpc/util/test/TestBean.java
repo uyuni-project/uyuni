@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.util.test;
 
-
 /**
  * TestBean
  * @version $Rev$

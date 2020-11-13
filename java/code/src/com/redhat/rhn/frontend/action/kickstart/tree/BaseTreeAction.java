@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.frontend.action.kickstart.tree;
+package com.redhat.rhn.frontend.action.kickstart.tree; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;

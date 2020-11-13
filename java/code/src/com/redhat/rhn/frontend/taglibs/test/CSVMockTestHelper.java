@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.taglibs.test;
+package com.redhat.rhn.frontend.taglibs.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
 import org.jmock.Expectations;

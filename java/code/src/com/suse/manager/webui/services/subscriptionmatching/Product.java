@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.services.subscriptionmatching;
+package com.suse.manager.webui.services.subscriptionmatching; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
 

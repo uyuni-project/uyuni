@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.serializer;
+package com.redhat.rhn.frontend.xmlrpc.serializer; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;

@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.rhnpackage.profile;
+package com.redhat.rhn.frontend.action.rhnpackage.profile; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;

@@ -14,13 +14,13 @@
  */
 package com.suse.manager.virtualization.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.suse.manager.virtualization.PoolDefinition;
 
-import java.util.Arrays;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Assert;
+import java.util.Arrays;
 
 public class PoolDefinitionTest  {
 

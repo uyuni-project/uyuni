@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.internal.doclet;
+package com.redhat.rhn.internal.doclet; import static org.junit.jupiter.api.Assertions.*;
 
 import jdk.javadoc.doclet.DocletEnvironment;
 

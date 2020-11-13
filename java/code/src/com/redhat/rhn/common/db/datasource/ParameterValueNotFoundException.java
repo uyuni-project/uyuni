@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.common.db.datasource;
+package com.redhat.rhn.common.db.datasource; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 

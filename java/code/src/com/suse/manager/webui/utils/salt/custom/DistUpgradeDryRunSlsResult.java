@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.salt.custom;
+package com.suse.manager.webui.utils.salt.custom; import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.annotations.SerializedName;
 import com.suse.salt.netapi.results.StateApplyResult;

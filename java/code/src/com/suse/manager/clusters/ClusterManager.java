@@ -38,6 +38,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
@@ -49,9 +51,6 @@ import com.suse.manager.webui.utils.salt.custom.ClusterUpgradePlanSlsResult;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;

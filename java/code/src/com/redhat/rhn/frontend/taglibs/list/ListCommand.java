@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.taglibs.list;
+package com.redhat.rhn.frontend.taglibs.list; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Describes the various states the ListTag moves thru as it renders a list

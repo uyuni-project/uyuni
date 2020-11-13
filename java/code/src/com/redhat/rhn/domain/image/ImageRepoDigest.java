@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.image;
+package com.redhat.rhn.domain.image; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;

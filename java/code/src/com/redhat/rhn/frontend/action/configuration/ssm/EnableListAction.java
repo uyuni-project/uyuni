@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.configuration.ssm;
+package com.redhat.rhn.frontend.action.configuration.ssm; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_UPDATE;
 import static com.redhat.rhn.manager.rhnset.RhnSetDecl.SYSTEMS;

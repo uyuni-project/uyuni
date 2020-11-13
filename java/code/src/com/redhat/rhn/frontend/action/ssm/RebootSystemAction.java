@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.ssm;
+package com.redhat.rhn.frontend.action.ssm; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 

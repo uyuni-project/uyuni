@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -22,11 +22,13 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ServerSerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
 
-import com.redhat.rhn.testing.TestUtils;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 

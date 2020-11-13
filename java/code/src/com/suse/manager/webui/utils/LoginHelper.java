@@ -13,7 +13,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils;
+package com.suse.manager.webui.utils; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.WrappedSQLException;

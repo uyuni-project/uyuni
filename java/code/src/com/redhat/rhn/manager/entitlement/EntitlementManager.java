@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.manager.entitlement;
+package com.redhat.rhn.manager.entitlement; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;

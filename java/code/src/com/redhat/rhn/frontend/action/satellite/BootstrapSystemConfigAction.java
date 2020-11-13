@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.satellite;
+package com.redhat.rhn.frontend.action.satellite; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;

@@ -1,4 +1,4 @@
-package com.suse.manager.webui.controllers.utils.test;
+package com.suse.manager.webui.controllers.utils.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;

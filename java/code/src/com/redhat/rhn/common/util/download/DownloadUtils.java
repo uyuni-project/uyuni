@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.common.util.download;
 
-
-
 import org.jfree.io.IOUtils;
 
 import java.io.BufferedReader;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.kickstart;
+package com.redhat.rhn.frontend.xmlrpc.kickstart; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;

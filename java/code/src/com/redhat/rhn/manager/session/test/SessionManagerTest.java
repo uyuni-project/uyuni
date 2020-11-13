@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.session.test;
+package com.redhat.rhn.manager.session.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

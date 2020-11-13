@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.html;
 
-
 /**
  * TextInputTag a simple class to render a text input tag
  * <p>

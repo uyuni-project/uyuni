@@ -16,6 +16,8 @@ package com.suse.manager.virtualization.test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc;
+package com.redhat.rhn.frontend.xmlrpc; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ServerFactory;

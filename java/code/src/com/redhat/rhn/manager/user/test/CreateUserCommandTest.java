@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.user.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
@@ -28,6 +27,9 @@ import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CreateUserCommandTest extends RhnBaseTestCase {
 

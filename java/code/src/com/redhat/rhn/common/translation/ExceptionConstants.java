@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.translation;
+package com.redhat.rhn.common.translation; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Translator The class that actually does the object translations for us.

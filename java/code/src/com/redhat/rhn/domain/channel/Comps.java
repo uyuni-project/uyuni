@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.channel;
+package com.redhat.rhn.domain.channel; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *

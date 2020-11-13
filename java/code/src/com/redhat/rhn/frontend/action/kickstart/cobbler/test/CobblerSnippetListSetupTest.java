@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.cobbler.test;
 
-import org.junit.jupiter.api.Test;
-
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CobblerSnippetListSetupTest

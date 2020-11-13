@@ -14,11 +14,9 @@
  */
 
 package com.redhat.rhn.manager.action.test;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
 
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -34,10 +32,11 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;

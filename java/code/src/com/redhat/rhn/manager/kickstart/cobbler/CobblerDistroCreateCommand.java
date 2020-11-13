@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.manager.kickstart.cobbler;
+package com.redhat.rhn.manager.kickstart.cobbler; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;

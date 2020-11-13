@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
+
+import org.junit.jupiter.api.Test;
 
 import servletunit.HttpServletRequestSimulator;
 

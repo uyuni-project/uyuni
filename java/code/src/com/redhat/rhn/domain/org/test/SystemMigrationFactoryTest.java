@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.org.test;
+package com.redhat.rhn.domain.org.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.SystemMigrationFactory;

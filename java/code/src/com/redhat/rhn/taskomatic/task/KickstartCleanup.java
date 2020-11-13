@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.taskomatic.task;
+package com.redhat.rhn.taskomatic.task; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;

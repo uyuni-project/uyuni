@@ -14,12 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.KickstartLocaleEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartDetailsEditTest

@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.manager.distupgrade;
+package com.redhat.rhn.manager.distupgrade; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Exception to be thrown in case of problems with dist upgrade.

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.validator.test;
+package com.redhat.rhn.common.validator.test; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 

@@ -15,6 +15,7 @@
 package com.suse.manager.utils;
 
 import com.redhat.rhn.domain.server.MinionServer;
+
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 

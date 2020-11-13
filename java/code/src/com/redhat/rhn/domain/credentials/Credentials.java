@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.credentials;
+package com.redhat.rhn.domain.credentials; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;

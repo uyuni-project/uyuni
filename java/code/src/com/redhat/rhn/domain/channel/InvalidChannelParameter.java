@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.channel;
+package com.redhat.rhn.domain.channel; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.notification;
+package com.redhat.rhn.domain.notification; import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.Gson;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;

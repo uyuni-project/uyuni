@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
-
 import com.redhat.rhn.FaultException;
 
 /**

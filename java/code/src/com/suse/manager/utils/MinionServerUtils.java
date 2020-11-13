@@ -16,6 +16,7 @@ package com.suse.manager.utils;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 
 import java.util.List;

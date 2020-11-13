@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.maintenance.rescheduling;
+package com.suse.manager.maintenance.rescheduling; import static org.junit.jupiter.api.Assertions.*;
 
 public enum RescheduleStrategyType {
 

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager;
+package com.redhat.rhn.manager; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Conveys an information about existence of an Entity

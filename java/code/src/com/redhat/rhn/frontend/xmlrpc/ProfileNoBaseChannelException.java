@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.frontend.xmlrpc;
+package com.redhat.rhn.frontend.xmlrpc; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.localization.LocalizationService;

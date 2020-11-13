@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common;
+package com.redhat.rhn.common; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Common constants.

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.packages.provider.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageKey;
@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

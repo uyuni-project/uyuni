@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.iss.test;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

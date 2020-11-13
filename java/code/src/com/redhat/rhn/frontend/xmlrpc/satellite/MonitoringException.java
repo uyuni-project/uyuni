@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.satellite;
+package com.redhat.rhn.frontend.xmlrpc.satellite; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.FaultException;
 

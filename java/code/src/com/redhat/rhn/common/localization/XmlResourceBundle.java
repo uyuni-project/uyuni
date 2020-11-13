@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.localization;
+package com.redhat.rhn.common.localization; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;

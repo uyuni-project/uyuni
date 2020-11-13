@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.schedule.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
@@ -29,6 +29,8 @@ import com.redhat.rhn.frontend.action.schedule.ActionChainEditAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

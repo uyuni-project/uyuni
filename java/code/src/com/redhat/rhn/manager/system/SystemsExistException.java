@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.system;
+package com.redhat.rhn.manager.system; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 

@@ -14,17 +14,18 @@
  */
 
 package com.redhat.rhn.common.messaging.test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 
-import org.junit.jupiter.api.Test;
-
-import org.apache.log4j.Logger;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.apache.log4j.Logger;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MessageQueueTest extends RhnBaseTestCase {
 

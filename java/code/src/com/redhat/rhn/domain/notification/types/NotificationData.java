@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.notification.types;
+package com.redhat.rhn.domain.notification.types; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.notification.NotificationMessage;
 

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.entitlement;
+package com.redhat.rhn.domain.entitlement; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;

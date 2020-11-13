@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.common;
+package com.redhat.rhn.common; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Failure to run a reflected method properly

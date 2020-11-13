@@ -1,12 +1,13 @@
 package com.redhat.rhn.domain.contentmgmt.validation.test;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
-
-import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
 
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_WARN;
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
 

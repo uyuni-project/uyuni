@@ -14,27 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import javax.servlet.http.Cookie;
-
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
-import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
-import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
-
-import org.apache.struts.action.DynaActionForm;
-import org.hibernate.HibernateException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-
-import servletunit.HttpServletRequestSimulator;
-import servletunit.ServletContextSimulator;
-import servletunit.struts.MockStrutsTestCase;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -48,6 +28,28 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
+
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+
+import org.apache.struts.action.DynaActionForm;
+import org.hibernate.HibernateException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.servlet.http.Cookie;
+
+import servletunit.HttpServletRequestSimulator;
+import servletunit.ServletContextSimulator;
+import servletunit.struts.MockStrutsTestCase;
 
 /**
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our

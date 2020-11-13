@@ -14,11 +14,11 @@
  */
 package com.suse.manager.metrics;
 
-import io.prometheus.client.Collector;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import io.prometheus.client.Collector;
 
 /**
  * Collector for a ThreadPool.

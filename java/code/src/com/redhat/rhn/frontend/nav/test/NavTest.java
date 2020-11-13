@@ -14,13 +14,8 @@
  */
 
 package com.redhat.rhn.frontend.nav.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.nav.DepthGuard;
 import com.redhat.rhn.frontend.nav.NavCache;
@@ -33,6 +28,12 @@ import com.redhat.rhn.frontend.nav.Renderable;
 import com.redhat.rhn.frontend.nav.TextRenderer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
+import org.apache.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class NavTest extends RhnBaseTestCase {
     private static Logger log = Logger.getLogger(NavTest.class);

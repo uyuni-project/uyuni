@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui;
+package com.suse.manager.webui; import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.MessageFormat;
 import java.util.Locale;

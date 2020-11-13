@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.session.WebSession;
@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.HibernateException;
+import org.junit.jupiter.api.Test;
 
 public class NestedTransactionFactoryTest extends RhnBaseTestCase {
 

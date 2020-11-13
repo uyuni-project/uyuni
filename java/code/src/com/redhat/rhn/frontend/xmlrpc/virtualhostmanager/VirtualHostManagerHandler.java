@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.virtualhostmanager;
+package com.redhat.rhn.frontend.xmlrpc.virtualhostmanager; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;

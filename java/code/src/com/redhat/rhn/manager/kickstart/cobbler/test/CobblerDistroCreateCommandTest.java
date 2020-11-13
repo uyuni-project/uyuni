@@ -1,4 +1,4 @@
-package com.redhat.rhn.manager.kickstart.cobbler.test;
+package com.redhat.rhn.manager.kickstart.cobbler.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.multiorg;
+package com.redhat.rhn.frontend.action.multiorg; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;

@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.common.translation;
+package com.redhat.rhn.common.translation; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 

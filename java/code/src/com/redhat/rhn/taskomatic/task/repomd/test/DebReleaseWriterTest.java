@@ -14,10 +14,8 @@
  */
 
 package com.redhat.rhn.taskomatic.task.repomd.test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.Channel;
@@ -30,6 +28,10 @@ import com.redhat.rhn.taskomatic.task.repomd.DebPackageWriter;
 import com.redhat.rhn.taskomatic.task.repomd.DebReleaseWriter;
 import com.redhat.rhn.taskomatic.task.repomd.DebRepositoryWriter;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;

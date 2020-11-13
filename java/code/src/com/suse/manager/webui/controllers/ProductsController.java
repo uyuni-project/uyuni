@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.common.hibernate.HibernateFactory.doWithoutAutoFlushing;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;

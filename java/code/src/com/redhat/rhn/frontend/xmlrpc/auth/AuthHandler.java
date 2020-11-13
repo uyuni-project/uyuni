@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.xmlrpc.auth;
+package com.redhat.rhn.frontend.xmlrpc.auth; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.session.InvalidSessionDurationException;
 import com.redhat.rhn.domain.session.WebSession;

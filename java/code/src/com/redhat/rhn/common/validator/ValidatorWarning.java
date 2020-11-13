@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.common.validator;
 
-
-
 /**
  * <p>
  *  The <code>ValidatorWarning</code> class represents an warning while

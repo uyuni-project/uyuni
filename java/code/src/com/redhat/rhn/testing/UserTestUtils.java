@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
@@ -27,8 +29,6 @@ import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
-
-import junit.framework.Assert;
 
 /**
  * A class that allows us to easily create test users.

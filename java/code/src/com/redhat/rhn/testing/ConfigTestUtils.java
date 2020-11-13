@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
@@ -32,8 +34,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 
 import java.util.Date;
-
-import junit.framework.Assert;
 
 /**
  * ConfigTestUtils

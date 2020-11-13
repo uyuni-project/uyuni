@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.visualization.json;
+package com.redhat.rhn.manager.visualization.json; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * POJO representing virtual host manager to be displayed in visualization.

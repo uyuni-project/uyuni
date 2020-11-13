@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.messaging;
+package com.redhat.rhn.common.messaging; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * A interface representing all messages that can be sent through the

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.system;
+package com.redhat.rhn.frontend.xmlrpc.system; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Installed SUSE product info containing all the fields in a

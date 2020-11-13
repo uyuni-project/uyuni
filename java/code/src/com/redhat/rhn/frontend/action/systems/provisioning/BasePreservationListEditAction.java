@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.BaseEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -23,6 +21,8 @@ import com.redhat.rhn.manager.PersistOperation;
 import com.redhat.rhn.manager.common.BaseFileListEditCommand;
 
 import org.apache.struts.action.DynaActionForm;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * AbstractPreservationListEditAction - stuts action for editing/creating

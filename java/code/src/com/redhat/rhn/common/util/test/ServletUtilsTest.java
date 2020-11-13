@@ -14,7 +14,8 @@
  */
 
 package com.redhat.rhn.common.util.test;
-import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -22,6 +23,7 @@ import com.redhat.rhn.testing.ServletTestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;

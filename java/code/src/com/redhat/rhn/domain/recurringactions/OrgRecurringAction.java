@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.recurringactions;
+package com.redhat.rhn.domain.recurringactions; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;

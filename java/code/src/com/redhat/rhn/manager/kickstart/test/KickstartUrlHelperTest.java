@@ -13,11 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.kickstart.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Date;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -26,6 +23,11 @@ import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.test.KickstartSessionTest;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Date;
 
 
 /**

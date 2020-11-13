@@ -15,7 +15,7 @@
 /**
  * Copyright (c) 2014 Red Hat, Inc.
  */
-package com.redhat.rhn.domain.action.test;
+package com.redhat.rhn.domain.action.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

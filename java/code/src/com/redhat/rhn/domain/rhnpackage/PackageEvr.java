@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.rhnpackage;
+package com.redhat.rhn.domain.rhnpackage; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.DebVersionComparator;
 import com.redhat.rhn.common.util.RpmVersionComparator;

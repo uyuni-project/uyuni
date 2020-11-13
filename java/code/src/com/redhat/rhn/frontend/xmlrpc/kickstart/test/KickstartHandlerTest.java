@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -38,6 +38,8 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.NoSuchKickstartTreeException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

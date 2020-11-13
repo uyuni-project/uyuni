@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.dto.kickstart;
+package com.redhat.rhn.frontend.dto.kickstart; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.dto.BaseDto;
 

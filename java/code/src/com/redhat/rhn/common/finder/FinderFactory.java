@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.finder;
+package com.redhat.rhn.common.finder; import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.net.URL;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.ssm;
+package com.redhat.rhn.manager.ssm; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.Server;
 import com.suse.salt.netapi.utils.Xor;

@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.xmlrpc.image.store;
+package com.redhat.rhn.frontend.xmlrpc.image.store; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;

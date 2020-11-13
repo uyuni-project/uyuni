@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.taglibs;
+package com.redhat.rhn.frontend.taglibs; import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.io.Writer;

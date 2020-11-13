@@ -13,19 +13,20 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.nav.test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 
-import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
-import java.util.List;
-
-import org.apache.commons.beanutils.MethodUtils;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.apache.commons.beanutils.MethodUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * NavNodeTest

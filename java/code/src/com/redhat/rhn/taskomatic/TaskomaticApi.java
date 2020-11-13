@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -36,6 +38,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -54,8 +57,6 @@ import java.util.stream.Stream;
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
-
-import static java.util.Collections.singletonList;
 
 /**
  * TaskomaticApi

@@ -14,12 +14,11 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
 import com.suse.utils.Json;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 
 import org.apache.http.HttpStatus;
 

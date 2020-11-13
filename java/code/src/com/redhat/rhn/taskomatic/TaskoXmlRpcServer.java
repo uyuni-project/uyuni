@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic;
 
 import com.redhat.rhn.common.conf.Config;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

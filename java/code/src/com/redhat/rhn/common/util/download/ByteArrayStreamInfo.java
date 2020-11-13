@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.util.download;
+package com.redhat.rhn.common.util.download; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.struts.actions.DownloadAction.StreamInfo;
 

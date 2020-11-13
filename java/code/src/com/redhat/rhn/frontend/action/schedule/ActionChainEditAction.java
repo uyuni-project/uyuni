@@ -15,7 +15,7 @@
 /**
  * Copyright (c) 2014 Red Hat, Inc.
  */
-package com.redhat.rhn.frontend.action.schedule;
+package com.redhat.rhn.frontend.action.schedule; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;

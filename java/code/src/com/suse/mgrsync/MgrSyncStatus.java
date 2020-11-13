@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.mgrsync;
+package com.suse.mgrsync; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Enum type representing the channel or product status to be used for mgr-sync.

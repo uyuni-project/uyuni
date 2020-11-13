@@ -1,9 +1,7 @@
 package com.suse.manager.reactor.messaging.test;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.Action;
@@ -30,15 +28,18 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.test.TestSystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.parser.JsonParser;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;

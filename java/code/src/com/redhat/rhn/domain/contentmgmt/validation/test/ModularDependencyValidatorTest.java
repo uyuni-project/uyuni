@@ -14,15 +14,17 @@
  */
 
 package com.redhat.rhn.domain.contentmgmt.validation.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_ERROR;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
 import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_ERROR;
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
 

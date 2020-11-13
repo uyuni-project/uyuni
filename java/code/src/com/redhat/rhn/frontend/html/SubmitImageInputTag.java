@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.html;
 
-
 /**
  * SubmitImageInputTag a simple class to render a text input tag
  * <p>

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.token.configuration;
+package com.redhat.rhn.frontend.action.token.configuration; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;

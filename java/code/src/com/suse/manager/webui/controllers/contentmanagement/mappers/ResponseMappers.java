@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.contentmanagement.mappers;
+package com.suse.manager.webui.controllers.contentmanagement.mappers; import static org.junit.jupiter.api.Assertions.*;
 
 
 import static com.suse.utils.Opt.stream;

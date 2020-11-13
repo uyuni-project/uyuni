@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.contentmanagement;
+package com.suse.manager.webui.controllers.contentmanagement; import static org.junit.jupiter.api.Assertions.*;
 
 import com.suse.manager.webui.controllers.contentmanagement.handlers.AppStreamsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.EnvironmentApiController;

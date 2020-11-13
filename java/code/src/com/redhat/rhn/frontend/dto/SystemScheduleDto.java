@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.dto;
+package com.redhat.rhn.frontend.dto; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * A DTO of basic system data and their assigned maintenance schedules

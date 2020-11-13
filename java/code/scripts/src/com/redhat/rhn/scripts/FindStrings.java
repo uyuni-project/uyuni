@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.scripts;
+package com.redhat.rhn.scripts; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.Constant;

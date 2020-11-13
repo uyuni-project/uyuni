@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system;
+package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.validator.ValidatorError;

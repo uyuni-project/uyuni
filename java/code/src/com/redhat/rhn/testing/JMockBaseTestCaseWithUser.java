@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.testing;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
@@ -29,8 +31,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 
 /**
  * Basic test class class with a User

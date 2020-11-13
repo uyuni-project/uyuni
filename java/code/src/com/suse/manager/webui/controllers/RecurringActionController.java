@@ -36,11 +36,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.webui.utils.gson.RecurringStateScheduleJson;
-import com.suse.manager.webui.utils.gson.ResultJson;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.webui.utils.gson.RecurringStateScheduleJson;
+import com.suse.manager.webui.utils.gson.ResultJson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;

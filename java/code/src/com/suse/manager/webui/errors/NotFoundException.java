@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.errors;
+package com.suse.manager.webui.errors; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Break the spark http request handling flow when a 404 happens

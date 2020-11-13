@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.domain.errata;
+package com.redhat.rhn.domain.errata; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;

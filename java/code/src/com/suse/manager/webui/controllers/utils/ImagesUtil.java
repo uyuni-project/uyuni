@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.utils;
+package com.suse.manager.webui.controllers.utils; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.suse.manager.gatherer.GathererRunner;

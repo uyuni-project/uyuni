@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.taglibs.list.helper;
+package com.redhat.rhn.frontend.taglibs.list.helper; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;

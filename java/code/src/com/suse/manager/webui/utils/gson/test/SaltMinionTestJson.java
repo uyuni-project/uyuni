@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils.gson.test;
+package com.suse.manager.webui.utils.gson.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;

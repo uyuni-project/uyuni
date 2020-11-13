@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.reactor.messaging.test;
+package com.suse.manager.reactor.messaging.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.db.datasource.DataResult;

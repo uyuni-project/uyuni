@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.test;
+package com.suse.manager.webui.controllers.test; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;

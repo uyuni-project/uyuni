@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.channels;
+package com.suse.manager.webui.controllers.channels; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.common.hibernate.HibernateFactory.doWithoutAutoFlushing;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.generateChannelJson;

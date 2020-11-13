@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.taglibs.test;
+package com.redhat.rhn.frontend.taglibs.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.taglibs.ToolbarTag;

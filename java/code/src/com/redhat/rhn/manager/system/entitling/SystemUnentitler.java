@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.system.entitling;
+package com.redhat.rhn.manager.system.entitling; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.entitlement.Entitlement;

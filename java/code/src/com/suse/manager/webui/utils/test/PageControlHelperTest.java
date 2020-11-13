@@ -1,4 +1,4 @@
-package com.suse.manager.webui.utils.test;
+package com.suse.manager.webui.utils.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

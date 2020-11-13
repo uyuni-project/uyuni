@@ -14,16 +14,18 @@
  */
 
 package com.suse.manager.maintenance.test;
-import org.junit.jupiter.api.BeforeEach;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.maintenance.IcalUtils;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileReader;
@@ -33,9 +35,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 import net.fortuna.ical4j.model.Calendar;
 

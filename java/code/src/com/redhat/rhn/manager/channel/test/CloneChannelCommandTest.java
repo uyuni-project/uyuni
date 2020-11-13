@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.channel.test;
+package com.redhat.rhn.manager.channel.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;

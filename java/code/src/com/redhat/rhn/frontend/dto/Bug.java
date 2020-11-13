@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.frontend.dto;
+package com.redhat.rhn.frontend.dto; import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

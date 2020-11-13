@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.rhnpackage;
+package com.redhat.rhn.frontend.action.rhnpackage; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.rhnpackage.Package;

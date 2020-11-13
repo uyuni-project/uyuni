@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.admin;
+package com.suse.manager.webui.controllers.admin; import static org.junit.jupiter.api.Assertions.*;
 
 import com.suse.manager.webui.controllers.admin.handlers.MonitoringApiController;
 

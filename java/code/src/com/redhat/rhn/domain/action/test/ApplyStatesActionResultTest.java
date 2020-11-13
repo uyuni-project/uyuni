@@ -18,12 +18,12 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 
 /**

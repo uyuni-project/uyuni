@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action.cluster;
+package com.redhat.rhn.domain.action.cluster; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.action.Action;
 import com.suse.manager.model.clusters.Cluster;

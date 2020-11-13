@@ -13,18 +13,21 @@
  * in this software or its documentation.
  */
 package com.suse.manager.webui.services.subscriptionmatching.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
 import com.suse.manager.webui.services.subscriptionmatching.PinnedMatch;
+import com.suse.manager.webui.services.subscriptionmatching.Product;
 import com.suse.manager.webui.services.subscriptionmatching.Subscription;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
-import com.suse.manager.webui.services.subscriptionmatching.Product;
 import com.suse.matcher.json.InputJson;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.MessageJson;
@@ -32,6 +35,9 @@ import com.suse.matcher.json.OutputJson;
 import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
 import com.suse.matcher.json.SystemJson;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,10 +50,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Test for SubscriptionMatchProcessor.

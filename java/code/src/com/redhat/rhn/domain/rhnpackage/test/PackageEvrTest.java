@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.rhnpackage.test;
+package com.redhat.rhn.domain.rhnpackage.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;

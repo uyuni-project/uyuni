@@ -1,4 +1,4 @@
-package com.suse.manager.reactor.messaging.test;
+package com.suse.manager.reactor.messaging.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

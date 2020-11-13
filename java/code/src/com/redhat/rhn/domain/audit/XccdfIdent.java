@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.audit;
+package com.redhat.rhn.domain.audit; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * XccdfIdent - Class representation of the table rhnXccdfIdent.

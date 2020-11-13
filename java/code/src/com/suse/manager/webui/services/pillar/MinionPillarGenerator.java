@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.services.pillar;
+package com.suse.manager.webui.services.pillar; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.MinionServer;
 

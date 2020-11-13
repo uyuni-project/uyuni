@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action.rhnpackage;
+package com.redhat.rhn.domain.action.rhnpackage; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.manager.action.ActionManager;

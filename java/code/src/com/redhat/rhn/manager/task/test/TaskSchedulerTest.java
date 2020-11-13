@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.task.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.task.TaskScheduler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Iterator;

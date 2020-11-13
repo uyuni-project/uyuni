@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.common.filediff;
 
-
 /**
  * This represents a hunk of text that is labeled as changed when diffing files.
  * @version $Rev$

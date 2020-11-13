@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,10 +25,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import org.junit.Assert;
-
-import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
 
 /**
  * This test implements a simulation considering n idle systems (specified below as

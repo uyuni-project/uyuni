@@ -1,5 +1,4 @@
 package com.redhat.rhn.manager.kickstart.cobbler.test;
-import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -8,6 +7,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Base for Cobbler command tests.

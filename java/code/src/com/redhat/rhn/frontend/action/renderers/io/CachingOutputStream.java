@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.renderers.io;
+package com.redhat.rhn.frontend.action.renderers.io; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
 

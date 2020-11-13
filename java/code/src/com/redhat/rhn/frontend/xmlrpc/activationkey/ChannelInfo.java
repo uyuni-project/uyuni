@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.xmlrpc.activationkey;
+package com.redhat.rhn.frontend.xmlrpc.activationkey; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Channel info containing label, name, url and a token for

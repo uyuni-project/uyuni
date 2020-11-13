@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils.salt.custom;
+package com.suse.manager.webui.utils.salt.custom; import static org.junit.jupiter.api.Assertions.*;
 
 public class MgrClustersResult {
 

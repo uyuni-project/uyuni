@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.metrics;
+package com.suse.manager.metrics; import static org.junit.jupiter.api.Assertions.*;
 
 import io.prometheus.client.Collector;
 import org.apache.log4j.Logger;

@@ -18,7 +18,9 @@ package com.redhat.rhn.frontend.xmlrpc.admin.monitoring;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.satellite.MonitoringException;
+
 import com.suse.manager.webui.services.impl.MonitoringService;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;

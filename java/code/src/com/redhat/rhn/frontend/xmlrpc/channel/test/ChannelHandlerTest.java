@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.xmlrpc.channel.test;
+package com.redhat.rhn.frontend.xmlrpc.channel.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;

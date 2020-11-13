@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.reactor.messaging;
+package com.suse.manager.reactor.messaging; import static org.junit.jupiter.api.Assertions.*;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;

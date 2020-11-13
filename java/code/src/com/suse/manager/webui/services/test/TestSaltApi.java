@@ -1,4 +1,4 @@
-package com.suse.manager.webui.services.test;
+package com.suse.manager.webui.services.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;

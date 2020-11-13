@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.configuration.sdc;
+package com.redhat.rhn.frontend.action.configuration.sdc; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_CONFIGFILES_DIFF;
 

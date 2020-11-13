@@ -14,7 +14,7 @@
  */
 package com.suse.manager.utils.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -27,7 +27,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.utils.Json;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 public class SaltUtilsTest  {
 

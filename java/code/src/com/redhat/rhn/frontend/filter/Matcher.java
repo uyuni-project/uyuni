@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.filter;
 
-
 /**
  * An interface used by TreeFilter right now
  * but may be useful in the future that matches a filter data

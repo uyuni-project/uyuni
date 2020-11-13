@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.html;
+package com.redhat.rhn.frontend.html; import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

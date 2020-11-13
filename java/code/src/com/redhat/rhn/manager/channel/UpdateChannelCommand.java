@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.channel;
 
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumType;

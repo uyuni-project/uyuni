@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action;
+package com.redhat.rhn.domain.action; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * CertificateUpdateAction - Class representing TYPE_CLIENTCERT_UPDATE_CLIENT_CERT

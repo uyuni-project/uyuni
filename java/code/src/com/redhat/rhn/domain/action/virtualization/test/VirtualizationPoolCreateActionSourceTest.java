@@ -1,16 +1,17 @@
 package com.redhat.rhn.domain.action.virtualization.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateActionSource;
 
 import com.suse.manager.virtualization.PoolSourceDevice;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 public class VirtualizationPoolCreateActionSourceTest  {
 

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.kickstart.cobbler;
+package com.redhat.rhn.domain.kickstart.cobbler; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;

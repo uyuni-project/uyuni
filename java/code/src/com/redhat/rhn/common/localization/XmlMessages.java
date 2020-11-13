@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.localization;
+package com.redhat.rhn.common.localization; import static org.junit.jupiter.api.Assertions.*;
 import com.redhat.rhn.common.conf.Config;
 
 import org.apache.commons.lang3.StringEscapeUtils;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action.channel;
+package com.redhat.rhn.domain.action.channel; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.channel.AccessToken;

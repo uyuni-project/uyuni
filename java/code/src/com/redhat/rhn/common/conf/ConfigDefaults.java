@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.conf;
+package com.redhat.rhn.common.conf; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.domain.kickstart.KickstartData;

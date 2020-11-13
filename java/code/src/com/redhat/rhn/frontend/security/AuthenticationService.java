@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.frontend.security;
+package com.redhat.rhn.frontend.security; import static org.junit.jupiter.api.Assertions.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

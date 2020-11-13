@@ -1,6 +1,6 @@
 package com.suse.manager.webui.utils.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -9,6 +9,7 @@ import com.suse.manager.webui.utils.TokenBuilder;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jose4j.jwt.NumericDate;
+import org.junit.jupiter.api.Test;
 
 import java.security.Key;
 import java.util.Arrays;

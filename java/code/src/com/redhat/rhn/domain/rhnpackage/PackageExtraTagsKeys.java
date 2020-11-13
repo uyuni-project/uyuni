@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.rhnpackage;
+package com.redhat.rhn.domain.rhnpackage; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

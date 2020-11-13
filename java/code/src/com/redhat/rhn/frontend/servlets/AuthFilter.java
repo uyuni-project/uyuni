@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.servlets;
+package com.redhat.rhn.frontend.servlets; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.CSRFTokenException;
 import com.redhat.rhn.common.security.CSRFTokenValidator;

@@ -14,14 +14,19 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
 import com.redhat.rhn.frontend.taglibs.FormatDateTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
+
+import com.mockobjects.helpers.TagTestHelper;
+import com.mockobjects.servlet.MockJspWriter;
+
+import org.junit.jupiter.api.Test;
+
 import java.util.Date;
+
 import javax.servlet.jsp.JspException;
 
 public class FormatDateTagTest extends RhnBaseTestCase {

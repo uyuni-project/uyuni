@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-
-
 /**
  * LocalConfigFileNameDto
  * @version $Rev$

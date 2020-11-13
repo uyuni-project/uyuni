@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.taskomatic.task.gatherer;
+package com.redhat.rhn.taskomatic.task.gatherer; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;

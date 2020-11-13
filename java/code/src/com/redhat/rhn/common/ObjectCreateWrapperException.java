@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.common;
+package com.redhat.rhn.common; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * RuntimeException wrapper for exceptions that come from creating objects using newInstance

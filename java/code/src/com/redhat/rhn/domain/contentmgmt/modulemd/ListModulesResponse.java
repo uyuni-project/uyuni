@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt.modulemd;
+package com.redhat.rhn.domain.contentmgmt.modulemd; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
 

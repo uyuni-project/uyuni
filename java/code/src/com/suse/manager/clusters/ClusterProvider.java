@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.clusters;
+package com.suse.manager.clusters; import static org.junit.jupiter.api.Assertions.*;
 
 public class ClusterProvider {
 

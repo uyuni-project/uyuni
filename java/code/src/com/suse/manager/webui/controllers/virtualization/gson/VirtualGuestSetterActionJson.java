@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.virtualization.gson;
+package com.suse.manager.webui.controllers.virtualization.gson; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * VirtualGuestsBaseAction represents most of the virtual guests actions

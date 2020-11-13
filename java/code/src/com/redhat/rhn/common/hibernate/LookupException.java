@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.hibernate;
+package com.redhat.rhn.common.hibernate; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.localization.LocalizationService;

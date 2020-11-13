@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.localization;
+package com.redhat.rhn.common.localization; import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.text.Collator;

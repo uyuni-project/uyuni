@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.maintenance;
+package com.suse.manager.maintenance; import static org.junit.jupiter.api.Assertions.*;
 
 import static java.util.Collections.emptySet;
 import static java.util.Optional.empty;

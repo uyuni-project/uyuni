@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.systems;
+package com.redhat.rhn.frontend.action.systems; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_ERRATA;

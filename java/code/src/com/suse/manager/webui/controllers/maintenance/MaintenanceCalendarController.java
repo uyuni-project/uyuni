@@ -42,6 +42,7 @@ import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.MaintenanceCalendarJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;

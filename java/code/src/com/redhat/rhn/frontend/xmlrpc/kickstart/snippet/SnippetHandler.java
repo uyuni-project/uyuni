@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.snippet;
 
-
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;

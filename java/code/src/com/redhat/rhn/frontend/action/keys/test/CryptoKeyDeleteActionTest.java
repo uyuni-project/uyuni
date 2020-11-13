@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.keys.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.frontend.action.keys.BaseCryptoKeyEditAction;
@@ -23,6 +23,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.crypto.CreateCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.crypto.test.CryptoKeyCommandTest;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * CryptoKeyDeleteActionTest

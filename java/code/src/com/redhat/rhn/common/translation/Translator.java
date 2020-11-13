@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.translation;
+package com.redhat.rhn.common.translation; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;

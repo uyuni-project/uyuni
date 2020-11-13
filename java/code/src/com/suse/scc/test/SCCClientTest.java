@@ -14,7 +14,7 @@
  */
 package com.suse.scc.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
@@ -22,12 +22,13 @@ import com.redhat.rhn.testing.httpservermock.Responder;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
-import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemJson;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +38,6 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
 import simple.http.Request;
 import simple.http.Response;
 

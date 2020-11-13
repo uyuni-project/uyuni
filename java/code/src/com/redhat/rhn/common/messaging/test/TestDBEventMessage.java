@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.messaging.test;
+package com.redhat.rhn.common.messaging.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 

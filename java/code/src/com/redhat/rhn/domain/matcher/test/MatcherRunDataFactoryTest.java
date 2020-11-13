@@ -1,4 +1,4 @@
-package com.redhat.rhn.domain.matcher.test;
+package com.redhat.rhn.domain.matcher.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;

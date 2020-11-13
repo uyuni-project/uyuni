@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.clusters.mappers;
+package com.suse.manager.webui.controllers.clusters.mappers; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.server.ManagedServerGroup;

@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
-
 /**
  * UserRoleStatusBean
  * @version $Rev$

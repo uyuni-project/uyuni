@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.org.usergroup;
+package com.redhat.rhn.domain.org.usergroup; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.role.Role;

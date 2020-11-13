@@ -19,11 +19,12 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
-import java.net.UnknownHostException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Utilities related to e-mail sending.

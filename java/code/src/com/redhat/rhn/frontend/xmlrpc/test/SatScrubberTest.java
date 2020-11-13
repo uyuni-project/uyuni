@@ -13,7 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.test;
-import org.junit.jupiter.api.AfterEach;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -34,13 +33,12 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 /**
  * SatScrubberTest - this test actually cleans up old junit created test data.

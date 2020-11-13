@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.jupiter.api.Test;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -24,6 +22,8 @@ import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * KickstartFileDownloadCommandTest

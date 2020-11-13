@@ -13,12 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.formula.test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.dto.FormulaData;
@@ -48,6 +45,9 @@ import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;

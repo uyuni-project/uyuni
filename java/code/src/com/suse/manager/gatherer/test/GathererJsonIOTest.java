@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.gatherer.test;
+package com.suse.manager.gatherer.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

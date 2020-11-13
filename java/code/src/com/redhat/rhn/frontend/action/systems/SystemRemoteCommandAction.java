@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.systems;
+package com.redhat.rhn.frontend.action.systems; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_SCRIPT_RUN;
 

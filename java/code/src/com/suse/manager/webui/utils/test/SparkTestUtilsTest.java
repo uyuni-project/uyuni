@@ -15,10 +15,11 @@
 
 package com.suse.manager.webui.utils.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.suse.manager.webui.utils.SparkTestUtils;
-import org.junit.Assert;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Test for SparkTestUtils.

@@ -16,7 +16,7 @@
  * Copyright (c) 2014 Red Hat, Inc.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.chain;
+package com.redhat.rhn.frontend.xmlrpc.chain; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;

@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.systems.entitlements.test;
+package com.redhat.rhn.frontend.action.systems.entitlements.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.OrgFactory;

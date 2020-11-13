@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.manager.errata;
+package com.redhat.rhn.manager.errata; import static org.junit.jupiter.api.Assertions.*;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toCollection;

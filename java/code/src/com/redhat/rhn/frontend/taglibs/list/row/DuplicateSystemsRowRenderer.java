@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.taglibs.list.row;
+package com.redhat.rhn.frontend.taglibs.list.row; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.dto.NetworkDto;
 import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;

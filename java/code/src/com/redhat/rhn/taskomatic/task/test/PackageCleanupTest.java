@@ -13,14 +13,14 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.test;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.PackageCleanup;
 import com.redhat.rhn.taskomatic.task.RhnJob;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.sql.Statement;

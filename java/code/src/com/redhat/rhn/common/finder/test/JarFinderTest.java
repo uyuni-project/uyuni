@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.finder.test;
+package com.redhat.rhn.common.finder.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.finder.Finder;
 import com.redhat.rhn.common.finder.FinderFactory;

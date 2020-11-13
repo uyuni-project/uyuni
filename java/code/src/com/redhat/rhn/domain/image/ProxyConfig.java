@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.image;
+package com.redhat.rhn.domain.image; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Simple class representing a proxy configuration.

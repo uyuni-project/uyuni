@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.maintenance;
+package com.suse.manager.webui.controllers.maintenance; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.CANCEL;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;

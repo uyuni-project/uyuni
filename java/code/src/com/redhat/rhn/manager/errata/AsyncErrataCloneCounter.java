@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.errata;
+package com.redhat.rhn.manager.errata; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Hashtable;
 

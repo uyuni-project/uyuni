@@ -13,11 +13,11 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.security.test;
-import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Enumeration;
 import java.util.Vector;

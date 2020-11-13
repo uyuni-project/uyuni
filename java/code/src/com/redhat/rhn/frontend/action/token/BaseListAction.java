@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.token;
+package com.redhat.rhn.frontend.action.token; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.frontend.struts.RequestContext;

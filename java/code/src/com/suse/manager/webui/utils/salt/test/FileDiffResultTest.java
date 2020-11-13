@@ -1,12 +1,15 @@
 package com.suse.manager.webui.utils.salt.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.utils.Json;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.Optional;

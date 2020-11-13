@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.tree.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
@@ -39,6 +39,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.util.LabelValueBean;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.List;

@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010 SUSE LLC
  */
-package com.redhat.rhn.taskomatic.task.repomd;
+package com.redhat.rhn.taskomatic.task.repomd; import static org.junit.jupiter.api.Assertions.*;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;

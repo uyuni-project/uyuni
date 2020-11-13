@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.audit.scap;
+package com.redhat.rhn.frontend.action.audit.scap; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 

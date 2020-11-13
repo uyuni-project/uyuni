@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.contentmgmt;
+package com.redhat.rhn.manager.contentmgmt; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentProjectFactory.lookupClonesInProject;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;

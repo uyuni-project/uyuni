@@ -1,4 +1,4 @@
-package com.redhat.rhn.domain.entitlement.test;
+package com.redhat.rhn.domain.entitlement.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

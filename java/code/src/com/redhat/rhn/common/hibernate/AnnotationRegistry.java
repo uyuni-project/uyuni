@@ -64,10 +64,10 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
-import com.suse.manager.model.clusters.Cluster;
 
-import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
 import java.util.LinkedList;
 import java.util.List;

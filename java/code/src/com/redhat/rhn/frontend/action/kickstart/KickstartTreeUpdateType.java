@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.kickstart;
+package com.redhat.rhn.frontend.action.kickstart; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * types of kickstart tree update strategies

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.matcher;
+package com.redhat.rhn.domain.matcher; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.common.hibernate.HibernateFactory.getByteArrayContents;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.stringToByteArray;

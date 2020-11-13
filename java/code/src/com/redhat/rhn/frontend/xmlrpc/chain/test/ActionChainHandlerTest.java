@@ -16,7 +16,7 @@
  * Copyright (c) 2014 Red Hat, Inc.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.chain.test;
+package com.redhat.rhn.frontend.xmlrpc.chain.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;

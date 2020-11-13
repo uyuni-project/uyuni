@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Set;
 import java.util.TreeSet;
-
-import junit.framework.Assert;
 
 
 /**

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.renderers;
+package com.redhat.rhn.frontend.action.renderers; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.ConfigDefaults;

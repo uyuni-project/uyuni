@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.struts;
+package com.redhat.rhn.frontend.struts; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.MessageResourcesFactory;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.role;
+package com.redhat.rhn.domain.role; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class UserGroup that reflects the DB representation of RHNUSERGROUP

@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.search.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * No unit-tests exist for SystemSearchHandler, reason being that to add usable test

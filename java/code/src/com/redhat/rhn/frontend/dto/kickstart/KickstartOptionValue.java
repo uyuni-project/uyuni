@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.dto.kickstart;
 
-
 /**
  * DTO for a com.redhat.rhn.domain.kickstart.KickstartOptionValue
  * @version $Rev: 50942 $

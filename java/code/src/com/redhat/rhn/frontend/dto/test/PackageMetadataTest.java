@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.frontend.dto.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * PackageMetadataTest

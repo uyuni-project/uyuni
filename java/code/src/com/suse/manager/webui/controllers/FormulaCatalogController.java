@@ -22,11 +22,10 @@ import static spark.Spark.get;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.webui.errors.NotFoundException;
-import com.suse.manager.webui.utils.FlashScopeHelper;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import java.util.Date;
 import java.util.HashMap;

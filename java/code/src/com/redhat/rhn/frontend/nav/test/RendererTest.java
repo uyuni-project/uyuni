@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.nav.DialognavRenderer;
 import com.redhat.rhn.frontend.nav.NavNode;
@@ -24,6 +24,8 @@ import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.Renderable;
 import com.redhat.rhn.frontend.nav.TextRenderer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;

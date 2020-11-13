@@ -14,9 +14,10 @@
  */
 
 package com.suse.manager.webui.services.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.SHA256Crypt;
@@ -35,10 +36,14 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
-import org.junit.Assert;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,9 +51,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Random;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 /**
  * Test for {@link ConfigChannelSaltManagerTest}

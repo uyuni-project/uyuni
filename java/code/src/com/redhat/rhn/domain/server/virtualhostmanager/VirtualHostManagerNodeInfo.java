@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.server.virtualhostmanager;
+package com.redhat.rhn.domain.server.virtualhostmanager; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.server.ServerArch;

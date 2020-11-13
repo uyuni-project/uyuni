@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.menu.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
@@ -30,7 +30,10 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
-import org.junit.Assert;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class MenuTreeTest  {
 

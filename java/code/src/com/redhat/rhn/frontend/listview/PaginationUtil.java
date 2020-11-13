@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.listview;
+package com.redhat.rhn.frontend.listview; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * PaginationUtil, contains utility functions for calcuating pagination.

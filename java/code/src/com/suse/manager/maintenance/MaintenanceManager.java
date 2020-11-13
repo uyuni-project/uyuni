@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.maintenance;
+package com.suse.manager.maintenance; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Optional.empty;

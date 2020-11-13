@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -30,11 +29,13 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.test.MockConnection;
-
-import servletunit.HttpServletRequestSimulator;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import servletunit.HttpServletRequestSimulator;
 
 /**
  * Tests the Power Management action.

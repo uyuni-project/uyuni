@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-
 /**
  * Miscellaneous constants used by Taskomatic tasks
  *

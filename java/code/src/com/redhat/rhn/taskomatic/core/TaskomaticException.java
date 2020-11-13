@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.taskomatic.core;
+package com.redhat.rhn.taskomatic.core; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Indicates Taskomatic is having a problem

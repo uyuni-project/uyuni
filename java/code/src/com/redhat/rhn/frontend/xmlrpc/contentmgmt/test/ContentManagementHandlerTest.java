@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt.test;
 
-import org.junit.jupiter.api.Test;
+import static java.util.Optional.empty;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -33,11 +34,11 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Optional.empty;
 
 public class ContentManagementHandlerTest extends BaseHandlerTestCase {
 

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.kickstart;
+package com.redhat.rhn.domain.kickstart; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;

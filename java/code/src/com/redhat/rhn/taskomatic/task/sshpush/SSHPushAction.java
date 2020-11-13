@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.taskomatic.task.sshpush;
+package com.redhat.rhn.taskomatic.task.sshpush; import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Simple DTO class used to encapsulate rows queried from the database.

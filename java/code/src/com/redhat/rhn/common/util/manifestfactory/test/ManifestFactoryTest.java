@@ -15,9 +15,12 @@
 
 package com.redhat.rhn.common.util.manifestfactory.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;

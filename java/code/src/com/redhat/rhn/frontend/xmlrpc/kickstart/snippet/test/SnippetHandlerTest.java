@@ -14,11 +14,13 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
+import static java.util.Collections.singletonList;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
@@ -47,8 +49,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static java.util.Collections.singletonList;
 
 /**
  * ErrataConfirmAction

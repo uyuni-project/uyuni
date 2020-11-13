@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.action.kickstart;
 
-
 /**
  * KickstartInitiateAction
  * @version $Rev$

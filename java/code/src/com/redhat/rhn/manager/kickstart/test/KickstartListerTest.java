@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.manager.kickstart.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -45,6 +45,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;

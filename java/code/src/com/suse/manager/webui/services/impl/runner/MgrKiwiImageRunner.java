@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.services.impl.runner;
+package com.suse.manager.webui.services.impl.runner; import static org.junit.jupiter.api.Assertions.*;
 
 import com.suse.salt.netapi.calls.RunnerCall;
 

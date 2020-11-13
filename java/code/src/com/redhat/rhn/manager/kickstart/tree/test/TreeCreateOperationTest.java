@@ -15,11 +15,13 @@
 
 package com.redhat.rhn.manager.kickstart.tree.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the {@link com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation} class

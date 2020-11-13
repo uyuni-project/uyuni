@@ -14,12 +14,13 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.taskomatic.task.ErrataCacheTask;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.junit.jupiter.api.Test;
 
 /**
  * ErrataCacheTaskTest

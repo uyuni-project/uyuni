@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.manager.audit.scap.xml;
+package com.redhat.rhn.manager.audit.scap.xml; import static org.junit.jupiter.api.Assertions.*;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Text;

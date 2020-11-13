@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.notification.test;
+package com.redhat.rhn.domain.notification.test; import static org.junit.jupiter.api.Assertions.*;
 
 import static java.util.Optional.empty;
 

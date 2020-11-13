@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.internal.doclet;
+package com.redhat.rhn.internal.doclet; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;

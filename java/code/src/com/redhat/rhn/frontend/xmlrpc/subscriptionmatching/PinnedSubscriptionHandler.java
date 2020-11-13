@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.subscriptionmatching;
+package com.redhat.rhn.frontend.xmlrpc.subscriptionmatching; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;

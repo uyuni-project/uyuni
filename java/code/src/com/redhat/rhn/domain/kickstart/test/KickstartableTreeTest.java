@@ -14,12 +14,7 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
@@ -43,11 +38,16 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cobbler.Distro;
 import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * KickstartableTreeTest

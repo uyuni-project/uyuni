@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.util.manifestfactory.test;
+package com.redhat.rhn.common.util.manifestfactory.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactory;
 

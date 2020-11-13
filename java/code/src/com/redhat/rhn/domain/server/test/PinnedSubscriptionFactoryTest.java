@@ -1,4 +1,4 @@
-package com.redhat.rhn.domain.server.test;
+package com.redhat.rhn.domain.server.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

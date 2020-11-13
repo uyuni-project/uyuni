@@ -15,16 +15,16 @@
 
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import com.redhat.rhn.common.util.StringUtil;
-
-import org.junit.Assert;
 
 public class StringUtilTest  {
 

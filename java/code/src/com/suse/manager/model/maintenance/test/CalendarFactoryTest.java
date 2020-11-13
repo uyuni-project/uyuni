@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 package com.suse.manager.model.maintenance.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
@@ -24,6 +23,9 @@ import com.suse.manager.model.maintenance.CalendarFactory;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.ScheduleFactory;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

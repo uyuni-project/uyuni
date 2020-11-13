@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.gatherer;
+package com.suse.manager.gatherer; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;

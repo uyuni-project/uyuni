@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.listview.test;
+package com.redhat.rhn.frontend.listview.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.testing.RhnBaseTestCase;

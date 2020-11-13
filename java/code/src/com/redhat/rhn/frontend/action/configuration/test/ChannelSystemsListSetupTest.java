@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -23,6 +23,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
 
 public class ChannelSystemsListSetupTest extends RhnMockStrutsTestCase {
 

@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.services.iface;
+package com.suse.manager.webui.services.iface; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 

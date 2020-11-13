@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.systems.customkey;
+package com.redhat.rhn.frontend.action.systems.customkey; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;

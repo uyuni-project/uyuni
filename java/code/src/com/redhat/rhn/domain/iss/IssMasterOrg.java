@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.iss;
+package com.redhat.rhn.domain.iss; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.BaseDto;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.util.manifestfactory;
+package com.redhat.rhn.common.util.manifestfactory; import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
 

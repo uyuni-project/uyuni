@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.schedule;
+package com.redhat.rhn.frontend.action.schedule; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.action.ActionManager;

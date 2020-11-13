@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.channel;
+package com.redhat.rhn.frontend.action.channel; import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;

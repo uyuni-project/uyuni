@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.recurringaction;
+package com.redhat.rhn.frontend.xmlrpc.recurringaction; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;

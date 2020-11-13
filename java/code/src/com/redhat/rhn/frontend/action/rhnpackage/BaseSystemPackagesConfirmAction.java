@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.rhnpackage;
+package com.redhat.rhn.frontend.action.rhnpackage; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
 

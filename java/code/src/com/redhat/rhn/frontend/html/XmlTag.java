@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.html;
 
-
-
 /**
  * XmlTag a simple class to render an XML tag
  * @version $Rev$

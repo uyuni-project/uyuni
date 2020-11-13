@@ -14,11 +14,13 @@
  */
 package com.redhat.rhn.domain.user.test;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;

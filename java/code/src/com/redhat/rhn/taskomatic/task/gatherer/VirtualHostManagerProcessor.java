@@ -28,8 +28,9 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import com.suse.manager.gatherer.HostJson;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;

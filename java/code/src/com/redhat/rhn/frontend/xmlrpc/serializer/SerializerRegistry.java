@@ -13,7 +13,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.xmlrpc.serializer;
+package com.redhat.rhn.frontend.xmlrpc.serializer; import static org.junit.jupiter.api.Assertions.*;
 
 import com.suse.manager.xmlrpc.serializer.MaintenanceCalendarSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceScheduleSerializer;

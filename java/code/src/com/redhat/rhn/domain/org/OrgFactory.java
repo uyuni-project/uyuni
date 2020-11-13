@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 

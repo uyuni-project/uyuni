@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils;
+package com.suse.manager.webui.utils; import static org.junit.jupiter.api.Assertions.*;
 
 import static java.util.Optional.ofNullable;
 

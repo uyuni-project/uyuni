@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.strings.jsp;
+package com.redhat.rhn.frontend.strings.jsp; import static org.junit.jupiter.api.Assertions.*;
 
 
 

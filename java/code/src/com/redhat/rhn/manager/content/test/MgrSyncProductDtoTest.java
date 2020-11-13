@@ -1,4 +1,4 @@
-package com.redhat.rhn.manager.content.test;
+package com.redhat.rhn.manager.content.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;

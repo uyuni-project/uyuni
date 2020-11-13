@@ -16,7 +16,7 @@
 /*
  * AUTOMATICALLY GENERATED FILE, DO NOT EDIT.
  */
-package com.redhat.rhn.frontend.xmlrpc.test;
+package com.redhat.rhn.frontend.xmlrpc.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.FaultException;
 

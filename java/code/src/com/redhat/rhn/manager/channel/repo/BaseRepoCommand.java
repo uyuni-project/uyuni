@@ -15,7 +15,7 @@
 /*
  * Copyright (c) 2010-2019 SUSE LLC
  */
-package com.redhat.rhn.manager.channel.repo;
+package com.redhat.rhn.manager.channel.repo; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.domain.channel.ChannelFactory;

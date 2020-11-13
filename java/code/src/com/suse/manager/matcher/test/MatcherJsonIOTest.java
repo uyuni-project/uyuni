@@ -1,9 +1,7 @@
 package com.suse.manager.matcher.test;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
 
 import static java.util.Collections.singleton;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.CallableMode;
@@ -36,8 +34,8 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.virtualization.test.TestVirtManager;
-import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
@@ -47,6 +45,8 @@ import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Files;

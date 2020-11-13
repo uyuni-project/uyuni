@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.validator;
+package com.redhat.rhn.common.validator; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;

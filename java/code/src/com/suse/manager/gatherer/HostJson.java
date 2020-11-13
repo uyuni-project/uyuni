@@ -15,8 +15,8 @@
 
 package com.suse.manager.gatherer;
 
-import java.util.Map;
 import java.util.Collections;
+import java.util.Map;
 
 
 /**

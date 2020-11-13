@@ -14,18 +14,19 @@
  */
 package com.suse.manager.model.products.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 /**
  * Tests Product.

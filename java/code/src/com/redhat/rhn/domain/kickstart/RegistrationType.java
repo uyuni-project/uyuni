@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
-
 /**
  * RegistrationType
  * @version $Rev$

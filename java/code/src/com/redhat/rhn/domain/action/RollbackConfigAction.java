@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.action;
 
-
 /**
  * RollbackConfigAction - Class representing TYPE_ROLLBACK_CONFIG
  * @version $Rev$

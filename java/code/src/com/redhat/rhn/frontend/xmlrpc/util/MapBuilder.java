@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.xmlrpc.util;
+package com.redhat.rhn.frontend.xmlrpc.util; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.StringUtil;
 

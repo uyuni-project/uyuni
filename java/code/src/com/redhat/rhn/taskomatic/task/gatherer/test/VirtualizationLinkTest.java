@@ -1,4 +1,4 @@
-package com.redhat.rhn.taskomatic.task.gatherer.test;
+package com.redhat.rhn.taskomatic.task.gatherer.test; import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

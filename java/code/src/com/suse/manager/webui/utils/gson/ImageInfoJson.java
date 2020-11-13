@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.utils.gson;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
@@ -25,6 +24,8 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+
+import com.google.gson.JsonObject;
 import com.suse.manager.webui.utils.ViewHelper;
 
 import java.util.List;

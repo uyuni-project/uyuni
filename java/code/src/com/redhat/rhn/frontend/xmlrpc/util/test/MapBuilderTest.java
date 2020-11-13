@@ -13,15 +13,16 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.util.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.xmlrpc.util.MapBuilder;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 

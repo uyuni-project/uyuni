@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.services.pillar;
+package com.suse.manager.webui.services.pillar; import static org.junit.jupiter.api.Assertions.*;
 
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;

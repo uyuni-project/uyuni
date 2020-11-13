@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic;
 
-
 /**
  * NoSuchBunchTaskException
  * @version $Rev$

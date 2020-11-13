@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.systems;
+package com.redhat.rhn.frontend.action.systems; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.server.CrashFactory;

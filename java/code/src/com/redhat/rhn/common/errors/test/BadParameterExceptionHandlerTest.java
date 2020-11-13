@@ -13,10 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.errors.test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-
-import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.BadParameterExceptionHandler;
@@ -37,6 +33,9 @@ import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
 

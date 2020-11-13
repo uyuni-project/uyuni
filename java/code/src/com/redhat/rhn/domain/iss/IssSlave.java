@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.domain.iss;
 
-import java.util.Date;
-import java.util.Set;
-
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.BaseDto;
+
+import java.util.Date;
+import java.util.Set;
 
 /**
  * IssSlave - Class representation of the table rhnissslave.

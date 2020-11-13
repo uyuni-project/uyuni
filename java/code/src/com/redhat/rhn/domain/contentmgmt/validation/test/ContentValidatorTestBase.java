@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.contentmgmt.validation.test;
+package com.redhat.rhn.domain.contentmgmt.validation.test; import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.redhat.rhn.common.localization.LocalizationService;

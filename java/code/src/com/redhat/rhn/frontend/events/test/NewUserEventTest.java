@@ -14,17 +14,9 @@
  */
 
 package com.redhat.rhn.frontend.events.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Vector;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockHttpSession;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.domain.user.User;
@@ -32,6 +24,17 @@ import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.mockobjects.servlet.MockHttpServletRequest;
+import com.mockobjects.servlet.MockHttpSession;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Test for NewUserEvent

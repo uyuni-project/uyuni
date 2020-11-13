@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.common.conf;
+package com.redhat.rhn.common.conf; import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;

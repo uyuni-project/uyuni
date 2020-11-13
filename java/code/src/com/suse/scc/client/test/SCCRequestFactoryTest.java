@@ -14,16 +14,16 @@
  */
 package com.suse.scc.client.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCRequestFactory;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link SCCRequestFactory}

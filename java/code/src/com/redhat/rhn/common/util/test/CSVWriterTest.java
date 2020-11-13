@@ -14,14 +14,16 @@
  */
 
 package com.redhat.rhn.common.util.test;
-import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.ExportWriter;
 import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.util.HashMap;

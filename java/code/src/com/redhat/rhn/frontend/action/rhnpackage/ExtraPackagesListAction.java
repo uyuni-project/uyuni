@@ -17,7 +17,7 @@
  * Copyright (c) 2012 SUSE LLC
  */
 
-package com.redhat.rhn.frontend.action.rhnpackage;
+package com.redhat.rhn.frontend.action.rhnpackage; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;

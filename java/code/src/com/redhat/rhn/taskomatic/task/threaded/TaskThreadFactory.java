@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.threaded;
+package com.redhat.rhn.taskomatic.task.threaded; import static org.junit.jupiter.api.Assertions.*;
 
 import EDU.oswego.cs.dl.util.concurrent.ThreadFactory;
 

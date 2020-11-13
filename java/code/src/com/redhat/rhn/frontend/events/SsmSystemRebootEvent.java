@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.action.ActionChain;
+
 import org.hibernate.Transaction;
 
 import java.util.Date;

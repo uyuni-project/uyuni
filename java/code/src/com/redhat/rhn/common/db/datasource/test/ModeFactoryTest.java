@@ -1,4 +1,4 @@
-package com.redhat.rhn.common.db.datasource.test;
+package com.redhat.rhn.common.db.datasource.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;

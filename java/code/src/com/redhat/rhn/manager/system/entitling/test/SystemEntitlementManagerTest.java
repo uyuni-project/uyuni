@@ -13,11 +13,9 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.system.entitling.test;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
 
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -45,6 +43,8 @@ import com.suse.manager.webui.services.impl.SaltService;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
