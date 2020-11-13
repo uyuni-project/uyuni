@@ -1,3 +1,5 @@
+- fix errors in spacewalk-debug and align postgresql queries to new DB version
+
 -------------------------------------------------------------------
 Thu Nov 12 09:59:39 CET 2020 - jgonzalez@suse.com
 
