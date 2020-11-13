@@ -8885,6 +8885,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="clusters.nav.add">
         <source>Add</source>
       </trans-unit>
+      <trans-unit id="contentmanagement.validation.selectedmodules">
+        <source>The following module streams will be enabled: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound">
         <source>Module '{0}' not found.</source>
         <context-group name="ctx">
