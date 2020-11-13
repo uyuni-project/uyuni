@@ -311,16 +311,12 @@ When(/^I execute spacewalk-debug on the server$/) do
   raise "Download debug file failed" unless code.zero?
 end
 
-Then(/^I get logfiles from "([^"]*)"$/) do |target|
-  node = get_target(target)
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/
-    node.run('zypper mr --enable os_pool_repo os_update_repo && zypper --non-interactive install tar')
+When(/^I extract the log files from all our active nodes$/) do
+  $nodes.each do |node|
+    next if node.nil?
+
+    extract_logs_from_node(node)
   end
-  node.run("journalctl > /var/log/messages && (tar cfvJP /tmp/#{target}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]])")
-  `mkdir logs` unless Dir.exist?('logs')
-  code = file_extract(node, "/tmp/#{target}-logs.tar.xz", "logs/#{target}-logs.tar.xz")
-  raise "Download log archive failed" unless code.zero?
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
