@@ -1,3 +1,4 @@
+- Report resolved module dependencies on CLM project details page
 - Allow creating custom ULN repositories with uln:// urls
 - Change message "Minion is down" to be more accurate
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
