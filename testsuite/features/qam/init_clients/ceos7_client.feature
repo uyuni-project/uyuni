@@ -36,7 +36,7 @@ Feature: Bootstrap a CentOS 7 traditional client
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml" as "path"
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos7_client"
     Then I should see a "XCCDF scan has been scheduled" text
