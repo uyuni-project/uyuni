@@ -4,6 +4,9 @@
 @sle11sp4_minion
 Feature: Bootstrap a SLES 11 SP4 Salt minion
 
+  Scenario: Clean up sumaform leftovers on a SLES 11 SP4 Salt minion
+    When I perform a full salt minion cleanup on "sle11sp4_minion"
+
   Scenario: Create the bootstrap repository for a Salt client
     Given I am authorized
     And I create the "x86_64" bootstrap repository for "sle11sp4_minion" on the server

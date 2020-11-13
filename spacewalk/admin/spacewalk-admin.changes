@@ -1,3 +1,9 @@
+-------------------------------------------------------------------
+Thu Nov 12 09:58:16 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.12-1
+- use the license macro to mark the LICENSE in the package so that
+  when installing without docs, it does install the LICENSE file
 - prevent javax.net.ssl.SSLHandshakeException after upgrading from
   SUSE Manager 3.2 (bsc#1177435)
 

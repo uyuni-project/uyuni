@@ -209,3 +209,24 @@ def repository_exist?(repo)
   repo_list = repo_xmlrpc.repo_list
   repo_list.include? repo
 end
+
+def generate_repository_name(repo_url)
+  repo_name = repo_url.strip
+  repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
+  repo_name
+end
+
+def extract_logs_from_node(node)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/
+    node.run('zypper mr --enable os_pool_repo os_update_repo') unless $qam_test
+    node.run('zypper --non-interactive install tar')
+    node.run('zypper mr --disable os_pool_repo os_update_repo') unless $qam_test
+  end
+  node.run('journalctl > /var/log/messages', false) # Some clients might not support systemd
+  node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
+  `mkdir logs` unless Dir.exist?('logs')
+  code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
+  raise 'Download log archive failed' unless code.zero?
+end

@@ -67,7 +67,7 @@ select schemaname as schema,
 select con.conname as name,
        con.contype as type,
        cl.relname as table,
-       con.consrc as src
+       pg_get_expr(conbin, conrelid) as src
   from pg_constraint con,
        pg_class cl
  where cl.oid = con.conrelid
@@ -86,7 +86,8 @@ from
         rhnPackageEvr rpe
 where
         rvi.evr_id = rpe.id and
-        rvi.name_id = rpn.id;
+        rvi.name_id = rpn.id
+order by created;
 "
 
 fi

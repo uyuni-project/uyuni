@@ -4,6 +4,9 @@
 @sle15sp1_ssh_minion
 Feature: Bootstrap a SLES 15 SP1 Salt SSH Minion
 
+  Scenario: Clean up sumaform leftovers on a SLES 15 SP1 Salt SSH Minion
+    When I perform a full salt minion cleanup on "sle15sp1_ssh_minion"
+
   Scenario: Bootstrap a SLES 15 SP1 system managed via salt-ssh
     Given I am authorized
     And I go to the bootstrapping page
@@ -24,6 +27,10 @@ Feature: Bootstrap a SLES 15 SP1 Salt SSH Minion
   Scenario: Remove sle-manager-tools-release from state after SLES 15 SP1 bootstrap
     Given I am on the Systems overview page of this "sle15sp1_ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
+
+# WORKAROUD for bsc#1178328
+  Scenario: Install dmidecode package to avoid a Hardware Refresh issue in SLES 15 SP1 SSH minion
+    And I install package "dmidecode" on this "sle15sp1_ssh_minion"
 
 @proxy
   Scenario: Check connection from SLES 15 SP1 SSH minion to proxy

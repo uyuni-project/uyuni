@@ -3,9 +3,9 @@
 
 @sle15sp1_client
 Feature: Bootstrap a SLES 15 SP1 traditional client
-  In order to register a traditional client to the SUSE Manager server
-  As the root user
-  I want to call rhnreg_ks
+
+  Scenario: Clean up sumaform leftovers on a SLES 15 SP1 traditional client
+    When I perform a full salt minion cleanup on "sle15sp1_client"
 
   Scenario: Register a SLES 15 SP1 traditional client
     When I register "sle15sp1_client" as traditional client with activation key "1-sle15sp1_client_key"

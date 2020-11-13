@@ -1,11 +1,11 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle11sp4_client
 Feature: Bootstrap a SLES 11 SP4 traditional client
-  In order to register a traditional client to the SUSE Manager server
-  As the root user
-  I want to call rhnreg_ks
+
+  Scenario: Clean up sumaform leftovers on a SLES 11 SP4 traditional client
+    When I perform a full salt minion cleanup on "sle11sp4_client"
 
   Scenario: Register a SLES 11 SP4 traditional client
     When I register "sle11sp4_client" as traditional client with activation key "1-sle11sp4_client_key"

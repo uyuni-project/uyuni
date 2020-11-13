@@ -339,15 +339,11 @@ public class RemoteMinionCommands {
                             details.append(command);
                             details.append("</pre> returned:<pre>");
                             int maxLength = 4000 - details.length() - 6;
-                            String output;
-                            if (result.length() > maxLength) {
+                            String output = result;
+                            int truncate = StringUtil.htmlifyText(output).length() - maxLength;
+                            if (truncate > 0) {
                                 // command output too large, truncate it to fit in the db
-                                output = StringUtils
-                                        .substring(result, 0, maxLength - 3) +
-                                        "...";
-                            }
-                            else {
-                                output = result;
+                                output = StringUtils.substring(output, 0, maxLength - truncate - 3) + "...";
                             }
                             details.append(StringUtil.htmlifyText(output));
 
