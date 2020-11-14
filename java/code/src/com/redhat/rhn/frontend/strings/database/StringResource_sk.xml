@@ -729,7 +729,7 @@
       </trans-unit>
       <trans-unit id="Critical Heap Free" xml:space="preserve">
         <source>Critical Heap Free</source>
-        <target/>
+        <target>Kritická voľná hromada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1821,7 +1821,7 @@
       </trans-unit>
       <trans-unit id="Warning Heap Free" xml:space="preserve">
         <source>Warning Heap Free</source>
-        <target/>
+        <target>Varovná voľná hromada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -3082,7 +3082,7 @@
       </trans-unit>
       <trans-unit id="Heap Free" xml:space="preserve">
           <source>Heap Free</source>
-        <target/>
+        <target>Voľná hromada</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
