@@ -743,14 +743,14 @@
       </trans-unit>
       <trans-unit id="Critical Idle Sessions" xml:space="preserve">
         <source>Critical Idle Sessions</source>
-        <target/>
+        <target>Kritické nečinné sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Idle Threads" xml:space="preserve">
         <source>Critical Idle Threads</source>
-        <target/>
+        <target>Kritické nečinné vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1016,7 +1016,7 @@
       </trans-unit>
       <trans-unit id="Critical Threads" xml:space="preserve">
         <source>Critical Threads</source>
-        <target/>
+        <target>Kritické vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1835,14 +1835,14 @@
       </trans-unit>
       <trans-unit id="Warning Idle Sessions" xml:space="preserve">
         <source>Warning Idle Sessions</source>
-        <target/>
+        <target>Varovné nečinné sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Idle Threads" xml:space="preserve">
         <source>Warning Idle Threads</source>
-        <target/>
+        <target>Varovné nečinné vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2080,7 +2080,7 @@
       </trans-unit>
       <trans-unit id="Warning Threads" xml:space="preserve">
         <source>Warning Threads</source>
-        <target/>
+        <target>Varovné vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2396,14 +2396,14 @@
       </trans-unit>
       <trans-unit id="metrics.Idle sessions" xml:space="preserve">
         <source>Idle sessions</source>
-        <target/>
+        <target>Nečinné sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Idle threads" xml:space="preserve">
         <source>Idle threads</source>
-        <target/>
+        <target>Nečinné vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2697,7 +2697,7 @@
       </trans-unit>
       <trans-unit id="metrics.Threads" xml:space="preserve">
         <source>Threads</source>
-        <target/>
+        <target>Vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3110,7 +3110,7 @@
       </trans-unit>
       <trans-unit id="Idle Sessions" xml:space="preserve">
           <source>Idle Sessions</source>
-        <target/>
+        <target>Nečinné sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3418,7 +3418,7 @@
       </trans-unit>
       <trans-unit id="Threads Running" xml:space="preserve">
           <source>Threads Running</source>
-        <target/>
+        <target>Bežiace vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
