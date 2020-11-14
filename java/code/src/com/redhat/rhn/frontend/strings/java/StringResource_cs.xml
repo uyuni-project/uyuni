@@ -54,6 +54,8 @@
       <trans-unit id="2.6.0" xml:space="preserve">
         <source>2.6.0</source>
         <target>2.6.0</target>
+        <target/>
+>>>>>>> 7434b321349... Translated using Weblate (Czech)
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -277,7 +279,7 @@
       </trans-unit>
       <trans-unit id="About Spacewalk" xml:space="preserve">
         <source>About</source>
-        <target>O</target>
+        <target/>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
