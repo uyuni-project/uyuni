@@ -26,7 +26,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.SCCRefreshLock;
+import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -114,7 +114,7 @@ public class ProductsController {
         data.put(ISS_MASTER, String.valueOf(IssFactory.getCurrentMaster() == null));
         data.put(REFRESH_NEEDED, String.valueOf(csm.isRefreshNeeded(null)));
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
-        data.put(REFRESH_FILE_LOCKED, String.valueOf(SCCRefreshLock.isAlreadyLocked()));
+        data.put(REFRESH_FILE_LOCKED, String.valueOf(FileLocks.SCC_REFRESH_LOCK.isLocked()));
         data.put(NO_TOOLS_CHANNEL_SUBSCRIPTION,
                 String.valueOf(!(ConfigDefaults.get().isUyuni() || csm.hasToolsChannelSubscription())));
 
@@ -133,19 +133,17 @@ public class ProductsController {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
         }
-        SCCRefreshLock.tryGetLock();
-        try {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSUSEProducts(csm.getProducts());
-        }
-        catch (Exception e) {
-            log.fatal(e.getMessage(), e);
-            return json(response, false);
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
-        return json(response, true);
+        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+            try {
+                ContentSyncManager csm = new ContentSyncManager();
+                csm.updateSUSEProducts(csm.getProducts());
+                return json(response, true);
+            }
+            catch (Exception e) {
+                log.fatal(e.getMessage(), e);
+                return json(response, false);
+            }
+        });
     }
 
     /**
@@ -160,19 +158,17 @@ public class ProductsController {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
         }
-        SCCRefreshLock.tryGetLock();
-        try {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateChannelFamilies(csm.readChannelFamilies());
-        }
-        catch (Exception e) {
-            log.fatal(e.getMessage(), e);
-            return json(response, false);
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
-        return json(response, true);
+        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+            try {
+                ContentSyncManager csm = new ContentSyncManager();
+                csm.updateChannelFamilies(csm.readChannelFamilies());
+                return json(response, true);
+            }
+            catch (Exception e) {
+                log.fatal(e.getMessage(), e);
+                return json(response, false);
+            }
+        });
     }
 
     /**
@@ -187,19 +183,17 @@ public class ProductsController {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
         }
-        SCCRefreshLock.tryGetLock();
-        try {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateRepositories(null);
-        }
-        catch (Exception e) {
-            log.fatal(e.getMessage(), e);
-            return json(response, false);
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
-        return json(response, true);
+        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+            try {
+                ContentSyncManager csm = new ContentSyncManager();
+                csm.updateRepositories(null);
+                return json(response, true);
+            }
+            catch (Exception e) {
+                log.fatal(e.getMessage(), e);
+                return json(response, false);
+            }
+        });
     }
 
     /**
@@ -211,19 +205,17 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeSubscriptions(Request request, Response response, User user) {
-        SCCRefreshLock.tryGetLock();
-        try {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSubscriptions();
-        }
-        catch (Exception e) {
-            log.fatal(e.getMessage(), e);
-            return json(response, false);
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
-        return json(response, true);
+        return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+            try {
+                ContentSyncManager csm = new ContentSyncManager();
+                csm.updateSubscriptions();
+                return json(response, true);
+            }
+            catch (Exception e) {
+                log.fatal(e.getMessage(), e);
+                return json(response, false);
+            }
+        });
     }
 
     /**

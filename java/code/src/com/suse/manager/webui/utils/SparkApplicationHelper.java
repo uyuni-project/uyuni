@@ -37,6 +37,7 @@ import spark.template.jade.JadeTemplateEngine;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -76,6 +77,32 @@ public class SparkApplicationHelper {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
             return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Returns a route that adds the users docsLocale to model.
+     * The model associated with the input route must contain the data in the form of a Map
+     * instance. The locale will be inserted into this Map.
+     * Otherwise exception will be thrown.
+     *
+     * @param route the route
+     * @return the route that adds the docsLocale to the ModelAndView
+     */
+    public static TemplateViewRoute withDocsLocale(TemplateViewRoute route) {
+        return (request, response) -> {
+            ModelAndView modelAndView = route.handle(request, response);
+            Object model = modelAndView.getModel();
+            if (model instanceof Map) {
+                User user = new RequestContext(request.raw()).getCurrentUser();
+                String docsLocale = Objects.requireNonNullElse(
+                        user.getPreferredDocsLocale(), ConfigDefaults.get().getDefaultDocsLocale());
+                ((Map) model).put("docsLocale", docsLocale);
+            }
+            else {
+                throw new UnsupportedOperationException("docsLocale can only be added to a Map!");
+            }
+            return modelAndView;
         };
     }
 

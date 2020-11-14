@@ -9,7 +9,8 @@
             <bean:message key="preservation_create.jsp.toolbar"/>
         </rhn:toolbar>
 
-        <bean:message key="preservation_edit.jsp.summary"/>
+        <bean:message key="preservation_edit.jsp.summary"
+                      arg0="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/autoinst-file-preservation.html"/>
         <h2><bean:message key="preservation_create.jsp.header2"/></h2>
         <div>
             <html:form action="/systems/provisioning/preservation/PreservationListCreate"

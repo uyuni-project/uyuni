@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/javascript/jquery-ui.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
     <script type="text/javascript" src="/javascript/actionchain.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
     <rhn:toolbar base="h1" icon="header-chain"
-        helpUrl="/docs/reference/schedule/action-chains.html">
+        helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/schedule/action-chains.html">
         <bean:message key="actionchain.jsp.title"/>
         <a id="label-link" href="#">
             <span id="label-link-text"><c:out value="${actionChain.label}"/></span>

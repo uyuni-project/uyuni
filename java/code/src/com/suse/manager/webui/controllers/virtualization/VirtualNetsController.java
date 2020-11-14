@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
@@ -66,7 +67,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/net/:sid",
-                withUserPreferences(withCsrfToken(withUser(this::show))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
 
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(this::data));

@@ -1,3 +1,4 @@
+- Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Sync state modules when starting action chain execution (bsc#1177336)
 - Handle group- and org-specific image pillars
 - Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)

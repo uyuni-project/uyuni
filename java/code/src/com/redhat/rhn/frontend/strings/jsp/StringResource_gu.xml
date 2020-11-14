@@ -2079,7 +2079,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>નોંધ: જ્યારે આ બોક્સ ચકાસાયેલ હોય ત્યારે ઉપરના પાસવર્ડ ક્ષેત્રો જરૂરી નથી; તેમછતાં પણ તમે           પાસવર્ડ ભરી શકશો કે જે જ્યારે આ વપરાશકર્તા ખાતા માટે PAM સત્તાધિકરણ નિષ્ક્રિય કરેલ હોય ત્યારે જ માત્ર           કામ કરશે.</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
-        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/docs/administration/auth-methods.html"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -11357,7 +11357,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -11510,7 +11510,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <source>
         File preservation lists are lists of files that will be restored to a system during a particular kickstart.
         You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
+        For more information refer to the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.
         The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
@@ -11646,7 +11646,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target>કિકસ્ટાર્ટ ફાઈલ સાચવણી યાદી બનાવો</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary" xml:space="preserve">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
@@ -21651,6 +21651,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>જર્મન</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.en_US" xml:space="preserve">
+        <source>English</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+        <target>અંગ્રેજી</target>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.lang.en" xml:space="preserve">
         <source>English</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>

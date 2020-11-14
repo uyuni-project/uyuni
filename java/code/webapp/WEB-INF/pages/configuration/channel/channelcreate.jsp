@@ -10,8 +10,15 @@
     <body>
         <rhn:toolbar base="h1" icon="header-configuration"
                      iconAlt="config.common.globalAlt"
-                     helpUrl="/docs/reference/configuration/config-channels.html">
-            <bean:message key="channelOverview.jsp.newToolbar" />
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-channels.html">
+            <c:choose>
+                <c:when test="${param.type == 'state'}">
+                    <bean:message key="channelOverview.jsp.newToolbar.stateType" />
+                </c:when>
+                <c:otherwise>
+                    <bean:message key="channelOverview.jsp.newToolbar" />
+                </c:otherwise>
+            </c:choose>
         </rhn:toolbar>
 
         <p><bean:message key="channelOverview.jsp.create-instruction" /></p>

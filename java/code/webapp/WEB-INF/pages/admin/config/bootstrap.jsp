@@ -6,7 +6,7 @@
 <html:html>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-                     helpUrl="/docs/reference/admin/bootstrap-script.html">
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/bootstrap-script.html">
             <bean:message key="bootstrap.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="bootstrap.jsp.summary"/></p>
