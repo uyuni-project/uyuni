@@ -114,6 +114,7 @@ public class LoginController {
             model.put("loginLength", Config.get().getString("max_user_len"));
             model.put("passwordLength", Config.get().getString("max_passwd_len"));
             model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
+            model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
             model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
 
             return new ModelAndView(model, "controllers/login/templates/login.jade");

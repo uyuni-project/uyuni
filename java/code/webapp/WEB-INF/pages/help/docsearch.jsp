@@ -9,7 +9,7 @@
 <body>
 <script type="text/javascript" src="/javascript/highlander.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
 <rhn:toolbar base="h1" icon="header-search" imgAlt="docsearch.jsp.imgAlt"
-               helpUrl="/docs/reference/help/help-menu.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/help/help-menu.html">
     <bean:message key="docsearch.jsp.toolbar"/>
   </rhn:toolbar>
 

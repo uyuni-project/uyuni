@@ -79,8 +79,16 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
                         user.hasRole(RoleFactory.SAT_ADMIN));
 
         requestContext.getRequest().setAttribute("targetuser", user);
-        requestContext.getRequest().setAttribute("supportedLocales", buildImageMap());
-        requestContext.getRequest().setAttribute("defaultLocale", buildDefaultLocale());
+
+        LocalizationService ls = LocalizationService.getInstance();
+        requestContext.getRequest().setAttribute("supportedLocales",
+                buildImageMap(ls.getConfiguredLocales()));
+        requestContext.getRequest().setAttribute("supportedDocsLocales",
+                buildImageMap(ls.getInstalledDocsLocales()));
+        requestContext.getRequest().setAttribute("defaultLocale",
+                buildDefaultLocale(ConfigDefaults.get().getDefaultLocale()));
+        requestContext.getRequest().setAttribute("defaultDocsLocale",
+                buildDefaultLocale(ConfigDefaults.get().getDefaultDocsLocale()));
         requestContext.getRequest().setAttribute("timezones", getTimeZones());
         if (user.getTimeZone() != null) {
             form.set("timezone",
@@ -104,6 +112,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
 
         setupTasks(form, user);
         setCurrentLocale(requestContext, user);
+        setDocsLocale(requestContext, user);
         request.setAttribute("pagesizes", getPageSizes());
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

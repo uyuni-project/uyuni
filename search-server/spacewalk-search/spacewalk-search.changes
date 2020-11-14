@@ -1,3 +1,4 @@
+- Add multi lang support to the document search
 - change default maximum memory to 512 MB, preventing OutOfMemoryError
 
 -------------------------------------------------------------------

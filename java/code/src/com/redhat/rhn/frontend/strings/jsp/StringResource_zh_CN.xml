@@ -2148,11 +2148,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target state="translated">注意：当选择此复选框时，则不需要上述密码项；您可以填写一个密码，但它只在这个用户帐户的 PAM 验证被禁用时才起作用。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
-        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/docs/administration/auth-methods.html"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target state="translated">如果要将 Satellite 设定为根据 LDAP、Kerberos 以及其它基于网络的认证系统认证，请访问 &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;参考指南&lt;/a&gt; 查看设定 PAM 的步骤。</target>
+<target state="translated">如果要将 Satellite 设定为根据 LDAP、Kerberos 以及其它基于网络的认证系统认证，请访问 &lt;a href={0}&gt;参考指南&lt;/a&gt; 查看设定 PAM 的步骤。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly" xml:space="preserve">
         <source>Read-only API user:</source>
@@ -12013,11 +12013,11 @@ Kickstart 侧写的引导装载程序和分区选项，有可能覆盖用户定�
         <source>
 You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
 A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
-For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <target>
 可以在 kickstart 配置文件中引用这些密钥和/或证书，以便在无人值守安装期间在系统上安装这些密钥/证书。
 系统需要拥有正确的密钥（用于安装已签名的软件包），以及要由 @@PRODUCT_NAME@@ 代理服务器或 @@PRODUCT_NAME@@ 服务器以无人值守模式安装的正确证书。
-有关详细信息，请参见&lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;参考指南&lt;/a&gt;</target>
+有关详细信息，请参见&lt;a href={0} target="_blank" &gt;参考指南&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -12173,7 +12173,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <source>
         File preservation lists are lists of files that will be restored to a system during a particular kickstart.
         You can reference a file preservation list in a kickstart profile.
-        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
+        For more information refer to the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.
         The following file preservation lists have been created for use by your organization:</source>
         <target>
         文件保留列表是在执行特定的 kickstart 期间要还原到系统的文件列表。
@@ -12318,8 +12318,8 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <target state="translated">创建 kickstart 文件保留列表</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary" xml:space="preserve">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
-        <target>此处列出的任何文件或目录在执行 kickstart 后将会保留。每行列出一个文件或目录。&lt;br/&gt;每个列表的总大小限制为 &lt;strong&gt;1 MB&lt;/strong&gt;。有关详细信息，请参见&lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;参考指南&lt;/a&gt;。</target>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href={0} target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <target>此处列出的任何文件或目录在执行 kickstart 后将会保留。每行列出一个文件或目录。&lt;br/&gt;每个列表的总大小限制为 &lt;strong&gt;1 MB&lt;/strong&gt;。有关详细信息，请参见&lt;a href={0} target="_blank" &gt;参考指南&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
@@ -22831,6 +22831,13 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target state="translated">德语</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.en_US" xml:space="preserve">
+        <source>English</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+        <target state="translated">英语</target>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.lang.en" xml:space="preserve">
         <source>English</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
