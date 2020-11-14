@@ -200,8 +200,7 @@ sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%
 
 %install
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-sed -i s#/srv/www/htdocs#/%{www_path}/www/htdocs# html/Makefile 
-make -C html install PREFIX=$RPM_BUILD_ROOT
+make -C html install PREFIX=$RPM_BUILD_ROOT INSTALL_DEST=%{www_path}/www/htdocs
 make -C po install PREFIX=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
