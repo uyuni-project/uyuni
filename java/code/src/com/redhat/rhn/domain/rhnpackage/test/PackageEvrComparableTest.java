@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.rhnpackage.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
-import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -25,51 +24,51 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * Test the compare() method in PackageEvr
- * @version $Rev$
  */
 public class PackageEvrComparableTest extends RhnBaseTestCase {
 
     public void testEquality() {
-        compare(0, "0-0-0", "0-0-0");
-        compare(0, "null-0-0", "0-0-0");
-        compare(0, "null-0-0", "null-0-0");
+        compare(0, "0:0-0", "0:0-0");
+        compare(0, "0-0", "0:0-0");
+        compare(0, "0-0", "0-0");
     }
 
     public void testFailure() {
-        failure("0-null-0", IllegalStateException.class);
-        failure("0-0-null", NullPointerException.class);
-        failure("X-0-null", NumberFormatException.class);
+        failure(new PackageEvr("0", null, "0", PackageType.RPM), IllegalStateException.class);
+        failure(new PackageEvr("0", "0", null, PackageType.RPM), NullPointerException.class);
+        failure(new PackageEvr("X", "0", null, PackageType.RPM), NumberFormatException.class);
     }
 
     public void testDifference() {
-        compare(-1, "1-1-1", "2-5-7");
-        compare(-1, "1-5-7", "2-5-7");
-        compare(-1, "1-1-7", "1-5-7");
-        compare(1, "1-1-7", "1-1-6");
-        compare(1, "1-10-7", "1-9-6");
-        compare(-1, "1-9-7", "1-11-6");
-        compare(-1, "1-1-7", "1-1-7.PTF");
-        compare(1, "1-1-7.PTF", "1-1-7");
-        compare(1, "1-2-1", "1-2~beta1-1");
-        compare(-1, "1-2~beta2-1", "1-2-1");
-        compare(1, "1-2~beta2-1", "1-2~beta1-1");
-        compare(-1, "1-2~beta2-1", "1-2~beta3-1");
+        compare(-1, "1:1-1", "2:5-7");
+        compare(-1, "1:5-7", "2:5-7");
+        compare(-1, "1:1-7", "1:5-7");
+        compare(1, "1:1-7", "1:1-6");
+        compare(1, "1:10-7", "1:9-6");
+        compare(-1, "1:9-7", "1:11-6");
+        compare(-1, "1:1-7", "1:1-7.PTF");
+        compare(1, "1:1-7.PTF", "1:1-7");
+        compare(1, "1:2-1", "1:2~beta1-1");
+        compare(-1, "1:2~beta2-1", "1:2-1");
+        compare(1, "1:2~beta2-1", "1:2~beta1-1");
+        compare(-1, "1:2~beta2-1", "1:2~beta3-1");
 
-        compare(1, "null-1.27+1.3.9-1", "null-1.27.1+1.3.9-1", PackageType.RPM);
-        compare(-1, "null-1.27+1.3.9-1", "null-1.27.1+1.3.9-1", PackageType.DEB);
+        compare(1, "1.27+1.3.9-1", "1.27.1+1.3.9-1", PackageType.RPM);
+        compare(-1, "1.27+1.3.9-1", "1.27.1+1.3.9-1", PackageType.DEB);
 
-        compare(1, "null-2-1.27+1.3.9", "null-2-1.27.1+1.3.9", PackageType.RPM);
-        compare(-1, "null-2-1.27+1.3.9", "null-2-1.27.1+1.3.9", PackageType.DEB);
+        compare(1, "2-1.27+1.3.9", "2-1.27.1+1.3.9", PackageType.RPM);
+        compare(-1, "2-1.27+1.3.9", "2-1.27.1+1.3.9", PackageType.DEB);
 
-        compare(1, "null-8.0.9-1", "null-a.8.0.9-1", PackageType.RPM);
-        compare(-1, "null-8.0.9-1", "null-a.8.0.9-1", PackageType.DEB);
+        compare(1, "8.0.9-1", "a.8.0.9-1", PackageType.RPM);
+        compare(-1, "8.0.9-1", "a.8.0.9-1", PackageType.DEB);
 }
 
     // On Postgres, we don't get as far as the specific errors - the DB kicks us out
     // with WrappedSQLException before we can even get to the specific-failure-code
-    private void failure(String evr, Class excClass) {
+    private void failure(PackageEvr evr, Class excClass) {
         try {
-            compare(0, evr, evr);
+            PackageEvr evrdb = PackageEvrFactory.lookupOrCreatePackageEvr(evr);
+            compare(0, evrdb, evrdb);
             fail("Comparison of " + evr + " must fail");
         }
         catch (WrappedSQLException wse) {
@@ -91,6 +90,10 @@ public class PackageEvrComparableTest extends RhnBaseTestCase {
     private void compare(int exp, String evrString1, String evrString2, PackageType type) {
         PackageEvr evr1 = create(evrString1, type);
         PackageEvr evr2 = create(evrString2, type);
+        compare(exp, evr1, evr2);
+    }
+
+    private void compare(int exp, PackageEvr evr1, PackageEvr evr2) {
         assertEquals(exp, evr1.compareTo(evr2));
         assertEquals(-exp, evr2.compareTo(evr1));
         assertEquals(0, evr1.compareTo(evr1));
@@ -98,17 +101,7 @@ public class PackageEvrComparableTest extends RhnBaseTestCase {
     }
 
     private PackageEvr create(String evr, PackageType type) {
-        String[] values = split(evr);
-        return PackageEvrFactory.lookupOrCreatePackageEvr(values[0], values[1], values[2], type);
-    }
-
-    private String[] split(String evr) {
-        String[] values = StringUtils.split(evr, "-");
-        for (int i = 0; i < values.length; i++) {
-            if ("null".equals(values[i])) {
-                values[i] = null;
-            }
-        }
-        return values;
+        PackageEvr packageEvr = PackageEvr.parsePackageEvr(type, evr);
+        return PackageEvrFactory.lookupOrCreatePackageEvr(packageEvr);
     }
 }
