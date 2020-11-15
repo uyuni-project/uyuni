@@ -277,7 +277,7 @@
       </trans-unit>
       <trans-unit id="About Spacewalk" xml:space="preserve">
         <source>About</source>
-        <target/>
+        <target>O</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
