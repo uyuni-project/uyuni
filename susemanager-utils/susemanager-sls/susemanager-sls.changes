@@ -1,3 +1,4 @@
+- Fix: sync before start action chains (bsc#1177336)
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Sync state modules when starting action chain execution (bsc#1177336)
 - Handle group- and org-specific image pillars
