@@ -15,7 +15,9 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.VersionConstraints;
@@ -51,9 +53,6 @@ public class PackageStateJson {
     /** Package architecture */
     private final String arch;
 
-    /** Package evr **/
-    private final transient PackageEvr packageEvr;
-
     /** Id to represent the state of the package */
     private final Optional<Integer> packageStateId;
 
@@ -76,7 +75,6 @@ public class PackageStateJson {
         this.arch = archIn;
         this.packageStateId = packageStateIdIn;
         this.versionConstraintId = versionConstraintIdIn;
-        this.packageEvr = evrIn;
     }
 
     /**
@@ -92,7 +90,6 @@ public class PackageStateJson {
         this.arch = archIn;
         this.packageStateId = Optional.empty();
         this.versionConstraintId = Optional.empty();
-        this.packageEvr = evrIn;
     }
 
     /**
@@ -146,10 +143,10 @@ public class PackageStateJson {
 
     /**
      * Convert this object into a {@link PackageState} object to be persisted.
-     *
+     * @param type the package type (RPM or DEB)
      * @return this object as a PackageState
      */
-    public Optional<PackageState> convertToPackageState() {
+    public Optional<PackageState> convertToPackageState(PackageType type) {
         Optional<PackageStates> state = getPackageStateId().flatMap(PackageStates::byId);
 
         // Create the return object only if we have a valid state
@@ -168,7 +165,7 @@ public class PackageStateJson {
                     VersionConstraints vc = versionConstraint.get();
                     if (!Arrays.asList(VersionConstraints.LATEST, VersionConstraints.ANY)
                             .contains(vc)) {
-                        packageState.setEvr(packageEvr);
+                        packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release, type));
                     }
                     packageState.setVersionConstraint(vc);
                 }

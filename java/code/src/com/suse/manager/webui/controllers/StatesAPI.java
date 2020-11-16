@@ -389,10 +389,12 @@ public class StatesAPI {
         json.getPackageStates().addAll(latestPackageStatesJSON(server));
 
         // Add only valid states to the new revision, unmanaged packages will be skipped
-        json.getPackageStates().forEach(pkgState -> pkgState.convertToPackageState().ifPresent(s -> {
-            s.setStateRevision(state);
-            state.addPackageState(s);
-        }));
+        json.getPackageStates().forEach(pkgState ->
+                pkgState.convertToPackageState(server.getPackageType()).ifPresent(s -> {
+                    s.setStateRevision(state);
+                    state.addPackageState(s);
+                })
+        );
         try {
             StateFactory.save(state);
             generateServerPackageState(server);
