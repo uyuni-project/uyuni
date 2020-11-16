@@ -757,14 +757,14 @@
       </trans-unit>
       <trans-unit id="Critical Inodes Pct Used" xml:space="preserve">
         <source>Critical Inodes Pct Used</source>
-        <target/>
+        <target>Kritické percento použitých inodov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Input Rate" xml:space="preserve">
         <source>Critical Input Rate</source>
-        <target/>
+        <target>Kritická vstupná rýchlosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1849,14 +1849,14 @@
       </trans-unit>
       <trans-unit id="Warning Inodes Pct Used" xml:space="preserve">
         <source>Warning Inodes Pct Used</source>
-        <target/>
+        <target>Varovné percento použitých inodov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Input Rate" xml:space="preserve">
         <source>Warning Input Rate</source>
-        <target/>
+        <target>Varovná vstupná rýchlosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2410,14 +2410,14 @@
       </trans-unit>
       <trans-unit id="metrics.Inodes pct used" xml:space="preserve">
         <source>Inodes pct used</source>
-        <target/>
+        <target>Percento použitých inodov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Input rate" xml:space="preserve">
         <source>Input rate</source>
-        <target/>
+        <target>Vstupná rýchlosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3124,7 +3124,7 @@
       </trans-unit>
       <trans-unit id="Inodes" xml:space="preserve">
           <source>Inodes</source>
-        <target/>
+        <target>Inody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
