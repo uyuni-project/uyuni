@@ -49,6 +49,20 @@ import com.redhat.rhn.testing.UserTestUtils;
  */
 public class PackageTest extends BaseTestCaseWithUser {
 
+    public void testIsType() throws Exception {
+        Package pkgRpm = PackageTest.createTestPackage(user.getOrg(),
+                PackageFactory.lookupPackageArchByLabel("x86_64"));
+
+        Package pkgDeb = PackageTest.createTestPackage(user.getOrg(),
+                PackageFactory.lookupPackageArchByLabel("amd64-deb"));
+
+        assertTrue(pkgRpm.isTypeRpm());
+        assertFalse(pkgRpm.isTypeDeb());
+
+        assertFalse(pkgDeb.isTypeRpm());
+        assertTrue(pkgDeb.isTypeDeb());
+    }
+
     public void testPackage() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
         assertNotNull(pkg);
