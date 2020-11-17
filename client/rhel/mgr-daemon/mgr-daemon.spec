@@ -17,7 +17,7 @@
 #
 
 # Macros that aren't defined in debbuild
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 %global _unitdir /lib/systemd/system
 %global _initrddir /etc/init.d
 %global is_deb 1
@@ -35,7 +35,7 @@ Version:        4.2.2
 Release:        1%{?dist}
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Group:          utils
 Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
@@ -50,7 +50,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch: noarch
 %endif
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 
 # 5.0.37.2 was last version+1 of spacewalksd before renaming to mgr-daemon
 Provides:       rhnsd = 5.0.38
@@ -87,7 +87,7 @@ Requires(postun): initscripts
 %endif
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 BuildRequires: init-system-helpers
 %if 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504
 BuildRequires: systemd
@@ -120,14 +120,14 @@ sed -i 's/RandomizedDelaySec=.*//' rhnsd.timer
 %install
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} INIT_DIR=$RPM_BUILD_ROOT/%{_initrddir} %{?is_deb:PLATFORM=deb} CONFIG_DIR=$RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version} && 0%{?suse_version} < 1210
 install -m 0755 rhnsd.init.SUSE $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
 # add rclink
 ln -sf ../../etc/init.d/rhnsd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
 %endif
 %endif
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 install -m 0755 rhnsd.init.Debian $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
 %endif
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
@@ -152,12 +152,12 @@ ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
 %endif
 %endif
 # find_lang not available on debbuild; we'll work around this below
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %find_lang rhnsd
 %endif
 
 # These will not work with debbuild
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %{!?systemd_post: %global systemd_post() if [ $1 -eq 1 ] ; then /usr/bin/systemctl enable %%{?*} >/dev/null 2>&1 || : ; fi; }
 %{!?systemd_preun: %global systemd_preun() if [ $1 -eq 0 ] ; then /usr/bin/systemctl --no-reload disable %%{?*} > /dev/null 2>&1 || : ; /usr/bin/systemctl stop %%{?*} > /dev/null 2>&1 || : ; fi; }
 %{!?systemd_postun_with_restart: %global systemd_postun_with_restart() /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : ; if [ $1 -ge 1 ] ; then /usr/bin/systemctl try-restart %%{?*} >/dev/null 2>&1 || : ; fi; }
@@ -176,7 +176,7 @@ rm -rf $RPM_BUILD_ROOT/%{_datadir}/locale
 %endif
 
 %post
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
 %service_add_post rhnsd.timer
@@ -202,7 +202,7 @@ if [ -f %{_unitdir}/rhnsd.service ]; then
 fi
 %endif
 %endif
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 if [ -f %{_initrddir}/rhnsd ] && ( [ "$1" == "configure" ] || [ "$1" == "abort-upgrade" ] ); then
         update-rc.d rhnsd defaults >/dev/null 2>&1 || :
 fi
@@ -213,7 +213,7 @@ fi
 
 
 %preun
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
 %service_del_preun rhnsd.timer
@@ -237,7 +237,7 @@ fi
 %endif
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 if [ -f %{_initrddir}/rhnsd ] || [ -e "/etc/init/rhnsd.conf" ]; then
     update-rc.d -f rhnsd remove || exit $?
 fi
@@ -248,7 +248,7 @@ fi
 %endif
 
 %postun
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
 %service_del_postun rhnsd.timer
@@ -269,7 +269,7 @@ fi
 %endif
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 if [ -f {_initrddir}/rhnsd ] && [ "$1" == "purge" ]; then
     update-rc.d rhnsd remove >/dev/null
 fi
@@ -306,7 +306,7 @@ fi
 %endif
 %{_mandir}/man8/rhnsd.8*
 %doc LICENSE
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 %{_datadir}/locale/
 %endif
 
