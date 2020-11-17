@@ -1,3 +1,5 @@
+- Updated RHEL Python requirements.
+- Added quotes around %{_vendor}.
 - Remove RH references in Python/Ruby localization and use the product name instead
 
 -------------------------------------------------------------------
