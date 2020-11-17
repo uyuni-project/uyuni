@@ -37,8 +37,8 @@ web.mount_point = /pub/
 # Mail settings
 web.disallowed_mail_domains =
 web.restrict_mail_domains =
-traceback_mail = galaxy-noise@suse.de
-web.traceback_mail = galaxy-noise@suse.de
+traceback_mail = fkobzik-local
+web.traceback_mail = fkobzik-local
 web.default_mail_from = SUSE Manager JUnit testsuite <junit-susemanager@suse.de>
 
 # Password settings
