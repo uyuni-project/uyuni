@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-
 /**
  * Test for {@link com.suse.manager.reactor.utils.ValueMap}
  */

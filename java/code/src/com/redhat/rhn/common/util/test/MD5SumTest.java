@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.TestUtils;
 import java.io.File;
 import java.util.Random;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 

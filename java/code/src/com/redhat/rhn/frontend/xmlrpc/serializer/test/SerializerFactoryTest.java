@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 

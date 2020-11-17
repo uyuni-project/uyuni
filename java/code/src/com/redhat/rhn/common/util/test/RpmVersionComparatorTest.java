@@ -12,7 +12,8 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common.util.test; import static org.junit.jupiter.api.Assertions.*;
+package com.redhat.rhn.common.util.test; import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -133,6 +134,7 @@ public class RpmVersionComparatorTest  {
     /*
      * Test for https://github.com/uyuni-project/uyuni/issues/2531
      */
+    @Test
     public void testUyuniIssue2531() {
         assertCompareSymm(1, "1.27+1.3.9", "1.27.1+1.3.9");
         assertCompareSymm(1, "1.27", "1.3.11");

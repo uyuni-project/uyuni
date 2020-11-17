@@ -17,8 +17,6 @@ package com.redhat.rhn.manager.audit.test; import static org.junit.jupiter.api.A
 import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
-import org.junit.Assert;
-
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;

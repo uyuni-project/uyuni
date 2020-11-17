@@ -16,7 +16,6 @@ package com.redhat.rhn.common.validator.test; import static org.junit.jupiter.ap
 
 import com.redhat.rhn.common.validator.HostPortValidator;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 /**

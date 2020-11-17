@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import redstone.xmlrpc.XmlRpcException;

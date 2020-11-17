@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.contentmgmt.modulemd.test; import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 public class ModuleTest  {

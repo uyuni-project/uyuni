@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto.test; import static org.junit.jupiter.api.As
 
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 /**

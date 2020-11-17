@@ -20,7 +20,6 @@ import org.cobbler.Distro;
 
 import java.util.HashMap;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 

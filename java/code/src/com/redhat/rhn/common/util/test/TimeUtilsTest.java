@@ -16,7 +16,6 @@ package com.redhat.rhn.common.util.test; import static org.junit.jupiter.api.Ass
 
 import com.redhat.rhn.common.util.TimeUtils;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 /**

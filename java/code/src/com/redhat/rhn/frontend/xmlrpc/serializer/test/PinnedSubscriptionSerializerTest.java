@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.frontend.xmlrpc.serializer.PinnedSubscriptionSerializer;
-import org.junit.Assert;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import java.io.IOException;

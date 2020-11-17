@@ -25,8 +25,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 import java.util.Date;
 
-import org.junit.Assert;
-
 /**
  * ValidatorTest
  * @version $Rev$

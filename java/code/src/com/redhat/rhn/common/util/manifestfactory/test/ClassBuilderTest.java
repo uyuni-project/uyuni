@@ -21,7 +21,6 @@ import com.redhat.rhn.common.util.manifestfactory.ClassBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 

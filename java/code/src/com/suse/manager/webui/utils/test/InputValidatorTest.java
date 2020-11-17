@@ -28,8 +28,6 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import java.util.List;
 
-import org.junit.Assert;
-
 /**
  * Tests for the InputValidator.
  */

@@ -18,8 +18,6 @@ package com.redhat.rhn.domain.contentmgmt.test; import static org.junit.jupiter.
 import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
-import org.junit.Assert;
-
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;

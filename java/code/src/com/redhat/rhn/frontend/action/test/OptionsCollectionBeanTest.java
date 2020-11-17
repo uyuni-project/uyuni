@@ -18,8 +18,6 @@ import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.frontend.action.OptionsCollectionBean;
 
-import org.junit.Assert;
-
 /**
  * OptionsCollectionBean
  * @version $Rev$

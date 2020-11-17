@@ -23,8 +23,6 @@ import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.DynaActionForm;
 
-import org.junit.Assert;
-
 /**
  * StrutsDelegateImplTest
  * @version $Rev$

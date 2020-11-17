@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.formula.test; import static org.junit.jupiter.api.
 import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.formula.FormulaFactory;
-import org.junit.Assert;
 import org.yaml.snakeyaml.Yaml;
 
 import java.util.Map;

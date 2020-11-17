@@ -25,8 +25,6 @@ import java.util.Map;
 import com.redhat.rhn.frontend.action.systems.SystemSearchHelper;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 
-import org.junit.Assert;
-
 /**
  * JUnit primarily for SystemSearchHelper.SearchResultScoreComparator
  * Could/should be expanded to cover more of SystemSearchHelper (which

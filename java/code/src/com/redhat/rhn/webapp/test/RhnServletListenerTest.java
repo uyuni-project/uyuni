@@ -17,8 +17,6 @@ package com.redhat.rhn.webapp.test; import static org.junit.jupiter.api.Assertio
 import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.webapp.RhnServletListener;
-import org.junit.Assert;
-
 /**
  * RhnServletListenerTest
  * @version $Rev$

@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import org.junit.Assert;
 import simple.http.Request;
 import simple.http.Response;
 
