@@ -764,14 +764,14 @@
       </trans-unit>
       <trans-unit id="Critical Input Rate" xml:space="preserve">
         <source>Critical Input Rate</source>
-        <target>Kritická vstupná rýchlosť</target>
+        <target>Kritická rýchlosť vstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Latency" xml:space="preserve">
         <source>Critical Latency</source>
-        <target/>
+        <target>Kritické oneskorenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -841,7 +841,7 @@
       </trans-unit>
       <trans-unit id="Critical Output Rate" xml:space="preserve">
         <source>Critical Output Rate</source>
-        <target/>
+        <target>Kritická rýchlosť výstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1856,14 +1856,14 @@
       </trans-unit>
       <trans-unit id="Warning Input Rate" xml:space="preserve">
         <source>Warning Input Rate</source>
-        <target>Varovná vstupná rýchlosť</target>
+        <target>Varovná rýchlosť vstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Latency" xml:space="preserve">
         <source>Warning Latency</source>
-        <target/>
+        <target>Varovné oneskorenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1919,7 +1919,7 @@
       </trans-unit>
       <trans-unit id="Warning Output Rate" xml:space="preserve">
         <source>Warning Output Rate</source>
-        <target/>
+        <target>Varovná rýchlosť výstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2417,7 +2417,7 @@
       </trans-unit>
       <trans-unit id="metrics.Input rate" xml:space="preserve">
         <source>Input rate</source>
-        <target>Vstupná rýchlosť</target>
+        <target>Rýchlosť vstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2431,7 +2431,7 @@
       </trans-unit>
       <trans-unit id="metrics.Latency" xml:space="preserve">
         <source>Latency</source>
-        <target/>
+        <target>Oneskorenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2501,7 +2501,7 @@
       </trans-unit>
       <trans-unit id="metrics.Output rate" xml:space="preserve">
         <source>Output rate</source>
-        <target/>
+        <target>Rýchlosť výstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3145,7 +3145,7 @@
       </trans-unit>
       <trans-unit id="Latency" xml:space="preserve">
           <source>Latency</source>
-        <target/>
+        <target>Oneskorenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3544,21 +3544,21 @@
       </trans-unit>
       <trans-unit id="kickstart.state.package_synch" xml:space="preserve">
           <source>Package synchronization in progress.</source>
-        <target/>
+        <target>Prebieha synchronizácia balíkov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.package_synch_scheduled" xml:space="preserve">
           <source>Package synchronization scheduled.</source>
-        <target/>
+        <target>Synchronizácia balíkov je naplánovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.configuration_deploy" xml:space="preserve">
           <source>Configuration files are being deployed.</source>
-        <target/>
+        <target>Nasadzujú sa konfiguračné súbory.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
