@@ -80,7 +80,7 @@ import java.util.*;
 public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     @RegisterExtension
-    private final Mockery CONTEXT = new JUnit5Mockery() {{
+    public final Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

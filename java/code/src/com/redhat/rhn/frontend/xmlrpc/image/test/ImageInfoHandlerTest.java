@@ -93,7 +93,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     private ImageInfoHandler handler = new ImageInfoHandler();
 
     @RegisterExtension
-    private final Mockery CONTEXT = new JUnit5Mockery() {{
+    public final Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

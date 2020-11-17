@@ -201,7 +201,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                     new ServerGroupManager());
 
     @RegisterExtension
-    private final Mockery MOCK_CONTEXT = new JUnit5Mockery() {{
+    public final Mockery MOCK_CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }};

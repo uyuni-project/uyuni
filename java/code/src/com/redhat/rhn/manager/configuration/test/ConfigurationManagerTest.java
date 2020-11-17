@@ -94,7 +94,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                                     ConfigFileCount.create(3, 0, 1, 0);
 
     @RegisterExtension
-    private final Mockery CONTEXT = new JUnit5Mockery() {{
+    public final Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
