@@ -8,13 +8,13 @@
 
 Name:           bootstrap
 Version:        3.0.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.
 
 Group:          Applications/Internet
 License:        Apache Software License v2
 URL:            http://getbootstrap.com/
-Source0:        https://github.com/twbs/bootstrap/archive/bootstrap-3.0.0.tar.gz
+Source0:        https://github.com/twbs/bootstrap/archive/v3.0.0.tar.gz
 Source1:        httpd-bootstrap-less.conf
 %if 0%{?suse_version}
 Requires(pre):  apache2
@@ -83,6 +83,14 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Mar 11 2020 Stefan Bluhm <stefan.bluhm@clacee.eu> 3.0.0-8
+- Updated bootstrap Source0 link.
+
+* Sat Feb 10 2018 mcalmer <mcalmer@suse.com> 3.0.0-7
+- Reverted "removed %%%%defattr from specfile"
+- Reverted "removed Group from specfile"
+- Reverted "removed BuildRoot from specfiles"
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 3.0.0-7
 - removed %%%%defattr from specfile
 - removed Group from specfile
