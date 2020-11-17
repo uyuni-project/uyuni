@@ -8702,20 +8702,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>O sistema já possui o serviço {0}.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="needs-adaptation">Como você adicionou o serviço de Virtualização ao sistema, nós também tomamos algumas providências para assegurar que seu sistema será capaz de gerenciar os sistemas virtuais da melhor forma. Consulte &lt;a href="{0}"&gt;aqui&lt;/a&gt; para mais informações.</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>Como você adicionou o serviço de Virtualização ao sistema, nós também tomamos algumas providências para assegurar que seu sistema será capaz de gerenciar os sistemas virtuais da melhor forma.</target>
-      </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
         <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
@@ -10456,6 +10442,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>O tipo &lt;strong&gt;Host De Criação De Imagem De Sistema Operacional&gt; foi aplicado.&lt;br/&gt;&lt;strong&gt;Nota:&lt;/strong&gt; Esta ação &lt;em&gt;não&lt;/em&gt; resultará no aplicativo de estado. Para aplicar o estado, use a &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;página de estados&lt;/a&gt; ou execute &lt;code class="text-info"&gt;state.highstate.&lt;/code&gt; a partir da linha de comando.</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
+        <target>Como você adicionou um tipo de sistema de virtualização ao sistema, também executamos algumas etapas extras para garantir que seu sistema possa gerenciar melhor os convidados virtuais. Veja &lt;a href="/docs/administration/virtualization.html"&gt;aqui&lt;/a&gt; para mais informações.</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
+        <target>Como você adicionou um tipo de sistema de virtualização ao sistema, também executamos algumas etapas extras para garantir que seu sistema possa gerenciar melhor os convidados virtuais.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>

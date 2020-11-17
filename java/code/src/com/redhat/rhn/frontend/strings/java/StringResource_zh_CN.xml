@@ -8732,20 +8732,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">系统已经具有 {0} 权利。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">因为您在该系统中添加了虚拟化权利，我们也可执行某些额外的步骤来确保您的系统能够更好地管理虚拟化客体。更多信息请参考&lt;a href="{0}"&gt;这里&lt;/a&gt;。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">因为您在该系统中添加了虚拟化权利，我们也可执行某些额外的步骤来确保您的系统能够更好地管理虚拟机。</target>
-      </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
         <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
@@ -10525,6 +10511,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>已应用&lt;strong&gt;操作系统映像构建主机&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;此操作&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用该状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
+        <target>由于您已将 "虚拟化系统" 类型添加到系统，因此我们还执行了一些额外的步骤来确保您的系统能够更好地管理虚拟 Guest。有关详细信息，请参见&lt;a href="/docs/administration/virtualization.html"&gt;此文档&lt;/a&gt;。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
+        <target>由于您已将 "虚拟化系统" 类型添加到系统，因此我们还执行了一些额外的步骤来确保您的系统能够更好地管理虚拟 Guest。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
