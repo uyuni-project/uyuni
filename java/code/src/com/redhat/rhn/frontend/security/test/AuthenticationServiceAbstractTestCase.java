@@ -40,14 +40,6 @@ public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTe
     protected String[] requestParamValues;
     private String requestUrl;
 
-    /**
-     * @param name The test case name
-     */
-    public AuthenticationServiceAbstractTestCase(String name) {
-        super(name);
-    }
-
-
     public AuthenticationServiceAbstractTestCase() {
     }
 

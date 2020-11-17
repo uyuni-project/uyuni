@@ -365,7 +365,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         DataResult<VirtualSystemOverview> data = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
-        assertEquals("Guest not found", 1, data.getTotalSize());
+        assertEquals(1, data.getTotalSize(), "Guest not found");
     }
 
     @Test
@@ -658,8 +658,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // Ok let's finally test what we came here for.
         List<Map<String, Object>> list = SystemManager.compatibleWithServer(user, srvr);
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
         for (Iterator<Map<String, Object>> itr = list.iterator(); itr.hasNext();) {
             Map<String, Object> o = itr.next();
@@ -667,7 +667,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 found = true;
             }
         }
-        assertTrue("Didn't get back the expected values", found);
+        assertTrue(found, "Didn't get back the expected values");
 
     }
 

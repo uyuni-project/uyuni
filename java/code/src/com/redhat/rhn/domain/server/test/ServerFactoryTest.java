@@ -852,19 +852,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         srvr = reload(srvr);
         // Ok let's finally test what we came here for.
         List list = ServerFactory.compatibleWithServer(user, srvr);
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
         for (Iterator itr = list.iterator(); itr.hasNext();) {
             Object o = itr.next();
-            assertEquals("List contains something other than Profiles",
-                    HashMap.class, o.getClass());
+            assertEquals(HashMap.class, o.getClass(), "List contains something other than Profiles");
             Map s = (Map) o;
             if (srvr1.getName().equals(s.get("name"))) {
                 found = true;
             }
         }
-        assertTrue("Didn't get back the expected values", found);
+        assertTrue(found, "Didn't get back the expected values");
     }
 
     @Test

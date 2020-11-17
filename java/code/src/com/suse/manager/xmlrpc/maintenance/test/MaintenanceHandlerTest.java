@@ -126,7 +126,7 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
                 assertContains(actual, "<string>Patch Update</string>");
             }
             else {
-                assertTrue("Not expected result set", false);
+                assertTrue(false, "Not expected result set");
             }
         }
     }

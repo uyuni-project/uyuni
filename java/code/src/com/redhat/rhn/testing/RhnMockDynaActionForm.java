@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.mockobjects.Expectation;
 
 import org.apache.struts.action.DynaActionForm;
@@ -25,8 +27,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import junit.framework.AssertionFailedError;
 
 /**
  * RhnMockDynaActionForm is a mock implementation of
@@ -186,7 +186,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
                 msg.append("] actual value [");
                 msg.append(actValue);
                 msg.append("]");
-                throw new AssertionFailedError(msg.toString());
+                fail(msg.toString());
             }
         }
     }

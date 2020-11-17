@@ -68,14 +68,14 @@ public class SessionManagerTest extends RhnBaseTestCase {
     public void testMakeSecureParamNoTimestamp() {
         String s = "12345678";
         String param = SessionManager.makeSecureParamNoTimestamp(s);
-        assertTrue("param == null", param != null);
-        assertTrue("param is empty", !param.equals(""));
-        assertTrue("token not found",
-              param.indexOf(SessionManager.SEC_PARM_TOKENIZER_CHAR) > 0);
-        assertTrue("s != param",
-              s.equals(SessionManager.extractSecureParam(param)));
-        assertTrue("not a valid secure param",
-              SessionManager.isValidSecureParam(param));
+        assertTrue(param != null, "param == null");
+        assertTrue(!param.equals(""), "param is empty");
+        assertTrue(param.indexOf(SessionManager.SEC_PARM_TOKENIZER_CHAR) > 0,
+              "token not found");
+        assertTrue(s.equals(SessionManager.extractSecureParam(param)),
+              "s != param");
+        assertTrue(SessionManager.isValidSecureParam(param),
+              "not a valid secure param");
     }
 
     @Test

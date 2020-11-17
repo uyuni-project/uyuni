@@ -34,7 +34,7 @@ public class HandlerFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testHandlerFactoryNotFound() {
-        assertTrue("handler should not exist.", factory.getHandler("NoHandler").isEmpty());
+        assertTrue(factory.getHandler("NoHandler").isEmpty(), "handler should not exist.");
     }
 
     @Test

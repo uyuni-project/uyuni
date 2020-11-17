@@ -95,11 +95,11 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
 
         String msg = "Cannot find property with tag [" + nameTag + "]" +
                                 " in bean [" + beanOut + "]";
-        assertTrue(msg, beanOut.indexOf(nameTag) > -1);
+        assertTrue(beanOut.indexOf(nameTag) > -1, msg);
 
         msg = "Cannot find property value with Value-> [" + valueTag + "]" +
                                                    " in bean [" + beanOut + "]";
-        assertTrue(msg, beanOut.indexOf(valueTag) > -1);
+        assertTrue(beanOut.indexOf(valueTag) > -1, msg);
 
     }
 }

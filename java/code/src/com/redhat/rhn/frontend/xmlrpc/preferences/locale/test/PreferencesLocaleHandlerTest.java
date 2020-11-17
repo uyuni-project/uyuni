@@ -32,7 +32,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
     public void testListTimeZone() {
         Object[] tzs = handler.listTimeZones();
         assertNotNull(tzs);
-        assertTrue("TimeZone list is empty", tzs.length != 0);
+        assertTrue(tzs.length != 0, "TimeZone list is empty");
         assertEquals(RhnTimeZone.class, tzs[0].getClass());
     }
 

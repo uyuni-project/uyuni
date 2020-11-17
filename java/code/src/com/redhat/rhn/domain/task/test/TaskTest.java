@@ -65,7 +65,7 @@ public class TaskTest extends RhnBaseTestCase {
 
         assertEquals(t2, t3);
         t3.setName("foo");
-        assertFalse("t2 should not be equal to t3", t2.equals(t3));
+        assertFalse(t2.equals(t3), "t2 should not be equal to t3");
     }
 
     @Test

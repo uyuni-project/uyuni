@@ -36,7 +36,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListImageStoreTypes() throws Exception {
         List<ImageStoreType> types = handler.listImageStoreTypes(admin);
-        assertFalse("No image store types found", types.isEmpty());
+        assertFalse(types.isEmpty(), "No image store types found");
         assertTrue(types.stream().anyMatch(t -> t.equals(ImageStoreFactory.TYPE_REGISTRY)));
         assertTrue(types.stream().anyMatch(t -> t.equals(ImageStoreFactory.TYPE_OS_IMAGE)));
     }
@@ -52,7 +52,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertEquals("registry.mgr", store.getLabel());
         assertEquals("registry.domain.top", store.getUri());
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, store.getStoreType());
-        assertNull("no credentials expected", store.getCreds());
+        assertNull(store.getCreds(), "no credentials expected");
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertEquals("registry.mgr", store.getLabel());
         assertEquals("registry.domain.top", store.getUri());
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, store.getStoreType());
-        assertNull("no credentials expected", store.getCreds());
+        assertNull(store.getCreds(), "no credentials expected");
     }
 
     @Test
@@ -110,7 +110,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertEquals("registry.mgr", store.getLabel());
         assertEquals("portus.domain.top", store.getUri());
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, store.getStoreType());
-        assertNotNull("credentials expected", store.getCreds());
+        assertNotNull(store.getCreds(), "credentials expected");
 
         Map<String, String> details = new HashMap<>();
         details.put("uri", "registry.domain.top");
@@ -122,7 +122,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertEquals("registry.mgr", store.getLabel());
         assertEquals("registry.domain.top", store.getUri());
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, store.getStoreType());
-        assertNull("no credentials expected", store.getCreds());
+        assertNull(store.getCreds(), "no credentials expected");
 
         details = new HashMap<>();
         details.put("username", "root");

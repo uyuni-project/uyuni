@@ -1013,7 +1013,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public static void assertNotEmpty(Collection coll) {
         assertNotNull(coll);
         if (coll.size() == 0) {
-            fail(null);
+            fail("Collection is empty");
         }
     }
 

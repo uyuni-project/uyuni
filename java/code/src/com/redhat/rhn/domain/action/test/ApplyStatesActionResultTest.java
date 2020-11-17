@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -40,7 +42,7 @@ public class ApplyStatesActionResultTest extends RhnBaseTestCase {
         stateResult.setOutput("Gibberish".getBytes(StandardCharsets.UTF_8));
         Optional<List<StateResult>> result = stateResult.getResult();
 
-        Assert.assertFalse(result.isPresent());
+        assertFalse(result.isPresent());
     }
 
     /**
@@ -71,6 +73,6 @@ public class ApplyStatesActionResultTest extends RhnBaseTestCase {
 
         Optional<List<StateResult>> result = stateResult.getResult();
 
-        Assert.assertTrue(result.isPresent());
+        assertTrue(result.isPresent());
     }
 }

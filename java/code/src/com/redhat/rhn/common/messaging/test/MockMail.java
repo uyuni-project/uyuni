@@ -15,12 +15,12 @@
 
 package com.redhat.rhn.common.messaging.test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.redhat.rhn.common.messaging.Mail;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
-import junit.framework.AssertionFailedError;
 
 /**
  * A Mock implementation of our Mail interface.
@@ -150,8 +150,7 @@ public class MockMail implements Mail {
      */
     public void verify() {
         if (expectedSendCount > sendCount) {
-            throw new AssertionFailedError("expectedSendCount: " +
-                    expectedSendCount + " actual count: " + sendCount);
+            fail("expectedSendCount: " + expectedSendCount + " actual count: " + sendCount);
         }
     }
 

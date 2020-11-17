@@ -71,7 +71,7 @@ public class GathererJsonIOTest  {
                 assertTrue(g.getParameters().containsKey("tenant"));
             }
             else {
-                assertTrue("Unknown Module", false);
+                assertTrue(false, "Unknown Module");
             }
         }
     }

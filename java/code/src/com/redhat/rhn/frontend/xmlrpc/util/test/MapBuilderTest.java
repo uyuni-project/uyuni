@@ -50,14 +50,14 @@ public class MapBuilderTest extends RhnBaseTestCase {
      */
     private void assertMethod(Map map, String name, String value, boolean flag) {
         if (flag) {
-            assertTrue("Cannot find property with Name [" + name + "]" ,
-                                    map.containsKey(StringUtil.debeanify(name)));
+            assertTrue(map.containsKey(StringUtil.debeanify(name)),
+                                    "Cannot find property with Name [" + name + "]");
             assertEquals(value, map.get(StringUtil.debeanify(name)));
 
         }
         else {
-            assertFalse("COULD find property with Name [" + name + "]" ,
-                    map.containsKey(StringUtil.debeanify(name)));
+            assertFalse(map.containsKey(StringUtil.debeanify(name)),
+                    "COULD find property with Name [" + name + "]");
         }
     }
     /**

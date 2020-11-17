@@ -64,7 +64,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
                 found = true;
             }
         }
-        assertTrue("Didnt find the updated note.", found);
+        assertTrue(found, "Didnt find the updated note.");
 
         ActivationKey key2 = ActivationKeyFactory.lookupByKey(key.getKey());
         assertNotNull(key2.getId());

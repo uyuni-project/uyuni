@@ -62,7 +62,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     @Test
     public final void testListImageProfileTypes() throws Exception {
         List<String> types = handler.listImageProfileTypes(admin);
-        assertEquals("Wrong number of image profile types found.", 2, types.size());
+        assertEquals(2, types.size(), "Wrong number of image profile types found.");
         assertTrue(types.stream().anyMatch(ImageProfile.TYPE_DOCKERFILE::equals));
         assertTrue(types.stream().anyMatch(ImageProfile.TYPE_KIWI::equals));
     }

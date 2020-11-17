@@ -513,23 +513,23 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata3)",
-                2, server1ScheduledErrata.size());
-        assertFalse("Server 1 Scheduled Erratas do not include other server's errata",
-                server1ScheduledErrata.contains(errata2.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata3.getId()));
+        assertEquals(2, server1ScheduledErrata.size(),
+                "Server 1 Scheduled Erratas has 2 erratas (errata1 and errata3)");
+        assertFalse(server1ScheduledErrata.contains(errata2.getId()),
+                "Server 1 Scheduled Erratas do not include other server's errata");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(errata3.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
 
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata2 and errata3)",
-                2, server2ScheduledErrata.size());
-        assertFalse("Server 2 Scheduled Erratas do not include other server's errata",
-                server2ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata3.getId()));
+        assertEquals(2, server2ScheduledErrata.size(),
+                "Server 2 Scheduled Erratas has 2 erratas (errata2 and errata3)");
+        assertFalse(server2ScheduledErrata.contains(errata1.getId()),
+                "Server 2 Scheduled Erratas do not include other server's errata");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(errata3.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
     }
 
     /**
@@ -659,20 +659,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled has 3 scheduled actions",
-                3, actionsServer1.size());
-        assertEquals("Server 1 Scheduled Erratas has 3 erratas (errata1 and both" +
-                " yumErratas)", 3, server1ScheduledErrata.size());
-        assertFalse("Server 1 Scheduled Erratas do not include irrelevant errata",
-                server1ScheduledErrata.contains(errata3.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain both yum erratas",
-                server1ScheduledErrata.contains(yumErrata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain both yum erratas",
-                server1ScheduledErrata.contains(yumErrata2.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain both yum erratas",
-                server1ScheduledErrata.contains(yumErrata2.getId()));
+        assertEquals(3, actionsServer1.size(), "Server 1 Scheduled has 3 scheduled actions");
+        assertEquals(3, server1ScheduledErrata.size(),
+                "Server 1 Scheduled Erratas has 3 erratas (errata1 and both yumErratas)");
+        assertFalse(server1ScheduledErrata.contains(errata3.getId()),
+                "Server 1 Scheduled Erratas do not include irrelevant errata");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(yumErrata1.getId()),
+                "Server 1 Scheduled Erratas contain both yum erratas");
+        assertTrue(server1ScheduledErrata.contains(yumErrata2.getId()),
+                "Server 1 Scheduled Erratas contain both yum erratas");
+        assertTrue(server1ScheduledErrata.contains(yumErrata2.getId()),
+                "Server 1 Scheduled Erratas contain both yum erratas");
 
         List<Action> updateStackErrataActions1 = actionsServer1.stream()
             .filter(a -> errataActionFromAction(a).getErrata().stream()
@@ -682,26 +681,25 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .filter(a -> !updateStackErrataActions1.contains(a))
             .collect(Collectors.toList());
 
-        assertTrue("Action does not mix update-stack and non-update stack erratas",
-            updateStackErrataActions1.stream()
+        assertTrue(updateStackErrataActions1.stream()
                 .flatMap(a -> errataActionFromAction(a).getErrata().stream())
-                .allMatch(ErrataManagerTest::doesUpdateStack));
+                .allMatch(ErrataManagerTest::doesUpdateStack),
+            "Action does not mix update-stack and non-update stack erratas");
 
-        assertTrue("Actions without update-stack erratas come after those that have",
-            nonUpdateStackErrataActions1.stream()
+        assertTrue(nonUpdateStackErrataActions1.stream()
                 .allMatch(a -> updateStackErrataActions1.stream()
-                    .allMatch(b -> b.getId() < a.getId())));
+                    .allMatch(b -> b.getId() < a.getId())),
+            "Actions without update-stack erratas come after those that have");
 
-        assertEquals("Server 2 Scheduled has 2 scheduled actions",
-                2, actionsServer2.size());
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata2 and yumErrata1)",
-                2, server2ScheduledErrata.size());
-        assertFalse("Server 2 Scheduled Erratas do not include irrelevant errata",
-                server2ScheduledErrata.contains(errata3.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain one yum errata",
-                server2ScheduledErrata.contains(yumErrata1.getId()));
+        assertEquals(2, actionsServer2.size(), "Server 2 Scheduled has 2 scheduled actions");
+        assertEquals(2, server2ScheduledErrata.size(),
+                "Server 2 Scheduled Erratas has 2 erratas (errata2 and yumErrata1)");
+        assertFalse(server2ScheduledErrata.contains(errata3.getId()),
+                "Server 2 Scheduled Erratas do not include irrelevant errata");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(yumErrata1.getId()),
+                "Server 2 Scheduled Erratas contain one yum errata");
 
         List<Action> updateStackErrataActions2 = actionsServer2.stream()
                 .filter(a -> errataActionFromAction(a).getErrata().stream()
@@ -711,15 +709,15 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .filter(a -> !updateStackErrataActions2.contains(a))
             .collect(Collectors.toList());
 
-        assertTrue("Action does not mix update-stack and non-update stack erratas",
-            updateStackErrataActions2.stream()
+        assertTrue(updateStackErrataActions2.stream()
                 .flatMap(a -> errataActionFromAction(a).getErrata().stream())
-                .allMatch(ErrataManagerTest::doesUpdateStack));
+                .allMatch(ErrataManagerTest::doesUpdateStack),
+            "Action does not mix update-stack and non-update stack erratas");
 
-        assertTrue("Actions without update-stack erratas come after those that have",
-            nonUpdateStackErrataActions2.stream()
+        assertTrue(nonUpdateStackErrataActions2.stream()
                 .allMatch(a -> updateStackErrataActions2.stream()
-                    .allMatch(b -> b.getId() < a.getId())));
+                    .allMatch(b -> b.getId() < a.getId())),
+            "Actions without update-stack erratas come after those that have");
     }
 
     private static boolean doesUpdateStack(Errata e) {
@@ -871,30 +869,28 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled has 2 scheduled actions",
-                2, actionsServer1.size());
-        assertEquals("Server 1 Scheduled Erratas has 3 erratas (errata1 and both" +
-                " yumErratas)", 3, server1ScheduledErrata.size());
-        assertFalse("Server 1 Scheduled Erratas do not include irrelevant errata",
-                server1ScheduledErrata.contains(errata3.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain both yum erratas",
-                server1ScheduledErrata.contains(yumErrata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain both yum erratas",
-                server1ScheduledErrata.contains(yumErrata2.getId()));
+        assertEquals(2, actionsServer1.size(), "Server 1 Scheduled has 2 scheduled actions");
+        assertEquals(3, server1ScheduledErrata.size(), "Server 1 Scheduled Erratas has 3 erratas " +
+                "(errata1 and both yumErratas)");
+        assertFalse(server1ScheduledErrata.contains(errata3.getId()),
+                "Server 1 Scheduled Erratas do not include irrelevant errata");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(yumErrata1.getId()),
+                "Server 1 Scheduled Erratas contain both yum erratas");
+        assertTrue(server1ScheduledErrata.contains(yumErrata2.getId()),
+                "Server 1 Scheduled Erratas contain both yum erratas");
 
 
-        assertEquals("Server 2 Scheduled has 2 scheduled actions",
-                2, actionsServer2.size());
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata2 and yumErrata1)",
-                2, server2ScheduledErrata.size());
-        assertFalse("Server 2 Scheduled Erratas do not include irrelevant errata",
-                server2ScheduledErrata.contains(errata3.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain one yum errata",
-                server2ScheduledErrata.contains(yumErrata1.getId()));
+        assertEquals(2, actionsServer2.size(), "Server 2 Scheduled has 2 scheduled actions");
+        assertEquals(2, server2ScheduledErrata.size(),
+                "Server 2 Scheduled Erratas has 2 erratas (errata2 and yumErrata1)");
+        assertFalse(server2ScheduledErrata.contains(errata3.getId()),
+                "Server 2 Scheduled Erratas do not include irrelevant errata");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(yumErrata1.getId()),
+                "Server 2 Scheduled Erratas contain one yum errata");
     }
 
     /**
@@ -919,7 +915,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> result =
                 ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
 
-        assertEquals("No Actions have been produced", 0, result.size());
+        assertEquals(0, result.size(), "No Actions have been produced");
     }
 
     /**
@@ -941,7 +937,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> result =
                 ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
 
-        assertEquals("No Actions have been produced", 0, result.size());
+        assertEquals(0, result.size(), "No Actions have been produced");
     }
 
     /**
@@ -960,7 +956,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> result =
                 ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
 
-        assertEquals("No Actions have been produced", 0, result.size());
+        assertEquals(0, result.size(), "No Actions have been produced");
     }
 
     /**
@@ -986,7 +982,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> result =
                 ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
 
-        assertEquals("No Actions have been produced", 0, result.size());
+        assertEquals(0, result.size(), "No Actions have been produced");
     }
 
     /**
@@ -1050,8 +1046,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // 4 Actions should be created
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        assertEquals("2 actions have been scheduled for server 1", 2,
-                actionsServer1.size());
+        assertEquals(2, actionsServer1.size(),
+                "2 actions have been scheduled for server 1");
         Set<Long> server1ScheduledErrata = new HashSet<Long>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -1061,8 +1057,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        assertEquals("2 actions have been scheduled for server 2", 2,
-                actionsServer2.size());
+        assertEquals(2, actionsServer2.size(),
+                "2 actions have been scheduled for server 2");
         Set<Long> server2ScheduledErrata = new HashSet<Long>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -1071,19 +1067,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server1ScheduledErrata.size());
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server1ScheduledErrata.size(),
+                "Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(errata2.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
 
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server2ScheduledErrata.size());
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server2ScheduledErrata.size(),
+                "Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server2ScheduledErrata.contains(errata1.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
     }
 
     /**
@@ -1149,7 +1145,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // only one Action should be created
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        assertEquals("1 action has been scheduled for server 1", 1, actionsServer1.size());
+        assertEquals(1, actionsServer1.size(), "1 action has been scheduled for server 1");
         Set<Long> server1ScheduledErrata = new HashSet<Long>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -1159,12 +1155,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        assertEquals("1 action has been scheduled for server 2", 1, actionsServer2.size());
-        assertEquals(
-                "action created for server 1 is actually the same as the one for server 2",
-                actionsServer1.get(0), actionsServer2.get(0));
-        assertEquals("action actually has 2 servers", 2,
-                actionsServer1.get(0).getServerActions().size());
+        assertEquals(1, actionsServer2.size(), "1 action has been scheduled for server 2");
+        assertEquals(actionsServer1.get(0), actionsServer2.get(0),
+                "action created for server 1 is actually the same as the one for server 2");
+        assertEquals(2, actionsServer1.get(0).getServerActions().size(),
+                "action actually has 2 servers");
         Set<Long> server2ScheduledErrata = new HashSet<Long>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -1173,19 +1168,17 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server1ScheduledErrata.size());
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server1ScheduledErrata.size(), "Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(errata2.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
 
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server2ScheduledErrata.size());
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server2ScheduledErrata.size(), "Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server2ScheduledErrata.contains(errata1.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
     }
 
     /**
@@ -1253,7 +1246,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // only one Action should be created
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        assertEquals("1 action has been scheduled for server 1", 1, actionsServer1.size());
+        assertEquals(1, actionsServer1.size(), "1 action has been scheduled for server 1");
         Set<Long> server1ScheduledErrata = new HashSet<Long>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -1263,12 +1256,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        assertEquals("1 action has been scheduled for server 2", 1, actionsServer2.size());
-        assertEquals(
-                "action created for server 1 is actually the same as the one for server 2",
-                actionsServer1.get(0), actionsServer2.get(0));
-        assertEquals("action actually has 2 servers", 2,
-                actionsServer1.get(0).getServerActions().size());
+        assertEquals(1, actionsServer2.size(), "1 action has been scheduled for server 2");
+        assertEquals(actionsServer1.get(0), actionsServer2.get(0),
+                "action created for server 1 is actually the same as the one for server 2");
+        assertEquals(2, actionsServer1.get(0).getServerActions().size(),
+                "action actually has 2 servers");
         Set<Long> server2ScheduledErrata = new HashSet<Long>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -1277,19 +1269,17 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server1ScheduledErrata.size());
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server1ScheduledErrata.size(), "Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(errata2.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
 
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server2ScheduledErrata.size());
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server2ScheduledErrata.size(), "Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server2ScheduledErrata.contains(errata1.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
     }
     /**
      * Tests applyErrata() with 2 identical clients and 2 errata applicable to both,
@@ -1372,8 +1362,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // only one Action should be created
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        assertEquals("no actions have been scheduled for server 1", 0, actionsServer1.size());
-        assertTrue("server 1 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
+        assertEquals(0, actionsServer1.size(), "no actions have been scheduled for server 1");
+        assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)), "server 1 has been added to the chain");
         Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server1))
             .map(e -> e.getAction())
@@ -1383,11 +1373,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .collect(Collectors.toSet());
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        assertEquals("no actions have been scheduled for server 2", 0, actionsServer2.size());
-        assertTrue("server 2 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
-        assertEquals("action chain actually has 2 entries", 2, actionChain.getEntries().size());
-        assertEquals("action chain points to 2 actions only", 2, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
-        assertEquals("action chain points to 2 servers", 2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+        assertEquals(0, actionsServer2.size(), "no actions have been scheduled for server 2");
+        assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)), "server 2 has been added to the chain");
+        assertEquals(2, actionChain.getEntries().size(), "action chain actually has 2 entries");
+        assertEquals(2, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count(), "action chain points to 2 actions only");
+        assertEquals(2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count(), "action chain points to 2 servers");
         Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server2))
             .map(e -> e.getAction())
@@ -1396,19 +1386,18 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .map(e -> e.getId())
             .collect(Collectors.toSet());
 
-        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server1ScheduledErrata.size());
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server1ScheduledErrata.size(),
+                "Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(errata2.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
 
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server2ScheduledErrata.size());
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server2ScheduledErrata.size(), "Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server2ScheduledErrata.contains(errata1.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
     }
 
     /**
@@ -1476,8 +1465,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // only one Action should be created
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        assertEquals("no actions have been scheduled for server 1", 0, actionsServer1.size());
-        assertTrue("server 1 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
+        assertEquals(0, actionsServer1.size(), "no actions have been scheduled for server 1");
+        assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)), "server 1 has been added to the chain");
         Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server1))
             .map(e -> e.getAction())
@@ -1487,11 +1476,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .collect(Collectors.toSet());
 
         List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
-        assertEquals("no actions have been scheduled for server 2", 0, actionsServer2.size());
-        assertTrue("server 2 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
-        assertEquals("action chain actually has 4 entries", 4, actionChain.getEntries().size());
-        assertEquals("action chain points to 4 actions", 4, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
-        assertEquals("action chain points to 2 servers", 2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+        assertEquals(0, actionsServer2.size(), "no actions have been scheduled for server 2");
+        assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)), "server 2 has been added to the chain");
+        assertEquals(4, actionChain.getEntries().size(), "action chain actually has 4 entries");
+        assertEquals(4, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count(), "action chain points to 4 actions");
+        assertEquals(2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count(), "action chain points to 2 servers");
         Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
             .filter(e -> e.getServer().equals(server2))
             .map(e -> e.getAction())
@@ -1500,19 +1489,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .map(e -> e.getId())
             .collect(Collectors.toSet());
 
-        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server1ScheduledErrata.size());
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
-                server1ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server1ScheduledErrata.size(),
+                "Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server1ScheduledErrata.contains(errata1.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
+        assertTrue(server1ScheduledErrata.contains(errata2.getId()),
+                "Server 1 Scheduled Erratas contain relevant erratas");
 
-        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
-                2, server2ScheduledErrata.size());
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata1.getId()));
-        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
-                server2ScheduledErrata.contains(errata2.getId()));
+        assertEquals(2, server2ScheduledErrata.size(),
+                "Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)");
+        assertTrue(server2ScheduledErrata.contains(errata1.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
+        assertTrue(server2ScheduledErrata.contains(errata2.getId()),
+                "Server 2 Scheduled Erratas contain relevant erratas");
     }
 
     /**

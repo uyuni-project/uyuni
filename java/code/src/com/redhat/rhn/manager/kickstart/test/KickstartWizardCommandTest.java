@@ -62,7 +62,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
                 foundBaseTree = true;
             }
         }
-        assertTrue("Didnt find any trees that are from a basechannel.", foundBaseTree);
+        assertTrue(foundBaseTree, "Didnt find any trees that are from a basechannel.");
 
 
         assertNotNull(cmd.getKickstartableTree(tree.getId()));

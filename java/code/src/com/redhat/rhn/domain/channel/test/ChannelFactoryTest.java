@@ -255,10 +255,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testChannelArchByLabel() {
-        assertNull("Arch found for null label",
-                ChannelFactory.findArchByLabel(null));
-        assertNull("Arch found for invalid label",
-                ChannelFactory.findArchByLabel("some-invalid_arch_label"));
+        assertNull(ChannelFactory.findArchByLabel(null), "Arch found for null label");
+        assertNull(ChannelFactory.findArchByLabel("some-invalid_arch_label"), "Arch found for invalid label");
 
         ChannelArch ca = ChannelFactory.findArchByLabel("channel-x86_64");
         assertNotNull(ca);
@@ -474,10 +472,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testfindChecksumByLabel() {
-        assertNull("Checksum found for null label",
-                ChannelFactory.findChecksumTypeByLabel(null));
-        assertNull("Checksum found for invalid label",
-                ChannelFactory.findChecksumTypeByLabel("some-invalid_checksum"));
+        assertNull(ChannelFactory.findChecksumTypeByLabel(null), "Checksum found for null label");
+        assertNull(ChannelFactory.findChecksumTypeByLabel("some-invalid_checksum"), "Checksum found for invalid label");
 
         ChecksumType ct = ChannelFactory.findChecksumTypeByLabel("sha256");
         assertNotNull(ct);

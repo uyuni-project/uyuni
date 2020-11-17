@@ -177,7 +177,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         cmd.setLogin(username);
         Object[] errors = cmd.validate();
         assertNotNull(errors);
-        assertEquals(username + " caused failure", 1, errors.length);
+        assertEquals(1, errors.length, username + " caused failure");
     }
 
     private void validUsername(String username, CreateUserCommand cmd) {
@@ -185,7 +185,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         cmd.setLogin(username);
         Object[] errors = cmd.validate();
         assertNotNull(errors);
-        assertEquals(username + " caused failure", 0, errors.length);
+        assertEquals(0, errors.length, username + " caused failure");
     }
 
 

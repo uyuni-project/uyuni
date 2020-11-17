@@ -194,8 +194,8 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
             fail("Expected [" + expectedEx.getName() + "]");
         }
         catch (Exception e) {
-            assertTrue("Expected [" + expectedEx.getName() + "]",
-                    expectedEx.isInstance(e));
+            assertTrue(expectedEx.isInstance(e),
+                    "Expected [" + expectedEx.getName() + "]");
         }
     }
 

@@ -35,7 +35,7 @@ public class ProxyServerTest extends RhnBaseTestCase {
                 ServerFactoryTest.TYPE_SERVER_PROXY);
         //flushAndEvict(server);
         Server s = ServerFactory.lookupById(server.getId());
-        assertNotNull("Server not found", s);
+        assertNotNull(s, "Server not found");
         assertFalse(s.isSatellite());
         assertTrue(s.isProxy());
     }

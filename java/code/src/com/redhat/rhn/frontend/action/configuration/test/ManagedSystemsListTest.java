@@ -49,7 +49,7 @@ public class ManagedSystemsListTest extends RhnMockStrutsTestCase {
 
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
 
-        assertTrue("Your list: pageList is NOT Empty", dr.isEmpty());
+        assertTrue(dr.isEmpty(), "Your list: pageList is NOT Empty");
 
         ConfigTestUtils.giveConfigCapabilities(serv);
         actionPerform();

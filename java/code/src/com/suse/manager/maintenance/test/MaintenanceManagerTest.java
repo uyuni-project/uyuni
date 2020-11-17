@@ -592,7 +592,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             fail("An exceptions should have been thrown.");
         }
         catch (Exception e) {
-            assertEquals("The exception should be of class: " + exceptionClass, exceptionClass, e.getClass());
+            assertEquals(exceptionClass, e.getClass(), "The exception should be of class: " + exceptionClass);
         }
     }
 }

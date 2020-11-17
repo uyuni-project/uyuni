@@ -30,7 +30,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         ClientCertificate cert = ClientCertificateDigester.buildCertificate(
                     TestUtils.findTestData("systemid.xml").openStream());
 
-        assertNotNull("SystemId is null", cert);
+        assertNotNull(cert, "SystemId is null");
 
         // hardcoded key from test system
         cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
@@ -43,7 +43,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         ClientCertificate cert =
                ClientCertificateDigester.buildCertificate(rdr);
 
-        assertNotNull("SystemId is null", cert);
+        assertNotNull(cert, "SystemId is null");
 
         // hardcoded key from test system
         cert.validate("3050cf46ac0417297e2dd964fdaac1ae");

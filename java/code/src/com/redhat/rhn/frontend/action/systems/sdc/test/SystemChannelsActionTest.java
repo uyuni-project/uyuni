@@ -82,7 +82,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
                 found = true;
             }
         }
-        assertTrue("Enabled child not found.", found);
+        assertTrue(found, "Enabled child not found.");
 
         assertNotNull(request.getAttribute(SystemChannelsAction.BASE_CHANNELS));
         assertNotNull(request.getAttribute(SystemChannelsAction.CUSTOM_BASE_CHANNELS));

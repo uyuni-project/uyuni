@@ -200,7 +200,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ContentSyncManager cm = new ContentSyncManager();
             Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
             assertNotNull(s);
-            assertFalse("Should no find a SUSE Manager Server Subscription", cm.hasToolsChannelSubscription());
+            assertFalse(cm.hasToolsChannelSubscription(), "Should no find a SUSE Manager Server Subscription");
 
             for (com.redhat.rhn.domain.scc.SCCSubscription dbs : SCCCachingFactory.lookupSubscriptions()) {
                 assertEquals("55REGCODE180", dbs.getRegcode());
@@ -243,7 +243,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             Files.copy(orderJson2.toPath(), ordertempFile.toPath());
             s = cm.updateSubscriptions();
             HibernateFactory.getSession().flush();
-            assertTrue("Should have a SUSE Manager Server Subscription", cm.hasToolsChannelSubscription());
+            assertTrue(cm.hasToolsChannelSubscription(), "Should have a SUSE Manager Server Subscription");
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
@@ -272,16 +272,16 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 .filter(c -> c.getUsername().equals("dummy"))
                 .findFirst().get();
 
-        assertTrue("Repo should not have authentication.", SCCCachingFactory.lookupRepositoryBySccId(633L).get()
-                .getRepositoryAuth().isEmpty());
+        assertTrue(SCCCachingFactory.lookupRepositoryBySccId(633L).get()
+                .getRepositoryAuth().isEmpty(), "Repo should not have authentication.");
 
         ContentSyncManager csm = new ContentSyncManager();
         csm.refreshRepositoriesAuthentication(repositories, credentials, null);
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(633L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepository upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth", upRepo.getBestAuth().flatMap(auth -> auth.tokenAuth()).isPresent());
+        assertTrue(upRepo.getBestAuth().flatMap(auth -> auth.tokenAuth()).isPresent(), "Best Auth is not token auth");
 
     }
 
@@ -325,15 +325,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         csm.refreshRepositoriesAuthentication(repositories, credentials, null);
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepository upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth", upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
 
         csm.refreshRepositoriesAuthentication(repositories, credentials, null);
         upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
-        assertTrue("Repo not found", upRepoOpt.isPresent());
+        assertTrue(upRepoOpt.isPresent(), "Repo not found");
         upRepo = upRepoOpt.get();
-        assertTrue("Best Auth is not token auth", upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth);
+        assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
     }
 
     public void dupIdSzenario(boolean rhel6sync, boolean rhel7sync, boolean rhel6first) throws Exception {
@@ -807,9 +807,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertContains(avChanLanbels, "sle-ha-geo12-debuginfo-pool-x86_64");
         assertContains(avChanLanbels, "sle-we12-updates-x86_64");
         // Installer Updates is optional and not in repositories.json
-        assertFalse("unexpected optional channel found", avChanLanbels.contains("sles12-installer-updates-x86_64"));
+        assertFalse(avChanLanbels.contains("sles12-installer-updates-x86_64"), "unexpected optional channel found");
         // Storage 2 is not in repositories.json to emulate no subscription
-        assertFalse("Storage should not be avaliable", avChanLanbels.contains("suse-enterprise-storage-2-updates-x86_64"));
+        assertFalse(avChanLanbels.contains("suse-enterprise-storage-2-updates-x86_64"), "Storage should not be avaliable");
     }
 
     /**
@@ -890,7 +890,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 "suse-caasp-all-pool-x86_64",
                 "suse-caasp-all-updates-x86_64");
         duplicates.removeAll(dupExceptions);
-        assertTrue(duplicates.size() + " Duplicate labels found: " + String.join("\n", duplicates), duplicates.isEmpty());
+        assertTrue(duplicates.isEmpty(), duplicates.size() + " Duplicate labels found: " + String.join("\n", duplicates));
     }
 
     /**
@@ -1263,14 +1263,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 foundDebugPool = true;
             }
             else if (c.getLabel().equals("sles12-installer-updates-x86_64")) {
-                assertTrue("Unexpected Installer Update channel found", false);
+                assertTrue(false, "Unexpected Installer Update channel found");
             }
             else if (c.getLabel().startsWith("suse-enterprise-storage")) {
-                assertTrue("Storage Channels should not be listed", false);
+                assertTrue(false, "Storage Channels should not be listed");
             }
         }
-        assertTrue("Pool channel not found", foundPool);
-        assertTrue("Debuginfo Pool channel not found", foundDebugPool);
+        assertTrue(foundPool, "Pool channel not found");
+        assertTrue(foundDebugPool, "Debuginfo Pool channel not found");
         Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream().collect(Collectors.groupingBy(c -> c.getStatus()));
         assertEquals(2, collect.get(MgrSyncStatus.INSTALLED).size());
         assertEquals(62, collect.get(MgrSyncStatus.AVAILABLE).size());
@@ -1300,8 +1300,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         for (MgrSyncProductDto product : products) {
             if (product.getFriendlyName().equals("SUSE Linux Enterprise Server 12 x86_64")) {
                 assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
-                assertFalse("Unexpected Installer Update Channel found",
-                        product.getChannels().stream().anyMatch(c -> c.getLabel().equals("sles12-installer-updates-x86_64")));
+                assertFalse(
+                        product.getChannels().stream().anyMatch(c -> c.getLabel().equals("sles12-installer-updates-x86_64")),
+                        "Unexpected Installer Update Channel found");
                 foundSLES = true;
 
                 for (MgrSyncProductDto ext : product.getExtensions()) {
@@ -1312,8 +1313,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 }
             }
         }
-        assertTrue("SLES not found", foundSLES);
-        assertTrue("HA-GEO not found", foundHAGEO);
+        assertTrue(foundSLES, "SLES not found");
+        assertTrue(foundHAGEO, "HA-GEO not found");
     }
 
     /**

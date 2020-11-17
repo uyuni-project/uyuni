@@ -229,7 +229,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         s = TestUtils.reload(s);
 
-        assertTrue("we shouldnt have a base entitlement", s.getBaseEntitlement() == null);
+        assertTrue(s.getBaseEntitlement() == null, "we shouldnt have a base entitlement");
     }
 
 
@@ -262,8 +262,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         while (i.hasNext()) {
             Entitlement e = (Entitlement) i.next();
             if (!(e instanceof VirtualizationEntitlement)) {
-                assertTrue("Didnt find entitlement in server: " + e.getLabel(),
-                        s.hasEntitlement(e));
+                assertTrue(s.hasEntitlement(e), "Didnt find entitlement in server: " + e.getLabel());
             }
         }
         assertTrue(s.hasEntitlement(EntitlementManager.VIRTUALIZATION));
@@ -297,7 +296,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
         while (i.hasNext()) {
             Entitlement e = (Entitlement) i.next();
-            assertFalse("does have: " + e, s.hasEntitlement(e));
+            assertFalse(s.hasEntitlement(e), "does have: " + e);
         }
 
         assertTrue(s.getAutoUpdate().equals("Y"));

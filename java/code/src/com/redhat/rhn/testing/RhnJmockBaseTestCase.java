@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.testing;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 

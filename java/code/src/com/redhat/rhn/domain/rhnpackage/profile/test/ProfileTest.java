@@ -127,12 +127,11 @@ public class ProfileTest extends RhnBaseTestCase {
         qry.setLong("sid", server.getId().longValue());
         qry.setLong("org_id", user.getOrg().getId().longValue());
         List list = qry.list();
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         for (Iterator itr = list.iterator(); itr.hasNext();) {
             Object o = itr.next();
-            assertEquals("Contains non Profile objects",
-                    Profile.class, o.getClass());
+            assertEquals(Profile.class, o.getClass(), "Contains non Profile objects");
         }
     }
 }

@@ -25,7 +25,7 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import junit.framework.AssertionFailedError;
+import junit.framework.AssertionFailedError; // todo handle with vintage
 
 /**
  * RhnMockHttpServletRequest is a mock implementation of the

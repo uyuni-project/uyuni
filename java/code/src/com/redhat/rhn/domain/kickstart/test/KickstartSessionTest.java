@@ -99,8 +99,8 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         session2.markFailed("some failed message");
         KickstartFactory.saveKickstartSession(session2);
         session2 = (KickstartSession) reload(session2);
-        assertEquals("Got wrong status: " + session2.getState().getLabel(),
-                KickstartFactory.SESSION_STATE_FAILED, session2.getState());
+        assertEquals(KickstartFactory.SESSION_STATE_FAILED,
+                session2.getState(), "Got wrong status: " + session2.getState().getLabel());
     }
 
 

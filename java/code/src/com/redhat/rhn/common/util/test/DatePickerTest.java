@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.common.util.DatePicker;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -85,7 +86,7 @@ public class DatePickerTest  {
 
         p = makePicker(Locale.ENGLISH);
         p.readMap(form);
-        assertEquals(d, p.getDate());
+        Assertions.assertEquals(d, p.getDate());
     }
 
     @Test

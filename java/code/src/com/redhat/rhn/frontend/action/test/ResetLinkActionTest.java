@@ -51,10 +51,10 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
             ActionForward rc = action.execute(mapping, form, request, response);
         }
         catch (BadParameterException bpe) {
-            assertTrue("Caught BPE", true);
+            assertTrue(true, "Caught BPE");
             return;
         }
-        assertTrue("Expected BadParameterException, didn't get one!", false);
+        assertTrue(false, "Expected BadParameterException, didn't get one!");
     }
 
     @Test

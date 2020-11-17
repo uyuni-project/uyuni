@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -167,10 +167,9 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      */
     protected void verifyList(String attribName, Class classIn) {
         List dr = (List) request.getAttribute(attribName);
-        assertNotNull("Your list: " + attribName + " is null", dr);
-        assertTrue("Your list: " + attribName + " is empty", dr.size() > 0);
-        assertEquals("Your list: " + attribName + " is the wrong class",
-                classIn, dr.iterator().next().getClass());
+        assertNotNull(dr, "Your list: " + attribName + " is null");
+        assertTrue(dr.size() > 0, "Your list: " + attribName + " is empty");
+        assertEquals(classIn, dr.iterator().next().getClass(), "Your list: " + attribName + " is the wrong class");
     }
 
     /**

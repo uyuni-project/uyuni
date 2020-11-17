@@ -167,7 +167,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
             assertTrue(f1.getChannels() == null || f1.getChannels().size() == 0);
             matched = true;
         }
-        assertTrue("didnt match the erratafile", matched);
+        assertTrue(matched, "didnt match the erratafile");
     }
 
 

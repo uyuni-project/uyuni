@@ -55,7 +55,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
      */
     @Test
     public void testGetInstance() {
-        assertNotNull("LocalizationService is null", ls);
+        assertNotNull(ls, "LocalizationService is null");
 
     }
 
@@ -75,7 +75,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     @Test
     public void testGetMessageNoParams() {
         String received = ls.getMessage("testMessage");
-        assertTrue("Message not valid", isMessageValid(received));
+        assertTrue(isMessageValid(received), "Message not valid");
         String expected = "this is a test of the emergency broadcast";
         assertEquals(expected, received);
     }
@@ -95,10 +95,8 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
      */
     @Test
     public void testGetMessagesMultipleFiles() {
-        assertTrue("Message not valid", isMessageValid(
-                ls.getMessage("testMessage")));
-        assertTrue("Message not valid", isMessageValid(
-                      ls.getMessage("jsp.testMessage")));
+        assertTrue(isMessageValid(ls.getMessage("testMessage")), "Message not valid");
+        assertTrue(isMessageValid(ls.getMessage("jsp.testMessage")), "Message not valid");
     }
 
     /** Test forcing a call with a null locale
@@ -142,8 +140,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     */
     @Test
     public void testGetDebugMessage() {
-        assertTrue("Message not valid", isMessageValid(
-                      ls.getDebugMessage("testMessage")));
+        assertTrue(isMessageValid(ls.getDebugMessage("testMessage")), "Message not valid");
     }
 
     /**
@@ -152,8 +149,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
      */
     @Test
     public void testGetMessageWithSpacesInKey() {
-        assertTrue("Message not valid", isMessageValid(
-                      ls.getMessage("cant have spaces")));
+        assertTrue(isMessageValid(ls.getMessage("cant have spaces")), "Message not valid");
     }
 
     /**
@@ -161,8 +157,8 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
      */
     @Test
     public void testGetInvalidMessage() {
-        assertFalse("Didn't fetch an invalid message (we want to, in this test)",
-                      isMessageValid(ls.getMessage("no message with this key")));
+        assertFalse(isMessageValid(ls.getMessage("no message with this key")),
+                      "Didn't fetch an invalid message (we want to, in this test)");
         // java.l10n_missingmessage_exceptions
         boolean orig = Config.get().getBoolean("java.l10n_missingmessage_exceptions");
         Config.get().setBoolean("java.l10n_missingmessage_exceptions", "true");

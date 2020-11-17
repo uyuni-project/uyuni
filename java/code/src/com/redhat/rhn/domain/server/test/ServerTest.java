@@ -140,7 +140,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         s2 = TestUtils.saveAndReload(s2);
         NetworkInterfaceTest.createTestNetworkInterface(s2);
         TestUtils.saveAndReload(s2);
-        assertTrue("we didnt make it to the end", true);
+        assertTrue(true, "we didnt make it to the end");
     }
     /**
      * Test for {@link Server#doesOsSupportsContainerization()}.

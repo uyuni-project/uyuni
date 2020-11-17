@@ -2520,7 +2520,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 thrown = true;
             }
         }
-        assertTrue("Expected exception not thrown", thrown);
+        assertTrue(thrown, "Expected exception not thrown");
     }
 
     @Test
@@ -2721,8 +2721,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         results = handler.getInstalledProducts(admin, server.getId().intValue());
 
-        assertEquals("invalid number of results", 3, results.size());
-
+        assertEquals(3, results.size(), "invalid number of results");
     }
 
     @Test
@@ -2902,7 +2901,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(VersionConstraints.LATEST, pst.getVersionConstraint());
             }
             else {
-                assertTrue("unexpected package state", false);
+                assertTrue(false, "unexpected package state");
             }
         }
 
@@ -2918,7 +2917,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(VersionConstraints.ANY, pst.getVersionConstraint());
             }
             else {
-                assertTrue("unexpected package state", false);
+                assertTrue(false, "unexpected package state");
             }
         }
 
@@ -2933,7 +2932,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(PackageStates.REMOVED, pst.getPackageState());
             }
             else {
-                assertTrue("unexpected package state", false);
+                assertTrue(false, "unexpected package state");
             }
         }
 
@@ -2982,7 +2981,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(PackageStates.REMOVED, pst.getPackageState());
             }
             else {
-                assertTrue("unexpected package state", false);
+                assertTrue(false, "unexpected package state");
             }
         }
 

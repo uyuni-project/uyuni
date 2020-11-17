@@ -1249,7 +1249,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testHardwareProfileXenHost()  throws Exception {
         MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.xen-host.json", (server) -> {
-            assertFalse("system should not be a virtual guest", server.isVirtualGuest());
+            assertFalse(server.isVirtualGuest(), "system should not be a virtual guest");
         });
     }
 
@@ -1967,9 +1967,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     private void assertTokenChannel(MinionServer minion, Channel channel) {
-        assertTrue(channel.getLabel(), minion.getAccessTokens().stream()
+        assertTrue(minion.getAccessTokens().stream()
                 .filter(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel))
-                .findFirst().isPresent());
+                .findFirst().isPresent(), channel.getLabel());
     }
 
     @Test
@@ -2119,7 +2119,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         //Verify that there are 2 actions scheduled, one apply state that we scheduled above and
         //2nd was because full package refresh was needed.
-        assertEquals("2 actions have been scheduled for server 1", 2, serversActions.size());
+        assertEquals(2, serversActions.size(), "2 actions have been scheduled for server 1");
     }
 
     @Test
@@ -2155,7 +2155,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
         List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
         //Verify that there is only one action scheduled, the apply state one that we scheduled above
-        assertEquals("2 actions have been scheduled for server 1", 1, serversActions.size());
+        assertEquals(1, serversActions.size(), "2 actions have been scheduled for server 1");
     }
 
     @Test
@@ -2216,7 +2216,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         action = (ClusterJoinNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals(1, action.getServerActions().size(), "1 action has been schedule for server");
         assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
@@ -2277,7 +2277,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         action = (ClusterJoinNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals(1, action.getServerActions().size(), "1 action has been schedule for server");
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
         assertEquals("\n" +
@@ -2357,7 +2357,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         action = (ClusterRemoveNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals(1, action.getServerActions().size(), "1 action has been schedule for server");
         assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
@@ -2409,7 +2409,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         action = (ClusterRemoveNodeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals(1, action.getServerActions().size(), "1 action has been schedule for server");
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
         assertEquals("\n" +
@@ -2463,7 +2463,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         action = (ClusterUpgradeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals(1, action.getServerActions().size(), "1 action has been schedule for server");
         assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
@@ -2518,7 +2518,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.execute(message);
 
         action = (ClusterUpgradeAction)ActionFactory.lookupById(action.getId());
-        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals(1, action.getServerActions().size(), "1 action has been schedule for server");
         assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());

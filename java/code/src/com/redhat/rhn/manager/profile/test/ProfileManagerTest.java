@@ -141,8 +141,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
-        assertNotNull("Profile is null", p);
-        assertNotNull("Profile has no id", p.getId());
+        assertNotNull(p, "Profile is null");
+        assertNotNull(p.getId(), "Profile has no id");
     }
 
     @Test
@@ -155,8 +155,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
-        assertNotNull("Profile is null", p);
-        assertNotNull("Profile has no id", p.getId());
+        assertNotNull(p, "Profile is null");
+        assertNotNull(p.getId(), "Profile has no id");
 
         ProfileManager.copyFrom(server, p);
     }
@@ -170,16 +170,15 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
-        assertNotNull("Profile is null", p);
-        assertNotNull("Profile has no id", p.getId());
+        assertNotNull(p, "Profile is null");
+        assertNotNull(p.getId(), "Profile has no id");
 
         List<Profile> list = ProfileManager.compatibleWithServer(server, user.getOrg());
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         for (Iterator<Profile> itr = list.iterator(); itr.hasNext();) {
             Object o = itr.next();
-            assertEquals("List contains something other than Profiles",
-                    Profile.class, o.getClass());
+            assertEquals(Profile.class, o.getClass(), "List contains something other than Profiles");
         }
     }
 
@@ -189,7 +188,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Long prid = 4908L;
         Long orgid = 4116748L;
         DataResult<PackageMetadata> dr = ProfileManager.compareServerToProfile(sid, prid, orgid, null);
-        assertNotNull("DataResult was null", dr);
+        assertNotNull(dr, "DataResult was null");
     }
 
     @Test

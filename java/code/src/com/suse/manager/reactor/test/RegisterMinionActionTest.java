@@ -235,13 +235,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             });
             assertEquals(keyObj.getBaseChannel(), minion.getBaseChannel());
             ServerGroup testGroup = keyObj.getServerGroups().stream().findFirst().get();
-            assertTrue("Server should have the testGroup ServerGroup",
-                    ServerGroupFactory.listServers(testGroup).contains(minion));
+            assertTrue(ServerGroupFactory.listServers(testGroup).contains(minion),
+                    "Server should have the testGroup ServerGroup");
             assertEquals(keyObj.getOrg(), minion.getOrg());
             Optional<Server> server = keyObj.getToken().getActivatedServers().stream()
                     .findFirst()
                     .filter(minion::equals);
-            assertTrue("Server should be a activated system on the activation key", server.isPresent());
+            assertTrue(server.isPresent(), "Server should be a activated system on the activation key");
         }
     };
 
@@ -496,7 +496,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 break;
             }
         }
-        assertTrue("Activation Key not set as invalid", found);
+        assertTrue(found, "Activation Key not set as invalid");
         assertEquals(otherOrg, minion.getOrg());
     }
 

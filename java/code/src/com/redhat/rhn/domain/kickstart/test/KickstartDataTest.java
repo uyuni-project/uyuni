@@ -693,11 +693,10 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
     }
 
     private void verifySet(Collection cloned, Collection orig, Class clazz) {
-        assertTrue("orig doesnt have any: " + clazz.getName(), orig.size() > 0);
-        assertTrue("cloned doesnt have any: " + clazz.getName(), cloned.size() > 0);
+        assertTrue(orig.size() > 0, "orig doesnt have any: " + clazz.getName());
+        assertTrue(cloned.size() > 0, "cloned doesnt have any: " + clazz.getName());
         assertEquals(cloned.size(), orig.size());
-        assertTrue("Not instance of: " + clazz.getName(),
-                clazz.isInstance(cloned.iterator().next()));
+        assertTrue(clazz.isInstance(cloned.iterator().next()), "Not instance of: " + clazz.getName());
     }
 
    /*

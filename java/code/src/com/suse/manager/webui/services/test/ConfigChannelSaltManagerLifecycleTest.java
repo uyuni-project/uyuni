@@ -209,11 +209,11 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
      */
     private static void initSlsAssertions(File initSlsFile, String ... contentChunks)
             throws IOException {
-        Assert.assertTrue(initSlsFile.exists());
-        Assert.assertTrue(initSlsFile.isFile());
+        assertTrue(initSlsFile.exists());
+        assertTrue(initSlsFile.isFile());
         String initSlsContents = FileUtils.readFileToString(initSlsFile);
         for (String contentChunk : contentChunks) {
-            Assert.assertTrue(initSlsContents.contains(contentChunk));
+            assertTrue(initSlsContents.contains(contentChunk));
         }
     }
 }

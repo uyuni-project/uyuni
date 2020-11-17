@@ -623,18 +623,18 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testAcRemoteCommandNoBase64() {
         try {
-            assertFalse("Exception expected and no success",
-                    this.ach.addScriptRun(this.admin,
+            assertFalse(this.ach.addScriptRun(this.admin,
                             this.server.getId().intValue(),
                             CHAIN_LABEL,
                             "root", "root", 300,
-                            ActionChainHandlerTest.SCRIPT_SAMPLE) > 0);
+                            ActionChainHandlerTest.SCRIPT_SAMPLE) > 0,
+                    "Exception expected and no success");
         }
         catch (IllegalArgumentException e) {
             assertContains(e.getMessage(), "Illegal base64 character");
         }
         catch (Exception e) {
-            assertTrue("Wrong exception thrown", false);
+            fail("Wrong exception thrown");
         }
     }
 

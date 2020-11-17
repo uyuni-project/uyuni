@@ -50,11 +50,11 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
     @Test
     public void testLookupByLabel() {
         ProfileType pt = ProfileFactory.lookupByLabel("normal");
-        assertNotNull("ProfileType is null", pt);
-        assertEquals("Not equal to normal", ProfileFactory.TYPE_NORMAL, pt);
+        assertNotNull(pt, "ProfileType is null");
+        assertEquals(ProfileFactory.TYPE_NORMAL, pt, "Not equal to normal");
 
         pt = ProfileFactory.lookupByLabel("foo");
-        assertNull("Found a ProfileType labeled foo", pt);
+        assertNull(pt, "Found a ProfileType labeled foo");
     }
 
     @Test
@@ -70,12 +70,11 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         session.flush();
 
         List<Profile> list = ProfileFactory.compatibleWithServer(server, user.getOrg());
-        assertNotNull("List is null", list);
-        assertFalse("List is empty", list.isEmpty());
+        assertNotNull(list, "List is null");
+        assertFalse(list.isEmpty(), "List is empty");
         for (Iterator<Profile> itr = list.iterator(); itr.hasNext();) {
             Object o = itr.next();
-            assertEquals("List contains something other than Profiles",
-                    Profile.class, o.getClass());
+            assertEquals(Profile.class, o.getClass(), "List contains something other than Profiles");
         }
     }
 

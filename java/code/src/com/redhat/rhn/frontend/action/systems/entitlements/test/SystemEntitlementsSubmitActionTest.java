@@ -190,8 +190,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
         String[] messageNames = {"system_entitlements.addon.success"};
 
         verifyActionMessages(messageNames);
-        assertTrue("Doesn't have: " + ent,
-                SystemManager.hasEntitlement(server.getId(), ent));
+        assertTrue(SystemManager.hasEntitlement(server.getId(), ent), "Doesn't have: " + ent);
 
     }
 
