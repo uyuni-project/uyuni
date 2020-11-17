@@ -20,7 +20,7 @@ import com.suse.salt.netapi.calls.wheel.Key;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

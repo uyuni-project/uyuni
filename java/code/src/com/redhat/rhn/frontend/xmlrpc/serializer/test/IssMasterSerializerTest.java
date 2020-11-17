@@ -21,7 +21,7 @@ import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.Test;
 
 import redstone.xmlrpc.XmlRpcException;

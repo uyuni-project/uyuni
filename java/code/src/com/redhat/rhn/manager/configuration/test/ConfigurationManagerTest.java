@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.manager.configuration.test; import static org.junit.jupiter.api.Assertions.*;
+
+import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 
@@ -68,8 +70,9 @@ import org.apache.commons.lang3.RandomUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,6 +84,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
+@ExtendWith(JUnit5Mockery.class)
 public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
     private User user;
@@ -89,7 +93,8 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     private static final ConfigFileCount EXPECTED_COUNT =
                                     ConfigFileCount.create(3, 0, 1, 0);
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    @RegisterExtension
+    private final Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

@@ -13,16 +13,14 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.image.test; import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
+package com.redhat.rhn.domain.image.test;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
@@ -60,17 +58,23 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,9 +84,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@ExtendWith(JUnit5Mockery.class)
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    @RegisterExtension
+    final protected JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

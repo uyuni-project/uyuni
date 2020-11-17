@@ -27,7 +27,7 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.domain.session.WebSession;

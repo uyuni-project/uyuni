@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.net.URLEncoder;

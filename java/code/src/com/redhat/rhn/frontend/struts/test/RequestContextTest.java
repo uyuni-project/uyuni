@@ -26,7 +26,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.utils.LoginHelper;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import java.net.URI;
 import java.util.HashMap;

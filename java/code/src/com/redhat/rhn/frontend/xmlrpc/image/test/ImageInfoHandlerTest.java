@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.image.test; import static org.junit.jupiter.api.Assertions.*;
+
+import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.BeforeEach;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
@@ -74,9 +76,10 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.HashSet;
 import java.util.List;
@@ -84,11 +87,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@ExtendWith(JUnit5Mockery.class)
 public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private ImageInfoHandler handler = new ImageInfoHandler();
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    @RegisterExtension
+    private final Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

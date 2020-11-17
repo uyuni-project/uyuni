@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.servlets.AuthFilter;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

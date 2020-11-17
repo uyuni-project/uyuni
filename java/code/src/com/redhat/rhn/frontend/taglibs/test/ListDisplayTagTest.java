@@ -28,7 +28,7 @@ import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import java.io.Writer;
 import javax.servlet.http.HttpServletRequest;

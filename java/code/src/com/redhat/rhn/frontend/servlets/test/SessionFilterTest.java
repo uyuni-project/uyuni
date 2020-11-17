@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.servlets.SessionFilter;
 
 import org.hibernate.Session;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import java.io.IOException;
 

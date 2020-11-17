@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.config.test; import static org.junit.jupiter.api.Assertions.*;
 
+import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -57,8 +58,9 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,6 +75,7 @@ import java.util.Set;
 /**
  * SystemConfigHandlerTest
  */
+@ExtendWith(JUnit5Mockery.class)
 public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private SaltApi saltApi = new TestSaltApi();
@@ -84,11 +87,12 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
             sshMinionBootstrapper
     );
     private ServerConfigHandler handler = new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper);
-    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+
+    @RegisterExtension
+    private final Mockery MOCK_CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }};
-
 
     @Test
     public void testDeployConfiguration() throws Exception {

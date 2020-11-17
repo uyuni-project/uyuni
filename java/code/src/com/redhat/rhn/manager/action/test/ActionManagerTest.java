@@ -14,6 +14,8 @@
  */
 
 package com.redhat.rhn.manager.action.test; import static org.junit.jupiter.api.Assertions.*;
+
+import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
@@ -112,8 +114,9 @@ import org.hibernate.query.Query;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,6 +136,7 @@ import java.util.stream.Collectors;
 /**
  * Tests for {@link ActionManager}.
  */
+@ExtendWith(JUnit5Mockery.class)
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
@@ -146,7 +150,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
-    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+    @RegisterExtension
+    private final Mockery MOCK_CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }};

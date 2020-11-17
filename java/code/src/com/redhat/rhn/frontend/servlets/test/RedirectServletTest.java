@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.servlets.test;
 import com.redhat.rhn.frontend.security.RedirectServlet;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

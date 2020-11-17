@@ -21,7 +21,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import com.mockobjects.servlet.MockHttpSession;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

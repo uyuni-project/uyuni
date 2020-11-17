@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.security.test;
 
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Enumeration;

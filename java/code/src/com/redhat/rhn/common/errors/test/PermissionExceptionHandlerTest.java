@@ -36,7 +36,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import java.util.Vector;
 
