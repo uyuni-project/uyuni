@@ -25259,7 +25259,7 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.title">
-        <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2020 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
