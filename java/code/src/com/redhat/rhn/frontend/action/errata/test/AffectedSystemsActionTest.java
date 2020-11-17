@@ -78,8 +78,6 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         assertTrue(sameForward.getPath().contains("eid=12345"));
         assertTrue(sameForward.getPath().contains("lower=10"));
 
-        verify();
-
         // With systems selected
         context().checking(new Expectations() { {
             oneOf(mapping).findForward("confirm");
