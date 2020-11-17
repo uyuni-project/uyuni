@@ -52,7 +52,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
     public void testPerformNoToken() {
         form.set("token", null);
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("No token", invalid.getName(), rc.getName());
+        assertEquals(invalid.getName(), rc.getName(), "No token");
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         ResetPasswordFactory.invalidateToken(rp.getToken());
         form.set("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("Invalid token", invalid.getName(), rc.getName());
+        assertEquals(invalid.getName(), rc.getName(), "Invalid token");
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         UserFactory.getInstance().disable(user, adminUser);
         form.set("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("Disabled user", invalid.getName(), rc.getName());
+        assertEquals(invalid.getName(), rc.getName(), "Disabled user");
     }
 
     @Test
@@ -90,19 +90,19 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         form.set("password", "a");
         form.set("passwordConfirm", "a");
         ActionForward rc = action.execute(mapping, form, request, response);
-        assertEquals("too short", badpwd.getName(), rc.getName());
+        assertEquals(badpwd.getName(), rc.getName(), "too short");
 
         form.set("password",
         "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
         form.set("passwordConfirm",
         "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
         rc = action.execute(mapping, form, request, response);
-        assertEquals("too long", badpwd.getName(), rc.getName());
+        assertEquals(badpwd.getName(), rc.getName(), "too long");
 
         form.set("password", "123\t\n6");
         form.set("passwordConfirm", "123\t\n6");
         rc = action.execute(mapping, form, request, response);
-        assertEquals("whitespace", badpwd.getName(), rc.getName());
+        assertEquals(badpwd.getName(), rc.getName(), "whitespace");
     }
 
     @Override

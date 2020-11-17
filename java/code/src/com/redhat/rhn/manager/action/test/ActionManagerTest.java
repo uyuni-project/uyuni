@@ -136,7 +136,6 @@ import java.util.stream.Collectors;
 /**
  * Tests for {@link ActionManager}.
  */
-@ExtendWith(JUnit5Mockery.class)
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
@@ -150,16 +149,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
-    @RegisterExtension
-    public final Mockery MOCK_CONTEXT = new JUnit5Mockery() {{
-        setThreadingPolicy(new Synchroniser());
-        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-    }};
-
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
+        context.setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
@@ -1125,8 +1119,8 @@ VALUES
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {
-            taskomaticApi = MOCK_CONTEXT.mock(TaskomaticApi.class);
-            MOCK_CONTEXT.checking(new Expectations() {
+            taskomaticApi = context.mock(TaskomaticApi.class);
+            context.checking(new Expectations() {
                 {
                     allowing(taskomaticApi).scheduleActionExecution(with(any(Action.class)));
                 }

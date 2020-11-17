@@ -122,6 +122,6 @@ public class DatePickerTest  {
     }
 
     private void assertEquals(int exp, Integer act) {
-        assertEquals(Integer.valueOf(exp), act);
+        Assertions.assertEquals(Integer.valueOf(exp), act);
     }
 }

@@ -44,7 +44,7 @@ import java.util.List;
 public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @RegisterExtension
-    private static final Mockery CONTEXT = new JUnit5Mockery() {{
+    public static final Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
