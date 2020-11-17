@@ -4,7 +4,9 @@ Version: 0.3
 Release: 17%{?dist}
 Summary: Mail-RFC822-Address Perl module
 License: distributable
+Group: Development/Libraries
 URL: http://search.cpan.org/search?mode=module&query=Mail%3a%3aRFC822%3a%3aAddress
+BuildRoot: %{_tmppath}/%{name}-root
 Buildarch: noarch
 %if 0%{?fedora} && 0%{?fedora} > 26
 BuildRequires:	perl-interpreter
@@ -68,6 +70,10 @@ fi
 * Mon May 25 2020 Stefan Bluhm <stefan.bluhm@clacee.eu> 0.3-16
 - Added source URL
 - Comment to build on RHEL8
+
+* Sat Feb 10 2018 mcalmer <mcalmer@suse.com> 0.3-15
+- revert removed Group from specfile
+- revert removed BuildRoot from specfiles
 
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 0.3-15
 - remove install/clean section initial cleanup
