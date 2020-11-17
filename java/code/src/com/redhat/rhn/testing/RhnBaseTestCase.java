@@ -38,9 +38,6 @@ import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
 
-import junit.framework.ComparisonFailure;
-import junit.framework.TestCase;
-
 /**
  * RhnBaseTestCase is the base class for all RHN TestCases.
  * It ensures that the HibernateSession is closed after each
@@ -58,7 +55,6 @@ public abstract class RhnBaseTestCase  {
 
     /**
      * Tears down the fixture, and closes the HibernateSession.
-     * @see TestCase#tearDown()
      * @see HibernateFactory#closeSession()
      */
     @AfterEach
@@ -182,37 +178,6 @@ public abstract class RhnBaseTestCase  {
         catch (NoSuchMethodException e) {
             throw new RuntimeException("Could not get property " + propName +
                     " from " + bean, e);
-        }
-    }
-
-    /**
-     * Assert that the date <code>later</code> is after the date
-     * <code>earlier</code>. The assertion succeeds if the dates
-     * are equal. Both dates must be non-null.
-     *
-     * @param earlier the earlier date to compare
-     * @param later teh later date to compare
-     */
-    public static void assertNotBefore(Date earlier, Date later) {
-        assertNotBefore(null, earlier, later);
-    }
-
-    /**
-     * Assert that the date <code>later</code> is after the date
-     * <code>earlier</code>. The assertion succeeds if the dates
-     * are equal. Both dates must be non-null.
-     *
-     * @param msg the message to print if the assertion fails
-     * @param earlier the earlier date to compare
-     * @param later the later date to compare
-     */
-    public static void assertNotBefore(String msg, Date earlier, Date later) {
-        assertNotNull(msg, earlier);
-        assertNotNull(msg, later);
-        if (earlier.after(later) && !earlier.equals(later)) {
-            String e = DateFormat.getDateTimeInstance().format(earlier);
-            String l = DateFormat.getDateTimeInstance().format(later);
-            throw new ComparisonFailure(msg, e, l);
         }
     }
 
