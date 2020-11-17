@@ -37,6 +37,7 @@ import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.HibernateException;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.file.Files;
@@ -167,9 +168,9 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      */
     protected void verifyList(String attribName, Class classIn) {
         List dr = (List) request.getAttribute(attribName);
-        assertNotNull(dr, "Your list: " + attribName + " is null");
-        assertTrue(dr.size() > 0, "Your list: " + attribName + " is empty");
-        assertEquals(classIn, dr.iterator().next().getClass(), "Your list: " + attribName + " is the wrong class");
+        Assertions.assertNotNull(dr, "Your list: " + attribName + " is null");
+        Assertions.assertTrue(dr.size() > 0, "Your list: " + attribName + " is empty");
+        Assertions.assertEquals(classIn, dr.iterator().next().getClass(), "Your list: " + attribName + " is the wrong class");
     }
 
     /**

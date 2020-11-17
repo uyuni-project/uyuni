@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.configuration.test; import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -49,7 +50,7 @@ public class ManagedSystemsListTest extends RhnMockStrutsTestCase {
 
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
 
-        assertTrue(dr.isEmpty(), "Your list: pageList is NOT Empty");
+        Assertions.assertTrue(dr.isEmpty(), "Your list: pageList is NOT Empty");
 
         ConfigTestUtils.giveConfigCapabilities(serv);
         actionPerform();

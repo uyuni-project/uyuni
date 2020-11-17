@@ -13,6 +13,8 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test; import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
@@ -82,7 +84,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
                 found = true;
             }
         }
-        assertTrue(found, "Enabled child not found.");
+        Assertions.assertTrue(found, "Enabled child not found.");
 
         assertNotNull(request.getAttribute(SystemChannelsAction.BASE_CHANNELS));
         assertNotNull(request.getAttribute(SystemChannelsAction.CUSTOM_BASE_CHANNELS));

@@ -44,6 +44,7 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.apache.struts.util.LabelValueBean;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -229,7 +230,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         s = TestUtils.reload(s);
 
-        assertTrue(s.getBaseEntitlement() == null, "we shouldnt have a base entitlement");
+        Assertions.assertTrue(s.getBaseEntitlement() == null, "we shouldnt have a base entitlement");
     }
 
 
@@ -262,7 +263,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         while (i.hasNext()) {
             Entitlement e = (Entitlement) i.next();
             if (!(e instanceof VirtualizationEntitlement)) {
-                assertTrue(s.hasEntitlement(e), "Didnt find entitlement in server: " + e.getLabel());
+                Assertions.assertTrue(s.hasEntitlement(e), "Didnt find entitlement in server: " + e.getLabel());
             }
         }
         assertTrue(s.hasEntitlement(EntitlementManager.VIRTUALIZATION));
@@ -296,7 +297,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
         while (i.hasNext()) {
             Entitlement e = (Entitlement) i.next();
-            assertFalse(s.hasEntitlement(e), "does have: " + e);
+            Assertions.assertFalse(s.hasEntitlement(e), "does have: " + e);
         }
 
         assertTrue(s.getAutoUpdate().equals("Y"));

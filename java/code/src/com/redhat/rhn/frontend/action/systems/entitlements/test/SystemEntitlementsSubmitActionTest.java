@@ -44,6 +44,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -190,7 +191,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
         String[] messageNames = {"system_entitlements.addon.success"};
 
         verifyActionMessages(messageNames);
-        assertTrue(SystemManager.hasEntitlement(server.getId(), ent), "Doesn't have: " + ent);
+        Assertions.assertTrue(SystemManager.hasEntitlement(server.getId(), ent), "Doesn't have: " + ent);
 
     }
 
