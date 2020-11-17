@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?sle_version} >= 15000
+%if 0%{?sle_version} >= 15000 || 0%{?rhel}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif

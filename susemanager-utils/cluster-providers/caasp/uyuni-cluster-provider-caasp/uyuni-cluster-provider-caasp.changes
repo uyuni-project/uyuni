@@ -1,3 +1,4 @@
+- Added Python3 build for RHEL
 - Show the cluster upgrade plan in the UI
 
 -------------------------------------------------------------------
