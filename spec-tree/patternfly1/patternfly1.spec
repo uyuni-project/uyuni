@@ -11,12 +11,12 @@
 Name:		patternfly1
 Summary:	PatternFly open interface project and its dependencies
 Version:	1.0.5
-Release:	9%{?release_suffix}%{?dist}
+Release:	11%{?release_suffix}%{?dist}
 License:	ASL 2.0
-Group:      Applications/Internet
-URL:		https://github.com/patternfly/patternfly
-Source:		patternfly-1.0.5.tar.gz
-Patch0:   fix_paths.patch
+Group:		Applications/Internet
+URL:		https://github.com/patternfly/patternfly-3
+Source:		https://github.com/patternfly/patternfly-3/archive/v1.0.5.tar.gz
+Patch0:		fix_paths.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
@@ -25,7 +25,7 @@ BuildArch:	noarch
 PatternFly open interface project, with dependencies bundled
 
 %prep
-%setup -q -n patternfly-1.0.5
+%setup -q -n patternfly-3-%{version}
 %patch0 -p1
 
 %build
@@ -40,6 +40,16 @@ cp -pR less/ %{buildroot}%{_datadir}/%{name}/resources/less
 %{_datadir}/%{name}/
 
 %changelog
+* Mon May 11 2020 Michael Mraka <michael.mraka@redhat.com> 1.0.5-11
+- Modified spec file to new URL, source and naming convention.
+
+* Wed Mar 11 2020 Stefan Bluhm <stefan.bluhm@clacee.eu> 1.0.5-10
+- Updated patternfly1 Source URL.
+
+* Sat Feb 10 2018 mcalmer <mcalmer@suse.com> 1.0.5-9
+- Reverted removed Group from specfile
+- Reverted removed BuildRoot from specfiles
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 1.0.5-9
 - removed Group from specfile
 - removed BuildRoot from specfiles
