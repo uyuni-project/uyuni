@@ -41,7 +41,6 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
         cmd.setAllowRemoteCommands(Boolean.TRUE);
         cmd.setAllowConfigActions(Boolean.TRUE);
         cmd.setEnableGpg(Boolean.FALSE);
-        cmd.setEnableSsl(Boolean.FALSE);
         cmd.setHttpProxy("proxy-host.redhat.com");
         cmd.setHttpProxyUsername("username");
         cmd.setHttpProxyPassword("password");

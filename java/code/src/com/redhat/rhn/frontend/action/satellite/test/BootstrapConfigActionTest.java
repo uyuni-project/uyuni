@@ -58,8 +58,6 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
         assertEquals(form.getString(BootstrapConfigAction.SSL_CERT),
                 CACertPathUtil.processCACertPath());
         assertEquals(Boolean.TRUE,
-                form.get(BootstrapConfigAction.ENABLE_SSL));
-        assertEquals(Boolean.TRUE,
                 form.get(BootstrapConfigAction.ENABLE_GPG));
         assertEquals(Boolean.FALSE,
                 form.get(BootstrapConfigAction.ALLOW_CONFIG_ACTIONS));

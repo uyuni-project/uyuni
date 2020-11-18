@@ -367,7 +367,6 @@
             <form-property name="server|satellite|http_proxy_password"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy_password_confirm"  type="java.lang.String"/>
             <form-property name="mount_point"  type="java.lang.String"/>
-            <form-property name="web|ssl_available"  type="java.lang.Boolean"/>
             <form-property name="disconnected"  type="java.lang.Boolean"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
             <form-property name="no_scrub" type="java.lang.String"

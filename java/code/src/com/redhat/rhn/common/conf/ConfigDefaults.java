@@ -26,8 +26,6 @@ import java.util.List;
 /**
  * ConfigDefaults is the place to store application specific Config settings
  * and convenience methods.
- *
- * @version $Rev$
  */
 public class ConfigDefaults {
 
@@ -37,8 +35,6 @@ public class ConfigDefaults {
     //
     // Names of the configuration parameters
     //
-
-    public static final String SSL_AVAILABLE = "ssl_available";
 
     public static final String SYSTEM_CHECKIN_THRESHOLD = "web.system_checkin_threshold";
     public static final String WEB_DEFAULT_MAIL_FROM = "web.default_mail_from";
@@ -550,16 +546,6 @@ public class ConfigDefaults {
      */
     public int getDefaultVirtCpus() {
         return Config.get().getInt(VIRT_CPU, 1);
-    }
-
-
-    /**
-     * Return <code>true</code> if SSL is available for web traffic.
-     *
-     * @return <code>true</code> if SSL is available for web traffic.
-     */
-    public boolean isSSLAvailable() {
-        return Config.get().getBoolean(SSL_AVAILABLE);
     }
 
     /**

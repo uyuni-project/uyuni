@@ -36,7 +36,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
     private String hostname;
     private Boolean saltEnabled;
     private String sslPath;
-    private Boolean enableSsl;
     private Boolean enableGpg;
     private Boolean allowConfigActions;
     private Boolean allowRemoteCommands;
@@ -69,9 +68,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
         }
         if (BooleanUtils.toBooleanDefaultIfNull(this.allowRemoteCommands, false)) {
             args.add("--allow-remote-commands");
-        }
-        if (!BooleanUtils.toBooleanDefaultIfNull(this.enableSsl, false)) {
-            args.add("--no-ssl");
         }
         if (!BooleanUtils.toBooleanDefaultIfNull(this.enableGpg, false)) {
             args.add("--no-gpg");
@@ -157,23 +153,6 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
     public void setEnableGpg(Boolean enableGpgIn) {
         this.enableGpg = enableGpgIn;
     }
-
-
-    /**
-     * @return Returns the enableSsl.
-     */
-    public Boolean getEnableSsl() {
-        return enableSsl;
-    }
-
-
-    /**
-     * @param enableSslIn The enableSsl to set.
-     */
-    public void setEnableSsl(Boolean enableSslIn) {
-        this.enableSsl = enableSslIn;
-    }
-
 
     /**
      * @return Returns the hostname.

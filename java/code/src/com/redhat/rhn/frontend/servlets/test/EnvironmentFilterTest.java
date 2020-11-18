@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.servlets.EnvironmentFilter;
 
 import org.apache.struts.Globals;
@@ -40,16 +39,8 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         request.setupAddParameter("messagep3", "param value");
         filter.init(null);
 
-        Config c = Config.get();
-        Boolean origValue = ConfigDefaults.get().isSSLAvailable();
-        c.setBoolean(ConfigDefaults.SSL_AVAILABLE, Boolean.TRUE.toString());
-        try {
-            filter.doFilter(request, response, chain);
-        }
-        finally {
-            // Revert back
-            c.setBoolean(ConfigDefaults.SSL_AVAILABLE, origValue.toString());
-        }
+        filter.doFilter(request, response, chain);
+
         // Check that we got the expected redirect.
         String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/manager/login";
         assertEquals(expectedRedir, response.getRedirect());
@@ -72,20 +63,14 @@ public class EnvironmentFilterTest extends BaseFilterTst {
 
     public void testAddAMessage() throws Exception {
         Config c = Config.get();
-        boolean origValue = ConfigDefaults.get().isSSLAvailable();
         EnvironmentFilter filter = new EnvironmentFilter();
         filter.init(null);
         request.setupAddParameter("message", "some.key.to.localize");
         request.setupAddParameter("messagep1", "param value");
         request.setupAddParameter("messagep2", "param value");
         request.setupAddParameter("messagep3", "param value");
-        c.setBoolean(ConfigDefaults.SSL_AVAILABLE, Boolean.FALSE.toString());
-        try {
-            filter.doFilter(request, response, chain);
-        }
-        finally {
-            c.setBoolean(ConfigDefaults.SSL_AVAILABLE, String.valueOf(origValue));
-        }
+
+        filter.doFilter(request, response, chain);
 
         assertNotNull(request.getAttribute(Globals.MESSAGE_KEY));
         assertNotNull(session.getAttribute(Globals.MESSAGE_KEY));

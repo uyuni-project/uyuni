@@ -9291,13 +9291,6 @@ y puede asignar o eliminar privilegios de administrador de Satélite
         </context-group>
         <target>Punto de montaje del repositorio de RPM</target>
       </trans-unit>
-      <trans-unit id="general.jsp.defaultTo_ssl" xml:space="preserve">
-        <source>Default To SSL</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
-        </context-group>
-        <target>Predeterminado para SSL</target>
-      </trans-unit>
       <trans-unit id="general.jsp.solaris" xml:space="preserve">
         <source>Enable Solaris Support</source>
         <context-group name="ctx">
@@ -9396,13 +9389,6 @@ Tenga en cuenta que podría ser necesario configurar manualmente estos scripts. 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.ssl" xml:space="preserve">
-        <source>Enable SSL</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>Activar SSL</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.gpg" xml:space="preserve">
         <source>Enable Client GPG checking</source>

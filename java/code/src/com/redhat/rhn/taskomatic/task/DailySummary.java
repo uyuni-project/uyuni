@@ -252,12 +252,7 @@ public class DailySummary extends RhnJavaJob {
 
         //Lastly, create the url for the link in the email.
         StringBuilder url = new StringBuilder();
-        if (Config.get().getBoolean(ConfigDefaults.SSL_AVAILABLE)) {
-            url.append("https://");
-        }
-        else {
-            url.append("http://");
-        }
+        url.append("https://");
         url.append(getHostname());
         url.append("/rhn/systems/Inactive.do");
 

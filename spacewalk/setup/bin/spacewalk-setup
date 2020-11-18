@@ -973,7 +973,6 @@ sub populate_initial_configs {
      serverDOTsatelliteDOTca_chain => '/usr/share/rhn/RHNS-CA-CERT',
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
-     webDOTssl_available => $opts->{'skip-ssl-cert-generation'} ? 0 : 1,
      cobblerDOThost => $answers->{hostname},
      serverDOTsusemanagerDOTmirrcred_email => '',
      serverDOTsusemanagerDOTmirrcred_user => '',

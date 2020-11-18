@@ -9468,13 +9468,6 @@ administrator privileges.</source>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="general.jsp.defaultTo_ssl" xml:space="preserve">
-        <source>Default To SSL</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="general.jsp.solaris" xml:space="preserve">
         <source>Enable Solaris Support</source>
         <target />
@@ -9569,13 +9562,6 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="bootstrap.jsp.salt" xml:space="preserve">
         <source>Bootstrap using Salt</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.ssl" xml:space="preserve">
-        <source>Enable SSL</source>
         <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>

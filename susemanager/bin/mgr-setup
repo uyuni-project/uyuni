@@ -664,8 +664,6 @@ do_migration() {
         mv /root/.ssh.new /root/.ssh
     fi
 
-    sed -i -e "s/^web\.ssl_available.*$/web.ssl_available = 1/" /etc/rhn/rhn.conf
-
     mv /etc/rhn/rhn.conf /etc/rhn/rhn.conf.setup
     cp /etc/rhn/rhn.conf-$FROMVERSION /etc/rhn/rhn.conf
     chmod 640 /etc/rhn/rhn.conf

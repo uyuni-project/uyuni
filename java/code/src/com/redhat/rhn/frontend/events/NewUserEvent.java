@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -26,8 +25,6 @@ import java.util.List;
 
 /**
  * An event representing an error generated from the web frontend
- *
- * @version $Rev: 59372 $
  */
 public class NewUserEvent extends BaseEvent implements EventMessage  {
 
@@ -81,26 +78,15 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
         //create url for new user
         Config c = Config.get();
         StringBuilder url = new StringBuilder();
-        if (ConfigDefaults.get().isSSLAvailable()) {
-            url.append("https://");
-        }
-        else {
-            url.append("http://");
-        }
+        url.append("https://");
         if (c.getString("java.base_domain") != null) {
             url.append(c.getString("java.base_domain"));
         }
         else {
             url.append(domain);
         }
-        if (c.getString("java.base_port") != null &&
-                !ConfigDefaults.get().isSSLAvailable()) {
-            url.append(":");
-            url.append(c.getString("java.base_port"));
-        }
         url.append("/");
         return url.toString();
-
     }
 
     /**

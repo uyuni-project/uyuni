@@ -30,13 +30,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import java.net.IDN;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.IDN;
 
 /**
  * BootstrapConfigAction - action to handle changing the bootstrap config file options.
- * @version $Rev: 1 $
  */
 public class BootstrapConfigAction extends BaseConfigAction {
     /* in document root */
@@ -44,7 +44,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
     public static final String HOSTNAME = "hostname";
     public static final String SSL_CERT = "ssl-cert";
     public static final String SALT = "salt";
-    public static final String ENABLE_SSL = "ssl";
 
     public static final String ENABLE_GPG = "gpg";
     public static final String ALLOW_CONFIG_ACTIONS = "allow-config-actions";
@@ -82,7 +81,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
                 cmd.setHostname(IDN.toASCII(form.getString(HOSTNAME)));
                 cmd.setSslPath(form.getString(SSL_CERT));
                 cmd.setSaltEnabled((Boolean) form.get(SALT));
-                cmd.setEnableSsl((Boolean) form.get(ENABLE_SSL));
                 cmd.setEnableGpg((Boolean) form.get(ENABLE_GPG));
                 cmd.setAllowConfigActions((Boolean) form.get(ALLOW_CONFIG_ACTIONS));
                 cmd.setAllowRemoteCommands((Boolean) form.get(ALLOW_REMOTE_COMMANDS));
@@ -97,8 +95,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
                 }
                 else {
                     createSuccessMessage(request, "bootstrap.config.success",
-                                         addProtocolToHostname(cmd.getHostname(),
-                                               (Boolean) form.get(ENABLE_SSL)));
+                                         addProtocolToHostname(cmd.getHostname()));
                 }
             }
         }
@@ -108,7 +105,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
                 Config.get().getString(ConfigDefaults.JABBER_SERVER)));
             form.set(SSL_CERT, caCertPath);
             form.set(SALT, Boolean.TRUE);
-            form.set(ENABLE_SSL, Boolean.TRUE);
             form.set(ENABLE_GPG, Boolean.TRUE);
             form.set(ALLOW_CONFIG_ACTIONS, Boolean.FALSE);
             form.set(ALLOW_REMOTE_COMMANDS, Boolean.FALSE);
@@ -118,14 +114,9 @@ public class BootstrapConfigAction extends BaseConfigAction {
 
     // the protocol should be specified if anything on that host is viewed
     // through a browser. We also need https for SSL
-    private String addProtocolToHostname(String name, Boolean sslEnabled) {
+    private String addProtocolToHostname(String name) {
         if (!name.startsWith("http")) {
-            if (sslEnabled != null && sslEnabled.booleanValue()) {
-                name = "https://" + name;
-            }
-            else {
-                name = "http://"  + name;     // could also be https://
-            }
+            name = "https://" + name;
         }
 
         return name;

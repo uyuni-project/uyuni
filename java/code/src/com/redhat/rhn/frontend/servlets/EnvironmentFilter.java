@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -71,8 +70,6 @@ public class EnvironmentFilter implements Filter {
                                                 (HttpServletResponse)response,
                                                 hreq);
 
-        boolean sslAvail = ConfigDefaults.get().isSSLAvailable();
-
         // There are a list of pages that don't require SSL, that list should
         // be called out here.
         String path = hreq.getRequestURI();
@@ -80,7 +77,7 @@ public class EnvironmentFilter implements Filter {
         // off to the next filter, that filter can do work that sends data to
         // the client, meaning that we can't redirect.
         if (RhnHelper.pathNeedsSecurity(nosslurls, path) &&
-                !hreq.isSecure() && sslAvail) {
+                !hreq.isSecure()) {
             if (log.isDebugEnabled()) {
                 log.debug("redirecting to secure: " + path);
             }
