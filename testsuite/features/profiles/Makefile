@@ -9,8 +9,8 @@ REGISTRY_PLACEHOLDER_AUTH   = portus.mgr.suse.de:5000
 ENVIRONMENTS                = internal_nue internal_prv
 REG_REPLACEMENT_NUE_NOAUTH  = registry.mgr.suse.de
 REG_REPLACEMENT_NUE_AUTH    = portus.mgr.suse.de:5000
-REG_REPLACEMENT_PRV_NOAUTH  = minima-mirror.mgr.prv.suse.net
-REG_REPLACEMENT_PRV_AUTH    = minima-mirror.mgr.prv.suse.net:5000
+REG_REPLACEMENT_PRV_NOAUTH  = registry.mgr.prv.suse.net
+REG_REPLACEMENT_PRV_AUTH    = registry.mgr.prv.suse.net:5000
 
 update: $(ENVIRONMENTS)
 
