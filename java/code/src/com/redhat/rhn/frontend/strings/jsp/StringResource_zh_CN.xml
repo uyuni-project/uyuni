@@ -10169,7 +10169,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="bootstrapsystemlist.jsp.detected_on" xml:space="preserve">
           <source>Detected on</source>
-        <target>检测位置</target>
+        <target>检测时间</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
@@ -23481,7 +23481,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.memory_allocation.message" xml:space="preserve">
         <source>Size in megabytes out of {0} total megabytes available on {1}</source>
-        <target>从 {1} 上的总可用内存 {0} (MB) 中分配的大小 (MB)</target>
+        <target>从 {1} 上的总共 {0} MB 中分配的大小 (MB)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -28620,7 +28620,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.header" xml:space="preserve">
         <source>A system is inactive if its system has not checked in for:</source>
-        <target>如果某个系统的系统在以下时间内未签入，则会进入非活动状态：</target>
+        <target>系统在以下时间内未签入将进入非活动状态：</target>
       </trans-unit>
       <trans-unit id="schedule.header" xml:space="preserve">
         <source>Select a Schedule</source>
