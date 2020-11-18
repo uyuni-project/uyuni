@@ -10,7 +10,7 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     And I follow "Create Channel"
     When I enter "Custom Channel for ubuntu-xenial-main" as "Channel Name"
     And I enter "ubuntu-xenial-main" as "Channel Label"
-    And I select the parent channel for the "ubuntu1804_minion" from "Parent Channel"
+    And I select the parent channel for the "ubuntu1604_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for ubuntu-xenial-main created" text
@@ -21,7 +21,7 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     And I follow "Create Channel"
     When I enter "Custom Channel for ubuntu-xenial-main-updates" as "Channel Name"
     And I enter "ubuntu-xenial-main-updates" as "Channel Label"
-    And I select the parent channel for the "ubuntu1804_minion" from "Parent Channel"
+    And I select the parent channel for the "ubuntu1604_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for ubuntu-xenial-main-updates created" text
