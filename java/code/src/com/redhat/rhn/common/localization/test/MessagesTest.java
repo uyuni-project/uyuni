@@ -58,7 +58,7 @@ public class MessagesTest extends RhnBaseTestCase {
     }
 
     /*
-     * @see junit.framework.TestCase#tearDown()
+     * Setup before each test.
      */
     @AfterEach
     public void tearDown() {

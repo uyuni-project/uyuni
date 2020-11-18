@@ -16,6 +16,8 @@ package com.redhat.rhn.testing;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
 
+import org.opentest4j.AssertionFailedError;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -24,8 +26,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
-
-import junit.framework.AssertionFailedError; // todo handle with vintage
 
 /**
  * RhnMockHttpServletRequest is a mock implementation of the
@@ -138,7 +138,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         try {
             return super.getParameter(paramName);
         }
-        catch (AssertionFailedError afe) {
+        catch (AssertionFailedError afe) { // todo verify if that works
             return null;
         }
     }

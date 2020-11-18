@@ -231,8 +231,8 @@ public class HttpClientAdapterTest  {
         assertFalse(result);
     }
 
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#tearDown()
+    /**
+     * Tear down after each test.
      */
     @AfterEach
     public void tearDown() throws Exception {
