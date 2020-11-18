@@ -138,7 +138,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         try {
             return super.getParameter(paramName);
         }
-        catch (AssertionFailedError afe) { // todo verify if that works
+        catch (junit.framework.AssertionFailedError afe) { // todo verify if that works uff this is such a PITA with legacy libs!
             return null;
         }
     }
