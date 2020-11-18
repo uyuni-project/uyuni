@@ -55,12 +55,10 @@ const useMandatoryChannelsApi = () : UseMandatoryChannelsApiReturnType => {
           setMandatoryChannelsRaw(allTheNewMandatoryChannelsData);
           setRequiredChannels(dependencies.requiredChannels);
           setRequiredByChannels(dependencies.requiredByChannels);
-          setIsDependencyDataLoaded(true);
-        })
-        .catch((jqXHR: Object, arg: string = '') => {
+        }).catch((jqXHR: Object, arg: string = '') => {
           const msg = Network.responseErrorMessage(jqXHR, (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
           setMessages(messages.concat(msg))
-        });
+        }).finally(() => setIsDependencyDataLoaded(true));
     } else {
       setIsDependencyDataLoaded(true);
     }

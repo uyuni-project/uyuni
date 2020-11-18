@@ -1,3 +1,4 @@
+- Update exception message in findSyncedMandatoryChannels
 - fix check for available products on ISS Slaves (bsc#1177184)
 - get media.1/products for cloned channels (bsc#1178303)
 - calculate size to truncate a history message based on the htmlified version (bsc#1178503)
