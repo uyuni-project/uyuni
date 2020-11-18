@@ -237,6 +237,10 @@ When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
   find("input[placeholder='Filter by Synopsis: ']").set(input)
 end
 
+When(/^I enter "([^"]*)" as the filtered channel name$/) do |input|
+  find("input[placeholder='Filter by Channel Name: ']").set(input)
+end
+
 When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
   find("input[name='product-description-filter']").set(input)
 end
