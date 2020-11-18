@@ -6179,7 +6179,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Name of Monitoring Notification Method that is created during setup/install process.</context>
         </context-group>
-        <target state="translated">恐慌目标</target>
+        <target state="translated">目标恐慌</target>
       </trans-unit>
       <trans-unit id="crypto.key.gpg" xml:space="preserve">
         <source>GPG</source>
@@ -7647,7 +7647,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="sdc.config.time.message_url" xml:space="preserve">
           <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-        <target state="translated">{0} / &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
+        <target state="translated">&lt;a href="{1}"&gt;{2}&lt;/a&gt; 于 {0}</target>
         <context-group name="sdc_actions_time_messages">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
