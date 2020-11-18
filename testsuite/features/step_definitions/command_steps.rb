@@ -45,13 +45,11 @@ Then(/^it should be possible to reach the build sources$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
-Then(/^it should be possible to reach the container profiles$/) do
-  url = 'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
-  $server.run("curl --insecure --location #{url} --output /dev/null")
-end
-
-Then(/^it should be possible to reach the test suite profiles$/) do
-  url = 'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
+Then(/^it should be possible to reach the Docker profiles$/) do
+  git_profiles = ENV['GITPROFILES']
+  url = git_profiles.sub(/github\.com/, "raw.githubusercontent.com")
+                    .sub(/\.git#:/, "/master/")
+                    .sub(/$/, "/Docker/Dockerfile")
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
