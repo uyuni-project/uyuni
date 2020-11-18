@@ -1,3 +1,4 @@
+- Drop the ssl_available option (SSL is always present)
 - fix reboot action race condition (bsc#1177031)
 - Improves misleading UI message displayed on systems with modules activated (bsc#1179525)
 - Fix availability check for debian repositories (bsc#1180127)
