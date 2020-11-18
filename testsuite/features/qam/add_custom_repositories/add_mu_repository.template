@@ -23,6 +23,8 @@ Feature: Adding a Maintenance Update custom channel and the custom repositories 
   Scenario: Add the custom repositories to the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
+    And I enter "<client>" as the filtered channel name
+    And I click on the filter button
     And I follow "Custom Channel for <client>"
     And I follow "Repositories" in the content area
     And I select the MU repositories for "<client>" from the list
@@ -32,6 +34,8 @@ Feature: Adding a Maintenance Update custom channel and the custom repositories 
   Scenario: Synchronize the repositories in the custom channel for <client>
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
+    And I enter "<client>" as the filtered channel name
+    And I click on the filter button
     And I follow "Custom Channel for <client>"
     And I follow "Repositories" in the content area
     And I follow "Sync"
