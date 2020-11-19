@@ -8,13 +8,11 @@ Feature: Bootstrap a CentOS 6 traditional client
     When I perform a full salt minion cleanup on "ceos6_client"
 
   Scenario: Prepare a CentOS 6 traditional client
-    When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-6-x86_64" on this "ceos6_client"
-    And I enable repository "SLE-Manager-Tools-RES-6-x86_64" on this "ceos6_client"
-    And I enable repository "CentOS-Base" on this "ceos6_client"
+    When I bootstrap traditional client "ceos6_client" using bootstrap script with activation key "1-ceos6_client_key" from the proxy
     And I install the traditional stack utils on "ceos6_client"
-    And I install OpenSCAP traditional dependencies on "ceos6_client"
-    And I register "ceos6_client" as traditional client with activation key "1-ceos6_client_key"
+    And I install OpenSCAP centos dependencies on "ceos6_client"
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
+    Then I should see "ceos6_client" via spacecmd
 
   Scenario: The onboarding of CentOS 6 traditional client is completed
     Given I am authorized
