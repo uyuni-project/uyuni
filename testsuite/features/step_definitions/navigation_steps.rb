@@ -163,6 +163,10 @@ end
 
 When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |_channel_type, client, from|
   select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
+  repeat_until_timeout(timeout: 60) do
+    break if find(:xpath, "//i[@class='fa fa-angle-down']", wait: 10)
+    select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
+  end
 end
 
 When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|

@@ -726,13 +726,13 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if host.include? 'ceos'
-    node.run('yum -y remove salt salt-minion')
+    node.run('yum -y remove salt salt-minion', false)
   elsif host.include? 'ubuntu'
-    node.run('apt-get --assume-yes remove salt salt-minion')
+    node.run('apt-get --assume-yes remove salt salt-minion', false)
   else
-    node.run('zypper --non-interactive remove -y salt salt-minion')
+    node.run('zypper --non-interactive remove -y salt salt-minion', false)
   end
-  node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt')
+  node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt', false)
 end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|
