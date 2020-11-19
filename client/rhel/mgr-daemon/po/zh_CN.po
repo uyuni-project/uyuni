@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-19 17:25+0000\n"
+"PO-Revision-Date: 2020-11-19 20:26+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "mgr-daemon/zh_CN/>\n"
@@ -29,46 +29,40 @@ msgstr ""
 
 #: ../rhnsd.c:54
 msgid "MINS"
-msgstr "<mrk mtype=\"seg\" mid=\"1\">MINS</mrk>"
+msgstr "MINS"
 
 #: ../rhnsd.c:55
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr "<mrk mtype=\"seg\" mid=\"2\">每隔 MINS 分连接到 Spacewalk</mrk>"
+msgstr "每隔 MINS 分钟连接到 Spacewalk"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
-msgstr "<mrk mtype=\"seg\" mid=\"3\">在前台运</mrk>"
+msgstr "在前台运行"
 
 #. Short description of program.
 #: ../rhnsd.c:62
 msgid "Spacewalk Services Daemon"
-msgstr "<mrk mtype=\"seg\" mid=\"4\">Spacewalk 服务守护程</mrk>"
+msgstr "Spacewalk 服务守护程序"
 
 #: ../rhnsd.c:115
 #, c-format
 msgid "Only root can run this program\n"
-msgstr ""
-"<mrk mtype=\"seg\" mid=\"5\">只有 root 用户可以运行此程\n"
-"</mrk>"
+msgstr "只有 root 用户可以运行此程序\n"
 
 #: ../rhnsd.c:135
 msgid "wrong number of arguments"
-msgstr "<mrk mtype=\"seg\" mid=\"6\">参数数错误</mrk>"
+msgstr "参数数目错误"
 
 #: ../rhnsd.c:142
 msgid "already running"
-msgstr "<mrk mtype=\"seg\" mid=\"7\">已运行</mrk>"
+msgstr "已运行"
 
 #: ../rhnsd.c:254
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
-msgstr ""
-"<mrk mtype=\"seg\" mid=\"8\">版权所有 (C) %s Red Hat, Inc.\n"
-"</mrk>"
+msgstr "版权所有 (C) %s Red Hat, Inc.\n"
 
 #: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
-msgstr ""
-"<mrk mtype=\"seg\" mid=\"9\">由 %s 编。\n"
-"</mrk>"
+msgstr "由 %s 编写。\n"
