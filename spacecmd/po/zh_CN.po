@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-07 13:50+0000\n"
+"PO-Revision-Date: 2020-11-19 02:25+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -1987,7 +1987,7 @@ msgstr "文件列表"
 
 #: ../src/spacecmd/filepreservation.py:83
 msgid "File [blank to finish]:"
-msgstr "文件 [留空可完成操作]："
+msgstr "文件 [留空可结束提示]："
 
 #: ../src/spacecmd/filepreservation.py:109
 msgid "filepreservation_delete: Delete a file preservation list"
@@ -6888,7 +6888,7 @@ msgstr "笔记的主题："
 
 #: ../src/spacecmd/system.py:2259
 msgid "Note Body (ctrl-D to finish):"
-msgstr "笔记正文（按 Ctrl-D 可完成）："
+msgstr "笔记正文（按 Ctrl-D 可结束提示）："
 
 #: ../src/spacecmd/system.py:2263
 msgid "A subject is required"
