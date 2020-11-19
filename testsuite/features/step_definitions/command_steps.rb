@@ -799,6 +799,13 @@ When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error con
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
+When(/^I install package tftpboot-installation on the server$/) do
+  node = get_target("server")
+  output, _code = node.run("find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm")
+  package = output.split("\n")[0]
+  node.run("rpm -i #{package}")
+end
+
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
