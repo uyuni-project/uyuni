@@ -161,7 +161,11 @@ When(/^I select the maximum amount of items per page$/) do
   find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
 end
 
-When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |_channel_type, client, from|
+When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
+end
+
+When(/^I select the base channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
   repeat_until_timeout(timeout: 60) do
     break if find(:xpath, "//i[@class='fa fa-angle-down']", wait: 10)
