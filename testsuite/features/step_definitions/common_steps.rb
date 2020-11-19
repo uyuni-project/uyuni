@@ -1175,20 +1175,26 @@ end
 
 # content lifecycle steps
 When(/^I click the environment build button$/) do
-  raise "Click on environment build failed" unless find(:xpath, '//*[@id="cm-build-modal-save-button"]').click
+  raise 'Click on environment build failed' unless find_button('cm-build-modal-save-button', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from Development to QA$/) do
-  raise "Click on promote from Development failed" unless find(:xpath, '//*[@id="dev_name-promote-modal-link"]').click
+  raise 'Click on promote from Development failed' unless find_button('dev_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from QA to Production$/) do
-  raise "Click on promote from QA failed" unless find(:xpath, '//*[@id="qa_name-promote-modal-link"]').click
+  raise 'Click on promote from QA failed' unless find_button('qa_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
     raise "Text \"#{text}\" not found" unless has_content?(text)
+  end
+end
+
+When(/^I wait at most (\d+) seconds until I see "([^"]*)" text in the environment "([^"]*)"$/) do |seconds, text, env|
+  within(:xpath, "//h3[text()='#{env}']/../..") do
+    step %(I wait at most #{seconds} seconds until I see "#{text}" text)
   end
 end
 
