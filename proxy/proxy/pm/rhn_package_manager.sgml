@@ -207,12 +207,6 @@ Manages RPM packages for the Spacewalk Proxy
             <para>Only print the packages to be pushed.</para>
         </listitem>
     </varlistentry>
-    <varlistentry>
-        <term>--no-ssl</term>
-        <listitem>
-            <para>Turn off SSL (not recommended).</para>
-        </listitem>
-    </varlistentry>
    <varlistentry>
         <term>-N, --new-cache</term>
         <listitem>

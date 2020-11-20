@@ -236,7 +236,7 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
                           hostname=options.hostname,
                           orgCACert=orgCACert,
                           isRpmYN=isRpmYN,
-                          using_ssl=0 if bool(options.no_ssl) else 1,
+                          using_ssl=1,
                           using_gpg=0 if bool(options.no_gpg) else 1,
                           allow_config_actions=options.allow_config_actions,
                           allow_remote_commands=options.allow_remote_commands,
@@ -777,96 +777,91 @@ fi
 def getCorpCACertSh():
     return """\
 echo
-if [ $USING_SSL -eq 1 ] ; then
+  if [ "$INSTALLER" == "apt" ]; then
+    CERT_DIR=/usr/local/share/ca-certificates/susemanager
+    TRUST_DIR=/usr/local/share/ca-certificates/susemanager
+    UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+    ORG_CA_CERT_IS_RPM_YN=0
+    ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
+  else
+    CERT_DIR=/usr/share/rhn
+    TRUST_DIR=/etc/pki/ca-trust/source/anchors
+    UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+  fi
 
-    if [ "$INSTALLER" == "apt" ]; then
-      CERT_DIR=/usr/local/share/ca-certificates/susemanager
-      TRUST_DIR=/usr/local/share/ca-certificates/susemanager
-      UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
-      ORG_CA_CERT_IS_RPM_YN=0
-      ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
-    else
-      CERT_DIR=/usr/share/rhn
-      TRUST_DIR=/etc/pki/ca-trust/source/anchors
-      UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
-    fi
+  if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+    # get name from config
+    CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
+  elif [ "$INSTALLER" == "apt" ]; then
+    CERT_FILE="${ORG_CA_CERT}.crt"
+  else
+    CERT_FILE=${ORG_CA_CERT}
+  fi
 
-    if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-      # get name from config
-      CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
-    elif [ "$INSTALLER" == "apt" ]; then
-      CERT_FILE="${ORG_CA_CERT}.crt"
-    else
-      CERT_FILE=${ORG_CA_CERT}
-    fi
+  function updateCertificates() {
+      if [ -d /etc/pki/ca-trust/source/anchors  -a -x /usr/bin/update-ca-trust ]; then
+          TRUST_DIR=/etc/pki/ca-trust/source/anchors
+      elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
+          # SLE 12
+          TRUST_DIR=/etc/pki/trust/anchors
+          UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+      elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash -a "$INSTALLER" == "zypper" ]; then
+          # SLE 11
+          TRUST_DIR=/etc/ssl/certs
+          UPDATE_TRUST_CMD="/usr/bin/c_rehash"
+          rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+          rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT-*.pem
+          if [ -f $CERT_DIR/$CERT_FILE ]; then
+              ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+              if [ $(grep -- "-----BEGIN CERTIFICATE-----" $CERT_DIR/$CERT_FILE | wc -l) -gt 1 ]; then
+                  csplit -b "%02d.pem" -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT- $CERT_DIR/$CERT_FILE '/-----BEGIN CERTIFICATE-----/' '{*}'
+              fi
+          fi
+          $UPDATE_TRUST_CMD >/dev/null
+          return
+      fi
 
-    function updateCertificates() {
-        if [ -d /etc/pki/ca-trust/source/anchors  -a -x /usr/bin/update-ca-trust ]; then
-            TRUST_DIR=/etc/pki/ca-trust/source/anchors
-        elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
-            # SLE 12
-            TRUST_DIR=/etc/pki/trust/anchors
-            UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
-        elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash -a "$INSTALLER" == "zypper" ]; then
-            # SLE 11
-            TRUST_DIR=/etc/ssl/certs
-            UPDATE_TRUST_CMD="/usr/bin/c_rehash"
-            rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
-            rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT-*.pem
-            if [ -f $CERT_DIR/$CERT_FILE ]; then
-                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
-                if [ $(grep -- "-----BEGIN CERTIFICATE-----" $CERT_DIR/$CERT_FILE | wc -l) -gt 1 ]; then
-                    csplit -b "%02d.pem" -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT- $CERT_DIR/$CERT_FILE '/-----BEGIN CERTIFICATE-----/' '{*}'
-                fi
-            fi
-            $UPDATE_TRUST_CMD >/dev/null
-            return
-        fi
+      if [ ! -d $TRUST_DIR ]; then
+          return
+      fi
+      if [ "$CERT_DIR" != "$TRUST_DIR" ]; then
+          if [ -f $CERT_DIR/$CERT_FILE ]; then
+              ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
+          else
+              rm -f $TRUST_DIR/$CERT_FILE
+          fi
+      fi
+      $UPDATE_TRUST_CMD
+  }
 
-        if [ ! -d $TRUST_DIR ]; then
-            return
-        fi
-        if [ "$CERT_DIR" != "$TRUST_DIR" ]; then
-            if [ -f $CERT_DIR/$CERT_FILE ]; then
-                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
-            else
-                rm -f $TRUST_DIR/$CERT_FILE
-            fi
-        fi
-        $UPDATE_TRUST_CMD
-    }
+  echo "* attempting to install corporate public CA cert"
 
-    echo "* attempting to install corporate public CA cert"
+  ### Check for Dynamic CA-Trust Updates - applies to RedHat and SLE-ES systems ###
+  if [ -x /usr/bin/update-ca-trust ] ; then
+      if [ "$(/usr/bin/update-ca-trust check | grep 'PEM/JAVA Status: DISABLED')" != "" ]; then
+          echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'"
+          echo "Finally, restart the onboarding sequence."
+          exit 1
+      fi
+  fi
 
-    ### Check for Dynamic CA-Trust Updates - applies to RedHat and SLE-ES systems ###
-    if [ -x /usr/bin/update-ca-trust ] ; then
-        if [ "$(/usr/bin/update-ca-trust check | grep 'PEM/JAVA Status: DISABLED')" != "" ]; then
-            echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'"
-            echo "Finally, restart the onboarding sequence."
-            exit 1
-        fi
-    fi
+  test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
+  rm -f ${ORG_CA_CERT}
+  $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
 
-    test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
-    rm -f ${ORG_CA_CERT}
-    $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
+  if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+      rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
+      rm -f ${ORG_CA_CERT}
+  else
+      mv ${ORG_CA_CERT} ${CERT_DIR}/${CERT_FILE}
+  fi
 
-    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-        rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
-        rm -f ${ORG_CA_CERT}
-    else
-        mv ${ORG_CA_CERT} ${CERT_DIR}/${CERT_FILE}
-    fi
-
-    if [  $ORG_CA_CERT_IS_RPM_YN -eq 0 ] ; then
-        # symlink & update certificates is already done in rpm post-install script
-        # no need to be done again if we have installed rpm
-        echo "* update certificates"
-        updateCertificates
-    fi
-else
-    echo "* configured not to use SSL: don't install corporate public CA cert"
-fi
+  if [  $ORG_CA_CERT_IS_RPM_YN -eq 0 ] ; then
+      # symlink & update certificates is already done in rpm post-install script
+      # no need to be done again if we have installed rpm
+      echo "* update certificates"
+      updateCertificates
+  fi
 
 """
 

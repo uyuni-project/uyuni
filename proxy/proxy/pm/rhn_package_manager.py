@@ -91,7 +91,6 @@ def main():
                help="Only copy packages; don't reimport. Same as --cache-locally"),
         Option('--test',      action='store_true', help='Only print the packages to be pushed'),
         Option('-N', '--new-cache',  action='store_true', help='Create a new username/password cache'),
-        Option('--no-ssl',    action='store_true', help='Turn off SSL (not recommended).'),
         Option('--no-session-caching',  action='store_true',
                help='Disables session-token authentication.'),
         Option('-?', '--usage',     action='store_true', help="Briefly describe the options"),
@@ -176,7 +175,7 @@ class UploadClass(uploadLib.UploadClass):
             self.die(-1, "rhn_parent not set in the configuration file")
         self.url = CFG.RHN_PARENT
         scheme = 'http://'
-        if not self.options.no_ssl and CFG.USE_SSL:
+        if CFG.USE_SSL:
             # i.e., --no-ssl overrides the USE_SSL config variable.
             scheme = 'https://'
         self.url = CFG.RHN_PARENT or ''

@@ -466,7 +466,6 @@ class Syncer:
         self.mountpoint = OPTIONS.mount_point
         self.listChannelsYN = listChannelsYN
         self.forceAllErrata = forceAllErrata
-        self.sslYN = not OPTIONS.no_ssl
         self._systemidPath = OPTIONS.systemid or _DEFAULT_SYSTEMID_PATH
         self._batch_size = OPTIONS.batch_size
         self.master_label = OPTIONS.master
@@ -524,7 +523,7 @@ class Syncer:
         # Sync across the wire:
         else:
             self.xmlDataServer = xmlWireSource.MetadataWireSource(self.systemid,
-                                                                  self.sslYN, self.xml_dump_version)
+                                                                  True, self.xml_dump_version)
             if CFG.ISS_PARENT:
                 sync_parent = CFG.ISS_PARENT
                 self.systemid = 'N/A'   # systemid is not used in ISS auth process
@@ -553,7 +552,7 @@ class Syncer:
                     usix.raise_with_tb(RhnSyncException(_('ERROR: this server must be registered with SUSE Manager.')),
                                        sys.exc_info()[2])
             # authorization check of the satellite
-            auth = xmlWireSource.AuthWireSource(self.systemid, self.sslYN,
+            auth = xmlWireSource.AuthWireSource(self.systemid, True,
                                                 self.xml_dump_version)
             auth.checkAuth()
 
@@ -640,7 +639,7 @@ class Syncer:
     def _process_comps(self, backend, label, timestamp):
         comps_path = 'rhn/comps/%s/comps-%s.xml' % (label, timestamp)
         self._write_repomd(comps_path, self.xmlDataServer.getComps, \
-            xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN, self.xml_dump_version).getCompsFileStream, \
+            xmlWireSource.RPCGetWireSource(self.systemid, True, self.xml_dump_version).getCompsFileStream, \
             label, timestamp)
         data = {label: None}
         backend.lookupChannels(data)
@@ -651,7 +650,7 @@ class Syncer:
     def _process_modules(self, backend, label, timestamp):
         modules_path = 'rhn/modules/%s/modules-%s.yaml' % (label, timestamp)
         self._write_repomd(modules_path, self.xmlDataServer.getModules, \
-            xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN, self.xml_dump_version).getModulesFilesStram, \
+            xmlWireSource.RPCGetWireSource(self.systemid, True, self.xml_dump_version).getModulesFilesStram, \
             label, timestamp)
         data = {label: None}
         backend.lookupChannels(data)
@@ -1397,7 +1396,7 @@ class Syncer:
         if CFG.ISS_PARENT:
             return self.xmlDataServer.getKickstartFile(kstree_label, relative_path)
         else:
-            srv = xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN,
+            srv = xmlWireSource.RPCGetWireSource(self.systemid, True,
                                                  self.xml_dump_version)
             return srv.getKickstartFileStream(channel, kstree_label, relative_path)
 
@@ -1923,7 +1922,7 @@ class Syncer:
         if CFG.ISS_PARENT:
             stream = self.xmlDataServer.getRpm(nvrea, channel, checksum)
         else:
-            rpmServer = xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN,
+            rpmServer = xmlWireSource.RPCGetWireSource(self.systemid, True,
                                                        self.xml_dump_version)
             stream = rpmServer.getPackageStream(channel, nvrea, checksum)
 
@@ -2259,8 +2258,6 @@ def processCommandline():
                help=_('do not process full package metadata')),
         Option('--no-rpms',             action='store_true',
                help=_('do not download, or process any RPMs')),
-        Option('--no-ssl',              action='store_true',
-               help=_('turn off SSL (not recommended)')),
         Option('--orgid',               action='store',
                help=_('org to which the sync imports data. defaults to the admin account')),
         Option('-p', '--print-configuration', action='store_true',
@@ -2434,8 +2431,7 @@ def processCommandline():
                     #"no_source_packages" : 'no-source-packages',
                     "no_errata": 'no-errata',
                     "no_kickstarts": 'no-kickstarts',
-                    "force_all_errata": 'force-all-errata',
-                    'no_ssl': 'no-ssl'}
+                    "force_all_errata": 'force-all-errata'}
 
     for oa in otherActions:
         if getattr(OPTIONS, oa):

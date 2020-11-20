@@ -30,7 +30,6 @@ config file(s)
 
 I.e., maps a file with SUSE Manager Update Agent-like key=value pairs e.g.,
 serverURL=https://test-satellite.example.redhat.com/XMLRPC
-noSSLServerURL=http://test-satellite.example.redhat.com/XMLRPC
 enableProxy=0
 sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT
 
@@ -45,7 +44,6 @@ key=value pairs to /etc/sysconfig/rhn/up2date):
        to replace in config file (e.g., /etc/sysconfig/rhn/up2date).
        Specifically:
 serverURL=https://test-satellite.example.redhat.com/XMLRPC
-noSSLServerURL=http://test-satellite.example.redhat.com/XMLRPC
 
     2. ./client_config_update.py /etc/sysconfig/rhn/up2date client-config-overrides.txt
 

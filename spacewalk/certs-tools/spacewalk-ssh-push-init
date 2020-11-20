@@ -166,7 +166,6 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   ${SUDO_CMD} sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(httpProxy=\).*/\1/" ${PATH_OVERRIDES}
-  ${SUDO_CMD} sed -i "s/\(noSSLServerURL=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
