@@ -1,5 +1,119 @@
 [
     {
+        "id" : -20,
+        "name" : "Debian 10",
+        "identifier" : "Debian-Client",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Debian 10",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -217,
+                "url" : "http://deb.debian.org/debian/dists/buster/main/binary-amd64/",
+                "name" : "debian-10-pool",
+                "distro_target" : "amd64",
+                "description" : "Debian 10 (buster) pool for amd64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -218,
+                "url" : "http://deb.debian.org/debian/dists/buster-updates/main/binary-amd64/",
+                "name" : "debian-10-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Debian 10 (buster) AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -219,
+                "url" : "http://security-cdn.debian.org/debian-security/dists/buster/updates/main/binary-amd64/",
+                "name" : "debian-10-main-security",
+                "distro_target" : "amd64",
+                "description" : "Debian 10 (buster) AMD64 Main Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -19,
+        "name" : "Debian 9",
+        "identifier" : "Debian-Client",
+        "former_identifier" : "",
+        "version" : "9",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Debian 9",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -214,
+                "url" : "http://deb.debian.org/debian/dists/stretch/main/binary-amd64/",
+                "name" : "debian-9-pool",
+                "distro_target" : "amd64",
+                "description" : "Debian 9 (stretch) pool for amd64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -215,
+                "url" : "http://deb.debian.org/debian/dists/stretch-updates/main/binary-amd64/",
+                "name" : "debian-9-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Debian 9 (stretch) AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -216,
+                "url" : "http://security-cdn.debian.org/debian-security/dists/stretch/updates/main/binary-amd64/",
+                "name" : "debian-9-main-security",
+                "distro_target" : "amd64",
+                "description" : "Debian 9 (stretch) AMD64 Main Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -18,
         "name" : "Ubuntu 20.04",
         "identifier" : "Ubuntu-Client",
