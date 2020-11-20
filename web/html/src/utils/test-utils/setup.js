@@ -1,4 +1,5 @@
-const jQuery = require("jQuery");
+import "../../manager/polyfills.js";
+import jQuery from "jQuery";
 
 // Allows us to mock and test the existing network layer easily
 global.jQuery = jQuery;
