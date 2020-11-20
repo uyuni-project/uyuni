@@ -47,5 +47,6 @@ Feature: openSCAP audit of CentOS Salt minion
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
-    And I should see a "rpm_" link
+    When I enter "pass" as the filtered XCCDF result type
+    And I click on the filter button
+    Then I should see a "rpm_verify_permissions" link

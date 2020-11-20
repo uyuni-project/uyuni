@@ -241,6 +241,10 @@ When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
   find("input[name='product-description-filter']").set(input)
 end
 
+When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
+  find("input[placeholder='Filter by Result: ']").set(input)
+end
+
 # Salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install --force #{package}-formula")
