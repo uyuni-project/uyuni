@@ -3,6 +3,8 @@ Fri Nov 20 14:42:33 CEST 2020 - karl.tarvas@suse.com
 
 - Version 4.2.2
 - Add @testing-library/react and msw, update relevant dependencies
+- Upgrade lodash to 4.17.19, this is already in the changelog, but
+  the change was not added to package.json.
 
 -------------------------------------------------------------------
 Fri Oct  2 11:29:00 CEST 2020 - dleidi@suse.com

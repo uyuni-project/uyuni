@@ -28,7 +28,7 @@ const npmDependencies = [
   { name: "immer", license: "MIT",  version: "3.3.0" }, 
   { name: "inline-style-parser", license: "MIT",  version: "0.1.1" }, 
   { name: "jexl", license: "MIT",  version: "2.2.2" }, 
-  { name: "lodash", license: "MIT",  version: "4.17.19" }, 
+  { name: "lodash", license: "MIT",  version: "4.17.20" }, 
   { name: "lodash.get", license: "MIT",  version: "4.4.2" }, 
   { name: "memoize-one", license: "MIT",  version: "5.1.1" }, 
   { name: "metal", license: "BSD-3-Clause",  version: "2.16.8" }, 
@@ -61,7 +61,7 @@ const npmDependencies = [
   { name: "style-to-object", license: "MIT",  version: "0.3.0" }, 
   { name: "timers-browserify", license: "MIT",  version: "2.0.11" }, 
   { name: "use-immer", license: "MIT",  version: "0.3.5" }, 
-  { name: "webpack", license: "MIT",  version: "4.44.2" }, 
+  { name: "webpack", license: "MIT",  version: "4.41.4" }, 
   
 ];
 
