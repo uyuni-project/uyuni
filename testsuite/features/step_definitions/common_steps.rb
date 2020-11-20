@@ -1158,7 +1158,7 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
         And I enter "#{repo_url.strip}" as "url"
         And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
         And I click on "Create Repository"
-        Then I should see a "Repository created successfully" text
+        Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
         And I should see "metadataSigned" as checked
       )
     end
