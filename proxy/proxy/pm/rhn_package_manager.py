@@ -63,7 +63,7 @@ PREFIX = 'rhn'
 def main():
     # Initialize a command-line processing object with a table of options
     optionsTable = [
-        Option('-v', '--verbose',   action='count',      help='Increase verbosity'),
+        Option('-v', '--verbose',   action='count',      help='Increase verbosity', default=1),
         Option('-d', '--dir',       action='store',      help='Process packages from this directory'),
         Option('-L', '--cache-locally', action='store_true',
                help='Locally cache packages so that Proxy will not ever need to '
