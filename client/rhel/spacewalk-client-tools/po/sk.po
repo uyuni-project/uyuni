@@ -14,10 +14,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-09-29 17:48+0000\n"
+"PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1033,9 +1033,9 @@ msgid "Cannot contact selected server"
 msgstr "Nie je možné kontaktovať vybraný server"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "Nemohli sme kontaktovať Satellite alebo Proxy na '%s.'"
+msgstr "Nemohli sme kontaktovať {PRODUCT_NAME} alebo Proxy na '{HOST}'."
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -1260,14 +1260,14 @@ msgstr ""
 "že ste vlastníkom %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
 "program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Táto chyba sa nemala stať. Ak nám chcete pomôcť vylepšiť tento program, "
-"predložte chybu na bugzilla.redhat.com. Veľmi užitočné by bolo zahrnutie "
+"predložte chybu na bugzilla.suse.com. Veľmi užitočné by bolo zahrnutie "
 "príslušných častí '%s'. Vďaka!"
 
 #: ../src/up2date_client/rhnreg.py:76
@@ -2491,15 +2491,12 @@ msgid "RHN Registration"
 msgstr "Registrácia RHN"
 
 #: ../rhn_register.desktop.in.h:2
-#, fuzzy
 msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-"Registrovať sa pre aktualizácie softvéru z Spacewalk/Red Hat Satellite/Red "
-"Hat Network Classic"
+msgstr "Registrovať sa pre aktualizácie softvéru z Spacewalk/Uyuni/SUSE Manager"
 
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+msgstr "Zaregistrovať sa v Spacewalk/Uyuni/SUSE Manager"
 
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 #~ msgstr ""
