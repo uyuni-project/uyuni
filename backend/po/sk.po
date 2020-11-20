@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:54+0100\n"
-"PO-Revision-Date: 2020-09-25 13:48+0000\n"
+"PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -685,7 +685,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -693,7 +692,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Na tomto serveri je zakázaná voľba --force rhnpush.\n"
+"     Na tomto serveri je zakázaná voľba --force mgrpush.\n"
 "     Pre ďalšiu pomoc kontaktujte svojho administrátora SUSE Manager.\n"
 "     "
 
@@ -1524,13 +1523,13 @@ msgid "Commandline: %s"
 msgstr "Príkazový riadok: %s"
 
 #: ../satellite_tools/satsync.py:2202
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
 "IBA LADIŤ: max. veľkosť-dávky pre spracovanie XML/database-import (1..%s). "
-"Viac informácií v \"man satellite-sync\"."
+"Viac informácií v \"man mgr-inter-sync\"."
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1541,13 +1540,12 @@ msgid "process data for this channel only"
 msgstr "spracovať dáta iba pre tento kanál"
 
 #: ../satellite_tools/satsync.py:2209
-#, fuzzy
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
-"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v "
-"\"man satellite-sync\"."
+"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v \""
+"man mgr-inter-sync\"."
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
@@ -1642,9 +1640,8 @@ msgid "alternative server with which to connect (hostname)"
 msgstr "alternatívny server, s ktorým sa možno spojiť (názov hostiteľa)"
 
 #: ../satellite_tools/satsync.py:2254
-#, fuzzy
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
-msgstr "synchronizovať s týmto krokom (viac informácií v man satellite-sync)"
+msgstr "synchronizovať s týmto krokom (viac informácií v man mgr-inter-sync)"
 
 #: ../satellite_tools/satsync.py:2256
 msgid "write complete data to tempfile before streaming to remainder of app"
