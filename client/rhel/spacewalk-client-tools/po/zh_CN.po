@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"POT-Creation-Date: 2020-11-20 12:55+0100\n"
 "PO-Revision-Date: 2020-11-09 14:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -295,7 +295,8 @@ msgid ""
 " * The location of a {PRODUCT_NAME} Server or Proxy\n"
 "\n"
 msgstr ""
-"此助手会引导您将您的系统连接到 {PRODUCT_NAME} 来接收软件更新（包括安全更新），以使系统持续受到支持并合规。此时您需要准备好以下各项：\n"
+"此助手会引导您将您的系统连接到 {PRODUCT_NAME} 来接收软件更新（包括安全更"
+"新），以使系统持续受到支持并合规。此时您需要准备好以下各项：\n"
 "\n"
 " * 网络连接\n"
 " * 您的 {PRODUCT_NAME} 登录名和口令\n"
@@ -776,10 +777,10 @@ msgid ""
 "Universal Default activation key: %s"
 msgstr ""
 "检测到通用默认激活密钥\n"
-"在您的帐户中检测到了通用默认激活密钥。这意味着，用于将系统连接到 {PRODUCT_NAME} Server 或 {PRODUCT_NAME} "
-"Proxy "
-"的一组属性（软件频道订阅、软件包安装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥的更多细节，另请参见《{PRODUCT_NAME} "
-"参考指南》。\n"
+"在您的帐户中检测到了通用默认激活密钥。这意味着，用于将系统连接到 "
+"{PRODUCT_NAME} Server 或 {PRODUCT_NAME} Proxy 的一组属性（软件频道订阅、软件"
+"包安装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥的更"
+"多细节，另请参见《{PRODUCT_NAME} 参考指南》。\n"
 "通用默认激活密钥：%s"
 
 #. Error Messages.
@@ -981,8 +982,8 @@ msgid "Cannot contact selected server"
 msgstr "无法联系所选服务器"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "无法联系 '%s' 上的从属服务器或代理。"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1197,10 +1198,10 @@ msgstr ""
 "您拥有 %s。"
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "此错误不应发生。如果您想要帮助我们改进此程序，请在 bugzilla.redhat.com 上报"
@@ -1497,7 +1498,8 @@ msgstr "此系统已注册。使用 --force 可覆盖"
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
-msgstr "不支持在 --activationkey 中使用 --use-eus-channel 选项。请改用用户名和口令。"
+msgstr ""
+"不支持在 --activationkey 中使用 --use-eus-channel 选项。请改用用户名和口令。"
 
 #: ../src/bin/rhnreg_ks.py:128
 msgid "The server you are registering against does not support EUS."
@@ -1731,7 +1733,9 @@ msgstr "登录(_L)："
 msgid ""
 "<small>Tip: Forgot your login or password? Contact your Satellite's "
 "<i>Organization Administrator</i>.</small>"
-msgstr "<small>提示：忘记了用户名或口令？请联系您的 Satellite <i>组织管理员</i>。</small>"
+msgstr ""
+"<small>提示：忘记了用户名或口令？请联系您的 Satellite <i>组织管理员</i>。</"
+"small>"
 
 #: ../data/rh_register.glade.h:20
 msgid "Hardware Info"
@@ -2040,7 +2044,8 @@ msgid ""
 msgstr ""
 "在此系统上找不到与 <b>%s</b> 兼容的安全证书。\n"
 "\n"
-"必须提供一个使用 SSL 技术的安全证书才能确保此系统与 Spacewalk 之间传送的数据（包括您的登录名和口令）安全。"
+"必须提供一个使用 SSL 技术的安全证书才能确保此系统与 Spacewalk 之间传送的数据"
+"（包括您的登录名和口令）安全。"
 
 #: ../data/rh_register.glade.h:88
 msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
@@ -2368,15 +2373,17 @@ msgid "RHN Registration"
 msgstr "RHN 注册"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+#, fuzzy
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "注册 Spacewalk/Red Hat Satellite/Red Hat Network Classic 提供的软件更新"
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "注册到 Spacewalk/Red Hat Satellite/Red Hat Network Classic。"
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "注册到 Spacewalk/Red Hat Satellite/Red Hat Network Classic。"
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."
