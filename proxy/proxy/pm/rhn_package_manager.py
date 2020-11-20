@@ -221,7 +221,7 @@ class UploadClass(uploadLib.UploadClass):
         for hash_dir in uploadLib.listdir(os.path.join(export_dir, "rpms")):
             for rpm in uploadLib.listdir(hash_dir):
                 # rpm name minus '.rpm'
-                if os.path.basename(rpm)[:-4] in package_set:
+                if str.encode(os.path.basename(rpm)[:-4]) in package_set:
                     self.files.append(rpm)
 
     def setServer(self):
