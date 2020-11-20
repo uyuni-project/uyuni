@@ -63,6 +63,7 @@ Feature: PXE boot a Retail terminal
     And I enter the hostname of "proxy" in third CNAME name field
     # direct zone tf.local:
     #   (Avahi does not cross networks, so we need to cheat by serving tf.local)
+    And I scroll to the top of the page
     And I press "Add Item" in available zones section
     And I enter "tf.local" in third available zone name field
     And I enter "master/db.tf.local" in third file name field
