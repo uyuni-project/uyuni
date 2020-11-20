@@ -23,8 +23,9 @@ Feature: openSCAP audit of traditional client
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Default" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text or "notapplicable" text
-    And I should see a "rule-" link
+    When I enter "pass" as the filtered XCCDF result type
+    And I click on the filter button
+    Then I should see a "rule-pwd-warnage" link
 
   Scenario: Cleanup: remove audit scans retention period from traditional client
     Given I am on the Organizations page
