@@ -15,12 +15,12 @@ import { Table } from "./Table";
 import { Column } from "./Column";
 
 describe("Table component", () => {
-  // TODO: Would be nice to infer types here to ensure this stays in sync with the component
+  // IMPROVE: Would be nice to infer types here to ensure this stays in sync with the component
   // Minimal required props based on the table's types
   const baseProps = {
     data: [],
     identifier: item => item.value,
-    // This is used to await loading states
+    // Only used to await loading states here in tests
     loadingText: "LOADING_TEXT"
   };
 
@@ -28,7 +28,7 @@ describe("Table component", () => {
   async function renderAndLoad(...args) {
     const result = render(...args);
     await waitForElementToBeRemoved(() =>
-      screen.queryByText(baseProps.loadingText, { exact: false })
+      screen.queryByText(baseProps.loadingText)
     );
     return result;
   }
@@ -55,7 +55,7 @@ describe("Table component", () => {
 
     await renderAndLoad(
       <Table {...baseProps} data={data}>
-        <Column columnKey="value" header={"Header"} cell={item => item.value} />
+        <Column columnKey="value" cell={item => item.value} />
       </Table>
     );
 
@@ -76,19 +76,45 @@ describe("Table component", () => {
         value: "Value 2"
       }
     ];
-    server.mockGet("/getData", {
+    server.mockGetJson("/getData", {
       items: data,
       total: data.length
     });
 
     await renderAndLoad(
       <Table {...baseProps} data={"/getData"}>
-        <Column columnKey="value" header={"Header"} cell={item => item.value} />
+        <Column columnKey="value" cell={item => item.value} />
       </Table>
     );
 
     data.forEach(item => {
       expect(screen.queryByText(item.value)).not.toBe(null);
     });
+  });
+
+  test("renders correct number of pages for multiple pages of data", async () => {
+    const itemsPerPage = 1;
+    const totalItems = 1234;
+
+    server.mockGetJson("/getData", {
+      items: [{ value: "Value" }],
+      total: totalItems
+    });
+
+    await renderAndLoad(
+      <Table
+        {...baseProps}
+        data={"/getData"}
+        initialItemsPerPage={itemsPerPage}
+      >
+        <Column columnKey="value" cell={item => item.value} />
+      </Table>
+    );
+
+    expect(
+      screen.queryByText(`${totalItems}`, {
+        selector: "option"
+      })
+    ).not.toBe(null);
   });
 });

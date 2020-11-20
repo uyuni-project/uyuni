@@ -7,7 +7,7 @@ export * from "@testing-library/react";
 const server = setupServer();
 
 /** Mock a GET request to `url` with a successful JSON response containing `response` */
-server.mockGet = function mockGet(url, response) {
+server.mockGetJson = function mockGetJson(url, response) {
   return server.use(
     rest.get(url, (req, res, ctx) => {
       return res(ctx.json(response));
