@@ -19,13 +19,14 @@ Feature: openSCAP audit of Salt minion
 
   Scenario: Check results of the audit job on the minion
     Given I am on the Systems overview page of this "sle_minion"
-    And I follow "Audit" in the content area
-    When I follow "xccdf_org.open-scap_testresult_Default"
+    When I follow "Audit" in the content area
+    And I follow "xccdf_org.open-scap_testresult_Default"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Default" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text or "notapplicable" text
-    And I should see a "rule-" link
+    When I enter "pass" as the filtered XCCDF result type
+    And I click on the filter button
+    Then I should see a "rule-pwd-warnage" link
 
   Scenario: Create a second, almost identical, audit job
     Given I enable IPv6 forwarding on all interfaces of the SLE minion
