@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"POT-Creation-Date: 2020-11-20 12:55+0100\n"
 "PO-Revision-Date: 2020-11-06 00:50+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -1104,6 +1104,7 @@ msgstr " 秒"
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
+#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/virtualization/ListTab.js:231
 msgid "Filter by name"
 msgstr "名前でフィルタ"
@@ -1679,7 +1680,6 @@ msgstr "システムグループ"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:286
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
 #: ../html/src/manager/clusters/shared/ui/select-server.js:113
-#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/content-management/list-projects/list-projects.js:81
 msgid "Filter by any value"
 msgstr "任意の値でフィルタ"
