@@ -20,14 +20,13 @@ import com.redhat.rhn.frontend.servlets.EnvironmentFilter;
 import org.apache.struts.Globals;
 
 /**
- * SessionFilterTest
- * @version $Rev: 64451 $
+ * EnvironmentFilterTest
  */
 public class EnvironmentFilterTest extends BaseFilterTst {
 
     public void setUp() throws Exception {
         super.setUp();
-        this.request.setRequestURL("http://rhn.webdev.redhat.com/rhn/manager/login");
+        this.request.setRequestURL("https://rhn.webdev.redhat.com/rhn/manager/login");
     }
 
     public void testNonSSLUrls() throws Exception {
@@ -65,6 +64,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         Config c = Config.get();
         EnvironmentFilter filter = new EnvironmentFilter();
         filter.init(null);
+        this.request.setupIsSecure(true);
         request.setupAddParameter("message", "some.key.to.localize");
         request.setupAddParameter("messagep1", "param value");
         request.setupAddParameter("messagep2", "param value");
