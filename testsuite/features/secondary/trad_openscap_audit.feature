@@ -35,7 +35,7 @@ Feature: openSCAP audit of traditional client
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-  Scenario: Delete audit results from traditional client
+  Scenario: Cleanup: delete audit results from traditional client
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "List Scans" in the content area
@@ -44,7 +44,7 @@ Feature: openSCAP audit of traditional client
     And I click on "Confirm"
     Then I should see a "deleted. 0 SCAP Scan(s) retained" text
 
-  Scenario: Restore audit scans retention period on traditional client
+  Scenario: Cleanup: restore audit scans retention period on traditional client
     Given I am on the Organizations page
     When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area

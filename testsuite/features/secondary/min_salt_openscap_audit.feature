@@ -49,7 +49,7 @@ Feature: openSCAP audit of Salt minion
     Then I should see a "XCCDF Rule Results" text
     And I should see a "rule-sysctl-ipv6-all-forward" text
 
-  Scenario: Remove audit scans retention period
+  Scenario: Cleanup: remove audit scans retention period
     Given I am on the Organizations page
     And I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
@@ -57,7 +57,7 @@ Feature: openSCAP audit of Salt minion
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-  Scenario: Delete audit results
+  Scenario: Cleanup: delete audit results
     Given I am on the Systems overview page of this "sle_minion"
     And I follow "Audit" in the content area
     And I follow "List Scans" in the content area
