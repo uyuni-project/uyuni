@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:21+0200\n"
+"POT-Creation-Date: 2020-11-20 12:54+0100\n"
 "PO-Revision-Date: 2020-11-19 02:25+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -358,30 +358,7 @@ msgstr "订阅权限不足，无法获取发行版 (%s, %s"
 msgid "System Registered but Inactive"
 msgstr "系统已注册但处于非活动状态"
 
-#: ../server/rhnChannel.py:2277
-#, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it is not subscribed to a channel. If you have not yet\n"
-"activated your product for service, please visit our website at:\n"
-"\n"
-"     http://www.redhat.com/apps/activate/\n"
-"\n"
-"...to activate your product."
-msgstr ""
-"\n"
-"体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
-"您的系统已注册，但不会接收更新，\n"
-"因为它未订阅频道。如果您尚未激活\n"
-"服务产品，请访问我们的网站：\n"
-"\n"
-"     http://www.redhat.com/apps/activate/\n"
-"\n"
-"...以激活您的产品。"
-
-#: ../server/rhnChannel.py:2288
+#: ../server/rhnChannel.py:2272
 #, python-format
 msgid ""
 "\n"
@@ -1202,8 +1179,8 @@ msgid ""
 "content on disk via Channel Dump ISOs."
 msgstr ""
 "错误：不再支持使用 RHN Classic Hosted 进行在线内容同步。\n"
-"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道转储 ISO 从磁盘上的本地内容同步，否则请改用 "
-"cdn-sync 命令。"
+"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道"
+"转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
