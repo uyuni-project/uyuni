@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"POT-Creation-Date: 2020-11-20 12:55+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/"
@@ -1134,8 +1134,8 @@ msgid "Cannot contact selected server"
 msgstr "Tidak dapat menghubungi server yang dipilih"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "Kami tidak dapat menghubungi Satelit atau Proxy di '%s.'"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1397,7 +1397,7 @@ msgstr ""
 #, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Kesalahan ini seharusnya tidak terjadi. Jika Anda ingin membantu kami "
@@ -2848,17 +2848,18 @@ msgstr "Up2date - Informasi Pendaftaran"
 
 #: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "Daftar untuk pembaruan perangkat lunak dari Spacewalk/Red Hat Satellite/Red "
 "Hat Network Classic"
 
 #: ../rhn_register.desktop.in.h:3
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
 #, fuzzy
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "Daftar ke Spacewalk / Red Hat Satellite / Red Hat Network Classic."
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "Daftar ke Spacewalk / Red Hat Satellite / Red Hat Network Classic."
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."

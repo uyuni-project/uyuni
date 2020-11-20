@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"POT-Creation-Date: 2020-11-20 12:55+0100\n"
 "PO-Revision-Date: 2018-03-16 11:01+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Gujarati (http://www.transifex.com/projects/p/spacewalk/"
@@ -990,8 +990,8 @@ msgid "Cannot contact selected server"
 msgstr "પસંદ થયેલ સર્વરનો સંપર્ક કરી શકાતો નથી"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "અમે '%s' આગળ સેટેલાઈટ અથવા પ્રોક્સીનો સંપર્ક કરી શક્યા નહિં."
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1212,10 +1212,10 @@ msgid ""
 msgstr "ત્યાં રુપરેખાંકન સંગ્રહિત કરવામાં ભૂલ. ખાતરી કરો કે તે તમારુ પોતાનું %s છે."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "ભૂલ ઉદ્ભવવી જોઈએ નહિં. જો તમે અમને આ કાર્યક્રમ સુધારવા માટે મદદ કરવા માંગો, તો મહેરબાની "
@@ -2419,15 +2419,16 @@ msgstr "RHN રજીસ્ટ્રેશન"
 
 #: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr "સ્પેસવૉક/સેટેલાઇટ/Red Hat નેટવર્ક માંથી સોફ્ટવેર સુધારાઓ માટે રજીસ્ટર કરો"
 
 #: ../rhn_register.desktop.in.h:3
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
 #, fuzzy
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "સ્પેસવૉક/સેટેલાઇટ/Red Hat નેટવર્કમાં રજીસ્ટર કરો."
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "સ્પેસવૉક/સેટેલાઇટ/Red Hat નેટવર્કમાં રજીસ્ટર કરો."
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."
