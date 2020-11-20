@@ -1,3 +1,12 @@
+-------------------------------------------------------------------
+Fri Nov 20 14:42:33 CEST 2020 - karl.tarvas@suse.com
+
+- Version 4.2.2
+- Add @testing-library/react and msw, update relevant dependencies
+
+-------------------------------------------------------------------
+Fri Oct  2 11:29:00 CEST 2020 - dleidi@suse.com
+
 - Drop node-fetch to fix CVE-2020-15168
 - Upgrade serialize-javascript - CVE-2020-7660
 - Upgrade elliptic - CVE-2020-13822
