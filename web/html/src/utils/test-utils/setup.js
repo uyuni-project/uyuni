@@ -1,3 +1,8 @@
+const jQuery = require("jQuery");
+
+// Allows us to mock and test the existing network layer easily
+global.jQuery = jQuery;
+
 global.t = string => string;
 
 global.Loggerhead = {

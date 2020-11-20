@@ -9,7 +9,9 @@
     "@babel/plugin-transform-flow-strip-types",
     "@babel/plugin-syntax-object-rest-spread",
     "@babel/plugin-syntax-dynamic-import",
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    // Used by React unit tests, see https://github.com/babel/babel/issues/8829#issuecomment-481210475
+    "@babel/plugin-transform-runtime"
   ],
   "env": {
     "test": {

@@ -28,6 +28,7 @@ Source1:        susemanager-nodejs-modules.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  fdupes
+# TODO: Define BuildRequires:  nodejs >= 10 in the below package
 BuildRequires:  nodejs-packaging
 
 %description
