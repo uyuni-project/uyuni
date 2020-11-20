@@ -1295,7 +1295,7 @@ msgstr ""
 "possuir %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
 "program, please file a bug at bugzilla.suse.com. Including the relevant "
