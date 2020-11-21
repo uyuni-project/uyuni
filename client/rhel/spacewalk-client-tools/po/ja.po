@@ -29,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-11-21 02:26+0000\n"
+"PO-Revision-Date: 2020-11-21 14:25+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/ja/>\n"
@@ -1066,7 +1066,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:341
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Spacewalk サーバーとの通信中にエラーが発生しました。"
+msgstr "Spacewalk サーバとの通信時にエラーが発生しました。"
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
