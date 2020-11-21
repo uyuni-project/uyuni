@@ -170,7 +170,8 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     @Override
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         node = null;
     }
 }

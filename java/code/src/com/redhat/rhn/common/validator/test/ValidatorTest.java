@@ -45,7 +45,6 @@ public class ValidatorTest  {
     @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
-
     }
 
 

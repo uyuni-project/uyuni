@@ -56,6 +56,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
     @Override
     @AfterEach
     public void tearDown() throws Exception {
+        super.tearDown();
         FileUtils.deleteDirectory(tmpFileRoot.toFile());
     }
 

@@ -47,7 +47,8 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
 
     @Override
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         ht = null;
         tth = null;
         out = null;

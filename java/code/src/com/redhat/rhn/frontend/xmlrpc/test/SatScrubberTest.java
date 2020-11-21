@@ -200,7 +200,6 @@ public class SatScrubberTest  {
      */
     @AfterEach
     public void tearDown() throws Exception {
-
         TestCaseHelper.tearDownHelper();
     }
 

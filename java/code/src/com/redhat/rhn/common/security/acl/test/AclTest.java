@@ -56,7 +56,8 @@ public class AclTest extends RhnBaseTestCase {
 
     /** Tears down the acl, handler, and context objects. */
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         acl = null;
         context = null;
         handler = null;

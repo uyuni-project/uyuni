@@ -52,7 +52,8 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         tt = null;
         tth = null;
         out = null;

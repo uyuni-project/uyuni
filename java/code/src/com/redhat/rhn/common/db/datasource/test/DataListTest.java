@@ -55,7 +55,8 @@ public class DataListTest extends RhnBaseTestCase {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         hsm = null;
         params = null;
         elabParams = null;

@@ -236,8 +236,6 @@ public class HttpClientAdapterTest  {
      */
     @AfterEach
     public void tearDown() throws Exception {
-
-
         // Clear proxy settings
         ProxySettingsDto proxySettings = new ProxySettingsDto();
         proxySettings.setHostname("");

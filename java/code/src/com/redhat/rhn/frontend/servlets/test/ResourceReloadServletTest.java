@@ -71,7 +71,8 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         request = null;
         response = null;
     }

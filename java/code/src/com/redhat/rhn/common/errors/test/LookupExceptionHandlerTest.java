@@ -105,7 +105,8 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }

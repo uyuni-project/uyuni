@@ -106,7 +106,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
     @Override
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         try {
             Files.deleteIfExists(tempDir);
         } catch (IOException e) {
