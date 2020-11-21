@@ -1,3 +1,5 @@
+- Added RHEL/CentOS Java alternatives options.
+- Create PostgreSQL Datadir should it not exist.
 - Adapt Debian10 bootstrap repository definition for salt on Python 3
 - add --force to mgr-create-bootstrap-repo to enforce generation
   even when some products are not synchronized
