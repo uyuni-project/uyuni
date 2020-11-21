@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:54+0100\n"
-"PO-Revision-Date: 2020-09-26 01:48+0000\n"
+"PO-Revision-Date: 2020-11-21 02:26+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
@@ -706,7 +706,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -714,7 +713,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     このサーバーでは --force rhnpush のオプションは無効になっています。\n"
+"     このサーバーでは --force mgrpush のオプションは無効になっています。\n"
 "     詳細については SUSE Manager の管理者にお問い合わせください。\n"
 "     "
 
@@ -1556,13 +1555,13 @@ msgid "Commandline: %s"
 msgstr "コマンドライン: %s"
 
 #: ../satellite_tools/satsync.py:2202
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
-"デバッグのみ: XML／データベース取り込みに対する最大バッチサイズ (1..%s) 。詳"
-"しくは \"man satellite-sync\" をお読みください。"
+"デバッグのみ: XML／データベース取り込みに対する最大バッチサイズ (1..%s) 。詳しくは \"man mgr-inter-sync\" "
+"をお読みください。"
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1573,13 +1572,10 @@ msgid "process data for this channel only"
 msgstr "このチャンネルに対してのみデータを処理"
 
 #: ../satellite_tools/satsync.py:2209
-#, fuzzy
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
-msgstr ""
-"ディスクダンプは完全エクスポートと考えられます。詳しくは \"man satellite-sync"
-"\" をお読みください。"
+msgstr "ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-sync\" をお読みください。"
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
@@ -1670,9 +1666,8 @@ msgid "alternative server with which to connect (hostname)"
 msgstr "接続先の代替サーバ (ホスト名)"
 
 #: ../satellite_tools/satsync.py:2254
-#, fuzzy
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
-msgstr "このステップまで同期 (詳しくは man satellite-sync を参照)"
+msgstr "このステップまで同期 (詳しくは man mgr-inter-sync を参照)"
 
 #: ../satellite_tools/satsync.py:2256
 msgid "write complete data to tempfile before streaming to remainder of app"
