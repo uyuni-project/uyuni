@@ -15,15 +15,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2015-03-17 12:22+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Spanish <trans-es@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2020-11-21 02:26+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/"
+"yum-rhn-plugin/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnplugin.py:49
 #, fuzzy, python-brace-format
@@ -70,7 +71,7 @@ msgstr ""
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "Puede usar rhn_register para registrarse."
 
 #: ../rhnplugin.py:136
 #, fuzzy, python-brace-format
@@ -95,7 +96,7 @@ msgstr ""
 
 #: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
-msgstr "La información del perfil de paquetes no pudo ser enviada."
+msgstr "No se pudo enviar la información de perfil de paquetes."
 
 #: ../rhnplugin.py:276
 msgid "Error Message:"
