@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-10-07 10:49+0000\n"
+"PO-Revision-Date: 2020-11-21 02:26+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -662,9 +662,8 @@ msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "使用方法: activationkey_setcontactmethod キー 連絡方法"
 
 #: ../src/spacecmd/api.py:44
-#, fuzzy
 msgid "api: call server API with arguments directly"
-msgstr "api: 指定したパラメータで直接 RHN API を呼び出す"
+msgstr "api: 指定したパラメータで直接サーバ API を呼び出す"
 
 #: ../src/spacecmd/api.py:45
 #, python-format
@@ -3142,9 +3141,9 @@ msgid "Actvationkey %s does not exist on the "
 msgstr "アクティベーションキー %s が "
 
 #: ../src/spacecmd/kickstart.py:2461
-#, fuzzy, python-format
+#, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
-msgstr "GPG/SSL 鍵 %s が "
+msgstr "GPG/SSL 鍵 %s が Spacewalk サーバ内に存在しません。読み飛ばしています"
 
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
@@ -3956,9 +3955,8 @@ msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
 msgstr "例: name:kernel AND version:2.6.18 AND -description:devel"
 
 #: ../src/spacecmd/package.py:178
-#, fuzzy
 msgid "package_remove: Remove a package from Spacewalk"
-msgstr "package_remove: Satellite からパッケージを削除"
+msgstr "package_remove: Spacewalk からパッケージを削除"
 
 #: ../src/spacecmd/package.py:179
 msgid "usage: package_remove PACKAGE ..."
