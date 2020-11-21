@@ -49,7 +49,8 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
     private TraceBackAction tba;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
         MessageQueue.registerAction(tba, TraceBackEvent.class);

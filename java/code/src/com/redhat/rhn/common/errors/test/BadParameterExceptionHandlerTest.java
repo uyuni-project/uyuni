@@ -49,6 +49,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
+        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
         MessageQueue.registerAction(tba, TraceBackEvent.class);

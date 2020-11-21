@@ -54,8 +54,6 @@ public class IcalUtilsTest  {
      */
     @BeforeEach
     public void setUp() throws Exception {
-
-
         File ical = new File(TestUtils.findTestData(new File(TESTDATAPATH, GOOGLE_ICS).getAbsolutePath()).getPath());
         multiZonesCal = icalUtils.parseCalendar(new FileReader(ical)).get();
     }

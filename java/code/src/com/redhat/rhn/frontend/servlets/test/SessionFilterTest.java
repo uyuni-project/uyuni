@@ -42,7 +42,8 @@ public class SessionFilterTest extends MockObjectTestCase {
     private FilterChain chain;
 
     @BeforeEach
-    public void setUp() throws IOException, ServletException {
+    public void setUp() throws Exception {
+        super.setUp();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         chain = mock(FilterChain.class);

@@ -44,7 +44,8 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     private ServletOutputStream output;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    public void setUp() throws Exception {
+        super.setUp();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         output = new MockServletOutputStream();
