@@ -79,8 +79,9 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
-    And I should see a "rpm_verify_hashes" link
+    When I enter "pass" as the filtered XCCDF result type
+    And I click on the filter button
+    Then I should see a "rpm_verify_permissions" link
 
 @centos_minion
   Scenario: Schedule some actions on the CentOS 7 traditional client
