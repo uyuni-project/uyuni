@@ -764,17 +764,30 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
 end
 
 When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
-  step %(I #{action} packages "#{TRADITIONAL_STACK_RPMS}" #{where} this "#{host}")
+  pkgs = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions'
+  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
-When(/^I (install|remove) OpenSCAP (traditional|salt|centos) dependencies (on|from) "([^"]*)"$/) do |action, client_type, where, host|
-  if client_type == 'traditional'
-    step %(I #{action} packages "#{OPEN_SCAP_TRAD_DEPS}" #{where} this "#{host}")
-  elsif client_type == 'salt'
-    step %(I #{action} packages "#{OPEN_SCAP_SALT_DEPS}" #{where} this "#{host}")
-  else
-    step %(I #{action} packages "#{OPEN_SCAP_CENTOS_DEPS}" #{where} this "#{host}")
+When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    pkgs = 'openscap-utils openscap-content'
+  elsif os_family =~ /^centos/
+    pkgs = 'openscap-utils scap-security-guide'
+  elsif os_family =~ /^ubuntu/
+    pkgs = 'libopenscap8 ssg-debderived'
   end
+  pkgs += ' spacewalk-oscap' if host.include? 'client'
+  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
+end
+
+# On CentOS 7, OpenSCAP files are for RedHat and need a small adaptation for CentOS
+When(/^I fix CentOS 7 OpenSCAP files on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  script = '/<\/rear-matter>/a  <platform idref="cpe:/o:centos:centos:7"/>'
+  file = "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml"
+  node.run("sed -i '#{script}' #{file}")
 end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|

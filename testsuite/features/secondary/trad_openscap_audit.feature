@@ -1,12 +1,17 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: openSCAP audit of traditional client
+Feature: OpenSCAP audit of traditional client
   In order to audit a traditional client
   As an authorized user
-  I want to run an openSCAP scan on it
+  I want to run an OpenSCAP scan on it
 
-  Scenario: Schedule an audit job using the SUSE profile
+  Scenario: Install the OpenSCAP packages on the traditional client
+    When I enable repository "os_pool_repo os_update_repo" on this "sle_client"
+    And I enable SUSE Manager tools repositories on "sle_client"
+    And I install OpenSCAP dependencies on "sle_client"
+
+  Scenario: Schedule an OpenSCAP audit job on the traditional client using SUSE profile
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
@@ -51,3 +56,8 @@ Feature: openSCAP audit of traditional client
     And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
+
+  Scenario: Cleanup: remove the openSCAP packages from the traditional client
+    When I remove OpenSCAP dependencies from "sle_client"
+    And I disable SUSE Manager tools repositories on "sle_client"
+    And I disable repository "os_pool_repo os_update_repo" on this "sle_client"

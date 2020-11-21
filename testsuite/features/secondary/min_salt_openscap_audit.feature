@@ -1,12 +1,16 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: openSCAP audit of Salt minion
+Feature: OpenSCAP audit of Salt minion
   In order to audit a Salt minion
   As an authorized user
-  I want to run an openSCAP scan on it
+  I want to run an OpenSCAP scan on it
 
-  Scenario: Schedule an audit job on the minion
+  Scenario: Install the OpenSCAP packages on the SLE minion
+    When I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
+    And I install OpenSCAP dependencies on "sle_minion"
+
+  Scenario: Schedule an OpenSCAP audit job on the SLE minion
     Given I disable IPv6 forwarding on all interfaces of the SLE minion
     When I am on the Systems overview page of this "sle_minion"
     And I follow "Audit" in the content area
@@ -73,3 +77,7 @@ Feature: openSCAP audit of Salt minion
     And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
+
+  Scenario: Cleanup: remove the openSCAP packages from the SLE minion
+    When I remove OpenSCAP dependencies from "sle_minion"
+    And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"
