@@ -39,10 +39,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-07-28 15:30+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools/es/>\n"
+"PO-Revision-Date: 2020-11-21 02:26+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1106,9 +1106,8 @@ msgid "Make sure the network connection on this system is operational."
 msgstr "Asegúrese de que la conexión a red esté funcionando."
 
 #: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Se produjo un error al conectarse con Red Hat Network."
+msgstr "Hubo un error de comunicación con el servidor Spacewalk."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
