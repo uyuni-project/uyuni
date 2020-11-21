@@ -54,27 +54,27 @@ Feature: openSCAP audit of CentOS Salt minion
 @centos_minion
   Scenario: Cleanup: remove audit scans retention period from CentOS minion
     Given I am on the Organizations page
-    And I follow "SUSE Test" in the content area
+    When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
-    When I enter "0" as "scap_retention_period"
+    And I enter "0" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
 @centos_minion
   Scenario: Cleanup: delete audit results from CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
-    And I follow "Audit" in the content area
+    When I follow "Audit" in the content area
     And I follow "List Scans" in the content area
-    When I click on "Select All"
+    And I click on "Select All"
     And I click on "Remove Selected Scans"
     And I click on "Confirm"
-    Then I should see a "2 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
+    Then I should see a "1 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
 @centos_minion
   Scenario: Cleanup: restore audit scans retention period on CentOS minion
     Given I am on the Organizations page
-    And I follow "SUSE Test" in the content area
+    When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
-    When I enter "90" as "scap_retention_period"
+    And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text

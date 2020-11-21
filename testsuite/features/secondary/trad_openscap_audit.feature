@@ -42,7 +42,7 @@ Feature: openSCAP audit of traditional client
     And I click on "Select All"
     And I click on "Remove Selected Scans"
     And I click on "Confirm"
-    Then I should see a "deleted. 0 SCAP Scan(s) retained" text
+    Then I should see a "1 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
   Scenario: Cleanup: restore audit scans retention period on traditional client
     Given I am on the Organizations page
