@@ -29,10 +29,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-10-02 13:48+0000\n"
+"PO-Revision-Date: 2020-11-21 02:26+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1046,9 +1046,9 @@ msgid "Cannot contact selected server"
 msgstr "選択したサーバーにコンタクトできません"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "'%s' の Satellite または Proxy にコンタクトできませんでした"
+msgstr "{HOST} にある {PRODUCT_NAME} または Proxy に接続できませんでした。"
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -1273,15 +1273,14 @@ msgstr ""
 "確認してください。"
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
 "program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
-"このエラーは発生すべきエラーではありません。 このプログラムの改善にご助力頂け"
-"る場合には、 bugzilla.redhat.com でバグ報告をお願いします。  '%s' の該当部分"
-"をバグ報告に入れて頂くと非常に助かります。ありがとうございます！"
+"このエラーは発生すべきエラーではありません。 このプログラムの改善にご助力頂ける場合には、 bugzilla.suse.com でバグ報告をお願いします。"
+"  '%s' の該当部分をバグ報告に入れて頂くと非常に助かります。ありがとうございます！"
 
 #: ../src/up2date_client/rhnreg.py:76
 msgid "Warning: unable to enable rhnsd with systemd"
@@ -2492,15 +2491,12 @@ msgid "RHN Registration"
 msgstr "RHN 登録"
 
 #: ../rhn_register.desktop.in.h:2
-#, fuzzy
 msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-"Spacewalk/Red Hat Satellite/Red Hat Network Classic からソフトウェアの更新を"
-"受け取るために登録する"
+msgstr "Spacewalk/Uyuni/SUSE Manager からソフトウェアの更新を受け取るために登録する"
 
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+msgstr "Spacewalk/Uyuni/SUSE Manager への登録"
 
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 #~ msgstr "Spacewalk/Red Hat Satellite/Red Hat Network Classic に登録します。"
