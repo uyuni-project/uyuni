@@ -799,14 +799,14 @@
       </trans-unit>
       <trans-unit id="Critical Match Rate" xml:space="preserve">
         <source>Critical Match Rate</source>
-        <target/>
+        <target>Kritická miera zhody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Matches" xml:space="preserve">
         <source>Critical Matches</source>
-        <target/>
+        <target>Kritické zhody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1247,7 +1247,7 @@
       </trans-unit>
       <trans-unit id="Local IP address filter pattern list" xml:space="preserve">
         <source>Local IP address filter pattern list</source>
-        <target/>
+        <target>Zoznam vzorov filtra lokálnych adries IP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1436,7 +1436,7 @@
       </trans-unit>
       <trans-unit id="Remote IP address filter pattern list" xml:space="preserve">
         <source>Remote IP address filter pattern list</source>
-        <target/>
+        <target>Zoznam vzorov filtra vzdialených adries IP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1891,14 +1891,14 @@
       </trans-unit>
       <trans-unit id="Warning Match Rate" xml:space="preserve">
         <source>Warning Match Rate</source>
-        <target/>
+        <target>Varovná miera zhody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Matches" xml:space="preserve">
         <source>Warning Matches</source>
-        <target/>
+        <target>Varovné zhody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2515,14 +2515,14 @@
       </trans-unit>
       <trans-unit id="metrics.Pattern match rate" xml:space="preserve">
         <source>Pattern match rate</source>
-        <target/>
+        <target>Miera zhody vzorov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Pattern matches" xml:space="preserve">
         <source>Pattern matches</source>
-        <target/>
+        <target>Zhody vzorov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3173,7 +3173,7 @@
       </trans-unit>
       <trans-unit id="Log Pattern Match" xml:space="preserve">
           <source>Log Pattern Match</source>
-        <target/>
+        <target>Zhoda vzorov záznamu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
