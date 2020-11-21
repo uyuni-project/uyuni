@@ -1,3 +1,4 @@
+- Fix: Don't fail on empty os-release line.
 - Add web_theme user preferences column (bsc#1178204)
 - Add 'preferred_docs_locale' to UserInfo table
 - add new column to rhnactiondup table for allowVendorChange flag
