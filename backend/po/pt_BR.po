@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:54+0100\n"
-"PO-Revision-Date: 2020-10-15 01:49+0000\n"
+"PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/pt_BR/>\n"
@@ -692,7 +692,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -700,7 +699,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     A opção --force rhnpush está desativada neste servidor.\n"
+"     A opção --force mgrpush está desativada neste servidor.\n"
 "     Entre em contato com o administrador do SUSE Manager para obter mais "
 "ajuda.\n"
 "     "
@@ -1540,13 +1539,13 @@ msgid "Commandline: %s"
 msgstr "Linha de comando: %s"
 
 #: ../satellite_tools/satsync.py:2202
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
 "APENAS PARA DEBUGAR: máx. tamanho do lote para processamento de importação "
-"XML/banco de dados (1..%s).\"man satellite-sync\" para obter mais "
+"XML/banco de dados (1..%s).\"man mgr-inter-sync\" para obter mais "
 "informações."
 
 #: ../satellite_tools/satsync.py:2205
@@ -1559,13 +1558,12 @@ msgid "process data for this channel only"
 msgstr "processar dados apenas para este canal"
 
 #: ../satellite_tools/satsync.py:2209
-#, fuzzy
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
-"despejo de disco será considerado uma exportação completa; veja \"man "
-"satellite-sync\" para mais informações."
+"despejo de disco será considerado uma exportação completa; veja \"man mgr-"
+"inter-sync\" para mais informações."
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
@@ -1662,9 +1660,8 @@ msgid "alternative server with which to connect (hostname)"
 msgstr "servidor alternativo ao qual se conectar (nome do host)"
 
 #: ../satellite_tools/satsync.py:2254
-#, fuzzy
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
-msgstr "sincronize com esta etapa (man satellite-sync para mais informações)"
+msgstr "sincronize com esta etapa (man mgr-inter-sync para mais informações)"
 
 #: ../satellite_tools/satsync.py:2256
 msgid "write complete data to tempfile before streaming to remainder of app"
