@@ -692,7 +692,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -1540,7 +1539,7 @@ msgid "Commandline: %s"
 msgstr "Linha de comando: %s"
 
 #: ../satellite_tools/satsync.py:2202
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
@@ -1559,7 +1558,6 @@ msgid "process data for this channel only"
 msgstr "processar dados apenas para este canal"
 
 #: ../satellite_tools/satsync.py:2209
-#, fuzzy
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
