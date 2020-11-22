@@ -813,14 +813,14 @@
       </trans-unit>
       <trans-unit id="Critical Number Running Maximum" xml:space="preserve">
         <source>Critical Number Running Maximum</source>
-        <target/>
+        <target>Kritický maximálny počet bežiacich</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Number Running Minimum" xml:space="preserve">
         <source>Critical Number Running Minimum</source>
-        <target/>
+        <target>Kritický minimálny počet bežiacich</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1023,7 +1023,7 @@
       </trans-unit>
       <trans-unit id="Critical Threads Running" xml:space="preserve">
         <source>Critical Threads Running</source>
-        <target/>
+        <target>Kritické bežiace vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2087,7 +2087,7 @@
       </trans-unit>
       <trans-unit id="Warning Threads Running" xml:space="preserve">
         <source>Warning Threads Running</source>
-        <target/>
+        <target>Varovné bežiace vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2704,7 +2704,7 @@
       </trans-unit>
       <trans-unit id="metrics.Threads running" xml:space="preserve">
         <source>Threads running</source>
-        <target/>
+        <target>Bežiace vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2844,7 +2844,7 @@
       </trans-unit>
       <trans-unit id="npunix" xml:space="preserve">
           <source>RHNMD must be running on the monitored host to perform this check.</source>
-        <target/>
+        <target>Na vykonanie tejto kontroly musí byť na monitorovanom hostiteľovi spustené RHNMD.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2858,7 +2858,7 @@
       </trans-unit>
       <trans-unit id="snmp" xml:space="preserve">
           <source>SNMP must be running on the monitored host to perform this check.</source>
-        <target/>
+        <target>Na vykonanie tejto kontroly musí byť na monitorovanom hostiteľovi spustené SNMP.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3271,7 +3271,7 @@
       </trans-unit>
       <trans-unit id="Process Running" xml:space="preserve">
           <source>Process Running</source>
-        <target/>
+        <target>Bežiaci proces</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3509,14 +3509,14 @@
       </trans-unit>
       <trans-unit id="kickstart.state.restarted" xml:space="preserve">
           <source>The system has been restarted in order to begin the autoinstallation process.</source>
-        <target/>
+        <target>Systém bol reštartovaný, aby sa začal proces automatickej inštalácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.configuration_accessed" xml:space="preserve">
           <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target>Systém stiahol konfiguračný súbor automatickej inštalácie z @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
