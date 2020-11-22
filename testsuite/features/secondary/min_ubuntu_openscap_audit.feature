@@ -1,13 +1,23 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: openSCAP audit of Ubuntu Salt minion
+Feature: OpenSCAP audit of Ubuntu Salt minion
   In order to audit an Ubuntu Salt minion
   As an authorized user
-  I want to run an openSCAP scan on it
+  I want to run an OpenSCAP scan on it
 
 @ubuntu_minion
-  Scenario: Schedule an OpenSCAP audit job for the Ubuntu minion
+  Scenario: Install the OpenSCAP packages on the Ubuntu minion
+    Given I am on the Systems overview page of this "ubuntu_minion"
+    When I enable universe repositories on "ubuntu_minion"
+    And I install OpenSCAP dependencies on "ubuntu_minion"
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I follow "Events" in the content area
+    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+
+@ubuntu_minion
+  Scenario: Schedule an OpenSCAP audit job on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
@@ -71,3 +81,8 @@ Feature: openSCAP audit of Ubuntu Salt minion
     And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
+
+@ubuntu_minion
+  Scenario: Cleanup: remove the OpenSCAP packages from the Ubuntu minion
+    When I remove OpenSCAP dependencies from "ubuntu_minion"
+    When I disable universe repositories on "ubuntu_minion"

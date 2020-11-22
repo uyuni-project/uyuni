@@ -25,7 +25,8 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I enable SUSE Manager tools repositories on "ceos_client"
     And I enable repository "CentOS-Base" on this "ceos_client"
     And I install the traditional stack utils on "ceos_client"
-    And I install OpenSCAP centos dependencies on "ceos_client"
+    And I install OpenSCAP dependencies on "ceos_client"
+    And I fix CentOS 7 OpenSCAP files on "ceos_client"
     And I register "ceos_client" as traditional client
     And I run "rhn-actions-control --enable-all" on "ceos_client"
 
@@ -104,7 +105,9 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
 @centos_minion
   Scenario: Cleanup: delete the installed rpms on CentOS 7 traditional client
     When I remove the traditional stack utils from "ceos_client"
-    And I remove OpenSCAP centos dependencies from "ceos_client"
+    And I remove OpenSCAP dependencies from "ceos_client"
+    And I disable SUSE Manager tools repositories on "ceos_client"
+    And I disable repository "CentOS-Base" on this "ceos_client"
 
 @centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after traditional client tests
