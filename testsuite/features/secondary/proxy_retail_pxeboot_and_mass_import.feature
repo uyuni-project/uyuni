@@ -413,6 +413,7 @@ Feature: PXE boot a Retail terminal
     And I press "Remove Item" in second CNAME section
     And I press "Remove Item" in first CNAME section
     # direct zone tf.local:
+    And I scroll to the top of the page
     And I press minus sign in third configured zone section
     And I press minus sign in third available zone section
     And I click on "Save Formula"
