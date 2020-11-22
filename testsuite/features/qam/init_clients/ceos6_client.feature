@@ -12,7 +12,7 @@ Feature: Bootstrap a CentOS 6 traditional client
     And I enable repository "SLE-Manager-Tools-RES-6-x86_64" on this "ceos6_client"
     And I enable repository "CentOS-Base" on this "ceos6_client"
     And I install the traditional stack utils on "ceos6_client"
-    And I install OpenSCAP centos dependencies on "ceos6_client"
+    And I install OpenSCAP dependencies on "ceos6_client"
     And I register "ceos6_client" as traditional client with activation key "1-ceos6_client_key"
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
 

@@ -1,20 +1,19 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: openSCAP audit of CentOS Salt minion
+Feature: OpenSCAP audit of CentOS Salt minion
   In order to audit a CentOS Salt minion
   As an authorized user
-  I want to run an openSCAP scan on it
+  I want to run an OpenSCAP scan on it
 
 @centos_minion
-  Scenario: Prepare the CentOS minion
-    Given I am authorized
-    When I enable SUSE Manager tools repositories on "ceos_minion"
-    And I enable repository "CentOS-Base" on this "ceos_minion"
-    And I install OpenSCAP centos dependencies on "ceos_minion"
+  Scenario: Install the OpenSCAP packages on the CentOS minion
+    When I enable repository "CentOS-Base" on this "ceos_minion"
+    And I install OpenSCAP dependencies on "ceos_minion"
+    And I fix CentOS 7 OpenSCAP files on "ceos_minion"
 
 @centos_minion
-  Scenario: Schedule an OpenSCAP audit job for the CentOS minion
+  Scenario: Schedule an OpenSCAP audit job on the CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
@@ -78,3 +77,8 @@ Feature: openSCAP audit of CentOS Salt minion
     And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
+
+@centos_minion
+  Scenario: Cleanup: remove the openSCAP packages from the CentOS minion
+    When I remove OpenSCAP dependencies from "ceos_minion"
+    And I disable repository "CentOS-Base" on this "ceos_minion"
