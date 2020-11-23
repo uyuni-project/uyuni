@@ -30,6 +30,7 @@
 # pylint: disable=C0103
 
 import gettext
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -52,7 +53,7 @@ def help_ssm(self):
     print('> ssm_add group:rhel5-x86_64')
     print('> ssm_intersect group:web-servers')
     print('')
-    print('Using the SSM:')
+    print(_('Using the SSM:'))
     print('> system_installpackage ssm zsh')
     print('> system_runscript ssm')
 
@@ -84,12 +85,12 @@ def do_ssm_add(self, args):
     systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems found'))
+        logging.warning(_N('No systems found'))
         return 1
 
     for system in systems:
         if system in self.ssm:
-            logging.warning(_('%s is already in the list') % system)
+            logging.warning(_N('%s is already in the list') % system)
             continue
         else:
             self.ssm[system] = self.get_system_id(system)
@@ -133,7 +134,7 @@ def do_ssm_intersect(self, args):
     systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems found'))
+        logging.warning(_N('No systems found'))
         return 1
 
     # tmp_ssm placeholder to gather systems that are both in original ssm
@@ -183,7 +184,7 @@ def do_ssm_remove(self, args):
     systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems found'))
+        logging.warning(_N('No systems found'))
         return 1
 
     for system in systems:

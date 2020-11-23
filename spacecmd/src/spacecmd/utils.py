@@ -60,6 +60,7 @@ except ImportError:
 import rpm
 
 from spacecmd.argumentparser import SpacecmdArgumentParser
+from spacecmd.i18n import _N
 
 __EDITORS = ['vim', 'vi', "emacs", 'nano']
 
@@ -130,13 +131,13 @@ def load_cache(cachefile):
             # So we catch this error and remove the corrupt partial file
             # If you don't do this then spacecmd will fail with an unhandled
             # exception until the partial file is manually removed
-            logging.warning(_("Loading cache file %s failed"), cachefile)
-            logging.warning(_("Cache generation was probably interrupted," +
+            logging.warning(_N("Loading cache file %s failed"), cachefile)
+            logging.warning(_N("Cache generation was probably interrupted," +
                             "removing corrupt %s"), cachefile)
             logging.debug(str(exc))
             os.remove(cachefile)
         except IOError:
-            logging.error(_("Couldn't load cache from %s"), cachefile)
+            logging.error(_N("Couldn't load cache from %s"), cachefile)
 
         if isinstance(data, (list, dict)):
             if 'expire' in data:
@@ -157,7 +158,7 @@ def save_cache(cachefile, data, expire=None):
         pickle.dump(data, output, pickle.HIGHEST_PROTOCOL)
         output.close()
     except IOError:
-        logging.error(_("Couldn't write to %s"), cachefile)
+        logging.error(_N("Couldn't write to %s"), cachefile)
 
     if 'expire' in data:
         del data['expire']
@@ -202,7 +203,7 @@ def editor(template='', delete=False):
             handle.write(template)
             handle.close()
         except IOError as exc:
-            logging.warning(_('Could not open the temporary file'))
+            logging.warning(_N('Could not open the temporary file'))
             logging.error(str(exc))
             return
 
@@ -222,12 +223,12 @@ def editor(template='', delete=False):
                 success = True
                 break
             else:
-                logging.error(_('Editor "%s" exited with code %i'), editor_cmd, exit_code)
+                logging.error(_N('Editor "%s" exited with code %i'), editor_cmd, exit_code)
         except OSError as exc:
-            logging.error(_("General failure running editor: %s"), str(exc))
+            logging.error(_N("General failure running editor: %s"), str(exc))
 
     if not success:
-        logging.error(_('No editors found'))
+        logging.error(_N('No editors found'))
         return ''
 
     if os.path.isfile(file_name) and exit_code == 0:
@@ -242,11 +243,11 @@ def editor(template='', delete=False):
                     os.remove(file_name)
                     file_name = ''
                 except OSError:
-                    logging.error(_('Could not remove %s'), file_name)
+                    logging.error(_N('Could not remove %s'), file_name)
 
             return contents, file_name
         except IOError:
-            logging.error(_('Could not read %s'), file_name)
+            logging.error(_N('Could not read %s'), file_name)
             return [], ''
 
 
@@ -364,7 +365,7 @@ def parse_time_input(userinput=''):
     if timestamp:
         return xmlrpclib.DateTime(timestamp.timetuple())
 
-    logging.error(_('Invalid time provided'))
+    logging.error(_N('Invalid time provided'))
     return
 
 
@@ -452,7 +453,7 @@ def print_errata_list(errata):
         elif re.match('product enhancement', erratum.get('advisory_type'), re.I):
             rhea.append(erratum)
         else:
-            logging.warning('%s is an unknown errata type',
+            logging.warning(_N('%s is an unknown errata type'),
                             erratum.get('advisory_name'))
             continue
 
@@ -507,7 +508,7 @@ def config_channel_order(all_channels=None, new_channels=None):
             channel = prompt_user(_('Channel:'))
 
             if channel not in all_channels:
-                logging.warning(_('Invalid channel'))
+                logging.warning(_N('Invalid channel'))
                 continue
 
             try:
@@ -518,16 +519,16 @@ def config_channel_order(all_channels=None, new_channels=None):
 
                 new_channels.insert(rank - 1, channel)
             except IndexError:
-                logging.warning(_('Invalid rank'))
+                logging.warning(_N('Invalid rank'))
                 continue
             except ValueError:
-                logging.warning(_('Invalid rank'))
+                logging.warning(_N('Invalid rank'))
                 continue
         elif re.match('r', action, re.I):
             channel = prompt_user(_('Channel:'))
 
             if channel not in all_channels:
-                logging.warning(_('Invalid channel'))
+                logging.warning(_N('Invalid channel'))
                 continue
 
             new_channels.remove(channel)
@@ -557,7 +558,7 @@ def list_locales():
                 for subitem in os.listdir(path):
                     zones.append(os.path.join(item, subitem))
             except IOError:
-                logging.error(_('Could not read %s'), path)
+                logging.error(_N('Could not read %s'), path)
         else:
             zones.append(item)
 
@@ -687,14 +688,14 @@ def json_dump_to_file(obj, filename):
 
     out = False
     if json_data is None:
-        logging.error(_("Could not generate json data object!"))
+        logging.error(_N("Could not generate json data object!"))
     else:
         try:
             with open(filename, 'w') as fdh:
                 fdh.write(json_data)
             out = True
         except IOError as exc:
-            logging.error(_("Could not open file %s for writing: %s"), filename, str(exc))
+            logging.error(_N("Could not open file %s for writing: %s"), filename, str(exc))
 
     return out
 
@@ -705,11 +706,11 @@ def json_read_from_file(filename):
         with open(filename) as fhd:
             data = json.loads(fhd.read())
     except IOError as exc:
-        logging.error(_("Could not open file %s for reading: %s"), filename, str(exc))
+        logging.error(_N("Could not open file %s for reading: %s"), filename, str(exc))
     except ValueError as exc:
-        logging.error(_("Could not parse JSON data from %s: %s"), filename, str(exc))
+        logging.error(_N("Could not parse JSON data from %s: %s"), filename, str(exc))
     except Exception as exc:
-        logging.error(_("Error processing file %s: %s"), filename, str(exc))
+        logging.error(_N("Error processing file %s: %s"), filename, str(exc))
 
     return data
 
@@ -737,7 +738,7 @@ def get_string_diff_dicts(string1, string2, sep="-"):
     replace2 = {}
 
     if string1 == string2:
-        logging.info(_("Skipping usage of common strings: both strings are equal"))
+        logging.info(_N("Skipping usage of common strings: both strings are equal"))
         return [None, None]
     substrings1 = deque(string1.split(sep))
     substrings2 = deque(string2.split(sep))
@@ -753,7 +754,7 @@ def get_string_diff_dicts(string1, string2, sep="-"):
             replace1['(^|-)' + sub1 + '(-|$)'] = r'\1' + "DIFF(" + sub1 + "|" + sub2 + ")" + r'\2'
             replace2['(^|-)' + sub2 + '(-|$)'] = r'\1' + "DIFF(" + sub1 + "|" + sub2 + ")" + r'\2'
     if substrings1 or substrings2:
-        logging.info(_("Skipping usage of common strings: number of substrings differ"))
+        logging.info(_N("Skipping usage of common strings: number of substrings differ"))
         return [None, None]
     return [replace1, replace2]
 
