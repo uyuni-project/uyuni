@@ -7,8 +7,13 @@ Feature: OpenSCAP audit of Salt minion
   I want to run an OpenSCAP scan on it
 
   Scenario: Install the OpenSCAP packages on the SLE minion
+    Given I am on the Systems overview page of this "sle_minion"
     When I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
     And I install OpenSCAP dependencies on "sle_minion"
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I follow "Events" in the content area
+    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
 
   Scenario: Schedule an OpenSCAP audit job on the SLE minion
     Given I disable IPv6 forwarding on all interfaces of the SLE minion
@@ -41,7 +46,7 @@ Feature: OpenSCAP audit of Salt minion
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
-    When I wait for the openSCAP audit to finish
+    When I wait for the OpenSCAP audit to finish
     And I disable IPv6 forwarding on all interfaces of the SLE minion
 
   Scenario: Compare audit results
@@ -78,6 +83,6 @@ Feature: OpenSCAP audit of Salt minion
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-  Scenario: Cleanup: remove the openSCAP packages from the SLE minion
+  Scenario: Cleanup: remove the OpenSCAP packages from the SLE minion
     When I remove OpenSCAP dependencies from "sle_minion"
     And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"

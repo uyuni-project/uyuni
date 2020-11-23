@@ -67,7 +67,7 @@ Feature: OpenSCAP audit of CentOS Salt minion
     And I click on "Select All"
     And I click on "Remove Selected Scans"
     And I click on "Confirm"
-    Then I should see a "1 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
+    Then I should see a " SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
 @centos_minion
   Scenario: Cleanup: restore audit scans retention period on CentOS minion
@@ -79,6 +79,6 @@ Feature: OpenSCAP audit of CentOS Salt minion
     Then I should see a "Organization SUSE Test was successfully updated." text
 
 @centos_minion
-  Scenario: Cleanup: remove the openSCAP packages from the CentOS minion
+  Scenario: Cleanup: remove the OpenSCAP packages from the CentOS minion
     When I remove OpenSCAP dependencies from "ceos_minion"
     And I disable repository "CentOS-Base" on this "ceos_minion"
