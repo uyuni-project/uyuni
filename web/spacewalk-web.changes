@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 23 15:16:14 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.20-1
 - Fix mandatory channels JS API to finish loading in case of error (bsc#1178839)
 - Fix the search panel in CLM filters page
 - Localize documentation links
