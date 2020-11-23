@@ -652,7 +652,7 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
 end
 
-When(/^I wait for the openSCAP audit to finish$/) do
+When(/^I wait for the OpenSCAP audit to finish$/) do
   host = $server.full_hostname
   @sle_id = retrieve_server_id($minion.full_hostname)
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')

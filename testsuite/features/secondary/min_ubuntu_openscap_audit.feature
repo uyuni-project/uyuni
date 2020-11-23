@@ -71,7 +71,7 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     And I click on "Select All"
     And I click on "Remove Selected Scans"
     And I click on "Confirm"
-    Then I should see a "1 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
+    Then I should see a " SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
 @ubuntu_minion
   Scenario: Cleanup: restore audit scans retention period on Ubuntu minion
@@ -83,6 +83,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     Then I should see a "Organization SUSE Test was successfully updated." text
 
 @ubuntu_minion
-  Scenario: Cleanup: remove the openSCAP packages from the Ubuntu minion
+  Scenario: Cleanup: remove the OpenSCAP packages from the Ubuntu minion
     When I remove OpenSCAP dependencies from "ubuntu_minion"
     When I disable universe repositories on "ubuntu_minion"

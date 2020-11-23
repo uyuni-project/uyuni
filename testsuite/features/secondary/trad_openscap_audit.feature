@@ -47,7 +47,7 @@ Feature: OpenSCAP audit of traditional client
     And I click on "Select All"
     And I click on "Remove Selected Scans"
     And I click on "Confirm"
-    Then I should see a "1 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
+    Then I should see a " SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
   Scenario: Cleanup: restore audit scans retention period on traditional client
     Given I am on the Organizations page
@@ -57,7 +57,7 @@ Feature: OpenSCAP audit of traditional client
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-  Scenario: Cleanup: remove the openSCAP packages from the traditional client
+  Scenario: Cleanup: remove the OpenSCAP packages from the traditional client
     When I remove OpenSCAP dependencies from "sle_client"
     And I disable SUSE Manager tools repositories on "sle_client"
     And I disable repository "os_pool_repo os_update_repo" on this "sle_client"
