@@ -89,7 +89,7 @@ const Cluster = (props: Props) => {
         <TopPanel title={name}
             button={panelButtons}
             icon="spacewalk-icon-clusters"
-            helpUrl="reference/clusters/clusters-menu.html">
+            helpUrl="reference/clusters/clusters-details.html">
             <HashRouter initialPath="overview">
               <div className="spacewalk-content-nav">
                 <ul className="nav nav-tabs">
