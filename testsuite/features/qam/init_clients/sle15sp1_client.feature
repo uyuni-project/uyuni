@@ -9,7 +9,7 @@ Feature: Bootstrap a SLES 15 SP1 traditional client
 
   Scenario: Register a SLES 15 SP1 traditional client
     When I bootstrap traditional client "sle15sp1_client" using bootstrap script with activation key "1-sle15sp1_client_key" from the proxy
-    And I install package "spacewalk-client-setup spacewalk-oscap mgr-cfg-actions" on this "sle15sp1_client"
+    And I install package "spacewalk-client-setup mgr-cfg-actions" on this "sle15sp1_client"
     And I run "mgr-actions-control --enable-all" on "sle15sp1_client"
     Then I should see "sle15sp1_client" via spacecmd
 

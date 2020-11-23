@@ -11,7 +11,6 @@ Feature: Be able to register a CentOS 6 traditional client and do some basic ope
     When I run "/usr/bin/update-ca-trust force-enable" on "ceos6_client"
     And I bootstrap traditional client "ceos6_client" using bootstrap script with activation key "1-ceos6_client_key" from the proxy
     And I install the traditional stack utils on "ceos6_client"
-    And I install OpenSCAP centos dependencies on "ceos6_client"
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
     Then I should see "ceos6_client" via spacecmd
 
