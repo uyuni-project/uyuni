@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Nov 23 15:13:37 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.23-1
 - Update exception message in findSyncedMandatoryChannels
 - Report resolved module dependencies on CLM project details page
 - Allow creating custom ULN repositories with uln:// urls
