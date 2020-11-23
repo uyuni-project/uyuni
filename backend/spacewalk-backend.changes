@@ -1,3 +1,5 @@
+- Fix missing 'LiteServer.add_suse_products' method (bsc#1178704)
+
 -------------------------------------------------------------------
 Mon Nov 23 15:11:42 CET 2020 - jgonzalez@suse.com
 
