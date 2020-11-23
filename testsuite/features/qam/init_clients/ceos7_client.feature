@@ -8,7 +8,8 @@ Feature: Bootstrap a CentOS 7 traditional client
     When I perform a full salt minion cleanup on "ceos7_client"
 
   Scenario: Prepare a CentOS 7 traditional client
-    When I enable repository "CentOS-Base" on this "ceos_client"
+    When I enable SUSE Manager tools repositories on "ceos7_client"
+    And I enable repository "CentOS-Base" on this "ceos7_client"
     And I bootstrap traditional client "ceos7_client" using bootstrap script with activation key "1-ceos7_client_key" from the proxy
     And I install the traditional stack utils on "ceos7_client"
     And I run "mgr-actions-control --enable-all" on "ceos7_client"

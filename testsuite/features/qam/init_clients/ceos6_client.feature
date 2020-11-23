@@ -8,7 +8,8 @@ Feature: Bootstrap a CentOS 6 traditional client
     When I perform a full salt minion cleanup on "ceos6_client"
 
   Scenario: Prepare a CentOS 6 traditional client
-    When I enable repository "CentOS-Base" on this "ceos_client"
+    When I enable SUSE Manager tools repositories on "ceos6_client"
+    And I enable repository "CentOS-Base" on this "ceos6_client"
     And I run "/usr/bin/update-ca-trust force-enable" on "ceos6_client"
     And I bootstrap traditional client "ceos6_client" using bootstrap script with activation key "1-ceos6_client_key" from the proxy
     And I install the traditional stack utils on "ceos6_client"
