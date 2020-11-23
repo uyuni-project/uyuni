@@ -1,3 +1,5 @@
+- Fix: internal: workaround for future tee of logs translation
+
 -------------------------------------------------------------------
 Thu Dec 03 13:41:55 CET 2020 - jgonzalez@suse.com
 
