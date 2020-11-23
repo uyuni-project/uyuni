@@ -589,6 +589,9 @@ public class HardwareMapper {
                     case "virtualbox":
                         virtTypeLabel = "virtualbox";
                         break;
+                    case "virtualpc":
+                        virtTypeLabel = "virtualpc";
+                        break;
                     default:
                         LOG.warn(String.
                                 format("Unsupported virtual instance " +
