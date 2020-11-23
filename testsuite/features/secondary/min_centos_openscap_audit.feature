@@ -8,9 +8,14 @@ Feature: OpenSCAP audit of CentOS Salt minion
 
 @centos_minion
   Scenario: Install the OpenSCAP packages on the CentOS minion
+    Given I am on the Systems overview page of this "sle_minion"
     When I enable repository "CentOS-Base" on this "ceos_minion"
     And I install OpenSCAP dependencies on "ceos_minion"
     And I fix CentOS 7 OpenSCAP files on "ceos_minion"
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I follow "Events" in the content area
+    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
 
 @centos_minion
   Scenario: Schedule an OpenSCAP audit job on the CentOS minion
