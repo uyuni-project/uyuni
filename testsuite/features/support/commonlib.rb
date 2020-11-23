@@ -39,8 +39,6 @@ end
 # determine image for PXE boot tests
 def compute_image_filename
   case ENV['PXEBOOT_IMAGE']
-  when nil
-    'Kiwi/POS_Image-JeOS6_head'
   when 'sles15sp2', 'sles15sp2o'
     # Same kiwi image version is used in case of 4.0 and 4.1
     'Kiwi/POS_Image-JeOS7_40'
@@ -53,8 +51,6 @@ end
 
 def compute_image_name
   case ENV['PXEBOOT_IMAGE']
-  when nil
-    'POS_Image_JeOS6_head'
   when 'sles15sp2', 'sles15sp2o'
     'POS_Image_JeOS7_40'
   when 'sles15sp1', 'sles15sp1o'
