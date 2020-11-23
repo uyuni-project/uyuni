@@ -1,3 +1,4 @@
+- add the VirtualPC as virtualization type (bsc#1178990)
 - Fix the activation key handling from kickstart profile (bsc#1178647)
 - Ignore docker network ifaces in the system duplicates list
 - Fix incorrect password autocompletions (bsc#1148357)
