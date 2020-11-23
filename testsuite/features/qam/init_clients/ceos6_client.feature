@@ -12,7 +12,6 @@ Feature: Bootstrap a CentOS 6 traditional client
     And I run "/usr/bin/update-ca-trust force-enable" on "ceos6_client"
     And I bootstrap traditional client "ceos6_client" using bootstrap script with activation key "1-ceos6_client_key" from the proxy
     And I install the traditional stack utils on "ceos6_client"
-    And I install OpenSCAP dependencies on "ceos6_client"
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
     Then I should see "ceos6_client" via spacecmd
 
@@ -33,27 +32,6 @@ Feature: Bootstrap a CentOS 6 traditional client
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos6_client" hostname
-
-  Scenario: Schedule an OpenSCAP audit job for the CentOS 6 traditional client
-    Given I am on the Systems overview page of this "ceos6_client"
-    When I follow "Audit" in the content area
-    And I follow "Schedule" in the content area
-    And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos6-xccdf.xml" as "path"
-    And I click on "Schedule"
-    And I run "rhn_check -vvv" on "ceos6_client"
-    Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
-
-  Scenario: Check the results of the OpenSCAP scan on the CentOS 6 traditional client
-    Given I am on the Systems overview page of this "ceos6_client"
-    When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_standard"
-    Then I should see a "Details of XCCDF Scan" text
-    And I should see a "RHEL-6" text
-    And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
-    And I should see a "service_" link
 
   Scenario: Schedule some actions on the CentOS 6 traditional client
     Given I am authorized as "admin" with password "admin"
