@@ -8,10 +8,10 @@ Feature: Bootstrap a CentOS 7 traditional client
     When I perform a full salt minion cleanup on "ceos7_client"
 
   Scenario: Prepare a CentOS 7 traditional client
-    When I bootstrap traditional client "ceos7_client" using bootstrap script with activation key "1-ceos7_client_key" from the proxy
+    When I enable SUSE Manager tools repositories on "ceos_client"
+    And I enable repository "CentOS-Base" on this "ceos_client"
+    And I bootstrap traditional client "ceos7_client" using bootstrap script with activation key "1-ceos7_client_key" from the proxy
     And I install the traditional stack utils on "ceos7_client"
-    And I install OpenSCAP dependencies on "ceos7_client"
-    And I fix CentOS 7 OpenSCAP files on "ceos7_client"
     And I run "mgr-actions-control --enable-all" on "ceos7_client"
 
   Scenario: The onboarding of CentOS 7 traditional client is completed
@@ -31,27 +31,6 @@ Feature: Bootstrap a CentOS 7 traditional client
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos7_client" hostname
-
-  Scenario: Schedule an OpenSCAP audit job for the CentOS 7 traditional client
-    Given I am on the Systems overview page of this "ceos7_client"
-    When I follow "Audit" in the content area
-    And I follow "Schedule" in the content area
-    And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml" as "path"
-    And I click on "Schedule"
-    And I run "rhn_check -vvv" on "ceos7_client"
-    Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
-
-  Scenario: Check the results of the OpenSCAP scan on the CentOS 7 traditional client
-    Given I am on the Systems overview page of this "ceos7_client"
-    When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_standard"
-    Then I should see a "Details of XCCDF Scan" text
-    And I should see a "RHEL-7" text
-    And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
-    And I should see a "service_" link
 
   Scenario: Schedule some actions on the CentOS 7 traditional client
     Given I am authorized as "admin" with password "admin"
