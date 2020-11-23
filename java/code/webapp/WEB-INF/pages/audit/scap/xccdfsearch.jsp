@@ -21,7 +21,7 @@
             }
         </script>
         <rhn:toolbar base="h1" icon="header-search"
-                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/audit/openscap-menu.html">
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/audit/openscap-advanced-search.html">
             <bean:message key="scapsearch.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="scapsearch.jsp.summary"/></p>

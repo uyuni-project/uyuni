@@ -11,7 +11,7 @@
 <body>
 
 <rhn:toolbar base="h1" icon="header-search"
-             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/audit/audit-menu.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/audit/openscap-xccdf-diff.html">
   <bean:message key="scapdiff.jsp.toolbar"/>
 </rhn:toolbar>
 
