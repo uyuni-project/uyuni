@@ -1,3 +1,5 @@
+- add the VirtualPC type in rhnVirtualInstanceType table(bsc#1178990)
+
 -------------------------------------------------------------------
 Mon Nov 23 17:52:59 CET 2020 - jgonzalez@suse.com
 
