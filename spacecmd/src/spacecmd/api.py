@@ -32,6 +32,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -78,8 +79,8 @@ def do_api(self, args):
         try:
             output = open(options.output, "w")
         except IOError:
-            logging.warning(_("Could not open to write: ") + options.output)
-            logging.info(_("Fallback output to stdout"))
+            logging.warning(_N("Could not open to write: ") + options.output)
+            logging.info(_N("Fallback output to stdout"))
 
             output = sys.stdout
     else:
@@ -88,7 +89,7 @@ def do_api(self, args):
     api = getattr(self.client, api_name, None)
 
     if not callable(api):
-        logging.warning(_("No such API: ") + api_name)
+        logging.warning(_N("No such API: ") + api_name)
         return
 
     try:

@@ -30,6 +30,7 @@
 # pylint: disable=C0103
 
 import gettext
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -87,7 +88,7 @@ def do_snippet_details(self, args):
                 break
 
         if not snippet:
-            logging.warning(_('%s is not a valid snippet') % name)
+            logging.warning(_N('%s is not a valid snippet') % name)
             continue
 
         if add_separator:
@@ -146,11 +147,11 @@ def do_snippet_create(self, args, update_name=''):
                                          delete=True)
     else:
         if not options.name:
-            logging.error(_('A name is required for the snippet'))
+            logging.error(_N('A name is required for the snippet'))
             return 1
 
         if not options.file:
-            logging.error(_('A file is required'))
+            logging.error(_N('A file is required'))
             return 1
 
     if options.file:

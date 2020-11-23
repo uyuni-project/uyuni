@@ -30,6 +30,7 @@
 # pylint: disable=C0103
 
 import gettext
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -63,7 +64,7 @@ def do_distribution_create(self, args, update=False):
         if args:
             options.name = args[0]
         elif not options.name:
-            logging.error(_('The name of the distribution is required'))
+            logging.error(_N('The name of the distribution is required'))
             return 1
 
     if is_interactive(options):
@@ -83,7 +84,7 @@ def do_distribution_create(self, args, update=False):
             options.base_channel = prompt_user(_('Base Channel:'))
 
         if options.base_channel not in self.list_base_channels():
-            logging.warning(_('Invalid channel label'))
+            logging.warning(_N('Invalid channel label'))
             options.base_channel = ''
 
         install_types = \
@@ -102,23 +103,23 @@ def do_distribution_create(self, args, update=False):
             options.install_type = prompt_user(_('Install Type:'))
 
             if options.install_type not in install_types:
-                logging.warning(_('Invalid install type'))
+                logging.warning(_N('Invalid install type'))
                 options.install_type = ''
     else:
         if not options.name:
-            logging.error(_('A name is required'))
+            logging.error(_N('A name is required'))
             return 1
 
         if not options.path:
-            logging.error(_('A path is required'))
+            logging.error(_N('A path is required'))
             return 1
 
         if not options.base_channel:
-            logging.error(_('A base channel is required'))
+            logging.error(_N('A base channel is required'))
             return 1
 
         if not options.install_type:
-            logging.error(_('An install type is required'))
+            logging.error(_N('An install type is required'))
             return 1
 
     if update:
@@ -190,7 +191,7 @@ def do_distribution_delete(self, args):
                   (args, dists))
 
     if not dists:
-        logging.error(_("No distributions matched argument %s") % args)
+        logging.error(_N("No distributions matched argument %s") % args)
         return 1
 
     # Print the distributions prior to the confirmation
@@ -229,7 +230,7 @@ def do_distribution_details(self, args):
                   (args, dists))
 
     if not dists:
-        logging.error(_("No distributions matched argument %s") % args)
+        logging.error(_N("No distributions matched argument %s") % args)
         return 1
 
     add_separator = False

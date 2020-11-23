@@ -38,6 +38,7 @@ except ImportError:
     import xmlrpclib
 from operator import itemgetter
 from xml.parsers.expat import ExpatError
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -210,7 +211,7 @@ def do_system_reboot(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     # get the start time option
@@ -275,14 +276,14 @@ def do_system_search(self, args, doreturn=False):
         try:
             (field, value) = query.split(':')
         except ValueError:
-            logging.error(_('Invalid query'))
+            logging.error(_N('Invalid query'))
             return []
     else:
         field = 'name'
         value = query
 
     if not value:
-        logging.warning(_('Invalid query'))
+        logging.warning(_N('Invalid query'))
         return []
 
     results = []
@@ -318,7 +319,7 @@ def do_system_search(self, args, doreturn=False):
         results = self.client.system.search.uuid(self.session, value)
         key = 'uuid'
     else:
-        logging.warning(_('Invalid search field'))
+        logging.warning(_N('Invalid search field'))
         return []
 
     systems = []
@@ -391,7 +392,7 @@ def do_system_runscript(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     if is_interactive(options):
@@ -411,7 +412,7 @@ def do_system_runscript(self, args):
             else:
                 options.timeout = 600
         except ValueError:
-            logging.error(_('Invalid timeout'))
+            logging.error(_N('Invalid timeout'))
             return 1
 
         options.start_time = prompt_user(_('Start Time [now]:'))
@@ -434,7 +435,7 @@ def do_system_runscript(self, args):
             keep_script_file = False
 
         if not script_contents:
-            logging.error(_('No script provided'))
+            logging.error(_N('No script provided'))
             return 1
     else:
         if not options.user:
@@ -453,7 +454,7 @@ def do_system_runscript(self, args):
             options.start_time = parse_time_input(options.start_time)
 
         if not options.file:
-            logging.error(_('A script file is required'))
+            logging.error(_N('A script file is required'))
             return 1
 
         script_contents = read_file(options.file)
@@ -506,7 +507,7 @@ def do_system_runscript(self, args):
                                                              options.start_time)
 
 
-        logging.info(_('Action ID: %i') % action_id)
+        logging.info(_N('Action ID: %i') % action_id)
         scheduled = len(system_ids)
     else:
         # older versions of the API require each system to be
@@ -526,21 +527,21 @@ def do_system_runscript(self, args):
                                                          script_contents,
                                                          options.start_time)
 
-                logging.info(_('Action ID: %i') % action_id)
+                logging.info(_N('Action ID: %i') % action_id)
                 scheduled += 1
             except xmlrpclib.Fault as detail:
                 logging.debug(detail)
-                logging.error(_('Failed to schedule %s') % system)
+                logging.error(_N('Failed to schedule %s') % system)
                 return 1
 
-    logging.info(_('Scheduled: %i system(s)') % scheduled)
+    logging.info(_N('Scheduled: %i system(s)') % scheduled)
 
     # don't delete a pre-existing script that the user provided
     if not keep_script_file:
         try:
             os.remove(options.file)
         except OSError:
-            logging.error(_('Could not remove %s') % options.file)
+            logging.error(_N('Could not remove %s') % options.file)
             return 1
 
     return 0
@@ -576,7 +577,7 @@ def do_system_listhardware(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -740,7 +741,7 @@ def do_system_installpackage(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     packages_to_install = args
@@ -789,7 +790,7 @@ def do_system_installpackage(self, args):
                     jobs[system_id].append(package.get('id'))
 
     if not jobs:
-        logging.warning(_('No packages to install'))
+        logging.warning(_N('No packages to install'))
         return 1
 
     add_separator = False
@@ -813,7 +814,7 @@ def do_system_installpackage(self, args):
     if warnings:
         print('')
     for system_id in warnings:
-        logging.warning(_('%s does not have access to all requested packages') %
+        logging.warning(_N('%s does not have access to all requested packages') %
                         self.get_system_name(system_id))
 
     print('')
@@ -832,9 +833,9 @@ def do_system_installpackage(self, args):
 
             scheduled += 1
         except xmlrpclib.Fault:
-            logging.error(_('Failed to schedule %s') % self.get_system_name(system_id))
+            logging.error(_N('Failed to schedule %s') % self.get_system_name(system_id))
 
-    logging.info(_('Scheduled %i system(s)') % scheduled)
+    logging.info(_N('Scheduled %i system(s)') % scheduled)
 
     return 0
 
@@ -895,7 +896,7 @@ def do_system_removepackage(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     package_list = args
@@ -956,12 +957,12 @@ def do_system_removepackage(self, args):
                                                                  jobs[system],
                                                                  options.start_time)
 
-            logging.info(_('Action ID: %i') % action_id)
+            logging.info(_N('Action ID: %i') % action_id)
             scheduled += 1
         except xmlrpclib.Fault:
-            logging.error(_('Failed to schedule %s') % system)
+            logging.error(_N('Failed to schedule %s') % system)
 
-    logging.info(_('Scheduled %i system(s)') % scheduled)
+    logging.info(_N('Scheduled %i system(s)') % scheduled)
 
     return 0
 
@@ -1030,7 +1031,7 @@ def do_system_upgradepackage(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     # make a dictionary of each system and the package IDs to install
@@ -1048,7 +1049,7 @@ def do_system_upgradepackage(self, args):
             package_ids = [p.get('to_package_id') for p in packages]
             jobs[system] = package_ids
         else:
-            logging.warning(_('No upgrades available for %s') % system)
+            logging.warning(_N('No upgrades available for %s') % system)
 
     if not jobs:
         return 1
@@ -1071,7 +1072,7 @@ def do_system_upgradepackage(self, args):
             if name:
                 package_names.append(name)
             else:
-                logging.error(_("Couldn't get name for package %i") % package)
+                logging.error(_N("Couldn't get name for package %i") % package)
 
         print('\n'.join(sorted(package_names)))
 
@@ -1093,9 +1094,9 @@ def do_system_upgradepackage(self, args):
 
             scheduled += 1
         except xmlrpclib.Fault:
-            logging.error(_('Failed to schedule %s') % system)
+            logging.error(_N('Failed to schedule %s') % system)
 
-    logging.info(_('Scheduled %i system(s)') % scheduled)
+    logging.info(_N('Scheduled %i system(s)') % scheduled)
 
     return 0
 
@@ -1131,7 +1132,7 @@ def do_system_listupgrades(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1144,7 +1145,7 @@ def do_system_listupgrades(self, args):
                                                             system_id)
 
         if not packages:
-            logging.warning(_('No upgrades available for %s') % system)
+            logging.warning(_N('No upgrades available for %s') % system)
             continue
 
         if add_separator:
@@ -1201,7 +1202,7 @@ def do_system_listinstalledpackages(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1256,7 +1257,7 @@ def do_system_listconfigchannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1269,13 +1270,13 @@ def do_system_listconfigchannels(self, args):
         add_separator = True
 
         if len(systems) > 1:
-            print('System: %s' % system)
+            print(_('System: %s') % system)
 
         try:
             channels = self.client.system.config.listChannels(self.session,
                                                               system_id)
         except xmlrpclib.Fault:
-            logging.warning(_('%s does not support configuration channels') %
+            logging.warning(_N('%s does not support configuration channels') %
                             system)
             continue
 
@@ -1355,7 +1356,7 @@ def do_system_listconfigfiles(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1378,7 +1379,7 @@ def do_system_listconfigfiles(self, args):
             files += self.client.system.config.listFiles(self.session,
                                                          system_id, 1)
         except xmlrpclib.Fault:
-            logging.warning(_('%s does not support configuration channels') %
+            logging.warning(_N('%s does not support configuration channels') %
                             system)
             continue
 
@@ -1401,7 +1402,7 @@ def do_system_listconfigfiles(self, args):
                     toprint.append(f)
 
             else:
-                logging.error("Error, unexpected channel type label %s" %
+                logging.error(_N("Error, unexpected channel type label %s") %
                               f['channel_type']['label'])
                 return 1
 
@@ -1484,7 +1485,7 @@ def do_system_addconfigfile(self, args, update_path=''):
                     break
                 else:
                     print('')
-                    logging.warning(_('%s is not a valid system') %
+                    logging.warning(_N('%s is not a valid system') %
                                     options.system)
                     print('')
 
@@ -1510,12 +1511,12 @@ def do_system_addconfigfile(self, args, update_path=''):
     elif options.sandbox:
         logging.debug("Selected system-sandbox")
     else:
-        logging.error(_("Must choose system-sandbox or locally-managed option"))
+        logging.error(_N("Must choose system-sandbox or locally-managed option"))
         self.help_system_addconfigfile()
         return 1
 
     if not options.system:
-        logging.error("Must provide system")
+        logging.error(_N("Must provide system"))
         self.help_system_addconfigfile()
         return 1
 
@@ -1588,7 +1589,7 @@ def do_system_addconfigchannels(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     channels = args
@@ -1651,7 +1652,7 @@ def do_system_removeconfigchannels(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     channels = args
@@ -1694,7 +1695,7 @@ def do_system_setconfigchannelorder(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     # get the current configuration channels from the first system
@@ -1774,7 +1775,7 @@ def do_system_deployconfigfiles(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     print('')
@@ -1794,7 +1795,7 @@ def do_system_deployconfigfiles(self, args):
                                         system_ids,
                                         options.start_time)
 
-    logging.info(_('Scheduled deployment for %i system(s)') % len(system_ids))
+    logging.info(_N('Scheduled deployment for %i system(s)') % len(system_ids))
 
     return 0
 
@@ -1847,7 +1848,7 @@ def do_system_delete(self, args):
         system_ids.append(system_id)
 
     if not system_ids:
-        logging.warning(_('No systems to delete'))
+        logging.warning(_N('No systems to delete'))
         return 1
 
     # make the column the right size
@@ -1870,7 +1871,7 @@ def do_system_delete(self, args):
     logging.debug("System names to IDs: %s", systems)
 
     self.client.system.deleteSystems(self.session, system_ids, options.cleanuptype)
-    logging.info(_('%i system(s) scheduled for removal'), len(system_ids))
+    logging.info(_N('%i system(s) scheduled for removal'), len(system_ids))
 
     # regenerate the system name cache
     self.generate_system_cache(True, delay=1)
@@ -1916,7 +1917,7 @@ def do_system_lock(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -1958,7 +1959,7 @@ def do_system_unlock(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -2046,7 +2047,7 @@ def do_system_listcustomvalues(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     add_separator = False
@@ -2113,7 +2114,7 @@ def do_system_addcustomvalue(self, args):
         systems = self.expand_systems(args[2:])
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in systems:
@@ -2195,7 +2196,7 @@ def do_system_removecustomvalues(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     keys = args[1:]
@@ -2250,7 +2251,7 @@ def do_system_addnote(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     if is_interactive(options):
@@ -2260,11 +2261,11 @@ def do_system_addnote(self, args):
         options.body = prompt_user(message, noblank=True, multiline=True)
     else:
         if not options.subject:
-            logging.error(_('A subject is required'))
+            logging.error(_N('A subject is required'))
             return 1
 
         if not options.body:
-            logging.error(_('A body is required'))
+            logging.error(_N('A body is required'))
             return 1
 
     for system in systems:
@@ -2310,13 +2311,13 @@ def do_system_deletenotes(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     note_ids = args
 
     if not args:
-        logging.warning(_('No notes to delete'))
+        logging.warning(_N('No notes to delete'))
         return
 
     for system in systems:
@@ -2331,7 +2332,7 @@ def do_system_deletenotes(self, args):
                 try:
                     note_id = int(note_id)
                 except ValueError:
-                    logging.warning('%s is not a valid note ID' % note_id)
+                    logging.warning(_N('%s is not a valid note ID') % note_id)
                     continue
 
                 # deleteNote does not throw an exception
@@ -2369,7 +2370,7 @@ def do_system_listnotes(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     add_separator = False
@@ -2427,7 +2428,7 @@ def do_system_listfqdns(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     add_separator = False
@@ -2486,7 +2487,7 @@ def do_system_setbasechannel(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     add_separator = False
@@ -2553,7 +2554,7 @@ def do_system_schedulechangechannels(self, args):
         return 1
 
     if not options.base:
-        logging.error(_('A base channel is required'))
+        logging.error(_N('A base channel is required'))
         return 1
 
     # use the systems listed in the SSM
@@ -2563,7 +2564,7 @@ def do_system_schedulechangechannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     if not options.start_time:
@@ -2644,7 +2645,7 @@ def do_system_listbasechannel(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -2699,7 +2700,7 @@ def do_system_listchildchannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -2952,7 +2953,7 @@ def do_system_details(self, args, short=False):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -3105,7 +3106,7 @@ def do_system_listerrata(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -3174,7 +3175,7 @@ def do_system_applyerrata(self, args):
         systems = self.expand_systems(args.pop(0))
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     # allow globbing and searching of errata
@@ -3220,7 +3221,7 @@ def do_system_listevents(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     add_separator = False
@@ -3279,7 +3280,7 @@ def do_system_listentitlements(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -3343,7 +3344,7 @@ def do_system_addentitlements(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in systems:
@@ -3399,7 +3400,7 @@ def do_system_removeentitlement(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in systems:
@@ -3473,7 +3474,7 @@ def do_system_deletepackageprofile(self, args):
             profile_id = profile.get('id')
 
     if not profile_id:
-        logging.warning(_('%s is not a valid profile') % label)
+        logging.warning(_N('%s is not a valid profile') % label)
         return 1
 
     self.client.system.deletePackageProfile(self.session, profile_id)
@@ -3519,11 +3520,11 @@ def do_system_createpackageprofile(self, args):
         options.description = prompt_user(_('Description:'), multiline=True)
     else:
         if not options.name:
-            logging.error(_('A profile name is required'))
+            logging.error(_N('A profile name is required'))
             return 1
 
         if not options.description:
-            logging.error(_('A profile description is required'))
+            logging.error(_N('A profile description is required'))
             return 1
 
     self.client.system.createPackageProfile(self.session,
@@ -3531,7 +3532,7 @@ def do_system_createpackageprofile(self, args):
                                             options.name,
                                             options.description)
 
-    logging.info(_("Created package profile '%s'") % options.name)
+    logging.info(_N("Created package profile '%s'") % options.name)
 
     return 0
 
@@ -3574,7 +3575,7 @@ def do_system_comparepackageprofile(self, args):
         systems = self.expand_systems(args[:-1])
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     profile = args[-1]
@@ -3726,8 +3727,8 @@ def filter_latest_packages(pkglist, version_key='version',
             p['arch'] = re.sub('AMD64', 'x86_64', p['arch'])
             tuplekey = p['name'], p['arch']
         else:
-            logging.error(_("Failed to filter package list, package %s") % p
-                          + _("found with no arch or arch_label"))
+            logging.error(_N("Failed to filter package list, package %s") % p
+                          + _N("found with no arch or arch_label"))
             return None
         if not tuplekey in latest:
             latest[tuplekey] = p
@@ -3852,7 +3853,7 @@ def do_system_comparewithchannel(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     channel_latest = {}
@@ -3877,7 +3878,7 @@ def do_system_comparewithchannel(self, args):
             allch = self.client.channel.listSoftwareChannels(self.session)
             allch_labels = [c['label'] for c in allch]
             if not options.channel in allch_labels:
-                logging.error(_("Specified channel does not exist"))
+                logging.error(_N("Specified channel does not exist"))
                 self.help_system_comparewithchannel()
                 return
             channels = [options.channel]
@@ -3888,9 +3889,9 @@ def do_system_comparewithchannel(self, args):
             basech = self.client.system.getSubscribedBaseChannel(self.session,
                                                                  system_id)
             if not basech:
-                logging.error(_("system %s is not subscribed to any channel!")
+                logging.error(_N("system %s is not subscribed to any channel!")
                               % system)
-                logging.error(_("Please subscribe to a channel, or specify a" +
+                logging.error(_N("Please subscribe to a channel, or specify a" +
                               "channel to compare with"))
                 return 1
             logging.debug("base channel %s for %s" % (basech['name'], system))
@@ -3995,7 +3996,7 @@ def do_system_schedulehardwarerefresh(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in systems:
@@ -4057,7 +4058,7 @@ def do_system_schedulepackagerefresh(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in systems:
@@ -4105,7 +4106,7 @@ def do_system_show_packageversion(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     print(_("Package\tVersion\tRelease\tEpoch\tArch\tSystem"))
@@ -4163,7 +4164,7 @@ def do_system_setcontactmethod(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in sorted(systems):
@@ -4221,7 +4222,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     print('')
@@ -4279,7 +4280,7 @@ def do_system_listmigrationtargets(self, args):
             print(_('WARN: Cannot find system ') + str(system))
             continue
 
-        print('System ' + str(system))
+        print(_('System ') + str(system))
         tgts = self.client.system.listMigrationTargets(self.session, system_id)
 
         if not tgts:
@@ -4345,7 +4346,7 @@ def do_system_schedulespmigration(self, args):
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         if not system_id:
-            logging.warning(_('Cannot find system ') + str(system) + _('. Skipping it.'))
+            logging.warning(_N('Cannot find system ') + str(system) + _('. Skipping it.'))
             continue
 
         print(_('Scheduling Service Pack migration for system ') + str(system))
@@ -4355,6 +4356,6 @@ def do_system_schedulespmigration(self, args):
                     child_channels, options.dry_run, options.start_time)
             print(_('Scheduled action ID: ') + str(result))
         except xmlrpclib.Fault as detail:
-            logging.error(_('Failed to schedule %s') % detail)
+            logging.error(_N('Failed to schedule %s') % detail)
 
 ####################

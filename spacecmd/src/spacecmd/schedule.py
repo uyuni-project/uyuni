@@ -36,6 +36,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -155,7 +156,7 @@ def do_schedule_cancel(self, args):
     # cancel all actions
     if '.*' in args:
         if not self.user_confirm(_('Cancel all pending actions [y/N]:')):
-            logging.info(_("All pending actions left untouched"))
+            logging.info(_N("All pending actions left untouched"))
             return 1
 
         actions = self.client.schedule.listInProgressActions(self.session)
@@ -170,16 +171,16 @@ def do_schedule_cancel(self, args):
         try:
             actions.append(int(a))
         except ValueError:
-            logging.warning(_('"%s" is not a valid ID') % str(a))
+            logging.warning(_N('"%s" is not a valid ID') % str(a))
             failed_actions.append(a)
 
     if actions:
         self.client.schedule.cancelActions(self.session, actions)
         for a in actions:
-            logging.info(_('Canceled action: %i'), a)
+            logging.info(_N('Canceled action: %i'), a)
     if failed_actions:
         for action in failed_actions:
-            logging.info(_("Failed action: %s"), action)
+            logging.info(_N("Failed action: %s"), action)
 
     print(_('Canceled %i action(s)') % len(actions))
 
@@ -229,13 +230,13 @@ def do_schedule_reschedule(self, args):
                 if action_id in failed_actions:
                     to_reschedule.append(action_id)
                 else:
-                    logging.warning(_('"%i" is not a failed action') % action_id)
+                    logging.warning(_N('"%i" is not a failed action') % action_id)
             except ValueError:
-                logging.warning(_('"%s" is not a valid ID') % str(a))
+                logging.warning(_N('"%s" is not a valid ID') % str(a))
                 continue
 
     if not to_reschedule:
-        logging.warning(_('No failed actions to reschedule'))
+        logging.warning(_N('No failed actions to reschedule'))
         return 1
     else:
         self.client.schedule.rescheduleActions(self.session, to_reschedule, True)
@@ -265,7 +266,7 @@ def do_schedule_details(self, args):
     try:
         action_id = int(action_id)
     except ValueError:
-        logging.warning(_('The ID "%s" is invalid') % action_id)
+        logging.warning(_N('The ID "%s" is invalid') % action_id)
         return 1
 
     completed = self.client.schedule.listCompletedSystems(self.session, action_id)
@@ -304,7 +305,7 @@ def do_schedule_details(self, args):
             for s in pending:
                 print(s.get('server_name'))
     else:
-        logging.error(_('No action found with the ID "%s"') % action_id)
+        logging.error(_N('No action found with the ID "%s"') % action_id)
         return 1
 
     return 0
@@ -329,7 +330,7 @@ def do_schedule_getoutput(self, args):
     try:
         action_id = int(args[0])
     except ValueError:
-        logging.error(_('"%s" is not a valid action ID') % str(args[0]))
+        logging.error(_N('"%s" is not a valid action ID') % str(args[0]))
         return 1
 
     script_results = None
@@ -382,7 +383,7 @@ def do_schedule_getoutput(self, args):
                 print('------')
                 print(action.get('message'))
         else:
-            logging.error(_("No systems found"))
+            logging.error(_N("No systems found"))
             return 1
 
     return 0

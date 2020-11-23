@@ -31,6 +31,7 @@
 # pylint: disable=C0103
 
 import gettext
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -64,7 +65,7 @@ def do_scap_listxccdfscans(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     add_separator = False
@@ -150,7 +151,7 @@ def do_scap_getxccdfscandetails(self, args):
         add_separator = True
 
         if len(args) > 1:
-            print('XID: %s' % xid)
+            print(_('XID: %s') % xid)
             print('')
 
         xid = int(xid)
@@ -204,7 +205,7 @@ def do_scap_schedulexccdfscan(self, args):
         systems = self.expand_systems(args[2:])
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     for system in systems:

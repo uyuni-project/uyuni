@@ -31,6 +31,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -72,15 +73,15 @@ def do_cryptokey_create(self, args):
             options.contents = editor(delete=True)
     else:
         if not options.type:
-            logging.error(_('The key type is required'))
+            logging.error(_N('The key type is required'))
             return 1
 
         if not options.description:
-            logging.error(_('A description is required'))
+            logging.error(_N('A description is required'))
             return 1
 
         if not options.file:
-            logging.error(_('A file containing the key is required'))
+            logging.error(_N('A file containing the key is required'))
             return 1
 
     # read the file the user specified
@@ -88,7 +89,7 @@ def do_cryptokey_create(self, args):
         options.contents = read_file(options.file)
 
     if not options.contents:
-        logging.error(_('No contents of the file'))
+        logging.error(_N('No contents of the file'))
         return 1
 
     # translate the key type to what the server expects
@@ -97,7 +98,7 @@ def do_cryptokey_create(self, args):
     elif re.match('S', options.type, re.I):
         options.type = 'SSL'
     else:
-        logging.error(_('Invalid key type'))
+        logging.error(_N('Invalid key type'))
         return 1
 
     self.client.kickstart.keys.create(self.session,
@@ -136,7 +137,7 @@ def do_cryptokey_delete(self, args):
                   (args, keys))
 
     if not keys:
-        logging.error(_("No keys matched argument %s") % args)
+        logging.error(_N("No keys matched argument %s") % args)
         return 1
 
     # Print the keys prior to the confirmation
@@ -194,7 +195,7 @@ def do_cryptokey_details(self, args):
                   (args, keys))
 
     if not keys:
-        logging.error(_("No keys matched argument %s") % args)
+        logging.error(_N("No keys matched argument %s") % args)
         return 1
 
     add_separator = False
@@ -204,7 +205,7 @@ def do_cryptokey_details(self, args):
             details = self.client.kickstart.keys.getDetails(self.session,
                                                             key)
         except xmlrpclib.Fault:
-            logging.warning(_('%s is not a valid crypto key') % key)
+            logging.warning(_N('%s is not a valid crypto key') % key)
             return 1
 
         if add_separator:

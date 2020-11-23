@@ -20,6 +20,7 @@
 #
 
 """ spacecmd - a command line interface to Spacewalk """
+from spacecmd.i18n import _N
 
 import gettext
 import logging
@@ -54,7 +55,6 @@ Type: 'help' for a list of commands
 
 _SYSTEM_CONF_FILE = '/etc/spacecmd.conf'
 
-
 def get_localhost_fqdn():
     """
     Get FQDN of the current machine.
@@ -71,7 +71,7 @@ def get_localhost_fqdn():
     except socket.gaierror as exc:
         logging.debug("Error while getting FQDN over the network: %s", str(exc))
     except Exception as exc:
-        logging.error(_("Unhandled exception occurred while getting FQDN:"), str(exc))
+        logging.error(_N("Unhandled exception occurred while getting FQDN:"), str(exc))
 
     return fqdn or socket.getfqdn()
 
@@ -153,7 +153,7 @@ if __name__ == '__main__':
     # don't automatically create config files passed via --config
     if shell.options.config:
         if not os.path.isfile(shell.options.config):
-            logging.error(_('Config file %s does not exist.'), shell.options.config)
+            logging.error(_N('Config file %s does not exist.'), shell.options.config)
             sys.exit(1)
     else:
     # create an empty configuration file if one's not present
@@ -170,7 +170,7 @@ if __name__ == '__main__':
                 handle.write('[spacecmd]\n')
                 handle.close()
             except IOError:
-                logging.error(_('Could not create %s'), user_conf_file)
+                logging.error(_N('Could not create %s'), user_conf_file)
 
     # load options from configuration files
     if shell.options.config:
