@@ -678,22 +678,6 @@ When(/^I enter "([^"]*)" password$/) do |host|
   step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
 end
 
-# TODO: Ideally we should do a full cleanup of the minion
-#       But we can't do that as we don't have products synced, so it will fail installing salt and sal-minion
-#       Instead we inject those packages when deploying through sumaform and we can't remove them.
-#       If someday we have synced products, we can proceed to run a full cleanup
-When(/^I clean up the minion's cache on "([^"]*)"$/) do |minion|
-  raise "#{minion} is not a salt minion" unless minion.include? 'minion'
-  node = get_target(minion)
-  if %w[sle_minion sle_ssh_tunnel_minion].include?(minion)
-    node.run('rcsalt-minion stop')
-    node.run('rm -Rf /var/cache/salt/minion')
-  elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
-    node.run('systemctl stop salt-minion')
-    node.run('rm -Rf /var/cache/salt/minion')
-  end
-end
-
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if host.include? 'ceos'
