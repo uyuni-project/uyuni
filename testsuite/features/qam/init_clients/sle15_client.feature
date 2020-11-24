@@ -42,10 +42,3 @@ Feature: Bootstrap a SLES 15 traditional client
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle15_client" hostname
-
-  Scenario: Check tab links "Software" => "Patches" of SLES 15 traditional
-    Given I am on the Systems overview page of this "sle15_client"
-    When I follow "Software" in the content area
-    And I follow "Patches" in the content area
-    Then I should see a "Relevant Patches" text
-    And I should see a "Show" button
