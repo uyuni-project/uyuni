@@ -7,8 +7,13 @@ Feature: OpenSCAP audit of Salt minion
   I want to run an OpenSCAP scan on it
 
   Scenario: Install the OpenSCAP packages on the SLE minion
+    Given I am on the Systems overview page of this "sle_minion"
     When I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
     And I install OpenSCAP dependencies on "sle_minion"
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I follow "Events" in the content area
+    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
 
   Scenario: Schedule an OpenSCAP audit job on the SLE minion
     Given I disable IPv6 forwarding on all interfaces of the SLE minion
