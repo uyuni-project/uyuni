@@ -1,3 +1,5 @@
+- Allow specifying both name and label of new Content Environment (bsc#1176411)
+
 -------------------------------------------------------------------
 Tue Nov 24 11:22:10 CET 2020 - jgonzalez@suse.com
 

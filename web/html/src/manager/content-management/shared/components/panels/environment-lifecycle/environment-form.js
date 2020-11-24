@@ -33,6 +33,15 @@ const EnvironmentForm = (props: Props) =>
       </div>
       <div className="row">
         <Text
+          name="label"
+          label={t("Label")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          disabled={props.editing}
+        />
+      </div>
+      <div className="row">
+        <Text
           name="description"
           label={t("Description")}
           labelClass="col-md-3"

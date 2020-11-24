@@ -8961,7 +8961,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Label must not exceed 16 characters</source>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
-        <source>Label must not exceed 128 characters</source>
+        <source>Name must not exceed 128 characters</source>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
