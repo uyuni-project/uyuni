@@ -1432,5 +1432,5 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
-  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
 end
