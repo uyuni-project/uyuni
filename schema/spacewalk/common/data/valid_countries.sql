@@ -194,6 +194,7 @@ insert into valid_countries(code,short_name,name) values ('PY','Paraguay','Repub
 insert into valid_countries(code,short_name,name) values ('QA','Qatar','State of Qatar');
 insert into valid_countries(code,short_name,name) values ('RE','Reunion','Department of Reunion');
 insert into valid_countries(code,short_name,name) values ('RO','Romania','Romania');
+insert into valid_countries(code,short_name,name) values ('RS','Serbia','Republic of Serbia');
 insert into valid_countries(code,short_name,name) values ('RU','Russian Federation','Russian Federation');
 insert into valid_countries(code,short_name,name) values ('RW','Rwanda','Rwandese Republic');
 insert into valid_countries(code,short_name,name) values ('SA','Saudi Arabia','Kingdom of Saudi Arabia');
