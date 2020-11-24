@@ -2,8 +2,10 @@ export function mapAddEnvironmentRequest(environment, environments, projectId) {
   let environmentRequest = {
     ...environment,
     projectLabel: projectId,
-    label: environment.name
+    label: environment.label,
+    name: environment.name
   }
+
 
   if (!environmentRequest.predecessorLabel) {
     const lastEnvironment = environments[environments.length - 1]
