@@ -46,15 +46,6 @@ Feature: Bootstrap a SLES 15 Salt SSH Minion
     And I follow "Proxy" in the content area
     Then I should see "sle15_ssh_minion" hostname
 
-  Scenario: Schedule errata refresh to reflect channel assignment on SLES 15 SSH minion
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Admin > Task Schedules"
-    And I follow "errata-cache-default"
-    And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-
   Scenario: Check events history for failures on SLES 15 SSH minion
     Given I am on the Systems overview page of this "sle15_ssh_minion"
     Then I check for failed events on history event page
