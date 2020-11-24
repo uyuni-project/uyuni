@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
+import org.apache.log4j.Logger;
 
 import java.util.Iterator;
 
@@ -37,11 +38,14 @@ public class InactiveSystemsRenderer extends BaseFragmentRenderer {
     private static final String INACTIVE_SYSTEMS_EMPTY = "inactiveSystemsEmpty";
     private static final String INACTIVE_SYSTEMS_CLASS = "inactiveSystemsClass";
 
+    private static Logger log = Logger.getLogger(InactiveSystemsRenderer.class);
+
     /**
      * {@inheritDoc}
      */
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         LocalizationService ls = LocalizationService.getInstance();
+        log.warn("temp---called with user org " + user.getOrg().getId() + "and user id" + user.getId());
         DataResult<SystemOverview> isdr =
                 SystemManager.inactiveListSortbyCheckinTime(user, pc);
         String inactiveSystemCSSTable = null;
