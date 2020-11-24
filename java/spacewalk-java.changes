@@ -1,3 +1,4 @@
+- add translation strings for newly added countries and timezones (jsc#PM-2081)
 - Fix the activation key handling from kickstart profile (bsc#1178647)
 - Update exception message in findSyncedMandatoryChannels
 - fix check for available products on ISS Slaves (bsc#1177184)
