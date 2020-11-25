@@ -37,7 +37,7 @@ const AddCluster = (props: Props) => {
 
     return (<TopPanel title={t('Add Cluster')}
                 icon="spacewalk-icon-clusters"
-                helpUrl="reference/clusters/clusters-menu.html">
+                helpUrl="reference/clusters/clusters-add.html">
                 <HashRouter initialPath="provider">
                     <Switch>
                         <Route path="provider">
