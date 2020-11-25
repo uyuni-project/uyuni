@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 25 12:29:42 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
 - Drop node-fetch to fix CVE-2020-15168
 - Upgrade serialize-javascript - CVE-2020-7660
 - Upgrade elliptic - CVE-2020-13822
