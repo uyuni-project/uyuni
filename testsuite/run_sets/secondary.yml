@@ -27,7 +27,7 @@
 - features/secondary/min_activationkey.feature
 - features/secondary/trad_migrate_to_minion.feature
 - features/secondary/trad_migrate_to_sshminion.feature
-- features/secondary/trad_ssh_push.feature
+- features/secondary/trad_ssh_tunnel.feature
 - features/secondary/srv_virtual_host_manager.feature
 - features/secondary/trad_baremetal_discovery.feature
 - features/secondary/min_salt_minions_page.feature
