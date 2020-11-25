@@ -1,5 +1,10 @@
 - Fixed cobbler version detection.
 - Generalised cobblerd service detection.
+
+-------------------------------------------------------------------
+Wed Nov 25 12:24:50 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
 - add sock_pool_size setting by default for better performance
 
 -------------------------------------------------------------------
