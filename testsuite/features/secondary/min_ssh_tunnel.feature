@@ -3,14 +3,14 @@
 
 Feature: Register a salt system to be managed via SSH tunnel
 
-  Scenario: Delete the salt minion for SSH reverse bootstrap
-    Given I am on the Systems overview page of this "sle_ssh_tunnel_minion"
+  Scenario: Delete the salt minion for SSH tunnel bootstrap
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I clean up the minion's cache on "sle_ssh_tunnel_minion"
-    Then "sle_ssh_tunnel_minion" should not be registered
+    And I clean up the minion's cache on "sle_minion"
+    Then "sle_minion" should not be registered
 
   Scenario: Register this minion for push via SSH tunnel
     Given I am authorized
@@ -57,7 +57,7 @@ Feature: Register a salt system to be managed via SSH tunnel
     When I force picking pending events on "sle_ssh_tunnel_minion" if necessary
     Then I wait until event "Package Removal scheduled by admin" is completed
 
-  Scenario: Run a remote command on this SSH reverse minion
+  Scenario: Run a remote command on this SSH tunnel minion
     Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
@@ -71,7 +71,7 @@ Feature: Register a salt system to be managed via SSH tunnel
     And I expand the results for "sle_ssh_tunnel_minion"
     Then I should see "My remote command output" in the command output for "sle_ssh_tunnel_minion"
 
-  Scenario: Cleanup: delete the SSH push tunnel minion
+  Scenario: Cleanup: delete the SSH tunnel minion
     Given I am on the Systems overview page of this "sle_ssh_tunnel_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -79,8 +79,8 @@ Feature: Register a salt system to be managed via SSH tunnel
     And I wait until I see "has been deleted" text
     Then "sle_ssh_tunnel_minion" should not be registered
 
-  Scenario: Cleanup: register a salt minion after SSH push tests
-    When I bootstrap minion client "sle_ssh_tunnel_minion" using bootstrap script with activation key "1-SUSE-PKG-x86_64" from the proxy
-    And I wait at most 10 seconds until Salt master sees "sle_ssh_tunnel_minion" as "unaccepted"
-    And I accept "sle_ssh_tunnel_minion" key in the Salt master
-    Then I should see "sle_ssh_tunnel_minion" via spacecmd
+  Scenario: Cleanup: register a salt minion after SSH tunnel tests
+    When I bootstrap minion client "sle_minion" using bootstrap script with activation key "1-SUSE-PKG-x86_64" from the proxy
+    And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
+    And I accept "sle_minion" key in the Salt master
+    Then I should see "sle_minion" via spacecmd
