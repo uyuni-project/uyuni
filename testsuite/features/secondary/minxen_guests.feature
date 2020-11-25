@@ -106,7 +106,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Given I am on the "Virtualization" page of this "xen_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
     And option "VNC" is selected as "graphicsType"
     And option "test-net0" is selected as "network0_source"
@@ -117,7 +116,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I enter "02:34:56:78:9a:bc" as "network0_mac"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen_server" should have 1024MB memory and 2 vcpus
     And "test-vm" virtual machine on "xen_server" should have spice graphics device
     And "test-vm" virtual machine on "xen_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "xen_server" should have a NIC with 02:34:56:78:9a:bc MAC address
@@ -191,7 +189,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
     And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
-    And "test-vm2" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
     And "test-vm2" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm2_system" xen disk
 
@@ -217,7 +214,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm3" text
     And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
-    Then "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
     And "test-vm3" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm3_system" xen disk
 

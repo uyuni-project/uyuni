@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%global debug_package %{nil} 
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -45,7 +46,7 @@ Name:           uyuni-common-libs
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -117,6 +118,10 @@ cp $RPM_BUILD_ROOT%{python3root}/common/*.py \
 %py3_compile -O %{buildroot}/%{python3root}
 %fdupes %{buildroot}/%{python3root}
 %endif
+%endif
+
+%if !(0%{?build_py2})
+rm -Rf $RPM_BUILD_ROOT%{python2root}
 %endif
 
 %if 0%{?build_py2}

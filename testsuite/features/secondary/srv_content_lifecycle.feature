@@ -93,9 +93,8 @@ Feature: Content lifecycle
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
-    And I wait until I see "Version 1 successfully built into dev_name" text
-    Then I should see a "Version 1: test version message 1" text
-    And I wait at most 600 seconds until I see "Built" text
+    And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
+    And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
 
 @susemanager
   Scenario: Build the sources in the project for SUSE Manager
@@ -107,9 +106,8 @@ Feature: Content lifecycle
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
-    And I wait until I see "Version 1 successfully built into dev_name" text
-    Then I should see a "Version 1: test version message 1" text
-    And I wait at most 600 seconds until I see "Built" text
+    And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
+    And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
 
   Scenario: Promote promote the sources in the project
     Given I am authorized as "admin" with password "admin"
@@ -121,11 +119,13 @@ Feature: Content lifecycle
     Then I should see a "qa_desc" text in the environment "qa_name"
     And I should see a "not built" text in the environment "qa_name"
     When I click promote from Development to QA
+    Then I should see a "Version 1: test version message 1" text
     And I click on "Promote environment" in "Promote version 1 into qa_name" modal
-    Then I wait until I see "Version 1: test version message 1" text in the environment "qa_name"
+    Then I wait until I see "Built" text in the environment "qa_name"
     When I click promote from QA to Production
+    Then I should see a "Version 1: test version message 1" text
     And I click on "Promote environment" in "Promote version 1 into prod_name" modal
-    Then I wait until I see "Version 1: test version message 1" text in the environment "prod_name"
+    Then I wait until I see "Built" text in the environment "prod_name"
 
   Scenario: Add new sources and promote again
     Given I am authorized as "admin" with password "admin"
@@ -136,19 +136,22 @@ Feature: Content lifecycle
     And I add the "Test Base Channel" channel to sources
     And I click on "Save"
     Then I wait until I see "Test Base Channel" text
-    And I should see a "Build (1)" text
+    And I wait until I see "Build (1)" text
     And I should see a "Version 2: (draft - not built) - Check the changes below" text
     When I click on "Build (1)"
     Then I wait until I see "Version 2 history" text
     When I enter "test version message 2" as "message"
     And I click the environment build button
-    Then I wait until I see "Version 2: test version message 2" text
+    Then I wait until I see "Version 2: test version message 2" text in the environment "dev_name"
+    And I wait until I see "Built" text in the environment "dev_name"
     When I click promote from Development to QA
+    Then I should see a "Version 2: test version message 2" text
     And I click on "Promote environment" in "Promote version 2 into qa_name" modal
-    Then I wait until I see "Version 2: test version message 2" text in the environment "qa_name"
+    Then I wait until I see "Built" text in the environment "qa_name"
     When I click promote from QA to Production
+    Then I should see a "Version 2: test version message 2" text
     And I click on "Promote environment" in "Promote version 2 into prod_name" modal
-    Then I wait until I see "Version 2: test version message 2" text in the environment "prod_name"
+    Then I wait until I see "Built" text in the environment "prod_name"
 
   Scenario: Clean up the Content Lifecycle Management feature
     Given I am authorized as "admin" with password "admin"
