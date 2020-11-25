@@ -1,15 +1,15 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Register a traditional system to be managed via SSH push
+Feature: Register a traditional system to be managed via SSH tunnel
 
   Scenario: Delete the traditional client for SSH reverse bootstrap
-    Given I am on the Systems overview page of this "sle_ssh_tunnel_client"
+    Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "sle_ssh_tunnel_client" should not be registered
+    Then "sle_client" should not be registered
 
   Scenario: Create bootstrap script for traditional SSH push via tunnel
     When I execute mgr-bootstrap "--activation-keys=1-SUSE-SSH-TUNNEL-DEV-x86_64 --script=bootstrap-ssh-push-tunnel.sh --no-up2date --traditional"
@@ -38,6 +38,6 @@ Feature: Register a traditional system to be managed via SSH push
     And I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh" on "server"
     And I remove server hostname from hosts file on "sle_ssh_tunnel_client"
 
-  Scenario: Cleanup: register a traditional client after SSH push tests
-    When I bootstrap traditional client "sle_ssh_tunnel_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
-    Then I should see "sle_ssh_tunnel_client" via spacecmd
+  Scenario: Cleanup: register a traditional client after SSH tunnel tests
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    Then I should see "sle_client" via spacecmd
