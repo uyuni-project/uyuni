@@ -1172,7 +1172,9 @@ Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warni
 end
 
 When(/^I create the MU repositories for "([^"]*)"$/) do |client|
-  repo_list = $mu_repositories[client]
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     if repository_exist? unique_repo_name
@@ -1193,7 +1195,9 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
 end
 
 When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
-  repo_list = $mu_repositories[client]
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     step %(I check "#{unique_repo_name}" in the list)
