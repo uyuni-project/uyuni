@@ -1560,8 +1560,8 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
-"デバッグのみ: XML／データベース取り込みに対する最大バッチサイズ (1..%s) 。詳しくは \"man mgr-inter-sync\" "
-"をお読みください。"
+"デバッグのみ: XML／データベース取り込みに対する最大バッチサイズ (1..%s) 。詳"
+"しくは \"man mgr-inter-sync\" をお読みください。"
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1575,7 +1575,9 @@ msgstr "このチャンネルに対してのみデータを処理"
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
-msgstr "ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-sync\" をお読みください。"
+msgstr ""
+"ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-sync"
+"\" をお読みください。"
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
