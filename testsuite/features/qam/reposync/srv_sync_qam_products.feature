@@ -99,3 +99,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" product has been added
+
+  Scenario: SUSE Manager Proxy 4.1 x86_64
+    Given I am on the Products page
+    And I enter "SUSE Manager Proxy 4.1 x86_64" as the filtered product description
+    And I select "SUSE Manager Proxy 4.1 x86_64" as a product
+    Then I should see the "SUSE Manager Proxy 4.1 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Manager Proxy 4.1 x86_64" product has been added
