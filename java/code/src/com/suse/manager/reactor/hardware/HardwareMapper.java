@@ -629,6 +629,7 @@ public class HardwareMapper {
         }
 
         if (type != null) {
+            final VirtualInstanceType virtType = type;
             List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
                     .lookupVirtualInstanceByUuid(virtUuid);
 
@@ -680,6 +681,11 @@ public class HardwareMapper {
                     if (StringUtils.isBlank(name)) {
                         // use minion name only when the hypervisor name is unknown
                         name = server.getName();
+                    }
+                    if (virtType != virtualInstance.getType()) {
+                        LOG.info("Changing the type from -> " + virtualInstance.getType().getLabel() +
+                                " to -> " + virtType.getLabel());
+                        virtualInstance.setType(virtType);
                     }
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
