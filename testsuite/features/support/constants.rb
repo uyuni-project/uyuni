@@ -135,7 +135,7 @@ PACKAGE_BY_CLIENT = { 'ceos_minion' => 'ant',
                       'sle15sp1_minion' => 'bison',
                       'sle15sp1_client' => 'bison' }.freeze
 
-CHANNEL_BY_CLIENT = { 'proxy' => 'SLES15-SP2-Pool',
+CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool',
                       'sle_client' => 'SLES12-SP4-Pool',
                       'sle_minion' => 'SLES12-SP4-Pool',
                       'ssh_minion' => 'SLES12-SP4-Pool',
