@@ -349,12 +349,12 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Create auto installation distribution
     Given I am authorized
-    And I install package "tftpboot-installation-SLE-15-SP2-x86_64" on this "server"
+    And I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be installed on "server"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-SP2-TFTP" as "label"
-    And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64" as "basepath"
+    And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
     And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I enter "useonlinerepo insecure=1" as "kernelopts"

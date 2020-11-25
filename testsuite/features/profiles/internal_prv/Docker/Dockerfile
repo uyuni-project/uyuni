@@ -1,4 +1,4 @@
-FROM minima-mirror.mgr.prv.suse.net/toaster-sles12sp3-products
+FROM registry.mgr.prv.suse.net/toaster-sles12sp3-products
 MAINTAINER Admin User "noemail@example.com"
 
 ARG repo

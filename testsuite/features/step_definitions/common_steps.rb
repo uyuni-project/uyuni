@@ -729,6 +729,32 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   end
 end
 
+When(/^I disable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  elsif os_family =~ /^centos/
+    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
+    end
+  end
+end
+
+When(/^I enable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^#\\s*deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^#\\s*deb /deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
+end
+
+When(/^I disable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^deb /# deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
+end
+
 When(/^I enable repositories before installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
@@ -1187,20 +1213,26 @@ end
 
 # content lifecycle steps
 When(/^I click the environment build button$/) do
-  raise "Click on environment build failed" unless find(:xpath, '//*[@id="cm-build-modal-save-button"]').click
+  raise 'Click on environment build failed' unless find_button('cm-build-modal-save-button', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from Development to QA$/) do
-  raise "Click on promote from Development failed" unless find(:xpath, '//*[@id="dev_name-promote-modal-link"]').click
+  raise 'Click on promote from Development failed' unless find_button('dev_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from QA to Production$/) do
-  raise "Click on promote from QA failed" unless find(:xpath, '//*[@id="qa_name-promote-modal-link"]').click
+  raise 'Click on promote from QA failed' unless find_button('qa_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
     raise "Text \"#{text}\" not found" unless has_content?(text)
+  end
+end
+
+When(/^I wait at most (\d+) seconds until I see "([^"]*)" text in the environment "([^"]*)"$/) do |seconds, text, env|
+  within(:xpath, "//h3[text()='#{env}']/../..") do
+    step %(I wait at most #{seconds} seconds until I see "#{text}" text)
   end
 end
 

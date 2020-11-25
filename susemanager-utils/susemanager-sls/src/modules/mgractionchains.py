@@ -122,6 +122,11 @@ def start(actionchain_id):
     target_sls = _calculate_sls(actionchain_id, __grains__['machine_id'], 1)
     log.debug("Starting execution of SUSE Manager Action Chains ID "
               "'{0}' -> Target SLS: {1}".format(actionchain_id, target_sls))
+    try:
+        __salt__['saltutil.sync_states']()
+        __salt__['saltutil.sync_modules']()
+    except Exception as exc:
+        log.error("There was an error while syncing custom states and execution modules")
     ret = __salt__['state.sls'](target_sls, queue=True)
     if isinstance(ret, list):
         raise CommandExecutionError(ret)
@@ -186,5 +191,3 @@ def clean():
     '''
     _read_next_ac_chunk()
     return {"success": True}
-
-
