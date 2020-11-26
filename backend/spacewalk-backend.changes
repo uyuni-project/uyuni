@@ -1,3 +1,5 @@
+- Do not raise TypeError when processing SUSE products (bsc#1178704)
+
 -------------------------------------------------------------------
 Wed Nov 25 12:19:21 CET 2020 - jgonzalez@suse.com
 
