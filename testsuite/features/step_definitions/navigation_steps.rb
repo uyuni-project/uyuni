@@ -778,22 +778,22 @@ When(/^I check the first patch in the list$/) do
 end
 
 When(/^I click on the red confirmation button$/) do
-  find_and_wait_click("button.btn-danger").click
+  find_and_wait_click('button.btn-danger').click
 end
 
 When(/^I click on the clear SSM button$/) do
-  find_and_wait_click("a#clear-ssm").click
+  find_and_wait_click('a#clear-ssm').click
 end
 
 When(/^I click on the filter button$/) do
-  find_and_wait_click("button.spacewalk-button-filter").click
+  find_and_wait_click('button.spacewalk-button-filter').click
   has_text?('is filtered', wait: 10)
 end
 
 Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless has_content?(text)
-    find("button.spacewalk-button-filter").click
+    find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
   end
 end
@@ -801,7 +801,7 @@ end
 Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if has_content?(text)
-    find("button.spacewalk-button-filter").click
+    find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
   end
 end
