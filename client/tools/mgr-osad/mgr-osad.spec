@@ -24,6 +24,7 @@
 %global rhnconf /etc/sysconfig/rhn
 %global client_caps_dir /etc/sysconfig/rhn/clientCaps.d
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
+%global __python /usr/bin/python2
 
 %if 0%{?suse_version}
 %global apache_group www
@@ -217,7 +218,7 @@ Summary:        OSA dispatcher
 Group:          System Environment/Daemons
 Obsoletes:      python2-osa-dispatcher < %{oldversion}
 Provides:       python2-osa-dispatcher = %{oldversion}
-%if 0%{?fedora} >= 28
+%if 0%{?fedora} >= 28 || 0%{?rhel}
 BuildRequires:  python2-devel
 Requires:       python2
 %else
@@ -283,8 +284,8 @@ SELinux policy module supporting osa-dispatcher.
 %if 0%{?suse_version}
 cp prog.init.SUSE prog.init
 %endif
-%if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
-sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python -s@' invocation.py
+%if 0%{?fedora} || 0%{?rhel}
+sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python3 -s@' invocation.py
 %endif
 
 %build
@@ -313,8 +314,8 @@ make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_
 %if 0%{?build_py3}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad-%{python3_version}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher-%{python3_version}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3\b|' $RPM_BUILD_ROOT/usr/sbin/osad-%{python3_version}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3\b|' $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher-%{python3_version}
 %endif
 
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
