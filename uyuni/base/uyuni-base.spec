@@ -86,7 +86,7 @@ Requires(pre):  uyuni-base-common
 Basic filesystem hierarchy for Uyuni proxy.
 
 %prep
-# nothing to do here
+%setup -q
 
 %build
 # nothing to do here
