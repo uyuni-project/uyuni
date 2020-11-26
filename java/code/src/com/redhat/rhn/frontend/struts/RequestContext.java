@@ -38,12 +38,10 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +55,7 @@ import javax.servlet.http.HttpServletRequest;
  * @version $Rev$
  */
 public class RequestContext {
-    private static Logger log = Logger.getLogger(RequestContext.class);
+
     // Request IDs go here.
     public static final String LABEL = "label";
     public static final String USER_ID = "uid";
@@ -104,7 +102,6 @@ public class RequestContext {
     public static final String NO_SCRIPT = "noscript";
     public static final String MODE = "mode";
     public static final String POST = "POST";
-
 
     /**
      * Names of pagination elements (and their corresponding attributes).
@@ -196,11 +193,7 @@ public class RequestContext {
         PxtSessionDelegateFactory factory = PxtSessionDelegateFactory.getInstance();
         PxtSessionDelegate pxtDelegate = factory.newPxtSessionDelegate();
         Long uid = pxtDelegate.getWebUserId(request);
-        User user = ((uid == null) ? null : UserFactory.lookupById(uid));
-        if (Objects.isNull(user)) {
-            log.warn("---No user found against given uid = " + uid);
-        }
-        return user;
+        return ((uid == null) ? null : UserFactory.lookupById(uid));
     }
 
     /**
