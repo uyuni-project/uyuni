@@ -9,7 +9,6 @@ Feature: Register a salt system to be managed via SSH tunnel
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I clean up the minion's cache on "sle_ssh_tunnel_minion"
     Then "sle_ssh_tunnel_minion" should not be registered
 
   Scenario: Register this minion for push via SSH tunnel
