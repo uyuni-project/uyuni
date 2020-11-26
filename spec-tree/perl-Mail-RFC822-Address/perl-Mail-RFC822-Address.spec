@@ -1,7 +1,7 @@
 %{!?perlgen:%global perlgen 5.8}
 Name: perl-Mail-RFC822-Address
 Version: 0.3
-Release: 15%{?dist}
+Release: 17%{?dist}
 Summary: Mail-RFC822-Address Perl module
 License: distributable
 Group: Development/Libraries
@@ -19,10 +19,7 @@ BuildRequires:  perl(Data::Dumper)
 %endif
 
 
-Requires: %(perl -MConfig -le 'if (defined $Config{useithreads}) { print "perl(:WITH_ITHREADS)" } else { print "perl(:WITHOUT_ITHREADS)" }')
-Requires: %(perl -MConfig -le 'if (defined $Config{usethreads}) { print "perl(:WITH_THREADS)" } else { print "perl(:WITHOUT_THREADS)" }')
-Requires: %(perl -MConfig -le 'if (defined $Config{uselargefiles}) { print "perl(:WITH_LARGEFILES)" } else { print "perl(:WITHOUT_LARGEFILES)" }')
-Source0: Mail-RFC822-Address-0.3.tar.gz
+Source0:  https://cpan.metacpan.org/authors/id/P/PD/PDWARREN/Mail-RFC822-Address-0.3.tar.gz
 
 %description
 Mail-RFC822-Address Perl module
@@ -66,6 +63,18 @@ fi
 %files -f Mail-RFC822-Address-%{version}-filelist
 
 %changelog
+* Mon May 25 2020 Michael Mraka <michael.mraka@redhat.com> 0.3-17
+- removed unnecessary dynamic requires to make it build on Fedora/RHEL without
+  preinstalled perl
+
+* Mon May 25 2020 Stefan Bluhm <stefan.bluhm@clacee.eu> 0.3-16
+- Added source URL
+- Comment to build on RHEL8
+
+* Sat Feb 10 2018 mcalmer <mcalmer@suse.com> 0.3-15
+- revert removed Group from specfile
+- revert removed BuildRoot from specfiles
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 0.3-15
 - remove install/clean section initial cleanup
 - removed Group from specfile

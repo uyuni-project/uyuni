@@ -1,3 +1,9 @@
+- Added quotes around %{_vendor} token for the if statements in spec file.
+
+-------------------------------------------------------------------
+Wed Nov 25 12:10:31 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - fix removal of mgr-deamon with selinux enabled (bsc#1177928)
 
 -------------------------------------------------------------------

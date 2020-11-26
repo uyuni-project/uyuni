@@ -10,7 +10,8 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
   Scenario: Prepare a CentOS 7 traditional client
     When I bootstrap traditional client "ceos7_client" using bootstrap script with activation key "1-ceos7_client_key" from the proxy
     And I install the traditional stack utils on "ceos7_client"
-    And I install OpenSCAP centos dependencies on "ceos7_client"
+    And I install OpenSCAP dependencies on "ceos7_client"
+    And I fix CentOS 7 OpenSCAP files on "ceos7_client"
     And I run "mgr-actions-control --enable-all" on "ceos7_client"
     And I wait until onboarding is completed for "ceos7_client"
 

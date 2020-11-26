@@ -1,4 +1,10 @@
 - Added RHEL support.
+
+-------------------------------------------------------------------
+Wed Nov 25 12:32:54 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Fix: sync before start action chains (bsc#1177336)
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Sync state modules when starting action chain execution (bsc#1177336)
 - Handle group- and org-specific image pillars

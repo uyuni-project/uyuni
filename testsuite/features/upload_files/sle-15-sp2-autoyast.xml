@@ -22,20 +22,6 @@
         <product>Basesystem Module</product>
         <product_dir>/</product_dir>
       </listentry>
-      <listentry>
-        <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://$redhat_management_server/ks/dist/child/sle-manager-tools15-pool-x86_64-sp2/$distrotree</media_url>
-        <name>manager tools pool</name>
-        <product>SUSE Manager Tools</product>
-        <product_dir>/</product_dir>
-      </listentry>
-      <listentry>
-        <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://$redhat_management_server/ks/dist/child/sle-manager-tools15-updates-x86_64-sp2/$distrotree</media_url>
-        <name>manager tools updates</name>
-        <product>SUSE Manager Tools</product>
-        <product_dir>/</product_dir>
-      </listentry>
     </add_on_products>
   </add-on>
   <general>

@@ -148,12 +148,12 @@ class MLLibmodProc:
 
     def get_default_stream(self, name: str):
         if self._mod_index is None:
-            raise mlerrcode.MlModuleNotFound("Unable to access module index when resolving default stream")
+            raise mlerrcode.MlGeneralException("Module index not found")
 
         module = self._mod_index.get_module(name)
 
         if not module:
-            raise mlerrcode.MlModuleNotFound("Module {} not found".format(name))
+            raise mlerrcode.MlModuleNotFound("Module {} not found".format(name)).set_data("streams", [mltypes.MLStreamType(name, "").to_obj()])
 
         defaults = module.get_defaults()
         if defaults:
@@ -183,7 +183,7 @@ class MLLibmodProc:
 
     def get_rpm_blacklist(self):
         if self._mod_index is None:
-            raise mlerrcode.MlModuleNotFound("No module index has been found")
+            raise mlerrcode.MlGeneralException("No module index has been found")
 
         enabled_packages: Set = set()
         for stream in self._enabled_stream_modules.values():
@@ -411,7 +411,7 @@ class MLLibmodAPI:
                 else:
                     self._proc.pick_default_stream(s_type=s_type)
             except mlerrcode.MlModuleNotFound as e:
-                not_found += e.data["streams"]
+                not_found.extend(e.data["streams"])
 
         if not_found:
             raise mlerrcode.MlModuleNotFound("Module not found").set_data("streams", not_found)
