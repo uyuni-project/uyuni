@@ -1,3 +1,6 @@
+- Updated RHEL Python requirements.
+- Added quotes around %{_vendor}.
+
 -------------------------------------------------------------------
 Wed Nov 25 12:21:32 CET 2020 - jgonzalez@suse.com
 
