@@ -1,3 +1,5 @@
+- Fix 'module not found' exception handling (bsc#1179257)
+
 -------------------------------------------------------------------
 Thu Jul 23 13:22:35 CEST 2020 - jgonzalez@suse.com
 
