@@ -200,51 +200,6 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
   end
 end
 
-Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
-  repeat_until_timeout(message: "'#{text}' still found") do
-    break unless has_content?(text)
-    find("button.spacewalk-button-filter").click
-    has_text?('is filtered', wait: 10)
-  end
-end
-
-Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
-  repeat_until_timeout(message: "'#{text}' was not found") do
-    break if has_content?(text)
-    find("button.spacewalk-button-filter").click
-    has_text?('is filtered', wait: 10)
-  end
-end
-
-When(/^I click on the filter button$/) do
-  find_and_wait_click("button.spacewalk-button-filter").click
-  has_text?('is filtered', wait: 10)
-end
-
-When(/^I click on the red confirmation button$/) do
-  find_and_wait_click("button.btn-danger").click
-end
-
-When(/^I click on the clear SSM button$/) do
-  find_and_wait_click("a#clear-ssm").click
-end
-
-When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  find("input[placeholder='Filter by Package Name: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
-  find("input[placeholder='Filter by Synopsis: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
-  find("input[name='product-description-filter']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
-  find("input[placeholder='Filter by Result: ']").set(input)
-end
-
 # Salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install --force #{package}-formula")
