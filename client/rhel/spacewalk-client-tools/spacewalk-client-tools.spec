@@ -23,7 +23,7 @@
 %global __python /usr/bin/python3
 %endif
 
-%if !0%{?rhel} >= 8
+%if !(0%{?rhel} >= 8)
 %global build_py2   1
 %endif
 
