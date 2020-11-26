@@ -276,7 +276,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 .getRepositoryAuth().isEmpty(), "Repo should not have authentication.");
 
         ContentSyncManager csm = new ContentSyncManager();
-        csm.refreshRepositoriesAuthentication(repositories, credentials, null);
+        csm.refreshRepositoriesAuthentication(repositories, credentials, null); // todo i think this doesn't mock correctly and causes timeouts
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(633L);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
