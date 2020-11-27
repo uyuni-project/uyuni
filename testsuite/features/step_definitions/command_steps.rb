@@ -36,7 +36,7 @@ end
 
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
-  proxy = "suma:P4$$word@#{$server_http_proxy}"
+  proxy = "suma2:P4$$wordWith%and&@#{$server_http_proxy}"
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
