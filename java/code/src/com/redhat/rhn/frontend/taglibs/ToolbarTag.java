@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.frontend.html.HtmlTag;
+import com.redhat.rhn.manager.acl.AclManager;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.frontend.html.HtmlTag;
-import com.redhat.rhn.manager.acl.AclManager;
 
 /**
  * The ToolbarTag generates a toolbar showing the page title, optional
@@ -62,6 +62,7 @@ import com.redhat.rhn.manager.acl.AclManager;
  *     <li>alt (required) - alternate link text
  *     <li>icon (required) - icon to be displayed for link
  *     <li>img (required if no icon specified) - image to be displayed for link
+ *     <li>spaOff - exclude link from single page application
  *     </ul>
  * </ul>
  * @version $Rev$
@@ -80,6 +81,7 @@ public class ToolbarTag extends TagSupport {
     private String miscUrl;
     private String miscText;
     private String miscAlt;
+    private boolean miscSpaOff;
     private String creationUrl;
     private String creationAcl;
     private String creationType;
@@ -476,6 +478,13 @@ public class ToolbarTag extends TagSupport {
         return miscText;
     }
 
+    public boolean isMiscSpaOff() {
+        return this.miscSpaOff;
+    }
+
+    public void setMiscSpaOff(boolean isMiscSpaOff) {
+        this.miscSpaOff = isMiscSpaOff;
+    }
 
     /**
      * {@inheritDoc}
@@ -587,7 +596,7 @@ public class ToolbarTag extends TagSupport {
 
             String create = "toolbar.create." + getCreationType();
             return renderActionLink(getCreationUrl(), create,
-                                    create, "item-add", null);
+                                    create, "item-add", null, false);
         }
         return "";
     }
@@ -598,7 +607,7 @@ public class ToolbarTag extends TagSupport {
 
             String clone = "toolbar.clone." + getCloneType();
             return renderActionLink(getCloneUrl(), clone,
-                                    clone, "item-clone", null);
+                                    clone, "item-clone", null, false);
         }
         return "";
     }
@@ -608,7 +617,7 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getDeletionUrl())) {
 
             String del = "toolbar.delete." + getDeletionType();
-            return renderActionLink(getDeletionUrl(), del, del, "item-del", null);
+            return renderActionLink(getDeletionUrl(), del, del, "item-del", null, false);
         }
         return "";
     }
@@ -618,7 +627,7 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getUploadUrl())) {
 
             String del = "toolbar.upload." + getUploadType();
-            return renderActionLink(getUploadUrl(), del, del, "item-upload", null);
+            return renderActionLink(getUploadUrl(), del, del, "item-upload", null, false);
         }
         return "";
     }
@@ -635,11 +644,12 @@ public class ToolbarTag extends TagSupport {
             return "";
         }
         return renderActionLink(getMiscUrl(), getMiscText(),
-                                 getMiscAlt(), getMiscIcon(), getMiscImg());
+                                 getMiscAlt(), getMiscIcon(), getMiscImg(), isMiscSpaOff());
     }
 
     private String renderActionLink(String url, String text,
-                                    String alt, String iconName, String imgName) {
+                                    String alt, String iconName,
+                                    String imgName, boolean isSpaOff) {
         if (url == null) {
             return "";
         }
@@ -648,6 +658,9 @@ public class ToolbarTag extends TagSupport {
 
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", url);
+        if (isSpaOff) {
+            a.setAttribute("data-senna-off", "true");
+        }
 
         if (assertNotEmpty(imgName)) {
             alt = LocalizationService.getInstance().getMessage(alt);
