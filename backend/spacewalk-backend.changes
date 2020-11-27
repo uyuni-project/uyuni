@@ -1,3 +1,4 @@
+- Quote the proxy settings to be used by Zypper (bsc#1179087)
 - Do not raise TypeError when processing SUSE products (bsc#1178704)
 
 -------------------------------------------------------------------
