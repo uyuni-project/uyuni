@@ -1,3 +1,8 @@
+- Added Python 3 build for RHEL7+
+- Generalised Python.
+- Removed duplicate Python 3 package.
+- "Prettified" spec.
+
 -------------------------------------------------------------------
 Fri Sep 18 11:18:49 CEST 2020 - jgonzalez@suse.com
 

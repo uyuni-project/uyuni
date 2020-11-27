@@ -17,11 +17,10 @@
 #
 
 
-%if ! (0%{?fedora} || 0%{?rhel} > 5)
+%global __python /usr/bin/python2 
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%endif
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} > 1320
 %global build_py3   1
 %endif
 
@@ -32,12 +31,13 @@ Name:           python-gzipstream
 Version:        4.2.1
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/python-gzipstream-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/python-gzipstream-%{version}.tar.gz
 %if ! (0%{?suse_version} && 0%{?suse_version} <= 1110)
 BuildArch:      noarch
 %endif
-%if (0%{?fedora} > 27 || 0%{?rhel} > 7)
+%if (0%{?fedora} > 27 || 0%{?rhel} >= 8)
 BuildRequires:  python2-devel
+BuildRequires:  python2-rpm-macros
 %else
 BuildRequires:  python-devel
 %endif
@@ -67,12 +67,12 @@ Obsoletes:      python-gzipstream < %{version}-%{release}
 Summary:        %summary
 Group:          Development/Languages/Python
 BuildRequires:  python3-devel
+
 %if 0%{?suse_version}
 BuildRequires:  python-rpm-macros
 %endif
 
 %description -n python3-gzipstream %_description
-
 %endif
 
 %prep
@@ -82,18 +82,18 @@ cp -a . ../py3
 
 %build
 %{__python} setup.py build
+
 %if 0%{?build_py3}
 cd ../py3
 %{__python3} setup.py build
-
 %endif
 
 %install
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix %{_usr}
+
 %if 0%{?build_py3}
 cd ../py3
 %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix %{_usr}
-
 %endif
 
 %files -n python2-gzipstream
@@ -101,21 +101,12 @@ cd ../py3
 %{python_sitelib}/*
 %doc html LICENSE
 
+
 %if 0%{?build_py3}
 %files -n python3-gzipstream
 %defattr(-,root,root)
 %{python3_sitelib}/*
 %doc html LICENSE
-
-%endif
-
-%if 0%{?build_py3}
-%files -n python3-gzipstream
-%defattr(-,root,root)
-%{python3_sitelib}/*
-%doc html
-%license LICENSE
-
 %endif
 
 %changelog
