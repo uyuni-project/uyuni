@@ -314,8 +314,8 @@ make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_
 %if 0%{?build_py3}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3\b|' $RPM_BUILD_ROOT/usr/sbin/osad-%{python3_version}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3\b|' $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher-%{python3_version}
+sed -i 's|#!/usr/bin/python\b|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad-%{python3_version}
+sed -i 's|#!/usr/bin/python\b|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher-%{python3_version}
 %endif
 
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
