@@ -1,3 +1,4 @@
+- Enhanced SPEC and extended for RHEL8.
 - Added RHEL/CentOS Java alternatives options.
 - Create PostgreSQL Datadir should it not exist.
 
