@@ -66,8 +66,7 @@ Feature: Sanity checks
   Scenario: The external resources can be reached
     Then it should be possible to reach the test packages
     And it should be possible to reach the build sources
-    And it should be possible to reach the container profiles
-    And it should be possible to reach the test suite profiles
+    And it should be possible to reach the Docker profiles
 
 @server_http_proxy
   Scenario: The HTTP proxy is working

@@ -1,3 +1,9 @@
+- Added Python3 build for RHEL
+
+-------------------------------------------------------------------
+Wed Nov 25 12:36:21 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
 - Show the cluster upgrade plan in the UI
 
 -------------------------------------------------------------------

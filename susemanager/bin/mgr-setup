@@ -4,6 +4,7 @@ DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
     sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
     opensuse|opensuse-leap)   JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
+    centos|rhel)              JVM='java-11-openjdk.x86_64';; 
     *)                        echo 'Unknown distribution!'
                               exit 1;;
 esac
@@ -181,7 +182,19 @@ cleanup_hostname() {
 }
 
 setup_db_postgres() {
+    DATADIR="/var/lib/pgsql/data" 
     systemctl --quiet enable postgresql 2>&1
+    if [[ "echo $(source /etc/os-release && echo ${ID_LIKE})" != *"suse"* ]]; then
+        # Create the PostgreSQL data folder, should it not exist.
+        if [ ! -f $DATADIR/PG_VERSION ]; then
+            rm -Rf ${DATADIR}
+            echo "Initializing PostgreSQL $VERSION at location ${DATADIR}"
+            runuser -l postgres -c "/usr/bin/initdb --auth=ident $DATADIR" &> initlog || {
+                echo "Initialisation failed. See $PWD/initlog ."
+                exit 1
+            }
+        fi
+    fi
     systemctl start postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing

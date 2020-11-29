@@ -16,11 +16,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%global debug_package %{nil}
 
-%if  0%{?rhel} && 0%{?rhel} < 6
-%global tomcat_path %{_var}/lib/tomcat5
-%global wwwdocroot %{_var}/www/html
-%else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %global tomcat_path %{_var}/lib/tomcat
 %global wwwdocroot %{_var}/www/html
@@ -33,10 +30,9 @@
 %global wwwdocroot %{_var}/www/html
 %endif
 %endif
-%endif
 
 Name:           spacewalk-branding
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only and OFL-1.1
@@ -59,30 +55,9 @@ Requires:       susemanager-best-practices_en-pdf
 Requires:       susemanager-docs_en
 Requires:       susemanager-getting-started_en-pdf
 Requires:       susemanager-reference_en-pdf
-Requires:       susemanager(bootstrap-datepicker)
-Requires:       susemanager(font-awesome) = 4.4.0
-Requires:       susemanager(jquery-timepicker) = 1.11.14
-Requires:       susemanager(jquery-ui)
-Requires:       susemanager(momentjs)
-Requires:       susemanager(pwstrength-bootstrap)
-Requires:       susemanager(roboto) = 1.2
-Requires:       susemanager(select2)
-Requires:       susemanager(select2-bootstrap-css)
-Requires:       susemanager(twitter-bootstrap-js)
-%else
-BuildRequires:  patternfly1
-Requires:       bootstrap <= 3.0.0
-Requires:       bootstrap-datepicker
-Requires:       font-awesome >= 4.0.0
-Requires:       jquery-timepicker >= 1.3.2
-Requires:       jquery-ui
-Requires:       momentjs
-Requires:       patternfly1
-Requires:       pwstrength-bootstrap
-Requires:       roboto >= 1.2
-Requires:       select2
-Requires:       select2-bootstrap-css
 %endif
+BuildRequires:  susemanager-frontend-libs-devel
+Requires:       susemanager-frontend-libs
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -106,8 +81,8 @@ rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
 # Compile less into css
-ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
-ln -s /srv/www/htdocs/css/patternfly1 css/patternfly1
+ln -s %{wwwdocroot}/css/bootstrap css/bootstrap
+ln -s %{wwwdocroot}/css/patternfly1 css/patternfly1
 lessc css/susemanager-light.less > css/susemanager-light.css
 lessc css/susemanager-dark.less > css/susemanager-dark.css
 lessc css/uyuni.less > css/uyuni.css

@@ -39,9 +39,7 @@ end
 # determine image for PXE boot tests
 def compute_image_filename
   case ENV['PXEBOOT_IMAGE']
-  when nil
-    'Kiwi/POS_Image-JeOS6_head'
-  when 'sles15sp2', 'sles15sp2o'
+  when 'sles15sp2', 'sles15sp2o', 'sles15sp3o'
     'Kiwi/POS_Image-JeOS7_head'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not supported image version.'
@@ -52,9 +50,7 @@ end
 
 def compute_image_name
   case ENV['PXEBOOT_IMAGE']
-  when nil
-    'POS_Image_JeOS6_head'
-  when 'sles15sp2', 'sles15sp2o'
+  when 'sles15sp2', 'sles15sp2o', 'sles15sp3o'
     'POS_Image_JeOS7_head'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not supported image version.'
@@ -66,7 +62,10 @@ end
 # compute list of reposyncs to avoid killing because they might be involved in bootstrapping
 # this is a safety net only, the best thing to do is to not start the reposync at all
 def compute_list_to_leave_running
-  do_not_kill = []
+  # Keep the repos needed for the auto-installation tests.
+  do_not_kill = ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2',
+                 'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2',
+                 'sle-module-basesystem15-sp2-pool-x86_64', 'sle-module-basesystem15-sp2-updates-x86_64']
   [$minion, $build_host, $sshminion, $server].each do |node|
     next if node.nil?
     os_version, os_family = get_os_version(node)
@@ -76,10 +75,6 @@ def compute_list_to_leave_running
     elsif os_family == 'sles' && os_version == '15-SP1'
       do_not_kill += ['sle-product-sles15-sp1-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp1', 'sle-module-containers15-sp1-pool-x86_64',
                       'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64']
-    elsif os_family == 'sles' && os_version == '15-SP2'
-      do_not_kill += ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2',
-                      'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2',
-                      'sle-module-basesystem15-sp2-pool-x86_64', 'sle-module-basesystem15-sp2-updates-x86_64']
     end
   end
   do_not_kill

@@ -729,6 +729,32 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   end
 end
 
+When(/^I disable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  elsif os_family =~ /^centos/
+    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
+    end
+  end
+end
+
+When(/^I enable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^#\\s*deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^#\\s*deb /deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
+end
+
+When(/^I disable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^deb /# deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
+end
+
 When(/^I enable repositories before installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
@@ -884,18 +910,6 @@ Then(/^I should see a text describing the OS release$/) do
   os_version, os_family = get_os_version($client)
   release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
   step %(I should see a "OS: #{release}" text)
-end
-
-Then(/^config-actions are enabled$/) do
-  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
-    raise 'config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client'
-  end
-end
-
-Then(/^remote-commands are enabled$/) do
-  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
-    raise 'remote commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist'
-  end
 end
 
 When(/^I remember when I scheduled an action$/) do
