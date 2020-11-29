@@ -136,7 +136,7 @@ Feature: Content lifecycle
     And I add the "Test Base Channel" channel to sources
     And I click on "Save"
     Then I wait until I see "Test Base Channel" text
-    And I should see a "Build (1)" text
+    And I wait until I see "Build (1)" text
     And I should see a "Version 2: (draft - not built) - Check the changes below" text
     When I click on "Build (1)"
     Then I wait until I see "Version 2 history" text

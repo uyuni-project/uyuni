@@ -20,11 +20,14 @@
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8 || 0%{?mageia}
 %global build_py3   1
 %global default_py3 1
+%global __python /usr/bin/python3
 %endif
 
+%if !(0%{?rhel} >= 8)
 %global build_py2   1
+%endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 %{!?_presetdir:%global _presetdir /lib/systemd/system-preset}
 # Bash constructs in scriptlets don't play nice with Debian's default shell, dash
 %global _buildshell /bin/bash
@@ -49,7 +52,7 @@
 %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 # For making sure we can set the right args for deb distros
 %global is_deb 1
 %endif
@@ -68,7 +71,7 @@
 Name:           spacewalk-client-tools
 Summary:        Support programs and libraries for Spacewalk
 License:        GPL-2.0-only
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Group:      admin
 Packager:   Uyuni Project <uyuni-devel@opensuse.org>
 %else
@@ -77,7 +80,7 @@ Group:          System Environment/Base
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 Url:            https://github.com/uyuni-project/uyuni
-Version:        4.2.2
+Version:        4.2.3
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
@@ -92,7 +95,7 @@ Obsoletes:      rhn-client-tools < %{version}-%{release}
 Obsoletes:      rhn-setup-gnome
 %endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 Requires:       coreutils
 Requires:       gnupg
 Requires:       rpm >= 4.2.3-24_nonptl
@@ -108,7 +111,7 @@ Requires:       yum
 %endif # 0{?suse_version}
 %endif # {_vendor} != "debbuild"
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires: apt
 %if 0%{?ubuntu} >= 1804
 Requires: gpg
@@ -161,7 +164,7 @@ system to receive software updates from Spacewalk.
 %if 0%{?build_py2}
 %package -n python2-%{name}
 Summary:        Support programs and libraries for Spacewalk
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Group: python
 %else
 Group:          System Environment/Base
@@ -173,7 +176,7 @@ Obsoletes:      python2-rhn-client-tools < %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
 Requires:       rhnlib >= 2.5.78
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 Requires:       rpm-python
 Requires:       python2-uyuni-common-libs
 %ifnarch s390 s390x
@@ -223,7 +226,7 @@ BuildRequires:  rpm-python
 %endif
 %endif # if {_vendor} != "debbuild"
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires: python-rpm
 Requires: python-dmidecode
 Requires: python-ethtool >= 0.4
@@ -247,7 +250,7 @@ Python 2 specific files of %{name}.
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary:        Support programs and libraries for Spacewalk
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Group: python
 %else
 Group:          System Environment/Base
@@ -255,7 +258,7 @@ Group:          System Environment/Base
 Provides:       python3-rhn-client-tools = %{version}-%{release}
 Obsoletes:      python3-rhn-client-tools < %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1500
 Requires:       python3-dbus-python
@@ -283,7 +286,7 @@ Requires:       python3-rhnlib >= 2.5.78
 Requires:       python3-rpm
 Requires:       python3-uyuni-common-libs
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 BuildRequires: python3-dev
 Requires: python3-dbus
 Requires: python3-newt
@@ -310,7 +313,7 @@ Provides:       rhn-check = %{version}-%{release}
 Obsoletes:      rhn-check < %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{pythonX}-spacewalk-check = %{version}-%{release}
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 Group:          System Environment/Base
 %if 0%{?suse_version}
 Requires:       zypp-plugin-spacewalk >= 1.0.2
@@ -323,7 +326,7 @@ Requires:       yum-rhn-plugin >= 2.8.2
 %endif
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires: apt-transport-spacewalk
 %endif
 
@@ -341,7 +344,7 @@ Provides:       python2-rhn-check = %{version}-%{release}
 Obsoletes:      python2-rhn-check < %{version}-%{release}
 Requires:       spacewalk-check = %{version}-%{release}
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires(preun): python-minimal
 Requires(post): python-minimal
 %endif
@@ -358,7 +361,7 @@ Provides:       python3-rhn-check = %{version}-%{release}
 Obsoletes:      python3-rhn-check < %{version}-%{release}
 Requires:       spacewalk-check = %{version}-%{release}
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires(preun): python3-minimal
 Requires(post): python3-minimal
 %endif
@@ -406,7 +409,7 @@ Requires:       newt-python
 Requires:       python-newt
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires(preun): python-minimal
 Requires(post): python-minimal
 %endif
@@ -429,7 +432,7 @@ Requires:       python3-newt
 Requires:       newt-python3
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires(preun): python3-minimal
 Requires(post): python3-minimal
 %endif
@@ -446,7 +449,7 @@ Requires:       %{name} = %{version}-%{release}
 Requires:       %{pythonX}-spacewalk-client-setup
 Requires:       spacewalk-client-setup = %{version}-%{release}
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires: libpam0g
 Requires: libpam-modules
 Requires: libpam-runtime
@@ -466,7 +469,7 @@ Group:          System Environment/Base
 Provides:       python-spacewalk-client-setup-gnome = %{version}-%{release}
 Obsoletes:      python-spacewalk-client-setup-gnome < %{version}-%{release}
 Requires:       spacewalk-client-setup-gnome = %{version}-%{release}
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version}
 Requires:       gtk3
 Requires:       python3-gobject
@@ -481,7 +484,7 @@ Requires:       liberation-sans-fonts
 %endif
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Requires: python-gnome2
 Requires: python-gtk2
 Requires: python-glade2
@@ -500,7 +503,7 @@ Python 2 specific files for spacewalk-client-setup-gnome.
 Summary:        Configure and register an RHN/Spacewalk client
 Group:          System Environment/Base
 Requires:       spacewalk-client-setup-gnome = %{version}-%{release}
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version}
 Requires:       python-gnome
 Requires:       python-gtk
@@ -514,7 +517,7 @@ Requires:       liberation-sans-fonts
 %endif
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 BuildRequires: libgtk2.0-dev
 Requires: libgtk-3-bin
 Requires: gir1.2-gtk-3.0
@@ -627,7 +630,7 @@ for d in usr/share/locale/*; do
 done
 cd -
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %find_lang rhn-client-tools
 %endif
 
@@ -688,15 +691,15 @@ rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
 %post -n spacewalk-client-setup-gnome
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 # See posttrans section below
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %postun -n spacewalk-client-setup-gnome
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 if [ $1 -eq 0 ] ; then
 %endif
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 if [[ "$1" == "purge" || "$1" == "remove" ]]; then
 %endif
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
@@ -704,7 +707,7 @@ if [[ "$1" == "purge" || "$1" == "remove" ]]; then
 fi
 
 # This macro doesn't exist for debbuild. I'm shoving this into post instead.
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %posttrans -n spacewalk-client-setup-gnome
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
@@ -716,7 +719,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 make -f Makefile.rhn-client-tools test
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 %files
 # No find_lang on Debian systems
 %{_datadir}/locale/
@@ -810,7 +813,7 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/rhncli.*
 %{python3_sitelib}/up2date_client/pkgplatform.*
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %dir %{python3_sitelib}/up2date_client/__pycache__/
 %{python3_sitelib}/up2date_client/__pycache__/__init__.*
 %{python3_sitelib}/up2date_client/__pycache__/config.*
@@ -874,7 +877,7 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/rhn/actions/rhnsd.*
 %{python3_sitelib}/rhn/actions/up2date_config.*
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %dir %{python3_sitelib}/rhn/actions/__pycache__/
 %{python3_sitelib}/up2date_client/__pycache__/getMethod.*
 %{python3_sitelib}/rhn/actions/__pycache__/__init__.*
@@ -937,7 +940,7 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/tui.*
 %{python3_sitelib}/up2date_client/rhnreg_constants.*
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %{python3_sitelib}/up2date_client/__pycache__/rhnreg.*
 %{python3_sitelib}/up2date_client/__pycache__/pmPlugin.*
 %{python3_sitelib}/up2date_client/__pycache__/tui.*
@@ -1020,7 +1023,7 @@ make -f Makefile.rhn-client-tools test
 %{python3_sitelib}/up2date_client/gui.*
 %{python3_sitelib}/up2date_client/progress.*
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %{python3_sitelib}/up2date_client/__pycache__/messageWindow.*
 %{python3_sitelib}/up2date_client/__pycache__/rhnregGui.*
 %{python3_sitelib}/up2date_client/__pycache__/gtk_compat.*
@@ -1030,7 +1033,7 @@ make -f Makefile.rhn-client-tools test
 %endif # 0{?build_py3}
 %endif # ! 0{?without_rhn_register}
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 
 %if 0%{?build_py2}
 %post -n python2-%{name}

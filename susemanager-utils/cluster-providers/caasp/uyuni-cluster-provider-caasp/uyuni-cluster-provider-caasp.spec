@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?sle_version} >= 15000
+%if 0%{?sle_version} >= 15000 || 0%{?rhel}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif
@@ -23,7 +23,7 @@
 %define fname caasp
 %define fdir %{_datadir}/susemanager/cluster-providers
 Name:           uyuni-cluster-provider-caasp
-Version:        4.2.1
+Version:        4.2.2
 Release:        1
 Summary:        SUSE CaaS Platform cluster provider for SUSE Manager
 License:        GPL-2.0-only

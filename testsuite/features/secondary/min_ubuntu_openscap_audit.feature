@@ -28,20 +28,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @ubuntu_minion
-  Scenario: Run a remote command on the Ubuntu minion
-    Given I am authorized
-    When I follow the left menu "Salt > Remote Commands"
-    Then I should see a "Remote Commands" text in the content area
-    When I enter command "cat /etc/os-release"
-    And I enter target "*ubuntu*"
-    And I click on preview
-    And I click on run
-    Then I should see "ubuntu_minion" hostname
-    When I wait until I see "show response" text
-    And I expand the results for "ubuntu_minion"
-    Then I should see a "ID=ubuntu" text
-
-@ubuntu_minion
   Scenario: Check the results of the OpenSCAP scan on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
