@@ -36,7 +36,7 @@
                                         <label for="http-proxy-input-password" class="col-xs-4 control-label">HTTP Proxy Password:</label>
                                         <div class="col-xs-8">
                                             <p class="form-control-static http-proxy-password"></p>
-                                          <input type="password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="Password">
+                                          <input type="password" autocomplete="new-password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="Password">
                                         </div>
                                       </div>
                                 </form>
