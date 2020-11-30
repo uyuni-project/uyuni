@@ -254,13 +254,13 @@ end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @client_api.call('auth.login', 'admin', 'admin')
   # -------------------------------
   # cleanup kickstart profiles and distros
   distro_name = 'fedora_kickstart_distro'
-  @cli.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
-  @cli.call('auth.logout', @sid)
+  @client_api.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
+  @client_api.call('auth.logout', @sid)
   # -------------------------------
   # remove not from suma managed profile
   $server.run('cobbler profile remove --name "testprofile"')

@@ -1,3 +1,6 @@
+# Copyright (c) 2020 SUSE LLC.
+# Licensed under the terms of the MIT license.
+#
 require_relative 'xmlrpctest'
 
 # configchannel class
