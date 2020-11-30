@@ -24,7 +24,11 @@
 %else
 %define apacheconfdir %{_sysconfdir}/httpd
 %define apachepkg httpd
+%if 0%{?rhel}
+%define apache_group root
+%else
 %define apache_group apache
+%endif
 %endif
 
 Name:           spacewalk-config
@@ -60,8 +64,8 @@ Requires(pre):  uyuni-base-common
 %if 0%{?suse_version}
 BuildRequires:  openssl
 BuildRequires:  sudo
-Requires:       apache2-mod_xsendfile
 %endif
+Requires:       (apache2-mod_xsendfile or mod_xsendfile)
 
 %description
 Common Spacewalk configuration files and templates.
