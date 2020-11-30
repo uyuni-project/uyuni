@@ -254,13 +254,13 @@ end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @client_api.call('auth.login', 'admin', 'admin')
   # -------------------------------
   # cleanup kickstart profiles and distros
   distro_name = 'fedora_kickstart_distro'
-  @cli.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
-  @cli.call('auth.logout', @sid)
+  @client_api.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
+  @client_api.call('auth.logout', @sid)
   # -------------------------------
   # remove not from suma managed profile
   $server.run('cobbler profile remove --name "testprofile"')
@@ -1172,7 +1172,9 @@ Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warni
 end
 
 When(/^I create the MU repositories for "([^"]*)"$/) do |client|
-  repo_list = $mu_repositories[client]
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     if repository_exist? unique_repo_name
@@ -1185,7 +1187,7 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
         And I enter "#{repo_url.strip}" as "url"
         And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
         And I click on "Create Repository"
-        Then I should see a "Repository created successfully" text
+        Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
         And I should see "metadataSigned" as checked
       )
     end
@@ -1193,7 +1195,9 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
 end
 
 When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
-  repo_list = $mu_repositories[client]
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     step %(I check "#{unique_repo_name}" in the list)
