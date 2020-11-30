@@ -1,3 +1,4 @@
+- add translation strings for newly added countries and timezones (jsc#PM-2081)
 - Update exception message in findSyncedMandatoryChannels
 
 -------------------------------------------------------------------
