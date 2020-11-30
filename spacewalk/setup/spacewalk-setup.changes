@@ -1,3 +1,4 @@
+- Updated SPEC for RHEL and Fedora.
 - Fixed cobbler version detection.
 - Generalised cobblerd service detection.
 
