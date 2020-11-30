@@ -1,3 +1,6 @@
+- Generalised manage_database.
+- Updated SPEC to work on RHEL.
+
 -------------------------------------------------------------------
 Fri Sep 18 11:43:47 CEST 2020 - jgonzalez@suse.com
 
