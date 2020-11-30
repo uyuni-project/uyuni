@@ -1,3 +1,4 @@
+- Fix incorrect password autocompletions (bsc#1148357)
 - Allow specifying both name and label of new Content Environment (bsc#1176411)
 
 -------------------------------------------------------------------

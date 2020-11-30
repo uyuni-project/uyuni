@@ -1,4 +1,3 @@
-- Fix incorrect password autocompletions (bsc#1148357)
 - Added RHEL/CentOS Java alternatives options.
 - Create PostgreSQL Datadir should it not exist.
 

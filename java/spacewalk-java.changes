@@ -1,3 +1,5 @@
+- Fix incorrect password autocompletions (bsc#1148357)
+
 -------------------------------------------------------------------
 Wed Nov 25 12:22:07 CET 2020 - jgonzalez@suse.com
 
