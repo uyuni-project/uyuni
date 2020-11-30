@@ -1,4 +1,6 @@
 - Required NodeJS version upgraded to 10
+- Fix incorrect password autocompletions (bsc#1148357)
+- Fix mandatory channels JS API to finish loading in case of error (bsc#1178839)
 - Allow specifying both name and label of new Content Environment (bsc#1176411)
 
 -------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2017 SUSE LLC.
+# Copyright (c) 2011-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require_relative 'xmlrpctest'
@@ -56,8 +56,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def is_parent_channel(child, parent)
     channel = @connection.call('channel.software.get_details', @sid, child)
-    return true if channel['parent_channel_label'] == parent
-    false
+    channel['parent_channel_label'] == parent
   end
 
   #
@@ -72,11 +71,10 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def list_software_channels
     channels = @connection.call('channel.list_software_channels', @sid)
-    channels.each do |c|
-      print '    Channel: ' + "\n"
-      c.keys.each do |key|
-        print '      ' + key + ': ' + c[key] + "\n"
-      end
-    end
+    channels.map { |channel| channel['label'] }
+  end
+
+  def list_child_channels(parent_channel)
+    list_software_channels.select { |channel| is_parent_channel(channel, parent_channel) }
   end
 end

@@ -161,8 +161,16 @@ When(/^I select the maximum amount of items per page$/) do
   find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
 end
 
-When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |_channel_type, client, from|
-  select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
+When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
+end
+
+When(/^I select the base channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
+  unless has_no_xpath?("//div[@id='activation-key-channels']//div[contains(@class, 'hide')]", wait: 10)
+    puts "Child channels for #{BASE_CHANNEL_BY_CLIENT[client]} not expanded, forcing it."
+    find(:xpath, "//*[contains(@class, 'pointer') and contains(text(), '#{BASE_CHANNEL_BY_CLIENT[client]}')]").click
+  end
 end
 
 When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|
@@ -534,7 +542,7 @@ When(/^I check test channel$/) do
 end
 
 When(/^I check the child channel "([^"]*)"$/) do |channel|
-  find(:xpath, "//i[@class='fa fa-angle-right']").click unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
+  find(:xpath, "//i[@class='fa fa-angle-right']").click unless has_xpath?("//i[@class='fa fa-angle-down']", wait: 60)
   checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
   checkbox.set(true)
 end
