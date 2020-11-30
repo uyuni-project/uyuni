@@ -623,16 +623,16 @@ end
 When(/^I wait for the OpenSCAP audit to finish$/) do
   host = $server.full_hostname
   @sle_id = retrieve_server_id($minion.full_hostname)
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @client_api.call('auth.login', 'admin', 'admin')
   begin
     repeat_until_timeout(message: "process did not complete") do
-      scans = @cli.call('system.scap.list_xccdf_scans', @sid, @sle_id)
+      scans = @client_api.call('system.scap.list_xccdf_scans', @sid, @sle_id)
       # in the openscap test, we schedule 2 scans
       break if scans.length > 1
     end
   ensure
-    @cli.call('auth.logout', @sid)
+    @client_api.call('auth.logout', @sid)
   end
 end
 

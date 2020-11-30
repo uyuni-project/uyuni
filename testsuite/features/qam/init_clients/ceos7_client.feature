@@ -31,11 +31,3 @@ Feature: Bootstrap a CentOS 7 traditional client
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos7_client" hostname
-
-  Scenario: Schedule some actions on the CentOS 7 traditional client
-    Given I am authorized as "admin" with password "admin"
-    When I authenticate to XML-RPC
-    And I refresh the packages on "ceos7_client" through XML-RPC
-    And I run a script on "ceos7_client" through XML-RPC
-    And I reboot "ceos7_client" through XML-RPC
-    And I unauthenticate from XML-RPC
