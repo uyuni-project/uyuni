@@ -121,16 +121,16 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
-  refute_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  refute_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
-  assert_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  assert_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^the PXE boot minion should have been reformatted$/) do
@@ -141,15 +141,15 @@ end
 
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
-  @rpc = XMLRPCUserTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
+  @user_api = XMLRPCUserTest.new(ENV['SERVER'])
+  @user_api.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  @rpc.create_user(@username, 'linux')
+  @user_api.create_user(@username, 'linux')
   step %(I am authorized as "#{@username}" with password "linux")
 end
 
 Then(/^I can cleanup the no longer needed user$/) do
-  @rpc.delete_user(@username)
+  @user_api.delete_user(@username)
 end
 
 When(/^I click on preview$/) do
