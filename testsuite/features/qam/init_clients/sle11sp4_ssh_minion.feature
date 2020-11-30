@@ -28,10 +28,6 @@ Feature: Bootstrap a SLES 11 SP4 Salt SSH Minion
     Given I am on the Systems overview page of this "sle11sp4_ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
 
-# WORKAROUD for bsc#1178328
-  Scenario: Install dmidecode package to avoid a Hardware Refresh issue in SLES 11 SP4 SSH minion
-    And I install package "dmidecode" on this "sle11sp4_ssh_minion"
-
 @proxy
   Scenario: Check connection from SLES 11 SP4 SSH minion to proxy
     Given I am on the Systems overview page of this "sle11sp4_ssh_minion"
