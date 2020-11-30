@@ -24594,6 +24594,34 @@ given channel.</source>
         <source>Allow Vendor Change</source>
       <target state="new" />
   </trans-unit>
+      <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
+        <source>Documentation Language</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.docs.langs" xml:space="preserve">
+        <source>Please select your preferred documentation language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ documentation.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="channelOverview.jsp.newToolbar.stateType" xml:space="preserve">
+        <source>New Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
+        <source>Create Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
       </body>
   </file>
 </xliff>
