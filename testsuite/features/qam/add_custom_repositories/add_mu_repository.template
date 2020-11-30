@@ -17,8 +17,7 @@ Feature: Adding a Maintenance Update custom channel and the custom repositories 
 
   Scenario: Add the Maintenance update repositories for <client>
     Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Software > Manage > Repositories"
-    And I create the MU repositories for "<client>"
+    When I create the MU repositories for "<client>"
 
   Scenario: Add the custom repositories to the custom channel for <client>
     Given I am authorized as "admin" with password "admin"

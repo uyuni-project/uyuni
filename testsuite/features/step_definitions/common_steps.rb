@@ -1127,14 +1127,15 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
       puts "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
       steps %(
-      When I follow "Create Repository"
-      And I enter "#{unique_repo_name}" as "label"
-      And I enter "#{repo_url.strip}" as "url"
-      And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
-      And I click on "Create Repository"
-      Then I should see a "Repository created successfully" text
-      And I should see "metadataSigned" as checked
-    )
+        When I follow the left menu "Software > Manage > Repositories"
+        And I follow "Create Repository"
+        And I enter "#{unique_repo_name}" as "label"
+        And I enter "#{repo_url.strip}" as "url"
+        And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
+        And I click on "Create Repository"
+        Then I should see a "Repository created successfully" text
+        And I should see "metadataSigned" as checked
+      )
     end
   end
 end
