@@ -1858,7 +1858,8 @@ SELECT 1
                     rhnUserServerPerms USP2 on NI2.server_id = USP2.server_id inner join
                     rhnServerNetAddress4 sa4_2 on sa4_2.interface_id = ni2.id
                         where USP2.user_id = :uid and
-                                sa4_2.address not in(%s) and NI2.name not like 'vnet%' and NI2.name not like 'virbr%'
+                                sa4_2.address not in(%s) and NI2.name not like 'vnet%' and NI2.name not like 'virbr%' and
+                                NI2.name not like 'docker%'
                                 group by sa4_2.address having count(distinct NI2.server_id) > 1) SUMM on SUMM.address = sa4.address
         where USP.user_id = :uid
     </query>
@@ -1901,7 +1902,8 @@ SELECT 1
                       rhnservernetaddress6 sa6_2 on sa6_2.interface_id = ni2.id
                 where usp2.user_id = :uid and
                       sa6_2.address not in(%s) and
-                      ni2.name not like 'vnet%' and ni2.name not like 'virbr%'
+                      ni2.name not like 'vnet%' and ni2.name not like 'virbr%' and
+                      ni2.name not like 'docker%'
                                 group by sa6_2.address, sa6_2.scope
                having count(distinct ni2.server_id) > 1) summ on summ.address = sa6.address and summ.scope = sa6.scope
          where usp.user_id = :uid
