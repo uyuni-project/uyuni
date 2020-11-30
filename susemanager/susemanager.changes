@@ -1,3 +1,4 @@
+- Use product IDs for Debian 9 and 10 SUSE Manager bootstrap repo data
 - Added RHEL/CentOS Java alternatives options.
 - Create PostgreSQL Datadir should it not exist.
 
