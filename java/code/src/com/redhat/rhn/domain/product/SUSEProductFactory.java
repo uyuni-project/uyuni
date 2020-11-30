@@ -40,6 +40,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -278,7 +279,8 @@ public class SUSEProductFactory extends HibernateFactory {
             Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
 
             SUSEProductChannel baseProductChannel = findSyncProductChannelByLabel(baseChannel.getLabel())
-                    .orElseThrow(() -> new IllegalStateException("No product channel found for " + baseChannel));
+                    .orElseThrow(() -> new NoSuchElementException("No product channel found for " + baseChannel +
+                            " of " + channel));
             Stream<SUSEProductChannel> suseProductChannelStream = findSyncedMandatoryChannels(
                         suseProductChannel.getProduct(),
                         baseProductChannel.getProduct(),
