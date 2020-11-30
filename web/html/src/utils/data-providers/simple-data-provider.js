@@ -9,17 +9,24 @@ export default class SimpleDataProvider {
   identifier: (row: any) => any;
   filter: ?(row: any, criteria: string) => boolean;
   comparators: ?{[string]: Comparator};
+  loading: ?boolean;
 
   constructor(data: Array<any>, identifier: (row: any) => any,
       filter?: (row: any, criteria: string) => boolean,
-      comparators?: {[string]: Comparator}) {
+      comparators?: {[string]: Comparator}, loading?: boolean) {
     this.data = data;
     this.identifier = identifier;
     this.filter = filter;
     this.comparators = comparators;
+    this.loading = loading;
   }
 
   get(callback: (promise: Promise<PagedData>) => any, pageControl?: PageControl): void {
+    // Only proceed if loading has finished
+    if (this.loading) {
+      return;
+    }
+
     let data = this.data;
     let total = data.length;
 
