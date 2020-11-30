@@ -1,3 +1,4 @@
+- add translation strings for newly added countries and timezones (jsc#PM-2081)
 - add the VirtualPC as virtualization type (bsc#1178990)
 - Fix the activation key handling from kickstart profile (bsc#1178647)
 
