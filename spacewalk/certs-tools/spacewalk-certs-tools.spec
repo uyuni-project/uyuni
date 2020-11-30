@@ -31,10 +31,13 @@
 %endif
 %global rhnroot %{_datadir}/rhn
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%global __python /usr/bin/python2
+
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
+
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
@@ -52,9 +55,7 @@ Requires(pre):  %{pythonX}-%{name} = %{version}-%{release}
 Requires:       openssl
 Requires:       rpm-build
 Requires:       spacewalk-base-minimal-config
-%if 0%{?suse_version} || 0%{?rhel} >= 5
 Requires:       %{rhn_client_tools}
-%endif
 Requires:       sudo
 Requires:       tar
 BuildRequires:  docbook-utils
@@ -71,6 +72,7 @@ Requires(post): python2-uyuni-common-libs
 Requires(post): rhnlib
 Requires(post): rpm-python
 %endif
+
 Obsoletes:      rhns-certs < 5.3.0
 Obsoletes:      rhns-certs-tools < 5.3.0
 # can not provides = %{version} since some old packages expect > 3.6.0
@@ -84,13 +86,16 @@ Spacewalk.
 %package -n python2-%{name}
 Summary:        Spacewalk SSL Key/Cert Tool
 Group:          Applications/Internet
+BuildRequires:  (python or python2)
 Requires:       %{name} = %{version}-%{release}
 Requires:       python2-rhn-client-tools
 Requires:       python2-uyuni-common-libs
-%if 0%{?rhel} && 0%{?rhel} <= 5
-Requires:       python-hashlib
-%endif
+%if 0%{?suse_version} || 0%{?rhel}
+BuildRequires:  python2
+%else
 BuildRequires:  python
+%endif
+
 
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
@@ -129,8 +134,13 @@ install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
     MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
+%if 0%{?rhel}>=8 || 0%{?fedora}
+sed -i '1s|python\b|python2|' $RPM_BUILD_ROOT/%{_bindir}/rhn-ssl-tool-%{python_version} $RPM_BUILD_ROOT/%{_bindir}/rhn-bootstrap-%{python_version}
+%endif
+
 %if 0%{?build_py3}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhn-ssl-tool mgr-package-rpm-certificate-osimage rhn-bootstrap
+sed -i '1s|python\b|python3|' rhn-ssl-tool mgr-package-rpm-certificate-osimage rhn-bootstrap client_config_update.py
+sed -i '1s|python\b|python3|' $RPM_BUILD_ROOT%{pub_bootstrap_dir}/client_config_update.py
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
     MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
@@ -139,6 +149,8 @@ make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 ln -s rhn-ssl-tool%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-ssl-tool
 ln -s rhn-bootstrap%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
+ln -s mgr-ssl-tool.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-ssl-tool.1.gz
+ln -s mgr-bootstrap.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-bootstrap.1.gz
 
 %if 0%{?suse_version}
 ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
@@ -146,8 +158,6 @@ ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
 ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
-ln -s mgr-ssl-tool.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-ssl-tool.1.gz
-ln -s mgr-bootstrap.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-bootstrap.1.gz
 
 %py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
@@ -190,7 +200,6 @@ esac
 %{_bindir}/mgr-sudo-ssl-tool
 %{_sbindir}/mgr-push-register
 %{_sbindir}/mgr-ssh-push-init
-%{_sbindir}/mgr-package-rpm-certificate-osimage
 %endif
 
 %files -n python2-%{name}
