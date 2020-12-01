@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"POT-Creation-Date: 2020-11-30 18:46+0100\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -1074,6 +1074,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
+#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/virtualization/ListTab.js:231
 msgid "Filter by name"
 msgstr ""
@@ -1101,7 +1102,7 @@ msgstr "Tiempo transcurrido"
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:235
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:128
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:58
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
 msgid "Status"
@@ -1397,8 +1398,8 @@ msgstr "Número de parte"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:154
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:257
 #: ../html/src/manager/content-management/list-projects/list-projects.js:100
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
@@ -1604,6 +1605,8 @@ msgid "Edit properties"
 msgstr "Editar propiedades"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:249
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
 #: ../html/src/manager/images/image-profile-edit.js:394
 #: ../html/src/manager/images/image-profiles.js:135
@@ -1631,7 +1634,6 @@ msgstr "Grupo de sistemas"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:286
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
 #: ../html/src/manager/clusters/shared/ui/select-server.js:113
-#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/content-management/list-projects/list-projects.js:81
 msgid "Filter by any value"
 msgstr "Filtrar por cualquier valor"
@@ -1877,7 +1879,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-form.js:151
 #: ../html/src/manager/content-management/list-filters/filter-form.js:189
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:84
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:47
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-view.js:549
@@ -2143,7 +2145,7 @@ msgstr ""
 msgid "Version {0} successfully built into {1}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:55
 msgid "Insert before"
 msgstr ""
 
@@ -2194,12 +2196,12 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:84
 msgid "not built"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:73
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr ""
 

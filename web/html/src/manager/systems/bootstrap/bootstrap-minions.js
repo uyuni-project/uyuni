@@ -207,7 +207,7 @@ class BootstrapMinions extends React.Component {
             <div className="form-group" >
                 <label className="col-md-3 control-label">Password:</label>
                 <div className="col-md-6">
-                    <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
+                    <input name="password" className="form-control" type="password" autocomplete="new-password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
                 </div>
              </div>
              :
@@ -224,7 +224,7 @@ class BootstrapMinions extends React.Component {
                  <div className="form-group">
                      <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
                      <div className="col-md-6">
-                         <input name="privKeyPwd" className="form-control" type="password" placeholder={t("Leave empty for no passphrase")} value={this.state.privKeyPwd} onChange={this.privKeyPwdChanged}/>
+                         <input name="privKeyPwd" className="form-control" type="password" autocomplete="new-password" placeholder={t("Leave empty for no passphrase")} value={this.state.privKeyPwd} onChange={this.privKeyPwdChanged}/>
                      </div>
                  </div>
              </div>;

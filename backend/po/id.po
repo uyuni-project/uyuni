@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:21+0200\n"
+"POT-Creation-Date: 2020-11-20 12:54+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -79,21 +79,6 @@ msgstr "Diduga sebuah nama paket, bukan: %s"
 msgid "Expected a package, not: %s"
 msgstr "Diduga sebuah paket, bukan: %s"
 
-#: ../server/handlers/xmlrpc/queue.py:433
-#, fuzzy, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipe nilai tindakan %s (%s) tidak valid"
-
-#: ../server/handlers/xmlrpc/queue.py:464
-#, fuzzy, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Tindakan %s bukan milik server %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, fuzzy, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Nilai %s (%s) tidak valid"
-
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, fuzzy, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -109,6 +94,16 @@ msgstr "Kunci sesi tidak valid"
 #, fuzzy
 msgid "This server ID no longer exists"
 msgstr "ID server ini tidak ada lagi"
+
+#: ../server/handlers/xmlrpc/queue.py:433
+#, fuzzy, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Tipe nilai tindakan %s (%s) tidak valid"
+
+#: ../server/handlers/xmlrpc/queue.py:464
+#, fuzzy, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Tindakan %s bukan milik server %s"
 
 #: ../server/handlers/xmlrpc/registration.py:194
 #, fuzzy
@@ -157,6 +152,11 @@ msgstr "Mengharapkan kamus sebagai argumen produk"
 #, fuzzy, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nilai '%s' tidak valid untuk %s (%s)"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, fuzzy, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Nilai %s (%s) tidak valid"
 
 #: ../server/importlib/userAuth.py:98
 #, fuzzy
@@ -368,18 +368,7 @@ msgstr ""
 "Akun Anda tidak memiliki akses ke saluran apa pun yang cocok "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2002
-#, fuzzy
-msgid ""
-"\n"
-"If you have a registration number, please register with it first at http://"
-"www.redhat.com/apps/activate/ and then try again.\n"
-"\n"
-msgstr ""
-"Jika Anda memiliki nomor registrasi, silakan mendaftar dengan terlebih "
-"dahulu di http://www.redhat.com/apps/activate/ dan kemudian coba lagi."
-
-#: ../server/rhnChannel.py:2012
+#: ../server/rhnChannel.py:2007
 #, fuzzy, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Izin berlangganan tidak cukup untuk rilis (%s, %s"
@@ -388,35 +377,12 @@ msgstr "Izin berlangganan tidak cukup untuk rilis (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2276 ../server/rhnChannel.py:2287
-#: ../server/rhnChannel.py:2302
+#: ../server/rhnChannel.py:2271 ../server/rhnChannel.py:2286
 #, fuzzy
 msgid "System Registered but Inactive"
 msgstr "Sistem Terdaftar tetapi Tidak Aktif"
 
-#: ../server/rhnChannel.py:2277
-#, fuzzy, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it is not subscribed to a channel. If you have not yet\n"
-"activated your product for service, please visit our website at:\n"
-"\n"
-"     http://www.redhat.com/apps/activate/\n"
-"\n"
-"...to activate your product."
-msgstr ""
-"Kombinasi pelepas Arsitektur dan OS tidak valid (%s, %s).\n"
-"Sistem Anda telah terdaftar, tetapi tidak akan menerima pembaruan\n"
-"karena tidak berlangganan saluran. Jika Anda belum\n"
-"mengaktifkan produk Anda untuk layanan, silakan kunjungi website kami di:\n"
-"\n"
-"http://www.redhat.com/apps/activate/\n"
-"\n"
-"... untuk mengaktifkan produk Anda."
-
-#: ../server/rhnChannel.py:2288
+#: ../server/rhnChannel.py:2272
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -430,7 +396,7 @@ msgstr ""
 "karena tidak dapat di subscribe ke base channel.\n"
 "Hubungi administrator organisasi Anda untuk mendapatkan bantuan."
 
-#: ../server/rhnChannel.py:2295
+#: ../server/rhnChannel.py:2279
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -445,7 +411,7 @@ msgstr ""
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
 
-#: ../server/rhnChannel.py:2303
+#: ../server/rhnChannel.py:2287
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -768,7 +734,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"     The --force rhnpush option is disabled on this server.\n"
+"     The --force mgrpush option is disabled on this server.\n"
 "     Please contact your SUSE Manager administrator for more help.\n"
 "     "
 msgstr ""
@@ -1228,256 +1194,6 @@ msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "format dari %s harus setidaknya YYYYMMDD."
 
-#: ../satellite_tools/messages.py:26
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"GALAT: menjalankan langkah %s. Galat adalah:\n"
-"%s"
-
-#: ../satellite_tools/messages.py:31
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"ERROR: ada masalah saat mengakses data channel dari\n"
-"       Repositori. Apakah Anda memigrasikan semua data dari ISO saluran\n"
-"       melakukan direktori ini? Jika demikian, silakan periksa kembali "
-"saluran ISOs, pastikan\n"
-"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan "
-"mengisi kembali\n"
-"       repositori sementara (%s)."
-
-#: ../satellite_tools/messages.py:39
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"GALAT: ada masalah sinkronisasi informasi.\n"
-"       Pesan galat: %s"
-
-#: ../satellite_tools/messages.py:44
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
-"       Tergantung pada rincian kesalahan tertentu, silakan tinjau "
-"konfigurasi Anda,\n"
-"       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
-"       Pesan galat: %s"
-
-#: ../satellite_tools/messages.py:51
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       If the master satellite is older than v5.3, it does not have ISS "
-"capability.\n"
-"       Otherwise, depending on the specific error details, please review "
-"your\n"
-"       configuration, basic network connectivity, and/or name resolution, "
-"and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
-"       Jika satelit master lebih tua dari v5.3, itu tidak memiliki kemampuan "
-"ISS.\n"
-"       Jika tidak, tergantung pada rincian kesalahan tertentu, harap tinjau\n"
-"       konfigurasi, konektivitas jaringan dasar, dan/atau resolusi nama, dan "
-"coba lagi.\n"
-"       Pesan galat: %s"
-
-#: ../satellite_tools/messages.py:59
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan "
-"sebagai\n"
-"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) "
-"disinkronkan\n"
-"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang "
-"hilang untuk ini\n"
-"       Transaksi:\n"
-"       %s"
-
-#: ../satellite_tools/messages.py:67
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran "
-"ini.\n"
-"Silakan hubungi kontak SUSE Manager Anda\n"
-"%s"
-
-#: ../satellite_tools/messages.py:72
-#, fuzzy, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
-
-#: ../satellite_tools/messages.py:74
-#, fuzzy, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
-
-#: ../satellite_tools/messages.py:75
-#, fuzzy, python-format
-msgid "    Extinct package:  %s"
-msgstr "Paket punah: %s"
-
-#: ../satellite_tools/messages.py:76
-#, fuzzy, python-format
-msgid "   Total size: %s"
-msgstr "Total ukuran: %s"
-
-#: ../satellite_tools/messages.py:77
-#, fuzzy, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
-
-#: ../satellite_tools/messages.py:78
-#, fuzzy, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "Fetch gagal: %s"
-
-#: ../satellite_tools/messages.py:79
-#, fuzzy, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "Ringkasan pengambilan RPM: %s"
-
-#: ../satellite_tools/messages.py:80
-#, fuzzy, python-format
-msgid "       success: %d"
-msgstr "sukses: %d"
-
-#: ../satellite_tools/messages.py:81
-#, fuzzy, python-format
-msgid "       failed:  %d"
-msgstr "Impor yang gagal (%d)"
-
-#: ../satellite_tools/messages.py:82
-#, fuzzy, python-format
-msgid "       extinct: %d"
-msgstr "punah: %d"
-
-#: ../satellite_tools/messages.py:84
-#, fuzzy, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
-
-#: ../satellite_tools/messages.py:85
-#, fuzzy, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "Mengambil / mengurai data errata: %s (%s)"
-
-#: ../satellite_tools/messages.py:86
-#, fuzzy, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "Mengambil / mengurai data kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:87
-#, fuzzy, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:88
-#, fuzzy, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
-
-#: ../satellite_tools/messages.py:89
-#, fuzzy
-msgid "   * WARNING: this may be a slow process."
-msgstr "* PERINGATAN: ini mungkin proses yang lambat."
-
-#: ../satellite_tools/messages.py:90
-#, fuzzy
-msgid "Linking packages to channels"
-msgstr "Menautkan paket ke saluran"
-
-#: ../satellite_tools/messages.py:91
-#, fuzzy, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "Mengimpor *relevan* errata: %s (%s)"
-
-#: ../satellite_tools/messages.py:92
-#, fuzzy
-msgid "   No new kickstartable tree to import"
-msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
-
-#: ../satellite_tools/messages.py:93
-#, fuzzy, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "Mengimpor pohon kickstartable (%d)"
-
-#: ../satellite_tools/messages.py:94
-#, fuzzy, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "Pohon kickstartable impor (%d)"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, fuzzy, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (ditentukan dalam baris perintah)\n"
-"tidak dapat dibuka dan dibaca:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, fuzzy, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" tidak dapat dibuka\n"
-"dan/atau tertulis kepada:\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
-#, fuzzy
-msgid "+++ sending log as an email +++"
-msgstr "+++ mengirim log sebagai email +++"
-
-#: ../satellite_tools/reposync.py:114
-#, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
-
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
-#, fuzzy
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
-
 #: ../satellite_tools/satsync.py:258
 #, fuzzy, python-format
 msgid "No handler for step %s"
@@ -1550,10 +1266,20 @@ msgstr "Master Manajer SUSE tidak mendukung sinkronisasi data organisasi."
 msgid "Skipping..."
 msgstr "Melewatkan: %s\n"
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:111
+#, fuzzy
+msgid "+++ sending log as an email +++"
+msgstr "+++ mengirim log sebagai email +++"
+
 #: ../satellite_tools/satsync.py:442
 #, fuzzy, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Sinkronisasi SUSE Manager Inter Server. laporan dari %s"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:124
+#, fuzzy
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
 
 #: ../satellite_tools/satsync.py:521
 #, fuzzy
@@ -1951,7 +1677,7 @@ msgstr "Baris perintah: %s"
 #, fuzzy, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
-"satellite-sync\" for more information."
+"mgr-inter-sync\" for more information."
 msgstr ""
 "DEBUG HANYA: max. batch-size untuk XML/database-import processing (1..%s).\" "
 "manusia satelit-sync\" untuk informasi lebih lanjut."
@@ -1969,7 +1695,7 @@ msgstr "data proses untuk saluran ini saja"
 #: ../satellite_tools/satsync.py:2209
 #, fuzzy
 msgid ""
-"disk dump will be considered to be a full export; see \"man satellite-sync\" "
+"disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
 "dump disk akan dianggap sebagai ekspor penuh; lihat \"man satellite-sync\" "
@@ -2085,7 +1811,7 @@ msgstr "server alternatif yang digunakan untuk menghubungkan (nama host)"
 
 #: ../satellite_tools/satsync.py:2254
 #, fuzzy
-msgid "synchronize to this step (man satellite-sync for more info)"
+msgid "synchronize to this step (man mgr-inter-sync for more info)"
 msgstr ""
 "sinkronisasi ke langkah ini (man satellite-sync untuk info lebih lanjut)"
 
@@ -2372,6 +2098,278 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
+
+#: ../satellite_tools/messages.py:26
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"GALAT: menjalankan langkah %s. Galat adalah:\n"
+"%s"
+
+#: ../satellite_tools/messages.py:31
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"ERROR: ada masalah saat mengakses data channel dari\n"
+"       Repositori. Apakah Anda memigrasikan semua data dari ISO saluran\n"
+"       melakukan direktori ini? Jika demikian, silakan periksa kembali "
+"saluran ISOs, pastikan\n"
+"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan "
+"mengisi kembali\n"
+"       repositori sementara (%s)."
+
+#: ../satellite_tools/messages.py:39
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"GALAT: ada masalah sinkronisasi informasi.\n"
+"       Pesan galat: %s"
+
+#: ../satellite_tools/messages.py:44
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
+"       Tergantung pada rincian kesalahan tertentu, silakan tinjau "
+"konfigurasi Anda,\n"
+"       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
+"       Pesan galat: %s"
+
+#: ../satellite_tools/messages.py:51
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan "
+"sebagai\n"
+"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) "
+"disinkronkan\n"
+"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang "
+"hilang untuk ini\n"
+"       Transaksi:\n"
+"       %s"
+
+#: ../satellite_tools/messages.py:59
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran "
+"ini.\n"
+"Silakan hubungi kontak SUSE Manager Anda\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, fuzzy, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
+
+#: ../satellite_tools/messages.py:66
+#, fuzzy, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
+
+#: ../satellite_tools/messages.py:67
+#, fuzzy, python-format
+msgid "    Extinct package:  %s"
+msgstr "Paket punah: %s"
+
+#: ../satellite_tools/messages.py:68
+#, fuzzy, python-format
+msgid "   Total size: %s"
+msgstr "Total ukuran: %s"
+
+#: ../satellite_tools/messages.py:69
+#, fuzzy, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
+
+#: ../satellite_tools/messages.py:70
+#, fuzzy, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "Fetch gagal: %s"
+
+#: ../satellite_tools/messages.py:71
+#, fuzzy, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "Ringkasan pengambilan RPM: %s"
+
+#: ../satellite_tools/messages.py:72
+#, fuzzy, python-format
+msgid "       success: %d"
+msgstr "sukses: %d"
+
+#: ../satellite_tools/messages.py:73
+#, fuzzy, python-format
+msgid "       failed:  %d"
+msgstr "Impor yang gagal (%d)"
+
+#: ../satellite_tools/messages.py:74
+#, fuzzy, python-format
+msgid "       extinct: %d"
+msgstr "punah: %d"
+
+#: ../satellite_tools/messages.py:76
+#, fuzzy, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
+
+#: ../satellite_tools/messages.py:77
+#, fuzzy, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "Mengambil / mengurai data errata: %s (%s)"
+
+#: ../satellite_tools/messages.py:78
+#, fuzzy, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "Mengambil / mengurai data kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:79
+#, fuzzy, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:80
+#, fuzzy, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
+
+#: ../satellite_tools/messages.py:81
+#, fuzzy
+msgid "   * WARNING: this may be a slow process."
+msgstr "* PERINGATAN: ini mungkin proses yang lambat."
+
+#: ../satellite_tools/messages.py:82
+#, fuzzy
+msgid "Linking packages to channels"
+msgstr "Menautkan paket ke saluran"
+
+#: ../satellite_tools/messages.py:83
+#, fuzzy, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "Mengimpor *relevan* errata: %s (%s)"
+
+#: ../satellite_tools/messages.py:84
+#, fuzzy
+msgid "   No new kickstartable tree to import"
+msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
+
+#: ../satellite_tools/messages.py:85
+#, fuzzy, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "Mengimpor pohon kickstartable (%d)"
+
+#: ../satellite_tools/messages.py:86
+#, fuzzy, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "Pohon kickstartable impor (%d)"
+
+#: ../satellite_tools/reposync.py:114
+#, fuzzy, python-format
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, fuzzy, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (ditentukan dalam baris perintah)\n"
+"tidak dapat dibuka dan dibaca:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, fuzzy, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" tidak dapat dibuka\n"
+"dan/atau tertulis kepada:\n"
+"%s"
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "If you have a registration number, please register with it first at "
+#~ "http://www.redhat.com/apps/activate/ and then try again.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Jika Anda memiliki nomor registrasi, silakan mendaftar dengan terlebih "
+#~ "dahulu di http://www.redhat.com/apps/activate/ dan kemudian coba lagi."
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "Invalid Architecture and OS release combination (%s, %s).\n"
+#~ "Your system has been registered, but will not receive updates\n"
+#~ "because it is not subscribed to a channel. If you have not yet\n"
+#~ "activated your product for service, please visit our website at:\n"
+#~ "\n"
+#~ "     http://www.redhat.com/apps/activate/\n"
+#~ "\n"
+#~ "...to activate your product."
+#~ msgstr ""
+#~ "Kombinasi pelepas Arsitektur dan OS tidak valid (%s, %s).\n"
+#~ "Sistem Anda telah terdaftar, tetapi tidak akan menerima pembaruan\n"
+#~ "karena tidak berlangganan saluran. Jika Anda belum\n"
+#~ "mengaktifkan produk Anda untuk layanan, silakan kunjungi website kami "
+#~ "di:\n"
+#~ "\n"
+#~ "http://www.redhat.com/apps/activate/\n"
+#~ "\n"
+#~ "... untuk mengaktifkan produk Anda."
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "ERROR: There was a problem communicating with the ISS Master.\n"
+#~ "       If the master satellite is older than v5.3, it does not have ISS "
+#~ "capability.\n"
+#~ "       Otherwise, depending on the specific error details, please review "
+#~ "your\n"
+#~ "       configuration, basic network connectivity, and/or name resolution, "
+#~ "and try again.\n"
+#~ "       Error message: %s\n"
+#~ msgstr ""
+#~ "GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
+#~ "       Jika satelit master lebih tua dari v5.3, itu tidak memiliki "
+#~ "kemampuan ISS.\n"
+#~ "       Jika tidak, tergantung pada rincian kesalahan tertentu, harap "
+#~ "tinjau\n"
+#~ "       konfigurasi, konektivitas jaringan dasar, dan/atau resolusi nama, "
+#~ "dan coba lagi.\n"
+#~ "       Pesan galat: %s"
 
 #, fuzzy
 #~ msgid "Red Hat Satellite Welcome Message"
