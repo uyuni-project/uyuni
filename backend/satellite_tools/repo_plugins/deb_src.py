@@ -264,7 +264,16 @@ class ContentSource:
         self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         self.authtoken = None
 
-        self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
+        # Exclude non-valid characters from reponame
+        self.reponame = self.name
+        for chr in ["$", " ", ".", ";", "/"]:
+            self.reponame = self.reponame.replace(chr, "_")
+        self.channel_label = channel_label
+
+        # The repository cache root will be "/var/cache/rhn/reposync/CHANNEL_LABEL/"
+        # and failback to reponame with excluded non-valid characters if channel label is empty
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.channel_label or self.reponame)
+        self.repo = DebRepo(url, root,
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
                             self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
         self.repo.verify()
