@@ -219,8 +219,8 @@ public abstract class BaseRepoCommand {
             }
             if (!Pattern.compile(REPOSITORY_LABEL_REGEX).matcher(this.label).find()) {
                 throw new InvalidRepoLabelException(label,
-		InvalidRepoLabelException.Reason.REGEX_FAILS,
-                "edit.channel.repo.invalidrepolabel", "");
+                    InvalidRepoLabelException.Reason.REGEX_FAILS,
+                    "edit.channel.repo.invalidrepolabel", "");
             }
             repo.setLabel(this.label);
         }

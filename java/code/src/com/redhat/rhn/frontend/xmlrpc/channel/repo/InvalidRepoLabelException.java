@@ -47,7 +47,7 @@ public class InvalidRepoLabelException extends FaultException {
     /**
      * Creates a new indication that a given repository label is invalid
      *
-     * @param labelIn  label the user attempted to give the repository
+     * @param repoLabel label the user attempted to give the repository
      * @param reasonIn flag indicating why the repository name is invalid; cannot be
      *                 <code>null</code>
      * @param messageIdIn the string resource message ID
