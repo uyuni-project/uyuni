@@ -76,6 +76,7 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
 %if 0%{?suse_version}
+BuildRequires:  %fillup_prereq %insserv_prereq tftp(server) postgresql-init
 Requires(pre,preun):         %fillup_prereq %insserv_prereq tftp(server) postgresql-init
 Requires(post): user(%{apache_user})
 Requires:       yast2-users
