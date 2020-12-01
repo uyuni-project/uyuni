@@ -365,8 +365,14 @@ public class RepoDetailsAction extends RhnAction {
                     "edit.channel.repo.repourlinvalid"));
         }
         catch (InvalidRepoLabelException e) {
-            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                    "edit.channel.repo.repolabelinuse", repoCmd.getLabel()));
+            if (e.getReason() == InvalidRepoLabelException.Reason.REGEX_FAILS) {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "edit.channel.repo.invalidrepolabel", repoCmd.getLabel()));
+	    }
+            else {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "edit.channel.repo.repolabelinuse", repoCmd.getLabel()));
+            }
         }
         catch (InvalidCertificateException e) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
