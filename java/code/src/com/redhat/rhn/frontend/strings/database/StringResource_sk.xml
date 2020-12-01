@@ -876,21 +876,21 @@
       </trans-unit>
       <trans-unit id="Critical Processes" xml:space="preserve">
         <source>Critical Processes</source>
-        <target/>
+        <target>Kritické procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Query Rate" xml:space="preserve">
         <source>Critical Query Rate</source>
-        <target/>
+        <target>Kritická miera dopytov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Query Time" xml:space="preserve">
         <source>Critical Query Time</source>
-        <target/>
+        <target>Kritický čas dopytov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1625,7 +1625,7 @@
       </trans-unit>
       <trans-unit id="Warn Processes" xml:space="preserve">
         <source>Warn Processes</source>
-        <target/>
+        <target>Varovné procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1947,14 +1947,14 @@
       </trans-unit>
       <trans-unit id="Warning Query Rate" xml:space="preserve">
         <source>Warning Query Rate</source>
-        <target/>
+        <target>Varovná miera dopytov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Query Time" xml:space="preserve">
         <source>Warning Query Time</source>
-        <target/>
+        <target>Varovný čas dopytov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2564,21 +2564,21 @@
       </trans-unit>
       <trans-unit id="metrics.Processes" xml:space="preserve">
         <source>Processes</source>
-        <target/>
+        <target>Procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Query rate" xml:space="preserve">
         <source>Query rate</source>
-        <target/>
+        <target>Miera dopytov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Query time" xml:space="preserve">
         <source>Query time</source>
-        <target/>
+        <target>Čas dopytov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2655,7 +2655,7 @@
       </trans-unit>
       <trans-unit id="metrics.Sleeping processes" xml:space="preserve">
         <source>Sleeping processes</source>
-        <target/>
+        <target>Spiace procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3278,14 +3278,14 @@
       </trans-unit>
       <trans-unit id="Processes" xml:space="preserve">
           <source>Processes</source>
-        <target/>
+        <target>Procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Query Rate" xml:space="preserve">
           <source>Query Rate</source>
-        <target/>
+        <target>Miera dopytov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
