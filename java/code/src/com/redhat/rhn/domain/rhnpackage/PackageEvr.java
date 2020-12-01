@@ -367,7 +367,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
             return PackageType.RPM;
         }
         else {
-            throw new RuntimeException("unreachable");
+            throw new RuntimeException("unsupported evr type: " + type);
         }
     }
 

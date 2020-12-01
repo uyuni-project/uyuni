@@ -588,7 +588,6 @@ public class StatesAPI {
             new PackageStateJson(
                     state.getName().getName(),
                     Optional.ofNullable(state.getEvr())
-                            //TODO: this should probably be rather null instead of a dummy value
                             .orElse(new PackageEvr("", "", "", PackageType.RPM)),
                     Optional.ofNullable(state.getArch())
                             .map(PackageArch::getLabel).orElse(""),
