@@ -25,8 +25,6 @@ import subprocess
 import datetime
 import re
 
-from salt.ext import six
-
 try:
     import xmlrpclib
 except ImportError:
@@ -57,13 +55,9 @@ LOG_LOCATION = '/var/log/rhn/errata-clone.log'
 
 def confirm(txt, options):
     if not options.assumeyes:
-        if six.PY2:
-            inputfn = raw_input
-        else:
-            inputfn = input
-        response = inputfn(txt)
+        response = input(txt)
         while ['y', 'n'].count(response.lower()) == 0:
-            response = inputfn(txt)
+            response = input(txt)
         if response.lower() == "n":
             print("Cancelling")
             sys.exit(0)
@@ -108,6 +102,7 @@ def create_repodata_link(src_path, dst_path):
 def remove_repodata_link(link_path):
     if os.path.exists(link_path):
         return os.unlink(link_path)
+    return None
 
 
 def diff_packages(old, new):
@@ -366,6 +361,7 @@ class ChannelTreeCloner:
         for cloner in self.cloners:
             if cloner.src_label() == src_label:
                 return cloner
+        return None
 
     def create_channels(self, skip_depsolve=False):
         to_create = self.needing_create()
@@ -515,8 +511,7 @@ class ChannelTreeCloner:
         self.process_deps(dep_results)
 
     def process_deps(self, deps):
-        # pylint: disable=deprecated-lambda, unnecessary-lambda
-        list_to_set = lambda x: set([tuple(y) for y in x])
+        list_to_set = lambda x: set([tuple(y) for y in x])  # pylint: disable=consider-using-set-comprehension
         needed_list = dict((channel[0], [])
                            for channel in list(self.channel_map.values()))
         for cloner in self.cloners:
