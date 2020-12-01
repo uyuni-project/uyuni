@@ -16,7 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel}
 %global build_py3 1
 %endif
 
@@ -69,16 +69,30 @@ install -m755 ssl-cert-check $RPM_BUILD_ROOT/%{_bindir}/ssl-cert-check
 install -m644 ssl-cert-check.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 
 %pre
+%if !0%{?rhel}
 %service_add_pre %{name}.timer
+%endif
 
 %post
+%if 0%{?rhel}
+%systemd_post %{name}.timer
+%else
 %service_add_post %{name}.timer
+%endif
 
 %preun
+%if 0%{?rhel}
+%systemd_preun %{name}.timer
+%else
 %service_del_preun %{name}.timer
+%endif
 
 %postun
+%if 0%{?rhel}
+%systemd_preun %{name}.timer
+%else
 %service_del_postun %{name}.timer
+%endif
 
 %files
 %defattr(-,root,root,-)
