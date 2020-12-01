@@ -1,3 +1,4 @@
+- Use channel label to calculate DEB repo cache path (bsc#1179410)
 - Quote the proxy settings to be used by Zypper (bsc#1179087)
 - add the VirtualPC as virtualization type (bsc#1178990)
 
