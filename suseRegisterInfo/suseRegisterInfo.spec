@@ -15,13 +15,13 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
 
+%global __python /usr/bin/python2
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %define pythonX %{?default_py3:python3}%{!?default_py3:python2}
 
 Name:           suseRegisterInfo
@@ -54,8 +54,13 @@ for a registration
 Summary:        Python 2 specific files for %{name}
 Group:          Productivity/Other
 Requires:       %{name} = %{version}-%{release}
+%if 0%{?rhel} >=8
+Requires:       python2
+BuildRequires:  python2-devel
+%else
 Requires:       python
 BuildRequires:  python-devel
+%endif
 
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
