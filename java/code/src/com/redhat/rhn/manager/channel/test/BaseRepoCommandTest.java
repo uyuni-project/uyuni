@@ -130,4 +130,82 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
             fail("valid repo type caused error: " + url);
         }
     }
+
+    public void testRepoLabelInput() {
+
+        // Repository label must contain only letters, hyphens, periods, underscores and numeral
+
+        // I N V A L I D
+        invalidRepoLabelInput("");
+        invalidRepoLabelInput("example/repo");
+        invalidRepoLabelInput("example;repo");
+        invalidRepoLabelInput("example_repo$");
+        invalidRepoLabelInput("my*examplerepo");
+        invalidRepoLabelInput("example^repo");
+
+        // V A L I D
+        validRepoLabelInput("my example repo");
+        validRepoLabelInput("my-example-repo");
+        validRepoLabelInput("my-example_repo");
+        validRepoLabelInput("my_repo_22");
+        validRepoLabelInput("My-Example-Repo");
+        validRepoLabelInput("My/Example/Repo/15");
+        validRepoLabelInput("My_Example_Repo_15.5");
+        validRepoLabelInput("My_Example_Repo_(15.5)");
+        validRepoLabelInput("My_Example_Repo_'15.5'");
+    }
+
+    private void validRepoLabelInput(String label) {
+        // give it a valid url
+        ccc.setUrl("http://localhost/" + label_count++);
+        // need to create unique label names.
+        ccc.setLabel(label);
+        // need to specify a type
+        ccc.setType("yum");
+        // need to specify MetadataSigned
+        ccc.setMetadataSigned(Boolean.FALSE);
+
+        try {
+            ccc.store();
+        }
+        catch (InvalidRepoUrlException e) {
+            fail("non duplicate url caused error");
+        }
+        catch (InvalidRepoUrlInputException e) {
+            fail("valid repo url input caused error");
+        }
+        catch (InvalidRepoLabelException e) {
+            fail("valid repo label caused error");
+        }
+        catch (InvalidRepoTypeException e) {
+            fail("valid repo type caused error");
+        }
+    }
+
+    private void invalidRepoLabelInput(String label) {
+        // give it a valid url
+        ccc.setUrl("http://localhost/");
+        // need to create unique label names.
+        ccc.setLabel(label);
+        // need to specify a type
+        ccc.setType("yum");
+        // need to specify MetadataSigned
+        ccc.setMetadataSigned(Boolean.FALSE);
+
+        try {
+            ccc.store();
+        }
+        catch (InvalidRepoUrlException e) {
+            fail("non duplicate url caused error");
+        }
+        catch (InvalidRepoUrlInputException e) {
+            fail("valid repo url input caused error");
+        }
+        catch (InvalidRepoLabelException e) {
+            // expected
+        }
+        catch (InvalidRepoTypeException e) {
+            fail("valid repo type caused error");
+        }
+    }
 }
