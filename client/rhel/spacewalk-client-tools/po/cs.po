@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
 "PO-Revision-Date: 2020-09-29 17:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -1041,8 +1041,8 @@ msgid "Cannot contact selected server"
 msgstr "Vybraný server nelze kontaktovat"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "Nemůžeme kontaktovat Satellit nebo Proxy na '%s.'"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1265,10 +1265,10 @@ msgstr ""
 "vlastníte %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Tato chyba neměla nastat. Chcete-li nám pomoci vylepšit tento program, "
@@ -2488,17 +2488,19 @@ msgid "RHN Registration"
 msgstr "RHN registrace"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+#, fuzzy
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "Registrujte se pro aktualizace softwaru ze Spacewalk / Red Hat Satellite / "
 "Red Hat Network Classic"
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
-"Registrujte se u Spacewalk / Red Hat Satellite / Red Hat Network Classic."
+
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr ""
+#~ "Registrujte se u Spacewalk / Red Hat Satellite / Red Hat Network Classic."
 
 #~ msgid "Enter your Red Hat Satellite URL."
 #~ msgstr "Zadejte svůj URL Red Hat Satellite."

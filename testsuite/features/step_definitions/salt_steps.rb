@@ -121,16 +121,16 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
-  refute_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  refute_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
-  assert_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  assert_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^the PXE boot minion should have been reformatted$/) do
@@ -141,15 +141,15 @@ end
 
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
-  @rpc = XMLRPCUserTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
+  @user_api = XMLRPCUserTest.new(ENV['SERVER'])
+  @user_api.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  @rpc.create_user(@username, 'linux')
+  @user_api.create_user(@username, 'linux')
   step %(I am authorized as "#{@username}" with password "linux")
 end
 
 Then(/^I can cleanup the no longer needed user$/) do
-  @rpc.delete_user(@username)
+  @user_api.delete_user(@username)
 end
 
 When(/^I click on preview$/) do
@@ -681,13 +681,13 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if host.include? 'ceos'
-    node.run('yum -y remove salt salt-minion')
+    node.run('yum -y remove salt salt-minion', false)
   elsif host.include? 'ubuntu'
-    node.run('apt-get --assume-yes remove salt salt-minion')
+    node.run('apt-get --assume-yes remove salt salt-minion', false)
   else
-    node.run('zypper --non-interactive remove -y salt salt-minion')
+    node.run('zypper --non-interactive remove -y salt salt-minion', false)
   end
-  node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt')
+  node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt', false)
 end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|

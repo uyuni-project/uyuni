@@ -31,8 +31,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-05 13:50+0000\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
+"PO-Revision-Date: 2020-11-09 14:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/zh_CN/>\n"
@@ -140,7 +140,7 @@ msgstr "指定要在已经过身份验证的 HTTP 代理中使用的用户名"
 
 #: ../src/up2date_client/rhncli.py:74
 msgid "Specify a password to use with an authenticated http proxy"
-msgstr "指定要在已经过身份验证的 HTTP 代理中使用的密码"
+msgstr "指定要在已经过身份验证的 HTTP 代理中使用的口令"
 
 #: ../src/up2date_client/rhncli.py:96
 msgid ""
@@ -299,8 +299,8 @@ msgstr ""
 "新），以使系统持续受到支持并合规。此时您需要准备好以下各项：\n"
 "\n"
 " * 网络连接\n"
-" * 您的 {PRODUCT_NAME} 登录名和密码\n"
-" * {PRODUCT_NAME} 服务器或代理的位置\n"
+" * 您的 {PRODUCT_NAME} 登录名和口令\n"
+" * {PRODUCT_NAME} Server 或 Proxy 的位置\n"
 "\n"
 
 #. Why Register Window
@@ -423,14 +423,14 @@ msgstr "登录名："
 
 #: ../src/up2date_client/rhnreg_constants.py:91
 msgid "Password:"
-msgstr "密码："
+msgstr "口令："
 
 #: ../src/up2date_client/rhnreg_constants.py:92
 #, python-brace-format
 msgid ""
 "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
 "Organization Administrator."
-msgstr "提示：忘记了登录名或密码？请联系您的 {PRODUCT_NAME} 组织管理员。"
+msgstr "提示：忘记了登录名或口令？请联系您的 {PRODUCT_NAME} 组织管理员。"
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid "Please enter a desired login."
@@ -438,7 +438,7 @@ msgstr "请输入所需的登录名。"
 
 #: ../src/up2date_client/rhnreg_constants.py:95
 msgid "Please enter and verify a password."
-msgstr "请输入并确认密码。"
+msgstr "请输入并确认口令。"
 
 #. OS Release Window
 #: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
@@ -778,9 +778,9 @@ msgid ""
 msgstr ""
 "检测到通用默认激活密钥\n"
 "在您的帐户中检测到了通用默认激活密钥。这意味着，用于将系统连接到 "
-"{PRODUCT_NAME} 服务器或 {PRODUCT_NAME} 代理的一组属性（软件频道订阅、软件包安"
-"装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥的更多细"
-"节，另请参见《{PRODUCT_NAME} 参考指南》。\n"
+"{PRODUCT_NAME} Server 或 {PRODUCT_NAME} Proxy 的一组属性（软件频道订阅、软件"
+"包安装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥的更"
+"多细节，另请参见《{PRODUCT_NAME} 参考指南》。\n"
 "通用默认激活密钥：%s"
 
 #. Error Messages.
@@ -819,7 +819,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:252
 #, python-format
 msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "架构：%s，操作系统发行版：%s，操作系统版本：%s"
+msgstr "体系结构：%s，操作系统发行版：%s，操作系统版本：%s"
 
 #: ../src/up2date_client/rhnreg_constants.py:254
 msgid ""
@@ -982,8 +982,8 @@ msgid "Cannot contact selected server"
 msgstr "无法联系所选服务器"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "无法联系 '%s' 上的从属服务器或代理。"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1021,7 +1021,7 @@ msgstr "必须输入登录名。"
 
 #: ../src/up2date_client/rhnregGui.py:422
 msgid "You must enter a password."
-msgstr "必须输入密码。"
+msgstr "必须输入口令。"
 
 #: ../src/up2date_client/rhnregGui.py:435
 msgid "There was an error while logging in."
@@ -1174,7 +1174,7 @@ msgstr "软件包"
 
 #: ../src/up2date_client/rhnregGui.py:1214
 msgid "Arch"
-msgstr "架构"
+msgstr "体系结构"
 
 #: ../src/up2date_client/rhnregGui.py:1221
 msgid "Building a list of RPM packages installed on your system.  Please wait."
@@ -1198,10 +1198,10 @@ msgstr ""
 "您拥有 %s。"
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "此错误不应发生。如果您想要帮助我们改进此程序，请在 bugzilla.redhat.com 上报"
@@ -1326,7 +1326,7 @@ msgstr "RPM 错误。消息：\n"
 
 #: ../src/up2date_client/up2dateErrors.py:116
 msgid "Password error. The message was:\n"
-msgstr "密码错误。消息：\n"
+msgstr "口令错误。消息：\n"
 
 #: ../src/up2date_client/up2dateErrors.py:120
 msgid "RPM dependency error. The message was:\n"
@@ -1439,7 +1439,7 @@ msgstr "指定用户名"
 
 #: ../src/bin/rhnreg_ks.py:54
 msgid "Specify a password"
-msgstr "指定密码"
+msgstr "指定口令"
 
 #: ../src/bin/rhnreg_ks.py:56
 msgid "Specify an organizational id for this system"
@@ -1488,7 +1488,7 @@ msgstr "即使系统已注册，也仍将其注册"
 
 #: ../src/bin/rhnreg_ks.py:86
 msgid "A username and password are required to register a system."
-msgstr "注册系统时需要用户名和密码。"
+msgstr "注册系统时需要用户名和口令。"
 
 #: ../src/bin/rhnreg_ks.py:91
 msgid "This system is already registered. Use --force to override"
@@ -1499,7 +1499,7 @@ msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
 msgstr ""
-"不支持在 --activationkey 中使用 --use-eus-channel 选项。请改用用户名和密码。"
+"不支持在 --activationkey 中使用 --use-eus-channel 选项。请改用用户名和口令。"
 
 #: ../src/bin/rhnreg_ks.py:128
 msgid "The server you are registering against does not support EUS."
@@ -1569,7 +1569,7 @@ msgstr "您的用户名"
 
 #: ../src/bin/spacewalk-channel.py:114
 msgid "your password"
-msgstr "您的密码"
+msgstr "您的口令"
 
 #: ../src/bin/spacewalk-channel.py:121
 msgid "ERROR: these arguments make no sense in this context (try --help)"
@@ -1596,7 +1596,7 @@ msgstr "添加频道 %s 期间出错"
 #: ../src/bin/spacewalk-channel.py:185
 #, python-format
 msgid "Channel(s): %s successfully removed"
-msgstr "已成功删除频道：%s"
+msgstr "已成功去除频道：%s"
 
 #: ../src/bin/spacewalk-channel.py:187
 #, python-format
@@ -1719,11 +1719,11 @@ msgstr "RHN 登录名字段"
 
 #: ../data/rh_register.glade.h:16
 msgid "RHN password field"
-msgstr "RHN 密码字段"
+msgstr "RHN 口令字段"
 
 #: ../data/rh_register.glade.h:17
 msgid "_Password:"
-msgstr "密码(_P)："
+msgstr "口令(_P)："
 
 #: ../data/rh_register.glade.h:18
 msgid "_Login:"
@@ -1734,7 +1734,7 @@ msgid ""
 "<small>Tip: Forgot your login or password? Contact your Satellite's "
 "<i>Organization Administrator</i>.</small>"
 msgstr ""
-"<small>提示：忘记了用户名或密码？请联系您的 Satellite <i>组织管理员</i>。</"
+"<small>提示：忘记了用户名或口令？请联系您的 Satellite <i>组织管理员</i>。</"
 "small>"
 
 #: ../data/rh_register.glade.h:20
@@ -2045,7 +2045,7 @@ msgstr ""
 "在此系统上找不到与 <b>%s</b> 兼容的安全证书。\n"
 "\n"
 "必须提供一个使用 SSL 技术的安全证书才能确保此系统与 Spacewalk 之间传送的数据"
-"（包括您的登录名和密码）安全。"
+"（包括您的登录名和口令）安全。"
 
 #: ../data/rh_register.glade.h:88
 msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
@@ -2123,7 +2123,7 @@ msgstr "代理用户名(_U)："
 
 #: ../data/rh_register.glade.h:105
 msgid "Proxy P_assword:"
-msgstr "代理密码(_A)："
+msgstr "代理口令(_A)："
 
 #: ../data/rh_register.glade.h:106
 msgid "proxy user field"
@@ -2131,7 +2131,7 @@ msgstr "代理用户字段"
 
 #: ../data/rh_register.glade.h:107
 msgid "proxy password field"
-msgstr "代理密码字段"
+msgstr "代理口令字段"
 
 #: ../data/rh_register.glade.h:108
 msgid "Confirm operation system release selection"
@@ -2373,15 +2373,17 @@ msgid "RHN Registration"
 msgstr "RHN 注册"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+#, fuzzy
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "注册 Spacewalk/Red Hat Satellite/Red Hat Network Classic 提供的软件更新"
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "注册到 Spacewalk/Red Hat Satellite/Red Hat Network Classic。"
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "注册到 Spacewalk/Red Hat Satellite/Red Hat Network Classic。"
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."

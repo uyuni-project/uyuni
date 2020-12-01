@@ -10950,14 +10950,81 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="translated">Redfish</target>
       </trans-unit>
-    <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">ssh minion で動作を実行</target>
+      </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">minion で動作チェーンを実行</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
+        <source>The following module streams will be enabled: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">下記のモジュールストリームを有効化します: {0}</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_created" xml:space="preserve">
+        <source>Project {0} created successfully</source>
+        <target state="translated">プロジェクト {0} を作成しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
+        <source>Project {0} deleted successfully</source>
+        <target state="translated">プロジェクト {0} を削除しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
+        <source>Project already exists</source>
+        <target state="translated">プロジェクトは既に存在しています</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.label_required" xml:space="preserve">
+        <source>Label is required</source>
+        <target state="translated">ラベルが必要です</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
+        <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
+        <target state="translated">ラベルは文字から書き始めなければならないほか、小文字を使用しなければなりません。文字のほかはハイフン ('-'), ピリオド ('.'), アンダースコア ('_'), 数字をそれぞれ使用することができます</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
+        <source>Label must not exceed 24 characters</source>
+        <target state="translated">ラベルは 24 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.name_required" xml:space="preserve">
+        <source>Name is required</source>
+        <target state="translated">名前が必要です</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+        <target state="translated">名前は 128 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
+        <source>Name already exists</source>
+        <target state="translated">その名前は既に存在しています</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
+        <source>Label must not exceed 16 characters</source>
+        <target state="translated">ラベルは 16 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
+        <source>Label must not exceed 128 characters</source>
+        <target state="translated">ラベルは 128 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
+        <source>Filter name already exists</source>
+        <target state="translated">そのフィルタ名は既に存在しています</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
+        <source>Filter {0} created successfully</source>
+        <target state="translated">フィルタ {0} を作成しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
+        <source>Filter {0} updated successfully</source>
+        <target state="translated">フィルタ {0} を更新しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+        <target state="translated">名前は 128 文字以内でなければなりません</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
