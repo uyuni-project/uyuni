@@ -1,3 +1,4 @@
+- Use channel label to calculate DEB repo cache path (bsc#1179410)
 - Quote the proxy settings to be used by Zypper (bsc#1179087)
 - Fix spacewalk-repo-sync to successfully manage and sync ULN repositories
 - fix errors in spacewalk-debug and align postgresql queries to new DB version
