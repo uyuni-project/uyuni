@@ -55,10 +55,9 @@ LOG_LOCATION = '/var/log/rhn/errata-clone.log'
 
 def confirm(txt, options):
     if not options.assumeyes:
-        inputfn = input()
-        response = inputfn(txt)
+        response = input(txt)
         while ['y', 'n'].count(response.lower()) == 0:
-            response = inputfn(txt)
+            response = input(txt)
         if response.lower() == "n":
             print("Cancelling")
             sys.exit(0)
