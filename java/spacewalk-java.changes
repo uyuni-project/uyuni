@@ -1,3 +1,4 @@
+- Add validation for custom repository labels
 - fix expanded support detection based on CentOS installations (bsc#1179589)
 - add translation strings for newly added countries and timezones (jsc#PM-2081)
 - Fix the activation key handling from kickstart profile (bsc#1178647)
