@@ -17,7 +17,7 @@ package com.redhat.rhn.common.util;
 import java.util.Comparator;
 
 /**
- * DebVersionComparatorTest
+ * DebVersionComparator
  */
 public class DebVersionComparator implements Comparator<String> {
 

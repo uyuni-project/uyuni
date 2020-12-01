@@ -1582,8 +1582,6 @@ public class SaltUtils {
                         info.getEpoch().orElse(null),
                         info.getVersion().get(),
                         info.getRelease().orElse("X"),
-                        //TODO: this is not correct but does not effect toUniversalEvrString.
-                        // we should still do this differently
                         PackageType.RPM
                 ).toUniversalEvrString()
         );

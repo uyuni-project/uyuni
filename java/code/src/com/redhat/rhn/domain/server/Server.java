@@ -2195,7 +2195,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     public PackageType getPackageType() {
-        //TODO: consider moving this to getOs
         return getServerArch().getArchType().getPackageType();
     }
 }

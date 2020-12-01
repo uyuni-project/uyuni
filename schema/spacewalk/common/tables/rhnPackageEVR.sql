@@ -22,7 +22,7 @@ CREATE TABLE rhnPackageEVR
     version  VARCHAR(512) NOT NULL,
     release  VARCHAR(512) NOT NULL,
     evr      EVR_T NOT NULL,
-    type varchar(10) generated always as ((evr).type) stored
+    type     varchar(10) generated always as ((evr).type) stored
 )
 
 ;
