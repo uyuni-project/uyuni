@@ -86,7 +86,6 @@ Spacewalk.
 %package -n python2-%{name}
 Summary:        Spacewalk SSL Key/Cert Tool
 Group:          Applications/Internet
-BuildRequires:  (python or python2)
 Requires:       %{name} = %{version}-%{release}
 Requires:       python2-rhn-client-tools
 Requires:       python2-uyuni-common-libs
