@@ -368,7 +368,7 @@ public class RepoDetailsAction extends RhnAction {
             if (e.getReason() == InvalidRepoLabelException.Reason.REGEX_FAILS) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "edit.channel.repo.invalidrepolabel", repoCmd.getLabel()));
-	    }
+            }
             else {
                 errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "edit.channel.repo.repolabelinuse", repoCmd.getLabel()));
