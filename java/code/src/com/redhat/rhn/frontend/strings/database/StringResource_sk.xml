@@ -897,14 +897,14 @@
       </trans-unit>
       <trans-unit id="Critical Queue Length" xml:space="preserve">
         <source>Critical Queue Length</source>
-        <target/>
+        <target>Kritická dĺžka frontu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical RAM Free" xml:space="preserve">
         <source>Critical RAM Free</source>
-        <target/>
+        <target>Kritická voľná RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1401,7 +1401,7 @@
       </trans-unit>
       <trans-unit id="Queue Name" xml:space="preserve">
         <source>Queue Name</source>
-        <target/>
+        <target>Názov frontu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1961,14 +1961,14 @@
       </trans-unit>
       <trans-unit id="Warning Queue Length" xml:space="preserve">
         <source>Warning Queue Length</source>
-        <target/>
+        <target>Varovná dĺžka frontu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning RAM Free" xml:space="preserve">
         <source>Warning RAM Free</source>
-        <target/>
+        <target>Varovná voľná RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2585,14 +2585,14 @@
       </trans-unit>
       <trans-unit id="metrics.Queue length" xml:space="preserve">
         <source>Queue length</source>
-        <target/>
+        <target>Dĺžka frontu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.RAM free" xml:space="preserve">
         <source>RAM free</source>
-        <target/>
+        <target>Voľná RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3061,7 +3061,7 @@
       </trans-unit>
       <trans-unit id="Execute Queue" xml:space="preserve">
           <source>Execute Queue</source>
-        <target/>
+        <target>Vykonať front</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
