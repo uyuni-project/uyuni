@@ -1,5 +1,4 @@
-
-- Update to postgresql13 (ECO-3049)
+- Update to postgresql13 (jsc#SLE-17030)
 
 -------------------------------------------------------------------
 Fri Sep 18 11:30:04 CEST 2020 - jgonzalez@suse.com
