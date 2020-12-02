@@ -127,8 +127,8 @@ Conflicts:      postgresql-implementation >= 12
 Conflicts:      postgresql-contrib-implementation >= 12
 %endif
 %else
-Requires:       postgresql >= 13
-Requires:       postgresql-contrib >= 13
+Requires:       postgresql >= 12
+Requires:       postgresql-contrib >= 12
 # we do not support postgresql versions > 13.x yet
 Conflicts:      postgresql >= 14
 Conflicts:      postgresql-contrib >= 14
