@@ -38,7 +38,11 @@ Requires:       perl-interpreter
 Requires:       perl
 %endif
 Requires:       jabberd-sqlite
+%if 0%{?rhel}
+Requires(post): libxslt-devel
+%else
 Requires(post): libxslt-tools
+%endif
 Requires(post): jabberd
 
 %description
