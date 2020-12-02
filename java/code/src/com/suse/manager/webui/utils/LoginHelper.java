@@ -70,7 +70,7 @@ public class LoginHelper {
     private static final Long MAX_PG_DB_VERSION = 139999L;
     private static final String MIN_PG_DB_VERSION_STRING = "10";
     private static final String MAX_PG_DB_VERSION_STRING = "13";
-    private static final Double OS_VERSION_CHECK = 15.2;
+    private static final Double OS_VERSION_CHECK = 15.3;
     private static final Long OS_VERSION_MIN_DB_VERSION = 130000L;
     private static final String OS_VERSION_WANTED_DB_VERSION = "13";
     public static final String DEFAULT_URL_BOUNCE = "/rhn/YourRhn.do";
