@@ -120,18 +120,11 @@ Requires:       postgresql13-contrib
 Conflicts:      postgresql-implementation >= 14
 Conflicts:      postgresql-contrib-implementation >= 14
 %else # not sle_version >= 150300
-%if 0%{?sle_version} >= 150200
 Requires:       postgresql12
 Requires:       postgresql12-contrib
 # we do not support postgresql versions > 13.x yet
 Conflicts:      postgresql-implementation >= 13
 Conflicts:      postgresql-contrib-implementation >= 13
-%else # mainly for openSUSE Leap 15.1
-Requires:       postgresql10
-Requires:       postgresql10-contrib
-Conflicts:      postgresql-implementation >= 12
-Conflicts:      postgresql-contrib-implementation >= 12
-%endif # if sle_version >= 150200
 %endif # if sle_version >= 150300
 %else # not suse_version
 Requires:       postgresql >= 12
