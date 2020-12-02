@@ -451,16 +451,13 @@ class ContentSource:
         if self.urls[0][-1] != '/':
             self.urls[0] += '/'
 
-        # Exclude non-valid characters from reponame
-        self.reponame = self.name
-        for chr in ["$", " ", ".", ";", "/"]:
-            self.reponame = self.reponame.replace(chr, "_")
+        # Replace non-valid characters from reponame (only alphanumeric chars allowed)
+        self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
         self.channel_label = channel_label
 
         # SUSE vendor repositories belongs to org = NULL
-        # The repository cache root will be "/var/cache/rhn/reposync/CHANNEL_LABEL/"
-        # and failback to reponame with excluded non-valid characters if channel label is empty
-        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.channel_label or self.reponame)
+        # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
 
         self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
         self.num_packages = 0
