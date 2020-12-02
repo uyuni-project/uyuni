@@ -1,3 +1,5 @@
+- Added nodejs_folder if it is not defined.
+- Disabled auto-dependency generation in SPEC file.
 - Upgrade jQuery version - vul GHSA-gxr4-xjj5-5px2
 - Add @testing-library/react and msw, update relevant dependencies
 - Upgrade lodash to 4.17.19, this is already in the changelog, but

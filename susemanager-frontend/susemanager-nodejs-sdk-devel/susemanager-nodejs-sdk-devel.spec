@@ -13,6 +13,16 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# Disable automatic requirement generation on build.
+AutoReqProv: no
+
+# Define macros if they are not defined.
+%{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
+%{!?nodejs_modulesdir:%define nodejs_modulesdir %{nodejs_sitelib}}
+
+# Disable debug_package generation.
+%global debug_package %{nil}
+
 Name:           susemanager-nodejs-sdk-devel
 Version:        4.2.2
 Release:        1%{?dist}
