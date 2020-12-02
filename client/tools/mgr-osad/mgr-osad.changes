@@ -1,3 +1,5 @@
+- Change the log file permissions as expected by logrotate (bsc#1177884)
+
 -------------------------------------------------------------------
 Wed May 05 15:54:53 CEST 2021 - jgonzalez@suse.com
 

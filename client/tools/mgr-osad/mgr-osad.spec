@@ -607,7 +607,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
-%ghost %attr(640,%{apache_user},root) %{_var}/log/rhn/osa-dispatcher.log
+%ghost %attr(640,%{apache_user},%{apache_group}) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
 %{_sbindir}/rcosa-dispatcher
 %dir %{rhnroot}
