@@ -110,11 +110,8 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %endif
 
 %files common
-%if 0%{?rhel} == 6
-%doc LICENSE
-%else
+%{!?_licensedir:%global license %doc}
 %license LICENSE
-%endif
 %defattr(-,root,root)
 %dir %attr(750,root,%{apache_group}) /etc/rhn
 %dir %{_prefix}/share/rhn
