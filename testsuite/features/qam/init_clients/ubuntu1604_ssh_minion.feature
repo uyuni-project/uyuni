@@ -22,6 +22,9 @@ Feature: Bootstrap a SSH-managed Ubuntu 16.04 minion and do some basic operation
     Then I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu1604_ssh_minion"
 
+  Scenario: Import the GPG keys for Ubuntu 16.04 Salt SSH minion
+    When I import the GPG keys for "ubuntu1604_ssh_minion"
+
   Scenario: Check events history for failures on SSH-managed Ubuntu 16.04 minion
     Given I am on the Systems overview page of this "ubuntu1604_ssh_minion"
     Then I check for failed events on history event page
