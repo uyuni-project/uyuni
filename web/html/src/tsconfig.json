@@ -16,8 +16,7 @@
       "utils/*": [ "./utils/*" ],
       "vendors/*": [ "./vendors/*" ]
     },
-    // Feel free to add/edit new config options below:
-    // ...
+    // Our configuration options
     "jsx": "react",
     // Eventually this should be `true`
     "noImplicitAny": false,
