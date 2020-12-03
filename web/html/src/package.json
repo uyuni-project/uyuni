@@ -29,14 +29,16 @@
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public",
-    "find-flow": "find . -path ./node_modules -prune -false -o -name '*.js' -exec grep -l '@flow' {} \\+",
-    "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
-    "migrate-flow": "yarn --silent find-flow | xargs yarn flow-to-ts",
     "snow": "snowpack dev --polyfill-node",
     "tsc": "tsc",
-    "tsc-grep-untyped-annotated": "(yarn --silent tsc 2>&1 || true) | tee | grep \"can only be used in TypeScript files\"",
-    "find-untyped-annotated": "yarn --silent tsc-grep-untyped-annotated | sed \"s/\\.js.*/.js/\" | uniq",
-    "migrate-untyped-annotated": "yarn --silent find-untyped-annotated | xargs yarn flow-to-ts"
+    "find-flow": "find . -path ./node_modules -prune -false -o -name '*.js' -o -name '*.jsx' | xargs grep -l '@flow'",
+    "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
+    "migrate-flow": "yarn --silent find-flow | xargs yarn flow-to-ts",
+    "tsc-grep-untyped-annotated": "(yarn --silent tsc 2>&1 || true) | tee | grep 'can only be used in TypeScript files'",
+    "find-untyped-annotated": "yarn --silent tsc-grep-untyped-annotated | sed -e 's/\\.js.*/.js/' | uniq",
+    "migrate-untyped-annotated": "yarn --silent find-untyped-annotated | xargs yarn flow-to-ts",
+    "find-object-to-any": "find . -path ./node_modules -prune -false -o -name '*.ts' -o -name '*.tsx' | xargs grep -l ': Object[^\\.]'",
+    "migrate-object-to-any": "yarn --silent find-object-to-any | xargs -I {} sed -i '' -e 's/: Object\\([^\\.]\\)/: any\\1/g' {}"
   },
   "engines": {
     "node": ">=10.0.0",
