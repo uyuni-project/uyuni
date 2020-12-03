@@ -1,3 +1,4 @@
+- Add lang attribute to html tags
 - fix expanded support detection based on CentOS installations (bsc#1179589)
 - Generalize the reactivation key message (bsc#1178483)
 - add translation strings for newly added countries and timezones (jsc#PM-2081)
