@@ -8,7 +8,8 @@
   },
   "devDependencies": {
     "@khanacademy/flow-to-ts": "0.1.7",
-    "@snowpack/plugin-react-refresh": "^2.3.7",
+    "@snowpack/plugin-react-refresh": "2.3.7",
+    "@snowpack/plugin-typescript": "1.1.0",
     "snowpack": "2.17.1"
   },
   "scripts": {
@@ -23,7 +24,7 @@
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public",
     "find-flow": "find . -path ./node_modules -prune -false -o -name '*.js' -exec grep -l '@flow' {} \\+",
-    "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120",
+    "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
     "migrate-flow": "yarn --silent find-flow | xargs yarn flow-to-ts",
     "snow": "snowpack dev"
   },
