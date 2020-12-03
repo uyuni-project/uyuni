@@ -911,21 +911,21 @@
       </trans-unit>
       <trans-unit id="Critical Read Rate" xml:space="preserve">
         <source>Critical Read Rate</source>
-        <target/>
+        <target>Kritická rýchlosť čítania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Redo Buffer Allocation Retries" xml:space="preserve">
         <source>Critical Redo Buffer Allocation Retries</source>
-        <target/>
+        <target>Kritické opakované pokusy o pridelenie vyrovnávacej pamäte Redo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Redo Log Space Requests" xml:space="preserve">
         <source>Critical Redo Log Space Requests</source>
-        <target/>
+        <target>Kritické požiadavky na miesto pre záznamy Redo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1975,21 +1975,21 @@
       </trans-unit>
       <trans-unit id="Warning Read Rate" xml:space="preserve">
         <source>Warning Read Rate</source>
-        <target/>
+        <target>Varovná rýchlosť čítania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Redo Buffer Allocation Retries" xml:space="preserve">
         <source>Warning Redo Buffer Allocation Retries</source>
-        <target/>
+        <target>Varovné opakované pokusy o pridelenie vyrovnávacej pamäte Redo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Redo Log Space Requests" xml:space="preserve">
         <source>Warning Redo Log Space Requests</source>
-        <target/>
+        <target>Varovné požiadavky na miesto pre záznamy Redo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2536,7 +2536,7 @@
       </trans-unit>
       <trans-unit id="metrics.Physical read rate" xml:space="preserve">
         <source>Physical read rate</source>
-        <target/>
+        <target>Fyzická rýchlosť čítania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2599,21 +2599,21 @@
       </trans-unit>
       <trans-unit id="metrics.Read rate" xml:space="preserve">
         <source>Read rate</source>
-        <target/>
+        <target>Rýchlosť čítania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Redo buffer allocation retry rate" xml:space="preserve">
         <source>Redo buffer allocation retry rate</source>
-        <target/>
+        <target>Miera opakovaných pokusov o pridelenie vyrovnávacej pamäte Redo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Redo log space request rate" xml:space="preserve">
         <source>Redo log space request rate</source>
-        <target/>
+        <target>Miera požiadaviek na miesto pre záznamy Redo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3299,7 +3299,7 @@
       </trans-unit>
       <trans-unit id="Redo Log" xml:space="preserve">
           <source>Redo Log</source>
-        <target/>
+        <target>Záznam Redo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
