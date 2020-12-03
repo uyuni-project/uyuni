@@ -4,16 +4,16 @@ test
 tests
 powered-test
 
-# asset directories
+# documentation and examples directories
 docs
 doc
 website
 images
-assets
-
-# examples
 example
 examples
+
+# NB! don't autoclean this, snowpack keeps scripts in assets
+# assets
 
 # code coverage directories
 coverage
