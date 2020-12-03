@@ -215,6 +215,11 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
+# This function kills all spacewalk-repo-sync processes, excepted the ones in a whitelist.
+# It waits for all the reposyncs in the whitelist to complete, and kills all others.
+#
+# This function is written as a state machine. It bails out if no process is seen during
+# 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
