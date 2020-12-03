@@ -40,11 +40,9 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   kernel_version, _code = node.run('uname -r')
   puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
-  os_pretty_raw, _code = node.run('grep "PRETTY" /etc/os-release')
-  os_pretty = os_pretty_raw.strip.split('=')[1].delete '"'
+  os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
-  puts 'i should see os version: ' + os_pretty if os_pretty.include? 'SUSE Linux'
-  step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
+  step %(I should see a "#{os_version}" text) if os_family.include? 'sles'
 end
 
 Then(/^I should see the terminals imported from the configuration file$/) do
@@ -655,11 +653,12 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  gpg_keys = get_gpg_keys(host)
   cmd = "mgr-bootstrap #{client} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
-  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=RHN-ORG-TRUSTED-SSL-CERT' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
   output, = target.run(cmd)
   unless output.include? key
