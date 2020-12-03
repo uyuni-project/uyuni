@@ -1,5 +1,5 @@
 {
-  "include": ["src", "types"],
+  "include": ["components", "core", "manager", "utils", "vendors", "global.d.ts"],
   "exclude": ["node_modules"],
   "extends": "@snowpack/app-scripts-react/tsconfig.base.json",
   "compilerOptions": {
@@ -8,8 +8,27 @@
     // Don't change these unless you know what you're doing.
     // See: https://github.com/microsoft/TypeScript/issues/25430
     "baseUrl": "./",
-    "paths": { "*": ["web_modules/.types/*"] }
+    "paths": {
+      "*": [ "web_modules/.types/*" ],
+      "components/*": [ "./components/*" ],
+      "core/*": [ "./core/*" ],
+      "manager/*": [ "./manager/*" ],
+      "utils/*": [ "./utils/*" ],
+      "vendors/*": [ "./vendors/*" ]
+    },
     // Feel free to add/edit new config options below:
     // ...
+    "jsx": "react",
+    // Eventually this should be `true`
+    "noImplicitAny": false,
+    // Eventually this should be `false`
+    "allowJs": true,
+    "noEmit": true,
+    "importsNotUsedAsValues": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "target": "es5"
   }
 }

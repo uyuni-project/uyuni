@@ -8,9 +8,13 @@
   },
   "devDependencies": {
     "@khanacademy/flow-to-ts": "0.1.7",
+    "@snowpack/app-scripts-react": "1.12.6",
     "@snowpack/plugin-react-refresh": "2.3.7",
     "@snowpack/plugin-typescript": "1.1.0",
-    "snowpack": "2.17.1"
+    "@types/jquery": "^3.5.4",
+    "@types/react": "^16.8.6",
+    "snowpack": "2.17.1",
+    "typescript": "4.1.2"
   },
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf dist",
@@ -26,7 +30,11 @@
     "find-flow": "find . -path ./node_modules -prune -false -o -name '*.js' -exec grep -l '@flow' {} \\+",
     "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
     "migrate-flow": "yarn --silent find-flow | xargs yarn flow-to-ts",
-    "snow": "snowpack dev"
+    "snow": "snowpack dev --polyfill-node",
+    "tsc": "tsc",
+    "tsc-grep-untyped-annotated": "(yarn --silent tsc 2>&1 || true) | tee | grep \"can only be used in TypeScript files\"",
+    "find-untyped-annotated": "yarn --silent tsc-grep-untyped-annotated | sed \"s/\\.js.*/.js/\" | uniq",
+    "migrate-untyped-annotated": "yarn --silent find-untyped-annotated | xargs yarn flow-to-ts"
   },
   "engines": {
     "node": ">=10.0.0",

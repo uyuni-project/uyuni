@@ -13,10 +13,9 @@ const proxy = httpProxy.createServer({
 
 module.exports = {
   mount: {
-    '../': "/",
-    // src: "/_dist_",
+    './': "/",
   },
-  // plugins: ["@snowpack/plugin-react-refresh"],
+  plugins: ["@snowpack/plugin-react-refresh", "@snowpack/plugin-typescript"],
   install: [
     /* ... */
   ],
@@ -35,7 +34,12 @@ module.exports = {
     ws: true,
     secure: false
   },
+  // No aliases are defined by default, see https://www.snowpack.dev/reference/configuration#config.alias
   alias: {
-    /* ... */
+    "components": "./components",
+    "core": "./core",
+    "manager": "./manager",
+    "utils": "./utils",
+    "vendors": "./vendors"
   },
 };
