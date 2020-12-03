@@ -7,7 +7,7 @@
 %><%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"
 %><%@ page contentType="text/html; charset=UTF-8"
 %><!DOCTYPE HTML>
-<html:html>
+<html:html lang="true">
   <head>
     <jsp:include page="layout_head.jsp" />
     <decorator:head />

@@ -1,3 +1,4 @@
+- Add lang attribute to html tags
 - SPEC file libxml2-devel addition, Source0 update.
 - Replace the virtpoller beacon by a guests refresh action
 - Added RHEL build support.
