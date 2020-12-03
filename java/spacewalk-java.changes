@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Dec 03 13:45:57 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.5-1
 - add the VirtualPC as virtualization type (bsc#1178990)
 - Fix the activation key handling from kickstart profile (bsc#1178647)
 - Ignore docker network ifaces in the system duplicates list
