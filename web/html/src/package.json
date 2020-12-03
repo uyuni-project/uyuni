@@ -6,6 +6,11 @@
   "dependencies": {
     "susemanager-nodejs-sdk-devel": "1.0.0"
   },
+  "devDependencies": {
+    "@khanacademy/flow-to-ts": "0.1.7",
+    "@snowpack/plugin-react-refresh": "^2.3.7",
+    "snowpack": "2.17.1"
+  },
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf dist",
     "dev": "webpack -d --config build/webpack.config.js --mode development",
@@ -16,7 +21,11 @@
     "lint": "eslint . -f codeframe",
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
-    "storybook": "start-storybook -s ./.storybook/public"
+    "storybook": "start-storybook -s ./.storybook/public",
+    "find-flow": "find . -path ./node_modules -prune -false -o -name '*.js' -exec grep -l '@flow' {} \\+",
+    "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120",
+    "migrate-flow": "yarn --silent find-flow | xargs yarn flow-to-ts",
+    "snow": "snowpack dev"
   },
   "engines": {
     "node": ">=10.0.0",
