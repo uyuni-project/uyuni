@@ -207,7 +207,7 @@ public class RhelUtils {
                 .filter(pkg -> StringUtils.startsWith(pkg, "sles_es-release")).isPresent();
         if (hasRESChannels || hasRESReleasePackage) {
             // we got a RES. find the corresponding SUSE product
-            Optional<ReleaseFile> releaseFile = rhelReleaseFile
+            Optional<ReleaseFile> releaseFile = rhelReleaseFile.or(() -> centosReleaseFile)
                     .flatMap(RhelUtils::parseReleaseFile);
             // Find the corresponding SUSEProduct in the database
             String name = releaseFile.map(ReleaseFile::getName).orElse("RES");
@@ -273,7 +273,7 @@ public class RhelUtils {
                 .filter(pkg -> StringUtils.startsWith(pkg, "sles_es-release")).isPresent();
         if (hasRESChannels || hasRESReleasePackage) {
             // we got a RES. find the corresponding SUSE product
-            Optional<ReleaseFile> releaseFile = rhelReleaseFile
+            Optional<ReleaseFile> releaseFile = rhelReleaseFile.or(() -> centosReleaseFile)
                     .flatMap(RhelUtils::parseReleaseFile);
             // Find the corresponding SUSEProduct in the database
             String name = releaseFile.map(ReleaseFile::getName).orElse("RES");
