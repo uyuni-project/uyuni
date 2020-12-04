@@ -40,6 +40,6 @@ module.exports = {
     "core": "./core",
     "manager": "./manager",
     "utils": "./utils",
-    "vendors": "./vendors"
+    // "vendors": "./vendors"
   },
 };
