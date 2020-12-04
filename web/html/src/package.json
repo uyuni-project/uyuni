@@ -53,9 +53,6 @@
     "find-object-to-any": "yarn --silent find-ts-tsx | xargs grep -l ': Object[^\\.]'",
     "migrate-object-to-any": "yarn --silent find-object-to-any | xargs -I {} sed -i '' -e 's/: Object\\([^\\.]\\)/: any\\1/g' {}",
 
-    "find-block-react": "yarn --silent find-ts-tsx | xargs grep -l 'const React = require(\"react\");'",
-    "migrate-block-react": "yarn --silent find-block-react | xargs -I {} sed -i '' -e 's/const React = require(\"react\");/import * as React from \"react\";/g' {}",
-
     "find-untyped-use-state": "yarn --silent find-ts-tsx | xargs grep -l 'React.useState(undefined)'",
     "migrate-untyped-use-state": "yarn --silent find-untyped-use-state | xargs -I {} sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' {}"
   },
