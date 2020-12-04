@@ -38,7 +38,7 @@
 %endif
 
 Name:           uyuni-base
-Version:        4.2.1
+Version:        4.2.2
 Release:        1
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -110,12 +110,9 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %endif
 
 %files common
-%if 0%{?rhel} == 6
-%doc LICENSE
-%else
-%license LICENSE
-%endif
 %defattr(-,root,root)
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %attr(750,root,%{apache_group}) /etc/rhn
 %dir %{_prefix}/share/rhn
 %dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
