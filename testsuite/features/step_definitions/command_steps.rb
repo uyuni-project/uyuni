@@ -416,6 +416,15 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
 
+When(/^I import the GPG keys for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  gpg_keys = get_gpg_keys(host)
+  gpg_keys.each do |key|
+    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
+    node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
+  end
+end
+
 When(/^the server starts mocking an IPMI host$/) do
   ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
