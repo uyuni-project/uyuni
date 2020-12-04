@@ -52,6 +52,8 @@ if $qam_test
   $ceos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $ceos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $ceos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
+  $ceos8_minion = twopence_init("ssh:#{ENV['CENTOS8_MINION']}") if ENV['CENTOS8_MINION']
+  $ceos8_ssh_minion = twopence_init("ssh:#{ENV['CENTOS8_SSHMINION']}") if ENV['CENTOS8_SSHMINION']
   $ubuntu1604_minion = twopence_init("ssh:#{ENV['UBUNTU1604_MINION']}") if ENV['UBUNTU1604_MINION']
   $ubuntu1604_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
@@ -70,6 +72,7 @@ if $qam_test
              $sle15sp1_minion, $sle15sp1_ssh_minion, $sle15sp1_client,
              $ceos6_minion, $ceos6_ssh_minion, $ceos6_client,
              $ceos7_minion, $ceos7_ssh_minion, $ceos7_client,
+             $ceos8_minion, $ceos8_ssh_minion,
              $ubuntu1604_ssh_minion, $ubuntu1604_minion,
              $ubuntu1804_ssh_minion, $ubuntu1804_minion,
              $ubuntu2004_ssh_minion, $ubuntu2004_minion,
@@ -220,6 +223,8 @@ $node_by_host = { 'server'                => $server,
                   'ceos7_minion'          => $ceos7_minion,
                   'ceos7_ssh_minion'      => $ceos7_ssh_minion,
                   'ceos7_client'          => $ceos7_client,
+                  'ceos8_minion'          => $ceos8_minion,
+                  'ceos8_ssh_minion'      => $ceos8_ssh_minion,
                   'ubuntu1604_minion'     => $ubuntu1604_minion,
                   'ubuntu1604_ssh_minion' => $ubuntu1604_ssh_minion,
                   'ubuntu1804_minion'     => $ubuntu1804_minion,
