@@ -89,6 +89,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
 
         try {
             ccc.store();
+            fail("invalid repository label should have thrown error: " + label);
         }
         catch (InvalidRepoLabelException e) {
             // expected
