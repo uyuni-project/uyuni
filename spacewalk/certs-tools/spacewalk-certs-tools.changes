@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 03 13:44:00 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Added RHEL8 build support.
+- SPEC file house keeping.
+
+-------------------------------------------------------------------
 Wed Nov 25 12:20:25 CET 2020 - jgonzalez@suse.com
 
 - version 4.2.2-1

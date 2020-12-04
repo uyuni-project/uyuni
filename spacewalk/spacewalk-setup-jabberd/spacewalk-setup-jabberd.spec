@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-setup-jabberd
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 License:        GPL-2.0-only
@@ -26,14 +26,10 @@ Group:          Applications/System
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-PreReq:         sqlite3
-%if 0%{?fedora} && 0%{?fedora} > 26
-BuildRequires:  perl-interpreter
-%else
+PreReq:         (sqlite3 or sqlite < 4)
 BuildRequires:  perl
-%endif
 BuildRequires:  jabberd
-BuildRequires:  sqlite3
+BuildRequires:  (sqlite3 or sqlite < 4)
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildArch:      noarch
 %if 0%{?fedora} && 0%{?fedora} > 26
@@ -41,10 +37,9 @@ Requires:       perl-interpreter
 %else
 Requires:       perl
 %endif
-%if 0%{?suse_version}
 Requires:       jabberd-sqlite
-%endif
 Requires(post): libxslt-tools
+Requires(post): jabberd
 
 %description
 Script, which sets up Jabberd for Spacewalk. Used during installation of

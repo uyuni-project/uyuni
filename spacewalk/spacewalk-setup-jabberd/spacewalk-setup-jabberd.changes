@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 03 13:52:05 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Generalised manage_database.
+- Updated SPEC to work on RHEL.
+
+-------------------------------------------------------------------
 Fri Sep 18 11:43:47 CEST 2020 - jgonzalez@suse.com
 
 - version 4.2.1-1

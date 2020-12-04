@@ -70,6 +70,8 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.test.CPUTest;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -118,7 +120,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -146,6 +148,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -1705,5 +1708,83 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(unknownPackage.getEvr().getVersion(), unknown.get("version"));
         assertEquals(unknownPackage.getEvr().getRelease(), unknown.get("release"));
         assertEquals(archAsLabel ? unknownPackage.getArch().getLabel() : unknownPackage.getArch().getName(), unknown.get("arch"));
+    }
+
+    public void testListDupesByIp() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "eth0", "172.17.0.2", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "eth0", "172.17.0.2", "11:22:33:44:55:78");
+
+        Set<Long> dupeSysIds = listDupesByIpAddress("172.17.0.2");
+        assertEquals(Set.of(server1.getId(), server2.getId()), dupeSysIds);
+    }
+
+    public void testListNoDupesByIp() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "eth0", "10.1.1.1", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "eth0", "10.1.1.99", "11:22:33:44:55:78");
+
+        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    public void testListDupesByIpOtherIface() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "eth0", "10.1.1.1", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "eth1", "10.1.1.1", "11:22:33:44:55:78");
+
+        Set<Long> dupeSysIds = listDupesByIpAddress("10.1.1.1");
+        assertEquals(Set.of(server1.getId(), server2.getId()), dupeSysIds);
+    }
+
+    public void testListNoDupesForDocker() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "docker0", "172.17.0.2", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "docker0", "172.17.0.2", "11:22:33:44:55:78");
+
+        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    public void testListNoDupesForVirbr() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "virbr0", "192.168.178.1", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "virbr0", "192.168.178.1", "11:22:33:44:55:78");
+
+        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    private static void createIfaceForServer(Server server, String ifaceName, String ip4address, String hwAddr) {
+        NetworkInterface iface = new NetworkInterface();
+        iface.setHwaddr(hwAddr);
+        iface.setName(ifaceName);
+        server.addNetworkInterface(iface);
+        ServerFactory.saveNetworkInterface(iface);
+        ServerFactory.getSession().flush();
+        ServerFactory.getSession().refresh(iface);
+
+        ServerNetAddress4 ipv4 = new ServerNetAddress4();
+        ipv4.setInterfaceId(iface.getInterfaceId());
+        ipv4.setAddress(ip4address);
+        ServerNetworkFactory.saveServerNetAddress4(ipv4);
+    }
+
+    private Set<Long> listDupesByIpAddress(String byIpAdress) {
+        return SystemManager.listDuplicatesByIP(user, 24).stream()
+                .filter(grp -> grp.getKey().equals(byIpAdress))
+                .findFirst()
+                .get()
+                .getSystems()
+                .stream()
+                .map(dto -> dto.getId())
+                .collect(Collectors.toSet());
     }
 }

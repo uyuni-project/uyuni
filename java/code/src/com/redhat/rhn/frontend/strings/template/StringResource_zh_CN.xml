@@ -39,12 +39,12 @@ Thank you for using @@PRODUCT_NAME@@.
 您可以获得在 @@PRODUCT_NAME@@ 上管理系统所需的访问权限。
 
   @@PRODUCT_NAME@@ 登录名：{2}
-       密码：{3}
+       口令：{3}
          电子邮件地址：{4}
 
   {5}
 
-重要说明：登录后请更改您的密码。
+重要说明：登录后请更改您的口令。
 
 感谢您使用 @@PRODUCT_NAME@@。
 {6}</target>
@@ -86,12 +86,12 @@ Thank you for using @@PRODUCT_NAME@@.
 您可以获得在 @@PRODUCT_NAME@@ 上管理系统所需的访问权限。
 
   @@PRODUCT_NAME@@ 登录名：{0}
-       密码：{1}
+       口令：{1}
          电子邮件：{2}
 
   {3}
 
-重要说明：登录后请更改您的密码。
+重要说明：登录后请更改您的口令。
 
 感谢您使用 @@PRODUCT_NAME@@。
 {4}</target>
@@ -331,7 +331,7 @@ You may address the issues outlined in this advisory in two ways:
       </context>
           </context-group>
         <target state="translated">
-发行版    架构       配置文件名称
+发行版    体系结构       配置文件名称
 ---------- ---------- ---------------------------------------------
 {0}
 
@@ -476,13 +476,13 @@ Thank you for using @@PRODUCT_NAME@@.
         <target>
 [ 这是按您的请求自动发送到 {0} 的一封电子邮件。]
 
-重设置登录名 {2} 的 @@PRODUCT_NAME@@ 密码的请求已发出。
+重设置登录名 {2} 的 @@PRODUCT_NAME@@ 口令的请求已发出。
 
 要继续完成重设置过程，请转到：
 
 {1}
 
-如果您不想要重设置密码，可忽略本电子邮件。
+如果您不想要重设置口令，可忽略本电子邮件。
 
 如果您在重设置过程中遇到任何其他问题，
 请联系您的 @@PRODUCT_NAME@@ 管理员取得更多帮助。
@@ -561,9 +561,9 @@ Thank you for using @@PRODUCT_NAME@@.
 [ 这是自动发送到 {0} 的一封电子邮件。]
 
 为了响应 {2} 发出的重设置请求，现已重设置登录名 {1} 的
-@@PRODUCT_NAME@@ 密码
+@@PRODUCT_NAME@@ 口令
 
-如果您并未发出此项密码重设置请求，请立即联系 @@PRODUCT_NAME@@
+如果您并未发出此项口令重设置请求，请立即联系 @@PRODUCT_NAME@@
 管理员 ({2}) 以取得更多帮助。
 
 感谢您使用 @@PRODUCT_NAME@@。

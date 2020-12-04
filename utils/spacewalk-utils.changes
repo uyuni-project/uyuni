@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Dec 03 13:54:48 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Fixed Python files to pass pylint.
+- Modified SPEC to work with RHEL8.
+- Remove Debian 9 and 10 channels for SUSE Manager, now provided by SCC data
+
+-------------------------------------------------------------------
 Wed Nov 25 12:25:22 CET 2020 - jgonzalez@suse.com
 
 - version 4.2.2-1

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-10-07 10:48+0000\n"
+"POT-Creation-Date: 2020-11-30 18:46+0100\n"
+"PO-Revision-Date: 2020-11-06 00:50+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1104,6 +1104,7 @@ msgstr " 秒"
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
+#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/virtualization/ListTab.js:231
 msgid "Filter by name"
 msgstr "名前でフィルタ"
@@ -1131,7 +1132,7 @@ msgstr "経過時間"
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:235
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:128
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:58
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
 msgid "Status"
@@ -1443,8 +1444,8 @@ msgstr "パーツ番号"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:154
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:257
 #: ../html/src/manager/content-management/list-projects/list-projects.js:100
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
@@ -1652,6 +1653,8 @@ msgid "Edit properties"
 msgstr "プロパティの編集"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:249
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
 #: ../html/src/manager/images/image-profile-edit.js:394
 #: ../html/src/manager/images/image-profiles.js:135
@@ -1679,7 +1682,6 @@ msgstr "システムグループ"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:286
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
 #: ../html/src/manager/clusters/shared/ui/select-server.js:113
-#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/content-management/list-projects/list-projects.js:81
 msgid "Filter by any value"
 msgstr "任意の値でフィルタ"
@@ -1791,9 +1793,8 @@ msgid "Upgrade"
 msgstr "アップグレード"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
-#, fuzzy
 msgid "Upgrade plan"
-msgstr "アップグレード "
+msgstr "アップグレードプラン"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:28
 msgid "You do not have permissions to perform this action"
@@ -1927,7 +1928,7 @@ msgstr "エポック"
 #: ../html/src/manager/content-management/list-filters/filter-form.js:151
 #: ../html/src/manager/content-management/list-filters/filter-form.js:189
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:84
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:47
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-view.js:549
@@ -2198,7 +2199,7 @@ msgstr "バージョン {0} の履歴"
 msgid "Version {0} successfully built into {1}"
 msgstr "バージョン {0} を {1} にビルドしました"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:55
 msgid "Insert before"
 msgstr "前に挿入"
 
@@ -2249,12 +2250,12 @@ msgstr "構築済み"
 msgid "Failed"
 msgstr "失敗"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:84
 msgid "not built"
 msgstr "未構築"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:73
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr "ビルド時間"
 
@@ -4383,11 +4384,11 @@ msgstr "仮想 CPU 数"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:215
 msgid "Auto-installation Profile"
-msgstr ""
+msgstr "自動インストールプロファイル"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:229
 msgid "Kernel options"
-msgstr ""
+msgstr "カーネルオプション"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:245
 msgid "Graphics"
