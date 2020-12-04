@@ -17,7 +17,7 @@
 #
 
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel} || 0%{?fedora}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif
