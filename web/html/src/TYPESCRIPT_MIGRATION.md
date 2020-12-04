@@ -6,14 +6,11 @@ Notes
 Migration steps:  
 
 1. Install new dependencies: `yarn`  
-1. Migrate CommonJS imports and exports as much as possible:  
-    ```
-    yarn migrate-cjs
-    yarn migrate-exports
-    ```
-    Both of these will log errors in places that they don't know how to handle, this is fine.
+1. Migrate CommonJS imports and exports to ES6 as much as possible: `yarn migrate-cjs-to-es6`  
+    This will log errors in places that they don't know how to handle, this is fine.
 1. Check which Flow files are found: `yarn find-flow`  
 1. Migrate any found Flow files to TS: `yarn migrate-flow`
+    There will be some redeclaration errors from the ES6 migration, these need to be fixed manually case by case
 1. Check which Javascript files have type annotations without Flow or TS: `yarn find-untyped-annotated`
 1. Migrate any of the above to TS: `yarn migrate-untyped-annotated`
     * There is one file which throws here, simply renaming to tsx is sufficient: `mv components/section-toolbar/section-toolbar.js components/section-toolbar/section-toolbar.tsx`
