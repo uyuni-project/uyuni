@@ -5,22 +5,43 @@
         <![CDATA[
 cat <<EOF >"/etc/salt/minion.d/susemanager.conf"
 master: $redhat_management_server
+server_id_use_crc: adler32
+enable_legacy_startup_events: False
+enable_fqdns_grains: False
+mine_enabled: False
 
 EOF
-#if $varExists('registration_key') or $varExists('redhat_management_key')
+#set activation_keys = ""
+#set management_key  = ""
+#if $varExists('registration_key')
+   #set activation_keys = $registration_key
+#end if
+
+#if $varExists('redhat_management_key')
+   #set management_key = $redhat_management_key.split(",",1)[0]
+#end if
+
+#if not $activation_keys and $management_key
+  #set keys= $redhat_management_key.split(",",1)
+  #if len(keys) > 1
+     #set activation_keys = $keys[1]
+  #end if
+#end if
+
+#if $activation_keys or $management_key
 cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
 grains:
     susemanager:
 EOF
 #end if
-#if $varExists('redhat_management_key')
+#if $management_key
 cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
-        management_key: "$redhat_management_key"
+        management_key: "$management_key"
 EOF
 #end if
-#if $varExists('registration_key')
+#if $activation_keys
 cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
-        activation_key: "$registration_key"
+        activation_key: "$activation_keys"
 EOF
 #end if
 

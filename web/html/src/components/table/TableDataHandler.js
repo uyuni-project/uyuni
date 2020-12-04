@@ -56,6 +56,8 @@ type Props = {
   selectedItems?: Array<any>,
   /** The message which is shown when there are no rows to display */
   emptyText?: string,
+  /** Indicate whether the data is loading (only effective for tables using SimpleDataProvider) */
+  loading?: boolean,
   /** The message which is shown when the data is loading */
   loadingText?: string,
   /** Children node in the table */
@@ -111,7 +113,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       }, {});
 
       return new SimpleDataProvider(data, this.props.identifier,
-        this.props.searchField && this.props.searchField.props.filter, comparators);
+        this.props.searchField && this.props.searchField.props.filter, comparators, this.props.loading);
     }
     else if (typeof data === "string") {
       return new AsyncDataProvider(data);

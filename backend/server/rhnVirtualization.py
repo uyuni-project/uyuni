@@ -70,6 +70,7 @@ class VirtualizationType:
     VMWARE = 'vmware'
     VIRTAGE = 'virtage'
     VBOX = 'virtualbox'
+    VPC ='virtualpc'
 
 class IdentityType:
     HOST = 'host'
