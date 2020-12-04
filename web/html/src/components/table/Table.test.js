@@ -117,4 +117,28 @@ describe("Table component", () => {
       })
     ).not.toBe(null);
   });
+
+  test("loading indicator for tables using SimpleDataProvider", async () => {
+    const data = [{value: "Value 0"}];
+
+    const { rerender } = render(
+      <Table {...baseProps} loading={true} />
+    );
+
+    // Check if loading indicator appears
+    expect(screen.queryByText(baseProps.loadingText)).not.toBe(null);
+
+    rerender(
+      <Table {...baseProps} data={data} loading={false} >
+        <Column columnKey="value" cell={item => item.value} />
+      </Table>
+    );
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(baseProps.loadingText)
+    );
+
+    // Check if loading indicator disappears and data is displayed
+    expect(screen.queryByText(baseProps.loadingText)).toBe(null);
+    expect(screen.queryByText(data[0].value)).not.toBe(null);
+  });
 });
