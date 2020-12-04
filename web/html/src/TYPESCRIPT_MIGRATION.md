@@ -1,5 +1,8 @@
 # Typescript migration
 
+Notes
+ - This relies on TS 4.1.2, 3.x does not give sufficient debugging output for automatic migrations.
+
 Migration steps:  
 
 1. Install new dependencies: `yarn`  
