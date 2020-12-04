@@ -28,7 +28,7 @@ Summary:        Streaming zlib (gzip) support for python
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
 Name:           python-gzipstream
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/python-gzipstream-%{version}.tar.gz

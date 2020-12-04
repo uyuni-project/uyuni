@@ -24,7 +24,7 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.2.3
+Version:        4.2.4
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -35,7 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
-BuildRequires:  python
+BuildRequires:  python2
 BuildRequires:  perl(Digest::SHA)
 Requires:       %{sbinpath}/restorecon
 

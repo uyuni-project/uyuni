@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Thu Dec 03 13:56:35 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.4-1
+- Enhanced SPEC and extended for RHEL8.
 - Use product IDs for Debian 9 and 10 SUSE Manager bootstrap repo data
 - Added RHEL/CentOS Java alternatives options.
 - Create PostgreSQL Datadir should it not exist.

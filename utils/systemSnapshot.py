@@ -14,7 +14,7 @@ import sys
 from time import strptime
 from datetime import datetime
 
-from optparse import OptionParser, Option
+from optparse import OptionParser, Option  # pylint: disable=deprecated-module
 from uyuni.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout
 
 try:
