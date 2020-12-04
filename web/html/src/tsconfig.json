@@ -1,5 +1,12 @@
 {
-  "include": ["components/**/*", "core/**/*", "manager/**/*", "utils/**/*", "vendors/**/*", "global.d.ts"],
+  "include": [
+    "components/**/*",
+    "core/**/*",
+    "manager/**/*",
+    "utils/**/*",
+    //"vendors/**/*",
+    "global.d.ts"
+  ],
   "exclude": ["**/node_modules", "**/.*/"],
   // "extends": "@snowpack/app-scripts-react/tsconfig.base.json",
   "compilerOptions": {
@@ -14,7 +21,7 @@
       "core/*": [ "./core/*" ],
       "manager/*": [ "./manager/*" ],
       "utils/*": [ "./utils/*" ],
-      "vendors/*": [ "./vendors/*" ]
+      // "vendors/*": [ "./vendors/*" ]
     },
     
     // TODO: Merge
