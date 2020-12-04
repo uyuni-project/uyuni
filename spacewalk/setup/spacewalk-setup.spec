@@ -17,7 +17,7 @@
 #
 
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel} || 0%{?fedora}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif
@@ -97,17 +97,13 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
-%if 0%{?suse_version}
 %if 0%{?build_py3}
-Requires:       python3-PyYAML
+Requires:       (python3-PyYAML or python3-pyyaml)
 %else
-Requires:       python-PyYAML
+Requires:       (python-PyYAML or PyYAML)
 %endif
-%else
 %if 0%{?fedora} >= 22
 Recommends:     cobbler20
-%endif
-Requires:       PyYAML
 %endif
 Requires:       /usr/bin/gpg
 Requires:       curl
@@ -306,7 +302,11 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/metadata/
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
+%if 0%{?rhel} || 0%{?fedora}
+%{misc_path}/spacewalk
+%else
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
+%endif
 %{_mandir}/man8/spacewalk-make-mount-points*
 %doc LICENSE
 
