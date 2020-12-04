@@ -137,7 +137,6 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
 
         // I N V A L I D
         invalidRepoLabelInput("");
-        invalidRepoLabelInput("example/repo");
         invalidRepoLabelInput("example;repo");
         invalidRepoLabelInput("example_repo$");
         invalidRepoLabelInput("my*examplerepo");
