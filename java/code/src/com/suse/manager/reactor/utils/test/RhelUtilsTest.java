@@ -144,6 +144,22 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    public void testDetectCentOSProductRES() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos2.json",
+                minionServer -> {
+                    Channel resChannel = createResChannel(user, "6");
+                    minionServer.addChannel(resChannel);
+                    minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+                },
+                prod -> {
+                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertEquals("res", prod.get().getSuseProduct().get().getName());
+                    assertEquals("CentOS", prod.get().getName());
+                    assertEquals("Final", prod.get().getRelease());
+                    assertEquals("6", prod.get().getVersion());
+        });
+    }
+
     public void testDetectRhelProductRHEL() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rhel.json",
                 null,
