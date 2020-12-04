@@ -60,7 +60,7 @@
     "migrate-block-react": "yarn --silent find-block-react | xargs -I {} sed -i '' -e 's/const React = require(\"react\");/import * as React from \"react\";/g' {}",
 
     "find-untyped-use-state": "yarn --silent find-ts-tsx | xargs grep -l 'React.useState(undefined)'",
-    "migrate-untyped-use-state": "yarn --silent find-untyped-use-state | xargs -I {} sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' {}",
+    "migrate-untyped-use-state": "yarn --silent find-untyped-use-state | xargs -I {} sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' {}"
   },
   "engines": {
     "node": ">=10.0.0",
