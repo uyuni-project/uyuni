@@ -1,3 +1,10 @@
+- Fix question mark explanations for Recurring States (bsc#1179485)
+
+-------------------------------------------------------------------
+Thu Dec 03 13:55:25 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.4-1
+- Fix loading indicator for tables using SimpleDataProvider (bsc#1177756)
 - Required NodeJS version upgraded to 10
 - Fix incorrect password autocompletions (bsc#1148357)
 - Fix mandatory channels JS API to finish loading in case of error (bsc#1178839)

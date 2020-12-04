@@ -8,7 +8,6 @@ const ReactDOM = require("react-dom");
 const {DateTimePicker} = require("../datetimepicker");
 const {Combobox} = require("../combobox");
 import type {ComboboxItem} from "../combobox";
-const { HelpLink } = require('components/utils/HelpLink');
 const { Form } = require('components/input/Form');
 const { Text } = require('components/input/Text');
 const Functions = require("utils/functions");
@@ -319,7 +318,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                                     <input className="form-control" name="minutes" type="number" value={this.state.minutes.id} min="0" max="59" onChange={this.onSelectMinutes} />
                                 </div>
                                 <div className={`col-sm-1 ${styles.helpIcon}`}>
-                                    <HelpLink text={t("The action will be executed every hour at the specified minute")}/>
+                                    <i className="fa fa-question-circle spacewalk-help-link" title={t("The action will be executed every hour at the specified minute")}/>
                                 </div>
                             </div>
                             <div className={`form-group ${styles.center}`}>
@@ -363,7 +362,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                                     <DateTimePicker onChange={this.onMonthlyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true} id="time-monthly"/>
                                 </div>
                                 <div className={`col-sm-1 ${styles.helpIcon}`}>
-                                    <HelpLink text={t("Days are limited to 28 to have a recurring schedule available for all the months")}/>
+                                    <i className="fa fa-question-circle spacewalk-help-link" title={t("Days are limited to 28 to have a recurring schedule available for all the months")}/>
                                 </div>
                             </div>
                             <div className={`form-group ${styles.center}`}>

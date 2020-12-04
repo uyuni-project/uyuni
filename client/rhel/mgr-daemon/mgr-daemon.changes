@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Dec 03 13:31:46 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.4-1
 - Added quotes around %{_vendor} token for the if statements in spec file.
 
 -------------------------------------------------------------------
