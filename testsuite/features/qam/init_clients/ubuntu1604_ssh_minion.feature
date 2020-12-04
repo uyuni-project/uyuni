@@ -14,10 +14,13 @@ Feature: Bootstrap a SSH-managed Ubuntu 16.04 minion and do some basic operation
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
-    When I check "manageWithSSH"
-    And I select "1-ubuntu1604_ssh_minion_key" from "activationKeys"
-    And I enter the hostname of "ubuntu1604_ssh_minion" as "hostname"
+    When I enter the hostname of "ubuntu1604_ssh_minion" as "hostname"
+    And I enter "root" as "user"
     And I enter "linux" as "password"
+    And I enter "22" as "port"
+    And I select "1-ubuntu1604_ssh_minion_key" from "activationKeys"
+    And I select the hostname of "proxy" from "proxies"
+    And I check "manageWithSSH"
     And I click on "Bootstrap"
     Then I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu1604_ssh_minion"
