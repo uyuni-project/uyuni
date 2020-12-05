@@ -9,6 +9,6 @@ const DateTime = props =>
     </span>
 ;
 
-module.exports = {
-    DateTime: DateTime
-}
+export {
+    DateTime,
+};

@@ -183,6 +183,6 @@ class RecurringStatesDetails extends React.Component {
     }
 }
 
-module.exports = {
-    RecurringStatesDetails: RecurringStatesDetails
+export {
+    RecurringStatesDetails,
 };

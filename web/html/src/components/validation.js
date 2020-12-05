@@ -12,4 +12,4 @@ Object.keys(validator).forEach(v => {
     }
 });
 
-module.exports = validations;
+export default validations;

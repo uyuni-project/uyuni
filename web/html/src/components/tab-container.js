@@ -64,7 +64,7 @@ const TabLabel = (props) =>
   </li>
 ;
 
-module.exports = {
-    TabContainer : TabContainer,
-    TabLabel: TabLabel
-}
+export {
+    TabContainer,
+    TabLabel,
+};

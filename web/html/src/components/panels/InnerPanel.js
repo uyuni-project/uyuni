@@ -42,6 +42,6 @@ function InnerPanel(props: Props) {
   );
 }
 
-module.exports = {
+export {
   InnerPanel,
 };

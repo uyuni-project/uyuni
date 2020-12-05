@@ -30,6 +30,6 @@ class TextField extends React.Component {
 
 }
 
-module.exports = {
-    TextField : TextField
-}
+export {
+    TextField,
+};

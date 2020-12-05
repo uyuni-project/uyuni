@@ -305,6 +305,6 @@ class VirtualHostManagerEdit extends React.Component {
 
 }
 
-module.exports = {
-    VirtualHostManagerEdit: VirtualHostManagerEdit
+export {
+    VirtualHostManagerEdit,
 };

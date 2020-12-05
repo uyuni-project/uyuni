@@ -15,6 +15,6 @@ const ProgressBar = (props) => {
   )
 }
 
-module.exports = {
-    ProgressBar: ProgressBar
-}
+export {
+    ProgressBar,
+};

@@ -44,6 +44,6 @@ class AceEditor extends React.Component {
   }
 }
 
-module.exports = {
-    AceEditor : AceEditor
-}
+export {
+    AceEditor,
+};

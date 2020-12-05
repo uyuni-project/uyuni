@@ -350,6 +350,6 @@ class PinSubscriptionSelector extends React.Component {
   }
 }
 
-module.exports = {
-  Pins: Pins,
-}
+export {
+  Pins,
+};

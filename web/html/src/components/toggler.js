@@ -42,6 +42,6 @@ Toggler.propTypes = {
   className: PropTypes.string
 };
 
-module.exports = {
-  Toggler: Toggler
-}
+export {
+  Toggler,
+};

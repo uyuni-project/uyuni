@@ -59,6 +59,6 @@ class ImageViewPackages extends React.Component {
   }
 }
 
-module.exports = {
-  ImageViewPackages: ImageViewPackages
-}
+export {
+  ImageViewPackages,
+};

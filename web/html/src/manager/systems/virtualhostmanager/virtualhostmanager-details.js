@@ -193,6 +193,6 @@ function ConfigParams(props) {
     );
 }
 
-module.exports = {
-    VirtualHostManagerDetails: VirtualHostManagerDetails
+export {
+    VirtualHostManagerDetails,
 };

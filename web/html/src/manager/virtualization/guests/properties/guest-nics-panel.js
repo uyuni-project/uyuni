@@ -125,7 +125,7 @@ function getRequestParams(model: Object, index: number): Object {
   };
 }
 
-module.exports = {
+export {
   guestNicsPanel,
   getRequestParams,
   getModelFromDefinition,

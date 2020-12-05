@@ -96,6 +96,6 @@ class DeleteSystem extends React.Component {
 
 }
 
-module.exports = {
-  DeleteSystem: DeleteSystem
-}
+export {
+  DeleteSystem,
+};

@@ -23,6 +23,6 @@ function partitioning(initPartitioning) {
   return my;
 }
 
-module.exports = {
-  partitioning: partitioning
-}
+export {
+  partitioning,
+};
