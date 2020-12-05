@@ -106,7 +106,7 @@ BuildRequires:  ical4j
 BuildRequires:  jade4j
 BuildRequires:  jaf
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  apache_commons_el
+BuildRequires:  apache-commons-el
 BuildRequires:  %{apache_commons_fileupload}
 BuildRequires:  %{apache_commons_validator}
 %if 0%{?rhel} >= 8 || 0%{?fedora}
