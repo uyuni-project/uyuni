@@ -9,13 +9,13 @@ Feature: Be able to list available products and enable them
   Scenario: List available products
     When I execute mgr-sync "list products" with user "admin" and password "admin"
     Then I should get "[I] SUSE Linux Enterprise Server 12 SP5 x86_64"
-    And I should get "[I] SUSE Linux Enterprise Desktop 15 SP2 x86_64"
+    And I should get "[ ] SUSE Linux Enterprise Desktop 15 SP2 x86_64"
 
   Scenario: List all available products
     When I execute mgr-sync "list products -e"
-    Then I should get "[I] SUSE Linux Enterprise Desktop 15 SP2 x86_64"
-    And I should get "  [I] (R) Basesystem Module 15 SP2 x86_64"
-    And I should get "  [I] Desktop Applications Module 15 SP2 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Desktop 15 SP2 x86_64"
+    And I should get "  [ ] (R) Basesystem Module 15 SP2 x86_64"
+    And I should get "  [ ] Desktop Applications Module 15 SP2 x86_64"
 
   Scenario: Enable "SUSE Linux Enterprise Desktop 15 SP2 x86_64" with recommended modules
     When I enable product "SUSE Linux Enterprise Desktop 15 SP2 x86_64"
