@@ -3,7 +3,7 @@
 
 import {LinkButton} from "components/buttons";
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { DisplayHighstate } from './display-highstate';
 import { Messages } from 'components/messages';

@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { SubmitButton, Button } from 'components/buttons';
 import { Form } from 'components/input/Form';

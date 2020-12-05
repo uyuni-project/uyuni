@@ -1,5 +1,6 @@
 // @flow
-import React, {useState, useEffect} from 'react';
+import * as React from 'react';
+import {useState, useEffect} from 'react';
 import {ModalLink} from "../../../components/dialog/ModalLink";
 import {closeDialog, Dialog} from "../../../components/dialog/Dialog";
 import {Button} from "../../../components/buttons";

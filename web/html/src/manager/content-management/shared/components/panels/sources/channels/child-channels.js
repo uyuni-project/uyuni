@@ -1,6 +1,6 @@
 // @flow
 import type {Node} from 'react';
-import React from 'react';
+import * as React from 'react';
 import {Highlight} from "components/table/Highlight";
 import {ChannelAnchorLink} from "components/links";
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";

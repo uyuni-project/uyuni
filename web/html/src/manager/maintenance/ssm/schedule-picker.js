@@ -1,6 +1,7 @@
 // @flow
 
-import React, {useState, useEffect, useContext} from "react";
+import * as React from 'react';
+import {useState, useEffect, useContext} from "react";
 
 import {AsyncButton} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";

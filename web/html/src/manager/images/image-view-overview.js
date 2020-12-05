@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import { LinkButton, Button } from 'components/buttons';
 import { DateTime } from 'components/datetime';
 import { ModalButton } from 'components/dialog/ModalButton';

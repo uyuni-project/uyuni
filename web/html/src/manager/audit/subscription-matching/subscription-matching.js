@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { TabContainer } from 'components/tab-container';
 import { Subscriptions } from './subscription-matching-subscriptions';

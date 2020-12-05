@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import GuestsConsole from './guests-console';
 import SpaRenderer from "core/spa/spa-renderer";
 

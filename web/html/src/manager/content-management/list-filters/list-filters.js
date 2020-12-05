@@ -1,5 +1,6 @@
 // @flow
-import React, {useEffect, useState} from 'react';
+import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {TopPanel} from 'components/panels/TopPanel';
 import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';

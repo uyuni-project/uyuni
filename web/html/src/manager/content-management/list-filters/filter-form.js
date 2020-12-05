@@ -1,5 +1,6 @@
 //@flow
-import React, {useEffect} from 'react';
+import * as React from 'react';
+import {useEffect} from 'react';
 import {Text} from "components/input/Text";
 import {DateTime} from "components/input/DateTime";
 import {Radio} from "components/input/Radio";

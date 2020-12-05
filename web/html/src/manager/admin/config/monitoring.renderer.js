@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import MonitoringAdmin from './monitoring-admin';
 import SpaRenderer from "core/spa/spa-renderer";
 

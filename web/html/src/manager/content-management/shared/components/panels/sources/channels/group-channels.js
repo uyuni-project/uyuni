@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {Toggler} from "components/toggler";
 import {Highlight} from "components/table/Highlight";
 import ChildChannels from "./child-channels";

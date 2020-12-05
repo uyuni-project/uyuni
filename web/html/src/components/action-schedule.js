@@ -2,7 +2,7 @@
 // @flow
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { DateTimePicker } from './datetimepicker';
 import { Combobox } from './combobox';

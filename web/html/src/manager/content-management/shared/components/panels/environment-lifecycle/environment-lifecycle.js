@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import EnvironmentView from "./environment-view";
 import EnvironmentForm from "./environment-form";

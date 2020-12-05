@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-import React from 'react';
+import * as React from 'react';
 import Network from 'utils/network';
 
 class MatcherRunPanel extends React.Component {

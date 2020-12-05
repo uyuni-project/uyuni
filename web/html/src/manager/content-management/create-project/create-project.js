@@ -1,5 +1,6 @@
 // @flow
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 import {TopPanel} from "components/panels/TopPanel";
 import TopPanelButtons from "./top-panel-buttons";
 import PropertiesCreate from "../shared/components/panels/properties/properties-create";

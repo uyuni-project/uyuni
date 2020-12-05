@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React from "react";
+import * as React from 'react';
 import {Table} from "components/table/Table";
 import {Column} from "components/table/Column";
 import {SearchField} from "components/table/SearchField";

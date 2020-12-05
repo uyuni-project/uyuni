@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import { Utils } from 'utils/functions';
 import { Table } from 'components/table/Table';
 import { Column } from 'components/table/Column';

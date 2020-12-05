@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import { Messages } from '../components/messages';
 import Network from '../utils/network';
 import Buttons from '../components/buttons';

@@ -1,6 +1,7 @@
 // @flow
 import { hot } from 'react-hot-loader';
-import React, {useEffect} from 'react';
+import * as React from 'react';
+import {useEffect} from 'react';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import {TopPanel} from 'components/panels/TopPanel';
 import {LinkButton} from 'components/buttons';

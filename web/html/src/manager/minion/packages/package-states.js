@@ -1,5 +1,6 @@
 // @flow
-import React, {useEffect, useState, useRef} from "react";
+import * as React from 'react';
+import {useEffect, useState, useRef} from "react";
 import {useImmer} from 'use-immer';
 import * as Buttons from "components/buttons";
 import {InnerPanel} from 'components/panels/InnerPanel';

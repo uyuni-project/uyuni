@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from "react";
+import * as React from 'react';
 
 jQuery.fn.datepicker.dates['en_US'] = {
     days:      [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',],
