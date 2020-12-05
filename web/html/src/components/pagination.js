@@ -76,7 +76,7 @@ const PageSelector = (props) => {
 }
 
 
-module.exports = {
-    PaginationBlock : PaginationBlock,
-    ItemsPerPageSelector : ItemsPerPageSelector,
-}
+export {
+    PaginationBlock,
+    ItemsPerPageSelector,
+};

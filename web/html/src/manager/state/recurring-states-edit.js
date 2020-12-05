@@ -128,6 +128,6 @@ class RecurringStatesEdit extends React.Component {
     }
 }
 
-module.exports = {
-    RecurringStatesEdit: RecurringStatesEdit
+export {
+    RecurringStatesEdit,
 };

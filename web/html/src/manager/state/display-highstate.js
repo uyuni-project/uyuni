@@ -136,6 +136,6 @@ class DisplayHighstate extends React.Component {
     }
 }
 
-module.exports = {
-    DisplayHighstate: DisplayHighstate
+export {
+    DisplayHighstate,
 };

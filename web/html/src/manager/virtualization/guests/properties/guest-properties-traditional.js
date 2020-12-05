@@ -78,6 +78,6 @@ class GuestPropertiesTraditional extends React.Component<Props, State> {
   }
 }
 
-module.exports = {
+export {
   GuestPropertiesTraditional,
 };

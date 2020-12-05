@@ -5,8 +5,10 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Network from 'utils/network';
 import { FormulaSelection } from 'components/formula-selection';
-const capitalize = require("utils/functions").Utils.capitalize;
+import {Utils} from 'utils/functions';
 import SpaRenderer from 'core/spa/spa-renderer';
+
+const capitalize = Utils.capitalize;
 
 export const renderer = (renderId, {serverId, warningMessage}) => {
 

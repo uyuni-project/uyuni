@@ -136,6 +136,6 @@ class GuestPropertiesForm extends React.Component<Props, State> {
   }
 }
 
-module.exports = {
+export {
   GuestPropertiesForm,
 };

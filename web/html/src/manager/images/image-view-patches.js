@@ -97,6 +97,6 @@ class ImageViewPatches extends React.Component {
   }
 }
 
-module.exports = {
-  ImageViewPatches: ImageViewPatches
-}
+export {
+  ImageViewPatches,
+};

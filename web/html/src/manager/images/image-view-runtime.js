@@ -105,6 +105,6 @@ class ClusterInfo extends React.Component {
   }
 }
 
-module.exports = {
-  ImageViewRuntime: ImageViewRuntime
-}
+export {
+  ImageViewRuntime,
+};

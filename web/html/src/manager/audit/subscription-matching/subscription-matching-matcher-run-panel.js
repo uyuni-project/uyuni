@@ -110,6 +110,6 @@ class MatcherScheduleButton extends React.Component {
   }
 }
 
-module.exports = {
-  MatcherRunPanel: MatcherRunPanel,
-}
+export {
+  MatcherRunPanel,
+};

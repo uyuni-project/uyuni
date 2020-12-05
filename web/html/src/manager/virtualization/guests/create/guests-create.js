@@ -105,6 +105,8 @@ class GuestsCreate extends React.Component<Props, State> {
   }
 }
 
-module.exports = {
-  GuestsCreate: hot(module)(GuestsCreate),
+const HotGuestsCreate = hot(module)(GuestsCreate);
+
+export {
+  HotGuestsCreate as GuestsCreate,
 };

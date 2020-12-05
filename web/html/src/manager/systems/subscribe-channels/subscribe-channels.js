@@ -14,6 +14,8 @@ import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 import { ChannelAnchorLink, ActionLink, ActionChainLink } from 'components/links';
 import ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
 
+import { hot } from 'react-hot-loader';
+
 import type {JsonResult} from "utils/network";
 import type {ActionChain} from "components/action-schedule";
 
@@ -623,8 +625,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
 }
 
-import { hot } from 'react-hot-loader';
+const HotSubscribeChannels = hot(module)(SystemChannels);
 
-module.exports = {
-  SubscribeChannels: hot(module)(SystemChannels)
-}
+export {
+  HotSubscribeChannels as SubscribeChannels,
+};

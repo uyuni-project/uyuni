@@ -49,6 +49,6 @@ class VirtualizationGuestDefinitionApi extends React.Component<Props, State> {
   }
 }
 
-module.exports = {
+export {
   VirtualizationGuestDefinitionApi,
 };

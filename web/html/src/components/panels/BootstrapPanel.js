@@ -31,6 +31,6 @@ BootstrapPanel.defaultProps = {
   footer: undefined,
 };
 
-module.exports = {
+export {
   BootstrapPanel,
 };

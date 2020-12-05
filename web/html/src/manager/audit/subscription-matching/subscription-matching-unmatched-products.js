@@ -154,6 +154,6 @@ class UnmatchedSystemPopUp extends React.Component {
   }
 }
 
-module.exports = {
-  UnmatchedProducts: UnmatchedProducts,
-}
+export {
+  UnmatchedProducts,
+};

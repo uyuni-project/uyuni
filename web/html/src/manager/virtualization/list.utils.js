@@ -31,9 +31,11 @@ function sortByState(aRaw: Object, bRaw: Object, columnKey: string, sortDirectio
   return (Math.sign(a - b) || Utils.sortById(aRaw, bRaw)) * sortDirection;
 }
 
-module.exports = {
-  Utils: {
-    sortByUpdate,
-    sortByState,
-  },
+const ListUtils = {
+  sortByUpdate,
+  sortByState,
+};
+
+export {
+  ListUtils as Utils,
 };

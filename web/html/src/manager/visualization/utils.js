@@ -53,10 +53,10 @@ function isCompliantToSSM(d) {
   return isSystemType(d) && ['enterprise_entitled', 'salt_entitled', 'bootstrap_entitled'].includes(d.data.base_entitlement);
 }
 
-module.exports = {
-    computeSvgDimensions: computeSvgDimensions,
-    adjustSvgDimensions: adjustSvgDimensions,
-    prepareDom: prepareDom,
-    isSystemType: isSystemType,
-    isCompliantToSSM: isCompliantToSSM
-}
+export {
+    computeSvgDimensions,
+    adjustSvgDimensions,
+    prepareDom,
+    isSystemType,
+    isCompliantToSSM,
+};
