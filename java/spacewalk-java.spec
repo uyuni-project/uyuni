@@ -214,7 +214,7 @@ Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
-Requires:       apache_commons_el
+Requires:       apache-commons-el
 Requires:       %{apache_commons_fileupload}
 Requires:       jcommon
 Requires:       jdom
