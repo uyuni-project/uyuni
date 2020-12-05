@@ -1,6 +1,6 @@
-const SpaRenderer  = require("core/spa/spa-renderer").default;
-const React = require('react');
-const { NotificationMessages } = require('./notification-messages');
+import SpaRenderer from 'core/spa/spa-renderer';
+import React from 'react';
+import { NotificationMessages } from './notification-messages';
 
 export const renderer = () => SpaRenderer.renderNavigationReact(
   <NotificationMessages />,

@@ -9,7 +9,7 @@ export type ChannelsDependencies = {
   requiredByChannels: Map<number, Set<number>>
 }
 
-const _union = require("lodash/union");
+import _union from 'lodash/union';
 
 
 // Converts array of channel names into a human-readable tooltip

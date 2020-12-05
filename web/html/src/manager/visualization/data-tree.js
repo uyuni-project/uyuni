@@ -1,11 +1,11 @@
 /* eslint-disable */
 'use strict';
 
-const HierarchyView = require('./ui/hierarchy-view.js');
-const Filters = require('./data-processing/filters.js');
-const Partitioning = require('./data-processing/partitioning.js');
-const Preprocessing = require('./data-processing/preprocessing.js');
-const Utils = require('./utils.js');
+import HierarchyView from './ui/hierarchy-view.js';
+import Filters from './data-processing/filters.js';
+import Partitioning from './data-processing/partitioning.js';
+import Preprocessing from './data-processing/preprocessing.js';
+import Utils from './utils.js';
 
 // Render hierarchy view - take data, transform with preprocessor, filters and
 // partitioning, render it in the container.

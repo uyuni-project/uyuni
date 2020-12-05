@@ -1,19 +1,19 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {SubmitButton, Button} = require("components/buttons");
-const { Form } = require('components/input/Form');
-const { FormGroup } = require('components/input/FormGroup');
-const { Label } = require('components/input/Label');
-const { Password } = require('components/input/Password');
-const { Text } = require('components/input/Text');
-const { Select } = require('components/input/Select');
-const Network = require("utils/network");
-const {Messages} = require("components/messages");
-const MessagesUtils = require("components/messages").Utils;
-const {Utils} = require("utils/functions");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { SubmitButton, Button } from 'components/buttons';
+import { Form } from 'components/input/Form';
+import { FormGroup } from 'components/input/FormGroup';
+import { Label } from 'components/input/Label';
+import { Password } from 'components/input/Password';
+import { Text } from 'components/input/Text';
+import { Select } from 'components/input/Select';
+import Network from 'utils/network';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { Utils } from 'utils/functions';
 
 class VirtualHostManagerEdit extends React.Component {
 

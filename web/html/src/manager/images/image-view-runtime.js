@@ -1,8 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
+import React from 'react';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 
 class ImageViewRuntime extends React.Component {
   constructor(props) {

@@ -9,7 +9,7 @@ import {Button} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
 import {DangerDialog} from "components/dialog/DangerDialog";
 
-const MessagesUtils = require("components/messages").Utils;
+import { Utils as MessagesUtils } from 'components/messages';
 
 type CalendarEditProps = {
     messages: MessagesUtils,

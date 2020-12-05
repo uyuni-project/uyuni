@@ -1,15 +1,15 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const { InnerPanel } = require('components/panels/InnerPanel');
-const Button = require("components/buttons").Button;
-const {Toggler} = require("components/toggler");
-const ModalButton = require("components/dialog/ModalButton").ModalButton;
-const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
-const {Column} = require("components/table/Column");
-const {Table} = require("components/table/Table");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { InnerPanel } from 'components/panels/InnerPanel';
+import { Button } from 'components/buttons';
+import { Toggler } from 'components/toggler';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { DeleteDialog } from 'components/dialog/DeleteDialog';
+import { Column } from 'components/table/Column';
+import { Table } from 'components/table/Table';
 
 // todo extract to utils
 const targetTypeToString = (targetType) => {

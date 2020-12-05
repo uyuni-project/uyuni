@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
+import React from 'react';
 
 const DateTime = props =>
     <span title={moment(props.time).format("YYYY-MM-DD HH:mm:ss Z")}>

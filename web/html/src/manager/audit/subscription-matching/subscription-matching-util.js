@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
+import React from 'react';
 
 const ToolTip = (props) =>
   <span title={props.title}>

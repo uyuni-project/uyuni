@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-var React = require("react");
+import React from 'react';
 
 const PaginationBlock = (props) => {
   const currentPage = props.currentPage;

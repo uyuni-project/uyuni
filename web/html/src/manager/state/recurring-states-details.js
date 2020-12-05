@@ -1,14 +1,14 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const {Button} = require("components/buttons");
-const {ModalButton} = require("components/dialog/ModalButton");
-const {DeleteDialog} = require("components/dialog/DeleteDialog");
-const { TopPanel } = require('components/panels/TopPanel');
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const {Messages} = require("components/messages");
-const {DisplayHighstate} = require("./display-highstate");
+import React from 'react';
+import { Button } from 'components/buttons';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { DeleteDialog } from 'components/dialog/DeleteDialog';
+import { TopPanel } from 'components/panels/TopPanel';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
+import { Messages } from 'components/messages';
+import { DisplayHighstate } from './display-highstate';
 
 // todo extract to utils
 const targetTypeToString = (targetType) => {

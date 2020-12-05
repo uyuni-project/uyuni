@@ -2,16 +2,16 @@
 
 import type { ActionChain } from 'components/action-schedule';
 
-const React = require('react');
-const { hot } = require('react-hot-loader');
-const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require('components/messages').Utils;
-const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { GuestProperties } = require('../GuestProperties');
-const { SimpleActionApi } = require('../../SimpleActionApi');
-const GuestNicsPanel = require('../properties/guest-nics-panel');
-const DiskUtils = require('../properties/disk-utils');
-const Functions = require('utils/functions');
+import React from 'react';
+import { hot } from 'react-hot-loader';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Utils as MessagesUtils } from 'components/messages';
+import { getOrderedItemsFromModel } from 'components/input/FormMultiInput';
+import { GuestProperties } from '../GuestProperties';
+import { SimpleActionApi } from '../../SimpleActionApi';
+import GuestNicsPanel from '../properties/guest-nics-panel';
+import DiskUtils from '../properties/disk-utils';
+import Functions from 'utils/functions';
 
 type Props = {
   host: Object,

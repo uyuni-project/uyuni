@@ -1,17 +1,17 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const UtilComponent = require("./subscription-matching-util");
+import React from 'react';
+import UtilComponent from './subscription-matching-util';
 const ToolTip = UtilComponent.ToolTip;
 const CsvLink = UtilComponent.CsvLink;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
-const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const {Highlight} = require("components/table/Highlight");
-const Functions = require("utils/functions");
+import { WarningIcon } from './subscription-matching-util';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import Functions from 'utils/functions';
 const Utils = Functions.Utils;
 
 class Subscriptions extends React.Component {

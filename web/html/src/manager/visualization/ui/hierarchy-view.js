@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-const Utils = require('../utils.js');
+import Utils from '../utils.js';
 
 // Display given hierarchy (given by it's root node) in given container using
 // force based layout.

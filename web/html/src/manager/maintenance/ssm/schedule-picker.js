@@ -14,7 +14,7 @@ import CancelActionsDialog from "../shared/cancel-actions-dialog";
 import type {Node} from 'react';
 import type {MessageType} from "components/messages";
 
-const Network = require("utils/network");
+import Network from 'utils/network';
 
 type ScheduleType = {
   id: number,

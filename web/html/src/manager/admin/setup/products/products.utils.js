@@ -1,4 +1,4 @@
-const _isEmpty = require("lodash/isEmpty");
+import _isEmpty from 'lodash/isEmpty';
 
 export function searchCriteriaInExtension(baseExtension, criteria) {
   if (criteria) {

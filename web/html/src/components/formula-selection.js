@@ -1,16 +1,15 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-
-const Messages = require("../components/messages").Messages;
-const Network = require("../utils/network");
-const Buttons = require("../components/buttons");
+import React from 'react';
+import { Messages } from '../components/messages';
+import Network from '../utils/network';
+import Buttons from '../components/buttons';
 
 const Button = Buttons.Button;
 const AsyncButton = Buttons.AsyncButton;
 const capitalize = require("../utils/functions").Utils.capitalize;
-const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
+import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
 
 class FormulaSelection extends React.Component {
     constructor(props) {

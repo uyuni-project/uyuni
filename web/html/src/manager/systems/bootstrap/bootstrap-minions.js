@@ -1,13 +1,13 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("components/messages").Messages;
-const Network = require("utils/network");
-const {AsyncButton, LinkButton} = require("components/buttons");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Messages } from 'components/messages';
+import Network from 'utils/network';
+import { AsyncButton, LinkButton } from 'components/buttons';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 class BootstrapMinions extends React.Component {
 

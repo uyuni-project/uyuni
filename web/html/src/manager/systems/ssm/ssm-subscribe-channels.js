@@ -2,22 +2,22 @@
 // @flow
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {AsyncButton, Button} = require("components/buttons");
-const {ActionSchedule} = require("components/action-schedule");
-const Network = require("utils/network");
-const Functions = require("utils/functions");
-const {Messages} = require("components/messages");
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const MessagesUtils = require("components/messages").Utils;
-const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("components/links");
-const {PopUp} = require("components/popup");
-const {Toggler} = require("components/toggler");
-const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { AsyncButton, Button } from 'components/buttons';
+import { ActionSchedule } from 'components/action-schedule';
+import Network from 'utils/network';
+import Functions from 'utils/functions';
+import { Messages } from 'components/messages';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
+import { Utils as MessagesUtils } from 'components/messages';
+import { ChannelLink, ActionLink, ActionChainLink, SystemLink } from 'components/links';
+import { PopUp } from 'components/popup';
+import { Toggler } from 'components/toggler';
+import ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 import type JsonResult from "utils/network";
 import type {ActionChain} from "components/action-schedule";

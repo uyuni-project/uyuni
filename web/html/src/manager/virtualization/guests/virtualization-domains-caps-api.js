@@ -1,7 +1,8 @@
 // @flow
-const React = require('react');
-const Network = require('utils/network');
-const MessagesUtils = require('components/messages').Utils;
+import React from 'react';
+
+import Network from 'utils/network';
+import { Utils as MessagesUtils } from 'components/messages';
 
 type Props = {
   hostId: string,
