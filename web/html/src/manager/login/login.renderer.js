@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import * as React from 'react';
 import Login from './login';
 
 export const renderer = (id, {

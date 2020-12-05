@@ -2,7 +2,7 @@
 
 import type { ActionChain } from 'components/action-schedule';
 
-import React from 'react';
+import * as React from 'react';
 import { hot } from 'react-hot-loader';
 import { TopPanel } from 'components/panels/TopPanel';
 import { Utils as MessagesUtils } from 'components/messages';

@@ -3,7 +3,7 @@
 import SpaRenderer from "../../../core/spa/spa-renderer";
 import escapeHtml from 'html-react-parser';
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 
 const Link = (props) =>

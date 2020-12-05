@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import PropertiesForm from "./properties-form";
 import {Loading} from "components/utils/Loading";

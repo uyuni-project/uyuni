@@ -3,7 +3,7 @@
 
 import SpaRenderer from 'core/spa/spa-renderer';
 import Network from '../../utils/network';
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { TopPanel } from 'components/panels/TopPanel';
 import DataTree from './data-tree.js';

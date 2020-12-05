@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-import React from 'react';
+import * as React from 'react';
 import UtilComponent from './subscription-matching-util';
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;

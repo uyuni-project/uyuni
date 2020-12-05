@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {Form} from "components/input/Form";
 import {Text} from "components/input/Text";
 

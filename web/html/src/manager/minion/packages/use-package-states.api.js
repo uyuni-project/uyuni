@@ -1,6 +1,7 @@
 //@flow
 import * as Network from 'utils/network';
-import React, {useState} from "react";
+import * as React from 'react';
+import {useState} from "react";
 import {Utils as MessagesUtils} from "components/messages";
 import type {
   ChangesMapObject,

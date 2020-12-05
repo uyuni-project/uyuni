@@ -2,7 +2,7 @@
 'use strict';
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 
 class AceEditor extends React.Component {

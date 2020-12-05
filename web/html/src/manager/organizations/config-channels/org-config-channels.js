@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import ConfigChannelsModule from 'components/config-channels';
 const ConfigChannels = ConfigChannelsModule.ConfigChannels;

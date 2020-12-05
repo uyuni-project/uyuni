@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-import React from 'react';
+import * as React from 'react';
 
 const ProgressBar = (props) => {
   const wrapperWidth = props.width ? { width: props.width } : { width : '100%' };

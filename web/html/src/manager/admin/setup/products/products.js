@@ -4,7 +4,7 @@
 import {searchCriteriaInExtension} from "./products.utils";
 
 import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Network from 'utils/network';
 import { Messages } from 'components/messages';

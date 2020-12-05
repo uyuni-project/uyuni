@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import { IconTag } from './icontag';
 
 function statusDisplay(system, isAdmin) {

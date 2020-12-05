@@ -2,7 +2,7 @@
 // @flow
 import ChildChannels from './child-channels';
 import ActivationKeyChannelsApi from "./activation-key-channels-api";
-import React from 'react';
+import * as React from 'react';
 import {Loading} from 'components/utils/Loading';
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
 import type {availableChannelsType, ChannelDto} from "./activation-key-channels-api";

@@ -1,5 +1,5 @@
 import SpaRenderer from 'core/spa/spa-renderer';
-import React from 'react';
+import * as React from 'react';
 import { GuestsList } from './guests-list';
 
 export const renderer = (id, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hypervisor }) => {

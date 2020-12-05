@@ -1,4 +1,5 @@
-import React, {useEffect} from "react";
+import * as React from 'react';
+import {useEffect} from "react";
 //global handleSst
 
 declare var handleSst:function;

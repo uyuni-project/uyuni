@@ -3,7 +3,7 @@
 import type { ActionChain } from 'components/action-schedule';
 import type { MessageType } from 'components/messages';
 
-import React from 'react';
+import * as React from 'react';
 import { Panel } from 'components/panels/Panel';
 import { Text } from 'components/input/Text';
 import Validation from 'components/validation';
