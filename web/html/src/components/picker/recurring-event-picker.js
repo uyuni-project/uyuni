@@ -381,6 +381,6 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     }
 }
 
-module.exports = {
-    RecurringEventPicker: RecurringEventPicker
+export {
+    RecurringEventPicker,
 };

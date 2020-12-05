@@ -146,6 +146,6 @@ class RecurringStatesList extends React.Component {
     }
 }
 
-module.exports = {
-    RecurringStatesList: RecurringStatesList
+export {
+    RecurringStatesList,
 };

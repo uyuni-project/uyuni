@@ -4,12 +4,11 @@
 import * as React from 'react';
 import { Messages } from '../components/messages';
 import Network from '../utils/network';
-import Buttons from '../components/buttons';
-
-const Button = Buttons.Button;
-const AsyncButton = Buttons.AsyncButton;
-const capitalize = require("../utils/functions").Utils.capitalize;
+import { Button, AsyncButton } from '../components/buttons';
+import {Utils} from 'utils/functions';
 import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
+
+const capitalize = Utils.capitalize;
 
 class FormulaSelection extends React.Component {
     constructor(props) {
@@ -268,6 +267,6 @@ function get(value, def) {
     return value;
 }
 
-module.exports = {
-    FormulaSelection: FormulaSelection
-}
+export {
+    FormulaSelection,
+};

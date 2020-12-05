@@ -89,8 +89,8 @@ function getChannelsToToggleWithDependencies(
   return channelsToToggle;
 }
 
-module.exports = {
-  dependenciesTooltip: dependenciesTooltip,
-  processChannelDependencies: processChannelDependencies,
-  getChannelsToToggleWithDependencies
-}
+export {
+  dependenciesTooltip,
+  processChannelDependencies,
+  getChannelsToToggleWithDependencies,
+};

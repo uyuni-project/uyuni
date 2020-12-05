@@ -65,6 +65,6 @@ function statusDisplay(system, isAdmin) {
   );
 }
 
-module.exports = {
-    statusDisplay: statusDisplay
-}
+export {
+    statusDisplay,
+};

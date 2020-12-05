@@ -103,6 +103,6 @@ class Messages extends React.Component {
   }
 }
 
-module.exports = {
-  Messages: Messages,
-}
+export {
+  Messages,
+};

@@ -54,6 +54,6 @@ class VirtualizationDomainsCapsApi extends React.Component<Props, State> {
   }
 }
 
-module.exports = {
+export {
   VirtualizationDomainsCapsApi,
 };

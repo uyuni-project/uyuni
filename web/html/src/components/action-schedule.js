@@ -318,6 +318,6 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
 }
 
-module.exports = {
-  ActionSchedule: ActionSchedule
-}
+export {
+  ActionSchedule,
+};

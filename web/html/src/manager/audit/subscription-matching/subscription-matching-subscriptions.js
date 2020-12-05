@@ -146,6 +146,6 @@ const QuantityCell = (props) => {
   return <span>{content}</span>;
 };
 
-module.exports = {
-  Subscriptions: Subscriptions,
-}
+export {
+  Subscriptions,
+};

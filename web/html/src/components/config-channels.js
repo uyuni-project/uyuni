@@ -523,6 +523,6 @@ class RankingTable extends React.Component {
   }
 }
 
-module.exports = {
-    ConfigChannels : ConfigChannels
-}
+export {
+    ConfigChannels,
+};

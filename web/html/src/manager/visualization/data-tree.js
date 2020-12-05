@@ -349,6 +349,6 @@ function strengthByType(node) {
   return force;
 }
 
-module.exports = {
-    dataTree: dataTree
-}
+export {
+    dataTree,
+};

@@ -552,6 +552,6 @@ class InspectDialog extends React.Component {
   }
 }
 
-module.exports = {
-  ImageViewOverview: ImageViewOverview
-}
+export {
+  ImageViewOverview,
+};

@@ -184,6 +184,6 @@ class SCCDialog extends React.Component {
 }
 
 
-module.exports = {
-  SCCDialog: SCCDialog
-}
+export {
+  SCCDialog,
+};

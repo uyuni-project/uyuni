@@ -127,6 +127,8 @@ class GuestsEdit extends React.Component<Props> {
   }
 }
 
-module.exports = {
-  GuestsEdit: hot(module)(GuestsEdit),
+const HotGuestsEdit = hot(module)(GuestsEdit);
+
+export {
+  HotGuestsEdit as GuestsEdit,
 };

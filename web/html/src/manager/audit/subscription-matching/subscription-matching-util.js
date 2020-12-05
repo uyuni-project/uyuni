@@ -64,10 +64,10 @@ const WarningIcon = (props) =>
   </i>
 ;
 
-module.exports = {
-  ToolTip: ToolTip,
-  CsvLink: CsvLink,
-  SystemLabel: SystemLabel,
-  humanReadablePolicy: humanReadablePolicy,
-  WarningIcon: WarningIcon,
-}
+export {
+  ToolTip,
+  CsvLink,
+  SystemLabel,
+  humanReadablePolicy,
+  WarningIcon,
+};

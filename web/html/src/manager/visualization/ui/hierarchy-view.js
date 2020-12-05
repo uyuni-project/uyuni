@@ -180,6 +180,6 @@ function getIconDimensionByType(node) {
   return size;
 }
 
-module.exports = {
-    hierarchyView: hierarchyView
-}
+export {
+    hierarchyView,
+};

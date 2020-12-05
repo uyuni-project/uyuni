@@ -102,6 +102,6 @@ class VirtualHostManagerList extends React.Component {
     }
 }
 
-module.exports = {
-    VirtualHostManagerList: VirtualHostManagerList
+export {
+    VirtualHostManagerList,
 };
