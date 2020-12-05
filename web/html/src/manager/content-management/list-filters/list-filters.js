@@ -5,7 +5,7 @@ import {TopPanel} from 'components/panels/TopPanel';
 import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';
 import {Table} from 'components/table/Table';
-import Functions from 'utils/functions';
+import {Utils} from 'utils/functions';
 import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import {hot} from 'react-hot-loader';
@@ -74,7 +74,7 @@ const ListFilters = (props: Props) => {
       >
         <Column
           columnKey="filter_name"
-          comparator={Functions.Utils.sortByText}
+          comparator={Utils.sortByText}
           header={t('Name')}
           cell={row => row.filter_name}
         />

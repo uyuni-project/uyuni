@@ -8,7 +8,7 @@ import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';
 import {SystemLink} from 'components/links';
 import {IconTag as Icon} from 'components/icontag';
-import Functions from 'utils/functions';
+import {Utils} from 'utils/functions';
 import {withErrorMessages} from '../api/use-clusters-api';
 
 import type {MessageType} from 'components/messages';
@@ -131,7 +131,7 @@ const SelectServer = (props: Props) => {
                     <Column
                         columnKey="name"
                         width="20%"
-                        comparator={Functions.Utils.sortByText}
+                        comparator={Utils.sortByText}
                         header={t('Name')}
                         cell={(row: ServerType) =>
                                 <SystemLink id={row.id}>{row.name}</SystemLink>

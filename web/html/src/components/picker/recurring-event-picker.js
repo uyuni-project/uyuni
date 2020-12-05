@@ -9,7 +9,7 @@ import { Combobox } from '../combobox';
 import type {ComboboxItem} from "../combobox";
 import { Form } from 'components/input/Form';
 import { Text } from 'components/input/Text';
-import Functions from 'utils/functions';
+import { Utils } from 'utils/functions';
 import styles from './recurring-event-picker.css';
 
 type RecurringEventPickerProps = {
@@ -51,7 +51,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         super(props);
 
         this.state = {
-            time: Functions.Utils.dateWithTimezone(localTime),
+            time: Utils.dateWithTimezone(localTime),
             scheduleName: props.scheduleName || "",
             type: props.type || "weekly",
             cronTimes: props.cronTimes || {minute: "", hour: "", dayOfMonth: "", dayOfWeek: ""},

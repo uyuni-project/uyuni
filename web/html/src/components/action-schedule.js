@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import { DateTimePicker } from './datetimepicker';
 import { Combobox } from './combobox';
 import type {ComboboxItem} from "./combobox";
-import Functions from '../utils/functions';
+import { Utils } from '../utils/functions';
 import Network from 'utils/network';
 import { Loading } from 'components/utils/Loading';
 
@@ -141,7 +141,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
   onMaintenanceWindowChanged = (selectedItem: MaintenanceWindow) => {
     const startDateStr = selectedItem.fromLocalDate;
-    this.onDateTimeChanged(Functions.Utils.dateWithTimezone(startDateStr));
+    this.onDateTimeChanged(Utils.dateWithTimezone(startDateStr));
   }
 
   onSelectMaintenanceWindow = (event: Object) => {

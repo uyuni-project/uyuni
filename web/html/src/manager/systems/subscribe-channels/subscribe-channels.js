@@ -6,7 +6,7 @@ import * as React from 'react';
 import { AsyncButton, Button } from 'components/buttons';
 import { ActionSchedule } from 'components/action-schedule';
 import Network from 'utils/network';
-import Functions from 'utils/functions';
+import { Utils, Formats } from 'utils/functions';
 import { Messages } from 'components/messages';
 import { Utils as MessagesUtils } from 'components/messages';
 import { Toggler } from 'components/toggler';
@@ -70,7 +70,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     super(props);
     this.state = {
       messages: [],
-      earliest: Functions.Utils.dateWithTimezone(localTime),
+      earliest: Utils.dateWithTimezone(localTime),
       originalBase: null,
       selectedBase: null,
       selectedChildrenIds: new Map(),
@@ -326,7 +326,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       JSON.stringify({
           base: this.state.selectedBase,
           children: selectedChildrenList,
-          earliest: Functions.Formats.LocalDateTime(this.state.earliest),
+          earliest: Formats.LocalDateTime(this.state.earliest),
           actionChain: this.state.actionChain ? this.state.actionChain.text : null
       }), "application/json")
         .promise.then(data => {
