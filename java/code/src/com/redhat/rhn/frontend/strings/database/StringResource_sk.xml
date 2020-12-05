@@ -932,28 +932,28 @@
       </trans-unit>
       <trans-unit id="Critical Request Rate" xml:space="preserve">
         <source>Critical Request Rate</source>
-        <target/>
+        <target>Kritická miera požiadaviek</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Requests" xml:space="preserve">
         <source>Critical Requests</source>
-        <target/>
+        <target>Kritické požiadavky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Round-trip Ave" xml:space="preserve">
         <source>Critical Round-trip Ave</source>
-        <target/>
+        <target>Kritické priemerné Round-trip</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Round-trip Avg" xml:space="preserve">
         <source>Critical Round-trip Avg</source>
-        <target/>
+        <target>Kritický priemer pre Round-trip</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -967,14 +967,14 @@
       </trans-unit>
       <trans-unit id="Critical Seconds" xml:space="preserve">
         <source>Critical Seconds</source>
-        <target/>
+        <target>Kritické sekundy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Size" xml:space="preserve">
         <source>Critical Size</source>
-        <target/>
+        <target>Kritická veľkosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1009,7 +1009,7 @@
       </trans-unit>
       <trans-unit id="Critical TIME_WAIT Connections" xml:space="preserve">
         <source>Critical TIME_WAIT Connections</source>
-        <target/>
+        <target>Kritické spojenia TIME_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1996,28 +1996,28 @@
       </trans-unit>
       <trans-unit id="Warning Request Rate" xml:space="preserve">
         <source>Warning Request Rate</source>
-        <target/>
+        <target>Varovná miera požiadaviek</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Requests" xml:space="preserve">
         <source>Warning Requests</source>
-        <target/>
+        <target>Varovné požiadavky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Ave" xml:space="preserve">
         <source>Warning Round-trip Ave</source>
-        <target/>
+        <target>Varovné priemerné Round-trip</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Avg" xml:space="preserve">
         <source>Warning Round-trip Avg</source>
-        <target/>
+        <target>Varovný priemer pre Round-trip</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2298,7 +2298,7 @@
       </trans-unit>
       <trans-unit id="metrics.Current requests" xml:space="preserve">
         <source>Current requests</source>
-        <target/>
+        <target>Aktuálne požiadavky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2627,14 +2627,14 @@
       </trans-unit>
       <trans-unit id="metrics.Request rate" xml:space="preserve">
         <source>Request rate</source>
-        <target/>
+        <target>Miera požiadaviek</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Round-trip avg" xml:space="preserve">
         <source>Round-trip avg</source>
-        <target/>
+        <target>Priemer pre Round-trip</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3327,7 +3327,7 @@
       </trans-unit>
       <trans-unit id="Requests" xml:space="preserve">
           <source>Requests</source>
-        <target/>
+        <target>Požiadavky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
