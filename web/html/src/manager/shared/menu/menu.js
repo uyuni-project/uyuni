@@ -3,8 +3,8 @@
 import SpaRenderer from "../../../core/spa/spa-renderer";
 import escapeHtml from 'html-react-parser';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const Link = (props) =>
   <a href={props.url} className={props.cssClass  + " js-spa"} target={props.target} title={props.title}>

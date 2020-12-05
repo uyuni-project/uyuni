@@ -1,14 +1,14 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const Utils = require("utils/functions").Utils;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const Button = require("components/buttons").Button;
-const ModalButton = require("components/dialog/ModalButton").ModalButton;
-const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
+import React from 'react';
+import { Utils } from 'utils/functions';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Button } from 'components/buttons';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { DeleteDialog } from 'components/dialog/DeleteDialog';
 
 class VirtualHostManagerList extends React.Component {
 

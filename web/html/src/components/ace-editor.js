@@ -1,9 +1,9 @@
 /* eslint-disable */
 'use strict';
 
-const PropTypes = require('prop-types');
-const React = require("react");
-const ReactDOM = require("react-dom");
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 class AceEditor extends React.Component {
   static propTypes = {

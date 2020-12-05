@@ -1,13 +1,13 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const ConfigChannelsModule = require("components/config-channels")
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ConfigChannelsModule from 'components/config-channels';
 const ConfigChannels = ConfigChannelsModule.ConfigChannels;
-const MessagesUtils = require("components/messages").Utils;
-const Network = require("utils/network");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import { Utils as MessagesUtils } from 'components/messages';
+import Network from 'utils/network';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 function matchUrl(target) {
     return "/rhn/manager/api/states/match?id=" + serverId + "&type=SERVER"

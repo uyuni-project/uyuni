@@ -1,21 +1,21 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const TabContainer = require("components/tab-container").TabContainer;
-const Subscriptions =  require("./subscription-matching-subscriptions").Subscriptions;
-const Pins =  require("./subscription-matching-pins").Pins;
-const Messages =  require("./subscription-matching-messages").Messages;
-const UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
-const MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
-const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const MessageContainer = require("components/messages").Messages;
-const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require("components/messages").Utils;
-const Network = require("utils/network");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
-const { StatePersistedContext } = require("components/utils/StatePersistedContext");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { TabContainer } from 'components/tab-container';
+import { Subscriptions } from './subscription-matching-subscriptions';
+import { Pins } from './subscription-matching-pins';
+import { Messages } from './subscription-matching-messages';
+import { UnmatchedProducts } from './subscription-matching-unmatched-products';
+import { MatcherRunPanel } from './subscription-matching-matcher-run-panel';
+import { WarningIcon } from './subscription-matching-util';
+import { Messages as MessageContainer } from 'components/messages';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Utils as MessagesUtils } from 'components/messages';
+import Network from 'utils/network';
+import SpaRenderer from 'core/spa/spa-renderer';
+import { StatePersistedContext } from 'components/utils/StatePersistedContext';
 
 class SubscriptionMatching extends React.Component {
   state = {

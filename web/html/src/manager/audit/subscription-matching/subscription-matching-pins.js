@@ -1,21 +1,21 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const {Highlight} = require("components/table/Highlight");
-const PopUp = require("components/popup").PopUp;
-const ModalButton = require("components/dialog/ModalButton").ModalButton;
-const UtilComponent =  require("./subscription-matching-util");
+import React from 'react';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import { PopUp } from 'components/popup';
+import { ModalButton } from 'components/dialog/ModalButton';
+import UtilComponent from './subscription-matching-util';
 const StrongText = UtilComponent.StrongText;
 const SystemLabel = UtilComponent.SystemLabel;
 const ToolTip = UtilComponent.ToolTip;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
-const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const Network = require("utils/network");
-const Functions = require("utils/functions");
+import { WarningIcon } from './subscription-matching-util';
+import Network from 'utils/network';
+import Functions from 'utils/functions';
 const Utils = Functions.Utils;
 
 class Pins extends React.Component {

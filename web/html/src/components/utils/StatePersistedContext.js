@@ -1,8 +1,8 @@
 /* eslint-disable */
 "use strict";
 
-const PropTypes = require('prop-types');
-const React = require("react");
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const StatePersistedContext = React.createContext({loadState: undefined, saveState: undefined});
 

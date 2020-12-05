@@ -3,21 +3,21 @@
 
 import {LinkButton} from "components/buttons";
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {DisplayHighstate} = require("./display-highstate");
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
-const {ActionSchedule} = require("components/action-schedule");
-const AsyncButton = require("components/buttons").AsyncButton;
-const {Toggler} = require("components/toggler");
-const Network = require("utils/network");
-const { InnerPanel } = require('components/panels/InnerPanel');
-const {RecurringStatesEdit} =  require("./recurring-states-edit");
-const Functions = require("utils/functions");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { DisplayHighstate } from './display-highstate';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { ActionSchedule } from 'components/action-schedule';
+import { AsyncButton } from 'components/buttons';
+import { Toggler } from 'components/toggler';
+import Network from 'utils/network';
+import { InnerPanel } from 'components/panels/InnerPanel';
+import { RecurringStatesEdit } from './recurring-states-edit';
+import Functions from 'utils/functions';
 const Formats = Functions.Formats;
-const {ActionLink, ActionChainLink} = require("components/links");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import { ActionLink, ActionChainLink } from 'components/links';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 const messagesCounterLimit = 3;
 

@@ -1,21 +1,21 @@
 /* eslint-disable */
 "use strict";
 
-const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
-const React = require("react");
-const MessageContainer = require("components/messages").Messages;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const {Highlight} = require("components/table/Highlight");
-const Network = require("utils/network");
-const Functions = require("utils/functions");
+import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
+import React from 'react';
+import { Messages as MessageContainer } from 'components/messages';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import Network from 'utils/network';
+import Functions from 'utils/functions';
 const Utils = Functions.Utils;
-const {AsyncButton, Button} = require("components/buttons");
-const { TopPanel } = require('components/panels/TopPanel');
-const escapeHtml = require('html-react-parser');
-const {Dialog} = require("components/dialog/Dialog");
-const {showDialog} = require("components/dialog/util");
+import { AsyncButton, Button } from 'components/buttons';
+import { TopPanel } from 'components/panels/TopPanel';
+import escapeHtml from 'html-react-parser';
+import { Dialog } from 'components/dialog/Dialog';
+import { showDialog } from 'components/dialog/util';
 
 const _MESSAGE_TYPE = {
   OnboardingFailed: {
@@ -470,5 +470,5 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-const { hot } = require('react-hot-loader');
+import { hot } from 'react-hot-loader';
 module.exports = { NotificationMessages: hot(module)(NotificationMessages) }
