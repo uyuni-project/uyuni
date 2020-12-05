@@ -3,12 +3,12 @@
 import type { ActionChain } from 'components/action-schedule';
 import type { MessageType } from 'components/messages';
 
-const React = require('react');
-const { Panel } = require('components/panels/Panel');
-const { Text } = require('components/input/Text');
-const Validation = require('components/validation');
-const MessagesUtils = require('components/messages').Utils;
-const { GuestPropertiesForm } = require('./guest-properties-form');
+import React from 'react';
+import { Panel } from 'components/panels/Panel';
+import { Text } from 'components/input/Text';
+import Validation from 'components/validation';
+import { Utils as MessagesUtils } from 'components/messages';
+import { GuestPropertiesForm } from './guest-properties-form';
 
 type Props = {
   host: Object,

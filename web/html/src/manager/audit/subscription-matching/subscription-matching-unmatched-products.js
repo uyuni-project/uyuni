@@ -1,16 +1,16 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const UtilComponent = require("./subscription-matching-util");
+import React from 'react';
+import UtilComponent from './subscription-matching-util';
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
-const PopUp = require("components/popup").PopUp;
-const ModalButton = require("components/dialog/ModalButton").ModalButton;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const Functions = require("utils/functions");
+import { PopUp } from 'components/popup';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import Functions from 'utils/functions';
 const Utils = Functions.Utils;
 
 class UnmatchedProducts extends React.Component {

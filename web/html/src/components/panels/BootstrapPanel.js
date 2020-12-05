@@ -1,6 +1,5 @@
-const React = require('react');
-
-const { Panel } = require('./Panel');
+import React from 'react';
+import { Panel } from './Panel';
 
 type Props = {
   title?: string,

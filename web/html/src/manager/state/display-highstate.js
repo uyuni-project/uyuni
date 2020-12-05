@@ -1,9 +1,9 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Network = require("utils/network");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Network from 'utils/network';
 
 
 function requestHighstate(id) {

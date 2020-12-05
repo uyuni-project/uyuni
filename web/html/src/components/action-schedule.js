@@ -2,15 +2,14 @@
 // @flow
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-
-const {DateTimePicker} = require("./datetimepicker");
-const {Combobox} = require("./combobox");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { DateTimePicker } from './datetimepicker';
+import { Combobox } from './combobox';
 import type {ComboboxItem} from "./combobox";
-const Functions = require("../utils/functions");
-const Network = require("utils/network");
-const {Loading} = require("components/utils/Loading");
+import Functions from '../utils/functions';
+import Network from 'utils/network';
+import { Loading } from 'components/utils/Loading';
 
 export type MaintenanceWindow = {
   id: number,

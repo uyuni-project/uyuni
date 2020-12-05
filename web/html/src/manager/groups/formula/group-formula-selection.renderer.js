@@ -1,13 +1,12 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-
-const Network = require("../../../utils/network");
-const FormulaSelection = require("../../../components/formula-selection").FormulaSelection;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Network from '../../../utils/network';
+import { FormulaSelection } from '../../../components/formula-selection';
 const capitalize = require("../../../utils/functions").Utils.capitalize;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import SpaRenderer from 'core/spa/spa-renderer';
 
 export const renderer = (renderId, {groupId, warningMessage}) => {
 

@@ -1,28 +1,28 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {AsyncButton, Button} = require("components/buttons");
-const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("utils/network");
-const Utils = require("utils/functions").Utils;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
-const {ModalButton} = require("components/dialog/ModalButton");
-const {ModalLink} = require("components/dialog/ModalLink");
-const {DeleteDialog} = require("components/dialog/DeleteDialog");
-const PopUp = require("components/popup").PopUp;
-const TabContainer = require("components/tab-container").TabContainer;
-const ImageViewOverview = require("./image-view-overview").ImageViewOverview;
-const ImageViewPatches = require("./image-view-patches").ImageViewPatches;
-const ImageViewPackages = require("./image-view-packages").ImageViewPackages;
-const ImageViewRuntime = require("./image-view-runtime").ImageViewRuntime;
-const DateTime = require("components/datetime").DateTime;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { AsyncButton, Button } from 'components/buttons';
+import { TopPanel } from 'components/panels/TopPanel';
+import Network from 'utils/network';
+import { Utils } from 'utils/functions';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { ModalLink } from 'components/dialog/ModalLink';
+import { DeleteDialog } from 'components/dialog/DeleteDialog';
+import { PopUp } from 'components/popup';
+import { TabContainer } from 'components/tab-container';
+import { ImageViewOverview } from './image-view-overview';
+import { ImageViewPatches } from './image-view-patches';
+import { ImageViewPackages } from './image-view-packages';
+import { ImageViewRuntime } from './image-view-runtime';
+import { DateTime } from 'components/datetime';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 /* global isAdmin, isRuntimeInfoEnabled */
 

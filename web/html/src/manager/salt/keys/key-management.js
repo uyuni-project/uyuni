@@ -1,19 +1,19 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Buttons = require("components/buttons");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Buttons from 'components/buttons';
 const AsyncButton = Buttons.AsyncButton;
-const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("utils/network");
-const Functions = require("utils/functions");
+import { TopPanel } from 'components/panels/TopPanel';
+import Network from 'utils/network';
+import Functions from 'utils/functions';
 const Utils = Functions.Utils;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const {Highlight} = require("components/table/Highlight");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 function listKeys() {
   return Network.get("/rhn/manager/api/systems/keys").promise;

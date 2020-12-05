@@ -1,10 +1,10 @@
 /* eslint-disable */
 'use strict';
 
-const React = require('react');
-const Network = require('utils/network');
-const Messages = require('components/messages').Messages;
-const Button = require('components/buttons').Button;
+import React from 'react';
+import Network from 'utils/network';
+import { Messages } from 'components/messages';
+import { Button } from 'components/buttons';
 
 const _SCC_REFRESH_STEPS = [
   {

@@ -2,16 +2,15 @@
 // @flow
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-
-const {DateTimePicker} = require("../datetimepicker");
-const {Combobox} = require("../combobox");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { DateTimePicker } from '../datetimepicker';
+import { Combobox } from '../combobox';
 import type {ComboboxItem} from "../combobox";
-const { Form } = require('components/input/Form');
-const { Text } = require('components/input/Text');
-const Functions = require("utils/functions");
-const styles = require("./recurring-event-picker.css");
+import { Form } from 'components/input/Form';
+import { Text } from 'components/input/Text';
+import Functions from 'utils/functions';
+import styles from './recurring-event-picker.css';
 
 type RecurringEventPickerProps = {
     timezone: string,

@@ -1,8 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-const UI = require('./ui/components.js');
-const Utils = require('./utils.js');
+import UI from './ui/components.js';
+import Utils from './utils.js';
 
 function computeSvgDimensions() {
   const width = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;

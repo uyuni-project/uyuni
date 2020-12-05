@@ -1,6 +1,6 @@
-const React = require('react');
-const { GuestsEdit } = require('./guests-edit');
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import React from 'react';
+import { GuestsEdit } from './guests-edit';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 export const renderer = (id, {
   host,

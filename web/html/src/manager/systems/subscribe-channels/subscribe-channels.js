@@ -2,18 +2,17 @@
 // @flow
 'use strict';
 
-const React = require("react");
-
-const {AsyncButton, Button} = require("components/buttons");
-const {ActionSchedule} = require("components/action-schedule");
-const Network = require("utils/network");
-const Functions = require("utils/functions");
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
-const {Toggler} = require("components/toggler");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("components/links");
-const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
+import React from 'react';
+import { AsyncButton, Button } from 'components/buttons';
+import { ActionSchedule } from 'components/action-schedule';
+import Network from 'utils/network';
+import Functions from 'utils/functions';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { Toggler } from 'components/toggler';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
+import { ChannelAnchorLink, ActionLink, ActionChainLink } from 'components/links';
+import ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
 
 import type {JsonResult} from "utils/network";
 import type {ActionChain} from "components/action-schedule";
@@ -624,7 +623,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
 }
 
-const { hot } = require('react-hot-loader');
+import { hot } from 'react-hot-loader';
 
 module.exports = {
   SubscribeChannels: hot(module)(SystemChannels)

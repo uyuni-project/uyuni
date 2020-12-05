@@ -1,6 +1,6 @@
-const SpaRenderer  = require("core/spa/spa-renderer").default;
-const React = require('react');
-const { GuestsList } = require('./guests-list');
+import SpaRenderer from 'core/spa/spa-renderer';
+import React from 'react';
+import { GuestsList } from './guests-list';
 
 export const renderer = (id, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hypervisor }) => {
   SpaRenderer.renderNavigationReact(

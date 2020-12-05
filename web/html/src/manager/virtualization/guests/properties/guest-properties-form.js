@@ -3,13 +3,13 @@
 import type { ActionChain } from 'components/action-schedule';
 import type { MessageType } from 'components/messages';
 
-const React = require('react');
-const { Panel } = require('components/panels/Panel');
-const { Form } = require('components/input/Form');
-const { SubmitButton, Button } = require('components/buttons');
-const { Messages } = require('components/messages');
-const { ActionSchedule } = require('components/action-schedule');
-const Functions = require('utils/functions');
+import React from 'react';
+import { Panel } from 'components/panels/Panel';
+import { Form } from 'components/input/Form';
+import { SubmitButton, Button } from 'components/buttons';
+import { Messages } from 'components/messages';
+import { ActionSchedule } from 'components/action-schedule';
+import Functions from 'utils/functions';
 
 type Props = {
   submitText: string,

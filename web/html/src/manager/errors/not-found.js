@@ -1,9 +1,9 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 const NotFound = ({currentUrl}) =>
     <>

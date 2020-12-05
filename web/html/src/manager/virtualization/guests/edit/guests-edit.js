@@ -3,18 +3,18 @@
 
 import type { ActionChain } from 'components/action-schedule';
 
-const { hot } = require('react-hot-loader');
-const React = require('react');
-const _isEqual = require('lodash/isEqual');
-const { TopPanel } = require('components/panels/TopPanel');
-const { Loading } = require('components/utils/Loading');
-const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { GuestProperties } = require('../GuestProperties');
-const GuestNicsPanel = require('../properties/guest-nics-panel');
-const DiskUtils = require('../properties/disk-utils');
-const { SimpleActionApi } = require('../../SimpleActionApi');
-const { VirtualizationGuestDefinitionApi } = require('../virtualization-guest-definition-api');
-const Functions = require('utils/functions');
+import { hot } from 'react-hot-loader';
+import React from 'react';
+import _isEqual from 'lodash/isEqual';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Loading } from 'components/utils/Loading';
+import { getOrderedItemsFromModel } from 'components/input/FormMultiInput';
+import { GuestProperties } from '../GuestProperties';
+import GuestNicsPanel from '../properties/guest-nics-panel';
+import DiskUtils from '../properties/disk-utils';
+import { SimpleActionApi } from '../../SimpleActionApi';
+import { VirtualizationGuestDefinitionApi } from '../virtualization-guest-definition-api';
+import Functions from 'utils/functions';
 
 type Props = {
   host: Object,

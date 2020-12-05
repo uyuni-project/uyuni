@@ -1,14 +1,14 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {RecurringEventPicker} = require("components/picker/recurring-event-picker");
-const {DisplayHighstate} = require("./display-highstate");
-const Button = require("components/buttons").Button;
-const AsyncButton = require("components/buttons").AsyncButton;
-const {Toggler} = require("components/toggler");
-const { InnerPanel } = require("components/panels/InnerPanel");
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { RecurringEventPicker } from 'components/picker/recurring-event-picker';
+import { DisplayHighstate } from './display-highstate';
+import { Button } from 'components/buttons';
+import { AsyncButton } from 'components/buttons';
+import { Toggler } from 'components/toggler';
+import { InnerPanel } from 'components/panels/InnerPanel';
 
 class RecurringStatesEdit extends React.Component {
     constructor(props) {
