@@ -94,6 +94,8 @@ def compute_list_to_leave_running
       when '15-SP2'
         ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2', 'sle-module-containers15-sp2-pool-x86_64',
          'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2', 'sle-module-containers15-sp2-updates-x86_64']
+      else
+        []
       end
   end
   do_not_kill.uniq
