@@ -10,8 +10,7 @@ import { SearchField } from 'components/table/SearchField';
 import { Highlight } from 'components/table/Highlight';
 import { HelpLink } from 'components/utils/HelpLink';
 import Network from 'utils/network';
-import Functions from 'utils/functions';
-const Utils = Functions.Utils;
+import { Utils } from 'utils/functions';
 import SpaRenderer from 'core/spa/spa-renderer';
 
 class TaskoTop extends React.Component {

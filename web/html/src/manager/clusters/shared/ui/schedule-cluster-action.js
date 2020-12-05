@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {AsyncButton, Button} from 'components/buttons';
 import {ActionSchedule} from 'components/action-schedule';
-import Functions from 'utils/functions';
+import {Utils} from 'utils/functions';
 import {withErrorMessages}  from '../api/use-clusters-api';
 import useUserLocalization from 'core/user-localization/use-user-localization';
 
@@ -28,7 +28,7 @@ const ScheduleClusterAction = (props: Props) => {
     const {timezone, localTime} = useUserLocalization();
 
     const [actionChain, setActionChain] = useState<?ActionChain>(null);
-    const [earliest, setEarliest] = useState(Functions.Utils.dateWithTimezone(localTime));
+    const [earliest, setEarliest] = useState(Utils.dateWithTimezone(localTime));
     const [disableSchedule, setDisableSchedule] = useState(false);
 
     const onSchedule = (): Promise<any> => {

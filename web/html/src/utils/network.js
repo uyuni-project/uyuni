@@ -2,7 +2,7 @@
 /* eslint-disable */
 "use strict";
 
-import Functions from '../utils/functions';
+import {Utils} from '../utils/functions';
 import {Messages, Utils as MessagesUtils} from '../components/messages';
 
 import type {Cancelable} from "../utils/functions";
@@ -31,7 +31,7 @@ function request(url: string, type:  "GET" | "POST" | "DELETE" | "PUT", headers,
             }
          }
    });
-   return Functions.Utils.cancelable(Promise.resolve(a), () => a.abort());
+   return Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
 function post(url: string, data: any, contentType: string, processData: boolean = true): Cancelable {

@@ -17,7 +17,7 @@ import Validation from 'components/validation';
 import { SubmitButton, Button } from 'components/buttons';
 import { Messages } from 'components/messages';
 import { ActionSchedule } from 'components/action-schedule';
-import Functions from 'utils/functions';
+import { Utils } from 'utils/functions';
 import { VirtualizationPoolCapsApi } from './virtualization-pools-capabilities-api';
 import * as FieldsData from './properties/fields-data';
 
@@ -38,7 +38,7 @@ export function PoolProperties(props: Props) {
   const [model, setModel] = React.useState(props.initialModel ? flattenModel(props.initialModel) : {});
   const [invalid, setInvalid] = React.useState(false);
   const [actionChain, setActionChain] = React.useState(null);
-  const [earliest, setEarliest] = React.useState(Functions.Utils.dateWithTimezone(props.localTime));
+  const [earliest, setEarliest] = React.useState(Utils.dateWithTimezone(props.localTime));
 
   React.useEffect(() => {
     clearFields();

@@ -10,8 +10,7 @@ import { ModalButton } from 'components/dialog/ModalButton';
 import { Table } from 'components/table/Table';
 import { Column } from 'components/table/Column';
 import { SearchField } from 'components/table/SearchField';
-import Functions from 'utils/functions';
-const Utils = Functions.Utils;
+import { Utils } from 'utils/functions';
 
 class UnmatchedProducts extends React.Component {
   state = {

@@ -14,7 +14,7 @@ import GuestNicsPanel from '../properties/guest-nics-panel';
 import DiskUtils from '../properties/disk-utils';
 import { SimpleActionApi } from '../../SimpleActionApi';
 import { VirtualizationGuestDefinitionApi } from '../virtualization-guest-definition-api';
-import Functions from 'utils/functions';
+import { Formats } from 'utils/functions';
 
 type Props = {
   host: Object,
@@ -69,7 +69,7 @@ class GuestsEdit extends React.Component<Props> {
       },
       nicsParams,
       disksParams,
-      {earliest: Functions.Formats.LocalDateTime(model.earliest)}
+      {earliest: Formats.LocalDateTime(model.earliest)}
     );
   }
 

@@ -7,8 +7,7 @@ import { Column } from 'components/table/Column';
 import { SearchField } from 'components/table/SearchField';
 import { Highlight } from 'components/table/Highlight';
 import { CsvLink } from './subscription-matching-util';
-import Functions from 'utils/functions';
-const Utils = Functions.Utils;
+import { Utils } from 'utils/functions';
 
 class Messages extends React.Component {
   buildRows = (rawMessages, systems, subscriptions) => {

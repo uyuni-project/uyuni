@@ -9,7 +9,7 @@ import { Form } from 'components/input/Form';
 import { SubmitButton, Button } from 'components/buttons';
 import { Messages } from 'components/messages';
 import { ActionSchedule } from 'components/action-schedule';
-import Functions from 'utils/functions';
+import { Utils } from 'utils/functions';
 
 type Props = {
   submitText: string,
@@ -37,7 +37,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      model: Object.assign({}, props.initialModel, { earliest: Functions.Utils.dateWithTimezone(props.localTime) }),
+      model: Object.assign({}, props.initialModel, { earliest: Utils.dateWithTimezone(props.localTime) }),
       isInvalid: false,
       actionChain: null,
     };
