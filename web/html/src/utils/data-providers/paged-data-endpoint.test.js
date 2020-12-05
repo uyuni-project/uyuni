@@ -1,5 +1,5 @@
 import {Utils} from 'utils/functions';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 
 import PagedDataEndpoint from './paged-data-endpoint';
 import PageControl from './page-control';

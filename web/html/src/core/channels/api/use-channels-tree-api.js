@@ -1,6 +1,6 @@
 // @flow
 import {useState} from 'react';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import _keyBy from "lodash/keyBy";
 import type {ChannelType} from "core/channels/type/channels.type";
 import produce from "immer";

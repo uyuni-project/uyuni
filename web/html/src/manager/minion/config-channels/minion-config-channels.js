@@ -3,8 +3,7 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import ConfigChannelsModule from 'components/config-channels';
-const ConfigChannels = ConfigChannelsModule.ConfigChannels;
+import { ConfigChannels } from 'components/config-channels';
 import { Utils as MessagesUtils } from 'components/messages';
 import Network from 'utils/network';
 import SpaRenderer from 'core/spa/spa-renderer';

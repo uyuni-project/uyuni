@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 
 type Props = {
   serverId: string,

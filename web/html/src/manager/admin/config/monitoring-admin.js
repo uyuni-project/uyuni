@@ -5,7 +5,7 @@ import {useEffect} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {HelpLink} from 'components/utils/HelpLink';
 import {Button, AsyncButton} from 'components/buttons';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import {Messages, Utils as MessagesUtils} from 'components/messages';
 import {Utils} from 'utils/functions';
 import {IconTag as Icon} from 'components/icontag';

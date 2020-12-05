@@ -32,9 +32,8 @@ function details(id, type) {
     )
 }
 
-export {
+export default {
     list,
     calendarNames,
     details
 }
-
