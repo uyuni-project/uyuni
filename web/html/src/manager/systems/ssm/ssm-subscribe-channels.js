@@ -16,7 +16,7 @@ import { Utils as MessagesUtils } from 'components/messages';
 import { ChannelLink, ActionLink, ActionChainLink, SystemLink } from 'components/links';
 import { PopUp } from 'components/popup';
 import { Toggler } from 'components/toggler';
-import ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
+import * as ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
 import SpaRenderer from 'core/spa/spa-renderer';
 
 import type JsonResult from "utils/network";

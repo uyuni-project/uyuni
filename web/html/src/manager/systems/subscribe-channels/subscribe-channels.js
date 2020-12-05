@@ -12,7 +12,7 @@ import { Utils as MessagesUtils } from 'components/messages';
 import { Toggler } from 'components/toggler';
 import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 import { ChannelAnchorLink, ActionLink, ActionChainLink } from 'components/links';
-import ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
+import * as ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
 
 import { hot } from 'react-hot-loader';
 

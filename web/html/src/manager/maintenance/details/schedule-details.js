@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {useState, useEffect} from "react";
 
-import * as Network from "utils/network";
+import Network from 'utils/network';
 
 import {AsyncButton} from "components/buttons";
 import {DeleteDialog} from "components/dialog/DeleteDialog";

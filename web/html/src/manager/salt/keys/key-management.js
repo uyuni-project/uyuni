@@ -3,8 +3,7 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import Buttons from 'components/buttons';
-const AsyncButton = Buttons.AsyncButton;
+import { AsyncButton } from 'components/buttons';
 import { TopPanel } from 'components/panels/TopPanel';
 import Network from 'utils/network';
 import { Utils } from 'utils/functions';

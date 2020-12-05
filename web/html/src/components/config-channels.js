@@ -3,17 +3,13 @@
 
 import * as React from 'react';
 import { AceEditor } from '../components/ace-editor';
-import Buttons from '../components/buttons';
+import { AsyncButton, LinkButton } from '../components/buttons';
 import { InnerPanel } from 'components/panels/InnerPanel';
-import Fields from '../components/fields';
+import { TextField } from '../components/fields';
 import { PopUp } from '../components/popup';
 import { Messages } from '../components/messages';
 import { Utils as MessagesUtils } from '../components/messages';
 import Network from '../utils/network';
-
-const AsyncButton = Buttons.AsyncButton;
-const LinkButton = Buttons.LinkButton;
-const TextField = Fields.TextField;
 
 function channelKey(channel) {
     return channel.label;

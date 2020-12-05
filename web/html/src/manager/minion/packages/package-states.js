@@ -2,9 +2,9 @@
 import * as React from 'react';
 import {useEffect, useState, useRef} from "react";
 import {useImmer} from 'use-immer';
-import * as Buttons from "components/buttons";
+import {AsyncButton} from "components/buttons";
 import {InnerPanel} from 'components/panels/InnerPanel';
-import Fields from "components/fields";
+import {TextField} from "components/fields";
 import {Messages} from "components/messages";
 import withPageWrapper from "components/general/with-page-wrapper";
 import {hot} from 'react-hot-loader';
@@ -17,9 +17,6 @@ import type {
   OptionalValue
 } from "./package.type";
 import * as packageHelpers from "./package-utils";
-
-const AsyncButton = Buttons.AsyncButton;
-const TextField = Fields.TextField;
 
 type PropsType = { serverId: string };
 type ViewType = "search" | "system" | "changes";
