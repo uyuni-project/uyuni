@@ -1,3 +1,5 @@
+- fix package manager string compare - python3 porting issue
+
 -------------------------------------------------------------------
 Thu Sep 03 10:34:38 CEST 2020 - jgonzalez@suse.com
 
