@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
+@scope_content_lifecycle_management
 Feature: Content lifecycle
 
   Scenario: Create a content lifecycle project

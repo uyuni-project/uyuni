@@ -5,6 +5,7 @@
 # so the inspect functionality is not tested here.
 
 @buildhost
+@scope_building_container_images
 Feature: Build container images
 
 @no_auth_registry

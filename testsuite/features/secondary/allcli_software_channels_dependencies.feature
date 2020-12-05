@@ -5,6 +5,7 @@
 # This feature test is currently disabled
 # It has to be rewritten using fake packages (orion-dummy etc) instead of real synched packages
 
+@scope_changing_software_channels
 Feature: Chanel subscription with recommended/required dependencies
 
   Scenario: Play with recommended and required child channels selection for a single system

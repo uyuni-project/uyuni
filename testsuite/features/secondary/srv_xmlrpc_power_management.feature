@@ -1,6 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_xmlrpc
 Feature: IPMI Power management test for XMLRPC
 
   Scenario: Setup an IPMI host for XMLRPC test

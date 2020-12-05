@@ -2,6 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 @sle_client
+@scope_cve_audit
+@scope_traditional_client
 Feature: CVE Audit on traditional clients
   In order to check if systems are patched against certain vulnerabilities
   As an authorized user

@@ -1,6 +1,7 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Patches page
   In order to use the Patches page
   As a authorized user

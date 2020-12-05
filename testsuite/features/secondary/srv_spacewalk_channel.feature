@@ -1,6 +1,7 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_spacewalk_utils
 Feature: Listing, adding and removing channels using the spacewalk-channel command
   Ino order to list available channels and add or remove them
   As root user

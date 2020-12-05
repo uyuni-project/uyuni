@@ -1,6 +1,7 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_xmlrpc
 Feature: XML-RPC "channel" namespace and sub-namespaces
 
   Scenario: Create a custom software channel

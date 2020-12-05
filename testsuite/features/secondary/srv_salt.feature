@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_salt
 Feature: Salt is configured and running
   In order to operate SUSE Manager based on Salt
   I want to use general Salt functionality and system registration

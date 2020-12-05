@@ -7,7 +7,11 @@
 * `testsuite/features/support`: general support functions
 * `testsuite/features/upload_files`: various data files uploaded into test machines by the testsuite
 * `testsuite/features/profiles`: Docker and Kiwi profiles picked up from this git repository directly by SUSE Manager
+* `testsuite/config`: contains the Cucumber profiles
 
+### Cucumber profiles
+In order to filter by team focus areas our test suite, we have a list of cucumber profiles that are filtering, by a tag with the same name, all the Cucumber features that fits on this focus area.
+You can see on this file `testsuite/config/cucumber.yml` the list of profiles.
 
 ### Grouping steps
 

@@ -4,6 +4,7 @@
 # This feature will be fully tested only if we have a CentOS and/or Ubuntu client
 # running
 
+@scope_visualization
 Feature: Work with Union and Intersection buttons in the group list
 
   Scenario: Create a sles group

@@ -1,6 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_power_management
 Feature: Redfish Power management
 
   Scenario: Setup a Redfish host

@@ -1,6 +1,8 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_res
+@scope_salt
 Feature: Install a patch on the CentOS minion via Salt through the UI
 
 @centos_minion

@@ -1,6 +1,7 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_power_management
 Feature: IPMI Power management
 
   Scenario: Setup an IPMI host

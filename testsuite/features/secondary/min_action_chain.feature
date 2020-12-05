@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@scope_action_chains
 Feature: Action chains on Salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion

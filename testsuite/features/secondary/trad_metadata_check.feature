@@ -1,6 +1,7 @@
 # Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_traditional_client
 Feature: Metadata attached to systems
 
   Scenario: Check pre requires

@@ -1,6 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_ubuntu
 Feature: Remote command on Ubuntu Salt minion
   In order to manage an Ubuntu Salt minion
   As an authorized user

@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_traditional_client
 Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Delete the traditional client for SSH reverse bootstrap
