@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import {showInfoToastr, showSuccessToastr, showWarningToastr, showErrorToastr} from 'components/toastr/toastr';
 
 import type {JsonResult} from "utils/network";

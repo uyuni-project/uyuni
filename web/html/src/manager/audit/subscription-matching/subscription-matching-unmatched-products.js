@@ -2,9 +2,7 @@
 "use strict";
 
 import * as React from 'react';
-import UtilComponent from './subscription-matching-util';
-const CsvLink = UtilComponent.CsvLink;
-const SystemLabel = UtilComponent.SystemLabel;
+import { CsvLink, SystemLabel } from './subscription-matching-util';
 import { PopUp } from 'components/popup';
 import { ModalButton } from 'components/dialog/ModalButton';
 import { Table } from 'components/table/Table';

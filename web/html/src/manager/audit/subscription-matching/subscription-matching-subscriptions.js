@@ -2,10 +2,7 @@
 "use strict";
 
 import * as React from 'react';
-import UtilComponent from './subscription-matching-util';
-const ToolTip = UtilComponent.ToolTip;
-const CsvLink = UtilComponent.CsvLink;
-const humanReadablePolicy = UtilComponent.humanReadablePolicy;
+import { ToolTip, CsvLink, humanReadablePolicy } from './subscription-matching-util';
 import { WarningIcon } from './subscription-matching-util';
 import { Table } from 'components/table/Table';
 import { Column } from 'components/table/Column';

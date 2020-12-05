@@ -6,7 +6,7 @@ import {Column} from "components/table/Column";
 import {SearchField} from "components/table/SearchField";
 import { TopPanel } from "components/panels/TopPanel";
 import { Messages } from "components/messages";
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import withPageWrapper from "../../../components/general/with-page-wrapper";
 import {hot} from 'react-hot-loader';
 

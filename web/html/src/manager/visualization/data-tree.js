@@ -1,10 +1,10 @@
 /* eslint-disable */
 'use strict';
 
-import HierarchyView from './ui/hierarchy-view.js';
-import Filters from './data-processing/filters.js';
-import Partitioning from './data-processing/partitioning.js';
-import Preprocessing from './data-processing/preprocessing.js';
+import * as HierarchyView from './ui/hierarchy-view.js';
+import * as Filters from './data-processing/filters.js';
+import * as Partitioning from './data-processing/partitioning.js';
+import * as Preprocessing from './data-processing/preprocessing.js';
 import * as Utils from './utils.js';
 
 // Render hierarchy view - take data, transform with preprocessor, filters and

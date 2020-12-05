@@ -98,7 +98,7 @@ function responseErrorMessage(jqXHR: Error | jqXHR , messageMapFunc: ?MapFuncTyp
    }
 }
 
-export {
+export default {
     get,
     post,
     put,

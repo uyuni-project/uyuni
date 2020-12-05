@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as React from 'react';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import {Utils, Formulas} from 'utils/functions';
 import {default as Jexl} from 'jexl';
 import {Button} from 'components/buttons';
