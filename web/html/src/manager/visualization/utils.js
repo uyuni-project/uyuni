@@ -2,7 +2,6 @@
 'use strict';
 
 import UI from './ui/components.js';
-import Utils from './utils.js';
 
 function computeSvgDimensions() {
   const width = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;

@@ -11,7 +11,7 @@ import { GuestProperties } from '../GuestProperties';
 import { SimpleActionApi } from '../../SimpleActionApi';
 import GuestNicsPanel from '../properties/guest-nics-panel';
 import DiskUtils from '../properties/disk-utils';
-import Functions from 'utils/functions';
+import { Formats } from 'utils/functions';
 
 type Props = {
   host: Object,
@@ -46,7 +46,7 @@ class GuestsCreate extends React.Component<Props, State> {
       },
       nics.length !== 0 ? { interfaces: nics } : undefined,
       disks.length !== 0 ? { disks } : undefined,
-      {earliest: Functions.Formats.LocalDateTime(model.earliest)}
+      {earliest: Formats.LocalDateTime(model.earliest)}
     );
   }
 

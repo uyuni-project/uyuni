@@ -5,7 +5,7 @@ import HierarchyView from './ui/hierarchy-view.js';
 import Filters from './data-processing/filters.js';
 import Partitioning from './data-processing/partitioning.js';
 import Preprocessing from './data-processing/preprocessing.js';
-import Utils from './utils.js';
+import * as Utils from './utils.js';
 
 // Render hierarchy view - take data, transform with preprocessor, filters and
 // partitioning, render it in the container.

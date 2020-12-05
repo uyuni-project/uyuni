@@ -10,7 +10,7 @@ import { DeleteDialog } from 'components/dialog/DeleteDialog';
 import { PopUp } from 'components/popup';
 import { Form } from 'components/input/Form';
 import { DateTime as InputDateTime } from 'components/input/DateTime';
-import Functions from 'utils/functions';
+import { Utils } from 'utils/functions';
 import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 
 /* global isAdmin, localTime, timezone */
@@ -439,7 +439,7 @@ class BuildDialog extends React.Component {
     super(props);
     this.state = {
       model: {
-        earliest: Functions.Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(localTime)
       }
     };
   }
@@ -498,7 +498,7 @@ class InspectDialog extends React.Component {
     super(props);
     this.state = {
       model: {
-        earliest: Functions.Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(localTime)
       }
     };
   }

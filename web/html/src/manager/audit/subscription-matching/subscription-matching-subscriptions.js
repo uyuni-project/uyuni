@@ -11,8 +11,7 @@ import { Table } from 'components/table/Table';
 import { Column } from 'components/table/Column';
 import { SearchField } from 'components/table/SearchField';
 import { Highlight } from 'components/table/Highlight';
-import Functions from 'utils/functions';
-const Utils = Functions.Utils;
+import { Utils } from 'utils/functions';
 
 class Subscriptions extends React.Component {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {

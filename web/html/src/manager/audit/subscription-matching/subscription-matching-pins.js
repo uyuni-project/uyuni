@@ -8,15 +8,10 @@ import { SearchField } from 'components/table/SearchField';
 import { Highlight } from 'components/table/Highlight';
 import { PopUp } from 'components/popup';
 import { ModalButton } from 'components/dialog/ModalButton';
-import UtilComponent from './subscription-matching-util';
-const StrongText = UtilComponent.StrongText;
-const SystemLabel = UtilComponent.SystemLabel;
-const ToolTip = UtilComponent.ToolTip;
-const humanReadablePolicy = UtilComponent.humanReadablePolicy;
+import { StrongText, SystemLabel, ToolTip, humanReadablePolicy } from './subscription-matching-util';
 import { WarningIcon } from './subscription-matching-util';
 import Network from 'utils/network';
-import Functions from 'utils/functions';
-const Utils = Functions.Utils;
+import { Utils } from 'utils/functions';
 
 class Pins extends React.Component {
   state = {

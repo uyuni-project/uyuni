@@ -14,8 +14,7 @@ import { Toggler } from 'components/toggler';
 import Network from 'utils/network';
 import { InnerPanel } from 'components/panels/InnerPanel';
 import { RecurringStatesEdit } from './recurring-states-edit';
-import Functions from 'utils/functions';
-const Formats = Functions.Formats;
+import { Utils, Formats } from 'utils/functions';
 import { ActionLink, ActionChainLink } from 'components/links';
 import SpaRenderer from 'core/spa/spa-renderer';
 
@@ -30,7 +29,7 @@ class Highstate extends React.Component {
         super(props);
         var state = {
             messages: [],
-            earliest: Functions.Utils.dateWithTimezone(localTime),
+            earliest: Utils.dateWithTimezone(localTime),
             test: false
         };
         this.state = state;

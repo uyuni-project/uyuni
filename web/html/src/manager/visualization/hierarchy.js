@@ -9,7 +9,7 @@ import { TopPanel } from 'components/panels/TopPanel';
 import DataTree from './data-tree.js';
 import Preprocessing from './data-processing/preprocessing.js';
 import UI from './ui/components.js';
-import Utils from './utils.js';
+import * as Utils from './utils.js';
 
 function displayHierarchy(data) {
   // disable the #spacewalk-content observer:

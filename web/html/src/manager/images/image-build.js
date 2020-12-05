@@ -8,7 +8,7 @@ import { Messages } from 'components/messages';
 import { Utils as MessagesUtils } from 'components/messages';
 import Network from 'utils/network';
 import { SubmitButton, LinkButton } from 'components/buttons';
-import Functions from 'utils/functions';
+import { Utils } from 'utils/functions';
 import { Form } from 'components/input/Form';
 import { FormGroup } from 'components/input/FormGroup';
 import { Select } from 'components/input/Select';
@@ -36,7 +36,7 @@ class BuildImage extends React.Component {
     this.state = {
       model: {
         version: version || "",
-        earliest: Functions.Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(localTime)
       },
       profile: {},
       profiles: [],

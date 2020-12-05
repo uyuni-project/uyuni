@@ -11,7 +11,7 @@ import type {FilterFormType} from "../shared/type/filter.type";
 import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/filters.enum";
 import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
 import useUserLocalization from "core/user-localization/use-user-localization";
-import Functions from "utils/functions";
+import {Utils} from "utils/functions";
 import produce from "immer";
 
 type Props = {
@@ -39,7 +39,7 @@ const FilterForm = (props: Props) => {
             draft[clmFilterOptions.ADVISORY_TYPE.key] = "Security Advisory";
           }
           if(clmFilterOptions.ISSUE_DATE.key === props.filter.type) {
-            draft[clmFilterOptions.ISSUE_DATE.key] = Functions.Utils.dateWithTimezone(localTime);
+            draft[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(localTime);
           }
         })
       )
