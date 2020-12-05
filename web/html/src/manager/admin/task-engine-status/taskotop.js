@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Messages as MessageContainer } from 'components/messages';
 import { Table } from 'components/table/Table';

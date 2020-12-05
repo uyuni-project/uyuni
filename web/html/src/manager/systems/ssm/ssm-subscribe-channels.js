@@ -2,7 +2,7 @@
 // @flow
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { AsyncButton, Button } from 'components/buttons';
 import { ActionSchedule } from 'components/action-schedule';

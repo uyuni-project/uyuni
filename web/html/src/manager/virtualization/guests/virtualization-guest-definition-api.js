@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
 import Network from 'utils/network';
 import { Utils as MessagesUtils } from 'components/messages';

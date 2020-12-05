@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { InnerPanel } from 'components/panels/InnerPanel';
 import { Button } from 'components/buttons';

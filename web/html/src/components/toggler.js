@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 /* eslint-disable */
-import React from 'react';
+import * as React from 'react';
 
 /** @module toggler */
 

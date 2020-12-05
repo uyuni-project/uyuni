@@ -1,10 +1,10 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import ReactHtmlParser from 'html-react-parser';
+import CreatorPanel from "components/panels/CreatorPanel";
 import EnvironmentView from "./environment-view";
 import EnvironmentForm from "./environment-form";
 import {Messages, Utils as MsgUtils} from 'components/messages';
-import CreatorPanel from "components/panels/CreatorPanel";
 import {Loading} from "components/utils/Loading";
 import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";

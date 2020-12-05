@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 
 class ImageViewRuntime extends React.Component {

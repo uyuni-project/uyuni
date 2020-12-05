@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {Select} from "../../../../../../components/input/Select";
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";

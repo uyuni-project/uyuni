@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import { AceEditor } from '../components/ace-editor';
 import Buttons from '../components/buttons';
 import { InnerPanel } from 'components/panels/InnerPanel';

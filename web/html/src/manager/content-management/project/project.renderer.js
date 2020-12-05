@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Project from './project';
 import {RolesProvider} from "core/auth/roles-context";
 import SpaRenderer from "core/spa/spa-renderer";

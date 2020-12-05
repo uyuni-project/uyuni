@@ -1,6 +1,7 @@
 // @flow
 
-import React, {useContext} from 'react';
+import * as React from 'react';
+import {useContext} from 'react';
 import Combo from 'components/input/Combo';
 import {FormContext} from 'components/input/Form';
 

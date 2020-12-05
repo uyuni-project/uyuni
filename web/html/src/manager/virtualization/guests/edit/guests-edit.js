@@ -4,7 +4,7 @@
 import type { ActionChain } from 'components/action-schedule';
 
 import { hot } from 'react-hot-loader';
-import React from 'react';
+import * as React from 'react';
 import _isEqual from 'lodash/isEqual';
 import { TopPanel } from 'components/panels/TopPanel';
 import { Loading } from 'components/utils/Loading';

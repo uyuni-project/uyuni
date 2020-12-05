@@ -1,6 +1,7 @@
 // @flow
 
-import React, {useEffect, useState} from 'react';
+import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {TopPanel} from "../../../components/panels/TopPanel";
 import Sources from "../shared/components/panels/sources/sources";
 import PropertiesEdit from "../shared/components/panels/properties/properties-edit";

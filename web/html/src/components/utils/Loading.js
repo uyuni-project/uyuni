@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 type LoadingProps = {
   /** Text to be displayed with the loading spinner */

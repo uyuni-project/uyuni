@@ -1,7 +1,7 @@
 // @flow
 // Note: to use this component you have to make sure the current user localization are injected with
 // the jade mixin userLocalization
-import React from 'react';
+import * as React from 'react';
 import type {Node} from 'react';
 
 export type userLocalizationType = {

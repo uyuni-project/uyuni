@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Utils } from 'utils/functions';
 import { DeleteSystem } from './delete-system';

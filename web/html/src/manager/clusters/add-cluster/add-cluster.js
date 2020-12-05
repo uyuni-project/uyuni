@@ -1,6 +1,7 @@
 // @flow
 import {hot} from 'react-hot-loader';
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import {TopPanel} from "components/panels/TopPanel";
 import SelectProvider from './select-provider';

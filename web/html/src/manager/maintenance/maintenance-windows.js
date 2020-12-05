@@ -1,7 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-import React, {useState, useEffect} from "react";
+import * as React from 'react';
+import {useState, useEffect} from "react";
 import {Messages} from "components/messages";
 
 import {MaintenanceWindowsDetails} from "./details/maintenance-windows-details";

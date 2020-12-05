@@ -1,5 +1,5 @@
 //@flow
-import React from 'react';
+import * as React from 'react';
 import _isEmpty from "lodash/isEmpty"
 
 import type {ProjectEnvironmentType} from '../../../type/project.type.js';

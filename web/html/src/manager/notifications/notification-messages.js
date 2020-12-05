@@ -2,7 +2,7 @@
 "use strict";
 
 import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
-import React from 'react';
+import * as React from 'react';
 import { Messages as MessageContainer } from 'components/messages';
 import { Table } from 'components/table/Table';
 import { Column } from 'components/table/Column';

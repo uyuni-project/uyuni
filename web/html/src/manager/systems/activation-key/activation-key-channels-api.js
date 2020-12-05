@@ -1,6 +1,6 @@
 /* eslint-disable */
 // @flow
-import React from 'react';
+import * as React from 'react';
 import * as Network from 'utils/network';
 
 type ActivationKeyChannelsProps = {
