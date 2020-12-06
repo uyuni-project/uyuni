@@ -17,6 +17,7 @@
         <rl:listset name="erratConfirmListSet">
             <rhn:csrf />
             <rhn:submitted />
+            <html:hidden property="allowVendorChange" value="${allowVendorChange}" />
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">
                     <html:submit styleClass="btn btn-success" property="dispatch">
