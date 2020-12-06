@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-30 18:46+0100\n"
-"PO-Revision-Date: 2020-11-12 16:32+0000\n"
+"PO-Revision-Date: 2020-12-06 15:26+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -1716,7 +1716,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:69
 msgid "Upgrade"
-msgstr ""
+msgstr "Upgrade (povýšení verze)"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
 msgid "Upgrade plan"
