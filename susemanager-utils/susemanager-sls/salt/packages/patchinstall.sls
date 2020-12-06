@@ -21,6 +21,7 @@ mgr_regular_patches:
 {% if not pillar.get('param_update_stack_patches', []) %}
     - refresh: true
 {% endif %}
+   - novendorchange:  {% not pillar.get('allow_vendor_change', False) %}
     - advisory_ids:
 {%- for patch in pillar.get('param_regular_patches', []) %}
       - {{ patch }}
