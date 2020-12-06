@@ -615,7 +615,6 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 
 # Pretifying symlinks for RHEL
 %if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{jardir}/apache-commons-jexl_commons-jexl.jar $RPM_BUILD_ROOT%{jardir}/commons-jexl.jar
 mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
 mv $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
 mv $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
@@ -749,7 +748,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %{jardir}/snakeyaml.jar
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
-%{jardir}/commons-jexl.jar
+%{jardir}/apache-commons-jexl_commons-jexl.jar
 %{jardir}/commons-lang3.jar
 %{jardir}/google-gson_google-gsongson.jar
 %{jardir}/httpcomponents_httpclient.jar
