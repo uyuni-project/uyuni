@@ -1002,7 +1002,7 @@
       </trans-unit>
       <trans-unit id="Critical Swap Pct Free" xml:space="preserve">
         <source>Critical Swap Pct Free</source>
-        <target/>
+        <target>Kritické percento voľného odkladacieho priestoru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2066,7 +2066,7 @@
       </trans-unit>
       <trans-unit id="Warning Swap Pct Free" xml:space="preserve">
         <source>Warning Swap Pct Free</source>
-        <target/>
+        <target>Varovné percento voľného odkladacieho priestoru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2256,7 +2256,7 @@
       </trans-unit>
       <trans-unit id="metrics.CPU usage" xml:space="preserve">
         <source>CPU usage</source>
-        <target/>
+        <target>Využitie CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2683,7 +2683,7 @@
       </trans-unit>
       <trans-unit id="metrics.Swap pct free" xml:space="preserve">
         <source>Swap pct free</source>
-        <target/>
+        <target>Percento voľného odkladacieho priestoru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2991,7 +2991,7 @@
       </trans-unit>
       <trans-unit id="CPU Usage" xml:space="preserve">
           <source>CPU Usage</source>
-        <target/>
+        <target>Využitie CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3054,7 +3054,7 @@
       </trans-unit>
       <trans-unit id="Disk Usage" xml:space="preserve">
           <source>Disk Usage</source>
-        <target/>
+        <target>Využitie disku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3201,7 +3201,7 @@
       </trans-unit>
       <trans-unit id="Memory Usage" xml:space="preserve">
           <source>Memory Usage</source>
-        <target/>
+        <target>Využitie pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3369,14 +3369,14 @@
       </trans-unit>
       <trans-unit id="Swap" xml:space="preserve">
           <source>Swap</source>
-        <target/>
+        <target>Odkladací priestor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Swap Usage" xml:space="preserve">
           <source>Swap Usage</source>
-        <target/>
+        <target>Využitie odkladacieho priestoru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
