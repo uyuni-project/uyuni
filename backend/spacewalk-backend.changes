@@ -1,3 +1,4 @@
+- add allow vendor change with patching via rhnstack 
 - Fixed kickstart tree permissions to a+r.
 - Avoid race condition due multiple reposync import threads (bsc#1183151)
 
