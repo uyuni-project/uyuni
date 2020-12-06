@@ -27,9 +27,11 @@ __rhnexport__ = ['update']
 def update(serverId, actionId, dry_run=0):
     log_debug(3)
     statement = """
-        select errata_id
-        from rhnActionErrataUpdate
-        where action_id = :action_id"""
+        select r1.errata_id, r2.allow_vendor_change
+        from rhnactionerrataupdate r1
+        join rhnactiondetails r2 on r1.action_id = r2.action_id
+        where r1.action_id = :action_id
+    """
     h = rhnSQL.prepare(statement)
     h.execute(action_id=actionId)
     ret = h.fetchall_dict()
@@ -38,4 +40,8 @@ def update(serverId, actionId, dry_run=0):
         raise InvalidAction("errata.update: Unknown action id "
                             "%s for server %s" % (actionId, serverId))
 
-    return [x['errata_id'] for x in ret]
+    params = {
+        "errata_id" : [x['errata_id'] for x in ret],
+        "allow_vendor_change" : (ret[0]['allow_vendor_change'] == 'Y')
+    }
+    return (params)
