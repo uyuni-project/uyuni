@@ -1,3 +1,5 @@
+- Make autoinstallation provisoning compatible with GRUB and ELILO
+  in addition to GRUB2 only (bsc#1164227)
 - Fix: sync before start action chains (bsc#1177336)
 
 -------------------------------------------------------------------
