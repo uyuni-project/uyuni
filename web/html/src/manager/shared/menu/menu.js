@@ -218,7 +218,7 @@ class Breadcrumb extends React.Component {
     return (
       <div>
         {product_name_link}
-        <span>></span>
+        <span>&gt;</span>
         {
           breadcrumbArray.map((a, i) => {
             return (
