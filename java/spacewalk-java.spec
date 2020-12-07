@@ -65,7 +65,7 @@ Group:          Applications/Internet
 Version:        4.2.5
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -128,7 +128,11 @@ BuildRequires:  jpa-api
 BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
+%if 0%{?rhel}
+BuildRequires:  libxml2-devel
+%else
 BuildRequires:  libxml2-tools
+%endif
 BuildRequires:  %{log4j}
 BuildRequires:  netty
 BuildRequires:  objectweb-asm
