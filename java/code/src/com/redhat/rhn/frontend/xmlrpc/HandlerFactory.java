@@ -65,6 +65,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.crash.CrashHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.monitoring.SystemMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.provisioning.powermanagement.PowerManagementHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.SnapshotHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler;
@@ -182,6 +183,7 @@ public class HandlerFactory {
         factory.addHandler("system.config", new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper));
         factory.addHandler("system.crash", new CrashHandler(xmlRpcSystemHelper));
         factory.addHandler("system.custominfo", new CustomInfoHandler());
+        factory.addHandler("system.monitoring", new SystemMonitoringHandler(formulaManager));
         factory.addHandler("system.provisioning.powermanagement", new PowerManagementHandler());
         factory.addHandler("system.provisioning.snapshot", new SnapshotHandler(xmlRpcSystemHelper));
         factory.addHandler("system.scap", new SystemScapHandler());
