@@ -470,14 +470,14 @@
       </trans-unit>
       <trans-unit id="Available Space Percent Used Critical if Above" xml:space="preserve">
         <source>Available Space Percent Used Critical if Above</source>
-        <target>Využité percento dostupného priestoru je kritické, ak je vyššie ako</target>
+        <target>Kritické percento použitého dostupného miesta, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Warn if Above" xml:space="preserve">
         <source>Available Space Percent Used Warn if Above</source>
-        <target>Využité percento dostupného priestoru je varovné, ak je vyššie ako</target>
+        <target>Varovné percento použitého dostupného miesta, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -568,7 +568,7 @@
       </trans-unit>
       <trans-unit id="Critical Avail Sessions Used Pct" xml:space="preserve">
         <source>Critical Avail Sessions Used Pct</source>
-        <target>Kritické percento použitých využiteľných sedení</target>
+        <target>Kritické percento použitých dostupných sedení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -981,14 +981,14 @@
       </trans-unit>
       <trans-unit id="Critical Space Available" xml:space="preserve">
         <source>Critical Space Available</source>
-        <target/>
+        <target>Kritické dostupné miesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Space Used" xml:space="preserve">
         <source>Critical Space Used</source>
-        <target/>
+        <target>Kritické použité miesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1030,7 +1030,7 @@
       </trans-unit>
       <trans-unit id="Critical Total Connections" xml:space="preserve">
         <source>Critical Total Connections</source>
-        <target/>
+        <target>Kritické celkové pripojenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1541,7 +1541,7 @@
       </trans-unit>
       <trans-unit id="Tablespace Name" xml:space="preserve">
         <source>Tablespace Name</source>
-        <target/>
+        <target>Názov tabuľkového priestoru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1660,7 +1660,7 @@
       </trans-unit>
       <trans-unit id="Warning Avail Sessions Used Pct" xml:space="preserve">
         <source>Warning Avail Sessions Used Pct</source>
-        <target>Varovné percento použitých využiteľných sedení</target>
+        <target>Varovné percento použitých dostupných sedení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2045,14 +2045,14 @@
       </trans-unit>
       <trans-unit id="Warning Space Available" xml:space="preserve">
         <source>Warning Space Available</source>
-        <target/>
+        <target>Varovné dostupné miesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Space Used" xml:space="preserve">
         <source>Warning Space Used</source>
-        <target/>
+        <target>Varovné použité miesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2094,7 +2094,7 @@
       </trans-unit>
       <trans-unit id="Warning Total Connections" xml:space="preserve">
         <source>Warning Total Connections</source>
-        <target/>
+        <target>Varovné celkové pripojenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2662,14 +2662,14 @@
       </trans-unit>
       <trans-unit id="metrics.Space available" xml:space="preserve">
         <source>Space available</source>
-        <target/>
+        <target>Dostupné miesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Space used" xml:space="preserve">
         <source>Space used</source>
-        <target/>
+        <target>Použité miesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3047,7 +3047,7 @@
       </trans-unit>
       <trans-unit id="Disk Space" xml:space="preserve">
           <source>Disk Space</source>
-        <target/>
+        <target>Miesto na disku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3411,7 +3411,7 @@
       </trans-unit>
       <trans-unit id="Tablespace Usage" xml:space="preserve">
           <source>Tablespace Usage</source>
-        <target/>
+        <target>Využitie tabuľkového priestoru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
