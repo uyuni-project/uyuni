@@ -57,21 +57,3 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
     Then the SLE15 products should be added
-
-@long_test
-@scc_credentials
-  Scenario: Enable "SUSE Linux Enterprise Server 15 SP2 with Basesystem module for x86_64"
-    Given I am on the Products page
-    When I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
-    And I select "x86_64" in the dropdown list of the architecture filter
-    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
-    Then I should see a "Basesystem Module 15 SP2 x86_64" text
-    And I should see that the "Basesystem Module 15 SP2 x86_64" product is "recommended"
-    When I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
-    Then I should see that the "Server Applications Module 15 SP2 x86_64" product is "recommended"
-    When I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
-    And I deselect "SUSE Manager Tools 15 x86_64 (BETA)" as a SUSE Manager product
-    And I deselect "Server Applications Module 15 SP2 x86_64" as a product
-    And I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
-    Then the SLE15SP2 base products should be added
