@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.formula;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.dto.EndpointInfo;
+import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -69,7 +71,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 
 /**
  * Factory class for working with formulas.
@@ -943,9 +944,15 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     private static boolean hasMonitoringDataEnabled(Map<String, Object> formData) {
         Map<String, Object> exporters = (Map<String, Object>) formData.get("exporters");
-        return exporters.values().stream()
-                .map(exporter -> (Map<String, Object>) exporter)
-                .anyMatch(exporter -> (boolean) exporter.get("enabled"));
+        if (exporters != null && !exporters.isEmpty()) {
+            return exporters.values().stream()
+                    .filter(Map.class::isInstance)
+                    .map(exporter -> (Map<String, Object>) exporter)
+                    .anyMatch(exporter -> (boolean) exporter.get("enabled"));
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -1108,4 +1115,58 @@ public class FormulaFactory {
         return dataDir + PILLAR_DIR;
     }
 
+    /**
+     * Find endpoint information from given formula data
+     * @param formulaName name of the formula to examine
+     * @param formulaData formula data to extract information from
+     * @return list of endpoint information objects
+     */
+    public static List<EndpointInfo> getEndpointsFromFormulaData(String formulaName, FormulaData formulaData) {
+        return getExportersEndpoints(formulaData);
+    }
+
+    private static List<EndpointInfo> getExportersEndpoints(FormulaData formulaData) {
+        Map<String, Object> formulaValues = formulaData.getFormulaValues();
+        if (formulaValues.containsKey("exporters")) {
+            Boolean proxyEnabled = getValueByPath(formulaValues, "proxy_enabled")
+                    .filter(Boolean.class::isInstance)
+                    .map(Boolean.class::cast)
+                    .orElse(false);
+            Optional<Integer> proxyPort = proxyEnabled ? getValueByPath(formulaValues, "proxy_port")
+                    .filter(Number.class::isInstance)
+                    .map(Number.class::cast)
+                    .map(Number::intValue) : Optional.empty();
+            String proxyPath = proxyEnabled ? "/proxy" : null;
+            Boolean tlsEnabled = getValueByPath(formulaValues, "tls:enabled")
+                    .filter(Boolean.class::isInstance)
+                    .map(Boolean.class::cast)
+                    .orElse(false);
+
+            Map<String, Object> exportersMap = getValueByPath(formulaValues, "exporters")
+                    .filter(Map.class::isInstance)
+                    .map(Map.class::cast)
+                    .orElseGet(Collections::emptyMap);
+
+            return exportersMap.entrySet().stream()
+                    .map(exporterEntry -> new ExporterConfig(exporterEntry.getKey(),
+                            Optional.ofNullable(exporterEntry.getValue())
+                                    .filter(Map.class::isInstance)
+                                    .map(Map.class::cast)
+                                    .orElseGet(Collections::emptyMap)))
+                    .filter(ExporterConfig::isEnabled)
+                    .filter(e -> (proxyEnabled && proxyPort.isPresent()) || (!proxyEnabled && e.getPort().isPresent()))
+                    .map(exporterConfig -> new EndpointInfo(
+                            formulaData.getSystemID(),
+                            exporterConfig.getEndpointNameOrFallback(),
+                            exporterConfig.getEndpointNameOrFallback(),
+                            proxyEnabled ? proxyPort.get() : exporterConfig.getPort().get(),
+                            proxyEnabled ? exporterConfig.getProxyModuleOrFallback() : null,
+                            proxyPath,
+                            tlsEnabled))
+                    .collect(Collectors.toList());
+        }
+        else {
+            return new ArrayList<>();
+        }
+    }
 }
