@@ -1,5 +1,10 @@
 - Make autoinstallation provisoning compatible with GRUB and ELILO
   in addition to GRUB2 only (bsc#1164227)
+- Fix: sync before start action chains (bsc#1177336)
+
+-------------------------------------------------------------------
+Thu Nov 12 10:07:50 CET 2020 - jgonzalez@suse.com
+
 - version 4.0.31-1
 - Revert: Sync state modules when starting action chain execution (bsc#1177336)
 - Sync state modules when starting action chain execution (bsc#1177336)
