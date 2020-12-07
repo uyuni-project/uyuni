@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-30 18:46+0100\n"
-"PO-Revision-Date: 2020-11-22 17:26+0000\n"
-"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
+"PO-Revision-Date: 2020-12-08 00:26+0000\n"
+"Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "web/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -52,7 +52,7 @@ msgstr "Sem janelas de manutenção futuras"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Earliest:"
-msgstr "Não agendar antes do que: "
+msgstr "Não agendar antes do que:"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Maintenance Window:"
@@ -504,7 +504,7 @@ msgstr "Nome da programação"
 
 #: ../html/src/components/picker/recurring-event-picker.js:309
 msgid "Select a Schedule"
-msgstr "Selecionar uma agenda:"
+msgstr "Selecionar uma agenda"
 
 #: ../html/src/components/picker/recurring-event-picker.js:316
 msgid "Hourly:"
