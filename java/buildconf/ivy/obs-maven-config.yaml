@@ -50,8 +50,8 @@ artifacts:
     package: jakarta-commons-discovery
     repository: Leap
   - artifact: commons-el
-    package: jakarta-commons-el
-    repository: Uyuni_Other
+    package: apache-commons-el
+    repository: Leap
   - artifact: commons-fileupload
     package: jakarta-commons-fileupload
     repository: Leap
