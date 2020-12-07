@@ -216,7 +216,7 @@ class Server(ServerWrapper):
         s.release = new_rel
         s.arch = self.archname
         if suse_products:
-            s.suse_products = suse_products
+            s.add_suse_products(suse_products)
         # Let get_server_channels deal with the errors and raise rhnFault
         target_channels = rhnChannel.guess_channels_for_server(s, none_ok=True)
         if target_channels:

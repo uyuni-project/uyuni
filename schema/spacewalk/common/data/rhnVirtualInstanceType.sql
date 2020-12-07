@@ -47,3 +47,6 @@ insert into rhnVirtualInstanceType (id, name, label)
 
 insert into rhnVirtualInstanceType (id, name, label)
     values (sequence_nextval('rhn_vit_id_seq'), 'Nutanix AHV', 'nutanix');
+
+insert into rhnVirtualInstanceType (id, name, label)
+    values (sequence_nextval('rhn_vit_id_seq'), 'VirtualPC', 'virtualpc');

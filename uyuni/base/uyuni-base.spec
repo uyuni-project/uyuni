@@ -15,6 +15,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%global debug_package %{nil}
+
 #Compat macro for new _fillupdir macro introduced in Nov 2017
 %if ! %{defined _fillupdir}
   %define _fillupdir /var/adm/fillup-templates
@@ -26,14 +28,20 @@
 %define apache_group www
 %else
 %define www_path %{_var}
+%if 0%{?rhel}
+%define apache_user root
+%define apache_group root
+%else
 %define apache_user apache
 %define apache_group apache
 %endif
+%endif
 
 Name:           uyuni-base
-Version:        4.2.1
+Version:        4.2.2
 Release:        1
 Url:            https://github.com/uyuni-project/uyuni
+Source0:        %{name}-%{version}.tar.gz
 Summary:        Uyuni Base Package
 License:        GPL-2.0-only
 Group:          System/Fhs
@@ -80,7 +88,7 @@ Requires(pre):  uyuni-base-common
 Basic filesystem hierarchy for Uyuni proxy.
 
 %prep
-# nothing to do here
+%setup -q
 
 %build
 # nothing to do here
@@ -98,11 +106,13 @@ mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
 getent passwd salt >/dev/null && %{_sbindir}/usermod -a -G susemanager salt
 getent passwd tomcat >/dev/null && %{_sbindir}/usermod -a -G susemanager tomcat
-getent passwd wwwrun >/dev/null && %{_sbindir}/usermod -a -G susemanager wwwrun
+getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager %{apache_user}
 %endif
 
 %files common
 %defattr(-,root,root)
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %attr(750,root,%{apache_group}) /etc/rhn
 %dir %{_prefix}/share/rhn
 %dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
@@ -110,7 +120,11 @@ getent passwd wwwrun >/dev/null && %{_sbindir}/usermod -a -G susemanager wwwrun
 %if ! (0%{?rhel} == 6 || 0%{?suse_version} == 1110)
 %files server
 %defattr(-,root,root)
-%dir %attr(755,%{apache_user},root) /var/spacewalk
+%if 0%{?rhel}
+/var/spacewalk
+%else
+%dir %attr(755,%{apache_user}, root) /var/spacewalk
+%endif
 %endif
 
 %files proxy

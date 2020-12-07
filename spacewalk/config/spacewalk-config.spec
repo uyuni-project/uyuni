@@ -24,14 +24,18 @@
 %else
 %define apacheconfdir %{_sysconfdir}/httpd
 %define apachepkg httpd
+%if 0%{?rhel}
+%define apache_group root
+%else
 %define apache_group apache
+%endif
 %endif
 
 Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -60,8 +64,8 @@ Requires(pre):  uyuni-base-common
 %if 0%{?suse_version}
 BuildRequires:  openssl
 BuildRequires:  sudo
-Requires:       apache2-mod_xsendfile
 %endif
+Requires:       (apache2-mod_xsendfile or mod_xsendfile)
 
 %description
 Common Spacewalk configuration files and templates.

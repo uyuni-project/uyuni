@@ -28623,7 +28623,7 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2020 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -28905,6 +28905,34 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
+        <source>Documentation Language</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.docs.langs" xml:space="preserve">
+        <source>Please select your preferred documentation language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ documentation.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="channelOverview.jsp.newToolbar.stateType" xml:space="preserve">
+        <source>New Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
+        <source>Create Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
       <target state="new" />
   </trans-unit>
       </body>

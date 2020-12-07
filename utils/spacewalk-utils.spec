@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-utils
-Version:        4.2.1
+Version:        4.2.3
 Release:        1%{?dist}
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
@@ -35,6 +35,9 @@ BuildRequires:  fdupes
 BuildRequires:  docbook-utils
 BuildRequires:  python3
 %if 0%{?pylint_check}
+BuildRequires:  (python3-PyYAML or python3-pyyaml)
+BuildRequires:  python3-solv
+BuildRequires:  python3-uyuni-common-libs
 BuildRequires:  spacewalk-python3-pylint
 %endif
 BuildRequires:  uyuni-base-common
@@ -53,9 +56,11 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 %endif
 # Required by spacewalk-hostname-rename
 Requires:       perl-Satcon
-# Required by debsolver.py
-Requires:       python3-PyYAML
-# Required by debsolver.py, cloneByDate.py, spacewalk-common-channels
+# Required by depsolver.py
+Requires:       (python3-PyYAML or python3-pyyaml)
+# Required by depsolver.py
+Requires:       python3-solv
+# Required by depsolver.py, cloneByDate.py, spacewalk-common-channels
 Requires:       python3-uyuni-common-libs
 # Required by spacewalk-clone-by-date, spacewalk-sync-setup
 Requires:       python3-salt
@@ -124,8 +129,12 @@ make all
 make install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir}
 pushd %{buildroot}
+%if 0%{?suse_version}
 %py3_compile -O %{buildroot}%{python3_sitelib}
 %fdupes %{buildroot}%{python3_sitelib}
+%else
+%py_byte_compile %{__python3} %{buildroot}%{python3_sitelib}
+%endif
 popd
 
 %check

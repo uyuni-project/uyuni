@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 03 13:38:22 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- defined __python for python2.
+- Excluded RHEL8 for Python 2 build.
+
+-------------------------------------------------------------------
 Fri Sep 18 11:14:23 CEST 2020 - jgonzalez@suse.com
 
 - version 4.2.1-1

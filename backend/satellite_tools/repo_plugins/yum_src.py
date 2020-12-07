@@ -641,11 +641,11 @@ type=rpm-md
         ret_url = None
         query_params = {}
         if self.proxy_hostname:
-            query_params['proxy'] = self.proxy_hostname
+            query_params['proxy'] = quote(self.proxy_hostname)
         if self.proxy_user:
-            query_params['proxyuser'] = self.proxy_user
+            query_params['proxyuser'] = quote(self.proxy_user)
         if self.proxy_pass:
-            query_params['proxypass'] = self.proxy_pass
+            query_params['proxypass'] = quote(self.proxy_pass)
         if self.sslcacert:
             # Since Zypper only accepts CAPATH, we need to split the certificates bundle
             # and run "c_rehash" on our custom CAPATH

@@ -1891,6 +1891,13 @@ class LiteServer:
     def get_suse_products(self):
         return self.suse_products
 
+    def add_suse_products(self, suse_products):
+        log_debug(1, suse_products)
+        if isinstance(suse_products, dict):
+            self.suse_products = suse_products['products']
+        elif isinstance(suse_products, list):
+            self.suse_products = suse_products
+
     def __repr__(self):
         dict = {}
         for attr in self._attributes:

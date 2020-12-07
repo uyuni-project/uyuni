@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-11-05 13:50+0000\n"
+"POT-Creation-Date: 2020-11-20 12:55+0100\n"
+"PO-Revision-Date: 2020-11-09 14:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "susemanager/zh_CN/>\n"
@@ -65,11 +65,11 @@ msgstr "电子邮件地址"
 
 #: ../yast/susemanager_cert.rb:114
 msgid "SSL Pass&word"
-msgstr "SSL 密码(&W)"
+msgstr "SSL 口令(&W)"
 
 #: ../yast/susemanager_cert.rb:121 ../yast/susemanager_db.rb:106
 msgid "R&epeat Password"
-msgstr "重新输入密码(&E)"
+msgstr "重新输入口令(&E)"
 
 #: ../yast/susemanager_cert.rb:132
 msgid ""
@@ -78,7 +78,7 @@ msgid ""
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
 "<p>请在此处输入创建 SSL 证书所需的数据。该证书用于多种目的，例如，连接到 "
-"SUSE Manager 代理服务器、在浏览器中使用 HTTPS 协议，等等。</p>"
+"SUSE Manager Proxy 服务器、在浏览器中使用 HTTPS 协议，等等。</p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
@@ -91,16 +91,16 @@ msgstr "'%1' 的值为空。"
 #: ../yast/susemanager_cert.rb:180 ../yast/susemanager_db.rb:140
 #: ../yast/susemanager_migration.rb:146
 msgid "Password is missing."
-msgstr "缺少密码。"
+msgstr "缺少口令。"
 
 #: ../yast/susemanager_cert.rb:185 ../yast/susemanager_db.rb:145
 #: ../yast/susemanager_migration.rb:163
 msgid "Passwords do not match."
-msgstr "密码不匹配。"
+msgstr "口令不匹配。"
 
 #: ../yast/susemanager_cert.rb:193 ../yast/susemanager_db.rb:153
 msgid "The password should have at least %1 characters."
-msgstr "密码应至少包含 %1 个字符。"
+msgstr "口令应至少包含 %1 个字符。"
 
 #: ../yast/susemanager_cert.rb:204 ../yast/susemanager_db.rb:164
 #: ../yast/susemanager_migration.rb:154
@@ -108,7 +108,7 @@ msgid ""
 "The password contains invalid characters.\n"
 "The invalid characters are: %1"
 msgstr ""
-"密码包含无效字符。\n"
+"口令包含无效字符。\n"
 "无效字符为：%1"
 
 #: ../yast/susemanager_congratulate.rb:35
@@ -125,7 +125,7 @@ msgstr "数据库用户(&U)"
 
 #: ../yast/susemanager_db.rb:98
 msgid "Database &Password"
-msgstr "数据库密码(&P)"
+msgstr "数据库口令(&P)"
 
 #: ../yast/susemanager_db.rb:115
 msgid ""
@@ -141,7 +141,7 @@ msgid ""
 "The password failed the cracklib check with:\n"
 "'%1'"
 msgstr ""
-"密码通不过 cracklib 检查：\n"
+"口令通不过 cracklib 检查：\n"
 "'%1'"
 
 #: ../yast/susemanager_manager.rb:84
@@ -181,11 +181,11 @@ msgstr "源 #{@product_name} 数据库用户名(&U)"
 
 #: ../yast/susemanager_migration.rb:94
 msgid "Source #{@product_name} Database &Password"
-msgstr "源 #{@product_name} 数据库密码(&P)"
+msgstr "源 #{@product_name} 数据库口令(&P)"
 
 #: ../yast/susemanager_migration.rb:101
 msgid "&Repeat Password"
-msgstr "重新输入密码(&R)"
+msgstr "重新输入口令(&R)"
 
 #: ../yast/susemanager_migration.rb:108
 msgid "Source #{@product_name} Database &Name"

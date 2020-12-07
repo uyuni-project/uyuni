@@ -29,9 +29,10 @@
 
 %if 0%{?fedora} || 0%{?rhel}
 %global apacheconfd %{_sysconfdir}/httpd/conf.d
-%global apache_user apache
-%global apache_group apache
+%global apache_user root
+%global apache_group root
 %global apache_pkg httpd
+%global m2crypto python3-m2crypto
 %endif
 
 %if 0%{?suse_version}
@@ -46,7 +47,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.2.2
+Version:        4.2.4
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -113,9 +114,9 @@ Summary:        Basic code that provides Spacewalk Server functionality
 Group:          System/Management
 Requires(pre):  %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
-Requires:       python3-python-pam
+Requires:       (python3-pam or python3-python-pam)
+Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)
 Requires:       spacewalk-config
-Requires:       apache2-mod_wsgi-python3
 
 # cobbler-web is known to break our configuration
 Conflicts:      cobbler-web
@@ -224,10 +225,14 @@ Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
 Requires:       systemd
 BuildRequires:  systemd
+%if 0%{?rhel}
+BuildRequires:	systemd-rpm-macros
+%else
 %{?systemd_requires}
+%endif
 
 Requires:       python3-gzipstream
-Requires:       python3-python-dateutil
+Requires:       (python3-dateutil or python3-python-dateutil)
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber
@@ -334,11 +339,9 @@ sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults
 install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
 
 ## Install Zypper plugins only on SUSE machines
-%if 0%{?suse_version}
 install -Dd -m 0750 % $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
 %{__install} satellite_tools/spacewalk-uln-resolver $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
 %{__install} satellite_tools/spacewalk-extra-http-headers $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
-%endif
 
 %check
 make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python3_sitelib}:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs PYTHON_BIN=python3 test
@@ -365,17 +368,33 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
 fi
 
 %pre tools
+%if !0%{?rhel}
 %service_add_pre spacewalk-diskcheck.service spacewalk-diskcheck.timer
+%endif
 
 %post tools
+%if 0%{?rhel}
+%systemd_post spacewalk-diskcheck.service
+%systemd_post spacewalk-diskcheck.timer
+%else
 %service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
+%endif
 
 %preun tools
+%if 0%{?rhel}
+%systemd_preun spacewalk-diskcheck.service
+%systemd_preun spacewalk-diskcheck.timer
+%else
 %service_del_preun spacewalk-diskcheck.service spacewalk-diskcheck.timer
+%endif
 
 %postun tools
+%if 0%{?rhel}
+%systemd_postun spacewalk-diskcheck.service
+%systemd_postun spacewalk-diskcheck.timer
+%else
 %service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
-
+%endif
 
 %files
 %defattr(-,root,root)
@@ -385,7 +404,11 @@ fi
 %dir %{_prefix}/lib/susemanager/bin
 %{python3rhnroot}/__init__.py*
 %{python3rhnroot}/common
+%if 0%{?rhel}
+%dir %{_var}/log/rhn
+%else
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%endif
 # Workaround for strict-whitespace-enforcement in httpd
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
 # config files
@@ -632,8 +655,8 @@ fi
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore
 %attr(755,root,root) %{_bindir}/satellite-sync
-%attr(755,root,root) %{_bindir}/mgr-inter-sync
-%attr(755,root,root) %{_bindir}/mgr-exporter
+%{_bindir}/mgr-inter-sync
+%{_bindir}/mgr-exporter
 %attr(755,root,root) %{_bindir}/spacewalk-debug
 %attr(755,root,root) %{_bindir}/rhn-satellite-exporter
 %attr(755,root,root) %{_bindir}/update-packages

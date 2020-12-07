@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
 "PO-Revision-Date: 2013-02-06 09:40+0000\n"
 "Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -950,8 +950,8 @@ msgid "Cannot contact selected server"
 msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "我們無法連上位於 %s 的衛星伺服器或代理伺服器。"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1164,10 +1164,10 @@ msgid ""
 msgstr "儲存您的設定時發生錯誤。 請確定您有 %s 的擁有權。"
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "這錯誤不該發生。如果您願意幫助我們改善這程式，請透過 bugzilla.redhat.com 發送"
@@ -2277,14 +2277,14 @@ msgid "RHN Registration"
 msgstr "註冊號碼（registration_number）"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
-msgstr ""
+#, fuzzy
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
+msgstr "為軟體更新而註冊"
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr ""
+#, fuzzy
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr "向 Red Hat Network 註冊"
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."
@@ -2765,9 +2765,6 @@ msgstr ""
 #~ msgid "Are you sure you would like to continue?"
 #~ msgstr "您確定要繼續嗎？"
 
-#~ msgid "Register to Spacewalk/Satellite/Red Hat Network."
-#~ msgstr "向 Red Hat Network 註冊"
-
 #~ msgid "Please verify the value of sslCACert in /etc/sysconfig/rhn/up2date"
 #~ msgstr "請驗證 /etc/sysconfig/rhn/up2date 中的 sslCACert 值"
 
@@ -2784,9 +2781,6 @@ msgstr ""
 #~ msgstr ""
 #~ "您的系統需要存取訂閱服務。這將能讓您的系統保持在最新、最安全，並受支援的狀"
 #~ "態。"
-
-#~ msgid "Registering for software updates"
-#~ msgstr "為軟體更新而註冊"
 
 #~ msgid "Software update setup unsuccessful"
 #~ msgstr "軟體更新的設定不成功"

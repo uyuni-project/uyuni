@@ -33,7 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
 /**
@@ -87,7 +89,9 @@ public class RenderUtils {
     public String renderNavigationMenu(HttpServletRequest request, String menuDefinition,
             String rendererClass, int minDepth, int maxDepth, Map<String, String> context,
             Map<String, String[]> additionalParams) throws Exception {
-        URL url = request.getSession().getServletContext().getResource(menuDefinition);
+        HttpSession session = request.getSession();
+        ServletContext servletContext = session.getServletContext();
+        URL url = servletContext.getResource(menuDefinition);
         return renderNavigationMenu(url, request, rendererClass, minDepth, maxDepth, context, additionalParams);
     }
 

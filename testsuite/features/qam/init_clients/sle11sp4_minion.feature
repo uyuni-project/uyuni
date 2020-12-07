@@ -45,13 +45,6 @@ Feature: Be able to bootstrap a sle11sp4 Salt minion via the GUI
     And I follow "Proxy" in the content area
     Then I should see "sle11sp4_minion" hostname
 
-  # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
-  Scenario: Check the new channel is working
-    When I refresh the metadata for "sle11sp4_minion"
-
-  Scenario: Detect latest Salt changes on the SLE11SP4 minion
-    When I query latest Salt changes on "sle11sp4_minion"
-
   Scenario: Check spacecmd system ID of bootstrapped minion
     Given I am on the Systems overview page of this "sle11sp4_minion"
     Then I run spacecmd listevents for "sle11sp4_minion"

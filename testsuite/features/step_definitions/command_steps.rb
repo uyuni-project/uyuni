@@ -36,7 +36,7 @@ end
 
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
-  proxy = "suma:P4$$word@#{$server_http_proxy}"
+  proxy = "suma2:P4$$wordWith%and&@#{$server_http_proxy}"
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
@@ -50,18 +50,11 @@ Then(/^it should be possible to reach the build sources$/) do
   end
 end
 
-Then(/^it should be possible to reach the container profiles$/) do
-  if $product == 'Uyuni'
-    # TODO: move that resource to next location ("test suite profiles")
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
-    $server.run("curl --insecure --location #{url} --output /dev/null")
-  end
-end
-
-Then(/^it should be possible to reach the test suite profiles$/) do
-  url = 'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
+Then(/^it should be possible to reach the Docker profiles$/) do
+  git_profiles = ENV['GITPROFILES']
+  url = git_profiles.sub(/github\.com/, "raw.githubusercontent.com")
+                    .sub(/\.git#:/, "/master/")
+                    .sub(/$/, "/Docker/Dockerfile")
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
@@ -222,6 +215,11 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
+# This function kills all spacewalk-repo-sync processes, excepted the ones in a whitelist.
+# It waits for all the reposyncs in the whitelist to complete, and kills all others.
+#
+# This function is written as a state machine. It bails out if no process is seen during
+# 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
@@ -429,6 +427,15 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   system_name = get_system_name('pxeboot_minion')
   $server.run("salt-cp #{system_name} #{dest} #{dest}")
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
+end
+
+When(/^I import the GPG keys for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  gpg_keys = get_gpg_keys(node)
+  gpg_keys.each do |key|
+    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
+    node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
+  end
 end
 
 When(/^the server starts mocking an IPMI host$/) do
@@ -659,19 +666,19 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
 end
 
-When(/^I wait for the openSCAP audit to finish$/) do
+When(/^I wait for the OpenSCAP audit to finish$/) do
   host = $server.full_hostname
   @sle_id = retrieve_server_id($minion.full_hostname)
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @client_api.call('auth.login', 'admin', 'admin')
   begin
     repeat_until_timeout(message: "process did not complete") do
-      scans = @cli.call('system.scap.list_xccdf_scans', @sid, @sle_id)
+      scans = @client_api.call('system.scap.list_xccdf_scans', @sid, @sle_id)
       # in the openscap test, we schedule 2 scans
       break if scans.length > 1
     end
   ensure
-    @cli.call('auth.logout', @sid)
+    @client_api.call('auth.logout', @sid)
   end
 end
 
@@ -771,17 +778,30 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
 end
 
 When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
-  step %(I #{action} packages "#{TRADITIONAL_STACK_RPMS}" #{where} this "#{host}")
+  pkgs = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions'
+  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
-When(/^I (install|remove) OpenSCAP (traditional|salt|centos) dependencies (on|from) "([^"]*)"$/) do |action, client_type, where, host|
-  if client_type == 'traditional'
-    step %(I #{action} packages "#{OPEN_SCAP_TRAD_DEPS}" #{where} this "#{host}")
-  elsif client_type == 'salt'
-    step %(I #{action} packages "#{OPEN_SCAP_SALT_DEPS}" #{where} this "#{host}")
-  else
-    step %(I #{action} packages "#{OPEN_SCAP_CENTOS_DEPS}" #{where} this "#{host}")
+When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    pkgs = 'openscap-utils openscap-content'
+  elsif os_family =~ /^centos/
+    pkgs = 'openscap-utils scap-security-guide'
+  elsif os_family =~ /^ubuntu/
+    pkgs = 'libopenscap8 ssg-debderived'
   end
+  pkgs += ' spacewalk-oscap' if host.include? 'client'
+  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
+end
+
+# On CentOS 7, OpenSCAP files are for RedHat and need a small adaptation for CentOS
+When(/^I fix CentOS 7 OpenSCAP files on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  script = '/<\/rear-matter>/a  <platform idref="cpe:/o:centos:centos:7"/>'
+  file = "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml"
+  node.run("sed -i '#{script}' #{file}")
 end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -797,6 +817,13 @@ When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error con
     successcodes = [0, 100, 101, 102, 103, 106]
   end
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+end
+
+When(/^I install package tftpboot-installation on the server$/) do
+  node = get_target("server")
+  output, _code = node.run("find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm")
+  package = output.split("\n")[0]
+  node.run("rpm -i #{package}")
 end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -1419,5 +1446,5 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
-  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
 end

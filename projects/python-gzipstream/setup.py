@@ -5,7 +5,7 @@
 from distutils.core import setup
 
 setup(name = "gzipstream",
-      version = "4.2.1",
+      version = "4.2.2",
       description = "Streaming zlib (gzip) support for python",
       long_description = """\
 A streaming gzip handler.

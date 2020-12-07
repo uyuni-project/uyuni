@@ -8727,20 +8727,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>システムはすでに {0} エンタイトルメントを持っています。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。詳細については、&lt;a href="/rhn/help/reference/en/ref.webui.systems.systems.jsp"&gt;こちら&lt;/a&gt;をご覧ください。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。</target>
-      </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
         <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
@@ -10522,6 +10508,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
+        <target>システムに対して仮想化システムの種類を追加したため、仮想化ゲストの管理を管理しやすくするための追加ステップを実行しました。詳しくは  &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; をお読みください。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
+        <target>システムに対して仮想化システムの種類を追加したため、仮想化ゲストの管理を管理しやすくするための追加ステップを実行しました。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <target>システムに対してモニタリングの種類を追加したため、自動的に Prometheus Exporters formula の割り当ても行ないました。 Prometheus metrics exporters にインストールと有効化については &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; をお使いください。</target>
@@ -10950,14 +10950,81 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="translated">Redfish</target>
       </trans-unit>
-    <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">ssh minion で動作を実行</target>
+      </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">minion で動作チェーンを実行</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
+        <source>The following module streams will be enabled: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">下記のモジュールストリームを有効化します: {0}</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_created" xml:space="preserve">
+        <source>Project {0} created successfully</source>
+        <target state="translated">プロジェクト {0} を作成しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
+        <source>Project {0} deleted successfully</source>
+        <target state="translated">プロジェクト {0} を削除しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
+        <source>Project already exists</source>
+        <target state="translated">プロジェクトは既に存在しています</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.label_required" xml:space="preserve">
+        <source>Label is required</source>
+        <target state="translated">ラベルが必要です</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
+        <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
+        <target state="translated">ラベルは文字から書き始めなければならないほか、小文字を使用しなければなりません。文字のほかはハイフン ('-'), ピリオド ('.'), アンダースコア ('_'), 数字をそれぞれ使用することができます</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
+        <source>Label must not exceed 24 characters</source>
+        <target state="translated">ラベルは 24 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.name_required" xml:space="preserve">
+        <source>Name is required</source>
+        <target state="translated">名前が必要です</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+        <target state="translated">名前は 128 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
+        <source>Name already exists</source>
+        <target state="translated">その名前は既に存在しています</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
+        <source>Label must not exceed 16 characters</source>
+        <target state="translated">ラベルは 16 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
+        <source>Label must not exceed 128 characters</source>
+        <target state="translated">ラベルは 128 文字以内でなければなりません</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
+        <source>Filter name already exists</source>
+        <target state="translated">そのフィルタ名は既に存在しています</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
+        <source>Filter {0} created successfully</source>
+        <target state="translated">フィルタ {0} を作成しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
+        <source>Filter {0} updated successfully</source>
+        <target state="translated">フィルタ {0} を更新しました</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+        <target state="translated">名前は 128 文字以内でなければなりません</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

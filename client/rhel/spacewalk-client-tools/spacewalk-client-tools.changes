@@ -1,3 +1,14 @@
+-------------------------------------------------------------------
+Thu Dec 03 13:44:41 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.4-1
+- Updated RHEL Python requirements.
+- Added quotes around %{_vendor}.
+
+-------------------------------------------------------------------
+Wed Nov 25 12:21:32 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - Remove RH references in Python/Ruby localization and use the product name instead
 
 -------------------------------------------------------------------

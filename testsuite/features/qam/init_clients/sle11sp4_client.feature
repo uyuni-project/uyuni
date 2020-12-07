@@ -9,7 +9,7 @@ Feature: Bootstrap a SLES 11 SP4 traditional client
 
   Scenario: Register a SLES 11 SP4 traditional client
     When I bootstrap traditional client "sle11sp4_client" using bootstrap script with activation key "1-sle11sp4_client_key" from the proxy
-    And I install package "spacewalk-client-setup spacewalk-oscap mgr-cfg-actions" on this "sle11sp4_client"
+    And I install package "spacewalk-client-setup mgr-cfg-actions" on this "sle11sp4_client"
     And I run "mgr-actions-control --enable-all" on "sle11sp4_client"
     Then I should see "sle11sp4_client" via spacecmd
 
@@ -42,10 +42,3 @@ Feature: Bootstrap a SLES 11 SP4 traditional client
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle11sp4_client" hostname
-
-  Scenario: Check tab links "Software" => "Patches" of sle11sp4 traditional
-    Given I am on the Systems overview page of this "sle11sp4_client"
-    When I follow "Software" in the content area
-    And I follow "Patches" in the content area
-    Then I should see a "Relevant Patches" text
-    And I should see a "Show" button

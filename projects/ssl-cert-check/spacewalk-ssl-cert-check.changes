@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 03 13:54:17 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Added RHEL to the Python 3 build.
+
+-------------------------------------------------------------------
 Fri Sep 18 11:46:06 CEST 2020 - jgonzalez@suse.com
 
 - version 4.2.1-1

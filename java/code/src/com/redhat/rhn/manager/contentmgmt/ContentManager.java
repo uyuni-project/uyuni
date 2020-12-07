@@ -729,11 +729,11 @@ public class ContentManager {
         // Resolve filters for dependencies
         try {
             DependencyResolver resolver = new DependencyResolver(env.getContentProject(), this.modulemdApi);
-            List<ContentFilter> resolvedFilters = resolver.resolveFilters(filters);
+            DependencyResolutionResult result = resolver.resolveFilters(filters);
 
             // align the contents
             newSrcTgtPairs.forEach(srcTgt ->
-                    alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), resolvedFilters, async, user));
+                    alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user));
         }
         catch (DependencyResolutionException e) {
             // Build shouldn't be allowed if dependency resolution fails
