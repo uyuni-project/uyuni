@@ -60,7 +60,8 @@ artifacts:
     repository: Leap
   - artifact: commons-jexl
     package: apache-commons-jexl
-    repository: Uyuni_Other
+    jar: commons-jexl\.jar
+    repository: Leap
   - artifact: commons-lang3
     package: apache-commons-lang3
     repository: Leap
