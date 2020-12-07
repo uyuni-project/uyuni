@@ -79,11 +79,6 @@ const Login = (props: Props) => {
   const loginInput = useInputValue('');
   const passwordInput = useInputValue('');
   const { onLogin, success, messages } = useLoginApi();
-  const loginInputRef = useRef();
-
-  useEffect(() => {
-    loginInputRef && loginInputRef.current && loginInputRef.current.focus();
-  }, []);
 
   const product = props.isUyuni ? products.uyuni : products.suma;
 
@@ -128,9 +123,8 @@ const Login = (props: Props) => {
                         className="form-control"
                         type="text"
                         placeholder={t('Login')}
-                        tabindex="1"
                         maxlength={props.loginLength}
-                        ref={loginInputRef}
+                        autoFocus={true}
                         {...loginInput}
                       />
                       <input
@@ -138,8 +132,8 @@ const Login = (props: Props) => {
                         name="password"
                         className="form-control"
                         type="password"
+                        autoComplete="password"
                         placeholder={t('Password')}
-                        tabindex="2"
                         maxlength={props.passwordLength}
                         {...passwordInput}
                       />
