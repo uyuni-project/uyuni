@@ -9,7 +9,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-configuration"
- helpUrl="/docs/reference/configuration/config-files-menu.html">
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-overview.html">
   <bean:message key="globalfilelist.jsp.toolbar"/>
 </rhn:toolbar>
 

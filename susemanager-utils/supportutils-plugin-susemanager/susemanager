@@ -5,27 +5,29 @@
 #              about SUSE Manager
 # License:     GPLv2
 # Author:      Stefan Bogner <sbogner@suse.com>
-# Modified:    2012 Oct 1
+#              Michael Calmer <mc@suse.com>
+# Modified:    2020 November 09
 #############################################################
 
-SVER=1.0.2
+SVER=4.2.0
 RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
 section_header "Supportconfig Plugin for SUSE Manager, v${SVER}"
+
+plugin_command "grep web.version /usr/share/rhn/config-defaults/rhn_web.conf"
+
+plugin_command "hostname --fqdn"
+
 RPMLIST="
 susemanager-tools
 susemanager
 susemanager-schema
-suse-manager-server-release
-suse-manager-server-release-cd
-release-notes-susemanager
+SUSE-Manager-Server-release
+sle-module-suse-manager-server-release
 salt-minion
 salt
-python-Jinja2
-python-tornado
-python-pyzmq
 "
 DAEMONLIST="susemanager tomcat osa-dispatcher postgresql"
 
@@ -45,6 +47,18 @@ do
     plugin_command "systemctl status $i"
 done
 
+plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib"
+plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib64"
+
+section_header "SSL Configuration"
+
+pconf_files /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+            /etc/apache2/ssl.crt/server.crt
+plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
+
+plugin_command "/bin/ls -l --time-style=long-iso /srv/www/htdocs/pub/ | grep -i trusted"
+
+
 plugin_command "psql --version"
 plugin_command "cat /var/lib/pgsql/data/PG_VERSION"
 plugin_command "zypper --no-refresh ls"
@@ -52,4 +66,8 @@ plugin_command "zypper --no-refresh lr -u"
 plugin_command "/usr/lib/susemanager/bin/susemanager-connection-check"
 plugin_command "salt-master --versions-report"
 
+plugin_command "echo \"select username scc_org from susecredentials sc join susecredentialstype sct on sct.id = sc.type_id where sct.label = 'scc';\" | spacewalk-sql --select-mode-direct -"
+
 plugin_command "/sbin/supportconfig-sumalog $LOG"
+plugin_command "cp /var/log/zypper.log $LOG"
+

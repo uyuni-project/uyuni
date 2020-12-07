@@ -16,7 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
 /**
- * Holds details for a unique AppStream module entry
+ * Detailed information on a unique AppStream module entry
  */
 public class ModuleInfo {
 
@@ -25,6 +25,23 @@ public class ModuleInfo {
     private String version;
     private String context;
     private String arch;
+
+    /**
+     * All args constructor
+     *
+     * @param nameIn the module name
+     * @param streamIn the stream name
+     * @param versionIn the stream version
+     * @param contextIn the stream context hash value
+     * @param archIn the architecture
+     */
+    public ModuleInfo(String nameIn, String streamIn, String versionIn, String contextIn, String archIn) {
+        name = nameIn;
+        stream = streamIn;
+        version = versionIn;
+        context = contextIn;
+        arch = archIn;
+    }
 
     public String getName() {
         return name;

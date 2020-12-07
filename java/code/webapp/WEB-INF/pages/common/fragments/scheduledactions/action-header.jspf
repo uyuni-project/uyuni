@@ -1,6 +1,8 @@
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
+
 <rhn:toolbar base="h1" icon="header-schedule"
              iconAlt="action.common.scheduleAlt"
-             helpUrl="/docs/reference/schedule/schedule-menu.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/schedule/schedule-menu.html">
   ${requestScope.actionname}
 </rhn:toolbar>
 

@@ -38,9 +38,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2020-07-28 15:30+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
+"PO-Revision-Date: 2020-11-21 02:26+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools/es/>\n"
 "Language: es\n"
@@ -1088,8 +1088,8 @@ msgid "Cannot contact selected server"
 msgstr "No se puede contactar al servidor seleccionado"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "No pudimos contactar el Satellite o Proxy en '%s.'"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1106,9 +1106,8 @@ msgid "Make sure the network connection on this system is operational."
 msgstr "Asegúrese de que la conexión a red esté funcionando."
 
 #: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Se produjo un error al conectarse con Red Hat Network."
+msgstr "Hubo un error de comunicación con el servidor Spacewalk."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
@@ -1316,10 +1315,10 @@ msgstr ""
 " propietario de %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Este error no debió haber ocurrido. Si desea ayudarnos a mejorar este "
@@ -2568,15 +2567,16 @@ msgstr "Registro de RHN"
 
 #: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr "Registro a Spacewalk/Satellite/Red Hat Network."
 
 #: ../rhn_register.desktop.in.h:3
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
 #, fuzzy
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "Registrarse a Spacewalk/Satellite/Red Hat Network."
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "Registrarse a Spacewalk/Satellite/Red Hat Network."
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."

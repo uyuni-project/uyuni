@@ -90,6 +90,11 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void syncGrains(MinionList minionList) {
         throw new UnsupportedOperationException();
     }

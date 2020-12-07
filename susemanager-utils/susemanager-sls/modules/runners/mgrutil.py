@@ -68,6 +68,9 @@ def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", option
             out.write(ret["stdout"])
     return ret
 
+def remove_ssh_known_host(user, hostname):
+    return __salt__['salt.cmd']('ssh.rm_known_host', user, hostname)
+
 
 def _cmd(cmd):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE)

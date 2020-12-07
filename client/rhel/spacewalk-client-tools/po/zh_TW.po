@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
 "PO-Revision-Date: 2018-03-16 11:05+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/"
@@ -968,8 +968,8 @@ msgid "Cannot contact selected server"
 msgstr "無法聯絡所選取的伺服器"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "我們無法連上位於 %s 的衛星伺服器或代理伺服器。"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1180,10 +1180,10 @@ msgid ""
 msgstr "儲存配置時發生錯誤。 請確定您有 %s 的擁有權。"
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "這錯誤不該發生。如果您願意幫助我們改善這程式，請透過 bugzilla.redhat.com 發送"
@@ -2360,15 +2360,16 @@ msgstr "RHN 註冊"
 
 #: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr "註冊以取得來自於 Spacewalk/Satellite/Red Hat Network 的軟體更新"
 
 #: ../rhn_register.desktop.in.h:3
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
 #, fuzzy
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "向 Spacewalk/Satellite/Red Hat Network 註冊。"
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "向 Spacewalk/Satellite/Red Hat Network 註冊。"
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."

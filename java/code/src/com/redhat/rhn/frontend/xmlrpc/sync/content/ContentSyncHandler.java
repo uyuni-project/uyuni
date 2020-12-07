@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
-import com.redhat.rhn.common.util.SCCRefreshLock;
+import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
@@ -119,14 +119,10 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannelFamilies(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        SCCRefreshLock.tryGetLock();
-        try {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateChannelFamilies(csm.readChannelFamilies());
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
+        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+                ContentSyncManager csm = new ContentSyncManager();
+                csm.updateChannelFamilies(csm.readChannelFamilies());
+        });
         return BaseHandler.VALID;
     }
 
@@ -145,14 +141,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        SCCRefreshLock.tryGetLock();
-        try {
+        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSUSEProducts(csm.getProducts());
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
+        });
         return BaseHandler.VALID;
     }
 
@@ -192,14 +184,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        SCCRefreshLock.tryGetLock();
-        try {
+        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSubscriptions();
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
+        });
         return BaseHandler.VALID;
     }
 
@@ -221,14 +209,10 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeRepositories(User loggedInUser, String mirrorUrl) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        SCCRefreshLock.tryGetLock();
-        try {
+        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateRepositories(mirrorUrl);
-        }
-        finally {
-            SCCRefreshLock.unlockFile();
-        }
+        });
         return BaseHandler.VALID;
     }
 

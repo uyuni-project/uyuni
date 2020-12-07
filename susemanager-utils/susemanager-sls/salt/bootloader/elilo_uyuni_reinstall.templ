@@ -1,0 +1,6 @@
+
+image = uyuni-reinstall-kernel
+###Created for automated reinstallation
+    label = {{ pillar.get('uyuni-reinstall-name') }}
+    append = "{{ pillar.get('kopts') }}"
+    initrd = uyuni-reinstall-initrd

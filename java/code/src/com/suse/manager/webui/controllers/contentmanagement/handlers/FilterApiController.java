@@ -21,6 +21,8 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -39,8 +41,6 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,6 +55,7 @@ public class FilterApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private FilterApiController() {
     }
@@ -148,11 +149,6 @@ public class FilterApiController {
     public static String createContentFilter(Request req, Response res, User user) {
         FilterRequest createFilterRequest = FilterHandler.getFilterRequest(req);
 
-        HashMap<String, String> requestErrors = FilterHandler.validateFilterRequest(createFilterRequest);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
-        }
-
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(createFilterRequest.getMatcher()),
                 createFilterRequest.getCriteriaKey(),
@@ -170,7 +166,11 @@ public class FilterApiController {
             );
         }
         catch (EntityExistsException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("Filter name already exists"));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("contentmanagement.filter_exists"));
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
         }
 
         if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
@@ -179,7 +179,7 @@ public class FilterApiController {
                     createdFilter.getId(),
                     user
             );
-            FlashScopeHelper.flash(req, String.format("Filter %s created successfully.", createdFilter.getName()));
+            FlashScopeHelper.flash(req, LOC.getMessage("contentmanagement.filter_created", createdFilter.getName()));
         }
 
         return ControllerApiUtils.listFiltersJsonResponse(res, user);
@@ -195,26 +195,27 @@ public class FilterApiController {
     public static String updateContentFilter(Request req, Response res, User user) {
         FilterRequest updateFilterRequest = FilterHandler.getFilterRequest(req);
 
-        HashMap<String, String> requestErrors = FilterHandler.validateFilterRequest(updateFilterRequest);
-        if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(Arrays.asList(""), requestErrors));
-        }
-
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
                 updateFilterRequest.getCriteriaKey(),
                 updateFilterRequest.getCriteriaValue());
-        CONTENT_MGR.updateFilter(
-                Long.parseLong(req.params("filterId")),
-                Optional.ofNullable(updateFilterRequest.getName()),
-                Optional.ofNullable(updateFilterRequest.getRule()).map(ContentFilter.Rule::lookupByLabel),
-                Optional.of(filterCriteria),
-                user
-        );
+        try {
+            CONTENT_MGR.updateFilter(
+                    Long.parseLong(req.params("filterId")),
+                    Optional.ofNullable(updateFilterRequest.getName()),
+                    Optional.ofNullable(updateFilterRequest.getRule()).map(ContentFilter.Rule::lookupByLabel),
+                    Optional.of(filterCriteria),
+                    user
+            );
+        }
+        catch (ValidatorException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
+        }
 
         if (!StringUtils.isEmpty(updateFilterRequest.getProjectLabel())) {
             FlashScopeHelper.flash(
-                    req, String.format("Filter %s updated successfully.", updateFilterRequest.getName())
+                    req, LOC.getMessage("contentmanagement.filter_updated", updateFilterRequest.getName())
             );
         }
 

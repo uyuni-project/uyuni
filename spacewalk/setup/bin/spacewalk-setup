@@ -283,7 +283,7 @@ sub setup_cobbler {
   my $cobbler_version = `rpm -q --queryformat '%{version}' cobbler`;
 
   # newer versions of Cobbler don't ship the config templates
-  if ($cobbler_version =~ /2\.0/) {
+  if ($cobbler_version =~ /^2\.0/) {
     # Cobbler 2.0 can use the old helper script
     system(COBBLER_20_COMMAND);
   } else {
@@ -305,7 +305,7 @@ sub setup_cobbler {
       print FILE "cobbler.host = " . $answers->{'hostname'} . "\n";
       close(FILE);
     }
-    if ( system("/sbin/checkproc /usr/bin/cobblerd") == 0 ) {
+    if ( system("ps -A | grep cobblerd") == 0 ) {
       system("cobbler sync");
     }
   }

@@ -32,6 +32,7 @@ public class UserInfo extends AbstractUserChild {
     private boolean usePamAuthentication;
     private String showSystemGroupList;
     private String preferredLocale;
+    private String preferredDocsLocale;
     private Date lastLoggedIn;
     private RhnTimeZone timeZone;
     private User user;
@@ -148,6 +149,23 @@ public class UserInfo extends AbstractUserChild {
     public void setPreferredLocale(String locale) {
         this.preferredLocale = locale;
     }
+
+    /**
+     * Returns the user's preferred documentation locale
+     * @return String docsLocale
+     */
+    String getPreferredDocsLocale() {
+        return this.preferredDocsLocale;
+    }
+
+    /**
+     * Sets the user's preferred documentation locale
+     * @param docsLocale documentation locale
+     */
+    void setPreferredDocsLocale(String docsLocale) {
+        this.preferredDocsLocale = docsLocale;
+    }
+
 
     /**
      * Getter for emailNotify

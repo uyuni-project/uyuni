@@ -75,6 +75,48 @@ public class MgrUtilRunner {
     }
 
     /**
+     * Result of removing a hostname from the ~/.ssh/known_hosts file
+     */
+    public static class RemoveKnowHostResult {
+
+        @SerializedName("status")
+        private String status;
+
+        @SerializedName("comment")
+        private String comment;
+
+        /**
+         * Constructor.
+         */
+        public RemoveKnowHostResult() {
+        }
+
+        /**
+         * Only needed for unit tests.
+         * @param statusIn status
+         * @param commentIn comment
+         */
+        public RemoveKnowHostResult(String statusIn, String commentIn) {
+            this.status = statusIn;
+            this.comment = commentIn;
+        }
+
+        /**
+         * @return status to get
+         */
+        public String getStatus() {
+            return status;
+        }
+
+        /**
+         * @return comment to get
+         */
+        public String getComment() {
+            return comment;
+        }
+    }
+
+    /**
      * Remove a Salt key from the "Rejected Keys" category.
      * @param minionId the minionId to look for in "Rejected Keys"
      * @return the execution result
@@ -99,6 +141,22 @@ public class MgrUtilRunner {
         RunnerCall<ExecResult> call =
                 new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args),
                         new TypeToken<ExecResult>() { });
+        return call;
+    }
+
+    /**
+     * Removes a hostname from a user's ~/.ssh/known_hosts file.
+     * @param user the user for which to remove the hostname
+     * @param hostname hotname to remove
+     * @return the execution result
+     */
+    public static RunnerCall<RemoveKnowHostResult> removeSSHKnowHost(String user, String hostname) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("user", user);
+        args.put("hostname", hostname);
+        RunnerCall<RemoveKnowHostResult> call =
+                new RunnerCall<>("mgrutil.remove_ssh_known_host", Optional.of(args),
+                        new TypeToken<RemoveKnowHostResult>() { });
         return call;
     }
 

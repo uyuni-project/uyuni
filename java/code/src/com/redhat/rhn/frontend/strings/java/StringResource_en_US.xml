@@ -4739,6 +4739,12 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="RS" xml:space="preserve">
+        <source>Serbia</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">All country select list pull-downs</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="RU" xml:space="preserve">
         <source>Russia</source>
         <context-group name="ctx">
@@ -7533,18 +7539,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
         <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
         <context-group name="ctx">
@@ -8816,6 +8810,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="task.status.minion-action-executor" xml:space="preserve">
         <source>Execute actions on minions</source>
       </trans-unit>
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+        <source>Execute actions on ssh minions</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
+        <source>Execute action chains on minions</source>
+      </trans-unit>
       <trans-unit id="task.status.notifications-cleanup" xml:space="preserve">
         <source>Cleanup notifications</source>
       </trans-unit>
@@ -8879,6 +8879,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="clusters.nav.add" xml:space="preserve">
         <source>Add</source>
       </trans-unit>
+      <trans-unit id="contentmanagement.validation.selectedmodules">
+        <source>The following module streams will be enabled: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
         <source>Module '{0}' not found.</source>
         <context-group name="ctx">
@@ -8914,6 +8920,51 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_created" xml:space="preserve">
+        <source>Project {0} created successfully</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
+        <source>Project {0} deleted successfully</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
+        <source>Project already exists</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.label_required" xml:space="preserve">
+        <source>Label is required</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
+        <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
+        <source>Label must not exceed 24 characters</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.name_required" xml:space="preserve">
+        <source>Name is required</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
+        <source>Name already exists</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
+        <source>Label must not exceed 16 characters</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
+        <source>Filter name already exists</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
+        <source>Filter {0} created successfully</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
+        <source>Filter {0} updated successfully</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
       </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>

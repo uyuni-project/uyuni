@@ -117,7 +117,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Cleanup: register SSH minion again as traditional client
     When I enable SUSE Manager tools repositories on "sle_client"
-    And I install package "spacewalk-client-setup spacewalk-oscap mgr-cfg-actions" on this "sle_client"
+    And I install the traditional stack utils on "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 

@@ -1,8 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
 <rhn:toolbar base="h1" icon="header-channel"
              imgAlt="overview.jsp.alt"
-             helpUrl="/docs/reference/software/manage-channels.html"
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/software/manage-channels.html"
              deletionUrl="/rhn/channels/manage/Delete.do?cid=${cid}"
              deletionType="channel">
   <bean:message key="channel.edit.jsp.toolbar" arg0="${fn:escapeXml(channel_name)}"/>

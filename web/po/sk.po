@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-14 17:04+0200\n"
+"POT-Creation-Date: 2020-11-30 18:46+0100\n"
 "PO-Revision-Date: 2020-10-02 21:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -456,6 +456,7 @@ msgstr ""
 #: ../html/src/manager/clusters/add-cluster/select-provider.js:26
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:133
 #: ../html/src/manager/clusters/shared/ui/select-server.js:98
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:44
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:969
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
@@ -551,7 +552,7 @@ msgstr ""
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:228
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:271
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
 msgid "Loading..."
 msgstr ""
@@ -740,7 +741,7 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:229
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:117
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:234
 msgid "General"
@@ -863,7 +864,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.js:866
 #: ../html/src/manager/content-management/list-filters/filter-form.js:165
 #: ../html/src/manager/images/image-view-packages.js:48
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:183
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:197
 msgid "Architecture"
 msgstr ""
 
@@ -1054,6 +1055,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
+#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/virtualization/ListTab.js:231
 msgid "Filter by name"
 msgstr ""
@@ -1081,7 +1083,7 @@ msgstr ""
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:235
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:128
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:58
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
 msgid "Status"
@@ -1141,7 +1143,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:122
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:50
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
@@ -1374,8 +1376,8 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:154
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:257
 #: ../html/src/manager/content-management/list-projects/list-projects.js:100
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
@@ -1579,6 +1581,8 @@ msgid "Edit properties"
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:249
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
 #: ../html/src/manager/images/image-profile-edit.js:394
 #: ../html/src/manager/images/image-profiles.js:135
@@ -1606,7 +1610,6 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:286
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
 #: ../html/src/manager/clusters/shared/ui/select-server.js:113
-#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/content-management/list-projects/list-projects.js:81
 msgid "Filter by any value"
 msgstr ""
@@ -1654,7 +1657,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:75
 #: ../html/src/manager/clusters/remove-node/remove-node.js:62
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:53
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:63
 msgid "Cluster:"
 msgstr ""
 
@@ -1681,7 +1684,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:87
 #: ../html/src/manager/notifications/notification-messages.js:410
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:207
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:249
 msgid "Type"
 msgstr ""
 
@@ -1697,20 +1700,24 @@ msgstr ""
 msgid "Nodes to remove:"
 msgstr ""
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:31
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:33
 msgid "Upgrade "
 msgstr ""
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:38
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:47
 msgid "Configuration override"
 msgstr ""
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:49
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:59
 msgid "Schedule upgrade cluster"
 msgstr ""
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:59
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:69
 msgid "Upgrade"
+msgstr ""
+
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
+msgid "Upgrade plan"
 msgstr ""
 
 #: ../html/src/manager/content-management/create-project/create-project.js:28
@@ -1735,7 +1742,7 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:89
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:90
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:35
 msgid "Create"
 msgstr ""
@@ -1843,7 +1850,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-form.js:151
 #: ../html/src/manager/content-management/list-filters/filter-form.js:189
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:84
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:47
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-view.js:549
@@ -2108,7 +2115,7 @@ msgstr ""
 msgid "Version {0} successfully built into {1}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:55
 msgid "Insert before"
 msgstr ""
 
@@ -2159,12 +2166,12 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:84
 msgid "not built"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:73
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr ""
 
@@ -2424,7 +2431,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.js:312
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:219
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:262
 msgid "None"
 msgstr ""
 
@@ -4171,41 +4178,49 @@ msgstr ""
 msgid "Something went wrong, connection is closed"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:84
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
 msgid "Create Virtual Machine"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:124
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:138
 #: ../html/src/manager/virtualization/pools/pool-properties.js:241
 msgid "Can not contain the following characters: /\\"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:135
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:149
 msgid "Hypervisor"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:150
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:164
 msgid "Virtual Machine Type"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:162
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:176
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:164
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:173
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:178
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:187
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:171
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:185
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:203
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:215
+msgid "Auto-installation Profile"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:229
+msgid "Kernel options"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:245
 msgid "Graphics"
 msgstr ""
 
@@ -4293,7 +4308,7 @@ msgid "File"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:119
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:120
 #: ../html/src/manager/virtualization/pools/pool-properties.js:503
 msgid "Format"
 msgstr ""
@@ -4302,19 +4317,19 @@ msgstr ""
 msgid "Disks"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:65
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:66
 msgid "Source storage pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:80
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:81
 msgid "Source Volume"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:101
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:102
 msgid "Disk size (GiB)"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:109
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:110
 msgid "Source template image URL"
 msgstr ""
 

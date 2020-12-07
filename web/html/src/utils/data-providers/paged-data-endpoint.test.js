@@ -1,6 +1,3 @@
-// Fix for node 8. Can be removed on node 10 or later
-import "@babel/polyfill";
-
 import {Utils} from 'utils/functions';
 import * as Network from 'utils/network';
 

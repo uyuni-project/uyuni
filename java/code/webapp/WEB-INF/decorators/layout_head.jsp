@@ -52,6 +52,10 @@
     <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>
     <script>window.preferredLocale='${currentLocale}'</script>
 
+    <!-- expose user preferred documentation language to the application -->
+    <c:set var="docsLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(pageContext)}"/>
+    <script>window.docsLocale='${docsLocale}'</script>
+
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
 

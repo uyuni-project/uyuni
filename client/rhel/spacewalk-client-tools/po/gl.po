@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
 "PO-Revision-Date: 2018-03-16 11:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Galician (http://www.transifex.com/projects/p/spacewalk/"
@@ -915,8 +915,8 @@ msgid "Cannot contact selected server"
 msgstr "Non é posíbel contactar co servidor escollido"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "Non puidemos contactar co Satélite ou Proxy de «%s»."
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1140,10 +1140,10 @@ msgstr ""
 "é o dono de %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Este erro non se debería ter producido. Se desexa axudarnos a mellorar este "
@@ -2269,13 +2269,11 @@ msgid "RHN Registration"
 msgstr "Rexistro na RHN"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 
 #~ msgid "Satellite URL:"

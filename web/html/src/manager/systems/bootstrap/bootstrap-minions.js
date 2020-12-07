@@ -207,7 +207,7 @@ class BootstrapMinions extends React.Component {
             <div className="form-group" >
                 <label className="col-md-3 control-label">Password:</label>
                 <div className="col-md-6">
-                    <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
+                    <input name="password" className="form-control" type="password" autocomplete="new-password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
                 </div>
              </div>
              :
@@ -224,13 +224,13 @@ class BootstrapMinions extends React.Component {
                  <div className="form-group">
                      <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
                      <div className="col-md-6">
-                         <input name="privKeyPwd" className="form-control" type="password" placeholder={t("Leave empty for no passphrase")} value={this.state.privKeyPwd} onChange={this.privKeyPwdChanged}/>
+                         <input name="privKeyPwd" className="form-control" type="password" autocomplete="new-password" placeholder={t("Leave empty for no passphrase")} value={this.state.privKeyPwd} onChange={this.privKeyPwdChanged}/>
                      </div>
                  </div>
              </div>;
 
         return (
-        <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/docs/reference/systems/bootstrapping.html">
+        <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="reference/systems/bootstrapping.html">
             <p>{t('You can add systems to be managed by providing SSH credentials only. {0} will prepare the system remotely and will perform the registration.', productName)}</p>
             {messages}
             <div className="form-horizontal">

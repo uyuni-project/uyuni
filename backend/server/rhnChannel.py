@@ -1891,6 +1891,13 @@ class LiteServer:
     def get_suse_products(self):
         return self.suse_products
 
+    def add_suse_products(self, suse_products):
+        log_debug(1, suse_products)
+        if isinstance(suse_products, dict):
+            self.suse_products = suse_products['products']
+        elif isinstance(suse_products, list):
+            self.suse_products = suse_products
+
     def __repr__(self):
         dict = {}
         for attr in self._attributes:
@@ -1997,11 +2004,6 @@ def guess_channels_for_server(server, user_id=None, none_ok=0,
             'arch': server.arch,
             'www_activation': ''
         }
-
-        if CFG.REFER_TO_WWW:
-            error_strings['www_activation'] = _("\nIf you have a "
-                                                "registration number, please register with it first at "
-                                                "http://www.redhat.com/apps/activate/ and then try again.\n\n")
 
         raise_with_tb(rhnFault(19, msg % error_strings), sys.exc_info()[2])
     except BaseChannelDeniedError:
@@ -2272,17 +2274,6 @@ def subscribe_to_tools_channel(server_id):
 #
 # bretm 02/07/2007 -- when we have better old-client documentation, probably
 # will be safe to get rid of all this crap
-
-h_invalid_channel_title = _("System Registered but Inactive")
-h_invalid_channel_message = _("""
-Invalid Architecture and OS release combination (%s, %s).
-Your system has been registered, but will not receive updates
-because it is not subscribed to a channel. If you have not yet
-activated your product for service, please visit our website at:
-
-     http://www.redhat.com/apps/activate/
-
-...to activate your product.""")
 
 s_invalid_channel_title = _("System Registered but Inactive")
 s_invalid_channel_message = _("""

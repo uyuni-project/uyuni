@@ -114,6 +114,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -415,15 +416,22 @@ public class SystemManager extends BaseManager {
     /**
      * Gets the installed packages on a system
      * @param sid The system in question
-     * @param expanded If true, also adds EVR, Arch and package name to the result.
      * @return Returns a list of packages for a system
      */
-    public static DataResult<Map<String, Object>> installedPackages(Long sid,
-            boolean expanded) {
-        String suffix = expanded ? "_expanded" : "";
-        SelectMode m = ModeFactory.getMode("System_queries",
-                                           "system_installed_packages" + suffix,
-                                           Map.class);
+    public static DataResult<Map<String, Object>> installedPackages(Long sid) {
+        return installedPackages(sid, false);
+    }
+
+    /**
+     * Gets the installed packages on a system
+     * @param sid The system in question
+     * @param archAsLabel set to true to return architecture as label, otherwise architecture name is used
+     * @return Returns a list of packages for a system
+     */
+    public static DataResult<Map<String, Object>> installedPackages(Long sid, boolean archAsLabel) {
+        String suffix = archAsLabel ? "_arch_as_label" : "";
+        String query = "system_installed_packages" + suffix;
+        SelectMode m = ModeFactory.getMode("System_queries", query, Map.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
         DataResult<Map<String, Object>> pkgs = m.execute(params);
@@ -721,6 +729,11 @@ public class SystemManager extends BaseManager {
         });
 
 
+        // clean known_hosts
+        if (server.asMinionServer().isPresent()) {
+            removeSaltSSHKnownHosts(server);
+        }
+
         // remove server itself
         ServerFactory.delete(server);
 
@@ -728,6 +741,16 @@ public class SystemManager extends BaseManager {
             saltApi.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
         });
+    }
+
+    private static void removeSaltSSHKnownHosts(Server server) {
+        Optional<MgrUtilRunner.RemoveKnowHostResult> result =
+                saltApi.removeSaltSSHKnownHost(server.getHostname());
+        boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
+        if (!removed) {
+            log.warn("Hostname " + server.getHostname() + " could not be removed from " +
+                    "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+        }
     }
 
     /**

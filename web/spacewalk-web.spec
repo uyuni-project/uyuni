@@ -23,16 +23,21 @@
 %define apache_group www
 %else
 %define www_path %{_var}
+%if 0%{?rhel}
+%define apache_user root
+%define apache_group root
+%else
 %define apache_user apache
 %define apache_group apache
 %endif
-%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
+%endif
+%{!?rhel: %global sbinpath /sbin}%{?rhel: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.2
+Version:        4.2.4
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -41,10 +46,11 @@ BuildArch:      noarch
 Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  susemanager-nodejs-sdk-devel
+
 %if 0%{?suse_version}
 BuildRequires:  apache2
 BuildRequires:  nodejs-packaging
-BuildRequires:  susemanager-nodejs-sdk-devel
 BuildRequires:  nodejs
 
 %endif
@@ -186,17 +192,15 @@ database.
 
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-%if 0%{?suse_version}
 pushd html/src
 ln -sf %{nodejs_sitelib} .
 BUILD_VALIDATION=false node build.js
 popd
-%endif
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 
 %install
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-make -C html install PREFIX=$RPM_BUILD_ROOT
+make -C html install PREFIX=$RPM_BUILD_ROOT INSTALL_DEST=%{www_path}/www/htdocs
 make -C po install PREFIX=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
@@ -212,13 +216,13 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
-%{__mkdir_p} %{buildroot}/srv/www/htdocs/javascript/manager
-cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript
+%{__mkdir_p} %{buildroot}/%{www_path}/www/htdocs/javascript/manager
+cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/www/htdocs/javascript
 
-%{__mkdir_p} %{buildroot}/srv/www/htdocs/vendors
-cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js
-cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js.map
-cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js.LICENSE
+%{__mkdir_p} %{buildroot}/%{www_path}/www/htdocs/vendors
+cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/%{www_path}/www/htdocs/vendors/vendors.bundle.js
+cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/%{www_path}/www/htdocs/vendors/vendors.bundle.js.map
+cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/www/htdocs/vendors/vendors.bundle.js.LICENSE
 
 %find_lang spacewalk-web
 

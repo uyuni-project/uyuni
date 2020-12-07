@@ -39,9 +39,7 @@ end
 # determine image for PXE boot tests
 def compute_image_filename
   case ENV['PXEBOOT_IMAGE']
-  when nil
-    'Kiwi/POS_Image-JeOS6_head'
-  when 'sles15sp2', 'sles15sp2o'
+  when 'sles15sp2', 'sles15sp2o', 'sles15sp3o'
     'Kiwi/POS_Image-JeOS7_head'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not supported image version.'
@@ -52,9 +50,7 @@ end
 
 def compute_image_name
   case ENV['PXEBOOT_IMAGE']
-  when nil
-    'POS_Image_JeOS6_head'
-  when 'sles15sp2', 'sles15sp2o'
+  when 'sles15sp2', 'sles15sp2o', 'sles15sp3o'
     'POS_Image_JeOS7_head'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not supported image version.'
@@ -63,27 +59,48 @@ def compute_image_name
   end
 end
 
-# compute list of reposyncs to avoid killing because they might be involved in bootstrapping
-# this is a safety net only, the best thing to do is to not start the reposync at all
+# If we for example
+#  - start a reposync in reposync/srv_sync_channels.feature.
+#  - then kill it in reposync/srv_abort_all_sync.feature
+#  - then restart it later on in init_clients/sle_minion.feature
+# then the channel will be in an inconsistent state.
+#
+# This function computes a list of reposyncs to avoid killing, because they might be involved in bootstrapping.
+#
+# This is a safety net only, the best thing to do is to not start the reposync at all.
+# rubocop:disable Metrics/MethodLength
 def compute_list_to_leave_running
   do_not_kill = []
+  if $long_tests_enabled
+    # keep the repos needed for the auto-installation tests
+    do_not_kill += ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2', 'sle-module-basesystem15-sp2-pool-x86_64',
+                    'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2', 'sle-module-basesystem15-sp2-updates-x86_64']
+  end
   [$minion, $build_host, $sshminion, $server].each do |node|
     next if node.nil?
     os_version, os_family = get_os_version(node)
-    if os_family == 'sles' && os_version == '12-SP4'
-      do_not_kill += ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
-                      'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4']
-    elsif os_family == 'sles' && os_version == '15-SP1'
-      do_not_kill += ['sle-product-sles15-sp1-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp1', 'sle-module-containers15-sp1-pool-x86_64',
-                      'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64']
-    elsif os_family == 'sles' && os_version == '15-SP2'
-      do_not_kill += ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2',
-                      'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2',
-                      'sle-module-basesystem15-sp2-pool-x86_64', 'sle-module-basesystem15-sp2-updates-x86_64']
-    end
+    next unless os_family == 'sles'
+    do_not_kill +=
+      case os_version
+      when '12-SP4'
+        ['sles12-sp4-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp4', 'sle-module-containers12-pool-x86_64-sp4',
+         'sles12-sp4-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp4', 'sle-module-containers12-updates-x86_64-sp4']
+      when '12-SP5'
+        ['sles12-sp5-pool-x86_64', 'sle-manager-tools12-pool-x86_64-sp5', 'sle-module-containers12-pool-x86_64-sp5',
+         'sles12-sp5-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp5', 'sle-module-containers12-updates-x86_64-sp5']
+      when '15-SP1'
+        ['sle-product-sles15-sp1-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp1', 'sle-module-containers15-sp1-pool-x86_64',
+         'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64']
+      when '15-SP2'
+        ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2', 'sle-module-containers15-sp2-pool-x86_64',
+         'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2', 'sle-module-containers15-sp2-updates-x86_64']
+      else
+        []
+      end
   end
-  do_not_kill
+  do_not_kill.uniq
 end
+# rubocop:enable Metrics/MethodLength
 
 # get registration URL
 # the URL depends on whether we use a proxy or not
@@ -220,4 +237,25 @@ def repository_exist?(repo)
   repo_xmlrpc.login('admin', 'admin')
   repo_list = repo_xmlrpc.repo_list
   repo_list.include? repo
+end
+
+def generate_repository_name(repo_url)
+  repo_name = repo_url.strip
+  repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
+  repo_name.sub!('/', '_')
+end
+
+def extract_logs_from_node(node)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/
+    node.run('zypper mr --enable os_pool_repo os_update_repo') unless $qam_test
+    node.run('zypper --non-interactive install tar')
+    node.run('zypper mr --disable os_pool_repo os_update_repo') unless $qam_test
+  end
+  node.run('journalctl > /var/log/messages', false) # Some clients might not support systemd
+  node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
+  `mkdir logs` unless Dir.exist?('logs')
+  code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
+  raise 'Download log archive failed' unless code.zero?
 end

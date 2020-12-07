@@ -2,18 +2,22 @@
 # Licensed under the terms of the MIT license.
 
 @sle12sp4_client
-Feature: Register a sle12sp4 traditional client
-  In order to register a traditional client to the SUSE Manager server
-  As the root user
-  I want to call rhnreg_ks
+Feature: Bootstrap a SLES 12 SP4 traditional client
 
-  Scenario: Register a sle12sp4 traditional client
-    When I register "sle12sp4_client" as traditional client with activation key "1-sle12sp4_client_key"
+  Scenario: Clean up sumaform leftovers on a SLES 12 SP4 traditional client
+    When I perform a full salt minion cleanup on "sle12sp4_client"
+
+  Scenario: Register a SLES 12 SP4 traditional client
+    When I bootstrap traditional client "sle12sp4_client" using bootstrap script with activation key "1-sle12sp4_client_key" from the proxy
+    And I install package "spacewalk-client-setup mgr-cfg-actions" on this "sle12sp4_client"
     And I run "mgr-actions-control --enable-all" on "sle12sp4_client"
     Then I should see "sle12sp4_client" via spacecmd
-    And I wait until onboarding is completed for "sle12sp4_client"
 
-  Scenario: Check registration values of sle12sp4 traditional client
+  Scenario: The onboarding of SLES 12 SP4 traditional client is completed
+    Given I am authorized
+    Then I wait until onboarding is completed for "sle12sp4_client"
+
+  Scenario: Check registration values of SLES 12 SP4 traditional client
     Given I update the profile of "sle12sp4_client"
     When I am on the Systems overview page of this "sle12sp4_client"
     And I wait until I see "Software Updates Available" text or "System is up to date" text
@@ -26,22 +30,15 @@ Feature: Register a sle12sp4 traditional client
     And I should see a "OS: sles-release" text
 
 @proxy
-  Scenario: Check connection from sle12sp4 traditional to proxy
+  Scenario: Check connection from SLES 12 SP4 traditional to proxy
     Given I am on the Systems overview page of this "sle12sp4_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
 @proxy
-  Scenario: Check registration on proxy of sle12sp4 traditional
+  Scenario: Check registration on proxy of SLES 12 SP4 traditional
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle12sp4_client" hostname
-
-  Scenario: Check tab links "Software" => "Patches" of sle12sp4 traditional
-    Given I am on the Systems overview page of this "sle12sp4_client"
-    When I follow "Software" in the content area
-    And I follow "Patches" in the content area
-    Then I should see a "Relevant Patches" text
-    And I should see a "Show" button

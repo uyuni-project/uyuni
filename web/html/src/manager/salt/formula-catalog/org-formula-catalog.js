@@ -60,7 +60,7 @@ class FormulaCatalog extends React.Component {
           items.push({severity: "warning", text: this.props.warningMessage});
         }
         return (
-            <TopPanel title={t("Formula Catalog")} icon="spacewalk-icon-salt-add" helpUrl="/docs/reference/salt/salt-formula-catalog.html">
+            <TopPanel title={t("Formula Catalog")} icon="spacewalk-icon-salt-add" helpUrl="reference/salt/salt-formula-catalog.html">
             <Messages items={items}/>
             <div>
               <Table

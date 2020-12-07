@@ -12,7 +12,7 @@
  creationUrl="/rhn/manager/systems/bootstrap"
  creationType="systems"
  creationAcl="user_role(org_admin)"
- helpUrl="/docs/reference/systems/systems-overview.html">
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/systems-overview.html">
   <bean:message key="overview.jsp.header"/>
 </rhn:toolbar>
 

@@ -34,7 +34,7 @@ const ListFilters = (props: Props) => {
   }, [])
 
   const searchData = (row, criteria) => {
-    const keysToSearch = ['name'];
+    const keysToSearch = ['filter_name'];
     if (criteria) {
       return keysToSearch.map(key => row[key]).join().toLowerCase().includes(criteria.toLowerCase());
     }
@@ -59,7 +59,7 @@ const ListFilters = (props: Props) => {
   );
 
   return (
-    <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons} helpUrl="/docs/reference/clm/clm-filters.html">
+    <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons} helpUrl="reference/clm/clm-filters.html">
       <Table
         data={displayedFilters}
         identifier={row => row.filter_name}
@@ -67,7 +67,7 @@ const ListFilters = (props: Props) => {
         searchField={(
           <SearchField
             filter={searchData}
-            placeholder={t('Filter by any value')}
+            placeholder={t('Filter by name')}
           />
         )}
       >

@@ -826,7 +826,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testListPackages() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        int numPackages = SystemManager.installedPackages(server.getId(), false).size();
+        int numPackages = SystemManager.installedPackages(server.getId()).size();
 
         List<Map<String, Object>> result =
                 handler.listPackages(admin,

@@ -5,7 +5,7 @@ spmigration:
     - dist_upgrade: True
     - dryrun: {{ salt['pillar.get']('susemanager:distupgrade:dryrun', False) }}
 {% if grains['osrelease_info'][0] >= 12 %}
-    - novendorchange: True
+    - novendorchange: {{ not salt['pillar.get']('susemanager:distupgrade:allowVendorChange', False) }}
 {% else %}
     - fromrepo: {{ salt['pillar.get']('susemanager:distupgrade:channels', []) }}
 {% endif %}
