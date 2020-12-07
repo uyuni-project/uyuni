@@ -480,8 +480,9 @@ end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
-  product_identifier = find(:xpath, xpath)['data-identifier']
-  raise "#{product_identifier} is not checked" unless has_checked_field?('checkbox-for-' + product_identifier)
+  within(:xpath, xpath) do
+    raise "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, "./div/input[@type='checkbox']").checked?
+  end
 end
 
 And(/^I wait until I see "(.*?)" product has been added$/) do |product|
