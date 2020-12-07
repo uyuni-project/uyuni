@@ -18,6 +18,7 @@ package com.suse.manager.webui.controllers.maintenance;
 import static com.suse.manager.webui.controllers.maintenance.MaintenanceController.handleRescheduleResult;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
@@ -95,8 +96,8 @@ public class MaintenanceScheduleController {
         get("/manager/schedule/maintenance/schedules",
                 withUserPreferences(withCsrfToken(withUser(MaintenanceScheduleController::maintenanceSchedules))),
                 jade);
-        get("/manager/systems/ssm/maintenance", withCsrfToken(withUser(MaintenanceScheduleController::ssmSchedules)),
-                jade);
+        get("/manager/systems/ssm/maintenance", withCsrfToken(withDocsLocale(withUser(
+                MaintenanceScheduleController::ssmSchedules))), jade);
         get("/manager/api/maintenance/schedule/list", withUser(MaintenanceScheduleController::list));
         get("/manager/api/maintenance/schedule/:id/details", withUser(MaintenanceScheduleController::details));
         get("/manager/api/maintenance/schedule/:id/systems", withUser(MaintenanceScheduleController::assignedSystems));

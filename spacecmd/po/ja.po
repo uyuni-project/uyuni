@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-14 17:04+0200\n"
-"PO-Revision-Date: 2020-10-07 10:49+0000\n"
+"POT-Creation-Date: 2020-11-20 12:55+0100\n"
+"PO-Revision-Date: 2020-11-21 02:26+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -662,8 +662,8 @@ msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "使用方法: activationkey_setcontactmethod キー 連絡方法"
 
 #: ../src/spacecmd/api.py:44
-msgid "api: call RHN API with arguments directly"
-msgstr "api: 指定したパラメータで直接 RHN API を呼び出す"
+msgid "api: call server API with arguments directly"
+msgstr "api: 指定したパラメータで直接サーバ API を呼び出す"
 
 #: ../src/spacecmd/api.py:45
 #, python-format
@@ -2370,8 +2370,8 @@ msgstr "使用方法: kickstart_delete プロファイル_1 プロファイル_2
 msgid "usage: kickstart_delete \"PROF*\""
 msgstr "使用方法: kickstart_delete \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:203 ../src/spacecmd/kickstart.py:2597
-#: ../src/spacecmd/kickstart.py:2653 ../src/spacecmd/kickstart.py:2695
+#: ../src/spacecmd/kickstart.py:203 ../src/spacecmd/kickstart.py:2596
+#: ../src/spacecmd/kickstart.py:2652 ../src/spacecmd/kickstart.py:2694
 msgid "No valid kickstart labels passed as arguments!"
 msgstr "パラメータで正しいキックスタートラベルを指定していません！"
 
@@ -3142,17 +3142,13 @@ msgstr "アクティベーションキー %s が "
 
 #: ../src/spacecmd/kickstart.py:2461
 #, python-format
-msgid "GPG/SSL key %s does not exist on the "
-msgstr "GPG/SSL 鍵 %s が "
-
-#: ../src/spacecmd/kickstart.py:2462
-msgid "satellite, skipping"
-msgstr "satellite にありません。読み飛ばしています"
+msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
+msgstr "GPG/SSL 鍵 %s が Spacewalk サーバ内に存在しません。読み飛ばしています"
 
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
 #. fixup may be required
-#: ../src/spacecmd/kickstart.py:2471
+#: ../src/spacecmd/kickstart.py:2470
 msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
@@ -3160,71 +3156,71 @@ msgstr ""
 "API ではいくつかの設定が省略されているため、インポートできない設定がありま"
 "す。インポートされた内容をご確認のうえ、必要であれば調整してください"
 
-#: ../src/spacecmd/kickstart.py:2473
+#: ../src/spacecmd/kickstart.py:2472
 msgid " * Details->Preserve ks.cfg"
 msgstr " * 詳細->ks.cfg を保持"
 
-#: ../src/spacecmd/kickstart.py:2474
+#: ../src/spacecmd/kickstart.py:2473
 msgid " * Details->Comment"
 msgstr " * 詳細->コメント"
 
-#: ../src/spacecmd/kickstart.py:2478
+#: ../src/spacecmd/kickstart.py:2477
 msgid " * Details->Organization Default Profile"
 msgstr " * 詳細->企業／組織のデフォルトプロファイル"
 
 #. No way to set the kernel options
-#: ../src/spacecmd/kickstart.py:2480
+#: ../src/spacecmd/kickstart.py:2479
 msgid " * Details->Kernel Options"
 msgstr " * 詳細->カーネルオプション"
 
-#: ../src/spacecmd/kickstart.py:2484
+#: ../src/spacecmd/kickstart.py:2483
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
 msgstr " * 詳細->カーネルの後のオプション : %s"
 
-#: ../src/spacecmd/kickstart.py:2500
+#: ../src/spacecmd/kickstart.py:2499
 msgid "no kickstart label given"
 msgstr "キックスタートラベルが指定されていません"
 
-#: ../src/spacecmd/kickstart.py:2503
+#: ../src/spacecmd/kickstart.py:2502
 msgid "invalid kickstart label "
 msgstr "キックスタートラベルが正しくありません "
 
-#: ../src/spacecmd/kickstart.py:2520
+#: ../src/spacecmd/kickstart.py:2519
 msgid "kickstart_diff: diff kickstart files"
 msgstr "kickstart_diff: キックスタートファイルの差分を抽出"
 
-#: ../src/spacecmd/kickstart.py:2522
+#: ../src/spacecmd/kickstart.py:2521
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "使用方法: kickstart_diff 比較元チャンネル 比較先チャンネル"
 
-#: ../src/spacecmd/kickstart.py:2571
+#: ../src/spacecmd/kickstart.py:2570
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
 msgstr "kickstart_getupdatetype: キックスタートプロファイルの更新タイプを取得"
 
-#: ../src/spacecmd/kickstart.py:2572
+#: ../src/spacecmd/kickstart.py:2571
 msgid "usage: kickstart_getupdatetype PROFILE"
 msgstr "使用方法: kickstart_getupdatetype プロファイル"
 
-#: ../src/spacecmd/kickstart.py:2573
+#: ../src/spacecmd/kickstart.py:2572
 msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
 msgstr "使用方法: kickstart_getupdatetype プロファイル_1 プロファイル_2"
 
-#: ../src/spacecmd/kickstart.py:2574
+#: ../src/spacecmd/kickstart.py:2573
 msgid "usage: kickstart_getupdatetype \"PROF*\""
 msgstr "使用方法: kickstart_getupdatetype \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:2603 ../src/spacecmd/kickstart.py:2659
-#: ../src/spacecmd/kickstart.py:2701
+#: ../src/spacecmd/kickstart.py:2602 ../src/spacecmd/kickstart.py:2658
+#: ../src/spacecmd/kickstart.py:2700
 #, python-format
 msgid "kickstart label %s doesn't exist!"
 msgstr "キックスタートラベル %s が存在しません！"
 
-#: ../src/spacecmd/kickstart.py:2619
+#: ../src/spacecmd/kickstart.py:2618
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
 msgstr "kickstart_setupdatetype: キックスタートプロファイルの更新タイプを設定"
 
-#: ../src/spacecmd/kickstart.py:2620
+#: ../src/spacecmd/kickstart.py:2619
 msgid ""
 "usage: kickstart_setupdatetype [options] KS_LABEL)\n"
 "\n"
@@ -3236,69 +3232,69 @@ msgstr ""
 "オプション:\n"
 "    -u (更新タイプ) ['red_hat', 'all', 'none']"
 
-#: ../src/spacecmd/kickstart.py:2634
+#: ../src/spacecmd/kickstart.py:2633
 msgid "Update Types"
 msgstr "更新タイプ"
 
-#: ../src/spacecmd/kickstart.py:2639
+#: ../src/spacecmd/kickstart.py:2638
 msgid "Update Type [none]:"
 msgstr "更新タイプ [none]:"
 
-#: ../src/spacecmd/kickstart.py:2670
+#: ../src/spacecmd/kickstart.py:2669
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
 msgstr ""
 "kickstart_getsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を"
 "取得"
 
-#: ../src/spacecmd/kickstart.py:2671
+#: ../src/spacecmd/kickstart.py:2670
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
 msgstr "使用方法: kickstart_getsoftwaredetails キックスタートラベル"
 
-#: ../src/spacecmd/kickstart.py:2672
+#: ../src/spacecmd/kickstart.py:2671
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 msgstr ""
 "使用方法: kickstart_getsoftwaredetails キックスタートラベル_1 キックスタート"
 "ラベル_2 ..."
 
-#: ../src/spacecmd/kickstart.py:2707
+#: ../src/spacecmd/kickstart.py:2706
 #, python-format
 msgid "noBase:        %s"
 msgstr "ベース無し:        %s"
 
-#: ../src/spacecmd/kickstart.py:2708
+#: ../src/spacecmd/kickstart.py:2707
 #, python-format
 msgid "ignoreMissing: %s"
 msgstr "存在しないものを無視: %s"
 
-#: ../src/spacecmd/kickstart.py:2710
+#: ../src/spacecmd/kickstart.py:2709
 #, python-format
 msgid "Kickstart Label: %s"
 msgstr "キックスタートラベル: %s"
 
-#: ../src/spacecmd/kickstart.py:2711
+#: ../src/spacecmd/kickstart.py:2710
 #, python-format
 msgid "noBase:          %s"
 msgstr "ベース無し:          %s"
 
-#: ../src/spacecmd/kickstart.py:2712
+#: ../src/spacecmd/kickstart.py:2711
 #, python-format
 msgid "ignoreMissing:   %s"
 msgstr "存在しないものを無視:   %s"
 
-#: ../src/spacecmd/kickstart.py:2721
+#: ../src/spacecmd/kickstart.py:2720
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr ""
 "kickstart_setsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を"
 "設定。"
 
-#: ../src/spacecmd/kickstart.py:2722
+#: ../src/spacecmd/kickstart.py:2721
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 "使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ"
 "情報 値"
 
-#: ../src/spacecmd/kickstart.py:2723
+#: ../src/spacecmd/kickstart.py:2722
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
@@ -3306,11 +3302,11 @@ msgstr ""
 "使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ"
 "情報 値 キックスタートパッケージ情報 値"
 
-#: ../src/spacecmd/kickstart.py:2757
+#: ../src/spacecmd/kickstart.py:2756
 msgid "Selected profile does not exist"
 msgstr "選択したプロファイルは存在しません"
 
-#: ../src/spacecmd/kickstart.py:2760 ../src/spacecmd/kickstart.py:2765
+#: ../src/spacecmd/kickstart.py:2759 ../src/spacecmd/kickstart.py:2764
 msgid "Enter valid input"
 msgstr "正しい入力を行なってください"
 
@@ -3959,8 +3955,8 @@ msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
 msgstr "例: name:kernel AND version:2.6.18 AND -description:devel"
 
 #: ../src/spacecmd/package.py:178
-msgid "package_remove: Remove a package from Satellite"
-msgstr "package_remove: Satellite からパッケージを削除"
+msgid "package_remove: Remove a package from Spacewalk"
+msgstr "package_remove: Spacewalk からパッケージを削除"
 
 #: ../src/spacecmd/package.py:179
 msgid "usage: package_remove PACKAGE ..."
@@ -8195,6 +8191,9 @@ msgstr "パラメータ {} は文字列型ではなく {} です。"
 #: ../src/bin/spacecmd:74
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN を取得している際に未処理の例外が発生しました:"
+
+#~ msgid "satellite, skipping"
+#~ msgstr "satellite にありません。読み飛ばしています"
 
 #~ msgid "Type:      s"
 #~ msgstr "タイプ:      s"

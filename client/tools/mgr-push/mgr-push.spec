@@ -21,13 +21,16 @@
 %define oldname rhnpush
 %define oldversion 5.5.114
 %{!?pylint_check: %global pylint_check 0}
+%global __python /usr/bin/python2
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
 
+%if !( 0%{?rhel} >= 8 )
 %global build_py2   1
+%endif
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
@@ -36,7 +39,7 @@ Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 Url:            https://github.com/uyuni-project/uyuni
-Version:        4.2.1
+Version:        4.2.2
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}

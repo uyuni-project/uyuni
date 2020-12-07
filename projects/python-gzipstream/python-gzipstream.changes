@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Dec 03 13:39:12 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Added Python 3 build for RHEL7+
+- Generalised Python.
+- Removed duplicate Python 3 package.
+- "Prettified" spec.
+
+-------------------------------------------------------------------
 Fri Sep 18 11:18:49 CEST 2020 - jgonzalez@suse.com
 
 - version 4.2.1-1

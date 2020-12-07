@@ -2458,8 +2458,7 @@ def import_kickstart_fromdetails(self, ksdetails):
             self.client.kickstart.profile.system.addKeys(self.session,
                                                          ksdetails['label'], [key])
         else:
-            logging.warning(_("GPG/SSL key %s does not exist on the ") % key +
-                            _("satellite, skipping"))
+            logging.warning(_("GPG/SSL key %s does not exist on the Spacewalk server, skipping") % key)
 
     # The pre/post logging settings
     self.client.kickstart.profile.setLogging(self.session, ksdetails['label'],

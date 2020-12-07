@@ -18,11 +18,11 @@
 
 import logging
 import sys
-import solv
+from optparse import OptionParser  # pylint: disable=deprecated-module
 import os
+import solv
 import yaml
 
-from optparse import OptionParser, Option
 
 try:
     from spacewalk.satellite_tools.progress_bar import ProgressBar
@@ -176,7 +176,7 @@ class DepSolver:
 if __name__ == '__main__':
     parser = OptionParser(usage="Usage: %prog [repoid] [repodata_path] [pkgname1] [pkgname2] ... [pkgnameM]")
     parser.add_option("-i", "--input-file", action="store",
-        help="YAML file to use as input. This would ignore all other input passed in the command line")
+                      help="YAML file to use as input. This would ignore all other input passed in the command line")
     parser.add_option("-y", "--output-yaml", action="count", help="Produce a YAML formatted output")
     (options, _args) = parser.parse_args()
 
@@ -197,16 +197,16 @@ if __name__ == '__main__':
         #   - apache2-utils
         #
         try:
-           repo_cfg = yaml.load(open(options.input_file))
-           for repo in repo_cfg['repositories']:
-               arg_repo.append({'id': repo, 'relative_path': repo_cfg['repositories'][repo]})
-           arg_pkgs = repo_cfg['packages']
-        except Exception as exc:
-           parser.error("Error reading input file: {}".format(exc))
-           sys.exit(1)
+            repo_cfg = yaml.load(open(options.input_file))
+            for repository in repo_cfg['repositories']:
+                arg_repo.append({'id': repository, 'relative_path': repo_cfg['repositories'][repository]})
+            arg_pkgs = repo_cfg['packages']
+        except Exception as exc:  # pylint: disable=broad-except
+            parser.error("Error reading input file: {}".format(exc))
+            sys.exit(1)
     elif len(_args) >= 3:
         arg_repo = [{'id': _args[0],
-                    'relative_path': _args[1] }]  # path to where repodata is located
+                     'relative_path': _args[1] }]  # path to where repodata is located
         arg_pkgs = _args[2:]
     else:
         parser.error("Wrong number of arguments")
@@ -220,12 +220,12 @@ if __name__ == '__main__':
             'packages': [],
             'dependencies' : {}
         }
-        for pkg in deplist:
-           pkg_tag = str(pkg)
-           output['packages'].append(pkg_tag)
-           output['dependencies'][pkg_tag] = {}
-           for dep in deplist[pkg]:
-               output['dependencies'][pkg_tag][str(dep)] = [str(x) for x in deplist[pkg][dep]]
+        for package in deplist:
+            pkg_tag = str(package)
+            output['packages'].append(pkg_tag)
+            output['dependencies'][pkg_tag] = {}
+            for dependency in deplist[package]:
+                output['dependencies'][pkg_tag][str(dependency)] = [str(x) for x in deplist[package][dependency]]
         sys.stdout.write(yaml.dump(output))
     else:
         result_set = dsolve.processResults(deplist)

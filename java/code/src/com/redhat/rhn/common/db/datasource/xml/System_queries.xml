@@ -1515,24 +1515,22 @@ ORDER BY PN.name, PE.evr
   </query>
 </mode>
 
-<mode name="system_installed_packages_expanded">
-  <query params="sid">
+<!--  Same ase system_installed_packages, but reports arch label instead of name -->
+<mode name="system_installed_packages_arch_as_label">
+    <query params="sid">
 SELECT PN.name,
        PE.version,
        PE.release,
        coalesce(PE.epoch, ' ') as epoch,
-       PA.name as arch,
-       SP.installtime,
-       PE.id evr_id,
-       PA.id arch_id,
-       PN.id name_id
+       PA.label as arch,
+       SP.installtime
   FROM rhnServerPackage SP inner join
        rhnPackageName PN on PN.id = SP.name_id inner join
        rhnPackageEVR PE on PE.id = SP.evr_id left join
        rhnPackageArch PA on SP.package_arch_id = PA.id
  WHERE SP.server_id = :sid
 ORDER BY PN.name, PE.evr
-  </query>
+    </query>
 </mode>
 
 <mode name="list_server_software_crashes" class="com.redhat.rhn.frontend.dto.SoftwareCrashDto">
@@ -1860,7 +1858,8 @@ SELECT 1
                     rhnUserServerPerms USP2 on NI2.server_id = USP2.server_id inner join
                     rhnServerNetAddress4 sa4_2 on sa4_2.interface_id = ni2.id
                         where USP2.user_id = :uid and
-                                sa4_2.address not in(%s) and NI2.name not like 'vnet%' and NI2.name not like 'virbr%'
+                                sa4_2.address not in(%s) and NI2.name not like 'vnet%' and NI2.name not like 'virbr%' and
+                                NI2.name not like 'docker%'
                                 group by sa4_2.address having count(distinct NI2.server_id) > 1) SUMM on SUMM.address = sa4.address
         where USP.user_id = :uid
     </query>
@@ -1903,7 +1902,8 @@ SELECT 1
                       rhnservernetaddress6 sa6_2 on sa6_2.interface_id = ni2.id
                 where usp2.user_id = :uid and
                       sa6_2.address not in(%s) and
-                      ni2.name not like 'vnet%' and ni2.name not like 'virbr%'
+                      ni2.name not like 'vnet%' and ni2.name not like 'virbr%' and
+                      ni2.name not like 'docker%'
                                 group by sa6_2.address, sa6_2.scope
                having count(distinct ni2.server_id) > 1) summ on summ.address = sa6.address and summ.scope = sa6.scope
          where usp.user_id = :uid

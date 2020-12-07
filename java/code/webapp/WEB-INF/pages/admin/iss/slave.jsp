@@ -8,7 +8,7 @@
         <rhn:toolbar base="h1" icon="repo-sync"
                      creationUrl="/rhn/admin/iss/EditMaster.do" creationType="master"
                      creationAcl="user_role(satellite_admin)"
-                     helpUrl="/docs/reference/admin/iss-slave-setup.html">
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/iss-slave-setup.html">
             <bean:message key="iss.slave.jsp.toolbar" />
         </rhn:toolbar>
         <p><bean:message key="iss.slave.jsp.explanation" /></p>

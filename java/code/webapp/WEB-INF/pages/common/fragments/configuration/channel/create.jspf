@@ -1,3 +1,5 @@
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
+
 <!-- create file to channel  -->
 <%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
         <html:hidden property="submitted" value="true"/>
@@ -191,7 +193,7 @@
            <div class="form-group">
                <div class="col-lg-offset-3 col-lg-6">
                    <span class="help-block">
-                       <bean:message key="filedetails.jsp.tip.macros" arg0="/docs/reference/configuration/config-channels.html" />
+                       <bean:message key="filedetails.jsp.tip.macros" arg0="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-channels.html" />
                    </span>
                </div>
            </div>

@@ -6,7 +6,7 @@
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard-proxy-settings.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <div class="responsive-wizard">
-            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/docs/reference/admin/setup-wizard.html">
+            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/setup-wizard.html">
                 Setup Wizard
             </rhn:toolbar>
             <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
@@ -36,7 +36,7 @@
                                         <label for="http-proxy-input-password" class="col-xs-4 control-label">HTTP Proxy Password:</label>
                                         <div class="col-xs-8">
                                             <p class="form-control-static http-proxy-password"></p>
-                                          <input type="password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="Password">
+                                          <input type="password" autocomplete="new-password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="Password">
                                         </div>
                                       </div>
                                 </form>

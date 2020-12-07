@@ -3,6 +3,9 @@
 XSLPROC="xsltproc"
 SQLITE="sqlite3"
 STP_QUERY="/etc/jabberd/scripts/db-setup.sqlite"
+if [ -f "$STP_QUERY" ]; then
+    STP_QUERY="/usr/share/jabberd/db-setup.sqlite"
+fi
 
 # How to parse sm.xml config
 read -r -d '' SM_PARSE <<XML
@@ -98,7 +101,7 @@ if [ -s ${DB_FILE[1]} ]; then
 fi
 
 # Create the database
-rcjabberd stop
+service jabberd stop
 echo "Daemon stopped"
 
 $SQLITE ${DB_FILE[1]} < $STP_QUERY 2>&1>/dev/null
@@ -106,7 +109,7 @@ chown jabber:jabber ${DB_FILE[1]}
 chmod 640 ${DB_FILE[1]}
 
 if [ $START_DAEMON -eq 1 ]; then
-    rcjabberd start
+    service jabberd start
     echo "Daemon started"
 fi
 

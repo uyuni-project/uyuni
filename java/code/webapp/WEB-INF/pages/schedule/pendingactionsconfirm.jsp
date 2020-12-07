@@ -9,7 +9,7 @@
 <body>
 <rhn:toolbar base="h1" icon="header-action"
                            imgAlt="actions.jsp.imgAlt"
-               helpUrl="/docs/reference/schedule/pending-actions.html">
+               helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/schedule/pending-actions.html">
     <bean:message key="pendingactions.jsp.confirm_cancel_actions"/>
   </rhn:toolbar>
 

@@ -122,7 +122,7 @@ class KeyManagement extends React.Component {
       <span>
         <TopPanel title={t("Keys")} icon="fa-desktop"
                button={ panelButtons }
-               helpUrl="/docs/reference/salt/salt-keys.html">
+               helpUrl="reference/salt/salt-keys.html">
           <Table
               data={this.state.keys}
               identifier={this.rowKey}

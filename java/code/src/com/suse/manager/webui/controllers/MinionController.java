@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -88,16 +89,16 @@ public class MinionController {
 
     private static void initStatesRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/packages",
-                withCsrfToken(MinionController::packageStates),
+                withCsrfToken(withDocsLocale(MinionController::packageStates)),
                 jade);
         get("/manager/systems/details/custom",
-                withCsrfToken(MinionController::minionCustomStates),
+                withCsrfToken(withDocsLocale(MinionController::minionCustomStates)),
                 jade);
         get("/manager/systems/details/highstate",
-                withCsrfToken(withUser(MinionController::highstate)),
+                withCsrfToken(withDocsLocale(withUser(MinionController::highstate))),
                 jade);
         get("/manager/systems/details/recurring-states",
-                withCsrfToken(withUser(MinionController::recurringStates)),
+                withCsrfToken(withDocsLocale(withUser(MinionController::recurringStates))),
                 jade);
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
@@ -106,10 +107,10 @@ public class MinionController {
                 withCsrfToken(withUser(MinionController::orgRecurringStates)),
                 jade);
         get("/manager/yourorg/custom",
-                withCsrfToken(withUser(MinionController::yourOrgConfigChannels)),
+                withCsrfToken(withDocsLocale(withUser(MinionController::yourOrgConfigChannels))),
                 jade);
         get("/manager/yourorg/recurring-states",
-                withCsrfToken(withUser(MinionController::yourOrgRecurringStates)),
+                withCsrfToken(withDocsLocale(withUser(MinionController::yourOrgRecurringStates))),
                 jade);
         get("/manager/groups/details/custom",
                 withCsrfToken(withUser(MinionController::serverGroupConfigChannels)),
@@ -123,7 +124,7 @@ public class MinionController {
 
     private static void initSSMRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/ssm/highstate",
-                withCsrfToken(withUser(MinionController::ssmHighstate)), jade);
+                withCsrfToken(withDocsLocale(withUser(MinionController::ssmHighstate))), jade);
     }
 
     /**

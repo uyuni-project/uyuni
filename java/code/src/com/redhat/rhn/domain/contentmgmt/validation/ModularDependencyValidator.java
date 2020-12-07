@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.manager.contentmgmt.DependencyResolutionException;
+import com.redhat.rhn.manager.contentmgmt.DependencyResolutionResult;
 import com.redhat.rhn.manager.contentmgmt.DependencyResolver;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_ERROR;
+import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage.TYPE_INFO;
 
 /**
  * Validates resolution of modular dependencies in a content project
@@ -75,7 +77,13 @@ public class ModularDependencyValidator implements ContentValidator {
 
         List<ContentValidationMessage> messages = new ArrayList<>();
         try {
-            resolver.resolveFilters(project.getActiveFilters());
+            DependencyResolutionResult result = resolver.resolveFilters(project.getActiveFilters());
+
+            // Add a message with the list of resolved modules
+            String selectedModules =
+                    result.getModules().stream().map(Module::getFullName).collect(Collectors.joining(", "));
+            messages.add(ContentValidationMessage.contentFiltersMessage(
+                    loc.getMessage("contentmanagement.validation.selectedmodules", selectedModules), TYPE_INFO));
         }
         catch (DependencyResolutionException e) {
             if (e.getCause() instanceof ModuleNotFoundException) {

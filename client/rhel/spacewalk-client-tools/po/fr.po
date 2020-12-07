@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
 "PO-Revision-Date: 2018-03-16 11:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/spacewalk/"
@@ -1100,8 +1100,8 @@ msgid "Cannot contact selected server"
 msgstr "Impossible de contacter le serveur sélectionné"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "Vous n'avons pas pu contacter le Satellite ou le Proxy à « %s »."
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1334,10 +1334,10 @@ msgstr ""
 "configuration. Vérifiez que vous êtes bien propriétaire de %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Cette erreur n'aurait pas dû se produire. Si vous voulez nous aider à "
@@ -2599,18 +2599,20 @@ msgid "RHN Registration"
 msgstr "Inscription RHN"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+#, fuzzy
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "Enregistrez votre système pour l'accès aux mises à jour de logiciel depuis "
 "Spacewalk, Red Hat Satellite ou Red Hat Network Classic"
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
-"Enregistrez votre système auprès de Spacewalk, Red Hat Satellite ou Red Hat "
-"Network Classic."
+
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr ""
+#~ "Enregistrez votre système auprès de Spacewalk, Red Hat Satellite ou Red "
+#~ "Hat Network Classic."
 
 #~ msgid "Enter your Red Hat Satellite URL."
 #~ msgstr "Veuillez saisir l'URL de votre Red Hat Satellite"

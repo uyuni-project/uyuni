@@ -9,7 +9,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system"
- helpUrl="/docs/reference/configuration/config-systems-menu.html" >
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/config-systems-managed.html" >
   <bean:message key="managedsystems.jsp.toolbar"/>
 </rhn:toolbar>
 <!-- no create button (these have to be created according to specific systems)-->

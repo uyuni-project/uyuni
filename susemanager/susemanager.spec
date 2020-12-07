@@ -16,14 +16,34 @@
 #
 
 
-%if 0%{?suse_version} > 1320
-# SLE15 builds on Python 3
+%if 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
+# SLE15 and RHEL8 build on Python 3
 %global build_py3   1
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
+%if 0%{?rhel}
+%global apache_user root
+%global apache_group root
+%global tftp_group root
+%global salt_user root
+%global salt_group root
+%global wwwdocroot %{_var}/www/html
+%endif
+
+%if 0%{?suse_version}
+%global apache_user wwwrun
+%global apache_group www
+%global tftp_group tftp
+%global salt_user salt
+%global salt_group salt
+%global wwwdocroot /srv/www/htdocs
+%endif
+
+%global debug_package %{nil}
+
 Name:           susemanager
-Version:        4.2.2
+Version:        4.2.4
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -46,15 +66,23 @@ BuildRequires:  python3-pycurl
 BuildRequires:  python-curl
 BuildRequires:  python-mock
 %endif
+BuildRequires:  python2
+%if !0%{?rhel}
 BuildRequires:  pyxml
+%endif
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
-PreReq:         %fillup_prereq %insserv_prereq tftp(server) postgresql-init
+%if 0%{?suse_version}
+BuildRequires:  %fillup_prereq %insserv_prereq tftp(server) postgresql-init
+Requires(pre):  %fillup_prereq %insserv_prereq tftp(server) postgresql-init
+Requires(preun):%fillup_prereq %insserv_prereq tftp(server) postgresql-init
+Requires(post): user(%{apache_user})
+Requires:       yast2-users
+%endif
 Requires(pre):  salt
-Requires(post): user(wwwrun)
 Requires:       cobbler
 Requires:       openslp-server
 Requires:       spacewalk-admin
@@ -79,7 +107,6 @@ Requires(pre):  uyuni-base-server
 Requires:       firewalld
 %endif
 Requires:       postfix
-Requires:       yast2-users
 # mgr-setup want to call mksubvolume
 Requires:       reprepro
 Requires:       snapper
@@ -152,11 +179,11 @@ make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandi
 install -d -m 755 %{buildroot}/srv/www/os-images/
 
 # empty repo for rhel base channels
-mkdir -p %{buildroot}/srv/www/htdocs/pub/repositories/
-cp -r pub/empty %{buildroot}/srv/www/htdocs/pub/repositories/
+mkdir -p %{buildroot}%{wwwdocroot}/pub/repositories/
+cp -r pub/empty %{buildroot}%{wwwdocroot}/pub/repositories/
 
 # empty repo for Ubuntu base fake channel
-cp -r pub/empty-deb %{buildroot}/srv/www/htdocs/pub/repositories/
+cp -r pub/empty-deb %{buildroot}%{wwwdocroot}/pub/repositories/
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
@@ -174,6 +201,9 @@ install -m 0644 yast/com.suse.yast2.SUSEManager.desktop %{buildroot}%{_datadir}/
 %if 0%{?suse_version} > 1320
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_prefix}/lib/firewalld/services
+%else
+mkdir -p %{buildroot}/%{_sysconfdir}/firewalld/services
+install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_sysconfdir}/firewalld/services
 %endif
 
 make -C po install PREFIX=$RPM_BUILD_ROOT
@@ -198,7 +228,11 @@ popd
 
 %post
 POST_ARG=$1
+%if 0%{?suse_version}
 %{fillup_and_insserv susemanager}
+%else
+%systemd_post %{name}
+%endif
 if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
@@ -209,7 +243,7 @@ fi
 if [ ! -d /srv/tftpboot ]; then
   mkdir -p /srv/tftpboot
   chmod 750 /srv/tftpboot
-  chown wwwrun:tftp /srv/tftpboot
+  chown %{apache_user}:%{tftp_group} /srv/tftpboot
 fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
@@ -222,7 +256,7 @@ if [ $POST_ARG -eq 2 ] ; then
     fi
     if [ -d "$SYSTEMS_DIR" ]; then
         chmod 775 "$SYSTEMS_DIR"
-        chown wwwrun:www "$SYSTEMS_DIR"
+        chown %{apache_user}:%{apache_group} "$SYSTEMS_DIR"
     fi
 fi
 # else new install and the systems dir should be created by spacewalk-setup
@@ -244,7 +278,9 @@ if [ -z $POSTGRES_LANG ]; then
 fi
 
 %postun
+%if 0%{?suse_version}
 %{insserv_cleanup}
+%endif
 
 %files -f susemanager.lang
 %defattr(-,root,root,-)
@@ -268,9 +304,11 @@ fi
 %else
 %{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
 %endif
-%attr(775,salt,susemanager) %dir /srv/www/os-images/
+%attr(775,%{salt_user},susemanager) %dir /srv/www/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
+%else
+%{_sysconfdir}/firewalld/services/suse-manager-server.xml
 %endif
 
 %files tools
@@ -279,11 +317,11 @@ fi
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
 %dir %{_datadir}/susemanager
-%dir /srv/www/htdocs/pub
-%dir /srv/www/htdocs/pub/repositories
-%dir /srv/www/htdocs/pub/repositories/empty
-%dir /srv/www/htdocs/pub/repositories/empty/repodata
-%dir /srv/www/htdocs/pub/repositories/empty-deb
+%dir %{wwwdocroot}/pub
+%dir %{wwwdocroot}/pub/repositories
+%dir %{wwwdocroot}/pub/repositories/empty
+%dir %{wwwdocroot}/pub/repositories/empty/repodata
+%dir %{wwwdocroot}/pub/repositories/empty-deb
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
@@ -299,9 +337,12 @@ fi
 %{pythonsmroot}/susemanager/package_helper.py*
 %{pythonsmroot}/susemanager/mgr_sync
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
+%if 0%{?rhel}
+%{pythonsmroot}/susemanager/__pycache__/*.pyc
+%endif
 %{_mandir}/man8/mgr-sync.8*
-/srv/www/htdocs/pub/repositories/empty/repodata/*.xml*
-/srv/www/htdocs/pub/repositories/empty-deb/Packages
-/srv/www/htdocs/pub/repositories/empty-deb/Release
+%{wwwdocroot}/pub/repositories/empty/repodata/*.xml*
+%{wwwdocroot}/pub/repositories/empty-deb/Packages
+%{wwwdocroot}/pub/repositories/empty-deb/Release
 
 %changelog

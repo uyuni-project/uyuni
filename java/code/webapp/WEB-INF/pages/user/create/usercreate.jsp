@@ -9,7 +9,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
 
   <rhn:toolbar base="h1" icon="header-user" imgAlt="user.common.userAlt"
-       helpUrl="/docs/reference/users/users-menu.html">
+       helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/users/users-menu.html">
   <bean:message key="usercreate.toolbar" />
   </rhn:toolbar>
 
@@ -79,7 +79,8 @@ function toggleAsterisk() {
                       </span></strong>
                       </c:when>
                       <c:otherwise>
-                        <bean:message key="usercreate.jsp.pam.reference"/>
+                        <bean:message key="usercreate.jsp.pam.reference"
+                                      arg0="/docs/${rhn:getDocsLocale(pageContext)}/administration/auth-methods.html"/>
                       </c:otherwise>
                     </c:choose>
                   </div>
@@ -192,6 +193,53 @@ function toggleAsterisk() {
       </div>
     </div>
   </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4><bean:message key="preferences.jsp.docs.lang" /></h4>
+        </div>
+        <div class="form-horizontal">
+            <div class="panel-body">
+                <p><bean:message key="preferences.jsp.docs.langs" /></p>
+                <div class="well well-sm">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="radio" name="preferredDocsLocale" value="<c:out value="${defaultDocsLocale.languageCode}" />"
+                                    <c:if test="${defaultDocsLocale.languageCode == currentDocsLocale}">
+                                        checked="checked"
+                                    </c:if>/>
+                            <c:out value="${defaultDocsLocale.localizedName}" />
+                        </div>
+                        </br>
+                        </br>
+                    </div>
+                    <c:set var="counter" value="0"/>
+                    <c:forEach var="item" items="${supportedDocsLocales}">
+                        <c:if test="${counter == 0}">
+                            <div class="form-group">
+                        </c:if>
+                        <div class="col-sm-6">
+                            <input type="radio" name="preferredDocsLocale" value="<c:out value="${item.key}" />"
+                                    <c:if test="${item.key == currentDocsLocale}">
+                                        checked="checked"
+                                    </c:if>/>
+                            <span class="text-info"><strong><c:out value="${item.value.localizedName}" /></strong></span>
+                        </div>
+                        <c:if test="${counter == 1}">
+                            </div>
+                        </c:if>
+                        <c:set var="counter" value="${counter + 1}" />
+                        <c:if test="${counter == 2}">
+                            <c:set var="counter" value="0" />
+                        </c:if>
+                    </c:forEach>
+                    <c:if test="${counter == 1}">
+                        </div>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <hr/>
 <div class="text-center">

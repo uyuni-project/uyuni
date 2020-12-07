@@ -126,6 +126,7 @@ class Responder:
             fnmatch.fnmatch(tag, "salt/engines/*"),
             fnmatch.fnmatch(tag, "salt/batch/*/start"),
             fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
+            fnmatch.fnmatch(tag, "suse/manager/image_synced"),
             fnmatch.fnmatch(tag, "suse/systemid/generate")
         ]) and not self._is_salt_mine_event(tag, data) and not self._is_presence_ping(tag, data):
             queue = 0

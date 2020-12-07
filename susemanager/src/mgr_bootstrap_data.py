@@ -1220,12 +1220,12 @@ DATA = {
         'TYPE' : 'deb'
     },
     'debian9-amd64' : {
-        'BASECHANNEL' : 'debian-9-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN9,
+        'PDID' : [-19, 2208], 'BETAPDID' : [2209], 'PKGLIST' : PKGLISTDEBIAN9,
         'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian10-amd64' : {
-        'BASECHANNEL' : 'debian-10-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN10,
+        'PDID' : [-20, 2210], 'BETAPDID' : [2211], 'PKGLIST' : PKGLISTDEBIAN10,
         'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
         'TYPE' : 'deb'
     },

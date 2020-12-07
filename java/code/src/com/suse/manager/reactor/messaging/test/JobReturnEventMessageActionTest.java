@@ -1690,7 +1690,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
-            File generatedPillar = new File("/srv/susemanager/pillar_data/images/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
+            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() + "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
 
             assertTrue(generatedPillar.exists());
             Map<String, Object> map;

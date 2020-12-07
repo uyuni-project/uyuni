@@ -17,7 +17,7 @@
 #
 
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel} || 0%{?fedora}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif
@@ -27,7 +27,7 @@ Name:           spacewalk-reports
 Summary:        Script based reporting
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz

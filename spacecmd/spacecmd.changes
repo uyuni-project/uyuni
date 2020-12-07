@@ -1,3 +1,14 @@
+-------------------------------------------------------------------
+Thu Dec 03 13:41:55 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Update translations
+
+-------------------------------------------------------------------
+Wed Nov 25 12:13:23 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Fix: make spacecmd build on Debian
 - Python3 fixes for errata in spacecmd (bsc#1169664)
 - Added support for i18n of user-facing strings
 - Python3 fix for sorted usage (bsc#1167907)

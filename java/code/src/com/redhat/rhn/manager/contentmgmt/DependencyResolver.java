@@ -29,9 +29,11 @@ import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.suse.utils.Opt.stream;
@@ -87,10 +89,11 @@ public class DependencyResolver {
      * Enhances the list of filters with dependency filters by looking up the dependencies in the sources
      *
      * @param filters the complete list of filters to be included in the project
-     * @return the updated list of filters
+     * @return an instance of {@link DependencyResolutionResult} with the resolved filters and selected modules
+     * including dependencies
      * @throws DependencyResolutionException if dependency resolution fails for some reason
      */
-    public List<ContentFilter> resolveFilters(List<ContentFilter> filters) throws DependencyResolutionException {
+    public DependencyResolutionResult resolveFilters(List<ContentFilter> filters) throws DependencyResolutionException {
 
         List<ModuleFilter> moduleFilters = filters.stream()
                 .flatMap(f -> stream((Optional<ModuleFilter>) f.asModuleFilter()))
@@ -100,25 +103,26 @@ public class DependencyResolver {
 
         // Transform module filters to package filters
         // If no module filters are attached, no modular package should be filtered out
+        DependencyResolutionResult resolved = null;
         if (moduleFilters.size() > 0) {
-            List<PackageFilter> modulePkgFilters = resolveModularDependencies(moduleFilters);
-            updatedFilters.addAll(modulePkgFilters);
+            resolved = resolveModularDependencies(moduleFilters);
+            updatedFilters.addAll(resolved.getFilters());
             updatedFilters.removeAll(moduleFilters);
         }
-
         // Any other dependency filters (e.g. package dependencies) can be appended here
-        // TODO: This module can also be called at setup time to provide feedback using DependencyResolutionException
 
-        return updatedFilters;
+        return new DependencyResolutionResult(updatedFilters, resolved != null ?
+                resolved.getModules() : Collections.emptyList());
     }
 
     /**
-     * Resolves modular dependencies and convert all module filters to package filters
+     * Resolves modular dependencies and converts all module filters to package filters
      *
      * @param filters the list of module filters to be included in the project
-     * @return a list of package filters derived from the module filters, including dependencies
+     * @return an instance of {@link DependencyResolutionResult} with the resolved filters and selected modules
+     * including dependencies
      */
-    private List<PackageFilter> resolveModularDependencies(List<ModuleFilter> filters)
+    private DependencyResolutionResult resolveModularDependencies(List<ModuleFilter> filters)
             throws DependencyResolutionException {
         List<Channel> sources = this.getActiveSources();
         List<Module> modules = filters.stream().map(ModuleFilter::getModule).collect(toList());
@@ -130,24 +134,25 @@ public class DependencyResolver {
             throw new DependencyResolutionException("Failed to resolve modular dependencies.", e);
         }
 
-        List<PackageFilter> outFilters = new ArrayList<>();
+        List<Module> resolvedModules = modPkgList.getSelected().stream().map(Module::new).collect(Collectors.toList());
+
+        List<ContentFilter> outFilters = new ArrayList<>();
 
         // 1. Modular packages to be denied
         outFilters.add(initFilter(FilterCriteria.Matcher.EXISTS, ContentFilter.Rule.DENY, "module_stream", null));
 
         // 2. Non-modular packages to be denied by name
-        Stream<PackageFilter> providedRpmApiFilters = modPkgList.getRpmApis().stream().map(
-                DependencyResolver::initFilterFromPackageName);
+        Stream<PackageFilter> providedRpmApiFilters = modPkgList.getRpmApis().stream()
+                .map(DependencyResolver::initFilterFromPackageName);
 
         // 3. Modular packages to be allowed
         Stream<PackageFilter> pkgAllowFilters = modPkgList.getRpmPackages().stream()
                 .map(DependencyResolver::initFilterFromPackageNevra);
 
         // Concatenate filter streams into the list
-        outFilters.addAll(Stream.of(providedRpmApiFilters, pkgAllowFilters).flatMap(s -> s)
-                .collect(toList()));
+        outFilters.addAll(Stream.of(providedRpmApiFilters, pkgAllowFilters).flatMap(s -> s).collect(toList()));
 
-        return outFilters;
+        return new DependencyResolutionResult(outFilters, resolvedModules);
     }
 
     private static PackageFilter initFilterFromPackageNevra(String nevra) {

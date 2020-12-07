@@ -1,7 +1,8 @@
 #!/bin/bash -e
 SCRIPT=$(basename ${0})
 BASE_DIR=$(dirname "${0}")
-OSC="osc -A https://api.suse.de"
+OSC_API="https://api.suse.de"
+OSC="osc -A $OSC_API"
 # List of packages that won't be built in any case
 EXCLUDED_PACKAGES=(heirloom-pkgtools oracle-server-admin oracle-server-scripts rhnclient smartpm jabberd-selinux oracle-rhnsat-selinux oracle-selinux oracle-xe-selinux spacewalk-monitoring-selinux spacewalk-proxy-selinux spacewalk-selinux cx_Oracle apt-spacewalk perl-DBD-Oracle spacewalk-jpp-workaround)
 
@@ -35,6 +36,8 @@ Optional:
   --force                    Continue even if there are uncommited changes.
                              Can be a problem if such changes affect the
                              packages you intend to build.
+  --osc_api=<API URL>        Build Service API. For example, https://api.opensuse.org.
+                             If not specified, default is $OSC_API
 
 EOF
 }
@@ -81,7 +84,7 @@ check_repo () {
 check_requirements;
 
 # read the options
-ARGS=$(getopt -o h --long help,no_revert,force,packages:,osc_project_wc:,repository: -n "${SCRIPT}" -- "$@")
+ARGS=$(getopt -o h --long help,no_revert,force,packages:,osc_project_wc:,repository:,osc_api: -n "${SCRIPT}" -- "$@")
 if [ $? -ne 0 ];
 then
   print_incorrect_syntax
@@ -96,6 +99,7 @@ while true ; do
     --repository)     REPOSITORY="${2}"; shift 2;;
     --no_revert)      REVERT="FALSE"; shift 1;;
     --force)          FORCE="TRUE"; shift 1;;
+    --osc_api)        OSC_API="${2}"; OSC="osc -A $OSC_API";shift 2;;
     --) shift ; break ;;
     *) print_incorrect_syntax; exit 1;;
   esac

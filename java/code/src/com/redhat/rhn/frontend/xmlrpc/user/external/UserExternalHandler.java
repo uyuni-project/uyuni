@@ -44,7 +44,7 @@ import org.apache.commons.lang3.StringUtils;
  * @version $Rev$
  * @xmlrpc.namespace user.external
  * @xmlrpc.doc If you are using IPA integration to allow authentication of users from
- * an external IPA server (rare) the users will still need to be created in the Satellite
+ * an external IPA server (rare) the users will still need to be created in the #product()
  * database. Methods in this namespace allow you to configure some specifics of how this
  * happens, like what organization they are created in or what roles they will have.
  * These options can also be set in the web admin interface.
@@ -56,11 +56,11 @@ public class UserExternalHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param keepRoles True if we should keep temporary roles between login sessions
      * @return 1 on success
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Set whether we should keeps roles assigned to users because of
      * their IPA groups even after they log in through a non-IPA method. Can only be
-     * called by a satellite_admin.
+     * called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("boolean", "keepRoles", "True if we should keep roles
      * after users log in through non-IPA method, false otherwise.")
@@ -90,11 +90,11 @@ public class UserExternalHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return True if we should keep roles
      * after users log in through non-IPA method, false otherwise.
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Get whether we should keeps roles assigned to users because of
      * their IPA groups even after they log in through a non-IPA method. Can only be
-     * called by a satellite_admin.
+     * called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #param_desc("boolean", "keep", "True if we should keep roles
      * after users log in through non-IPA method, false otherwise")
@@ -114,11 +114,11 @@ public class UserExternalHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param useOrgUnit True if we should keep pay attention to the Org Unit from IPA
      * @return 1 on success
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Set whether we place users into the organization that corresponds
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
-     * Satellite organization name. Can only be called by a satellite_admin.
+     * #product() organization name. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("boolean", "useOrgUnit", "True if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise.")
@@ -140,11 +140,11 @@ public class UserExternalHandler extends BaseHandler {
      * Get the value of EXT_AUTH_USE_ORGUNIT
      * @param loggedInUser The current user
      * @return True if we should use org unit
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Get whether we place users into the organization that corresponds
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
-     * Satellite organization name. Can only be called by a satellite_admin.
+     * #product() organization name. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #param_desc("boolean", "use", "True if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise")
@@ -163,10 +163,10 @@ public class UserExternalHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param defaultOrg the orgId that we want to use as the default org
      * @return 1 on success
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Set the default org that users should be added in if orgunit from
-     * IPA server isn't found or is disabled. Can only be called by a satellite_admin.
+     * IPA server isn't found or is disabled. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "defaultOrg", "Id of the organization to set
      * as the default org. 0 if there should not be a default organization.")
@@ -193,10 +193,10 @@ public class UserExternalHandler extends BaseHandler {
      * Get the value of EXT_AUTH_DEFAULT_ORGID
      * @param loggedInUser The current user
      * @return orgId of the default org
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Get the default org that users should be added in if orgunit from
-     * IPA server isn't found or is disabled. Can only be called by a satellite_admin.
+     * IPA server isn't found or is disabled. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype #param_desc("int", "id", "Id of the default organization. 0 if there is no default")
      */
@@ -219,11 +219,11 @@ public class UserExternalHandler extends BaseHandler {
      * @param name The name of the new group
      * @param roles List of roles to set for this group
      * @return the newly created group
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Externally authenticated users may be members of external groups. You
      * can use these groups to assign additional roles to the users when they log in.
-     * Can only be called by a satellite_admin.
+     * Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group. Must be
      * unique.")
@@ -265,10 +265,10 @@ public class UserExternalHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param name The name of the group
      * @return the  group
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Get a representation of the role mapping for an external group.
-     * Can only be called by a satellite_admin.
+     * Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
      * @xmlrpc.returntype $UserExtGroupSerializer
@@ -294,7 +294,7 @@ public class UserExternalHandler extends BaseHandler {
      * @return 1 if successful, error otherwise
      *
      * @xmlrpc.doc Update the roles for an external group. Replace previously set roles
-     * with the ones passed in here. Can only be called by a satellite_admin.
+     * with the ones passed in here. Can only be called by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
      * @xmlrpc.param #array_single("string", "role - Can be any of:
@@ -333,10 +333,10 @@ public class UserExternalHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param name The name of the group
      * @return 1 if successful, error otherwise
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc Delete the role map for an external group. Can only be called
-     * by a satellite_admin.
+     * by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
      * @xmlrpc.returntype #return_int_success()
@@ -358,10 +358,10 @@ public class UserExternalHandler extends BaseHandler {
      * delete an external user group
      * @param loggedInUser The current user
      * @return the external groups
-     * @throws PermissionCheckFailureException if the user is not a Sat admin
+     * @throws PermissionCheckFailureException if the user is not a product admin
      *
      * @xmlrpc.doc List role mappings for all known external groups. Can only be called
-     * by a satellite_admin.
+     * by a #product() Administrator.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      * #array_begin()

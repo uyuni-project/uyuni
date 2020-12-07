@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM minima-mirror.mgr.prv.suse.net:5000/cucutest/suma-head-testsuite
+FROM registry.mgr.prv.suse.net:5000/cucutest/suma-head-testsuite
 MAINTAINER Michael Calmer "mc@suse.com"
 
 ARG repo

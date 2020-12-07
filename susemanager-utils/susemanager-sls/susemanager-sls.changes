@@ -1,6 +1,25 @@
+- Make autoinstallation provisoning compatible with GRUB and ELILO
+  in addition to GRUB2 only (bsc#1164227)
+
+-------------------------------------------------------------------
+Thu Dec 03 13:58:41 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Added RHEL support.
+
+-------------------------------------------------------------------
+Wed Nov 25 12:32:54 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Fix: sync before start action chains (bsc#1177336)
+- Revert: Sync state modules when starting action chain execution (bsc#1177336)
+- Sync state modules when starting action chain execution (bsc#1177336)
+- Handle group- and org-specific image pillars
+- Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
+- Fix grub2 autoinstall kernel path (bsc#1178060)
+- use require in reboot trigger (bsc#1177767)
 - add pillar option to get allowVendorChange option during dist upgrade
 - Change VM creation state to handle installation from kernel, PXE or CDROM
-- States and metadata for showing the cluster upgrade plan in the UI
 - Fix action chain resuming when patches updating salt-minion don't cause service to be
   restarted (bsc#1144447)
 - Make grub2 autoinstall kernel path relative to the boot partition root (bsc#1175876)

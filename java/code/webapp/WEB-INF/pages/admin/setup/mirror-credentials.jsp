@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <label for="modal-password" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.password" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" autocomplete="off" id="edit-password" required>
+                                    <input type="password" autocomplete="new-password" class="form-control" id="edit-password" required>
                                 </div>
                             </div>
                         </form>
@@ -105,7 +105,7 @@
         </div>
 
         <div class="responsive-wizard">
-            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/docs/reference/admin/setup-wizard.html">
+            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/setup-wizard.html">
                 <bean:message key="mirror-credentials.jsp.header" />
             </rhn:toolbar>
             <rhn:dialogmenu mindepth="0" maxdepth="1"

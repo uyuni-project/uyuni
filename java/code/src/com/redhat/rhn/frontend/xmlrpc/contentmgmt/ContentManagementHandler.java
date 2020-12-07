@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
@@ -32,6 +33,7 @@ import com.redhat.rhn.frontend.xmlrpc.ContentValidationFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
@@ -117,6 +119,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param name the Content Project name
      * @param description the description
      * @throws EntityExistsFaultException when Project already exists
+     * @throws ValidationException if validation violation occurs
      * @return the created Content Project
      *
      * @xmlrpc.doc Create Content Project
@@ -134,6 +137,9 @@ public class ContentManagementHandler extends BaseHandler {
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
         }
+        catch (ValidatorException e) {
+            throw new ValidationException(e);
+        }
     }
 
     /**
@@ -143,6 +149,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param label the new label
      * @param props the map with the Content Project properties
      * @throws EntityNotExistsFaultException when Project does not exist
+     * @throws ValidationException if validation violation occurs
      * @return the updated Content Project
      *
      * @xmlrpc.doc Update Content Project with given label
@@ -165,6 +172,9 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (ValidatorException e) {
+            throw new ValidationException(e);
         }
     }
 
@@ -252,6 +262,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param description the Content Environment description
      * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
      * @throws EntityExistsFaultException when Environment with given parameters already exists
+     * @throws ValidationException if validation violation occurs
      * @return the created Content Environment
      *
      * @xmlrpc.doc Create a Content Environment and appends it behind given Content Environment
@@ -276,6 +287,9 @@ public class ContentManagementHandler extends BaseHandler {
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
         }
+        catch (ValidatorException e) {
+            throw new ValidationException(e);
+        }
     }
 
     /**
@@ -286,6 +300,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param envLabel the Environment label
      * @param props the map with the Environment properties
      * @throws EntityNotExistsFaultException when the Environment does not exist
+     * @throws ValidationException if validation violation occurs
      * @return the updated Environment
      *
      * @xmlrpc.doc Update Content Environment with given label
@@ -311,6 +326,9 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (ValidatorException e) {
+            throw new ValidationException(e);
         }
     }
 
@@ -821,16 +839,16 @@ public class ContentManagementHandler extends BaseHandler {
      * Build a Project
      *
      * @param loggedInUser the user
-     * @param message the log message to be assigned to the build
      * @param projectLabel the Project label
+     * @param message the log message to be assigned to the build
      * @throws EntityNotExistsFaultException when Project does not exist
      * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
      * @xmlrpc.doc Build a Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "message" "Log message to be assigned to the build")
      * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
+     * @xmlrpc.param #param_desc("string", "message" "Log message to be assigned to the build")
      * @xmlrpc.returntype #return_int_success()
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {

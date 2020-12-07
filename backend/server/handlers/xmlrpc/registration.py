@@ -86,6 +86,8 @@ def parse_smbios(smbios):
         return (virttype, uuid)
     elif product == "VirtualBox" and uuid is not None:
         return (rhnVirtualization.VirtualizationType.VBOX, uuid)
+    elif product == "VirtualPC" and uuid is not None:
+         return (rhnVirtualization.VirtualizationType.VPC, uuid)
     return (None, None)
 
 
