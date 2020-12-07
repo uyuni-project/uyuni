@@ -45,30 +45,6 @@ Feature: Be able to bootstrap a SLES 15 Salt minion
     And I follow "Proxy" in the content area
     Then I should see "sle15_minion" hostname
 
-  # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
-  Scenario: Check the new channel for SLES 15 minion is working
-    When I refresh the metadata for "sle15_minion"
-
-  Scenario: Detect latest Salt changes on the SLES 15 minion
-    When I query latest Salt changes on "sle15_minion"
-
-  Scenario: Run a remote command on normal SLES 15 minion
-    Given I am authorized as "testing" with password "testing"
-    When I follow the left menu "Salt > Remote Commands"
-    Then I should see a "Remote Commands" text in the content area
-    When I enter command "file /tmp"
-    And I click on preview
-    Then I should see "sle15_minion" hostname
-    And I wait until I do not see "pending" text
-    When I click on run
-    And I wait until I do not see "pending" text
-    And I expand the results for "sle15_minion"
-    Then I should see "/tmp: sticky, directory" in the command output for "sle15_minion"
-
-  Scenario: Check spacecmd system ID of bootstrapped SLES 15 minion
-    Given I am on the Systems overview page of this "sle15_minion"
-    Then I run spacecmd listevents for "sle15_minion"
-
   Scenario: Check events history for failures on SLES 15 minion
     Given I am on the Systems overview page of this "sle15_minion"
     Then I check for failed events on history event page

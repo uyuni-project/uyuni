@@ -40,11 +40,9 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   kernel_version, _code = node.run('uname -r')
   puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
-  os_pretty_raw, _code = node.run('grep "PRETTY" /etc/os-release')
-  os_pretty = os_pretty_raw.strip.split('=')[1].delete '"'
+  os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
-  puts 'i should see os version: ' + os_pretty if os_pretty.include? 'SUSE Linux'
-  step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
+  step %(I should see a "#{os_version}" text) if os_family.include? 'sles'
 end
 
 Then(/^I should see the terminals imported from the configuration file$/) do
@@ -253,13 +251,13 @@ end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @client_api.call('auth.login', 'admin', 'admin')
   # -------------------------------
   # cleanup kickstart profiles and distros
   distro_name = 'fedora_kickstart_distro'
-  @cli.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
-  @cli.call('auth.logout', @sid)
+  @client_api.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
+  @client_api.call('auth.logout', @sid)
   # -------------------------------
   # remove not from suma managed profile
   $server.run('cobbler profile remove --name "testprofile"')
@@ -618,11 +616,12 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  gpg_keys = get_gpg_keys(host)
   cmd = "mgr-bootstrap #{client} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
-  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=RHN-ORG-TRUSTED-SSL-CERT' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
   output, = target.run(cmd)
   unless output.include? key
@@ -677,6 +676,32 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
     end
   end
+end
+
+When(/^I disable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  elsif os_family =~ /^centos/
+    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
+    end
+  end
+end
+
+When(/^I enable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^#\\s*deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^#\\s*deb /deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
+end
+
+When(/^I disable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^deb /# deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
 end
 
 When(/^I enable repositories before installing Docker$/) do
@@ -832,18 +857,6 @@ Then(/^I should see a text describing the OS release$/) do
   os_version, os_family = get_os_version($client)
   release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
   step %(I should see a "OS: #{release}" text)
-end
-
-Then(/^config-actions are enabled$/) do
-  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
-    raise 'config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client'
-  end
-end
-
-Then(/^remote-commands are enabled$/) do
-  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
-    raise 'remote commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist'
-  end
 end
 
 When(/^I remember when I scheduled an action$/) do
@@ -1106,27 +1119,32 @@ Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warni
 end
 
 When(/^I create the MU repositories for "([^"]*)"$/) do |client|
-  repo_list = $mu_repositories[client]
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     if repository_exist? unique_repo_name
       puts "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
       steps %(
-      When I follow "Create Repository"
-      And I enter "#{unique_repo_name}" as "label"
-      And I enter "#{repo_url.strip}" as "url"
-      And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
-      And I click on "Create Repository"
-      Then I should see a "Repository created successfully" text
-      And I should see "metadataSigned" as checked
-    )
+        When I follow the left menu "Software > Manage > Repositories"
+        And I follow "Create Repository"
+        And I enter "#{unique_repo_name}" as "label"
+        And I enter "#{repo_url.strip}" as "url"
+        And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
+        And I click on "Create Repository"
+        Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
+        And I should see "metadataSigned" as checked
+      )
     end
   end
 end
 
 When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
-  repo_list = $mu_repositories[client]
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     step %(I check "#{unique_repo_name}" in the list)
@@ -1135,20 +1153,26 @@ end
 
 # content lifecycle steps
 When(/^I click the environment build button$/) do
-  raise "Click on environment build failed" unless find(:xpath, '//*[@id="cm-build-modal-save-button"]').click
+  raise 'Click on environment build failed' unless find_button('cm-build-modal-save-button', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from Development to QA$/) do
-  raise "Click on promote from Development failed" unless find(:xpath, '//*[@id="dev_name-promote-modal-link"]').click
+  raise 'Click on promote from Development failed' unless find_button('dev_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from QA to Production$/) do
-  raise "Click on promote from QA failed" unless find(:xpath, '//*[@id="qa_name-promote-modal-link"]').click
+  raise 'Click on promote from QA failed' unless find_button('qa_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
     raise "Text \"#{text}\" not found" unless has_content?(text)
+  end
+end
+
+When(/^I wait at most (\d+) seconds until I see "([^"]*)" text in the environment "([^"]*)"$/) do |seconds, text, env|
+  within(:xpath, "//h3[text()='#{env}']/../..") do
+    step %(I wait at most #{seconds} seconds until I see "#{text}" text)
   end
 end
 
