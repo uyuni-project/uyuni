@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Mon Nov 23 15:10:09 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
 - Fix: make spacecmd build on Debian
+
 -------------------------------------------------------------------
 Thu Oct 22 10:39:51 CEST 2020 - jgonzalez@suse.com
 

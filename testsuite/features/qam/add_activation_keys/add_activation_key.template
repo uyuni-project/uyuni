@@ -7,16 +7,6 @@ Feature: Create an activation key for <client>
   As the testing user
   I want to use activation keys
 
-  Scenario: Create an activation key with the channel for a <client>
-    Given I am on the Systems page
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "Create Key"
-    And I enter "<client>_key" as "description"
-    And I enter "<client>_key" as "key"
-    And I select the base channel for the "<client>" from "selectedBaseChannel"
-    And I check the custom channels for "<client>"
-    And I include the recommended child channels
-    And I select the contact method for the "<client>" from "contact-method"
-    And I click on "Create Activation Key"
-    And I scroll to the top of the page
-    Then I should see a "Activation key <client>_key has been created" text
+  Scenario: Create an activation key with the channel and child channels for a <client>
+    When I create an activation key including custom channels for "<client>" via XML-RPC
+

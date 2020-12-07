@@ -21615,7 +21615,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary">
-        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility.  The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
+        <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -25259,7 +25259,7 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.title">
-        <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2020 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>

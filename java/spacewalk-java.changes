@@ -1,3 +1,20 @@
+- fix expanded support detection based on CentOS installations (bsc#1179589)
+- Generalize the reactivation key message (bsc#1178483)
+- add translation strings for newly added countries and timezones (jsc#PM-2081)
+- add the VirtualPC as virtualization type (bsc#1178990)
+- Fix the activation key handling from kickstart profile (bsc#1178647)
+
+-------------------------------------------------------------------
+Tue Nov 24 11:21:03 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.24-1
+- Update content sensitive help links
+
+-------------------------------------------------------------------
+Mon Nov 23 15:13:37 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.23-1
+- Update exception message in findSyncedMandatoryChannels
 - Report resolved module dependencies on CLM project details page
 - Allow creating custom ULN repositories with uln:// urls
 - Change message "Minion is down" to be more accurate

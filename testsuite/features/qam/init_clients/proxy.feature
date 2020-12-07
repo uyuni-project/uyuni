@@ -13,6 +13,9 @@ Feature: Setup SUSE Manager proxy
 
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
     When I perform a full salt minion cleanup on "proxy"
+    # WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
+    And I set correct product for "proxy"
+    # End of WORKAROUND
 
   Scenario: Bootstrap the proxy as a Salt minion
     Given I am authorized
@@ -25,6 +28,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "linux" as "password"
     And I select "1-proxy_key" from "activationKeys"
     And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "proxy"
 
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion

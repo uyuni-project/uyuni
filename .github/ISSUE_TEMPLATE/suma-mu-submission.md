@@ -18,7 +18,7 @@ assignees: 'juliogonzalez'
 
 Add more tasks if needed.
 
-- [ ] ask Joseph/Karl to submit a current version of the doc package to our Devel: project
+- [ ] ask Joseph/Karl to submit a current version of the doc package to our Devel: project, and the changes to the repository used for documentation.suse.com (so later we can ping #doc.suse.com-request on release day)
 - [ ] Confirm that doc is ready
 - [ ] check salt package if all patches in testing are also available for the update, for both products and products:testing (not needed for MUs without client tools)
 - [ ] Quick review changelogs with tito-wrapper and patch-creator, and request changes if needed

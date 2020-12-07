@@ -1,5 +1,11 @@
-- make autoinstallation provisoning compatible with GRUB and ELILO
+- Make autoinstallation provisoning compatible with GRUB and ELILO
   in addition to GRUB2 only (bsc#1164227)
+
+-------------------------------------------------------------------
+Mon Nov 23 15:32:19 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.18-1
+- Fix: sync before start action chains (bsc#1177336)
 - Temp: revert Sync state modules when starting action chain execution (bsc#1177336)
 - Handle group- and org-specific image pillars
 - use require in reboot trigger (bsc#1177767)

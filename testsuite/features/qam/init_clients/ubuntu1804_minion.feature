@@ -14,8 +14,10 @@ Feature: Bootstrap a Ubuntu 18.04 Salt minion
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
-    And I enter the hostname of "ubuntu1804_minion" as "hostname"
+    When I enter the hostname of "ubuntu1804_minion" as "hostname"
+    And I enter "root" as "user"
     And I enter "linux" as "password"
+    And I enter "22" as "port"
     And I select "1-ubuntu1804_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"

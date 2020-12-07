@@ -1,3 +1,9 @@
+- Use product IDs for Debian 9 and 10 SUSE Manager bootstrap repo data
+
+-------------------------------------------------------------------
+Mon Nov 23 15:22:38 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.22-1
 - Adapt Debian10 bootstrap repository definition for salt on Python 3
 - add --force to mgr-create-bootstrap-repo to enforce generation
   even when some products are not synchronized
