@@ -431,7 +431,7 @@ end
 
 When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   node = get_target(host)
-  gpg_keys = get_gpg_keys(host)
+  gpg_keys = get_gpg_keys(node)
   gpg_keys.each do |key|
     gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
     node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
