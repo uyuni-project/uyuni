@@ -17,11 +17,15 @@ package com.suse.manager.webui.controllers.contentmanagement.mappers;
 
 import static com.suse.utils.Opt.stream;
 
+import com.redhat.rhn.domain.channel.Channel;
+
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
+import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 
 import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
@@ -42,6 +46,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -121,6 +126,12 @@ public class ResponseMappers {
                                     .orElse(null)
                     );
                     environmentResponse.setBuiltTime(envDB.computeBuiltTime().orElse(null));
+                    environmentResponse.setHasProfiles(envDB.getTargets().stream()
+                            .map(EnvironmentTarget::asSoftwareTarget)
+                            .flatMap(Optional::stream)
+                            .map(SoftwareEnvironmentTarget::getChannel)
+                            .anyMatch(Channel::containsDistributions)
+                    );
                     return environmentResponse;
                 })
                 .collect(Collectors.toList());

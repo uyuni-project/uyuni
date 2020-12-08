@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
-import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import EnvironmentView from "./environment-view";
 import EnvironmentForm from "./environment-form";
+import {Messages, Utils as MsgUtils} from 'components/messages';
+import CreatorPanel from "components/panels/CreatorPanel";
 import {Loading} from "components/loading/loading";
 import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
@@ -100,6 +101,7 @@ const EnvironmentLifecycle = (props: Props) => {
                           })}
                       onOpen={({ setItem }) => setItem(environment)}
                       onCancel={() => cancelAction()}
+                      disableDelete={environment.hasProfiles}
                       onDelete={({ item, closeDialog }) => {
                         return onAction(item, "delete", props.projectId)
                           .then((projectWithDeleteddEnvironment) => {
@@ -125,12 +127,20 @@ const EnvironmentLifecycle = (props: Props) => {
                         }
 
                         return (
-                          <EnvironmentForm
-                            environment={{...item}}
-                            environments={props.environments}
-                            onChange={(item) => setItem(item)}
-                            editing
-                          />
+                          <>
+                            {item.hasProfiles && <Messages items={MsgUtils.warning(
+                              <>
+                              {t("This environment cannot be deleted since it is being used in an autoinstallation distribution.")}
+                              </>
+                            )}/>
+                            }
+                            <EnvironmentForm
+                              environment={{...item}}
+                              environments={props.environments}
+                              onChange={(item) => setItem(item)}
+                              editing
+                            />
+                          </>
                         )
                       }}
                       renderContent={() => <EnvironmentView
