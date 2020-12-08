@@ -25114,8 +25114,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary" xml:space="preserve">
-        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility.  The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
-        <target>使用系统配置文件特定的激活密钥，可以通过 'rhnreg_ks' 命令行实用程序重新注册此系统。重新注册的系统将具有相同的 ID、历史记录、组和频道（除非系统的基础频道发生更改）。</target>
+        <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
+        <target state="needs-adaptation">使用系统配置文件特定的激活密钥，可以通过 'rhnreg_ks' 命令行实用程序重新注册此系统。重新注册的系统将具有相同的 ID、历史记录、组和频道（除非系统的基础频道发生更改）。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
