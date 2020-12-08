@@ -1,3 +1,4 @@
+- Fix user creation with pam auth and no password (bsc#1179579)
 - Do not call page decorator in HEAD requests (bsc#1181228)
 - Ensure new files are synced just after writing them (bsc#1175660)
 - enable openscap auditing for salt systems in SSM (bsc#1157711)
