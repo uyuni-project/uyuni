@@ -88,7 +88,8 @@ end
 # rubocop:enable Metrics/AbcSize
 
 def get_gpg_keys(node)
-  os_version, os_family = get_os_version(node)
+  host = get_target(node)
+  os_version, os_family = get_os_version(host)
   if os_family =~ /^sles/
     gpg_keys, _code = $server.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", false)
   elsif os_family =~ /^centos/
