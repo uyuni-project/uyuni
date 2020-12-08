@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
@@ -31,6 +32,7 @@ import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.State;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
+import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -552,6 +554,37 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.purgeTarget(target);
         assertEquals(0, envdev.getTargets().size());
         assertNull(ChannelFactory.lookupByLabel(channelLabel));
+    }
+
+    /**
+     * Test purging {@link SoftwareEnvironmentTarget} that is being used in a kickstart profile
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testPurgeSwTargetWithKS() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
+        ContentProjectFactory.save(envdev);
+        cp.setFirstEnvironment(envdev);
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        KickstartableTreeTest.createTestKickstartableTree(channel);
+        SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
+        envdev.addTarget(target);
+        String channelLabel = channel.getLabel();
+
+        try {
+            ContentProjectFactory.purgeTarget(target);
+            fail("Must not purge.");
+        }
+        catch (ContentManagementException e) {
+            assertEquals("The target " + target.toString() +
+                    " is being used in an autoinstallation profile. Cannot remove.", e.getMessage());
+        }
+        finally {
+            assertEquals(1, envdev.getTargets().size());
+            assertNotNull(ChannelFactory.lookupByLabel(channelLabel));
+        }
     }
 
     /**

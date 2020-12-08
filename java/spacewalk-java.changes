@@ -1,3 +1,5 @@
+- Prevent deletion of CLM environments if they're used in an autoinstallation
+  profile (bsc#1179552)
 - register saltkey XMLRPC handler and fix behavior of delete salt key (bsc#1179872)
 - Add validation for custom repository labels
 - fix expanded support detection based on CentOS installations (bsc#1179589)

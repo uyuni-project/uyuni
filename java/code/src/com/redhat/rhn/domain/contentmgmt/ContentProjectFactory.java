@@ -292,6 +292,17 @@ public class ContentProjectFactory extends HibernateFactory {
      * @param target the Environment Target
      */
     public static void purgeTarget(EnvironmentTarget target) {
+        boolean hasDistributions = target
+                .asSoftwareTarget()
+                .map(SoftwareEnvironmentTarget::getChannel)
+                .map(Channel::containsDistributions)
+                .orElse(false);
+
+        if (hasDistributions) {
+            throw new ContentManagementException("The target " + target.toString() +
+                    " is being used in an autoinstallation profile. Cannot remove.");
+        }
+
         // firstly fix the original/clone relations of channels
         target.asSoftwareTarget().ifPresent(swTgt -> {
             Optional<Channel> prevChannel = swTgt.getChannel().asCloned().map(c -> c.getOriginal());
