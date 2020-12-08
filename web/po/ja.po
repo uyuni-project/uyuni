@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-08 13:38+0100\n"
-"PO-Revision-Date: 2020-11-06 00:50+0000\n"
+"PO-Revision-Date: 2020-12-09 00:26+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -4418,11 +4418,11 @@ msgstr "一時停止"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:47
 msgid "Synchronize Guests List"
-msgstr ""
+msgstr "ゲスト一覧の同期"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Synchronize"
-msgstr ""
+msgstr "同期"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Hosted Virtual Systems"
