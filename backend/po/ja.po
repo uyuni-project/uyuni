@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-20 12:54+0100\n"
+"POT-Creation-Date: 2020-12-08 13:38+0100\n"
 "PO-Revision-Date: 2020-11-21 02:26+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -42,9 +42,9 @@ msgid "declined proxy authentication"
 msgstr "プロキシ認証が拒否されました"
 
 #: ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:215
-#: ../server/handlers/xmlrpc/registration.py:1168
-#: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
 #: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
@@ -110,51 +110,51 @@ msgstr "無効な動作値タイプ %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "動作 %s はサーバー %s に属していません"
 
-#: ../server/handlers/xmlrpc/registration.py:194
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "無効な値  %s (%s)"
+
+#: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
 msgstr "必要なデータが足りません"
 
-#: ../server/handlers/xmlrpc/registration.py:198
+#: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
 msgstr "必要なメンバーが足りません"
 
-#: ../server/handlers/xmlrpc/registration.py:207
+#: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
 msgstr "システムを無効なユーザー名に登録しようとしています"
 
-#: ../server/handlers/xmlrpc/registration.py:839
+#: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
 msgstr "無効なシステムリリースバージョンを要求しています"
 
-#: ../server/handlers/xmlrpc/registration.py:1063
+#: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
 "適切なネットワークインターフェイスが見つかりませんでした。 ipaddr と ip6addr "
 "の両方が見つかりません。"
 
-#: ../server/handlers/xmlrpc/registration.py:1115
+#: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
 msgstr "{PRODUCT_NAME} ようこそメッセージ"
 
-#: ../server/handlers/xmlrpc/registration.py:1125
+#: ../server/handlers/xmlrpc/registration.py:1127
 msgid "Privacy Statement"
 msgstr "プライバシーステートメント"
 
-#: ../server/handlers/xmlrpc/registration.py:1146
+#: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
 msgstr "製品の引数としてディクショナリが期待されています"
 
-#: ../server/handlers/xmlrpc/registration.py:1374
+#: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "無効な値 '%s' − %s (%s)"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "無効な値  %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -197,11 +197,6 @@ msgstr ""
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "アーキテクチャ `%s' はサポートされていません"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -248,6 +243,11 @@ msgstr "キックスタートセッションの不一致です"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "再登録トークンの積み重ねには対応していません"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "アーキテクチャ `%s' はサポートされていません"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -347,7 +347,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "無効な URI %s"
 
-#: ../server/rhnChannel.py:1992
+#: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
@@ -357,7 +357,7 @@ msgstr ""
 "arch='%(arch)s')%(www_activation)s に一致するチャンネルのいずれにもアクセスが"
 "ありません"
 
-#: ../server/rhnChannel.py:2007
+#: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "リリース (%s, %s にはサブスクリプション許可が不足しています"
@@ -366,11 +366,11 @@ msgstr "リリース (%s, %s にはサブスクリプション許可が不足し
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2271 ../server/rhnChannel.py:2286
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
 msgstr "システムは登録されていますが非アクティブになっています"
 
-#: ../server/rhnChannel.py:2272
+#: ../server/rhnChannel.py:2279
 #, python-format
 msgid ""
 "\n"
@@ -387,7 +387,7 @@ msgstr ""
 "に\n"
 "お問い合わせください。\n"
 
-#: ../server/rhnChannel.py:2279
+#: ../server/rhnChannel.py:2286
 #, python-format
 msgid ""
 "\n"
@@ -404,7 +404,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2287
+#: ../server/rhnChannel.py:2294
 #, python-format
 msgid ""
 "\n"
@@ -421,6 +421,16 @@ msgstr ""
 "さい。\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "エラー: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "トレースバック: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1107,16 +1117,6 @@ msgstr "エラークラス情報: %s\n"
 #, python-format
 msgid "Explanation: %s"
 msgstr "説明: %s"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "エラー: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "トレースバック: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
@@ -1917,6 +1917,33 @@ msgstr ""
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
 
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同期。 %s からのレポート"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (コマンドライン内で指定されています)\n"
+"を開いて読み込むことができません:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" を開いたり書き込んだりする\n"
+"ことができません:\n"
+"%s"
+
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -2109,33 +2136,6 @@ msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "キックスタート可能なツリーを取り込みました (%d)"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同期。 %s からのレポート"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (コマンドライン内で指定されています)\n"
-"を開いて読み込むことができません:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" を開いたり書き込んだりする\n"
-"ことができません:\n"
-"%s"
 
 #~ msgid ""
 #~ "\n"

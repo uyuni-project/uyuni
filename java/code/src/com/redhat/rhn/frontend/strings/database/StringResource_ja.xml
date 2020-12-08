@@ -3605,27 +3605,27 @@
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
-    <trans-unit id="Asia/Jerusalem" xml:space="preserve">
+      <trans-unit id="Asia/Jerusalem" xml:space="preserve">
         <source>(GMT+0200) Israel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">(GMT+0200) イスラエル</target>
+      </trans-unit>
       <trans-unit id="Asia/Singapore" xml:space="preserve">
         <source>(GMT+0800) Singapore</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
+        <target state="translated">(GMT+0800) シンガポール</target>
+      </trans-unit>
+      <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
         <source>(GMT+0800) Malaysia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">(GMT+0800) マレーシア</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
