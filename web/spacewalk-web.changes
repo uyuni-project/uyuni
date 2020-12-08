@@ -1,3 +1,5 @@
+- Prevent deletion of CLM environments if they're used in an autoinstallation
+  profile (bsc#1179552)
 - Fix loading indicator for tables using SimpleDataProvider (bsc#1177756)
 - Fix question mark explanations for Recurring States (bsc#1179485)
 - Allow specifying both name and label of new Content Environment (bsc#1176411)
