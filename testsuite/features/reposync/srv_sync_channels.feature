@@ -25,14 +25,14 @@ Feature: Be able to list available channels and enable them
 @scc_credentials
   Scenario: List products
     When I execute mgr-sync "list products"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP5 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
     And I should get "[ ] SUSE Manager Proxy 4.0 x86_64"
 
 @scc_credentials
 @susemanager
   Scenario: List all products for SUSE Manager
     When I execute mgr-sync "list products --expand"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP5 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
     And I should get "[ ] SUSE Manager Proxy 4.0 x86_64"
     And I should get "  [ ] (R) SUSE Linux Enterprise Client Tools RES 7 x86_64"
     And I should get "  [ ] (R) SUSE Manager Tools 15 x86_64"
@@ -41,13 +41,13 @@ Feature: Be able to list available channels and enable them
 @uyuni
   Scenario: List all products for Uyuni
     When I execute mgr-sync "list products --expand"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP5 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
     And I should get "[ ] SUSE Manager Proxy 4.0 x86_64"
 
 @scc_credentials
   Scenario: List products with filter
     When I execute mgr-sync "list products --expand --filter x86_64"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP5 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
     And I shouldn't get "ppc64"
     And I shouldn't get "s390x"
 
@@ -60,20 +60,20 @@ Feature: Be able to list available channels and enable them
     And I should see "Repo URL:" in the output
 
 @scc_credentials
-  Scenario: Enable sles12-sp5-pool-x86_64
-    When I execute mgr-sync "add channel sles12-sp5-pool-x86_64"
+  Scenario: Enable sles12-sp4-pool-x86_64
+    When I execute mgr-sync "add channel sles12-sp4-pool-x86_64"
     And I execute mgr-sync "list channels"
-    Then I should get "[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]"
-    And I should get "    [I] SLES12-SP5-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-updates-x86_64]"
-    And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp5]"
+    Then I should get "[I] SLES12-SP4-Pool for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-pool-x86_64]"
+    And I should get "    [I] SLES12-SP4-Updates for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-updates-x86_64]"
+    And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp4]"
 
 @scc_credentials
-  Scenario: Enable sle-module-containers12-pool-x86_64-sp5
-    When I execute mgr-sync "add channel sle-module-containers12-pool-x86_64-sp5"
+  Scenario: Enable sle-module-containers12-pool-x86_64-sp4
+    When I execute mgr-sync "add channel sle-module-containers12-pool-x86_64-sp4"
     And I execute mgr-sync "list channels"
-    Then I should get "[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]"
-    And I should get "    [I] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp5]"
-    And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp5]"
+    Then I should get "[I] SLES12-SP4-Pool for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-pool-x86_64]"
+    And I should get "    [I] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp4]"
+    And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp4]"
 
 @scc_credentials
   Scenario: Let mgr-sync time out

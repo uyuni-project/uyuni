@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-20 12:54+0100\n"
+"POT-Creation-Date: 2020-12-08 13:38+0100\n"
 "PO-Revision-Date: 2020-05-14 22:19+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
@@ -32,9 +32,9 @@ msgid "declined proxy authentication"
 msgstr ""
 
 #: ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:215
-#: ../server/handlers/xmlrpc/registration.py:1168
-#: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
 #: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
@@ -95,50 +95,50 @@ msgstr ""
 msgid "Action %s does not belong to server %s"
 msgstr "L'acció %s no pertany al servidor %s"
 
-#: ../server/handlers/xmlrpc/registration.py:194
-msgid "Required data missing"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:198
-msgid "Required members missing"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:207
-msgid "Attempt to register a system to an invalid username"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:839
-msgid "Invalid system release version requested"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1063
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1115
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
-msgid "Privacy Statement"
-msgstr "Declaració de privacitat de la Red Hat Network"
-
-#: ../server/handlers/xmlrpc/registration.py:1146
-msgid "Expected a dictionary as a product argument"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1374
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Valor no vàlid %s (%s)"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+#, fuzzy
+msgid "Privacy Statement"
+msgstr "Declaració de privacitat de la Red Hat Network"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr ""
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -175,11 +175,6 @@ msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
 msgstr ""
 
 #: ../server/rhnServer/server_token.py:78
@@ -224,6 +219,11 @@ msgstr ""
 
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
+msgstr ""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
 msgstr ""
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
@@ -324,14 +324,14 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "L'URI %s no és vàlid"
 
-#: ../server/rhnChannel.py:1992
+#: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 
-#: ../server/rhnChannel.py:2007
+#: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr ""
@@ -340,11 +340,11 @@ msgstr ""
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2271 ../server/rhnChannel.py:2286
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
 msgstr ""
 
-#: ../server/rhnChannel.py:2272
+#: ../server/rhnChannel.py:2279
 #, python-format
 msgid ""
 "\n"
@@ -354,7 +354,7 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2279
+#: ../server/rhnChannel.py:2286
 #, python-format
 msgid ""
 "\n"
@@ -364,7 +364,7 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2287
+#: ../server/rhnChannel.py:2294
 #, python-format
 msgid ""
 "\n"
@@ -373,6 +373,16 @@ msgid ""
 "at:\n"
 "\n"
 "  %(entitlement_url)s\n"
+msgstr ""
+
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "ERROR: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
 msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
@@ -990,16 +1000,6 @@ msgstr "Informació de la classe d'error: %s\n"
 #, python-format
 msgid "Explanation: %s"
 msgstr "Explicació: %s"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "ERROR: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr ""
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
@@ -1756,6 +1756,27 @@ msgstr ""
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
 
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1915,27 +1936,6 @@ msgstr ""
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
 msgstr ""
 
 #, fuzzy

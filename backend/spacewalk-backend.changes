@@ -1,3 +1,4 @@
+- Added logging for dpkg repository detection
 - Added RHEL8 build.
 
 -------------------------------------------------------------------

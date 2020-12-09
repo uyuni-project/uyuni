@@ -19,10 +19,12 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
+import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -113,4 +115,13 @@ public interface VirtManager {
      * @return either "kvm" or "xen"
      */
     Optional<String> getHypervisor(String minionId);
+
+    /**
+     * Get the plan to use to update the guests infos in the database
+     *
+     * @param minionId the virtualization host minionId
+     *
+     * @return the plan to pass to VirtualInstanceManager.updateGuestsVirtualInstances
+     */
+    Optional<List<VmInfo>> getGuestsUpdatePlan(String minionId);
 }

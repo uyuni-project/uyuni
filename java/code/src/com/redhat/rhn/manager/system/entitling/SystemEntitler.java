@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -37,12 +38,15 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
 
 import org.apache.log4j.Logger;
 
@@ -134,6 +138,7 @@ public class SystemEntitler {
             if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
                 this.updateLibvirtEngine(minion);
+                new MinionPillarFileManager(new MinionVirtualizationPillarGenerator()).updatePillarFile(minion);
             }
 
             if (EntitlementManager.MONITORING.equals(ent)) {
@@ -210,6 +215,8 @@ public class SystemEntitler {
     }
 
     private void updateLibvirtEngine(MinionServer minion) {
+        VirtualInstanceManager.updateHostVirtualInstance(minion,
+                VirtualInstanceFactory.getInstance().getFullyVirtType());
         virtManager.updateLibvirtEngine(minion);
     }
 

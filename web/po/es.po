@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-30 18:46+0100\n"
+"POT-Creation-Date: 2020-12-08 13:38+0100\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -85,7 +85,7 @@ msgstr "Canal de configuración: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:155
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
 msgid "Edit"
 msgstr "Editar"
 
@@ -178,7 +178,7 @@ msgstr "Buscar"
 #: ../html/src/manager/maintenance/details/schedule-details.js:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:82
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
 msgstr "Sistema"
 
@@ -211,7 +211,7 @@ msgid "Assign"
 msgstr "Asignar"
 
 #: ../html/src/components/config-channels.js:455
-#: ../html/src/components/table/TableDataHandler.js:287
+#: ../html/src/components/table/TableDataHandler.js:289
 msgid "There are no entries to show."
 msgstr "No hay ninguna entrada que mostrar."
 
@@ -265,7 +265,7 @@ msgstr "Cancelar"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:36
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:37
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:27
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
@@ -483,48 +483,48 @@ msgstr "de"
 msgid "Page {0} of {1}"
 msgstr "Página {0} de {1}"
 
-#: ../html/src/components/picker/recurring-event-picker.js:305
+#: ../html/src/components/picker/recurring-event-picker.js:304
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:84
 #: ../html/src/manager/maintenance/list/schedule-list.js:36
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
 msgstr "Nombre de programación"
 
-#: ../html/src/components/picker/recurring-event-picker.js:309
+#: ../html/src/components/picker/recurring-event-picker.js:308
 msgid "Select a Schedule"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:316
+#: ../html/src/components/picker/recurring-event-picker.js:315
 msgid "Hourly:"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:322
+#: ../html/src/components/picker/recurring-event-picker.js:321
 msgid "The action will be executed every hour at the specified minute"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:328
+#: ../html/src/components/picker/recurring-event-picker.js:327
 msgid "Daily:"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:337
+#: ../html/src/components/picker/recurring-event-picker.js:336
 msgid "Weekly:"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:353
+#: ../html/src/components/picker/recurring-event-picker.js:352
 msgid "Monthly:"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:366
+#: ../html/src/components/picker/recurring-event-picker.js:365
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:372
+#: ../html/src/components/picker/recurring-event-picker.js:371
 msgid "Custom Quartz format:"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:375
+#: ../html/src/components/picker/recurring-event-picker.js:374
 msgid "e.g. \"0 15 2 ? * 7\""
 msgstr ""
 
@@ -554,7 +554,7 @@ msgstr "Vaciar"
 msgid "Select All"
 msgstr "Seleccionar todo"
 
-#: ../html/src/components/table/TableDataHandler.js:288
+#: ../html/src/components/table/TableDataHandler.js:290
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
@@ -563,7 +563,7 @@ msgstr "Seleccionar todo"
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.js:316
+#: ../html/src/components/table/TableDataHandler.js:318
 msgid "items per page"
 msgstr "elementos por página"
 
@@ -773,7 +773,7 @@ msgid "Organizations"
 msgstr "Organizaciones"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
 msgstr "Reiniciar"
 
@@ -1075,7 +1075,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
 #: ../html/src/manager/content-management/list-filters/list-filters.js:70
-#: ../html/src/manager/virtualization/ListTab.js:231
+#: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
 msgstr ""
 
@@ -1179,7 +1179,7 @@ msgstr "Nombre"
 #: ../html/src/manager/salt/keys/key-management.js:180
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
-#: ../html/src/manager/virtualization/ListTab.js:255
+#: ../html/src/manager/virtualization/ListTab.js:263
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "Acciones"
@@ -1644,7 +1644,7 @@ msgstr "Nombre de anfitrión del nodo"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:311
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:116
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
 msgstr "(ninguno)"
 
@@ -2799,7 +2799,7 @@ msgid "Revision"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.js:561
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
 msgstr "Actualizaciones"
 
@@ -3383,7 +3383,7 @@ msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.js:340
 #: ../html/src/manager/salt/keys/key-management.js:173
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:94
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
@@ -3786,7 +3786,7 @@ msgstr ""
 msgid "Are you sure you want to delete this schedule?"
 msgstr "¿Confirma que quiere eliminar el perfil seleccionado?"
 
-#: ../html/src/manager/state/recurring-states-edit.js:99
+#: ../html/src/manager/state/recurring-states-edit.js:98
 msgid "Test mode"
 msgstr ""
 
@@ -4293,64 +4293,72 @@ msgstr ""
 msgid "Graphics"
 msgstr "Gráficas"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:24
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
 msgstr "Iniciar/reanudar"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:24
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
 msgstr "Detener"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Force off"
 msgstr "Forzar apagado"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Reset"
 msgstr "Restablecer"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:33
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:34
 msgid "Suspend"
 msgstr "Suspender"
 
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:47
+msgid "Synchronize Guests List"
+msgstr ""
+
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:48
+msgid "Synchronize"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Hosted Virtual Systems"
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:49
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
 "Esta es la lista de invitados virtuales que se han configurado para su "
 "ejecución en este anfitrión."
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:63
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
 msgid "Guest"
 msgstr "Invitado"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:72
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:93
 msgid "Unregistered System"
 msgstr "Sistema no registrado"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:101
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:122
 msgid "Current Memory"
 msgstr "Memoria actual"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:107
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:128
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:113
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "Base Software Channel"
 msgstr "Canal de sóftwer de base"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:138
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:159
 msgid "paused"
 msgstr "en pausa"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:147
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:168
 msgid "Graphical Console"
 msgstr "Consola gráfica"
 
@@ -4431,11 +4439,11 @@ msgstr ""
 msgid "Please install libvirt python module."
 msgstr ""
 
-#: ../html/src/manager/virtualization/ListTab.js:142
+#: ../html/src/manager/virtualization/ListTab.js:143
 msgid "{0} selected"
 msgstr ""
 
-#: ../html/src/manager/virtualization/ListTab.js:238
+#: ../html/src/manager/virtualization/ListTab.js:246
 msgid "Action Status"
 msgstr "Estado de acción"
 

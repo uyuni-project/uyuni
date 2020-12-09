@@ -26,7 +26,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And the virtpoller beacon should be enabled on "xen_server"
     And I restart salt-minion on "xen_server"
 
 @virthost_xen
@@ -265,5 +264,3 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I delete test-net1 virtual network on "xen_server" without error control
     And I delete test-pool0 virtual storage pool on "xen_server" without error control
     And I delete all "test-vm.*" volumes from "default" pool on "xen_server" without error control
-    # Remove the virtpoller cache to avoid problems
-    And I run "rm /var/cache/virt_state.cache" on "xen_server" without error control

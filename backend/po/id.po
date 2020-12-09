@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-20 12:54+0100\n"
+"POT-Creation-Date: 2020-12-08 13:38+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -35,9 +35,9 @@ msgid "declined proxy authentication"
 msgstr "otentikasi proxy yang ditolak"
 
 #: ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:215
-#: ../server/handlers/xmlrpc/registration.py:1168
-#: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
 #: ../server/configFilesHandler.py:129
 #, fuzzy, python-format
 msgid ""
@@ -105,27 +105,32 @@ msgstr "Tipe nilai tindakan %s (%s) tidak valid"
 msgid "Action %s does not belong to server %s"
 msgstr "Tindakan %s bukan milik server %s"
 
-#: ../server/handlers/xmlrpc/registration.py:194
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, fuzzy, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Nilai %s (%s) tidak valid"
+
+#: ../server/handlers/xmlrpc/registration.py:196
 #, fuzzy
 msgid "Required data missing"
 msgstr "Data yang diperlukan hilang"
 
-#: ../server/handlers/xmlrpc/registration.py:198
+#: ../server/handlers/xmlrpc/registration.py:200
 #, fuzzy
 msgid "Required members missing"
 msgstr "Anggota yang diperlukan hilang"
 
-#: ../server/handlers/xmlrpc/registration.py:207
+#: ../server/handlers/xmlrpc/registration.py:209
 #, fuzzy
 msgid "Attempt to register a system to an invalid username"
 msgstr "Mencoba mendaftarkan sistem ke nama pengguna yang tidak valid"
 
-#: ../server/handlers/xmlrpc/registration.py:839
+#: ../server/handlers/xmlrpc/registration.py:841
 #, fuzzy
 msgid "Invalid system release version requested"
 msgstr "Versi rilis sistem tidak valid yang diminta"
 
-#: ../server/handlers/xmlrpc/registration.py:1063
+#: ../server/handlers/xmlrpc/registration.py:1065
 #, fuzzy
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
@@ -133,30 +138,25 @@ msgstr ""
 "Tidak dapat menemukan antarmuka jaringan yang valid, ipaddr dan ip6addr "
 "tidak ditemukan."
 
-#: ../server/handlers/xmlrpc/registration.py:1115
+#: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
 msgstr ""
 
-#: ../server/handlers/xmlrpc/registration.py:1125
+#: ../server/handlers/xmlrpc/registration.py:1127
 #, fuzzy
 msgid "Privacy Statement"
 msgstr "Red Hat Pernyataan Privasi Satelit"
 
-#: ../server/handlers/xmlrpc/registration.py:1146
+#: ../server/handlers/xmlrpc/registration.py:1148
 #, fuzzy
 msgid "Expected a dictionary as a product argument"
 msgstr "Mengharapkan kamus sebagai argumen produk"
 
-#: ../server/handlers/xmlrpc/registration.py:1374
+#: ../server/handlers/xmlrpc/registration.py:1376
 #, fuzzy, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nilai '%s' tidak valid untuk %s (%s)"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, fuzzy, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Nilai %s (%s) tidak valid"
 
 #: ../server/importlib/userAuth.py:98
 #, fuzzy
@@ -201,11 +201,6 @@ msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
 #, fuzzy, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, fuzzy, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Arsitektur '%s' tidak didukung"
 
 #: ../server/rhnServer/server_token.py:78
 #, fuzzy, python-format
@@ -257,6 +252,11 @@ msgstr "Ketidakcocokan sesi kickstart"
 #, fuzzy
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Penumpukan token pendaftaran ulang tidak didukung"
+
+#: ../server/rhnServer/server_class.py:97
+#, fuzzy, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Arsitektur '%s' tidak didukung"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 #, fuzzy
@@ -359,7 +359,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "URI “%s” Tidak Sah"
 
-#: ../server/rhnChannel.py:1992
+#: ../server/rhnChannel.py:1999
 #, fuzzy, python-format
 msgid ""
 "Your account does not have access to any channels matching "
@@ -368,7 +368,7 @@ msgstr ""
 "Akun Anda tidak memiliki akses ke saluran apa pun yang cocok "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2007
+#: ../server/rhnChannel.py:2014
 #, fuzzy, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Izin berlangganan tidak cukup untuk rilis (%s, %s"
@@ -377,12 +377,12 @@ msgstr "Izin berlangganan tidak cukup untuk rilis (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2271 ../server/rhnChannel.py:2286
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 #, fuzzy
 msgid "System Registered but Inactive"
 msgstr "Sistem Terdaftar tetapi Tidak Aktif"
 
-#: ../server/rhnChannel.py:2272
+#: ../server/rhnChannel.py:2279
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -396,7 +396,7 @@ msgstr ""
 "karena tidak dapat di subscribe ke base channel.\n"
 "Hubungi administrator organisasi Anda untuk mendapatkan bantuan."
 
-#: ../server/rhnChannel.py:2279
+#: ../server/rhnChannel.py:2286
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -411,7 +411,7 @@ msgstr ""
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
 
-#: ../server/rhnChannel.py:2287
+#: ../server/rhnChannel.py:2294
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -426,6 +426,16 @@ msgstr ""
 "di:\n"
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
+
+#: ../common/rhnTB.py:205
+#, fuzzy, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "GALAT: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, fuzzy, python-format
+msgid "TRACEBACK: %s"
+msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1177,16 +1187,6 @@ msgstr "Galat Info Kelas: %s"
 #, fuzzy, python-format
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
-
-#: ../common/rhnTB.py:205
-#, fuzzy, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "GALAT: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, fuzzy, python-format
-msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
@@ -2099,6 +2099,33 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
 
+#: ../satellite_tools/reposync.py:114
+#, fuzzy, python-format
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, fuzzy, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (ditentukan dalam baris perintah)\n"
+"tidak dapat dibuka dan dibaca:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, fuzzy, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" tidak dapat dibuka\n"
+"dan/atau tertulis kepada:\n"
+"%s"
+
 #: ../satellite_tools/messages.py:26
 #, fuzzy, python-format
 msgid ""
@@ -2290,33 +2317,6 @@ msgstr "Mengimpor pohon kickstartable (%d)"
 #, fuzzy, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Pohon kickstartable impor (%d)"
-
-#: ../satellite_tools/reposync.py:114
-#, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, fuzzy, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (ditentukan dalam baris perintah)\n"
-"tidak dapat dibuka dan dibaca:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, fuzzy, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" tidak dapat dibuka\n"
-"dan/atau tertulis kepada:\n"
-"%s"
 
 #, fuzzy
 #~ msgid ""

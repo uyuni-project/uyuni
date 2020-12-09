@@ -1,4 +1,5 @@
 - SPEC file libxml2-devel addition, Source0 update.
+- Replace the virtpoller beacon by a guests refresh action
 - Added RHEL build support.
 - Simplified SPEC file.
 - fix expanded support detection based on CentOS installations (bsc#1179589)

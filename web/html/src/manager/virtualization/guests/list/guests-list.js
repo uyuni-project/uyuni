@@ -8,6 +8,7 @@ import * as Systems from 'components/systems';
 import { Utils as ListUtils } from '../../list.utils';
 import { ListTab } from '../../ListTab';
 import { HypervisorCheck } from '../../HypervisorCheck';
+import { ActionApi } from '../../ActionApi';
 
 type Props = {
   serverId: string,
@@ -37,9 +38,28 @@ export function GuestsList(props: Props) {
     },
   ];
 
+  const panelButtons = !props.foreignEntitled && props.saltEntitled ? (
+    <ActionApi urlTemplate={`/rhn/manager/api/systems/details/virtualization/guests/${props.serverId}/refresh`}>
+    {
+      ({onAction, messages}) => {
+        return (
+          <AsyncButton
+            title={t("Synchronize Guests List")}
+            text={t("Synchronize")}
+            icon="fa-refresh"
+            action={() => onAction((url) => url, "", {})}
+            defaultType="btn-info"
+          />
+        );
+      }
+    }
+    </ActionApi>
+  ) : [];
+
   return (
     <>
       <HypervisorCheck saltVirtHost={!props.foreignEntitled && props.saltEntitled} hypervisor={props.hypervisor}/>
+
       <ListTab
         serverId={props.serverId}
         saltEntitled={props.saltEntitled}
@@ -53,6 +73,7 @@ export function GuestsList(props: Props) {
           return Object.keys(actions).filter(key => key.startsWith("new-") && actions[key].type === "virt.create")
         }}
         idName="uuid"
+        panelButtons={panelButtons}
       >
       {
         (createModalButton, onAction) => {

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-20 12:54+0100\n"
+"POT-Creation-Date: 2020-12-08 13:38+0100\n"
 "PO-Revision-Date: 2020-11-19 02:25+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -41,9 +41,9 @@ msgid "declined proxy authentication"
 msgstr "已拒绝代理身份验证"
 
 #: ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:215
-#: ../server/handlers/xmlrpc/registration.py:1168
-#: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
 #: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
@@ -106,49 +106,49 @@ msgstr "无效的操作值类型 %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "操作 %s 不属于服务器 %s"
 
-#: ../server/handlers/xmlrpc/registration.py:194
-msgid "Required data missing"
-msgstr "缺少必需的数据"
-
-#: ../server/handlers/xmlrpc/registration.py:198
-msgid "Required members missing"
-msgstr "缺少必需的成员"
-
-#: ../server/handlers/xmlrpc/registration.py:207
-msgid "Attempt to register a system to an invalid username"
-msgstr "尝试将系统注册到无效的用户名"
-
-#: ../server/handlers/xmlrpc/registration.py:839
-msgid "Invalid system release version requested"
-msgstr "请求了无效的系统发行版"
-
-#: ../server/handlers/xmlrpc/registration.py:1063
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
-
-#: ../server/handlers/xmlrpc/registration.py:1115
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} 欢迎消息"
-
-#: ../server/handlers/xmlrpc/registration.py:1125
-msgid "Privacy Statement"
-msgstr "隐私声明"
-
-#: ../server/handlers/xmlrpc/registration.py:1146
-msgid "Expected a dictionary as a product argument"
-msgstr "预期需要提供一个字典作为产品参数"
-
-#: ../server/handlers/xmlrpc/registration.py:1374
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "值 '%s'（为 %s (%s) 提供）无效"
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "无效的值 %s (%s)"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr "缺少必需的数据"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr "缺少必需的成员"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr "尝试将系统注册到无效的用户名"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr "请求了无效的系统发行版"
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "{PRODUCT_NAME} 欢迎消息"
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+msgid "Privacy Statement"
+msgstr "隐私声明"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr "预期需要提供一个字典作为产品参数"
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "值 '%s'（为 %s (%s) 提供）无效"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -188,11 +188,6 @@ msgstr "请在此客户端中以 root 身份运行 rhn_register"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "未为系统配置文件启用服务：\"%s\""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "不支持体系结构 `%s'"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -237,6 +232,11 @@ msgstr "Kickstart 会话不匹配"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "不支持堆叠重新注册令牌"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "不支持体系结构 `%s'"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -336,7 +336,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "无效的 URI %s"
 
-#: ../server/rhnChannel.py:1992
+#: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
@@ -345,7 +345,7 @@ msgstr ""
 "您的帐户无权访问与 (release='%(release)s', "
 "arch='%(arch)s')%(www_activation)s 匹配的任何频道"
 
-#: ../server/rhnChannel.py:2007
+#: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "订阅权限不足，无法获取发行版 (%s, %s"
@@ -354,11 +354,11 @@ msgstr "订阅权限不足，无法获取发行版 (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2271 ../server/rhnChannel.py:2286
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
 msgstr "系统已注册但处于非活动状态"
 
-#: ../server/rhnChannel.py:2272
+#: ../server/rhnChannel.py:2279
 #, python-format
 msgid ""
 "\n"
@@ -373,7 +373,7 @@ msgstr ""
 "因为它无法订阅基础频道。\n"
 "请联系您的组织管理员以取得帮助。\n"
 
-#: ../server/rhnChannel.py:2279
+#: ../server/rhnChannel.py:2286
 #, python-format
 msgid ""
 "\n"
@@ -388,7 +388,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2287
+#: ../server/rhnChannel.py:2294
 #, python-format
 msgid ""
 "\n"
@@ -403,6 +403,16 @@ msgstr ""
 "服务权利。要为此系统赋予服务权利，请登录网站：\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "错误：%s %s：%s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "回溯：%s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1067,16 +1077,6 @@ msgstr "错误类信息：%s\n"
 #, python-format
 msgid "Explanation: %s"
 msgstr "说明：%s"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "错误：%s %s：%s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "回溯：%s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
@@ -1852,6 +1852,33 @@ msgstr "  28 - 错误：--master 只在与 --mount-point 结合使用时才有�
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "错误：未知转储版本，请尝试使用某个 %s"
 
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同步报告，来自 %s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"无法打开和读取（在\n"
+"命令行中指定的）\"%s\"\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"无法打开和/或\n"
+"写入 \"%s\"：\n"
+"%s"
+
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -2039,33 +2066,6 @@ msgstr "正在导入 kickstart 树 (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同步报告，来自 %s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"无法打开和读取（在\n"
-"命令行中指定的）\"%s\"\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"无法打开和/或\n"
-"写入 \"%s\"：\n"
-"%s"
 
 #~ msgid ""
 #~ "\n"
