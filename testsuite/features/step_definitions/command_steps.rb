@@ -658,6 +658,10 @@ When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)
   @command_output = sshcmd("spacewalk-repo-sync -c #{arg1} -u #{arg2}")[:stdout]
 end
 
+When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
+  @command_output = sshcmd("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'")[:stdout]
+end
+
 When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=0')
 end
@@ -1012,6 +1016,14 @@ When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]
   filepath = "/tmp/#{label}"
   $server.run("echo -e \"#{content}\" > #{filepath}", true, 600, 'root')
   command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f  #{filepath} -y"
+  $server.run(command)
+  file_delete($server, filepath)
+end
+
+When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]*)" and revision "([^"]*)"$/) do |content, label, revision|
+  filepath = "/tmp/#{label}"
+  $server.run("echo -e \"#{content}\" > #{filepath}", true, 600, 'root')
+  command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f #{filepath} -r #{revision} -y"
   $server.run(command)
   file_delete($server, filepath)
 end

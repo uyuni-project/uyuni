@@ -1,3 +1,4 @@
+- Added '-r REVISION' option to the 'configchannel_updateinitsls' command (bsc#1179566)
 - Fix: internal: workaround for future tee of logs translation
 
 -------------------------------------------------------------------

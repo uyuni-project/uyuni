@@ -39,9 +39,14 @@ Feature: State Configuration channels
   Scenario: Create the 3rd state channel with spacecmd
     Given I am authorized as "admin" with password "admin"
     When I create channel "statechannel3" from spacecmd of type "state"
-    When I follow the left menu "Configuration > Channels"
+    And I follow the left menu "Configuration > Channels"
     Then I should see a "statechannel3" text
-    And  I update init.sls from spacecmd with content "touch /root/statechannel3:\n  cmd.run:\n    - creates: /root/statechannel3" for channel "statechannel3"
+    When I update init.sls from spacecmd with content "touch /tmp/statechannel3:\n  cmd.run:\n    - creates: /tmp/statechannel3" for channel "statechannel3"
+    And I get "/init.sls" file details for channel "statechannel3" via spacecmd
+    Then I should see "Revision: 2" in the output
+    When  I update init.sls from spacecmd with content "touch /root/statechannel3:\n  cmd.run:\n    - creates: /root/statechannel3" for channel "statechannel3" and revision "100"
+    And I get "/init.sls" file details for channel "statechannel3" via spacecmd
+    Then I should see "Revision: 100" in the output
 
   Scenario: Subscribe a minion to 1st and 2nd state channels
     When I am on the Systems overview page of this "sle_minion"

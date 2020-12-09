@@ -379,7 +379,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * Update the init.sls file for the given state channel with the given contents.
      * @param user The current user
      * @param channelLabel the label of the config channel.
-     * @param data a map containing 'content' and 'contents_enc64'
+     * @param data a map containing 'content', 'contents_enc64' and 'revision'
      * @return returns the updated config revision..
      *
      * @xmlrpc.doc Update the init.sls file for the given state channel. User can only update contents, nothing else.
@@ -389,6 +389,7 @@ public class ConfigChannelHandler extends BaseHandler {
      *  #struct_begin("path info")
      *      #prop_desc("string","contents", "Contents of the init.sls file")
      *      #prop_desc("boolean","contents_enc64", "Identifies base64 encoded content(default: disabled)")
+     *      #prop_desc("int", "revision", "next revision number, auto increment for null")
      *  #struct_end()
      * @xmlrpc.returntype
      * $ConfigRevisionSerializer
@@ -399,6 +400,7 @@ public class ConfigChannelHandler extends BaseHandler {
         Set<String> validKeys = new HashSet<String>();
         validKeys.add(ConfigRevisionSerializer.CONTENTS);
         validKeys.add(ConfigRevisionSerializer.CONTENTS_ENC64);
+        validKeys.add(ConfigRevisionSerializer.REVISION);
         validateMap(validKeys, data);
         XmlRpcConfigChannelHelper helper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = helper.lookupGlobal(user, channelLabel);
@@ -415,6 +417,9 @@ public class ConfigChannelHandler extends BaseHandler {
             form.setGroup(configInfo.getGroupname());
             form.setOwner(configInfo.getUsername());
             form.setPermissions(configInfo.getFilemode().toString());
+            if (data.containsKey(ConfigRevisionSerializer.REVISION)) {
+                form.setRevNumber(String.valueOf(data.get(ConfigRevisionSerializer.REVISION)));
+            }
             result = ConfigFileBuilder.getInstance().update(form, user, configFile);
 
          }

@@ -848,6 +848,7 @@ def help_configchannel_updateinitsls(self):
 
 options:
   -c CHANNEL
+  -r REVISION
   -f local path to file contents
   -y automatically proceed with file contents
 '''))
@@ -856,6 +857,7 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-c', '--channel')
     arg_parser.add_argument('-f', '--file')
+    arg_parser.add_argument('-r', '--revision')
     arg_parser.add_argument('-y', '--yes', action='store_true')
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -907,6 +909,13 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
                 template = ''
             (contents, _ignore) = editor(template=template, delete=True)
 
+        revision_input = prompt_user(_('Revision [next]:'))
+        if revision_input:
+            try:
+                options.revision = int(revision_input)
+            except ValueError:
+                logging.warning(_('The revision must be an integer'))
+
     else:
         if options.file:
             contents = read_file(options.file)
@@ -919,6 +928,8 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
     file_info = {'contents': ''.join(contents),
                  'contents_enc64': True
                 }
+    if options.revision:
+        file_info['revision'] = options.revision
 
 
     if not options.channel:
@@ -930,6 +941,8 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
         logging.error(_N("Error obtaining file info"))
         self.help_configchannel_updateinitsls()
         return 1
+    if 'revision' in file_info:
+        print(_('revision:                 %s') % file_info['revision'])
     print(_('contents_enc64:           %s') % file_info['contents_enc64'])
     print(_('Contents'))
     print('--------')
