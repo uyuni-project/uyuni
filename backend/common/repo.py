@@ -7,6 +7,7 @@ import http
 import os
 import zlib
 import lzma
+import logging
 import tempfile
 import subprocess
 from urllib import parse
@@ -96,6 +97,8 @@ class DpkgRepo:
         path = p_url.path
         if not path.endswith(index_file):
             if index_file in path:
+                logging.error("URL has already {} mentioned in it. Raising \
+                               GeneralRepoException!".format(index_file), exc_info=True)
                 raise GeneralRepoException("URL has already {} mentioned in it.".format(index_file))
             path = os.path.join(path.rstrip("/"), index_file)
 
@@ -111,10 +114,15 @@ class DpkgRepo:
             for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
                 packages_url = self.append_index_file(cnt_fname)
                 if packages_url.startswith("file://"):
-                    with open(packages_url.replace("file://", ""), "rb") as f:
-                        self._pkg_index = cnt_fname, f.read()
-                        break
-                    # TODO: Add logging in error case!
+                    try:
+                        with open(packages_url.replace("file://", ""), "rb") as f:
+                            self._pkg_index = cnt_fname, f.read()
+                            break
+                    except FileNotFoundError as ex:
+                        logging.exception(
+                            "File not found: {}".format(
+                                packages_url.replace("file://", "")), exc_info=True)
+                        raise ex
                 else:
                     resp = requests.get(packages_url, proxies=self.proxies)
                     if resp.status_code == http.HTTPStatus.OK:
@@ -138,9 +146,14 @@ class DpkgRepo:
             elif fname == DpkgRepo.PKG_XZ:
                 cnt_data = lzma.decompress(cnt_data)
         except (zlib.error, lzma.LZMAError) as exc:
+            logging.exception("Exception during decompression of pkg index",
+                              exc_info=True)
             raise GeneralRepoException(exc)
         except Exception as exc:
-            raise GeneralRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc))
+            logging.exception("Unknown exception during decompression of \
+                               pkg index. Raising GeneralRepoException",
+                              exc_info=True)
+            raise GeneralRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc)) from exc
 
         return cnt_data.decode("utf-8")
 
@@ -220,8 +233,11 @@ class DpkgRepo:
                     )
                     out = process.wait(timeout=90)
                 else:
+                    logging.error("Signature file for GPG check could not be accessed: \
+                                   '{}. Raising GeneralRepoException.".format(release_signature_file))
                     raise GeneralRepoException("Signature file for GPG check could not be accessed: {}".format(release_signature_file))
             else:
+                logging.error("No release file found: '{}'. Raising GeneralRepoException.".format(uri))
                 raise GeneralRepoException("No release file found: {}".format(uri))
         else:
             # There is a response, so we are dealing with a URL.
@@ -253,8 +269,10 @@ class DpkgRepo:
                     out = process.wait(timeout=90)
 
         if process.returncode == 0:
+            logging.debug("GPG signature is valid")
             return True
         else:
+            logging.debug("GPG signature is invalid. gpg return code: {}".format(process.returncode))
             return False
 
 
@@ -277,6 +295,7 @@ class DpkgRepo:
 
     def _get_release_index_from_file(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
+        logging.debug("Fetching release file from local filesystem: {}".format(self._url.replace("file://", "")))
         local_path = self._url.replace("file://", "")
         release_file = None
         if os.access(self._get_parent_url(local_path, 2, "InRelease"), os.R_OK):
@@ -294,12 +313,16 @@ class DpkgRepo:
         # Repo format is not flat
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
+                logging.error("GPG verfication failed: {}".format(release_file))
+                logging.error("Raising GeneralRepoException!")
                 raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
             try:
                 with open(release_file, "rb") as f:
                     self._release = self._parse_release_index(f.read().decode("utf-8"))
-            except IOError:
-                raise GeneralRepoException("IOError while accessing file: {}".format(release_file))
+            except IOError as ex:
+                logging.exception("IOError while accessing file: '{}'. Raising \
+                                   GeneralRepoException!".format(release_file), exc_info=True)
+                raise GeneralRepoException("IOError while accessing file: {}".format(release_file)) from ex
 
         # Repo format is flat
         else:
@@ -308,31 +331,40 @@ class DpkgRepo:
             elif os.access(self._get_parent_url(local_path, 0, "Release"), os.R_OK):
                 release_file = self._get_parent_url(local_path, 0, "Release")
             else:
+                logging.error("No release file found in '{}'. Raising \
+                                   GeneralRepoException.".format(self._get_parent_url(local_path, 0)))
                 raise GeneralRepoException("No release file found in {}".format(self._get_parent_url(local_path, 0)))
 
             try:
                 with open(release_file, "rb") as f:
                     release_file_content = f.read().decode("utf-8")
                     if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
+                        logging.error("GPG verfication failed: '{}'. \
+                                           Raising GeneralRepoException.".format(release_file))
                         raise GeneralRepoException("GPG verfication failed: {}".format(release_file))
                     self._release = self._parse_release_index(release_file_content)
-            except IOError:
-                raise GeneralRepoException("IOError while accessing file: {}".format(release_file))
+            except IOError as ex:
+                logging.exception("IOError while accessing file: '{}'. Raising \
+                                   GeneralRepoException.".format(release_file), exc_info=True)
+                raise GeneralRepoException("IOError while accessing file: {}".format(release_file)) from ex
 
         return self._release
 
     def _get_release_index_from_http(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
+        logging.debug("Fetching release file from local http: {}".format(self._url))
         resp = requests.get(self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies)
         if resp.status_code != http.HTTPStatus.OK:
             resp = requests.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
-        
+
         try:
             if resp.status_code not in [
                 http.HTTPStatus.NOT_FOUND,
                 http.HTTPStatus.OK,
                 http.HTTPStatus.FORBIDDEN,
             ]:
+                logging.error("Fetching release index failed with http status \
+                               '{}'. Raising GeneralRepoException.".format(resp.status_code))
                 raise GeneralRepoException(
                     "HTTP error {} occurred while connecting to the URL".format(resp.status_code)
                 )
@@ -341,6 +373,7 @@ class DpkgRepo:
             self._flat_checked = 1
 
             if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
+                logging.error("Repo has no valid GPG signature. Raising GeneralRepoException.")
                 raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
@@ -352,6 +385,7 @@ class DpkgRepo:
 
                 if resp.status_code == http.HTTPStatus.OK:
                     if self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
+                        logging.error("Repo has no valid GPG signature. GeneralRepoException will be raised!")
                         raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
                     self._release = self._parse_release_index(resp.content.decode("utf-8"))
         finally:

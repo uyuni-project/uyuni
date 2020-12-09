@@ -1,3 +1,5 @@
+- Added logging for dpkg repository detection
+
 -------------------------------------------------------------------
 Wed May 19 16:48:09 CEST 2021 - jgonzalez@suse.com
 
