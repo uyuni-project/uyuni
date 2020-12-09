@@ -32,14 +32,13 @@
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define apache_group    www
-%define salt_user-group    salt
+%define salt_user_group salt
 %define apache2         apache2
 %define java_version    11
 %else
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %define apache_group    apache
-%define salt_user_group root 
 %define apache2         httpd
 %define java_version    1:11
 %endif
