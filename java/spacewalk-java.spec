@@ -39,6 +39,7 @@
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %define apache_group    apache
+%define salt_user_group salt
 %define apache2         httpd
 %define java_version    1:11
 %endif
