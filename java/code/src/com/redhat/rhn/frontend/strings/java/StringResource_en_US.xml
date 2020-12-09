@@ -4727,12 +4727,6 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="RS" xml:space="preserve">
-        <source>Serbia</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">All country select list pull-downs</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="RO" xml:space="preserve">
         <source>Romania</source>
         <context-group name="ctx">
