@@ -32,33 +32,25 @@
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define apache_group    www
+%define salt_user-group    salt
 %define apache2         apache2
-%define ehcache         ehcache >= 2.10.1
-%define apache_commons_discovery   jakarta-commons-discovery
-%define apache_commons_el          jakarta-commons-el
-%define apache_commons_validator   jakarta-commons-validator
 %define java_version    11
-%if 0%{?sle_version} > 150100
-%define apache_commons_fileupload  apache-commons-fileupload
-%define apache_commons_digester    apache-commons-digester
-%define log4j                      log4j12
-%else
-%define apache_commons_fileupload  jakarta-commons-fileupload
-%define apache_commons_digester    jakarta-commons-digester
-%define log4j                      log4j
-%endif
 %else
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %define apache_group    apache
+%define salt_user_group root 
 %define apache2         httpd
-%define ehcache         ehcache-core >= 2.10.1
-%define apache_commons_discovery   apache-commons-discovery
-%define apache_commons_el          apache-commons-el
-%define apache_commons_fileupload  apache-commons-fileupload
-%define apache_commons_validator   apache-commons-validator
 %define java_version    1:11
 %endif
+
+%define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
+%define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
+%define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
+%define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
+%define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
+%define log4j                      (log4j or log4j12)
+
 
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
@@ -70,7 +62,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.4
+Version:        4.2.5
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -83,7 +75,9 @@ BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
+%if 0%{?suse_version}
 BuildRequires:  ant-nodeps
+%endif
 BuildRequires:  antlr >= 2.7.6
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
@@ -98,7 +92,6 @@ BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 %if 0%{?suse_version}
 BuildRequires:  classmate
-BuildRequires:  javamail
 %endif
 BuildRequires:  concurrent
 BuildRequires:  dom4j
@@ -113,11 +106,17 @@ BuildRequires:  ical4j
 BuildRequires:  jade4j
 BuildRequires:  jaf
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  %{apache_commons_el}
+BuildRequires:  apache-commons-el
 BuildRequires:  %{apache_commons_fileupload}
 BuildRequires:  %{apache_commons_validator}
+%if 0%{?rhel} >= 8 || 0%{?fedora}
+BuildRequires:  java-11-openjdk-devel
+BuildRequires:	maven-javadoc-plugin
+%else
 BuildRequires:  java-devel >= %{java_version}
+%endif
 BuildRequires:  java-saml
+BuildRequires:  javamail
 BuildRequires:  javapackages-tools
 BuildRequires:  javassist
 BuildRequires:  jboss-logging
@@ -157,7 +156,7 @@ BuildRequires:  velocity
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
 
-Requires:       /sbin/unix2_chkpwd
+Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -172,13 +171,12 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 %if 0%{?suse_version}
 Requires:       classmate
-Requires:       javamail
 %endif
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       %{ehcache}
-Requires:       gnu-jaf
+Requires:       (jaf or gnu-jaf)
 Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
@@ -186,8 +184,13 @@ Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       jade4j
 Requires:       %{apache_commons_digester}
+%if 0%{?rhel} >= 8
+Requires:       java-11-openjdk
+%else
 Requires:       java >= %{java_version}
+%endif
 Requires:       java-saml
+Requires:       javamail
 Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging
@@ -211,7 +214,7 @@ Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
-Requires:       %{apache_commons_el}
+Requires:       apache-commons-el
 Requires:       %{apache_commons_fileupload}
 Requires:       jcommon
 Requires:       jdom
@@ -317,7 +320,7 @@ This package contains testing files of spacewalk-java.
 Summary:        Autogenerated apidoc sources for spacewalk-java
 Group:          Applications/Internet
 
-BuildRequires:  docbook_4
+BuildRequires:  (docbook-dtds or docbook_4)
 
 %description apidoc-sources
 This package contains apidoc sources of spacewalk-java.
@@ -334,7 +337,7 @@ This package contains apidoc sources of spacewalk-java.
 Summary:        Java version of taskomatic
 Group:          Applications/Internet
 
-Requires:       /sbin/unix2_chkpwd
+Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
@@ -353,7 +356,11 @@ Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
+%if 0%{?rhel} >= 8
+Requires:	java-11-openjdk
+%else
 Requires:       java >= %{java_version}
+%endif
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
@@ -376,7 +383,11 @@ Obsoletes:      taskomatic-sat < 5.3.0
 Provides:       taskomatic = %{version}-%{release}
 Provides:       taskomatic-sat = %{version}-%{release}
 BuildRequires:  systemd
+%if 0%{?rhel}
+BuildRequires:  systemd-rpm-macros
+%else
 %{?systemd_requires}
+%endif
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
@@ -412,10 +423,17 @@ find . -name 'StringResource_*.xml' |      while read i ;
 done
 %endif
 
+# Adapt Apache service name in taskomatic.service
+sed -i 's/apache2.service/%{apache2}.service/' scripts/taskomatic.service
+
 %build
 PRODUCT_NAME="SUSE Manager"
 %if !0%{?sle_version} || 0%{?is_opensuse}
 PRODUCT_NAME="Uyuni"
+%endif
+
+%if 0%{?rhel}
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
 %endif
 
 # compile only java sources (no packing here)
@@ -474,6 +492,11 @@ PRODUCT_NAME="SUSE Manager"
 %if !0%{?sle_version} || 0%{?is_opensuse}
 PRODUCT_NAME="Uyuni"
 %endif
+
+%if 0%{?rhel}
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+%endif
+
 export NO_BRP_STALE_LINK_ERROR=yes
 
 %if 0%{?suse_version}
@@ -590,22 +613,66 @@ rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 %endif
 
+# Pretifying symlinks for RHEL
+%if 0%{?rhel}
+mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
+mv $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
+mv $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
+mv $RPM_BUILD_ROOT%{jardir}/jta.jar $RPM_BUILD_ROOT%{jardir}/geronimo-jta-1.1-api.jar
+mv $RPM_BUILD_ROOT%{jardir}/struts_core.jar $RPM_BUILD_ROOT%{jardir}/struts.jar
+# Repointing some symlinks.
+ln -nsf /usr/share/java/c3p0/c3p0.jar $RPM_BUILD_ROOT%{jardir}/c3p0.jar
+ln -nsf /usr/share/java/concurrent/concurrent.jar $RPM_BUILD_ROOT%{jardir}/concurrent.jar
+ln -nsf /usr/share/java/hibernate-commons-annotations/hibernate-commons-annotations.jar $RPM_BUILD_ROOT%{jardir}/hibernate-commons-annotations.jar
+ln -nsf /usr/share/java/javamail/javax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
+ln -nsf /usr/share/java/c3p0/c3p0.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/c3p0.jar
+ln -nsf /usr/share/java/concurrent/concurrent.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/concurrent.jar
+ln -nsf /usr/share/java/hibernate-commons-annotations/hibernate-commons-annotations.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/hibernate-commons-annotations.jar
+ln -nsf /usr/share/java/javamail/javax.mail.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/javamail.jar
+# Removing unused symlinks.
+rm -rf $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation-api.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamaildsn.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamailgimap.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamailimap.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail-api.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamailmail.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamailmailapi.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamailpop3.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/javamailsmtp.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/struts_extras.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/struts_taglib.jar
+%endif
+
 # show all JAR symlinks
 echo "#### SYMLINKS START ####"
 find $RPM_BUILD_ROOT%{jardir} -name *.jar
 echo "#### SYMLINKS END ####"
 
 %pre -n spacewalk-taskomatic
+%if !0%{?rhel}
 %service_add_pre taskomatic.service
+%endif
 
 %post -n spacewalk-taskomatic
+%if 0%{?rhel}
+%systemd_post taskomatic.service 
+%else
 %service_add_post taskomatic.service
+%endif
 
 %preun -n spacewalk-taskomatic
+%if 0%{?rhel}
+%systemd_preun taskomatic.service
+%else
 %service_del_preun taskomatic.service
+%endif
 
 %postun -n spacewalk-taskomatic
+%if 0%{?rhel}
+%systemd_postun taskomatic.service
+%else
 %service_del_postun taskomatic.service
+%endif
 
 %post config
 if [ ! -d /var/log/rhn ]; then
@@ -628,15 +695,15 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %defattr(-,root,root)
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
-%attr(775, salt, salt) %dir /srv/susemanager/salt/salt_ssh
-%attr(775, salt, salt) %dir /srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir /srv/susemanager/salt/salt_ssh
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir /srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
 %attr(775, root, tomcat) %dir %{appdir}
 %dir /srv/susemanager
 %dir /srv/susemanager/salt
 %attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data
 %attr(775,tomcat,susemanager) %dir /srv/susemanager/pillar_data/images
 %dir /srv/susemanager/formula_data
-%attr(750, tomcat, salt) %dir /srv/susemanager/tmp
+%attr(750, tomcat, %{salt_user_group}) %dir /srv/susemanager/tmp
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
@@ -659,7 +726,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/antlr.jar
 %{jardir}/bcel.jar
 %{jardir}/c3p0*.jar
-%if 0%{?fedora} >= 25 || 0%{?sle_version} >= 150200
+%if 0%{?fedora} || 0%{?sle_version} >= 150200 || 0%{?rhel}
 %{jardir}/cglib_cglib.jar
 %else
 %{jardir}/cglib.jar
@@ -681,7 +748,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %{jardir}/snakeyaml.jar
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
-%{jardir}/commons-jexl.jar
+%{jardir}/apache-commons-jexl_commons-jexl.jar
 %{jardir}/commons-lang3.jar
 %{jardir}/google-gson_google-gsongson.jar
 %{jardir}/httpcomponents_httpclient.jar

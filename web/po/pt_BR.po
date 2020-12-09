@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-10-23 16:49+0000\n"
-"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
+"POT-Creation-Date: 2020-12-08 13:38+0100\n"
+"PO-Revision-Date: 2020-12-08 00:26+0000\n"
+"Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "web/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -22,17 +22,19 @@ msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "restante"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
+"O navegador Internet Explorer não é compatível. Tente usar Firefox, Chrome "
+"ou Edge"
 
 #: ../html/src/components/action-schedule.js:54
 msgid "new action chain"
-msgstr ""
+msgstr "Cadeia de novas ações"
 
 #: ../html/src/components/action-schedule.js:197
 msgid ""
@@ -40,38 +42,41 @@ msgid ""
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
 msgstr ""
+"Existem vários programas de manutenção para sistemas selecionados. "
+"Certifique-se de que os sistemas do conjunto usem no máximo 1 programação de "
+"manutenção se desejar programar por data ou janela de manutenção."
 
 #: ../html/src/components/action-schedule.js:204
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "Sem janelas de manutenção futuras"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Earliest:"
-msgstr ""
+msgstr "Não agendar antes do que:"
 
 #: ../html/src/components/action-schedule.js:249
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "Janela de manutenção:"
 
 #: ../html/src/components/action-schedule.js:274
 msgid "Add to:"
-msgstr ""
+msgstr "Adicionar à Corrente da Ação:"
 
 #: ../html/src/components/action-schedule.js:290
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "Carregando o calendário..."
 
 #: ../html/src/components/config-channels.js:26
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "Canal de configuração de estado"
 
 #: ../html/src/components/config-channels.js:29
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Canal de configuração normal"
 
 #: ../html/src/components/config-channels.js:54
 msgid "Configuration Channel: {0}"
-msgstr ""
+msgstr "Canal de configuração: {0}"
 
 #: ../html/src/components/config-channels.js:58
 #: ../html/src/manager/images/image-profiles.js:161
@@ -84,34 +89,35 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:155
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: ../html/src/components/config-channels.js:59
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "Editar Canal de Configuração"
 
 #: ../html/src/components/config-channels.js:111
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "Existem alterações não salvas. Você quer prosseguir?"
 
 #: ../html/src/components/config-channels.js:149
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "As atribuições de estado foram salvas."
 
 #: ../html/src/components/config-channels.js:158
 msgid "An error occurred on save."
-msgstr ""
+msgstr "Ocorreu um erro ao salvar."
 
 #: ../html/src/components/config-channels.js:281
 #: ../html/src/manager/minion/packages/package-states.js:275
 msgid "No current changes."
-msgstr ""
+msgstr "Sem mudanças atuais."
 
 #: ../html/src/components/config-channels.js:282
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
+"Nenhum estado atribuído. Use a pesquisa para localizar e atribuir estados."
 
 #: ../html/src/components/config-channels.js:341
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:51
@@ -128,7 +134,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #: ../html/src/components/config-channels.js:342
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:166
@@ -136,36 +142,36 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: ../html/src/components/config-channels.js:349
 #: ../html/src/manager/maintenance/details/schedule-details.js:180
 #: ../html/src/manager/maintenance/details/schedule-details.js:187
 msgid "Save Changes"
-msgstr ""
+msgstr "Salvar Mudanças"
 
 #: ../html/src/components/config-channels.js:355
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 #: ../html/src/components/config-channels.js:360
 msgid "Reorder"
-msgstr ""
+msgstr "Reordenar"
 
 #: ../html/src/components/config-channels.js:372
 #: ../html/src/components/config-channels.js:376
 msgid "Changes"
-msgstr ""
+msgstr "Mudanças"
 
 #: ../html/src/components/config-channels.js:374
 msgid "1 Change"
-msgstr ""
+msgstr "1 Mudança"
 
 #: ../html/src/components/config-channels.js:383
 #: ../html/src/components/config-channels.js:412
 #: ../html/src/manager/minion/packages/package-states.js:244
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: ../html/src/components/config-channels.js:389
 #: ../html/src/manager/admin/config/monitoring-admin.js:43
@@ -175,50 +181,51 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.js:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:82
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
-msgstr ""
+msgstr "Sistemas"
 
 #: ../html/src/components/config-channels.js:399
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Canais de Configuração"
 
 #: ../html/src/components/config-channels.js:409
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "Pesquisar canais de configuração"
 
 #: ../html/src/components/config-channels.js:423
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr ""
+msgstr "Edite a classificação dos canais de configuração arrastando-os."
 
 #: ../html/src/components/config-channels.js:424
 msgid "There are no states assigned."
-msgstr ""
+msgstr "Não há estados atribuídos."
 
 #: ../html/src/components/config-channels.js:431
 msgid "Channel Name"
-msgstr ""
+msgstr "Nome do Canal"
 
 #: ../html/src/components/config-channels.js:432
 msgid "Channel Label"
-msgstr ""
+msgstr "Referência do Canal"
 
 #: ../html/src/components/config-channels.js:433
 msgid "Assign"
-msgstr ""
+msgstr "Assinar"
 
 #: ../html/src/components/config-channels.js:455
-#: ../html/src/components/table/TableDataHandler.js:287
+#: ../html/src/components/table/TableDataHandler.js:289
 msgid "There are no entries to show."
-msgstr ""
+msgstr "Não há entradas para mostrar."
 
 #: ../html/src/components/dialog/ActionConfirm.js:71
 msgid "Are you sure you want to {0} {1} "
-msgstr ""
+msgstr "Tem certeza de que deseja {0} {1} "
 
 #: ../html/src/components/dialog/ActionConfirm.js:81
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
 msgstr ""
+"Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
@@ -237,7 +244,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
 #: ../html/src/components/panels/CreatorPanel.js:91
@@ -262,56 +269,63 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:36
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:37
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:27
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
-msgstr ""
+msgstr "Remover"
 
 #: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
-msgstr ""
+msgstr "Remover projeto"
 
 #: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
-msgstr ""
+msgstr "Tem certeza que deseja excluir o projeto "
 
 #: ../html/src/components/FormulaForm.js:17
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr ""
+"Fórmula salva. A aplicação do estado-alto não é necessária para esta fórmula."
 
 #: ../html/src/components/FormulaForm.js:79
 msgid ""
 "Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
 "on each system!"
 msgstr ""
+"Várias fórmulas de grupo detectadas. Apenas uma fórmula para \"{0}\" pode "
+"ser usada em cada sistema!"
 
 #: ../html/src/components/FormulaForm.js:107
 #: ../html/src/manager/clusters/cluster/cluster-config.js:50
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:60
 msgid "Please input required fields: {0}"
-msgstr ""
+msgstr "Insira os campos obrigatórios: {0}"
 
 #: ../html/src/components/FormulaForm.js:110
 #: ../html/src/manager/clusters/cluster/cluster-config.js:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:63
 msgid "Invalid format of fields: {0}"
-msgstr ""
+msgstr "Formato inválido de campos: {0}"
 
 #: ../html/src/components/FormulaForm.js:157
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
+"Nesta página você pode configurar o Salt Formulas para instalar e configurar "
+"o software automaticamente."
 
 #: ../html/src/components/formulas/EditGroup.js:266
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
+"Este campo é usado como um identificador de 'chave' nos dados do pilar "
+"resultante."
 
 #: ../html/src/components/formula-selection.js:130
 msgid " No group"
-msgstr ""
+msgstr " Sem grupo"
 
 #: ../html/src/components/formula-selection.js:230
 msgid ""
@@ -319,6 +333,9 @@ msgid ""
 "then be configured on group and system level. This allows you to "
 "automatically install and configure software."
 msgstr ""
+"Nesta página, você pode selecionar Fórmulas de Sal para este grupo / "
+"sistema, que podem ser configuradas no nível do grupo e do sistema. Isso "
+"permite que você instale e configure o software automaticamente."
 
 #: ../html/src/components/formula-selection.js:236
 #: ../html/src/components/panels/CreatorPanel.js:116
@@ -327,25 +344,25 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:143
 #: ../html/src/manager/minion/packages/package-states.js:201
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: ../html/src/components/formula-selection.js:244
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:59
 msgid "Formulas"
-msgstr ""
+msgstr "Fórmulas"
 
 #: ../html/src/components/formulas/PasswordInput.js:52
 msgid "Generate new password"
-msgstr ""
+msgstr "Gerar nova senha"
 
 #: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
-msgstr ""
+msgstr "mostrar/esconder senha"
 
 #: ../html/src/components/formulas/SectionToggle.js:15
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "Alternar visibilidade da seção"
 
 #: ../html/src/components/input/Check.stories.js:31
 #: ../html/src/components/input/DateTime.stories.js:35
@@ -359,65 +376,65 @@ msgstr ""
 #: ../html/src/components/input/Select.stories.js:38
 #: ../html/src/components/input/Text.stories.js:36
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"
 
 #: ../html/src/components/input/Combo.stories.js:30
 msgid "Flavor"
-msgstr ""
+msgstr "Sabor"
 
 #: ../html/src/components/input/Combo.stories.js:32
 msgid "Start typing..."
-msgstr ""
+msgstr "Comece a digitar..."
 
 #: ../html/src/components/input/Combo.stories.js:33
 msgid "No flavors"
-msgstr ""
+msgstr "Sem sabores"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
-msgstr ""
+msgstr "Hora"
 
 #: ../html/src/components/input/FormMultiInput.js:122
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:59
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 #: ../html/src/components/input/FormMultiInput.js:134
 #: ../html/src/manager/clusters/remove-node/remove-node.js:81
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 msgid "Users"
-msgstr ""
+msgstr "Usuários"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
 #: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
-msgstr ""
+msgstr "Primeiro Nome"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
 #: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/Text.stories.js:28
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "2 caracteres mínimo"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
-msgstr ""
+msgstr "Sobrenome"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
-msgstr ""
+msgstr "Senha"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
-msgstr ""
+msgstr "Mínimo de 4 caracteres"
 
 #: ../html/src/components/input/Radio.stories.js:26
 #: ../html/src/components/input/Radio.stories.js:55
@@ -425,32 +442,32 @@ msgstr ""
 #: ../html/src/components/input/Radio.stories.js:116
 #: ../html/src/components/input/Select.stories.js:26
 msgid "Level"
-msgstr ""
+msgstr "Nível"
 
 #: ../html/src/components/input/Radio.stories.js:31
 #: ../html/src/components/input/Radio.stories.js:61
 #: ../html/src/components/input/Radio.stories.js:91
 #: ../html/src/components/input/Radio.stories.js:122
 msgid "Beginner"
-msgstr ""
+msgstr "Iniciante"
 
 #: ../html/src/components/input/Radio.stories.js:32
 #: ../html/src/components/input/Radio.stories.js:62
 #: ../html/src/components/input/Radio.stories.js:92
 #: ../html/src/components/input/Radio.stories.js:123
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: ../html/src/components/input/Radio.stories.js:33
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
-msgstr ""
+msgstr "Experto"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
-msgstr ""
+msgstr "Primeiro"
 
 #: ../html/src/components/pagination.js:16
 #: ../html/src/manager/admin/setup/products/products.js:358
@@ -462,64 +479,64 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
-msgstr ""
+msgstr "Próximo"
 
 #: ../html/src/components/pagination.js:54
 msgid "Page"
-msgstr ""
+msgstr "Página"
 
 #: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:363
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:766
 msgid "of"
-msgstr ""
+msgstr "de"
 
 #: ../html/src/components/pagination.js:72
 msgid "Page {0} of {1}"
-msgstr ""
+msgstr "Página {0} de {1}"
 
-#: ../html/src/components/picker/recurring-event-picker.js:305
+#: ../html/src/components/picker/recurring-event-picker.js:304
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:84
 #: ../html/src/manager/maintenance/list/schedule-list.js:36
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
-msgstr ""
+msgstr "Nome da programação"
 
-#: ../html/src/components/picker/recurring-event-picker.js:309
+#: ../html/src/components/picker/recurring-event-picker.js:308
 msgid "Select a Schedule"
-msgstr ""
+msgstr "Selecionar uma agenda"
 
-#: ../html/src/components/picker/recurring-event-picker.js:316
+#: ../html/src/components/picker/recurring-event-picker.js:315
 msgid "Hourly:"
-msgstr ""
+msgstr "Horário:"
 
-#: ../html/src/components/picker/recurring-event-picker.js:322
+#: ../html/src/components/picker/recurring-event-picker.js:321
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "A ação será executada a cada hora no minuto especificado"
 
-#: ../html/src/components/picker/recurring-event-picker.js:328
+#: ../html/src/components/picker/recurring-event-picker.js:327
 msgid "Daily:"
-msgstr ""
+msgstr "Diariamente:"
 
-#: ../html/src/components/picker/recurring-event-picker.js:337
+#: ../html/src/components/picker/recurring-event-picker.js:336
 msgid "Weekly:"
-msgstr ""
+msgstr "Semanalmente:"
 
-#: ../html/src/components/picker/recurring-event-picker.js:353
+#: ../html/src/components/picker/recurring-event-picker.js:352
 msgid "Monthly:"
-msgstr ""
+msgstr "Mensal:"
 
-#: ../html/src/components/picker/recurring-event-picker.js:366
+#: ../html/src/components/picker/recurring-event-picker.js:365
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:372
+#: ../html/src/components/picker/recurring-event-picker.js:371
 msgid "Custom Quartz format:"
 msgstr ""
 
-#: ../html/src/components/picker/recurring-event-picker.js:375
+#: ../html/src/components/picker/recurring-event-picker.js:374
 msgid "e.g. \"0 15 2 ? * 7\""
 msgstr ""
 
@@ -549,7 +566,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.js:288
+#: ../html/src/components/table/TableDataHandler.js:290
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
@@ -558,7 +575,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.js:316
+#: ../html/src/components/table/TableDataHandler.js:318
 msgid "items per page"
 msgstr ""
 
@@ -757,7 +774,7 @@ msgid "Organizations"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
 msgstr ""
 
@@ -1056,7 +1073,8 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:229
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:138
-#: ../html/src/manager/virtualization/ListTab.js:231
+#: ../html/src/manager/content-management/list-filters/list-filters.js:70
+#: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
 msgstr ""
 
@@ -1083,7 +1101,7 @@ msgstr ""
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:235
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:128
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:58
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
 msgid "Status"
@@ -1159,7 +1177,7 @@ msgstr ""
 #: ../html/src/manager/salt/keys/key-management.js:180
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
-#: ../html/src/manager/virtualization/ListTab.js:255
+#: ../html/src/manager/virtualization/ListTab.js:263
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr ""
@@ -1376,8 +1394,8 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:154
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:257
 #: ../html/src/manager/content-management/list-projects/list-projects.js:100
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
@@ -1581,6 +1599,8 @@ msgid "Edit properties"
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:249
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
 #: ../html/src/manager/images/image-profile-edit.js:394
 #: ../html/src/manager/images/image-profiles.js:135
@@ -1608,7 +1628,6 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:286
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
 #: ../html/src/manager/clusters/shared/ui/select-server.js:113
-#: ../html/src/manager/content-management/list-filters/list-filters.js:70
 #: ../html/src/manager/content-management/list-projects/list-projects.js:81
 msgid "Filter by any value"
 msgstr ""
@@ -1619,7 +1638,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:311
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:116
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
 msgstr ""
 
@@ -1849,7 +1868,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-form.js:151
 #: ../html/src/manager/content-management/list-filters/filter-form.js:189
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:84
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:47
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-view.js:549
@@ -2114,7 +2133,7 @@ msgstr ""
 msgid "Version {0} successfully built into {1}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:55
 msgid "Insert before"
 msgstr ""
 
@@ -2165,12 +2184,12 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:84
 msgid "not built"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:73
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr ""
 
@@ -2762,7 +2781,7 @@ msgid "Revision"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.js:561
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
 msgstr ""
 
@@ -3326,11 +3345,11 @@ msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.js:340
 #: ../html/src/manager/salt/keys/key-management.js:173
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:94
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
@@ -3719,7 +3738,7 @@ msgstr ""
 msgid "Are you sure you want to delete this schedule?"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-edit.js:99
+#: ../html/src/manager/state/recurring-states-edit.js:98
 msgid "Test mode"
 msgstr ""
 
@@ -4105,7 +4124,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
 msgid "Organization"
-msgstr ""
+msgstr "Organização"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
@@ -4223,62 +4242,70 @@ msgstr ""
 msgid "Graphics"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:24
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:24
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:27
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Force off"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:30
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Reset"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:33
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:34
 msgid "Suspend"
 msgstr ""
 
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:47
+msgid "Synchronize Guests List"
+msgstr ""
+
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:48
+msgid "Synchronize"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Hosted Virtual Systems"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:49
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:63
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
 msgid "Guest"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:72
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:93
 msgid "Unregistered System"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:101
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:122
 msgid "Current Memory"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:107
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:128
 msgid "vCPUs"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:113
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "Base Software Channel"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:138
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:159
 msgid "paused"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:147
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:168
 msgid "Graphical Console"
 msgstr ""
 
@@ -4357,11 +4384,11 @@ msgstr ""
 msgid "Please install libvirt python module."
 msgstr ""
 
-#: ../html/src/manager/virtualization/ListTab.js:142
+#: ../html/src/manager/virtualization/ListTab.js:143
 msgid "{0} selected"
 msgstr ""
 
-#: ../html/src/manager/virtualization/ListTab.js:238
+#: ../html/src/manager/virtualization/ListTab.js:246
 msgid "Action Status"
 msgstr ""
 

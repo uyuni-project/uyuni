@@ -9,6 +9,7 @@ Author: Pradeep Kilambi <pkilambi@redhat.com>
 
 """
 
+import csv
 import os
 import sys
 try:
@@ -16,7 +17,7 @@ try:
 except ImportError:
     import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
-from optparse import OptionParser, Option
+from optparse import OptionParser, Option  # pylint: disable=deprecated-module
 from uyuni.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout
 
 _topdir = '/usr/share/rhn'
@@ -44,7 +45,6 @@ options_table = [
 ]
 
 _csv_fields = ['systemId', 'to-org-id']
-
 
 def main():
     global client, DEBUG
@@ -78,7 +78,7 @@ def main():
 
         if not options.to_org_id:
             print("Missing Destination org id")
-            return
+            return None
         else:
             to_org_id = options.to_org_id or None
 
@@ -100,13 +100,14 @@ def main():
             server_id = [int(server_id)]
         try:
             migrate_system(sessionKey, int(to_org_id), server_id)
-        except Exception:
+        except Exception:  # pylint: disable=try-except-raise
             raise
 
     if DEBUG:
         print("Migration Completed successfully")
     xmlrpc_logout(client, sessionKey)
 
+    return None
 
 def migrate_system(key, newOrgId, server_ids):
     """
@@ -120,7 +121,6 @@ def migrate_system(key, newOrgId, server_ids):
         sys.stderr.write("Error: %s\n" % e.faultString)
         sys.exit(-1)
 
-    return
 
 
 def lookup_server(key, from_org_id):
@@ -146,7 +146,6 @@ def read_csv_file(csv_file):
     """
      Parse the fields in the given csv
     """
-    import csv
     csv_data = []
     f_csv = open(csv_file)
     reader = csv.reader(f_csv)

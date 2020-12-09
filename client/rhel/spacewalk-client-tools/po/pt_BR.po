@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 16:18+0100\n"
-"PO-Revision-Date: 2020-10-23 16:49+0000\n"
+"POT-Creation-Date: 2020-11-25 10:58+0100\n"
+"PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/pt_BR/>\n"
@@ -1064,9 +1064,10 @@ msgid "Cannot contact selected server"
 msgstr "Não foi possível contatar o servidor selecionado"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
-msgstr "Não foi possível contatar o Satellite ou Proxy em '%s.'"
+#, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+msgstr ""
+"Não foi possível entrar em contato com o {PRODUCT_NAME} ou Proxy em '{HOST}'."
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -1083,7 +1084,7 @@ msgstr "Certifique-se de que a conexão de rede deste sistema está operacional.
 
 #: ../src/up2date_client/rhnregGui.py:341
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Houve um erro ao tentar a comunicação com o servidor Spacewalk."
+msgstr "Ocorreu um erro de comunicação com o servidor Spacewalk."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
@@ -1297,11 +1298,11 @@ msgstr ""
 #, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Este erro não deveria ter acontecido. Se você gostaria de nos ajudar a "
-"melhorar este programa, por favor relate um erro em bugzilla.redhat.com. "
+"melhorar este programa, por favor relate um erro em bugzilla.suse.com. "
 "Incluir as partes relevantes de '%s' ajudaria bastante. Obrigado!"
 
 #: ../src/up2date_client/rhnreg.py:76
@@ -2533,16 +2534,15 @@ msgid "RHN Registration"
 msgstr "Registro RHN"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
-msgstr ""
-"Registre para atualizações de software da Spacewalk/Red Hat Satellite/Red "
-"Hat Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
+msgstr "Registre para atualizações de software da Spacewalk/Uyuni/SUSE Manager"
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "Registrar na Spacewalk/Red Hat Satellite/Red Hat NetworkClassic."
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr "Registro para Spacewalk/Uyuni/SUSE Manager"
+
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "Registrar na Spacewalk/Red Hat Satellite/Red Hat NetworkClassic."
 
 #~ msgid "Enter your Red Hat Satellite URL."
 #~ msgstr "Digite sua URL Red Hat Satellite."

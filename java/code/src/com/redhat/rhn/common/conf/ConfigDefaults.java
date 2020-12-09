@@ -207,10 +207,6 @@ public class ConfigDefaults {
 
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
 
-    public static final String VIRTPOLLER_CACHE_EXPIRATION = "server.susemanager.virtpoller.expire_time";
-    public static final String VIRTPOLLER_CACHE_FILE = "server.susemanager.virtpoller.cache_file";
-    public static final String VIRTPOLLER_INTERVAL = "server.susemanager.virtpoller.interval";
-
     /**
      * Token lifetime in seconds
      */

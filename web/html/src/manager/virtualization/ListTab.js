@@ -44,6 +44,7 @@ type Props = {
   canCreate: boolean,
   getCreateActionsKeys: (actionResults: Object) => Array<string>,
   idName: string,
+  panelButtons: React.Node,
 };
 
 export function ListTab(props: Props) {
@@ -172,21 +173,28 @@ export function ListTab(props: Props) {
           messages,
         }) => {
           const panelButtons = (
-            <div className="pull-right btn-group">
-              {props.saltEntitled && props.canCreate
-                && (
-                <LinkButton
-                  text={t(`Create ${capsType}`)}
-                  title={t(`Create ${capsType}`)}
-                  className="btn-default"
-                  icon="fa-plus"
-                  href={`/rhn/manager/systems/details/virtualization/${urlType}/${props.serverId}/new`}
-                />)
-              }
-              {props.modalsData
-                .filter(action => props.isActionVisible(action))
-                .map(action => createSelectedModalButton(action))}
-            </div>);
+            <>
+              <div className="pull-right btn-group">
+                {props.panelButtons}
+              </div>
+              <span className="pull-right">&nbsp;&nbsp;</span>
+              <div className="pull-right btn-group">
+                {props.saltEntitled && props.canCreate
+                  && (
+                  <LinkButton
+                    text={t(`Create ${capsType}`)}
+                    title={t(`Create ${capsType}`)}
+                    className="btn-default"
+                    icon="fa-plus"
+                    href={`/rhn/manager/systems/details/virtualization/${urlType}/${props.serverId}/new`}
+                  />)
+                }
+                {props.modalsData
+                  .filter(action => props.isActionVisible(action))
+                  .map(action => createSelectedModalButton(action))}
+              </div>
+            </>
+          );
 
           return (
             <VirtualizationListRefreshApi
@@ -281,4 +289,5 @@ ListTab.defaultProps = {
   saltEntitled: true,
   getCreateActionsKeys: (actions) => Object.keys(actions).filter(key => key.startsWith("new-")),
   modalsData: [],
+  panelButtons: [],
 }

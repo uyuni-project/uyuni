@@ -1,5 +1,5 @@
 import "../../manager/polyfills.js";
-import jQuery from "jQuery";
+import jQuery from "jquery";
 
 // Allows us to mock and test the existing network layer easily
 global.jQuery = jQuery;

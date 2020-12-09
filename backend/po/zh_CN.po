@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:21+0200\n"
-"PO-Revision-Date: 2020-11-04 11:50+0000\n"
+"POT-Creation-Date: 2020-12-08 13:38+0100\n"
+"PO-Revision-Date: 2020-11-19 02:25+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/zh_CN/>\n"
@@ -41,9 +41,9 @@ msgid "declined proxy authentication"
 msgstr "已拒绝代理身份验证"
 
 #: ../server/handlers/app/packages.py:192
-#: ../server/handlers/xmlrpc/registration.py:215
-#: ../server/handlers/xmlrpc/registration.py:1168
-#: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
 #: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
@@ -83,6 +83,19 @@ msgstr "预期需要提供软件包名称，而不是：%s"
 msgid "Expected a package, not: %s"
 msgstr "预期需要提供软件包，而不是：%s"
 
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "未为服务器配置文件启用 SUSE Manager Proxy 服务：\"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "无效会话密钥"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "此服务器 ID 不再存在"
+
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
@@ -98,54 +111,41 @@ msgstr "操作 %s 不属于服务器 %s"
 msgid "Invalid value %s (%s)"
 msgstr "无效的值 %s (%s)"
 
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "未为服务器配置文件启用 SUSE Manager 代理服务：\"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "无效会话密钥"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "此服务器 ID 不再存在"
-
-#: ../server/handlers/xmlrpc/registration.py:194
+#: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
 msgstr "缺少必需的数据"
 
-#: ../server/handlers/xmlrpc/registration.py:198
+#: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
 msgstr "缺少必需的成员"
 
-#: ../server/handlers/xmlrpc/registration.py:207
+#: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
 msgstr "尝试将系统注册到无效的用户名"
 
-#: ../server/handlers/xmlrpc/registration.py:839
+#: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
 msgstr "请求了无效的系统发行版"
 
-#: ../server/handlers/xmlrpc/registration.py:1063
+#: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
 
-#: ../server/handlers/xmlrpc/registration.py:1115
+#: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
 msgstr "{PRODUCT_NAME} 欢迎消息"
 
-#: ../server/handlers/xmlrpc/registration.py:1125
+#: ../server/handlers/xmlrpc/registration.py:1127
 msgid "Privacy Statement"
 msgstr "隐私声明"
 
-#: ../server/handlers/xmlrpc/registration.py:1146
+#: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
 msgstr "预期需要提供一个字典作为产品参数"
 
-#: ../server/handlers/xmlrpc/registration.py:1374
+#: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "值 '%s'（为 %s (%s) 提供）无效"
@@ -189,15 +189,10 @@ msgstr "请在此客户端中以 root 身份运行 rhn_register"
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "未为系统配置文件启用服务：\"%s\""
 
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "不支持架构 `%s'"
-
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "为令牌 `%s' 分配了多个基础频道"
+msgstr "为令牌 `%s' 指派了多个基础频道"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
@@ -238,9 +233,14 @@ msgstr "Kickstart 会话不匹配"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "不支持堆叠重新注册令牌"
 
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "不支持体系结构 `%s'"
+
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
-msgstr "无效的用户名/密码组合"
+msgstr "无效的用户名/口令组合"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:467
@@ -276,17 +276,17 @@ msgstr "请将您的电子邮件地址限制为 %s 个字符"
 #: ../server/rhnUser.py:623
 #, python-format
 msgid "password must be at least %d characters"
-msgstr "密码必须至少为 %d 个字符"
+msgstr "口令必须至少为 %d 个字符"
 
 #: ../server/rhnUser.py:626
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr "密码必须短于 %d 个字符"
+msgstr "口令必须短于 %d 个字符"
 
 #: ../server/rhnUser.py:644
 #, python-format
 msgid "password contains character `%s'"
-msgstr "密码包含字符 `%s'"
+msgstr "口令包含字符 `%s'"
 
 #: ../server/rhnUser.py:651
 #, python-format
@@ -336,7 +336,7 @@ msgstr ""
 msgid "Invalid URI %s"
 msgstr "无效的 URI %s"
 
-#: ../server/rhnChannel.py:1992
+#: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
@@ -345,19 +345,7 @@ msgstr ""
 "您的帐户无权访问与 (release='%(release)s', "
 "arch='%(arch)s')%(www_activation)s 匹配的任何频道"
 
-#: ../server/rhnChannel.py:2002
-msgid ""
-"\n"
-"If you have a registration number, please register with it first at http://"
-"www.redhat.com/apps/activate/ and then try again.\n"
-"\n"
-msgstr ""
-"\n"
-"如果您有注册号，请先在 http://www.redhat.com/apps/activate/ 上使用该注册号注"
-"册，然后重试。\n"
-"\n"
-
-#: ../server/rhnChannel.py:2012
+#: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "订阅权限不足，无法获取发行版 (%s, %s"
@@ -366,35 +354,11 @@ msgstr "订阅权限不足，无法获取发行版 (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2276 ../server/rhnChannel.py:2287
-#: ../server/rhnChannel.py:2302
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
 msgstr "系统已注册但处于非活动状态"
 
-#: ../server/rhnChannel.py:2277
-#, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it is not subscribed to a channel. If you have not yet\n"
-"activated your product for service, please visit our website at:\n"
-"\n"
-"     http://www.redhat.com/apps/activate/\n"
-"\n"
-"...to activate your product."
-msgstr ""
-"\n"
-"架构和操作系统发行版的组合无效 (%s, %s)。\n"
-"您的系统已注册，但不会接收更新，\n"
-"因为它未订阅频道。如果您尚未激活\n"
-"服务产品，请访问我们的网站：\n"
-"\n"
-"     http://www.redhat.com/apps/activate/\n"
-"\n"
-"...以激活您的产品。"
-
-#: ../server/rhnChannel.py:2288
+#: ../server/rhnChannel.py:2279
 #, python-format
 msgid ""
 "\n"
@@ -404,12 +368,12 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 "\n"
-"架构和操作系统发行版的组合无效 (%s, %s)。\n"
+"体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
 "您的系统已注册，但不会接收更新，\n"
 "因为它无法订阅基础频道。\n"
 "请联系您的组织管理员以取得帮助。\n"
 
-#: ../server/rhnChannel.py:2295
+#: ../server/rhnChannel.py:2286
 #, python-format
 msgid ""
 "\n"
@@ -424,7 +388,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2303
+#: ../server/rhnChannel.py:2294
 #, python-format
 msgid ""
 "\n"
@@ -440,6 +404,16 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "错误：%s %s：%s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "回溯：%s"
+
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
 msgid "This does not appear to be a valid username."
@@ -447,11 +421,11 @@ msgstr "这似乎不是有效的用户名。"
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
-msgstr "无效的用户名和密码组合。"
+msgstr "无效的用户名和口令组合。"
 
 #: ../common/rhnException.py:55
 msgid "This login is already taken, or the password is incorrect."
-msgstr "此登录名已被使用，或者密码不正确。"
+msgstr "此登录名已被使用，或者口令不正确。"
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
@@ -479,7 +453,7 @@ msgstr "必须填写有效用户名。"
 
 #: ../common/rhnException.py:62
 msgid "Valid password required."
-msgstr "必须填写有效密码。"
+msgstr "必须填写有效口令。"
 
 #: ../common/rhnException.py:63
 msgid "Minimum username length violation."
@@ -487,7 +461,7 @@ msgstr "最小用户名长度违规。"
 
 #: ../common/rhnException.py:64
 msgid "Minimum password length violation."
-msgstr "最小密码长度违规。"
+msgstr "最小口令长度违规。"
 
 #: ../common/rhnException.py:65
 msgid "The username contains invalid characters."
@@ -499,7 +473,7 @@ msgstr "找不到文件。"
 
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
-msgstr "不支持该架构和操作系统版本组合。"
+msgstr "不支持该体系结构和操作系统版本组合。"
 
 #: ../common/rhnException.py:68
 msgid "Could not retrieve system data from database."
@@ -519,7 +493,7 @@ msgstr "无法更新数据库项。"
 
 #: ../common/rhnException.py:72
 msgid "Unsupported server architecture."
-msgstr "不支持的服务器架构。"
+msgstr "不支持的服务器体系结构。"
 
 #: ../common/rhnException.py:73
 #, python-format
@@ -662,9 +636,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     架构无效。\n"
+"     体系结构无效。\n"
 "\n"
-"     软件包的架构不受以下对象的支持：\n"
+"     软件包的体系结构不受以下对象的支持：\n"
 "     "
 
 #: ../common/rhnException.py:121
@@ -709,9 +683,10 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:134
+#, fuzzy
 msgid ""
 "\n"
-"     The --force rhnpush option is disabled on this server.\n"
+"     The --force mgrpush option is disabled on this server.\n"
 "     Please contact your SUSE Manager administrator for more help.\n"
 "     "
 msgstr ""
@@ -827,7 +802,7 @@ msgstr "最大用户名长度违规"
 
 #: ../common/rhnException.py:183
 msgid "Maximum password length violation"
-msgstr "最大密码长度违规"
+msgstr "最大口令长度违规"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
@@ -841,11 +816,11 @@ msgstr "系统名不能短于 1 个字符"
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
 msgid "SUSE Manager Proxy error."
-msgstr "SUSE Manager 代理错误。"
+msgstr "SUSE Manager Proxy 错误。"
 
 #: ../common/rhnException.py:191
 msgid "SUSE Manager Proxy unable to login."
-msgstr "SUSE Manager 代理无法登录。"
+msgstr "SUSE Manager Proxy 无法登录。"
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -856,17 +831,17 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     SUSE Manager 代理系统 ID 与数据库中的 Spacewalk 代理服务器\n"
+"     SUSE Manager Proxy 系统 ID 与数据库中的 Spacewalk 代理服务器\n"
 "     不匹配。\n"
 "     "
 
 #: ../common/rhnException.py:197
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "SUSE Manager 代理会话令牌无效。"
+msgstr "SUSE Manager Proxy 会话令牌无效。"
 
 #: ../common/rhnException.py:198
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "SUSE Manager 代理会话令牌已失效。"
+msgstr "SUSE Manager Proxy 会话令牌已失效。"
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
@@ -899,7 +874,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     已在此 SUSE Manager 服务器上禁用服务器间同步。\n"
+"     已在此 SUSE Manager Server 上禁用服务器间同步。\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -1103,264 +1078,11 @@ msgstr "错误类信息：%s\n"
 msgid "Explanation: %s"
 msgstr "说明：%s"
 
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "错误：%s %s：%s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "回溯：%s"
-
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s 至少应采用 YYYYMMDD 格式。\n"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"错误：正在执行步骤 %s。错误为：\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"错误：从您的临时储存库访问频道数据时出现\n"
-"       问题。您是否已将频道 ISO 中的所有数据\n"
-"       迁移到此目录？如果是，请再次检查频道\n"
-"       ISO，确保不缺少任何 ISO，然后以交互方式\n"
-"       重新装入并重新填充临时储存库 (%s)。\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"错误：同步信息时出现问题。\n"
-"       错误消息：%s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"错误：与 ISS 主服务器通讯时出现问题。\n"
-"       根据具体的错误细节，请检查您的配置、\n"
-"       基本网络连接和/或名称解析，然后重试。\n"
-"       错误消息：%s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       If the master satellite is older than v5.3, it does not have ISS "
-"capability.\n"
-"       Otherwise, depending on the specific error details, please review "
-"your\n"
-"       configuration, basic network connectivity, and/or name resolution, "
-"and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"错误：与 ISS 主服务器通讯时出现问题。\n"
-"       如果主服务器的从属服务器版本低于 v5.3，则它不具备\n"
-"       ISS 功能。否则，请根据具体的错误细节检查您的\n"
-"       配置、基本网络连接和/或名称解析，然后重试。\n"
-"       错误消息：%s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"错误：如果不同步子频道的父频道，则无法同步该\n"
-"       子频道。父频道需要：(a) 事先已经过同步，\n"
-"       或 (b) 配合所需的子频道一起同步。此事务缺少\n"
-"       父频道：\n"
-"       %s\n"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"错误：未赋权您同步此频道集中的频道。\n"
-"请联系您的 SUSE Manager 联系人\n"
-"%s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  错误：设备上的可用空间不足 (%s KB)。"
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s 提取成功：%s（%s 字节）"
-
-#: ../satellite_tools/messages.py:75
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    软件包不存在：%s"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Total size: %s"
-msgstr "   总大小：%s"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      已下载 %s，共 %s。估计剩余时间：%s"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    提取失败：%s"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   RPM 提取摘要：%s"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "       success: %d"
-msgstr "       成功：%d"
-
-#: ../satellite_tools/messages.py:81
-#, python-format
-msgid "       failed:  %d"
-msgstr "       失败：%d"
-
-#: ../satellite_tools/messages.py:82
-#, python-format
-msgid "       extinct: %d"
-msgstr "       不存在：%d"
-
-#: ../satellite_tools/messages.py:84
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   正在检索/分析 *相关的* 软件包元数据：%s (%s)"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   正在检索/分析勘误数据：%s (%s)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   正在检索/分析 kickstart 数据：%s (%s)"
-
-#: ../satellite_tools/messages.py:87
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   正在检索/分析 kickstart 树文件：%s (%s)"
-
-#: ../satellite_tools/messages.py:88
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   正在导入 *相关的* 软件包元数据：%s (%s)"
-
-#: ../satellite_tools/messages.py:89
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * 警告：此过程可能需要较长时间。"
-
-#: ../satellite_tools/messages.py:90
-msgid "Linking packages to channels"
-msgstr "将软件包链接到频道"
-
-#: ../satellite_tools/messages.py:91
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   正在导入 *相关的* 勘误：%s (%s)"
-
-#: ../satellite_tools/messages.py:92
-msgid "   No new kickstartable tree to import"
-msgstr "   没有可导入的新 kickstart 树"
-
-#: ../satellite_tools/messages.py:93
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "正在导入 kickstart 树 (%d)"
-
-#: ../satellite_tools/messages.py:94
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "已导入 kickstart 树 (%d)"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"无法打开和读取（在\n"
-"命令行中指定的）\"%s\"\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"无法打开和/或\n"
-"写入 \"%s\"：\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ 正在以电子邮件形式发送日志 +++"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同步报告，来自 %s"
-
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1426,10 +1148,18 @@ msgstr "SUSE Manager 主服务器不支持同步组织数据。"
 msgid "Skipping..."
 msgstr "正在跳过..."
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:111
+msgid "+++ sending log as an email +++"
+msgstr "+++ 正在以电子邮件形式发送日志 +++"
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "来自 %s 的 SUSE Manager 服务器间同步报告"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:124
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
 #: ../satellite_tools/satsync.py:521
 msgid " - file-system synchronization"
@@ -1437,7 +1167,7 @@ msgstr " - 文件系统同步"
 
 #: ../satellite_tools/satsync.py:533 ../satellite_tools/satsync.py:541
 msgid " - live synchronization"
-msgstr " - 实时同步"
+msgstr " - 在线同步"
 
 #: ../satellite_tools/satsync.py:534
 #, python-brace-format
@@ -1448,7 +1178,7 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
-"错误：不再支持使用 RHN Classic Hosted 进行实时内容同步。\n"
+"错误：不再支持使用 RHN Classic Hosted 进行在线内容同步。\n"
 "除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道"
 "转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
 
@@ -1776,13 +1506,13 @@ msgid "Commandline: %s"
 msgstr "命令行：%s"
 
 #: ../satellite_tools/satsync.py:2202
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
-"satellite-sync\" for more information."
+"mgr-inter-sync\" for more information."
 msgstr ""
-"仅限调试：已达到 XML 的最大批大小/正在处理数据库导入 (1..%s)。有关详细信息，"
-"请参见 \"man satellite-sync\"。"
+"仅限调试：XML/数据库导入处理的最大批大小 (1..%s)。有关详细信息，请参见 \"man "
+"satellite-sync\"。"
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1793,8 +1523,9 @@ msgid "process data for this channel only"
 msgstr "仅处理此频道的数据"
 
 #: ../satellite_tools/satsync.py:2209
+#, fuzzy
 msgid ""
-"disk dump will be considered to be a full export; see \"man satellite-sync\" "
+"disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
 msgstr ""
 "磁盘转储将被视为完整导出内容；有关详细信息，请参见 \"man satellite-sync\"。"
@@ -1836,7 +1567,7 @@ msgstr "备用 HTTP 代理用户名"
 
 #: ../satellite_tools/satsync.py:2228
 msgid "alternative http proxy password"
-msgstr "备用 HTTP 代理密码"
+msgstr "备用 HTTP 代理口令"
 
 #: ../satellite_tools/satsync.py:2230
 msgid "parent SUSE Manager to import content from"
@@ -1887,7 +1618,8 @@ msgid "alternative server with which to connect (hostname)"
 msgstr "用于连接的备用服务器（主机名）"
 
 #: ../satellite_tools/satsync.py:2254
-msgid "synchronize to this step (man satellite-sync for more info)"
+#, fuzzy
+msgid "synchronize to this step (man mgr-inter-sync for more info)"
 msgstr "同步到此步骤（有关详细信息，请参见 man satellite-sync）"
 
 #: ../satellite_tools/satsync.py:2256
@@ -1904,7 +1636,7 @@ msgstr "用于同步输出的备用电子邮件地址（--email 选项）"
 
 #: ../satellite_tools/satsync.py:2262
 msgid "do not remove rpms when importing from local dump"
-msgstr "从本地转储导入时不要删除 RPM"
+msgstr "从本地转储导入时不要去除 RPM"
 
 #: ../satellite_tools/satsync.py:2264
 msgid ""
@@ -2119,3 +1851,268 @@ msgstr "  28 - 错误：--master 只在与 --mount-point 结合使用时才有�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "错误：未知转储版本，请尝试使用某个 %s"
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同步报告，来自 %s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"无法打开和读取（在\n"
+"命令行中指定的）\"%s\"\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"无法打开和/或\n"
+"写入 \"%s\"：\n"
+"%s"
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"错误：正在执行步骤 %s。错误为：\n"
+"%s\n"
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"错误：从您的临时储存库访问频道数据时出现\n"
+"       问题。您是否已将频道 ISO 中的所有数据\n"
+"       迁移到此目录？如果是，请再次检查频道\n"
+"       ISO，确保不缺少任何 ISO，然后以交互方式\n"
+"       重新装入并重新填充临时储存库 (%s)。\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"错误：同步信息时出现问题。\n"
+"       错误消息：%s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"错误：与 ISS 主服务器通讯时出现问题。\n"
+"       根据具体的错误细节，请检查您的配置、\n"
+"       基本网络连接和/或名称解析，然后重试。\n"
+"       错误消息：%s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"错误：如果不同步子频道的父频道，则无法同步该\n"
+"       子频道。父频道需要：(a) 事先已经过同步，\n"
+"       或 (b) 配合所需的子频道一起同步。此事务缺少\n"
+"       父频道：\n"
+"       %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"错误：未赋权您同步此频道集中的频道。\n"
+"请联系您的 SUSE Manager 联系人\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  错误：设备上的可用空间不足 (%s KB)。"
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s 提取成功：%s（%s 字节）"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    软件包不存在：%s"
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr "   总大小：%s"
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      已下载 %s，共 %s。估计剩余时间：%s"
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    提取失败：%s"
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   RPM 提取摘要：%s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr "       成功：%d"
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr "       失败：%d"
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr "       不存在：%d"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   正在检索/分析 *相关的* 软件包元数据：%s (%s)"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   正在检索/分析勘误数据：%s (%s)"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   正在检索/分析 kickstart 数据：%s (%s)"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   正在检索/分析 kickstart 树文件：%s (%s)"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   正在导入 *相关的* 软件包元数据：%s (%s)"
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * 警告：此过程可能需要较长时间。"
+
+#: ../satellite_tools/messages.py:82
+msgid "Linking packages to channels"
+msgstr "将软件包链接到频道"
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   正在导入 *相关的* 勘误：%s (%s)"
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr "   没有可导入的新 kickstart 树"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "正在导入 kickstart 树 (%d)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "已导入 kickstart 树 (%d)"
+
+#~ msgid ""
+#~ "\n"
+#~ "If you have a registration number, please register with it first at "
+#~ "http://www.redhat.com/apps/activate/ and then try again.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "如果您有注册号，请先在 http://www.redhat.com/apps/activate/ 上使用该注册号"
+#~ "注册，然后重试。\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Invalid Architecture and OS release combination (%s, %s).\n"
+#~ "Your system has been registered, but will not receive updates\n"
+#~ "because it is not subscribed to a channel. If you have not yet\n"
+#~ "activated your product for service, please visit our website at:\n"
+#~ "\n"
+#~ "     http://www.redhat.com/apps/activate/\n"
+#~ "\n"
+#~ "...to activate your product."
+#~ msgstr ""
+#~ "\n"
+#~ "体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
+#~ "您的系统已注册，但不会接收更新，\n"
+#~ "因为它未订阅频道。如果您尚未激活\n"
+#~ "服务产品，请访问我们的网站：\n"
+#~ "\n"
+#~ "     http://www.redhat.com/apps/activate/\n"
+#~ "\n"
+#~ "...以激活您的产品。"
+
+#~ msgid ""
+#~ "\n"
+#~ "ERROR: There was a problem communicating with the ISS Master.\n"
+#~ "       If the master satellite is older than v5.3, it does not have ISS "
+#~ "capability.\n"
+#~ "       Otherwise, depending on the specific error details, please review "
+#~ "your\n"
+#~ "       configuration, basic network connectivity, and/or name resolution, "
+#~ "and try again.\n"
+#~ "       Error message: %s\n"
+#~ msgstr ""
+#~ "\n"
+#~ "错误：与 ISS 主服务器通讯时出现问题。\n"
+#~ "       如果主服务器的从属服务器版本低于 v5.3，则它不具备\n"
+#~ "       ISS 功能。否则，请根据具体的错误细节检查您的\n"
+#~ "       配置、基本网络连接和/或名称解析，然后重试。\n"
+#~ "       错误消息：%s\n"

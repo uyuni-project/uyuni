@@ -40,11 +40,9 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   kernel_version, _code = node.run('uname -r')
   puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
-  os_pretty_raw, _code = node.run('grep "PRETTY" /etc/os-release')
-  os_pretty = os_pretty_raw.strip.split('=')[1].delete '"'
+  os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
-  puts 'i should see os version: ' + os_pretty if os_pretty.include? 'SUSE Linux'
-  step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
+  step %(I should see a "#{os_version}" text) if os_family.include? 'sles'
 end
 
 Then(/^I should see the terminals imported from the configuration file$/) do
@@ -513,8 +511,9 @@ end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
-  product_identifier = find(:xpath, xpath)['data-identifier']
-  raise "#{product_identifier} is not checked" unless has_checked_field?('checkbox-for-' + product_identifier)
+  within(:xpath, xpath) do
+    raise "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, "./div/input[@type='checkbox']").checked?
+  end
 end
 
 And(/^I wait until I see "(.*?)" product has been added$/) do |product|
@@ -538,18 +537,18 @@ end
 
 Then(/^the SLE12 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
   if $product != 'Uyuni'
-    raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP2 SUSE Linux Enterprise Server 12 SP2 x86_64 [sle-manager-tools12-pool-x86_64-sp2]'
+    raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
   end
-  raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
 Then(/^the SLE15 products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-Pool for x86_64 SUSE Linux Enterprise Server 15 x86_64 [sle-product-sles15-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-Updates for x86_64 Basesystem Module 15 x86_64 [sle-module-basesystem15-updates-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-Pool for x86_64 Server Applications Module 15 x86_64 [sle-module-server-applications15-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-SP2-Pool for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle-product-sles15-sp2-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-SP2-Updates for x86_64 Basesystem Module 15 SP2 x86_64 [sle-module-basesystem15-sp2-updates-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-SP2-Pool for x86_64 Server Applications Module 15 SP2 x86_64 [sle-module-server-applications15-sp2-pool-x86_64]'
 end
 
 Then(/^the SLE15SP2 base products should be added$/) do
@@ -668,11 +667,13 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  node = get_target(host)
+  gpg_keys = get_gpg_keys(node, target)
   cmd = "mgr-bootstrap #{client} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
-  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=RHN-ORG-TRUSTED-SSL-CERT' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
   output, = target.run(cmd)
   unless output.include? key

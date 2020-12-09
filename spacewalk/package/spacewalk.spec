@@ -70,7 +70,9 @@ Requires:       spacewalk-backend-xmlrpc
 Requires:       spacewalk-certs-tools
 
 # Misc
+%if !0%{?rhel}
 Requires:       pxe-default-image
+%endif
 Requires:       spacewalk-config
 Requires:       spacewalk-schema
 

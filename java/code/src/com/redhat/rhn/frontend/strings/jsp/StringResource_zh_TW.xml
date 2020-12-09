@@ -24850,10 +24850,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary" xml:space="preserve">
-        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility.  The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
+        <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.activation.key" xml:space="preserve">
         <source>Key:</source>
@@ -29477,6 +29478,34 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
+        <source>Documentation Language</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.docs.langs" xml:space="preserve">
+        <source>Please select your preferred documentation language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ documentation.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="channelOverview.jsp.newToolbar.stateType" xml:space="preserve">
+        <source>New Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
+        <source>Create Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
       <target state="new" />
   </trans-unit>
       </body>

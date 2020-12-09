@@ -5589,7 +5589,7 @@ organization. You may grant or remove the organization administrator role in the
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
           </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;注意:&lt;/strong&gt; 検証を行った上で対応している電力管理タイプは IPMI のみですが、他のタイプでも動作することがあります。他の電力管理タイプを有効にする場合は、rhn.conf 内の「java.power_management.types」オプションを上書きしてください。</target>
+        <target state="translated">&lt;strong&gt;注意:&lt;/strong&gt; 下記に示した電力管理タイプはいずれも検証済みでサポート対象内ですが、これら以外は動作するかどうかは保証されていません。詳しくはドキュメンテーションをお読みください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -22486,21 +22486,21 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       <!--KS schedule pages -->
       <trans-unit id="kickstart.schedule.heading4.jsp" xml:space="preserve">
           <source>Advanced Autoinstallation Configuration</source>
-        <target state="needs-adaptation">高度なキックスタート設定</target>
+        <target state="translated">高度な自動インストール設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.distro" xml:space="preserve">
           <source>As specified by the Distribution</source>
-        <target state="needs-adaptation">キックスタートディストリビューションによる指定にあわせる</target>
+        <target state="translated">ディストリビューションによる指定にあわせる</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.profile" xml:space="preserve">
           <source>As specified by the Profile</source>
-        <target state="needs-adaptation">キックスタートプロファイルによる指定にあわせる</target>
+        <target state="translated">プロファイルによる指定にあわせる</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -25119,11 +25119,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary" xml:space="preserve">
-        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility.  The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
+        <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-        <target state="translated">システムプロファイル固有のアクティベーションキーを使用することで、このシステムを 'rhnreg_ks' コマンドラインユーティリティで再登録できるようになります。  このシステムは同じ ID とグループ、そしてチャンネルで再登録を行ないます (ただし、システムのベースチャンネルが変更された場合を除きます) 。</target>
+        <target state="needs-adaptation">システムプロファイル固有のアクティベーションキーを使用することで、このシステムを 'rhnreg_ks' コマンドラインユーティリティで再登録できるようになります。  このシステムは同じ ID とグループ、そしてチャンネルで再登録を行ないます (ただし、システムのベースチャンネルが変更された場合を除きます) 。</target>
       </trans-unit>
       <trans-unit id="sdc.details.activation.key" xml:space="preserve">
         <source>Key:</source>
@@ -30006,24 +30006,52 @@ given channel.</source>
         <source>System not found</source>
         <target state="translated">システムが見つかりませんでした</target>
       </trans-unit>
-    <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
+      <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
         <source>Style Theme</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">スタイルテーマ</target>
+      </trans-unit>
       <trans-unit id="preferences.jsp.text.theme" xml:space="preserve">
         <source>Please select your preferred theme style.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">使用したいテーマスタイルを選択してください。</target>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">ベンダー変更を許可する</target>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
+        <source>Documentation Language</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+        <target state="translated">ドキュメンテーションの言語</target>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.docs.langs" xml:space="preserve">
+        <source>Please select your preferred documentation language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ documentation.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
+        </context-group>
+        <target state="translated">下記に示されたサポート済み言語の一覧から、ご希望のドキュメンテーション言語を選択してください。ここで選択した言語が、 @@PRODUCT_NAME@@ のドキュメンテーションに対する規定の言語になります。</target>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.newToolbar.stateType" xml:space="preserve">
+        <source>New Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+        <target state="translated">新しい設定状態チャンネル</target>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
+        <source>Create Config State Channel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+        <target state="translated">設定状態チャンネルの作成</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

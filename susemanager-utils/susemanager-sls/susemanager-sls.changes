@@ -1,3 +1,11 @@
+- Remove the virtpoller beacon
+- Make autoinstallation provisoning compatible with GRUB and ELILO
+  in addition to GRUB2 only (bsc#1164227)
+
+-------------------------------------------------------------------
+Thu Dec 03 13:58:41 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - Added RHEL support.
 
 -------------------------------------------------------------------

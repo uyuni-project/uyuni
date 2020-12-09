@@ -87,6 +87,18 @@ def get_os_version(node)
 end
 # rubocop:enable Metrics/AbcSize
 
+def get_gpg_keys(node, target = $server)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^sles/
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", false)
+  elsif os_family =~ /^centos/
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", false)
+  else
+    gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}*", false)
+  end
+  gpg_keys.lines.map(&:strip)
+end
+
 def sle11family?(node)
   _out, code = node.run('pidof systemd', false)
   code.nonzero?

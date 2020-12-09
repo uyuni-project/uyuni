@@ -18,15 +18,17 @@
 
 %if 0%{?suse_version}
 %define java_version   11
+%global apache_group www
 %else
 %define java_version   1:11
+%global apache_group apache
 %endif
 
 Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
 Group:          Applications/Internet
-Version:        4.2.2
+Version:        4.2.3
 Release:        1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -50,7 +52,7 @@ BuildRequires:  doc-indexes
 BuildRequires:  hadoop
 BuildRequires:  jakarta-commons-httpclient
 BuildRequires:  jakarta-oro
-BuildRequires:  java-devel >= %{java_version}
+BuildRequires:  (java-devel >= %{java_version} or java-11-openjdk-devel)
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
@@ -62,6 +64,9 @@ BuildRequires:  redstone-xmlrpc
 BuildRequires:  simple-core
 BuildRequires:  slf4j
 BuildRequires:  systemd
+%if 0%{?rhel}
+BuildRequires:  systemd-rpm-macros
+%endif
 BuildRequires:  uyuni-base-common
 BuildRequires:  zip
 Requires(pre):  doc-indexes
@@ -85,16 +90,8 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Obsoletes:      rhn-search < 5.3.0
-%if 0%{?fedora} || 0%{?rhel} >=7
-Requires:       mchange-commons
-%endif
-%if 0%{?fedora} >= 21 || 0%{?sle_version} >= 150200
-Requires:       log4j12
-BuildRequires:  log4j12
-%else
-Requires:       log4j
-BuildRequires:  log4j
-%endif
+Requires:       (log4j or log4j12)
+BuildRequires:  (log4j or log4j12)
 
 %description
 This package contains the code for the Full Text Search Server for
@@ -104,6 +101,9 @@ Spacewalk Server.
 %setup -n %{name}-%{version}
 
 %install
+%if 0%{?rhel}
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+%endif
 rm -fr ${RPM_BUILD_ROOT}
 ant -Djar.version=%{version} install
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
@@ -136,16 +136,30 @@ mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
 ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
 
 %post
+%if 0%{?rhel}
+%systemd_post rhn-search.service
+%else
 %service_add_post rhn-search.service
+%endif
 
 %preun
+%if 0%{?rhel}
+%systemd_preun rhn-search.service
+%else
 %service_del_preun rhn-search.service
+%endif
 
 %postun
+%if 0%{?rhel}
+%systemd_preun rhn-search.service
+%else
 %service_del_postun rhn-search.service
+%endif
 
 %pre
+%if !0%{?rhel}
 %service_add_pre rhn-search.service
+%endif
 
 %files
 %defattr(644,root,root,755)
@@ -165,7 +179,11 @@ ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/lib
-%attr(770,root,www) %dir /var/log/rhn
+%if 0%{?rhel}
+%dir %{_var}/log/rhn
+%else
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%endif
 %{_sbindir}/rcrhn-search
 
 %changelog
