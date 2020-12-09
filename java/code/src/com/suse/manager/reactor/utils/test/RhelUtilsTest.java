@@ -177,7 +177,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },
                 prod -> {
-                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
+                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("res", prod.get().getSuseProduct().get().getName());
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Final", prod.get().getRelease());
