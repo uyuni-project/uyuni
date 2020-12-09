@@ -1,3 +1,4 @@
+- Added 'revision' argument to the 'configchannel.updateInitSls' XMLRPC API method (bsc#1179566)
 - Add validation for custom repository labels
 - Fix configuration file download links to actually download files instead of redirecting to the home page (bsc#1179324)
 - Add lang attribute to html tags
