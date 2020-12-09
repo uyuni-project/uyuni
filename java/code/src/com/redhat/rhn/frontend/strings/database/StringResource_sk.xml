@@ -1065,21 +1065,21 @@
       </trans-unit>
       <trans-unit id="Critical Value" xml:space="preserve">
         <source>Critical Value</source>
-        <target/>
+        <target>Kritická hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Virtual Mem Pct Free" xml:space="preserve">
         <source>Critical Virtual Mem Pct Free</source>
-        <target/>
+        <target>Kritické percento voľnej virtuálnej pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Virtual Memory Used" xml:space="preserve">
         <source>Critical Virtual Memory Used</source>
-        <target/>
+        <target>Kritická použitá virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1296,7 +1296,7 @@
       </trans-unit>
       <trans-unit id="ORACLE_HOME" xml:space="preserve">
         <source>ORACLE_HOME</source>
-        <target/>
+        <target state="translated">ORACLE_HOME</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2129,21 +2129,21 @@
       </trans-unit>
       <trans-unit id="Warning Value" xml:space="preserve">
         <source>Warning Value</source>
-        <target/>
+        <target>Varovná hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Mem Pct Free" xml:space="preserve">
         <source>Warning Virtual Mem Pct Free</source>
-        <target/>
+        <target>Varovné percento voľnej virtuálnej pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Memory Used" xml:space="preserve">
         <source>Warning Virtual Memory Used</source>
-        <target/>
+        <target>Varovná použitá virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2739,21 +2739,21 @@
       </trans-unit>
       <trans-unit id="metrics.Value" xml:space="preserve">
         <source>Value</source>
-        <target/>
+        <target>Hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual mem pct free" xml:space="preserve">
         <source>Virtual mem pct free</source>
-        <target/>
+        <target>Percento voľnej virtuálnej pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual memory used" xml:space="preserve">
         <source>Virtual memory used</source>
-        <target/>
+        <target>Použitá virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2774,7 +2774,7 @@
       </trans-unit>
       <trans-unit id="metrics.value" xml:space="preserve">
         <source>value</source>
-        <target/>
+        <target>hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3453,7 +3453,7 @@
       </trans-unit>
       <trans-unit id="Virtual Memory" xml:space="preserve">
           <source>Virtual Memory</source>
-        <target/>
+        <target>Virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
