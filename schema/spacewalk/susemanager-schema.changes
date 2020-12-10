@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Dec 10 16:37:59 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
 - Move dist upgrade SQL file to the correct directory so it gets picked up in schema upgrades (bsc#1179759)
 
 -------------------------------------------------------------------
