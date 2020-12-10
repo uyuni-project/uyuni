@@ -2,6 +2,12 @@
 - add the VirtualPC type in rhnVirtualInstanceType table(bsc#1178990)
 
 -------------------------------------------------------------------
+Thu Dec 10 16:37:59 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
+- Move dist upgrade SQL file to the correct directory so it gets picked up in schema upgrades (bsc#1179759)
+
+-------------------------------------------------------------------
 Mon Nov 23 17:52:59 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.16-1
