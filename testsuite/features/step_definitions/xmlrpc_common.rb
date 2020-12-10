@@ -240,8 +240,17 @@ When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_nam
   raise if @activation_key_api.add_config_channels(key, [channel_name]) < 1
 end
 
-Then(/^I have to see them by calling activationkey\.get_details\(\)$/) do
-  raise unless @activation_key_api.get_details(key)
+When(/^I call activationkey\.set_details\(\) to the key setting as description "([^"]*)"$/) do |description|
+  raise unless @activation_key_api.set_details(key, description, '', 10, 'default')
+end
+
+Then(/^I have to see them by calling activationkey\.get_details\(\) having as description "([^"]*)"$/) do |description|
+  details = @activation_key_api.get_details(key)
+  puts "Key info for the key details['key']:"
+  details.each_pair do |k, v|
+    puts "  #{k}:#{v}"
+  end
+  raise unless details['description'] == description
 end
 
 When(/^I create an activation key including custom channels for "([^"]*)" via XML-RPC$/) do |client|
@@ -334,6 +343,7 @@ Given(/^I am logged in via XML\-RPC actionchain as user "(.*?)" and password "(.
   # Authenticate
   @action_chain_api = XMLRPCActionChain.new($server.ip)
   @schedule_api = XMLRPCScheduleTest.new($server.ip)
+  @system_api = XMLRPCSystemTest.new($server.ip)
   @action_chain_api.login(luser, password)
   @system_api.login(luser, password)
   @schedule_api.login(luser, password)
@@ -527,44 +537,6 @@ end
 Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpc_api_tester = XMLRPCApiTest.new($server.ip)
   assert(@rpc_api_tester.login(luser, password))
-end
-
-# power management namespace
-
-Given(/^I am logged in via XML\-RPC powermgmt as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @powermanagenent_api = XMLRPCPowermanagementTest.new($server.ip)
-  @powermanagenent_api.login(luser, password)
-  @system_api.login(luser, password)
-end
-
-When(/^I fetch power management values$/) do
-  @powermgmt_result = @powermanagenent_api.get_details($client_id)
-end
-
-Then(/^power management results should have "([^"]*)" for "([^"]*)"$/) do |value, hkey|
-  assert_equal(value, @powermgmt_result[hkey])
-end
-
-Then(/^I set power management value "([^"]*)" for "([^"]*)"$/) do |value, hkey|
-  @powermanagenent_api.set_details($client_id, { hkey => value })
-end
-
-Then(/^I turn power on$/) do
-  @powermanagenent_api.power_on($client_id)
-end
-
-Then(/^I turn power off$/) do
-  @powermanagenent_api.power_off($client_id)
-end
-
-Then(/^I do power management reboot$/) do
-  @powermanagenent_api.reboot($client_id)
-end
-
-Then(/^the power status is "([^"]*)"$/) do |estat|
-  stat = @powermanagenent_api.get_status($client_id)
-  assert(stat) if estat == 'on'
-  assert(!stat) if estat == 'off'
 end
 
 # cveaudit namespace

@@ -55,14 +55,6 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
   end
 
   def get_details(id)
-    keyinfo = @connection.call('activationkey.get_details', @sid, id)
-    puts '      Key info for the key ' + keyinfo['key']
-
-    keyinfo.each_pair do |k, v|
-      puts '        ' + k.to_s + ': ' + v.to_s
-    end
-
-    res = ('Test description of the key ' + id) == keyinfo['description']
-    res
+    @connection.call('activationkey.get_details', @sid, id)
   end
 end
