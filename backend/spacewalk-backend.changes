@@ -1,3 +1,4 @@
+- SPEC file update: Source0 URL, Python3 build requirements.
 - Added logging for dpkg repository detection
 - Added RHEL8 build.
 

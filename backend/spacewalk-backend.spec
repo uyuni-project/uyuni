@@ -50,7 +50,7 @@ Group:          System/Management
 Version:        4.2.4
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch
@@ -75,6 +75,7 @@ BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
+BuildRequires:  python3
 BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
