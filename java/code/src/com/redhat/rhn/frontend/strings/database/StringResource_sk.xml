@@ -1086,28 +1086,28 @@
       </trans-unit>
       <trans-unit id="Critical Waiters" xml:space="preserve">
         <source>Critical Waiters</source>
-        <target/>
+        <target>Kritické Waiters</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Write Rate" xml:space="preserve">
         <source>Critical Write Rate</source>
-        <target/>
+        <target>Kritická rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Write rate" xml:space="preserve">
         <source>Critical Write rate</source>
-        <target/>
+        <target>Kritická rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Database" xml:space="preserve">
         <source>Database</source>
-        <target/>
+        <target>Databáza</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1149,7 +1149,7 @@
       </trans-unit>
       <trans-unit id="Expected DB Name (V$DATABASE.NAME)" xml:space="preserve">
         <source>Expected DB Name (V$DATABASE.NAME)</source>
-        <target/>
+        <target>Očakávaný názov DB (V$DATABASE.NAME)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2150,14 +2150,14 @@
       </trans-unit>
       <trans-unit id="Warning Waiters" xml:space="preserve">
         <source>Warning Waiters</source>
-        <target/>
+        <target>Varovné Waiters</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Write Rate" xml:space="preserve">
         <source>Warning Write Rate</source>
-        <target/>
+        <target>Varovná rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2760,14 +2760,14 @@
       </trans-unit>
       <trans-unit id="metrics.Waiters" xml:space="preserve">
         <source>Waiters</source>
-        <target/>
+        <target>Waiters</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Write rate" xml:space="preserve">
         <source>Write rate</source>
-        <target/>
+        <target>Rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3026,7 +3026,7 @@
       </trans-unit>
       <trans-unit id="Database Accessibility" xml:space="preserve">
           <source>Database Accessibility</source>
-        <target/>
+        <target>Prístupnosť databázy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
