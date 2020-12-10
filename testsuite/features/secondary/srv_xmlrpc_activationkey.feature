@@ -14,8 +14,8 @@ Feature: XML-RPC "activationkey" namespace
 
   Scenario: Activation key details
     Given I am logged in via XML-RPC activationkey as user "admin" and password "admin"
-    When I call activationkey.set_details() to the key
-    Then I have to see them by calling activationkey.get_details()
+    When I call activationkey.set_details() to the key setting as description "Key description"
+    Then I have to see them by calling activationkey.get_details() having as description "Key description"
 
   Scenario: Cleanup: delete activation key
     Then I should get key deleted
