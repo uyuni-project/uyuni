@@ -25,12 +25,13 @@ def twopence_init(target)
 end
 
 # Define common twopence objects
+$localhost = twopence_init("ssh:#{ENV['HOSTNAME']}")
 $proxy = twopence_init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = twopence_init("ssh:#{ENV['SERVER']}")
 $kvm_server = twopence_init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
 $xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
-$nodes = [$server, $proxy, $kvm_server, $xen_server]
+$nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
 if $qam_test
   # Define twopence objects for QAM environment
@@ -205,7 +206,8 @@ if ENV['SCC_CREDENTIALS']
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
 end
-$node_by_host = { 'server'                => $server,
+$node_by_host = { 'localhost'             => $localhost,
+                  'server'                => $server,
                   'proxy'                 => $proxy,
                   'ceos_minion'           => $ceos_minion,
                   'ceos_ssh_minion'       => $ceos_minion,

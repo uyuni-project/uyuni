@@ -92,6 +92,16 @@ Feature: Action chains on Salt minions
     Then I should see a "Revision 1 of /etc/action-chain.cnf from channel Action Chain Channel" text
     And I should see a "Update Configuration File" button
 
+  Scenario: Download the configuration file from configuration channel
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Configuration > Channels"
+    And I follow "Action Chain Channel"
+    And I follow "List/Remove Files"
+    And I follow "/etc/action-chain.cnf"
+    And I follow "Download File"
+    And I wait until file "/root/action-chain.cnf" exists on "localhost"
+    Then file "/root/action-chain.cnf" should contain "Testchain=YES_PLEASE" on "localhost"
+
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Configuration" in the content area
@@ -264,3 +274,6 @@ Feature: Action chains on Salt minions
     And I run "rm -f /tmp/action_chain_done" on "sle_minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "sle_minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "sle_minion" without error control
+
+  Scenario: Cleanup: remove downloaded files
+    When I run "rm -f /root/action-chain.cnf" on "localhost" without error control
