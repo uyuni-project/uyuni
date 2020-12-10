@@ -1,4 +1,3 @@
-- mv dist upgrade sql file so it gets picked up in schema upgrades (bsc#1179759)
 - add new valid countries and timezones (jsc#PM-2081)
 - add the VirtualPC type in rhnVirtualInstanceType table(bsc#1178990)
 
