@@ -1661,6 +1661,28 @@ public class ErrataManager extends BaseManager {
         return applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
     }
 
+
+        /**
+     * Apply a list of errata to a list of servers, with an optional Action
+     * Chain.
+     * Note that not all erratas are applied to all systems. Systems get
+     * only the erratas relevant for them.
+     * @param user user
+     * @param errataIds errata ids
+     * @param earliest schedule time
+     * @param actionChain the action chain to add the action to or null
+     * @param serverIds server ids
+     * @param allowVendorChange allow vendor change boolean
+     * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
+                                         ActionChain actionChain, List<Long> serverIds, boolean allowVendorChange)
+        throws TaskomaticApiException {
+        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true, allowVendorChange);
+    }
+
     /**
      * Apply a list of errata to a list of servers, with an optional Action
      * Chain.
@@ -1676,12 +1698,13 @@ public class ErrataManager extends BaseManager {
      *        Systems get only the erratas relevant for them.
      *        If false, InvalidErrataException is thrown if an errata does not apply
      *        to a system.
+     * @param allowVendorChange If true not all erratas are applied to all systems.
      * @return list of action ids
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
     private static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
-            ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
+            ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant, boolean allowVendorChange)
         throws TaskomaticApiException {
 
         // compute server id to applicable errata id map
