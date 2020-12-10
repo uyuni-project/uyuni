@@ -13,7 +13,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I follow "Create Channel"
     When I enter "Custom Channel for CentOS 8 DVD" as "Channel Name"
     And I enter "centos-8-iso" as "Channel Label"
-    And I select the parent channel for the "ceos7_minion" from "Parent Channel"
+    And I select the parent channel for the "ceos8_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for CentOS 8 DVD created" text
