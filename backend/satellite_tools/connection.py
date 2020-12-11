@@ -40,9 +40,7 @@ class Transport(rpclib.transports.Transport):
         content_encoding = self.headers_in.get('Content-Encoding')
 
         if content_encoding == 'gzip':
-            # Un-gzipstream it
-            # NOTE: if data expected to get bigger than ~2.5Gb in size
-            #       then use GzipStreamXL instead (it's slower though)
+            # Un-gzipit
             fd = CompressedStream(fd)
 
         if content_type == 'text/xml':
@@ -146,6 +144,7 @@ class CompressedStream:
         def noop():
             pass
         self._real_stream = stream
+        # TODO: Is this sill true, since gzipstream is no longer in use?
         # gzipstream tries to flush stuff; add a noop function
         self._real_stream.flush = noop
         self.stream = self._real_stream

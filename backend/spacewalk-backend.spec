@@ -75,7 +75,6 @@ BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
-BuildRequires:  python3-gzipstream
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
 BuildRequires:  python3-rpm
@@ -231,7 +230,6 @@ BuildRequires:	systemd-rpm-macros
 %{?systemd_requires}
 %endif
 
-Requires:       python3-gzipstream
 Requires:       (python3-dateutil or python3-python-dateutil)
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv

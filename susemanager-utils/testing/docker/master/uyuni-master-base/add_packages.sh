@@ -28,10 +28,9 @@ zypper --non-interactive in  \
               python3-ethtool \
               python3-gobject2 \
               python3-gpgme \
-              python3-gzipstream \
               python3-iniparse \
               python3-newt \
-	      python3-python-pam \
+              python3-python-pam \
               python3-psycopg2 \
               python3-pyOpenSSL \
               python3-pycrypto \
