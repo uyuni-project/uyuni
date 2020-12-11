@@ -24,6 +24,7 @@ jobs:
    - name: Align translations files
      run: scripts/translation/update-all-translation-strings.sh
      env:
+       ADDITIONAL_SAFE_BRANCHNAME: master
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
    - name: Push changes

@@ -3,6 +3,7 @@
 set -x
 
 SAFE_BRANCHNAMES=(master-weblate)
+SAFE_BRANCHNAMES+=($ADDITIONAL_SAFE_BRANCHNAME)
 GIT_ROOT_DIR=$(git rev-parse --show-toplevel)
 
 function update_po() {
