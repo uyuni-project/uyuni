@@ -27,10 +27,27 @@ Migration steps:
 1. And also: `yarn migrate-react-node-jsx-element-2`
 
 
-
 Notes:
  - about 10 files need manual Node -> ReactNode migration
- - about 70 files need manual module.exports -> export/export default migration
  - a number of types are declared but not actually exported for other modules to use
  - untyped object initializations `let websocket = {};` could be fixed by adding `any`
  - some components can't be used as JSX children, why?
+
+## Common problems you may encounter:
+
+### `Argument of type 'Foo' is not assignable to parameter of type 'never'` when pushing into an empty array
+
+Untyped arrays `const foo = []` are of type `never[]`, meaning you can't push anything non-empty into them.  
+To fix the problem, add a type to the initialization: `const foo: Foo[] = []`  
+This is not a problem if the source of the assignment is already typed as in `const foo = getTypedFoo()`
+
+### `Type 'string[]' is not assignable to type 'number[]'`
+
+Most commonly with `string` and `number`, but there are other similar instances as well.  
+This means you're passing in an array of strings while the input is expected to be an array of numbers.  
+To fix, either change the input or the expected input format.  
+
+### `Type '(props: Props) => JSX.Element' is not assignable to type 'string'`  
+
+Usually it means the target expects a string, but you want to pass an element.  
+To fix, change the target's props to accept `JSX.Element` which among other things is a superset of `string`.
