@@ -8,14 +8,10 @@
   },
   "devDependencies": {
     "@khanacademy/flow-to-ts": "0.1.7",
-    "@snowpack/app-scripts-react": "1.12.6",
-    "@snowpack/plugin-react-refresh": "2.3.7",
-    "@snowpack/plugin-typescript": "1.1.0",
     "@types/jquery": "3.2.0",
     "@types/react": "^16.8.6",
     "@types/react-dom": "^16.8.6",
     "@types/node": "14.14.10",
-    "snowpack": "2.17.1",
     "typescript": "4.1.2"
   },
   "scripts": {
@@ -29,7 +25,6 @@
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public",
-    "snow": "snowpack dev --polyfill-node",
     "tsc": "tsc",
 
     "find-js-jsx": "find components core manager utils -path ./node_modules -prune -false -o -path ./build -prune -false -o -name '*.js' -o -name '*.jsx'",
