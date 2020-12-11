@@ -19,10 +19,13 @@ Migration steps:
 1. Check which files have `Object` annotations which should be `any`: `yarn find-object-to-any`
     * For context, Flow and TS handle `Object` very differently. In Flow it's a loose type that matches anything, in TS it's a strict type and `any` should be used to allow anything instead.
 1. Fix any of the above: `yarn migrate-object-to-any`
+1. In similar vain, migrate `Array<Object>` to `Array<any>`: `yarn migrate-array-object-array-any`
 1. Some of our `useState` calls are typed incorrectly as `undefined` because they have no annotations, we should mark them as `any`. To find them: `yarn find-untyped-use-state`
 1. Fix any of the above: `yarn migrate-untyped-use-state`
-?? 1. Some child renderers etc are typed as `React.ReactNode` while they should be `JSX.Element`. Find them: `yarn find-reactnode-jsxelement`
-?? 1. Fix any of the above: `yarn migrate-react-node-jsx-element`
+1. Some child renderers etc are typed as `React.ReactNode` while they should be `JSX.Element`. Find them: `yarn find-react-node-jsx-element`
+1. Fix any of the above: `yarn migrate-react-node-jsx-element`
+1. And also: `yarn migrate-react-node-jsx-element-2`
+
 
 
 Notes:

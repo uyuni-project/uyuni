@@ -16,8 +16,7 @@
     "@types/react-dom": "^16.8.6",
     "@types/node": "14.14.10",
     "snowpack": "2.17.1",
-    "typescript": "4.1.2",
-    "5to6-codemod": "Etheryte/5to6-codemod#ecf5368"
+    "typescript": "4.1.2"
   },
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf dist",
@@ -35,12 +34,6 @@
 
     "find-js-jsx": "find components core manager utils -path ./node_modules -prune -false -o -path ./build -prune -false -o -name '*.js' -o -name '*.jsx'",
     "find-ts-tsx": "find components core manager utils -path ./node_modules -prune -false -o -path ./build -prune -false -o -name '*.ts' -o -name '*.tsx'",
-    "find-require-module-exports": "yarn --silent find-js-jsx | xargs grep -l -e 'require(' -e 'module\\.exports'",
-
-    "transform-cjs": "jscodeshift --parser=flow -t node_modules/5to6-codemod/transforms/cjs.js",
-    "TODO-transform-exports": "jscodeshift --parser=flow -t node_modules/5to6-codemod/transforms/exports.js",
-    "TODO-transform-named": "jscodeshift --parser=flow -t node_modules/5to6-codemod/transforms/named-export-generation.js",
-    "migrate-cjs-to-es6": "TARGET_FILES=`yarn --silent find-require-module-exports`; yarn transform-cjs $TARGET_FILES;",
 
     "find-flow": "yarn --silent find-js-jsx | xargs grep -l '@flow'",
     "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
@@ -54,7 +47,14 @@
     "migrate-object-to-any": "yarn --silent find-object-to-any | xargs -I {} sed -i '' -e 's/: Object\\([^\\.]\\)/: any\\1/g' {}",
 
     "find-untyped-use-state": "yarn --silent find-ts-tsx | xargs grep -l 'React.useState(undefined)'",
-    "migrate-untyped-use-state": "yarn --silent find-untyped-use-state | xargs -I {} sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' {}"
+    "migrate-untyped-use-state": "yarn --silent find-untyped-use-state | xargs -I {} sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' {}",
+
+    "find-react-node-jsx-element": "yarn --silent find-ts-tsx | xargs grep -l '=> React.ReactNode'",
+    "migrate-react-node-jsx-element": "yarn --silent find-react-node-jsx-element | xargs -I {} sed -i '' -e 's/=> React.ReactNode/=> JSX.Element/' {}",
+    "find-react-node-jsx-element-2": "yarn --silent find-ts-tsx | xargs grep -l ': React.ReactNode {'",
+    "migrate-react-node-jsx-element-2": "yarn --silent find-react-node-jsx-element-2 | xargs -I {} sed -i '' -e 's/: React.ReactNode {/: JSX.Element {/' {}",
+
+    "migrate-array-object-array-any": "yarn --silent find-ts-tsx | xargs -I {} sed -i '' -e 's/Array<Object>/Array<any>/' {}"
   },
   "engines": {
     "node": ">=10.0.0",
