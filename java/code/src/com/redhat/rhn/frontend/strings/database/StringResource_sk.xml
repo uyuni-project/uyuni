@@ -1114,35 +1114,35 @@
       </trans-unit>
       <trans-unit id="Device" xml:space="preserve">
         <source>Device</source>
-        <target/>
+        <target>Zariadenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Disk number or disk name (from iostat)" xml:space="preserve">
         <source>Disk number or disk name (from iostat)</source>
-        <target/>
+        <target>Číslo disku alebo názov disku (z iostat)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect" xml:space="preserve">
         <source>Expect</source>
-        <target/>
+        <target>Očakávať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect Content" xml:space="preserve">
         <source>Expect Content</source>
-        <target/>
+        <target>Očakávať obsah</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect Header" xml:space="preserve">
         <source>Expect Header</source>
-        <target/>
+        <target>Očakávať hlavičku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1156,7 +1156,7 @@
       </trans-unit>
       <trans-unit id="FTP Port" xml:space="preserve">
         <source>FTP Port</source>
-        <target/>
+        <target>Port FTP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1170,14 +1170,14 @@
       </trans-unit>
       <trans-unit id="HTTP Port" xml:space="preserve">
         <source>HTTP Port</source>
-        <target/>
+        <target>Port HTTP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HTTPS Port" xml:space="preserve">
         <source>HTTPS Port</source>
-        <target/>
+        <target>Port HTTPS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -3624,7 +3624,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">(GMT+0800) Malajzia</target>
       </trans-unit>
     </body>
   </file>
