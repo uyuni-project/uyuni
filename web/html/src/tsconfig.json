@@ -23,19 +23,25 @@
         "utils/*": [ "./utils/*" ],
         // "vendors/*": [ "./vendors/*" ]
       },
-      "noImplicitAny": false,
-      // Below are CRA defaults, these might be a good baseline?
       "target": "es5",
       "lib": [
+        "es5",
         "dom",
         "dom.iterable",
         "esnext"
       ],
+      "strict": true,
+      // Should eventually be false
       "allowJs": true,
+      // Should eventually be true
+      "noImplicitAny": false,
+      // See https://mariusschulz.com/blog/downlevel-iteration-for-es3-es5-in-typescript
+      "downlevelIteration": true,
+      "importHelpers": true,
+      // Below are CRA defaults for a good baseline
       "skipLibCheck": true,
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
-      "strict": true,
       "forceConsistentCasingInFileNames": true,
       "noFallthroughCasesInSwitch": true,
       "module": "esnext",
@@ -43,7 +49,7 @@
       "resolveJsonModule": true,
       "isolatedModules": true,
       "noEmit": true,
-      "jsx": "react"
+      "jsx": "react-jsx"
     }
   }
   
