@@ -617,22 +617,12 @@ rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 %endif
 
-# Pretifying symlinks for RHEL
+# Prettifying symlinks for RHEL
 %if 0%{?rhel}
 mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
 mv $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
 mv $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
 mv $RPM_BUILD_ROOT%{jardir}/jta.jar $RPM_BUILD_ROOT%{jardir}/geronimo-jta-1.1-api.jar
-mv $RPM_BUILD_ROOT%{jardir}/struts_core.jar $RPM_BUILD_ROOT%{jardir}/struts.jar
-# Repointing some symlinks.
-ln -nsf /usr/share/java/c3p0/c3p0.jar $RPM_BUILD_ROOT%{jardir}/c3p0.jar
-ln -nsf /usr/share/java/concurrent/concurrent.jar $RPM_BUILD_ROOT%{jardir}/concurrent.jar
-ln -nsf /usr/share/java/hibernate-commons-annotations/hibernate-commons-annotations.jar $RPM_BUILD_ROOT%{jardir}/hibernate-commons-annotations.jar
-ln -nsf /usr/share/java/javamail/javax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
-ln -nsf /usr/share/java/c3p0/c3p0.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/c3p0.jar
-ln -nsf /usr/share/java/concurrent/concurrent.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/concurrent.jar
-ln -nsf /usr/share/java/hibernate-commons-annotations/hibernate-commons-annotations.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/hibernate-commons-annotations.jar
-ln -nsf /usr/share/java/javamail/javax.mail.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/javamail.jar
 # Removing unused symlinks.
 rm -rf $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation-api.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamaildsn.jar
@@ -643,8 +633,6 @@ rm -rf $RPM_BUILD_ROOT%{jardir}/javamailmail.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamailmailapi.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamailpop3.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/javamailsmtp.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/struts_extras.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/struts_taglib.jar
 %endif
 
 # show all JAR symlinks
