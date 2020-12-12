@@ -1184,42 +1184,42 @@
       </trans-unit>
       <trans-unit id="Host or Address to Look Up" xml:space="preserve">
         <source>Host or Address to Look Up</source>
-        <target/>
+        <target>Hostiteľ alebo adresa na vyhľadanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IMAP Port" xml:space="preserve">
         <source>IMAP Port</source>
-        <target/>
+        <target>Port IMAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IP Address (optional; defaults to host IP)" xml:space="preserve">
         <source>IP Address (optional; defaults to host IP)</source>
-        <target/>
+        <target>IP adresa (voliteľné; predvolené pre hostiteľské IP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Include reclaimable memory" xml:space="preserve">
         <source>Include reclaimable memory</source>
-        <target/>
+        <target>Zahrnúť pamäť, ktorá sa dá získať späť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Name" xml:space="preserve">
         <source>Index Name</source>
-        <target/>
+        <target>Názov indexu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Owner" xml:space="preserve">
         <source>Index Owner</source>
-        <target/>
+        <target>Vlastník indexu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1233,7 +1233,7 @@
       </trans-unit>
       <trans-unit id="Interface" xml:space="preserve">
         <source>Interface</source>
-        <target/>
+        <target>Rozhranie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -3495,14 +3495,14 @@
       </trans-unit>
       <trans-unit id="kickstart.state.deployed" xml:space="preserve">
           <source>Files required for autoinstallation action have been installed.</source>
-        <target/>
+        <target>Boli nainštalované súbory potrebné na akciu automatickej inštalácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.injected" xml:space="preserve">
           <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-        <target/>
+        <target>Konfigurácia systému bola upravená tak, aby sa automatická inštalácia spustila pri ďalšom štarte systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3610,14 +3610,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">(GMT+0200) Izrael</target>
       </trans-unit>
       <trans-unit id="Asia/Singapore" xml:space="preserve">
         <source>(GMT+0800) Singapore</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">(GMT+0800) Singapur</target>
       </trans-unit>
       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
         <source>(GMT+0800) Malaysia</source>
