@@ -11,6 +11,9 @@ gem 'nokogiri', '1.10.8'
 gem 'rake', '12.3.3'
 gem 'selenium-webdriver', '3.141.0'
 #gem 'simplecov', '0.17.0'
+# Pre-requisite:
+# Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
+# or build & install from https://github.com/openSUSE/twopence
 gem 'twopence'
 gem 'xmlrpc', '0.3.0'
 gem 'minitest', ' 5.11.3'

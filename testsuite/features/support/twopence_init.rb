@@ -25,7 +25,7 @@ def twopence_init(target)
 end
 
 # Define common twopence objects
-$localhost = twopence_init("ssh:#{ENV['HOSTNAME']}")
+$localhost = twopence_init("ssh:#{ENV['HOSTNAME']}") unless $debug_mode
 $proxy = twopence_init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = twopence_init("ssh:#{ENV['SERVER']}")
 $kvm_server = twopence_init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
