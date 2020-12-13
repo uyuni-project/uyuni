@@ -1240,7 +1240,7 @@
       </trans-unit>
       <trans-unit id="JDBC Pool Name" xml:space="preserve">
         <source>JDBC Pool Name</source>
-        <target/>
+        <target>Názov fondu JDBC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1254,35 +1254,35 @@
       </trans-unit>
       <trans-unit id="Local port number filter" xml:space="preserve">
         <source>Local port number filter</source>
-        <target/>
+        <target>Filter miestnych čísel portov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log file" xml:space="preserve">
         <source>Log file</source>
-        <target/>
+        <target>Súbor záznamu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MySQL Port" xml:space="preserve">
         <source>MySQL Port</source>
-        <target/>
+        <target>Port MySQL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Critical if Above" xml:space="preserve">
         <source>Number of Allocated Extents Critical if Above</source>
-        <target/>
+        <target>Počet pridelených rozsahov je kritický, ak je vyšší ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Warn if Above" xml:space="preserve">
         <source>Number of Allocated Extents Warn if Above</source>
-        <target/>
+        <target>Počet pridelených rozsahov je varovný, ak je vyšší ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1373,14 +1373,14 @@
       </trans-unit>
       <trans-unit id="Percent of Available Extents Critical if Above" xml:space="preserve">
         <source>Percent of Available Extents Critical if Above</source>
-        <target/>
+        <target>Percento dostupných rozsahov je kritické, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Warn if Above" xml:space="preserve">
         <source>Percent of Available Extents Warn if Above</source>
-        <target/>
+        <target>Percento dostupných rozsahov je varovné, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1443,7 +1443,7 @@
       </trans-unit>
       <trans-unit id="Remote port number filter" xml:space="preserve">
         <source>Remote port number filter</source>
-        <target/>
+        <target>Filter vzdialených čísel portov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -3117,7 +3117,7 @@
       </trans-unit>
       <trans-unit id="Index Extents" xml:space="preserve">
           <source>Index Extents</source>
-        <target/>
+        <target>Rozsahy indexov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3138,7 +3138,7 @@
       </trans-unit>
       <trans-unit id="JDBC Connection Pool" xml:space="preserve">
           <source>JDBC Connection Pool</source>
-        <target/>
+        <target>Fond pripojení JDBC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3404,7 +3404,7 @@
       </trans-unit>
       <trans-unit id="Table Extents" xml:space="preserve">
           <source>Table Extents</source>
-        <target/>
+        <target>Rozsahy tabuliek</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
