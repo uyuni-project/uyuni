@@ -36,12 +36,16 @@ License:        GPL-2.0-only
 Group:          Applications/System
 
 Url:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 BuildRequires:  gettext
+%if 0%{?rhel} >= 8
+BuildRequires:  python2-devel
+%else
 BuildRequires:  python-devel
+%endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       abrt
 Requires:       abrt-cli
@@ -53,7 +57,11 @@ spacewalk-abrt - rhn-check plug-in for collecting information about crashes hand
 %package -n python2-%{name}
 Summary:        ABRT plug-in for rhn-check
 Group:          Applications/System
-BuildRequires:  python
+%if 0%{?rhel} >= 8
+BuildRequires:       python2
+%else
+BuildRequires:       python
+%endif
 Requires:       python2-rhn-check
 Requires:       python2-rhn-client-tools
 
