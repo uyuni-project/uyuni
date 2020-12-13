@@ -544,6 +544,8 @@ end
 Given(/^I am logged in via XML\-RPC powermgmt as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @powermanagenent_api = XMLRPCPowermanagementTest.new($server.ip)
   @powermanagenent_api.login(luser, password)
+  @system_api = XMLRPCSystemTest.new($server.ip)
+  @system_api.login(luser, password)
 end
 
 When(/^I fetch power management values$/) do
