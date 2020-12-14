@@ -14,7 +14,8 @@ namespace :cucumber do
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       json_results = "-f json -o output_#{timestamp}-#{filename}.json"
       html_results = "-f html -o output_#{timestamp}-#{filename}.html"
-      cucumber_opts = %W[#{html_results} #{json_results} #{junit_results} -f rerun --out failed.txt -f pretty -r features]
+      profile = ENV['PROFILE'] || 'default'
+      cucumber_opts = %W[#{html_results} #{json_results} #{junit_results} -f rerun –profile #{profile} --out failed.txt -f pretty -r features]
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
@@ -28,17 +29,12 @@ namespace :parallel do
     task "#{run_set}" do
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
-      cucumber_opts = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
+      profile = ENV['PROFILE'] || 'default'
+      cucumber_opts = "–profile #{profile}  -f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html -f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json #{junit_results} -f rerun --out failed.txt -f CustomFormatter::PrettyFormatter -r features "
       sh "bundle exec parallel_cucumber -n 6 -o '#{cucumber_opts}' #{features}"
     end
   end
 end
-
-task :cucumber_testsuite do
-  Rake::Task['cucumber:testsuite'].invoke
-end
-
-task default: [:cucumber_testsuite]
 
 namespace :utils do
   desc 'Generate feature file for a client from a template and include it in a yaml file'

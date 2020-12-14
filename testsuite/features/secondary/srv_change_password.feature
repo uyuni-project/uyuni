@@ -1,6 +1,7 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Change the user's password
   In order to change my password
   As an authorized user

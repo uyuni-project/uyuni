@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_configuration_channels
 Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Create a configuration channel for mixed client types

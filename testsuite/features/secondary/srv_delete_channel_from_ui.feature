@@ -1,6 +1,7 @@
 # Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT License.
 
+@scope_configuration_channels
 Feature: Delete channels with child or clone is not allowed
   Using the UI, we cannot delete a channel if it has a child
   or a clone created from it

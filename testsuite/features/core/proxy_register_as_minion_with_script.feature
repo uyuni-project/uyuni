@@ -6,6 +6,7 @@
 #
 # Alternative: Bootstrap the proxy as a Salt minion from script
 
+@scope_proxy
 Feature: Setup SUSE Manager proxy
   In order to use a proxy with the SUSE manager server
   As the system administrator

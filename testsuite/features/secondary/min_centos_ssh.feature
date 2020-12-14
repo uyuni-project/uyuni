@@ -5,6 +5,7 @@
 # 2) run a remote command
 # 3) delete CentOS SSH minion client and register as Centos minion
 
+@scope_res
 Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
 @centos_minion

@@ -1,6 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_xmlrpc
 Feature: XML-RPC "activationkey" namespace
 
   Background:

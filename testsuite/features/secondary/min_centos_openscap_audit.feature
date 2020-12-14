@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_openscap
+@scope_res
 Feature: OpenSCAP audit of CentOS Salt minion
   In order to audit a CentOS Salt minion
   As an authorized user

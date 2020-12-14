@@ -11,6 +11,7 @@
 
 @buildhost
 @long_test
+@scope_building_container_images
 Feature: Build OS images
 
   Scenario: Create an OS image profile with activation key

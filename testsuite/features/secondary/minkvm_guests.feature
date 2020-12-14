@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_virtualization
 Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm

@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@scope_onboarding
 Feature: Negative tests for bootstrapping normal minions
   In order to register only valid minions
   As an authorized user

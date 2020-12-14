@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_salt
 Feature: System package list is updated if packages are manually installed or removed
 
   Scenario: Pre-requisite: install milkyway-dummy-1.0 package

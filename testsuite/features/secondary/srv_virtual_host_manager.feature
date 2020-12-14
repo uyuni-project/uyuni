@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_virtual_host_manager
 Feature: Virtual host manager web UI
 
   Scenario: Check the VHM page

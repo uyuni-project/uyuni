@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_openscap
 Feature: OpenSCAP audit of Salt minion
   In order to audit a Salt minion
   As an authorized user

@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@scope_salt_ssh
+@scope_onboarding
 Feature: Register a salt-ssh system via XML-RPC
 
 @ssh_minion
