@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 
 /**
@@ -39,6 +40,10 @@ import java.util.Set;
  * @version $Rev: 119601 $
  */
 public abstract class BaseRepoCommand {
+
+    public static final String REPOSITORY_LABEL_REGEX =
+        "^[a-zA-Z\\d][\\w\\d\\s\\-\\.\\'\\(\\)\\/\\_]*$";
+
 
     protected ContentSource repo;
 
@@ -211,6 +216,11 @@ public abstract class BaseRepoCommand {
         if (this.label != null && !this.label.equals(repo.getLabel())) {
             if (ChannelFactory.lookupContentSourceByOrgAndLabel(org, label) != null) {
                 throw new InvalidRepoLabelException(label);
+            }
+            if (!Pattern.compile(REPOSITORY_LABEL_REGEX).matcher(this.label).find()) {
+                throw new InvalidRepoLabelException(label,
+                    InvalidRepoLabelException.Reason.REGEX_FAILS,
+                    "edit.channel.repo.invalidrepolabel", "");
             }
             repo.setLabel(this.label);
         }
