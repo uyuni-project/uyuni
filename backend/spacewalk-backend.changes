@@ -1,3 +1,4 @@
+- Removal of python-gzipstream since it's no longer used
 - Use sanitized repo label to build reposync repo cache path (bsc#1179410)
 - SPEC file update: Source0 URL, Python3 build requirements.
 - Added logging for dpkg repository detection
