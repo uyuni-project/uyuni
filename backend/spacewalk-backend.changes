@@ -1,3 +1,4 @@
+- Removal of python-gzipstream since it's no longer used
 - Added logging for dpkg repository detection
 - Added RHEL8 build.
 
