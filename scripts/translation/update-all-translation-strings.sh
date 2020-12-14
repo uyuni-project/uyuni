@@ -72,7 +72,7 @@ for podir in ${PO_DIRS[@]}; do
     ret=$?
     if [ $ret -eq 1 ]; then
         echo "FAILED to update $podir" >&2
-	#exit 1
+	exit 1
     elif [ $ret -eq 2 ]; then
         commits=$((commits+1))
     fi
@@ -87,7 +87,7 @@ for xliffdir in ${XLIFF_DIRS[@]}; do
     ret=$?
     if [ $ret -eq 1 ]; then
         echo "FAILED to update $xliffdir" >&2
-	#exit 1
+	exit 1
     elif [ $ret -eq 2 ]; then
         commits=$((commits+1))
     fi
