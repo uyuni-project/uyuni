@@ -99,8 +99,8 @@ Feature: Action chains on Salt minions
     And I follow "List/Remove Files"
     And I follow "/etc/action-chain.cnf"
     And I follow "Download File"
-    And I wait until file "/root/action-chain.cnf" exists on "localhost"
-    Then file "/root/action-chain.cnf" should contain "Testchain=YES_PLEASE" on "localhost"
+    And I wait until file "/tmp/downloads/action-chain.cnf" exists on "localhost"
+    Then file "/tmp/downloads/action-chain.cnf" should contain "Testchain=YES_PLEASE" on "localhost"
 
   Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
@@ -276,4 +276,4 @@ Feature: Action chains on Salt minions
     And I run "rm -f /tmp/action_chain_one_system_done" on "sle_minion" without error control
 
   Scenario: Cleanup: remove downloaded files
-    When I run "rm -f /root/action-chain.cnf" on "localhost" without error control
+    When I run "rm -f /tmp/downloads/action-chain.cnf" on "localhost" without error control

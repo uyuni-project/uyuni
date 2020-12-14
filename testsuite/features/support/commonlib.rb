@@ -112,9 +112,13 @@ def compute_list_to_leave_running
         %w[sle-product-sles15-sp2-pool-x86_64
            sle-manager-tools15-pool-x86_64-sp2
            sle-module-containers15-sp2-pool-x86_64
+           sle-module-server-applications15-sp2-pool-x86_64
+           sle-manager-tools15-beta-updates-x86_64-sp2
            sle-product-sles15-sp2-updates-x86_64
            sle-manager-tools15-updates-x86_64-sp2
-           sle-module-containers15-sp2-updates-x86_64]
+           sle-module-containers15-sp2-updates-x86_64
+           sle-module-server-applications15-sp2-updates-x86_64
+           sle-manager-tools15-beta-updates-x86_64-sp2]
       else
         []
       end

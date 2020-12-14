@@ -57,7 +57,13 @@ Capybara.register_driver(:headless_chrome) do |app|
   # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
   client.read_timeout = 180
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048], w3c: false },
+    chromeOptions: {
+      args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048],
+      w3c: false,
+      prefs: {
+        'download.default_directory': '/tmp/downloads'
+      }
+    },
     unexpectedAlertBehaviour: 'accept',
     unhandledPromptBehavior: 'accept'
   )

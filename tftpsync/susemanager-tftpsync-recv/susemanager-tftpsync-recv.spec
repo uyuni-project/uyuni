@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel}
 # SLE15 builds on Python 3
 %global build_py3   1   
 %endif
@@ -30,11 +30,11 @@ Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires(pre):  apache2
-Requires(pre):  tftp(server)
+Requires(pre):  (apache2 or httpd)
+Requires(pre):  (tftp(server) or tftp)
 %if 0%{?build_py3}
 Requires:       python3
-Requires:       apache2-mod_wsgi-python3
+Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)
 %else
 Requires:       python
 Requires:       apache2-mod_wsgi

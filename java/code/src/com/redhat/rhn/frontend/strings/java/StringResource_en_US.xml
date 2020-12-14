@@ -8445,6 +8445,9 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
       </trans-unit>
+      <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+        <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
+      </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
       </trans-unit>

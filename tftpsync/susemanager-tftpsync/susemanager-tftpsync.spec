@@ -15,7 +15,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?suse_version} > 1320
+%global debug_package %{nil}
+
+%if 0%{?suse_version} > 1320 || 0%{?rhel}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif

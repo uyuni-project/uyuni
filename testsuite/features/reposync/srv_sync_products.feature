@@ -52,6 +52,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see a "Basesystem Module 15 SP2 x86_64" text
     And I should see that the "Basesystem Module 15 SP2 x86_64" product is "recommended"
     When I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
+    # Drop following line if you wish to re-enable testing with beta client tools for SLE15
+    And I deselect "SUSE Manager Tools 15 x86_64 (BETA)" as a SUSE Manager product
     Then I should see the "SUSE Linux Enterprise Server 15 SP2 x86_64" selected
     Then I should see the "Basesystem Module 15 SP2 x86_64" selected
     And I click the Add Product button
