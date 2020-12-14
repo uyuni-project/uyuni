@@ -1,7 +1,6 @@
 //@flow
 
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
 import { hot } from 'react-hot-loader';
 import { useInputValue } from 'components/hooks/forms/useInputValue';
 import { Messages } from '../../components/messages';

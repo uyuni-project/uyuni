@@ -110,7 +110,7 @@ const HelpPanel = (props) => {
         {t("The server uses ")}<a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">{t("Prometheus")}</a>{t(" exporters to expose metrics about your environment.")}
       </p>
       <p>
-        {t("Refer to the ")}<a href={"/docs/" + window.docsLocale + "/suse-manager/administration/monitoring.html"} target="_blank">{t("documentation")}</a>{t(" to learn how to to consume these metrics.")}
+        {t("Refer to the ")}<a href={"/docs/" + window.docsLocale + "/suse-manager/administration/monitoring.html"} target="_blank" rel="noopener noreferrer">{t("documentation")}</a>{t(" to learn how to to consume these metrics.")}
       </p>
   </div>);
 }
