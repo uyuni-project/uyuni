@@ -2,6 +2,12 @@
 - remove duplicate repo definition
 
 -------------------------------------------------------------------
+Mon Dec 14 13:32:48 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.19-1
+- add SLE15 SP1 LTSS
+
+-------------------------------------------------------------------
 Thu Sep 03 10:44:36 CEST 2020 - jgonzalez@suse.com
 
 - version 4.0.18-1
