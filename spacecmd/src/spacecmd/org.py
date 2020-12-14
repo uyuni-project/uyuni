@@ -33,6 +33,7 @@ import gettext
 import logging
 from getpass import getpass
 from operator import itemgetter
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 _PREFIXES = ['Dr.', 'Mr.', 'Miss', 'Mrs.', 'Ms.']
@@ -92,32 +93,32 @@ def do_org_create(self, args):
             if password1 == password2:
                 options.password = password1
             elif len(password1) < 5:
-                logging.warning(_('Password must be at least 5 characters'))
+                logging.warning(_N('Password must be at least 5 characters'))
             else:
-                logging.warning(_("Passwords don't match"))
+                logging.warning(_N("Passwords don't match"))
     else:
         if not options.org_name:
-            logging.error(_('An organization name is required'))
+            logging.error(_N('An organization name is required'))
             return 1
 
         if not options.username:
-            logging.error(_('A username is required'))
+            logging.error(_N('A username is required'))
             return 1
 
         if not options.first_name:
-            logging.error(_('A first name is required'))
+            logging.error(_N('A first name is required'))
             return 1
 
         if not options.last_name:
-            logging.error(_('A last name is required'))
+            logging.error(_N('A last name is required'))
             return 1
 
         if not options.email:
-            logging.error(_('An email address is required'))
+            logging.error(_N('An email address is required'))
             return 1
 
         if not options.password:
-            logging.error(_('A password is required'))
+            logging.error(_N('A password is required'))
             return 1
 
         if not options.pam:
@@ -165,7 +166,7 @@ def do_org_delete(self, args):
     name = args[0]
     org_id = self.get_org_id(name)
     if not org_id:
-        logging.warning(_("No organisation found for the name %s"), name)
+        logging.warning(_N("No organisation found for the name %s"), name)
         print(_("Organisation '{}' was not found").format(name))
         return 1
     elif self.user_confirm(_('Delete this organization [y/N]:')):
@@ -196,7 +197,7 @@ def do_org_rename(self, args):
     name, new_name = args
     org_id = self.get_org_id(name)
     if not org_id:
-        logging.warning(_("No organisation found for the name %s"), name)
+        logging.warning(_N("No organisation found for the name %s"), name)
         print(_("Organisation '{}' was not found").format(name))
         return 1
     else:
@@ -230,11 +231,11 @@ def do_org_addtrust(self, args):
     org_to_trust_id = self.get_org_id(trust_org)
 
     if your_org_id is None:
-        logging.warning(_("No organisation found for the name %s"), your_org)
+        logging.warning(_N("No organisation found for the name %s"), your_org)
         print(_("Organisation '{}' was not found").format(your_org))
         return 1
     elif org_to_trust_id is None:
-        logging.warning(_("No trust organisation found for the name %s"), trust_org)
+        logging.warning(_N("No trust organisation found for the name %s"), trust_org)
         print(_("Organisation '{}' to trust for, was not found").format(trust_org))
         return 1
     else:
@@ -266,11 +267,11 @@ def do_org_removetrust(self, args):
     your_org_id = self.get_org_id(your_org)
     trusted_org_id = self.get_org_id(trust_org)
     if your_org_id is None:
-        logging.warning(_("No organisation found for the name %s"), your_org)
+        logging.warning(_N("No organisation found for the name %s"), your_org)
         print(_("Organisation '{}' was not found").format(your_org))
         return 1
     elif trusted_org_id is None:
-        logging.warning(_("No trust organisation found for the name %s"), trust_org)
+        logging.warning(_N("No trust organisation found for the name %s"), trust_org)
         print(_("Organisation '{}' to trust for, was not found").format(trust_org))
         return 1
     else:
@@ -309,7 +310,7 @@ def do_org_trustdetails(self, args):
     trusted_org = args[0]
     org_id = self.get_org_id(trusted_org)
     if org_id is None:
-        logging.warning(_("No trusted organisation found for the name %s"), trusted_org)
+        logging.warning(_N("No trusted organisation found for the name %s"), trusted_org)
         print(_("Trusted organisation '{}' was not found").format(trusted_org))
         return 1
     else:
@@ -374,14 +375,14 @@ def do_org_listtrusts(self, args):
 
     org_id = self.get_org_id(args[0])
     if org_id is None:
-        logging.warning(_("No organisation found for the name %s"), args[0])
+        logging.warning(_N("No organisation found for the name %s"), args[0])
         print(_("Organisation '{}' was not found").format(args[0]))
         return 1
     else:
         trusts = self.client.org.trusts.listTrusts(self.session, org_id)
         if not trusts:
             print(_("No trust organisation has been found"))
-            logging.warning(_("No trust organisation has been found"))
+            logging.warning(_N("No trust organisation has been found"))
             return 1
         else:
             for trust in sorted(trusts, key=itemgetter('orgName')):
@@ -410,7 +411,7 @@ def do_org_listusers(self, args):
 
     org_id = self.get_org_id(args[0])
     if org_id is None:
-        logging.warning(_("No organisation found for the name %s"), args[0])
+        logging.warning(_N("No organisation found for the name %s"), args[0])
         print(_("Organisation '{}' was not found").format(args[0]))
         return 1
     else:

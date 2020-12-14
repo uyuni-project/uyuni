@@ -31,6 +31,7 @@
 
 import gettext
 from operator import itemgetter
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -198,7 +199,7 @@ def do_report_ipaddresses(self, args):
         systems = self.get_system_names()
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     report = {}
@@ -262,7 +263,7 @@ def do_report_kernels(self, args):
         systems = self.get_system_names()
 
     if not systems:
-        logging.warning(_('No systems selected'))
+        logging.warning(_N('No systems selected'))
         return 1
 
     report = {}

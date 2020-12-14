@@ -37,6 +37,8 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -263,7 +265,7 @@ def do_group_backup(self, args):
         if not os.path.isdir(outputpath_base):
             os.makedirs(outputpath_base)
     except OSError:
-        logging.error(_('Could not create output directory: %s'), outputpath_base)
+        logging.error(_N('Could not create output directory: %s'), outputpath_base)
         return 1
 
     for group in groups:
@@ -326,21 +328,21 @@ def do_group_restore(self, args):
                 logging.debug("Found file %s" % inputdir + "/" + d_item)
                 files[d_item] = inputdir + "/" + d_item
     else:
-        logging.error(_("Restore dir %s does not exits or is not a directory") % inputdir)
+        logging.error(_N("Restore dir %s does not exits or is not a directory") % inputdir)
         return 1
 
     if not files:
-        logging.error(_("Restore dir %s has no restore items") % inputdir)
+        logging.error(_N("Restore dir %s has no restore items") % inputdir)
         return 1
 
     missing_groups = 0
     if groups and next(iter(groups)) != 'ALL':
         for group in groups:
             if group not in files:
-                logging.error(_("Group %s was not found in backup") % (group))
+                logging.error(_N("Group %s was not found in backup") % (group))
                 missing_groups += 1
     if missing_groups:
-        logging.error(_("Found %s missing groups, terminating"), missing_groups)
+        logging.error(_N("Found %s missing groups, terminating"), missing_groups)
         return 1
 
     for groupname in self.do_group_list('', True):
@@ -355,7 +357,7 @@ def do_group_restore(self, args):
         details = details.rstrip('\n')
 
         if groupname in current and current[groupname] == details:
-            logging.error(_("Group %s already restored") % groupname)
+            logging.error(_N("Group %s already restored") % groupname)
             continue
 
         elif groupname in current:
@@ -367,13 +369,13 @@ def do_group_restore(self, args):
                 userinput = prompt_user(_('Continue [y/N]:'))
 
                 if re.match('y', userinput, re.I):
-                    logging.info(_("Updating description for group: %s") % groupname)
+                    logging.info(_N("Updating description for group: %s") % groupname)
                     self.client.systemgroup.update(self.session, groupname, details)
             else:
-                logging.info(_("Updating description for group: %s") % groupname)
+                logging.info(_N("Updating description for group: %s") % groupname)
                 self.client.systemgroup.update(self.session, groupname, details)
         else:
-            logging.info(_("Creating new group %s") % groupname)
+            logging.info(_N("Creating new group %s") % groupname)
             self.client.systemgroup.create(self.session, groupname, details)
 
     return 0
@@ -423,7 +425,7 @@ def do_group_listsystems(self, args, doreturn=False):
         systems = self.client.systemgroup.listSystems(self.session, group)
         systems = [s.get('profile_name') for s in systems]
     except xmlrpclib.Fault:
-        logging.warning(_('%s is not a valid group') % group)
+        logging.warning(_N('%s is not a valid group') % group)
         return []
 
     if doreturn:
@@ -460,7 +462,7 @@ def do_group_details(self, args, short=False):
             details = self.client.systemgroup.getDetails(self.session, group)
             systems = [stm.get('profile_name') for stm in self.client.systemgroup.listSystems(self.session, group)]
         except xmlrpclib.Fault:
-            logging.warning(_('The group "%s" is invalid') % group)
+            logging.warning(_N('The group "%s" is invalid') % group)
             return 1
 
         if add_separator:

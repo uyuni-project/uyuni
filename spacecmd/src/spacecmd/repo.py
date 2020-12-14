@@ -35,6 +35,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -163,7 +164,7 @@ def do_repo_addfilters(self, args):
         repofilter = arg[1:]
 
         if not (flag == '+' or flag == '-'):
-            logging.error(_('Each filter must start with + or -'))
+            logging.error(_N('Each filter must start with + or -'))
             return 1
 
         self.client.channel.software.addRepoFilter(self.session,
@@ -200,7 +201,7 @@ def do_repo_removefilters(self, args):
         repofilter = arg[1:]
 
         if not (flag == '+' or flag == '-'):
-            logging.error(_('Each filter must start with + or -'))
+            logging.error(_N('Each filter must start with + or -'))
             return 1
 
         self.client.channel.software.removeRepoFilter(self.session,
@@ -239,7 +240,7 @@ def do_repo_setfilters(self, args):
         repofilter = arg[1:]
 
         if not (flag == '+' or flag == '-'):
-            logging.error(_('Each filter must start with + or -'))
+            logging.error(_N('Each filter must start with + or -'))
             return 1
 
         filters.append({'filter': repofilter, 'flag': flag})
@@ -313,7 +314,7 @@ def do_repo_delete(self, args):
             try:
                 self.client.channel.software.removeRepo(self.session, repo)
             except xmlrpclib.Fault:
-                logging.error(_('Failed to remove repo %s') % repo)
+                logging.error(_N('Failed to remove repo %s') % repo)
 
     return 0
 
@@ -354,11 +355,11 @@ def do_repo_create(self, args):
         options.key = prompt_user(_('SSL Client key:'))
     else:
         if not options.name:
-            logging.error(_('A name is required'))
+            logging.error(_N('A name is required'))
             return 1
 
         if not options.url:
-            logging.error(_('A URL is required'))
+            logging.error(_N('A URL is required'))
             return 1
 
         if not options.type:
@@ -401,7 +402,7 @@ def do_repo_rename(self, args):
         details = self.client.channel.software.getRepoDetails(self.session, args[0])
         oldname = details.get('id')
     except xmlrpclib.Fault:
-        logging.error(_('Could not find repo %s') % args[0])
+        logging.error(_N('Could not find repo %s') % args[0])
         return 1
 
     newname = args[1]
@@ -464,7 +465,7 @@ def do_repo_updatessl(self, args):
         options.key = prompt_user(_('SSL Client key:'))
     else:
         if not options.name:
-            logging.error(_('A name is required'))
+            logging.error(_N('A name is required'))
             return 1
 
     self.client.channel.software.updateRepoSsl(self.session,

@@ -37,6 +37,7 @@ try:
 except ImportError:
     import xmlrpclib
 
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -154,7 +155,7 @@ def do_errata_apply(self, args, only_systems=None):
     systems = sorted(list(set(systems)))
 
     if not systems:
-        logging.warning(_('No patches to apply'))
+        logging.warning(_N('No patches to apply'))
         return 1
 
     # a summary of which errata we're going to apply
@@ -193,7 +194,7 @@ def do_errata_apply(self, args, only_systems=None):
                                                    [erratum],
                                                    options.start_time)
 
-            logging.info('Scheduled %i system(s) for %s' %
+            logging.info(_N('Scheduled %i system(s) for %s') %
                          (len(to_apply[erratum]),
                           self.get_erratum_name(erratum)))
     else:
@@ -214,7 +215,7 @@ def do_errata_apply(self, args, only_systems=None):
                         break
 
             if not errata_to_apply:
-                logging.warning(_('No patches to schedule for %s') % system)
+                logging.warning(_N('No patches to schedule for %s') % system)
                 continue
 
             # this results in one action per erratum for each server
@@ -223,7 +224,7 @@ def do_errata_apply(self, args, only_systems=None):
                                                    errata_to_apply,
                                                    options.start_time)
 
-            logging.info(_('Scheduled %i patches for %s') %
+            logging.info(_N('Scheduled %i patches for %s') %
                          (len(errata_to_apply), system))
 
     return 0
@@ -386,7 +387,7 @@ def do_errata_details(self, args):
             channels = \
                 self.client.errata.applicableToChannels(self.session, erratum)
         except xmlrpclib.Fault:
-            logging.warning(_('%s is not a valid erratum') % erratum)
+            logging.warning(_N('%s is not a valid erratum') % erratum)
             continue
 
         if add_separator:
@@ -464,7 +465,7 @@ def do_errata_delete(self, args):
     errata = self.expand_errata(args)
 
     if not errata:
-        logging.warning(_('No patches to delete'))
+        logging.warning(_N('No patches to delete'))
         return 1
 
     print(_('Erratum            Channels'))
@@ -481,7 +482,7 @@ def do_errata_delete(self, args):
     for erratum in errata:
         self.client.errata.delete(self.session, erratum)
 
-    logging.info(_('Deleted %i patches') % len(errata))
+    logging.info(_N('Deleted %i patches') % len(errata))
 
     self.generate_errata_cache(True)
 
@@ -519,7 +520,7 @@ def do_errata_publish(self, args):
     channels = args[1:]
 
     if not errata:
-        logging.warning(_('No patches to publish'))
+        logging.warning(_N('No patches to publish'))
         return 1
 
     print('\n'.join(sorted(errata)))
