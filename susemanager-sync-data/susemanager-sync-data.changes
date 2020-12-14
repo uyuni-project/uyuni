@@ -1,6 +1,12 @@
 - add product definitions for Debain 9 AMD64 and Debian 10 AMD64
 
 -------------------------------------------------------------------
+Mon Dec 14 13:30:42 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
+- add SLE15 SP1 LTSS
+
+-------------------------------------------------------------------
 Mon Nov 23 15:32:53 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.8-1
