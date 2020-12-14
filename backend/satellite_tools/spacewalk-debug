@@ -453,13 +453,15 @@ if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" 2>/dev/null ]; then
 
         # tasko and .trc files need to be parsed separately to find old ones
         for dir in database/trc rhn-logs/rhn/tasko tasko/sat; do
-            for file in $(find $DIR/$dir); do
-                if [ -f "$file" ]; then
-                    if [ -n "$(find $file -daystart -mtime +$MAX_LOG_AGE)" ]; then
-                        rm $file
+            if [ -d $dir ]; then
+                for file in $(find $DIR/$dir); do
+                    if [ -f "$file" ]; then
+                        if [ -n "$(find $file -daystart -mtime +$MAX_LOG_AGE)" ]; then
+                            rm $file
+                        fi
                     fi
-                fi
-            done
+                done
+            fi
         done
 fi
 

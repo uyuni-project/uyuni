@@ -35,6 +35,7 @@ Feature: Prepare server for using Docker
     And I click on "Update Activation Key"
     Then I should see a "Activation key Docker testing has been modified" text
 
+@no_auth_registry
   Scenario: Create an image store without credentials
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Images > Stores"

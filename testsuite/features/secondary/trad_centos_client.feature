@@ -25,7 +25,8 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I enable SUSE Manager tools repositories on "ceos_client"
     And I enable repository "CentOS-Base" on this "ceos_client"
     And I install the traditional stack utils on "ceos_client"
-    And I install OpenSCAP centos dependencies on "ceos_client"
+    And I install OpenSCAP dependencies on "ceos_client"
+    And I fix CentOS 7 OpenSCAP files on "ceos_client"
     And I register "ceos_client" as traditional client
     And I run "rhn-actions-control --enable-all" on "ceos_client"
 
@@ -65,7 +66,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml" as "path"
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos_client"
     Then I should see a "XCCDF scan has been scheduled" text
@@ -79,8 +80,9 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
-    And I should see a "rpm_verify_hashes" link
+    When I enter "pass" as the filtered XCCDF result type
+    And I click on the filter button
+    Then I should see a "ensure_redhat_gpgkey_installed" link
 
 @centos_minion
   Scenario: Schedule some actions on the CentOS 7 traditional client
@@ -103,7 +105,9 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
 @centos_minion
   Scenario: Cleanup: delete the installed rpms on CentOS 7 traditional client
     When I remove the traditional stack utils from "ceos_client"
-    And I remove OpenSCAP centos dependencies from "ceos_client"
+    And I remove OpenSCAP dependencies from "ceos_client"
+    And I disable SUSE Manager tools repositories on "ceos_client"
+    And I disable repository "CentOS-Base" on this "ceos_client"
 
 @centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after traditional client tests

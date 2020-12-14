@@ -1,3 +1,14 @@
+- Add validation for custom repository labels
+- fix expanded support detection based on CentOS installations (bsc#1179589)
+- add translation strings for newly added countries and timezones (jsc#PM-2081)
+- Fix the activation key handling from kickstart profile (bsc#1178647)
+- Update exception message in findSyncedMandatoryChannels
+- fix check for available products on ISS Slaves (bsc#1177184)
+- get media.1/products for cloned channels (bsc#1178303)
+- calculate size to truncate a history message based on the htmlified version (bsc#1178503)
+- Change message "Minion is down" to be more accurate
+- XMLRPC: Report architecture label in the list of installed packages (bsc#1176898)
+
 -------------------------------------------------------------------
 Thu Nov 12 10:00:15 CET 2020 - jgonzalez@suse.com
 

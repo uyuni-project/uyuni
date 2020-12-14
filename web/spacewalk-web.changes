@@ -1,3 +1,5 @@
+- Fix mandatory channels JS API to finish loading in case of error (bsc#1178839)
+
 -------------------------------------------------------------------
 Thu Nov 12 10:02:44 CET 2020 - jgonzalez@suse.com
 

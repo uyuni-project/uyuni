@@ -10,7 +10,6 @@ Feature: Register a salt-ssh system via XML-RPC
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I clean up the minion's cache on "ssh_minion"
     Then "ssh_minion" should not be registered
 
 @ssh_minion

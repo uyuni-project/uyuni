@@ -1505,24 +1505,22 @@ ORDER BY PN.name, PE.evr
   </query>
 </mode>
 
-<mode name="system_installed_packages_expanded">
-  <query params="sid">
+<!--  Same ase system_installed_packages, but reports arch label instead of name -->
+<mode name="system_installed_packages_arch_as_label">
+    <query params="sid">
 SELECT PN.name,
        PE.version,
        PE.release,
        coalesce(PE.epoch, ' ') as epoch,
-       PA.name as arch,
-       SP.installtime,
-       PE.id evr_id,
-       PA.id arch_id,
-       PN.id name_id
+       PA.label as arch,
+       SP.installtime
   FROM rhnServerPackage SP inner join
        rhnPackageName PN on PN.id = SP.name_id inner join
        rhnPackageEVR PE on PE.id = SP.evr_id left join
        rhnPackageArch PA on SP.package_arch_id = PA.id
  WHERE SP.server_id = :sid
 ORDER BY PN.name, PE.evr
-  </query>
+    </query>
 </mode>
 
 <mode name="list_server_software_crashes" class="com.redhat.rhn.frontend.dto.SoftwareCrashDto">

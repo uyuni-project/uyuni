@@ -4685,14 +4685,14 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="RS">
-        <source>Serbia</source>
+      <trans-unit id="RO">
+        <source>Romania</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="RO">
-        <source>Romania</source>
+      <trans-unit id="RS" xml:space="preserve">
+        <source>Serbia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
@@ -8114,6 +8114,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
+      </trans-unit>
+      <trans-unit id="edit.channel.repo.invalidrepolabel">
+        <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
