@@ -1,3 +1,4 @@
+- register saltkey XMLRPC handler and fix behavior of delete salt key (bsc#1179872)
 - Add validation for custom repository labels
 - fix expanded support detection based on CentOS installations (bsc#1179589)
 - add translation strings for newly added countries and timezones (jsc#PM-2081)
