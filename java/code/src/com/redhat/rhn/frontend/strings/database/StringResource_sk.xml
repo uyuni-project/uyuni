@@ -1303,28 +1303,28 @@
       </trans-unit>
       <trans-unit id="Oracle Hostname or IP" xml:space="preserve">
         <source>Oracle Hostname or IP</source>
-        <target/>
+        <target>Názov hostiteľa Oracle alebo IP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Password" xml:space="preserve">
         <source>Oracle Password</source>
-        <target/>
+        <target>Heslo Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Port" xml:space="preserve">
         <source>Oracle Port</source>
-        <target/>
+        <target>Port Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle SID" xml:space="preserve">
         <source>Oracle SID</source>
-        <target/>
+        <target>SID Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1345,28 +1345,28 @@
       </trans-unit>
       <trans-unit id="PID file (overrides command name)" xml:space="preserve">
         <source>PID file (overrides command name)</source>
-        <target/>
+        <target>Súbor file (prepíše názov príkazu)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Packets to send" xml:space="preserve">
         <source>Packets to send</source>
-        <target/>
+        <target>Pakety na odoslanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Password" xml:space="preserve">
         <source>Password</source>
-        <target/>
+        <target>Heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pathname" xml:space="preserve">
         <source>Pathname</source>
-        <target/>
+        <target>Názov cesty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1387,14 +1387,14 @@
       </trans-unit>
       <trans-unit id="Port" xml:space="preserve">
         <source>Port</source>
-        <target/>
+        <target>Port</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Protocol (TCP/UDP)" xml:space="preserve">
         <source>Protocol (TCP/UDP)</source>
-        <target/>
+        <target>Protokol (TCP/UDP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -3460,28 +3460,28 @@
       </trans-unit>
       <trans-unit id="Web server (HTTP)" xml:space="preserve">
           <source>Web server (HTTP)</source>
-        <target/>
+        <target>Web server (HTTP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Red Hat Enterprise Linux 4" xml:space="preserve">
           <source>Red Hat Enterprise Linux 4</source>
-        <target/>
+        <target>Red Hat Enterprise Linux 4</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Red Hat Enterprise Linux 3" xml:space="preserve">
           <source>Red Hat Enterprise Linux 3</source>
-        <target/>
+        <target>Red Hat Enterprise Linux 3</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Red Hat Enterprise Linux 2.1" xml:space="preserve">
           <source>Red Hat Enterprise Linux 2.1</source>
-        <target/>
+        <target>Red Hat Enterprise Linux 2.1</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
