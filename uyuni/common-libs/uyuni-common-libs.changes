@@ -1,3 +1,5 @@
+- Section in Debian packages in now treated as optional (bsc#1179555)
+
 -------------------------------------------------------------------
 Wed Aug 12 10:59:42 CEST 2020 - jgonzalez@suse.com
 
