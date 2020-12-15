@@ -2,7 +2,7 @@ name: changelog_test
 
 on:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    types: [opened, edited, synchronize, reopened, closed]
 
 jobs:
   changelog_test:
@@ -26,3 +26,12 @@ jobs:
     steps:
     - name: Changelogs approved
       run : echo "Changelogs approved"
+
+  # warns the user if they merged the PR, but the changelog test failed
+  warn_user_if_merged:
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    needs: changelog_test
+    steps:
+    - name: Warn me
+    - run: echo {{ needs.changelog_test }}
+    
