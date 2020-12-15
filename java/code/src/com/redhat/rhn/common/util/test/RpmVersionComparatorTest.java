@@ -108,8 +108,6 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(1, "1.0^20160102", "1.0^20160101^git1");
     }
 
-    }
-
     /*
      * Test for https://github.com/uyuni-project/uyuni/issues/2531
      */
@@ -144,7 +142,7 @@ public class RpmVersionComparatorTest extends TestCase {
 
     private int testRPMVersionCompareInDatabase(String operand1, String operand2) {
         // test the stored function
-        CallableMode m = ModeFactory.getCallableMode("PackageEvr_queries", "rpmstrcmp");
+        CallableMode m = ModeFactory.getCallableMode("test_queries", "rpmstrcmp");
         Map inParams = new HashMap();
         Map outParams = new HashMap();
         outParams.put("compareResult", Types.INTEGER);

@@ -450,4 +450,16 @@ SELECT 1 FROM dual
     </query>
 </mode>
 
+<callable-mode name="debstrcmp">
+    <query params="operand1, operand2">
+        {:compareResult = call deb.debstrcmp(:operand1, :operand2)}
+    </query>
+</callable-mode>
+
+<callable-mode name="rpmstrcmp">
+    <query params="operand1, operand2">
+        {:compareResult = call rpm.rpmstrcmp(:operand1, :operand2)}
+    </query>
+</callable-mode>
+
 </datasource_modes>
