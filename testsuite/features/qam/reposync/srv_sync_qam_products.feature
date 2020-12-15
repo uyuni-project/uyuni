@@ -106,7 +106,15 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "RHEL7 Base x86_64" as a product
     Then I should see the "RHEL7 Base x86_64" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" product has been added
+    And I wait until I see "RHEL7 Base x86_64" product has been added
+
+  Scenario: Add RHEL8 Base x86_64
+    Given I am on the Products page
+    And I enter "RHEL8 Base x86_64" as the filtered product description
+    And I select "RHEL8 Base x86_64" as a product
+    Then I should see the "RHEL8 Base x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL8 Base x86_64" product has been added
 
   Scenario: SUSE Manager Proxy 4.1 x86_64
     Given I am on the Products page
