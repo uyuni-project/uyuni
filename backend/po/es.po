@@ -16,10 +16,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-08 13:38+0100\n"
-"PO-Revision-Date: 2020-11-08 16:50+0000\n"
+"PO-Revision-Date: 2020-12-15 03:26+0000\n"
 "Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -410,12 +410,12 @@ msgstr ""
 #: ../common/rhnTB.py:205
 #, python-format
 msgid "ERROR: %s %s: %s"
-msgstr ""
+msgstr "ERROR: %s %s: %s"
 
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "TRAZA: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -499,7 +499,7 @@ msgid "Unsupported server architecture."
 msgstr "Arquitectura de servidor no soportada."
 
 #: ../common/rhnException.py:73
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     The anonymous server functionality is no longer available.\n"
@@ -512,12 +512,17 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"La funcionalidad anónima del servidor no está ya disponible. Por favor "
-"vuelva a registrar este sistema ejecutando rhn_register (o up2date –register "
-"en Red Hat Enterprise Linux 3+) como root. Por favor visite https://"
-"%(hostname)s/rhn/systems/SystemEntitlements.do o acceda a https://"
-"%(hostname)s, y desde el tabular “Overview”, seleccione “Subscription "
-"Management” para habilitar el servicio RHN para este sistema"
+"     La funcionalidad anónima del servidor no está ya disponible. \n"
+"\n"
+"     Por favor vuelva a registrar este sistema ejecutando mgr_register como "
+"root.\n"
+"     Por favor visite https://%(hostname)s/rhn/systems/SystemEntitlements.do "
+"\n"
+"     o acceda a https://%(hostname)s, y desde la pestaña “General”, "
+"seleccione\n"
+"     “Gestión de subscripciones” para habilitar el servicio para este "
+"sistema.\n"
+"     "
 
 #: ../common/rhnException.py:81
 msgid "Record not available in the database."
@@ -528,7 +533,7 @@ msgid "Invalid value for entry."
 msgstr "Valor para la entrada no válido."
 
 #: ../common/rhnException.py:83
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Manager.\n"
@@ -539,10 +544,14 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"Este sistema no tiene un título válido para Red Hat Network. Por favor "
-"visite https://%(hostname)s/rhn/systems/SystemEntitlements.do o acceda a "
-"https://%(hostname)s, y desde el tabular “Overview”, seleccione "
-"“Subscription Management” para habilitar el servicio RHN para este sistema"
+"     Este sistema no tiene una subscripción válida de SUSE Manager.\n"
+"     Por favor visite https://%(hostname)s/rhn/systems/SystemEntitlements.do "
+"\n"
+"     o acceda a https://%(hostname)s, y desde la pestaña “General\", "
+"seleccione \n"
+"     “Gestión de subscripciones” para habilitar el servicio para este "
+"sistema.\n"
+"     "
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
@@ -587,7 +596,6 @@ msgid "Invalid channel version."
 msgstr "Versión del canal no válida."
 
 #: ../common/rhnException.py:100
-#, fuzzy
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -601,13 +609,16 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"Límites de afiliación al grupo de usuario excedida. El ajuste actual de su "
-"cuenta no le permite añadir otra cuenta de usuario. Por favor compruebe con "
-"el administrador de su organización para su cuenta si el número máximo de "
-"usuarios permitidos para suscribirse a RHN necesita ser cambiado."
+"     Límite de afiliación al grupo de usuarios excedido.\n"
+"\n"
+"     La configuración actual de su cuenta no le permite añadir otra \n"
+"     cuenta de usuario. Por favor compruebe con el administrador \n"
+"     de su organización para su cuenta si el número máximo de \n"
+"     usuarios permitidos para suscribirse a Server necesita \n"
+"     ser cambiado.\n"
+"     "
 
 #: ../common/rhnException.py:108
-#, fuzzy
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -621,13 +632,15 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"Límites de afiliación a grupo de sistema excedido. El ajuste actual para su "
-"cuenta no le permite añadir otro perfil de sistema. Por favor consulte con "
-"el administrador de la organización para su cuenta para modificar el número "
-"máximo de perfiles de sistema que pueden ser suscritos en su cuenta RHN."
+"     Límite de afiliación a grupo de sistemas excedido. \n"
+"\n"
+"     La configuración actual de su cuenta no le permite añadir otro \n"
+"     perfil de sistema. Por favor consulte con el administrador de la \n"
+"     organización para su cuenta para modificar el número máximo de \n"
+"     perfiles de sistema que pueden ser suscritos en su cuenta.\n"
+"     "
 
 #: ../common/rhnException.py:116
-#, fuzzy
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -636,8 +649,10 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"Arquitectura no válida. El arquitectura del paquete no se soporta por Red "
-"Hat Network"
+"     Arquitectura no válida. \n"
+"\n"
+"     El arquitectura del paquete no se soporta por\n"
+"     "
 
 #: ../common/rhnException.py:121
 msgid "Invalid RPM header"
