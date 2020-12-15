@@ -8,28 +8,28 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="translated">排队的</target>
+        <target state="translated">已排队</target>
       </trans-unit>
       <trans-unit id="Picked Up" xml:space="preserve">
         <source>Picked Up</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="translated">获取</target>
+        <target state="translated">已获取</target>
       </trans-unit>
       <trans-unit id="Completed" xml:space="preserve">
         <source>Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="translated">完成的</target>
+        <target state="translated">已完成</target>
       </trans-unit>
       <trans-unit id="Failed" xml:space="preserve">
         <source>Failed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
-        <target state="translated">失败的</target>
+        <target state="translated">失败</target>
       </trans-unit>
       <!-- System Group Types -->
       <trans-unit id="Spacewalk Management Entitled Servers" xml:space="preserve">
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="unentitled" xml:space="preserve">
           <source>&lt;em&gt;(none)&lt;/em&gt;</source>
-        <target state="translated">&lt;em&gt;(无)&lt;/em&gt;</target>
+        <target state="translated">&lt;em&gt;（无）&lt;/em&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -101,7 +101,7 @@
       </trans-unit>
       <trans-unit id="virtualization_host" xml:space="preserve">
           <source>Virtualization Host</source>
-        <target state="translated">虚拟化</target>
+        <target state="translated">虚拟化主机</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -149,14 +149,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">(GMT+0400) 俄罗斯 (莫斯科)</target>
+        <target state="translated">(GMT+0400) 俄罗斯（莫斯科）</target>
       </trans-unit>
       <trans-unit id="Africa/Johannesburg" xml:space="preserve">
         <source>(GMT+0200) South Africa (Johannesburg)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">(GMT+0200) 南非 (约翰内斯堡)</target>
+        <target state="translated">(GMT+0200) 南非（约翰内斯堡）</target>
       </trans-unit>
       <trans-unit id="Europe/Bucharest" xml:space="preserve">
         <source>(GMT+0200) Europe (Eastern)</source>
@@ -184,7 +184,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">（GMT-0330）加拿大（纽芬兰)</target>
+        <target state="translated">（GMT-0330）加拿大（纽芬兰）</target>
       </trans-unit>
       <trans-unit id="America/Halifax" xml:space="preserve">
         <source>(GMT-0400) Canada (Atlantic)</source>
@@ -261,7 +261,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">（GMT+1200）新西兰</target>
+        <target state="translated">（GMT+1200）新西兰（瓦利斯）</target>
       </trans-unit>
       <trans-unit id="Pacific/Auckland" xml:space="preserve">
         <source>(GMT+1200) New Zealand (Auckland)</source>
@@ -345,7 +345,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">（GMT+0430）阿富汗斯坦</target>
+        <target state="translated">（GMT+0430）阿富汗</target>
       </trans-unit>
       <trans-unit id="Indian/Mauritius" xml:space="preserve">
         <source>(GMT+0400) Russia (Samara)</source>
@@ -359,7 +359,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">（GMT-0100）亚速尔</target>
+        <target state="translated">（GMT-0100）亚速尔群岛</target>
       </trans-unit>
       <trans-unit id="Atlantic/South_Georgia" xml:space="preserve">
         <source>(GMT-0200) Sandwich Islands</source>
@@ -373,7 +373,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">（GMT-1100）Midway</target>
+        <target state="translated">（GMT-1100）中途岛</target>
       </trans-unit>
       <trans-unit id="America/Santiago" xml:space="preserve">
         <source>(GMT-0300) Chile (Continental)</source>
@@ -451,7 +451,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ web 服务器端口（http 为 80，https 为 443）</target>
+        <target state="translated">@@PRODUCT_NAME@@ Web 服务器端口（http 为 80，https 为 443）</target>
       </trans-unit>
       <trans-unit id="XPROTO" xml:space="preserve">
         <source>External protocol ('http' or 'https')</source>
@@ -473,14 +473,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">如果被使用的可用空间的百分比超过这个值将到达 Critical</target>
+        <target state="translated">如果超过此值则到达已使用可用空间百分比临界值</target>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Warn if Above" xml:space="preserve">
         <source>Available Space Percent Used Warn if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">如果被使用的可用空间的百分比超过这个值将到达 Warn</target>
+        <target state="translated">如果超过此值则到达已使用可用空间百分比警告值</target>
       </trans-unit>
       <trans-unit id="BEA Domain Admin Server" xml:space="preserve">
         <source>BEA Domain Admin Server</source>
@@ -494,7 +494,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">BEA 服务器名</target>
+        <target state="translated">BEA 服务器名称</target>
       </trans-unit>
       <trans-unit id="Basic regular expression" xml:space="preserve">
         <source>Basic regular expression</source>
@@ -522,588 +522,588 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">进程组群计数</target>
+        <target state="translated">进程群计数</target>
       </trans-unit>
       <trans-unit id="Critical 1 min" xml:space="preserve">
         <source>Critical 1 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 1分钟</target>
+        <target state="translated">临界值（1 分钟）</target>
       </trans-unit>
       <trans-unit id="Critical 15 min" xml:space="preserve">
         <source>Critical 15 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 15分钟</target>
+        <target state="translated">临界值（15 分钟）</target>
       </trans-unit>
       <trans-unit id="Critical 5 min" xml:space="preserve">
         <source>Critical 5 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 5分钟</target>
+        <target state="translated">临界值（5 分钟）</target>
       </trans-unit>
       <trans-unit id="Critical Accesses" xml:space="preserve">
         <source>Critical Accesses</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 访问</target>
+        <target state="translated">临界值（访问）</target>
       </trans-unit>
       <trans-unit id="Critical Active Locks" xml:space="preserve">
         <source>Critical Active Locks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 活跃的锁</target>
+        <target state="translated">临界值（活动锁）</target>
       </trans-unit>
       <trans-unit id="Critical Active Sessions" xml:space="preserve">
         <source>Critical Active Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 活跃的会话</target>
+        <target state="translated">临界值（活动会话）</target>
       </trans-unit>
       <trans-unit id="Critical Avail Sessions Used Pct" xml:space="preserve">
         <source>Critical Avail Sessions Used Pct</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 被使用的活跃会话的百分比</target>
+        <target state="translated">临界值（已使用的可用会话百分比）</target>
       </trans-unit>
       <trans-unit id="Critical Blocked Process Count" xml:space="preserve">
         <source>Critical Blocked Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 阻塞进程数量</target>
+        <target state="translated">临界值（已阻止进程计数）</target>
       </trans-unit>
       <trans-unit id="Critical Blocking Sessions" xml:space="preserve">
         <source>Critical Blocking Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 阻塞会话</target>
+        <target state="translated">临界值（阻止会话）</target>
       </trans-unit>
       <trans-unit id="Critical Buffer Cache Hit Ratio" xml:space="preserve">
         <source>Critical Buffer Cache Hit Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 缓冲区缓存点击率</target>
+        <target state="translated">临界值（缓冲区缓存命中率）</target>
       </trans-unit>
       <trans-unit id="Critical CLOSE_WAIT Connections" xml:space="preserve">
         <source>Critical CLOSE_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical CLOSE_WAIT 连接</target>
+        <target state="translated">临界值（CLOSE_WAIT 连接）</target>
       </trans-unit>
       <trans-unit id="Critical CPU Load 1-Min Ave" xml:space="preserve">
         <source>Critical CPU Load 1-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical CPU 负载 1 分钟平均值</target>
+        <target state="translated">临界值（CPU 负载 1 分钟平均值）</target>
       </trans-unit>
       <trans-unit id="Critical CPU Load 15-Min Ave" xml:space="preserve">
         <source>Critical CPU Load 15-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical CPU 负载 15 分钟平均值</target>
+        <target state="translated">临界值（CPU 负载 15 分钟平均值）</target>
       </trans-unit>
       <trans-unit id="Critical CPU Load 5-Min Ave" xml:space="preserve">
         <source>Critical CPU Load 5-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical CPU 负载 5 分钟平均值</target>
+        <target state="translated">临界值（CPU 负载 5 分钟平均值）</target>
       </trans-unit>
       <trans-unit id="Critical CPU Pct Used" xml:space="preserve">
         <source>Critical CPU Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical CPU 使用的百分比</target>
+        <target state="translated">临界值（已使用 CPU 百分比）</target>
       </trans-unit>
       <trans-unit id="Critical CPU Time Rate" xml:space="preserve">
         <source>Critical CPU Time Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical CPU 时间率</target>
+        <target state="translated">临界值（CPU 时间比率）</target>
       </trans-unit>
       <trans-unit id="Critical Child Process Count" xml:space="preserve">
         <source>Critical Child Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 子进程数</target>
+        <target state="translated">临界值（子进程计数）</target>
       </trans-unit>
       <trans-unit id="Critical Child Process Groups" xml:space="preserve">
         <source>Critical Child Process Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 子进程组</target>
+        <target state="translated">临界值（子进程组）</target>
       </trans-unit>
       <trans-unit id="Critical Connection Rate" xml:space="preserve">
         <source>Critical Connection Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 连接率</target>
+        <target state="translated">临界值（连接速率）</target>
       </trans-unit>
       <trans-unit id="Critical Connections" xml:space="preserve">
         <source>Critical Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 连接</target>
+        <target state="translated">临界值（连接）</target>
       </trans-unit>
       <trans-unit id="Critical Count" xml:space="preserve">
         <source>Critical Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 数</target>
+        <target state="translated">临界值（计数）</target>
       </trans-unit>
       <trans-unit id="Critical Data Dictionary Hit Ratio" xml:space="preserve">
         <source>Critical Data Dictionary Hit Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 数据字典点中率</target>
+        <target state="translated">临界值（数据字典命中率）</target>
       </trans-unit>
       <trans-unit id="Critical Defunct Process Count" xml:space="preserve">
         <source>Critical Defunct Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 非现存进程数</target>
+        <target state="translated">临界值（失去作用进程计数）</target>
       </trans-unit>
       <trans-unit id="Critical Disk Sort Ratio" xml:space="preserve">
         <source>Critical Disk Sort Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 磁盘排序率</target>
+        <target state="translated">临界值（磁盘排序率）</target>
       </trans-unit>
       <trans-unit id="Critical ESTABLISHED Connections" xml:space="preserve">
         <source>Critical ESTABLISHED Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 建立的连接</target>
+        <target state="translated">临界值（已建立的连接）</target>
       </trans-unit>
       <trans-unit id="Critical Execution Time Moving Ave" xml:space="preserve">
         <source>Critical Execution Time Moving Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 执行时间移动平均值</target>
+        <target state="translated">临界值（执行时间平均值）</target>
       </trans-unit>
       <trans-unit id="Critical Exit Status" xml:space="preserve">
         <source>Critical Exit Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 退出状态</target>
+        <target state="translated">临界值（退出状态）</target>
       </trans-unit>
       <trans-unit id="Critical FIN_WAIT Connections" xml:space="preserve">
         <source>Critical FIN_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical FIN_WAIT 连接</target>
+        <target state="translated">临界值（FIN_WAIT 连接）</target>
       </trans-unit>
       <trans-unit id="Critical Filesystem Pct Used" xml:space="preserve">
         <source>Critical Filesystem Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 文件系统使用的百分比</target>
+        <target state="translated">临界值（已使用文件系统百分比）</target>
       </trans-unit>
       <trans-unit id="Critical Heap Free" xml:space="preserve">
         <source>Critical Heap Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 空闲堆栈</target>
+        <target state="translated">临界值（堆释放）</target>
       </trans-unit>
       <trans-unit id="Critical High Execution Time" xml:space="preserve">
         <source>Critical High Execution Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 最长执行时间</target>
+        <target state="translated">临界值（最长执行时间）</target>
       </trans-unit>
       <trans-unit id="Critical Idle Sessions" xml:space="preserve">
         <source>Critical Idle Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 空闲会话</target>
+        <target state="translated">临界值（空闲会话）</target>
       </trans-unit>
       <trans-unit id="Critical Idle Threads" xml:space="preserve">
         <source>Critical Idle Threads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 空闲线程</target>
+        <target state="translated">临界值（空闲线程）</target>
       </trans-unit>
       <trans-unit id="Critical Inodes Pct Used" xml:space="preserve">
         <source>Critical Inodes Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical Inodes 使用的百分比</target>
+        <target state="translated">临界值（已使用 Inode 百分比）</target>
       </trans-unit>
       <trans-unit id="Critical Input Rate" xml:space="preserve">
         <source>Critical Input Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 输入率</target>
+        <target state="translated">临界值（输入率）</target>
       </trans-unit>
       <trans-unit id="Critical Latency" xml:space="preserve">
         <source>Critical Latency</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 延迟</target>
+        <target state="translated">临界值（延迟）</target>
       </trans-unit>
       <trans-unit id="Critical Library Cache Miss Ratio" xml:space="preserve">
         <source>Critical Library Cache Miss Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 计算库缓存未点中率</target>
+        <target state="translated">临界值（库缓存未命中率）</target>
       </trans-unit>
       <trans-unit id="Critical Line Rate" xml:space="preserve">
         <source>Critical Line Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 行率</target>
+        <target state="translated">临界值（行比率）</target>
       </trans-unit>
       <trans-unit id="Critical Lines" xml:space="preserve">
         <source>Critical Lines</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 行</target>
+        <target state="translated">临界值（行）</target>
       </trans-unit>
       <trans-unit id="Critical Match Rate" xml:space="preserve">
         <source>Critical Match Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 匹配率</target>
+        <target state="translated">临界值（匹配率）</target>
       </trans-unit>
       <trans-unit id="Critical Matches" xml:space="preserve">
         <source>Critical Matches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 匹配</target>
+        <target state="translated">临界值（匹配项）</target>
       </trans-unit>
       <trans-unit id="Critical Number Running Maximum" xml:space="preserve">
         <source>Critical Number Running Maximum</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 最大运行数量</target>
+        <target state="translated">临界值（最大运行数量）</target>
       </trans-unit>
       <trans-unit id="Critical Number Running Minimum" xml:space="preserve">
         <source>Critical Number Running Minimum</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 最小运行数量</target>
+        <target state="translated">临界值（最小运行数量）</target>
       </trans-unit>
       <trans-unit id="Critical Open Tables" xml:space="preserve">
         <source>Critical Open Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 打开表</target>
+        <target state="translated">临界值（打开表）</target>
       </trans-unit>
       <trans-unit id="Critical Opened Tables" xml:space="preserve">
         <source>Critical Opened Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 打开的表</target>
+        <target state="translated">临界值（已打开表）</target>
       </trans-unit>
       <trans-unit id="Critical Output Rate" xml:space="preserve">
         <source>Critical Output Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 输出率</target>
+        <target state="translated">临界值（输出率）</target>
       </trans-unit>
       <trans-unit id="Critical Packet Loss Pct" xml:space="preserve">
         <source>Critical Packet Loss Pct</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 丢失的数据包的百分比</target>
+        <target state="translated">临界值（数据包丢失百分比）</target>
       </trans-unit>
       <trans-unit id="Critical Percent" xml:space="preserve">
         <source>Critical Percent</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 百分比</target>
+        <target state="translated">临界值（百分比）</target>
       </trans-unit>
       <trans-unit id="Critical Physical Memory Used" xml:space="preserve">
         <source>Critical Physical Memory Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 使用的物理内存</target>
+        <target state="translated">临界值（已使用物理内存）</target>
       </trans-unit>
       <trans-unit id="Critical Process Count" xml:space="preserve">
         <source>Critical Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 进程数</target>
+        <target state="translated">临界值（进程计数）</target>
       </trans-unit>
       <trans-unit id="Critical Processes" xml:space="preserve">
         <source>Critical Processes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 进程</target>
+        <target state="translated">临界值（进程）</target>
       </trans-unit>
       <trans-unit id="Critical Query Rate" xml:space="preserve">
         <source>Critical Query Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 查询率</target>
+        <target state="translated">临界值（查询率）</target>
       </trans-unit>
       <trans-unit id="Critical Query Time" xml:space="preserve">
         <source>Critical Query Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 查询时间</target>
+        <target state="translated">临界值（查询时间）</target>
       </trans-unit>
       <trans-unit id="Critical Queue Length" xml:space="preserve">
         <source>Critical Queue Length</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 队列长度</target>
+        <target state="translated">临界值（队列长度）</target>
       </trans-unit>
       <trans-unit id="Critical RAM Free" xml:space="preserve">
         <source>Critical RAM Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 可用的 RAM</target>
+        <target state="translated">临界值（可用的 RAM）</target>
       </trans-unit>
       <trans-unit id="Critical Read Rate" xml:space="preserve">
         <source>Critical Read Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 读频率</target>
+        <target state="translated">临界值（读取率）</target>
       </trans-unit>
       <trans-unit id="Critical Redo Buffer Allocation Retries" xml:space="preserve">
         <source>Critical Redo Buffer Allocation Retries</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 重复重新尝试分配缓冲区</target>
+        <target state="translated">临界值（重复缓冲区分配重试）</target>
       </trans-unit>
       <trans-unit id="Critical Redo Log Space Requests" xml:space="preserve">
         <source>Critical Redo Log Space Requests</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 重复日志空间请求</target>
+        <target state="translated">临界值（重复日志空间请求）</target>
       </trans-unit>
       <trans-unit id="Critical Request Rate" xml:space="preserve">
         <source>Critical Request Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 请求率</target>
+        <target state="translated">临界值（请求率）</target>
       </trans-unit>
       <trans-unit id="Critical Requests" xml:space="preserve">
         <source>Critical Requests</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 请求</target>
+        <target state="translated">临界值（请求）</target>
       </trans-unit>
       <trans-unit id="Critical Round-trip Ave" xml:space="preserve">
         <source>Critical Round-trip Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 平均 Round-trip</target>
+        <target state="translated">临界值（平均往返时间）</target>
       </trans-unit>
       <trans-unit id="Critical Round-trip Avg" xml:space="preserve">
         <source>Critical Round-trip Avg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 平均 Round-trip</target>
+        <target state="translated">临界值（平均往返时间）</target>
       </trans-unit>
       <trans-unit id="Critical SYN_RCVD Connections" xml:space="preserve">
         <source>Critical SYN_RCVD Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical SYN_RCVD 连接</target>
+        <target state="translated">临界值（SYN_RCVD 连接）</target>
       </trans-unit>
       <trans-unit id="Critical Seconds" xml:space="preserve">
         <source>Critical Seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 秒</target>
+        <target state="translated">临界值（秒）</target>
       </trans-unit>
       <trans-unit id="Critical Size" xml:space="preserve">
         <source>Critical Size</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 大小</target>
+        <target state="translated">临界值（大小）</target>
       </trans-unit>
       <trans-unit id="Critical Space Available" xml:space="preserve">
         <source>Critical Space Available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 可用空间</target>
+        <target state="translated">临界值（可用空间）</target>
       </trans-unit>
       <trans-unit id="Critical Space Used" xml:space="preserve">
         <source>Critical Space Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 使用的空间</target>
+        <target state="translated">临界值（已使用的空间）</target>
       </trans-unit>
       <trans-unit id="Critical Stopped Process Count" xml:space="preserve">
         <source>Critical Stopped Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 终止进程数</target>
+        <target state="translated">临界值（已停止进程计数）</target>
       </trans-unit>
       <trans-unit id="Critical Swap Pct Free" xml:space="preserve">
         <source>Critical Swap Pct Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 空闲的交换分区的百分比</target>
+        <target state="translated">临界值（空闲的交换分区百分比）</target>
       </trans-unit>
       <trans-unit id="Critical TIME_WAIT Connections" xml:space="preserve">
         <source>Critical TIME_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical TIME_WAIT 连接</target>
+        <target state="translated">临界值（TIME_WAIT 连接）</target>
       </trans-unit>
       <trans-unit id="Critical Threads" xml:space="preserve">
         <source>Critical Threads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 线程</target>
+        <target state="translated">临界值（线程）</target>
       </trans-unit>
       <trans-unit id="Critical Threads Running" xml:space="preserve">
         <source>Critical Threads Running</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 运行的线程</target>
+        <target state="translated">临界值（正在运行的线程）</target>
       </trans-unit>
       <trans-unit id="Critical Total Connections" xml:space="preserve">
         <source>Critical Total Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 连接总数</target>
+        <target state="translated">临界值（连接总数）</target>
       </trans-unit>
       <trans-unit id="Critical Traffic" xml:space="preserve">
         <source>Critical Traffic</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 流量</target>
+        <target state="translated">临界值（流量）</target>
       </trans-unit>
       <trans-unit id="Critical Transferred Per Child" xml:space="preserve">
         <source>Critical Transferred Per Child</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 每个子进程的数据传输</target>
+        <target state="translated">临界值（每个子进程的已传输数据）</target>
       </trans-unit>
       <trans-unit id="Critical Transferred Per Slot" xml:space="preserve">
         <source>Critical Transferred Per Slot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 每个 slot 的数据传输</target>
+        <target state="translated">临界值（每个槽的已传输数据）</target>
       </trans-unit>
       <trans-unit id="Critical Users" xml:space="preserve">
         <source>Critical Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 用户</target>
+        <target state="translated">临界值（用户）</target>
       </trans-unit>
       <trans-unit id="Critical Value" xml:space="preserve">
         <source>Critical Value</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 值</target>
+        <target state="translated">临界值</target>
       </trans-unit>
       <trans-unit id="Critical Virtual Mem Pct Free" xml:space="preserve">
         <source>Critical Virtual Mem Pct Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 空闲的虚拟内存的百分比</target>
+        <target state="translated">临界值（空闲的虚拟内存百分比）</target>
       </trans-unit>
       <trans-unit id="Critical Virtual Memory Used" xml:space="preserve">
         <source>Critical Virtual Memory Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 使用的虚拟内存</target>
+        <target state="translated">临界值（已使用的虚拟内存）</target>
       </trans-unit>
       <trans-unit id="Critical Waiters" xml:space="preserve">
         <source>Critical Waiters</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 等待者</target>
+        <target state="translated">临界值（等待者）</target>
       </trans-unit>
       <trans-unit id="Critical Write Rate" xml:space="preserve">
         <source>Critical Write Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 写频率</target>
+        <target state="translated">临界值（写入率）</target>
       </trans-unit>
       <trans-unit id="Critical Write rate" xml:space="preserve">
         <source>Critical Write rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Critical 写频率</target>
+        <target state="translated">临界值（写入率）</target>
       </trans-unit>
       <trans-unit id="Database" xml:space="preserve">
         <source>Database</source>
@@ -1124,35 +1124,35 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">磁盘号或磁盘名（从 iostat 获得）</target>
+        <target state="translated">磁盘号或磁盘名称（从 iostat 获得）</target>
       </trans-unit>
       <trans-unit id="Expect" xml:space="preserve">
         <source>Expect</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">期望</target>
+        <target state="translated">预期</target>
       </trans-unit>
       <trans-unit id="Expect Content" xml:space="preserve">
         <source>Expect Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">期望的内容</target>
+        <target state="translated">预期内容</target>
       </trans-unit>
       <trans-unit id="Expect Header" xml:space="preserve">
         <source>Expect Header</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">期望的头</target>
+        <target state="translated">预期标头</target>
       </trans-unit>
       <trans-unit id="Expected DB Name (V$DATABASE.NAME)" xml:space="preserve">
         <source>Expected DB Name (V$DATABASE.NAME)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">期望的 DB 名（V$DATABASE.NAME）</target>
+        <target state="translated">预期 DB 名称（V$DATABASE.NAME）</target>
       </trans-unit>
       <trans-unit id="FTP Port" xml:space="preserve">
         <source>FTP Port</source>
@@ -1187,7 +1187,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">查询的主机或地址</target>
+        <target state="translated">要查找的主机或地址</target>
       </trans-unit>
       <trans-unit id="IMAP Port" xml:space="preserve">
         <source>IMAP Port</source>
@@ -1208,14 +1208,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">包括可以重新请求的内存</target>
+        <target state="translated">包括可回收内存</target>
       </trans-unit>
       <trans-unit id="Index Name" xml:space="preserve">
         <source>Index Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">索引名</target>
+        <target state="translated">索引名称</target>
       </trans-unit>
       <trans-unit id="Index Owner" xml:space="preserve">
         <source>Index Owner</source>
@@ -1229,7 +1229,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">输入流量 Critical</target>
+        <target state="translated">输入流量临界值</target>
       </trans-unit>
       <trans-unit id="Interface" xml:space="preserve">
         <source>Interface</source>
@@ -1243,21 +1243,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">JDBC 池名</target>
+        <target state="translated">JDBC 池名称</target>
       </trans-unit>
       <trans-unit id="Local IP address filter pattern list" xml:space="preserve">
         <source>Local IP address filter pattern list</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">本地的 IP 地址过滤器特征列表</target>
+        <target state="translated">本地 IP 地址过滤器模式列表</target>
       </trans-unit>
       <trans-unit id="Local port number filter" xml:space="preserve">
         <source>Local port number filter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">本地端口过滤器</target>
+        <target state="translated">本地端口号过滤器</target>
       </trans-unit>
       <trans-unit id="Log file" xml:space="preserve">
         <source>Log file</source>
@@ -1278,21 +1278,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">如果被分配的事件数量超过这个值将到达 Critical</target>
+        <target state="translated">如果超过此值则到达已分配区域数的临界值</target>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Warn if Above" xml:space="preserve">
         <source>Number of Allocated Extents Warn if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">如果被分配的事件的数量超过这个值将到达 Critical</target>
+        <target state="translated">如果超过此值则到达已分配区域数的警告值</target>
       </trans-unit>
       <trans-unit id="OK Exit Status" xml:space="preserve">
         <source>OK Exit Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">OK 退出状态</target>
+        <target state="translated">确定退出状态</target>
       </trans-unit>
       <trans-unit id="ORACLE_HOME" xml:space="preserve">
         <source>ORACLE_HOME</source>
@@ -1306,14 +1306,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Oracle 主机名或 IP</target>
+        <target state="translated">Oracle 主机名称或 IP</target>
       </trans-unit>
       <trans-unit id="Oracle Password" xml:space="preserve">
         <source>Oracle Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Oracle 密码</target>
+        <target state="translated">Oracle 口令</target>
       </trans-unit>
       <trans-unit id="Oracle Port" xml:space="preserve">
         <source>Oracle Port</source>
@@ -1341,49 +1341,49 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">输出流量 Critical</target>
+        <target state="translated">输出流量临界值</target>
       </trans-unit>
       <trans-unit id="PID file (overrides command name)" xml:space="preserve">
         <source>PID file (overrides command name)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">PID 文件（覆盖命令名）</target>
+        <target state="translated">PID 文件（覆盖命令名称）</target>
       </trans-unit>
       <trans-unit id="Packets to send" xml:space="preserve">
         <source>Packets to send</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">发送的数据包</target>
+        <target state="translated">要发送的数据包</target>
       </trans-unit>
       <trans-unit id="Password" xml:space="preserve">
         <source>Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">密码</target>
+        <target state="translated">口令</target>
       </trans-unit>
       <trans-unit id="Pathname" xml:space="preserve">
         <source>Pathname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">路径名</target>
+        <target state="translated">路径名称</target>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Critical if Above" xml:space="preserve">
         <source>Percent of Available Extents Critical if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">如果有效的事件超过这个值将到达 Critical</target>
+        <target state="translated">如果超过此值则到达可用区域百分比临界值</target>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Warn if Above" xml:space="preserve">
         <source>Percent of Available Extents Warn if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">如果有效的事件超过这个值将到达 Warn</target>
+        <target state="translated">如果超过此值则到达可用区域百分比警告值</target>
       </trans-unit>
       <trans-unit id="Port" xml:space="preserve">
         <source>Port</source>
@@ -1404,7 +1404,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">队列名</target>
+        <target state="translated">队列名称</target>
       </trans-unit>
       <trans-unit id="RHNMD Port" xml:space="preserve">
         <source>RHNMD Port</source>
@@ -1439,14 +1439,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">远程的 IP 地址过滤器特征列表</target>
+        <target state="translated">远程 IP 地址过滤器模式列表</target>
       </trans-unit>
       <trans-unit id="Remote port number filter" xml:space="preserve">
         <source>Remote port number filter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">远程的端口号过滤器</target>
+        <target state="translated">远程端口号过滤器</target>
       </trans-unit>
       <trans-unit id="SMTP Port" xml:space="preserve">
         <source>SMTP Port</source>
@@ -1502,21 +1502,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">服务名</target>
+        <target state="translated">服务名称</target>
       </trans-unit>
       <trans-unit id="Servlet Name" xml:space="preserve">
         <source>Servlet Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Servlet 名</target>
+        <target state="translated">Servlet 名称</target>
       </trans-unit>
       <trans-unit id="Status (OK/WARNING/CRITICAL/UNKNOWN)" xml:space="preserve">
         <source>Status (OK/WARNING/CRITICAL/UNKNOWN)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">状态（OK/WARNING/CRITICAL/未知）</target>
+        <target state="translated">状态（确定/警告/临界/未知）</target>
       </trans-unit>
       <trans-unit id="TNS Listener Port" xml:space="preserve">
         <source>TNS Listener Port</source>
@@ -1551,14 +1551,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">阻塞的时间（秒）</target>
+        <target state="translated">阻止时间（秒）</target>
       </trans-unit>
       <trans-unit id="Time Idle (seconds)" xml:space="preserve">
         <source>Time Idle (seconds)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">空闲的时间（秒）</target>
+        <target state="translated">空闲时间（秒）</target>
       </trans-unit>
       <trans-unit id="Timeout (seconds)" xml:space="preserve">
         <source>Timeout (seconds)</source>
@@ -1600,49 +1600,49 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Warn 1分钟</target>
+        <target state="translated">警告值（1 分钟）</target>
       </trans-unit>
       <trans-unit id="Warn 15 min" xml:space="preserve">
         <source>Warn 15 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Warn 15分钟</target>
+        <target state="translated">警告值（15 分钟）</target>
       </trans-unit>
       <trans-unit id="Warn 5 min" xml:space="preserve">
         <source>Warn 5 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Warn 5分钟</target>
+        <target state="translated">警告值（5 分钟）</target>
       </trans-unit>
       <trans-unit id="Warn Percent" xml:space="preserve">
         <source>Warn Percent</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Warn 百分比</target>
+        <target state="translated">警告值（百分比）</target>
       </trans-unit>
       <trans-unit id="Warn Processes" xml:space="preserve">
         <source>Warn Processes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Warn 进程</target>
+        <target state="translated">警告值（进程）</target>
       </trans-unit>
       <trans-unit id="Warn Users" xml:space="preserve">
         <source>Warn Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Warn 用户</target>
+        <target state="translated">警告值（用户）</target>
       </trans-unit>
       <trans-unit id="Warning Accesses" xml:space="preserve">
         <source>Warning Accesses</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">Warning 访问</target>
+        <target state="translated">警告值（访问）</target>
       </trans-unit>
       <trans-unit id="Warning Active Locks" xml:space="preserve">
         <source>Warning Active Locks</source>
@@ -3605,27 +3605,27 @@
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
-    <trans-unit id="Asia/Jerusalem" xml:space="preserve">
+      <trans-unit id="Asia/Jerusalem" xml:space="preserve">
         <source>(GMT+0200) Israel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Asia/Singapore" xml:space="preserve">
         <source>(GMT+0800) Singapore</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
         <source>(GMT+0800) Malaysia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
