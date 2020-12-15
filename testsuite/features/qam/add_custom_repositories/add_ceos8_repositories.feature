@@ -48,3 +48,50 @@ Feature: Adding the CentOS 8 distribution custom repositories
 
   Scenario: The custom channel for CentOS 8 has been synced
     When I wait until the channel "centos-8-iso" has been synced
+
+  Scenario: Create CLM filters to remove AppStream metadata
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I follow "Create Filter"
+    And I enter "ruby-2.7" as "filter_name"
+    And I select "Module (Stream)" from "type"
+    And I enter "ruby" as "moduleName"
+    And I enter "2.7" as "moduleStream"
+    And I click on "Save"
+    Then I should see a "ruby-2.7" text
+    When I follow "Create Filter"
+    And I enter "python-3.8" as "filter_name"
+    And I select "Module (Stream)" from "type"
+    And I enter "python38" as "moduleName"
+    And I enter "3.8" as "moduleStream"
+    And I click on "Save"
+    Then I should see a "python-3.8" text
+
+  Scenario: Create a CLM project to remove AppStream metadata
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "Create Project"
+    And I enter "Remove AppStream metadata" as "name"
+    And I enter "no-appstream" as "label"
+    And I click on "Create"
+    Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
+    When I follow "Attach/Detach Sources"
+    And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
+    And I check "Custom Channel for CentOS 8 DVD"
+    And I check "RES-AS-8-Updates for x86_64"
+    And I click on "Save"
+    Then I should see a "Custom Channel for CentOS 8 DVD" text
+    When I follow "Attach/Detach Filters"
+    And I check "python-3.8: enable module python38:3.8"
+    And I check "ruby-2.7: enable module ruby:2.7"
+    And I click on "Save"
+    Then I should see a "python-3.8: enable module python38:3.8" text
+    When I follow "Add Environment"
+    And I enter "result" as "name"
+    And I enter "Filtered channels without AppStream channels" as "description"
+    And I click on "Save"
+    Then I should see a "not built" text
+    When I click on "Build (9)"
+    And I enter "Initial build" as "message"
+    And I click the environment build button
+    Then I should see a "Version 1: Initial build" text
