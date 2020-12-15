@@ -28,7 +28,7 @@ Feature: Adding the CentOS 6 distribution custom repositories
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-  Scenario: Add the repository to the custom channel for <label>
+  Scenario: Add the repository to the custom channel for CentOS 6 DVD
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 6 DVD"
@@ -37,7 +37,7 @@ Feature: Adding the CentOS 6 distribution custom repositories
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the custom channel for <label>
+  Scenario: Synchronize the repository in the custom channel for CentOS 6 DVD
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 6 DVD"
