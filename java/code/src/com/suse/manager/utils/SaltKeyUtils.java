@@ -14,12 +14,15 @@
  */
 package com.suse.manager.utils;
 
+import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.wheel.Key;
+
+import org.apache.log4j.Logger;
 
 import java.util.stream.Stream;
 
@@ -29,6 +32,7 @@ import java.util.stream.Stream;
 public class SaltKeyUtils {
 
     private final SaltApi saltApi;
+    private static final Logger LOG = Logger.getLogger(SaltKeyUtils.class);
 
     /**
      * @param saltApiIn
@@ -42,10 +46,10 @@ public class SaltKeyUtils {
      * @param user the user
      * @param minionId the key identifier (minion id)
      * @return true on success otherwise false
-     * @throws PermissionCheckFailureException requires org admin privileges
+     * @throws PermissionException requires org admin privileges
+     * or management privileges for the server
      */
-    public boolean deleteSaltKey(User user, String minionId)
-            throws PermissionCheckFailureException {
+    public boolean deleteSaltKey(User user, String minionId) throws PermissionException {
 
         //Note: since salt only allows globs we have to do our own strict matching
         Key.Names keys = saltApi.getKeys();
@@ -60,19 +64,24 @@ public class SaltKeyUtils {
 
         if (exists) {
             return MinionServerFactory.findByMinionId(minionId).map(minionServer -> {
-                if (minionServer.getOrg().equals(user.getOrg())) {
+                if (user.getServers().contains(minionServer)) {
                     saltApi.deleteKey(minionId);
                     return true;
                 }
                 else {
-                    return false;
+                    throw new PermissionException("You do not have permissions to " +
+                            "perform this action for system id[" + minionServer.getId() + "]");
                 }
             }).orElseGet(() -> {
+                if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+                    throw new PermissionException(RoleFactory.ORG_ADMIN);
+                }
                 saltApi.deleteKey(minionId);
                 return true;
             });
         }
         else {
+            LOG.info(String.format("No key found for minionID [%s]", minionId));
             return false;
         }
     }
