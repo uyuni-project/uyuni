@@ -1,3 +1,5 @@
+- fix option parsing in configure-tftpsync (bsc#1180017)
+
 -------------------------------------------------------------------
 Wed May 20 11:07:52 CEST 2020 - jgonzalez@suse.com
 
