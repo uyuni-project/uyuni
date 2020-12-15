@@ -56,7 +56,6 @@ class deb_Header:
                 'arch': debcontrol.get_as_string('Architecture') + '-deb',
                 'summary': debcontrol.get_as_string('Description').splitlines()[0],
                 'vendor': debcontrol.get_as_string('Maintainer'),
-                'package_group': debcontrol.get_as_string('Section'),
                 'epoch':   '',
                 'version': 0,
                 'release': 0,
@@ -130,7 +129,8 @@ class DEB_Package(A_Package):
             self.header_data.seek(0, 0)
             self.header = deb_Header(self.header_data)
         except:
-            raise_with_tb(InvalidPackageError, sys.exc_info()[2])
+            e = sys.exc_info()[1]
+            raise_with_tb(InvalidPackageError(e), sys.exc_info()[2])
 
     def save_payload(self, output_stream):
         c_hash = checksum.getHashlibInstance(self.checksum_type, False)
