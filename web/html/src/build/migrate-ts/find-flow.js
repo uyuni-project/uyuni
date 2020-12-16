@@ -73,6 +73,7 @@ const parser = require("./parser");
     console.log(`found ${uniqueFiles.length} candidate inputs in total`);
   }
 
+  // TODO: Obsolete
   // Find which files are Flow files
   const flowFiles = [];
   try {
