@@ -60,11 +60,11 @@ while [ $# -ge 1 ]; do
         --help | -h)  print_help;;
         --answer-file=*) parse_answer_file $1;;
         --non-interactive) INTERACTIVE=0;;
-        --tftpbootdir) TFTPBOOT=$(echo $1 | cut -d= -f2-);;
-        --server-fqdn) SUMA_FQDN=$(echo $1 | cut -d= -f2-);;
-        --server-ip) SUMA_IP=$(echo $1 | cut -d= -f2-);;
-        --proxy-fqdn) SUMA_PROXY_FQDN=$(echo $1 | cut -d= -f2-);;
-        --proxy-ip) SUMA_PROXY_IP=$(echo $1 | cut -d= -f2-);;
+        --tftpbootdir=*) TFTPBOOT=$(echo $1 | cut -d= -f2-);;
+        --server-fqdn=*) SUMA_FQDN=$(echo $1 | cut -d= -f2-);;
+        --server-ip=*) SUMA_IP=$(echo $1 | cut -d= -f2-);;
+        --proxy-fqdn=*) SUMA_PROXY_FQDN=$(echo $1 | cut -d= -f2-);;
+        --proxy-ip=*) SUMA_PROXY_IP=$(echo $1 | cut -d= -f2-);;
         *) echo Error: Invalid option $1
     esac
     shift
