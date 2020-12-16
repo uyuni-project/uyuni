@@ -52,10 +52,9 @@
     "find-array-object-array-any": "yarn --silent find-ts-tsx | xargs grep -l 'Array<Object>'",
     "migrate-array-object-array-any": "yarn --silent find-array-object-array-any | xargs -I {} sed -i '' -e 's/Array<Object>/Array<any>/' {}",
 
-    "rename-if-old": "",
+    "rename-if-old": "TODO",
 
-    "migrate": "",
-    "migrate-all": "yarn --silent find-js-jsx |"
+    "migrate": "./build/migrate-ts/index.sh"
   },
   "engines": {
     "node": ">=10.0.0",
