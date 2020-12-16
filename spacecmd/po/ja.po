@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-11-21 02:26+0000\n"
+"PO-Revision-Date: 2020-12-16 12:27+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -601,9 +601,9 @@ msgid "does not exist, skipping!"
 msgstr "が存在しません。読み飛ばしています！"
 
 #: ../src/spacecmd/activationkey.py:1581
-#, fuzzy, python-format
+#, python-format
 msgid "Cloning key %s as %s"
-msgstr "キー %s を %s にエクスポートしています"
+msgstr "キー %s を %s として複製しています"
 
 #: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1442
 #, python-format
@@ -1193,7 +1193,6 @@ msgid "configchannel_updateinitsls: Update init.sls file"
 msgstr "configchannel_updateinitsls: init.sls ファイルを更新"
 
 #: ../src/spacecmd/configchannel.py:847
-#, fuzzy
 msgid ""
 "usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1203,13 +1202,13 @@ msgid ""
 "  -f local path to file contents\n"
 "  -y automatically proceed with file contents\n"
 msgstr ""
-"使用方法: configchannel_updateinitsls -c (チャンネル) -f (ローカルファイルパ"
-"ス) [オプション])\n"
+"使用方法: configchannel_updateinitsls -c (チャンネル) -f (ローカルファイルパス) [オプション])\n"
 "\n"
 "オプション:\n"
 "  -c (チャンネル名)\n"
+"  -r (リビジョン)\n"
 "  -f (ファイルの内容を含むローカルパス)\n"
-"  -y ファイルの内容を自動処理する\n"
+"  -y: ファイルの内容を自動処理する\n"
 
 #: ../src/spacecmd/configchannel.py:895
 #, python-format
@@ -1217,9 +1216,9 @@ msgid "No existing file information found for %s"
 msgstr "%s に対する既存のファイル情報がありません"
 
 #: ../src/spacecmd/configchannel.py:945
-#, fuzzy, python-format
+#, python-format
 msgid "revision:                 %s"
-msgstr "キー:                    %s"
+msgstr "リビジョン:                 %s"
 
 #: ../src/spacecmd/configchannel.py:946
 #, python-format
@@ -1370,9 +1369,9 @@ msgid "Importing config channel  %s"
 msgstr "設定チャンネル %s をインポートしています"
 
 #: ../src/spacecmd/configchannel.py:1280
-#, fuzzy, python-format
+#, python-format
 msgid "Found %s %s for cc %s"
-msgstr "ks %s が見つかりました"
+msgstr "%s %s (cc %s 向け) が見つかりました"
 
 #: ../src/spacecmd/configchannel.py:1308
 #, python-format
@@ -1867,9 +1866,9 @@ msgid "Apply these patches [y/N]:"
 msgstr "これらのパッチを適用します [y/N]:"
 
 #: ../src/spacecmd/errata.py:197
-#, fuzzy, python-format
+#, python-format
 msgid "Scheduled %i system(s) for %s"
-msgstr "%i 個のシステムにスケジュールしました"
+msgstr "%i 個のシステムに %s をスケジュールしました"
 
 #: ../src/spacecmd/errata.py:218
 #, python-format
@@ -5568,9 +5567,9 @@ msgstr ""
 "プレフィクスのオプションか正規表現のオプションを指定せずに実行しています！"
 
 #: ../src/spacecmd/softwarechannel.py:1301
-#, fuzzy, python-format
+#, python-format
 msgid "Cloning %s as %s"
-msgstr "%s に %s として接続しました"
+msgstr "%s を %s として複製しています"
 
 #: ../src/spacecmd/softwarechannel.py:1349
 msgid "softwarechannel_addpackages: Add packages to a software channel"
@@ -6182,19 +6181,16 @@ msgid "If <SCHEDULE> is left empty, it will be disabled."
 msgstr "<スケジュール> を指定しない場合、そのスケジュールは無効化されます。"
 
 #: ../src/spacecmd/softwarechannel.py:2707
-#, fuzzy
 msgid "softwarechannel_removesyncschedule: "
-msgstr "softwarechannel_setsyncschedule: "
+msgstr "softwarechannel_removesyncschedule: "
 
 #: ../src/spacecmd/softwarechannel.py:2708
-#, fuzzy
 msgid "Removes the repo sync schedule for a software channel"
-msgstr "ソフトウェアチャンネルに対するリポジトリー同期スケジュールを設定"
+msgstr "ソフトウェアチャンネルに対するリポジトリー同期スケジュールを削除"
 
 #: ../src/spacecmd/softwarechannel.py:2710
-#, fuzzy
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
-msgstr "使用方法: softwarechannel_setsyncschedule <チャンネル> <スケジュール>"
+msgstr "使用方法: softwarechannel_removesyncschedule <チャンネル>"
 
 #: ../src/spacecmd/softwarechannel.py:2735
 msgid ""
@@ -6302,7 +6298,7 @@ msgstr "インターセクション:"
 
 #: ../src/spacecmd/ssm.py:56
 msgid "Using the SSM:"
-msgstr ""
+msgstr "SSM を使用した場合:"
 
 #: ../src/spacecmd/ssm.py:64
 msgid "ssm_add: Add systems to the SSM"
@@ -6862,9 +6858,9 @@ msgstr ""
 "  -q/--quiet   : 静寂モード (ヘッダを省略)"
 
 #: ../src/spacecmd/system.py:1405
-#, fuzzy, python-format
+#, python-format
 msgid "Error, unexpected channel type label %s"
-msgstr "チャンネルラベルを指定していません！"
+msgstr "エラーです。予期しないチャンネルタイプラベル %s です"
 
 #: ../src/spacecmd/system.py:1417
 msgid "system_addconfigfile: Create a configuration file"
@@ -6947,9 +6943,8 @@ msgstr ""
 "りません"
 
 #: ../src/spacecmd/system.py:1519
-#, fuzzy
 msgid "Must provide system"
-msgstr "%s は正しいシステムではありません"
+msgstr "システムを指定しなければなりません"
 
 #: ../src/spacecmd/system.py:1553
 msgid "system_addconfigchannels: Add config channels to a system"
@@ -7175,9 +7170,9 @@ msgid "No notes to delete"
 msgstr "削除すべきメモはありません"
 
 #: ../src/spacecmd/system.py:2335
-#, fuzzy, python-format
+#, python-format
 msgid "%s is not a valid note ID"
-msgstr "\"%s\" は正しい ID ではありません"
+msgstr "%s は正しいメモ ID ではありません"
 
 #: ../src/spacecmd/system.py:2347
 msgid "system_listnotes: List the available notes for a system"
@@ -7824,9 +7819,8 @@ msgid "WARN: Cannot find system "
 msgstr "警告: システムが見つかりません "
 
 #: ../src/spacecmd/system.py:4283
-#, fuzzy
 msgid "System "
-msgstr "システム"
+msgstr "システム "
 
 #: ../src/spacecmd/system.py:4287
 msgid "  No migration targets"
@@ -8168,9 +8162,9 @@ msgid "Invalid time provided"
 msgstr "時刻の指定が正しくありません"
 
 #: ../src/spacecmd/utils.py:456
-#, fuzzy, python-format
+#, python-format
 msgid "%s is an unknown errata type"
-msgstr "不明なファイルタイプです "
+msgstr "%s は不明なエラータタイプです"
 
 #: ../src/spacecmd/utils.py:464
 msgid "Security Errata"
