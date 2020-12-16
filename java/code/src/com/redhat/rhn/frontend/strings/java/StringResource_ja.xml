@@ -11007,7 +11007,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="needs-adaptation">ラベルは 128 文字以内でなければなりません</target>
+        <target state="translated">名前は 128 文字以内でなければなりません</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
@@ -11025,10 +11025,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Name must not exceed 128 characters</source>
         <target state="translated">名前は 128 文字以内でなければなりません</target>
       </trans-unit>
-    <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">リポジトリのラベル '{0}' が正しくありません。リポジトリのラベルは英小文字で始まらなければならないほか、 2 文字目以降には英小文字とハイフン ('-'), ピリオド ('.'), アンダースコア ('_'), 数字, スペース, カッコ, スラッシュ ('/') を使用することができます。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
