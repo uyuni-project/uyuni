@@ -1,3 +1,5 @@
+- Prevent deletion of CLM environments if they're used in an autoinstallation
+  profile (bsc#1179552)
 - Fix Debian package version comparison
 - register saltkey XMLRPC handler and fix behavior of delete salt key (bsc#1179872)
 - Added 'revision' argument to the 'configchannel.updateInitSls' XMLRPC API method (bsc#1179566)

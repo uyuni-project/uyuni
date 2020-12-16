@@ -19,6 +19,7 @@ type Props = {
   onCancel?: Function,
   onOpen?: Function,
   onDelete?: Function,
+  disableDelete?: boolean,
   disableOperations?: boolean,
   collapsible?: boolean,
   customIconClass?: string,
@@ -90,7 +91,7 @@ const CreatorPanel = (props: Props) => {
                           id={`${props.id}-modal-delete-button`}
                           className="btn-danger"
                           text={t('Delete')}
-                          disabled={props.disableOperations}
+                          disabled={props.disableDelete || props.disableOperations}
                           handler={() => props.onDelete && props.onDelete({
                             item,
                             closeDialog: () => closeDialog(modalNameId)
