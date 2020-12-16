@@ -150,14 +150,6 @@ When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |clien
   select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
 end
 
-When(/^I select the base channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
-  unless has_no_xpath?("//div[@id='activation-key-channels']//div[contains(@class, 'hide')]", wait: 10)
-    puts "Child channels for #{BASE_CHANNEL_BY_CLIENT[client]} not expanded, forcing it."
-    find(:xpath, "//*[contains(@class, 'pointer') and contains(text(), '#{BASE_CHANNEL_BY_CLIENT[client]}')]").click
-  end
-end
-
 When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   if client.include? 'ssh_minion'
     select('Push via SSH', from: from)

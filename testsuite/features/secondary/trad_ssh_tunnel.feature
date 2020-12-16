@@ -4,7 +4,7 @@
 @scope_traditional_client
 Feature: Register a traditional system to be managed via SSH push
 
-  Scenario: Delete the traditional client for SSH reverse bootstrap
+  Scenario: Delete the traditional client for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text

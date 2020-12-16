@@ -20,7 +20,6 @@ Feature: Bootstrap a SLES 12 SP4 Salt SSH Minion
     Then I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle12sp4_ssh_minion"
 
-
 # WORKAROUD for bsc#1124634
 # Package 'sle-manager-tools-release' is automatically installed during bootstrap and
 # stays installed after removal of channel containing it. So it is not possible to update it.

@@ -431,19 +431,19 @@ When(/^I import the GPG keys for "([^"]*)"$/) do |host|
 end
 
 When(/^the server starts mocking an IPMI host$/) do
-  ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
+  ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
-    dest = "/etc/ipmi/" + file
+    dest = '/etc/ipmi/' + file
     return_code = file_inject($server, source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
-  $server.run("chmod +x /etc/ipmi/fake_ipmi_host.sh")
-  $server.run("ipmi_sim -n < /dev/null > /dev/null &")
+  $server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh')
+  $server.run('ipmi_sim -n < /dev/null > /dev/null &')
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  $server.run("kill $(pidof ipmi_sim)")
-  $server.run("kill $(pidof -x fake_ipmi_host.sh)")
+  $server.run('kill $(pidof ipmi_sim)')
+  $server.run('kill $(pidof -x fake_ipmi_host.sh)')
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -475,16 +475,18 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, system|
-  output = sshcmd("cobbler system report --name #{system}:1", ignore_err: true)[:stdout]
-  raise "Not found: #{output}" unless output.include?(arg1)
+Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
+  node = get_target(host)
+  output = sshcmd("cobbler system report --name #{node.full_hostname}:1", ignore_err: true)[:stdout]
+  raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  step %(the cobbler report contains "#{arg1}" for system "#{$client.full_hostname}")
+Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
+  output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
+  raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-Then(/^I clean the search index on the server$/) do
+When(/^I clean the search index on the server$/) do
   output = sshcmd('/usr/sbin/rcrhn-search cleanindex', ignore_err: true)
   raise 'The output includes an error log' if output[:stdout].include?('ERROR')
 end
@@ -729,14 +731,14 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
-  node.run(cmd, true)
+  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 106])
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
   raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
-  node.run(cmd, true)
+  node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
 When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
@@ -768,38 +770,47 @@ end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "yum -y install #{package}"
-        elsif host.include? 'ubuntu'
-    "apt-get --assume-yes install #{package}"
-        else
-    "zypper --non-interactive install -y #{package}"
-        end
-  node.run(cmd, error_control.empty?)
+  if host.include? 'ceos'
+    cmd = "yum -y install #{package}"
+    successcodes = [0]
+  elsif host.include? 'ubuntu'
+    cmd = "apt-get --assume-yes install #{package}"
+    successcodes = [0]
+  else
+    cmd = "zypper --non-interactive install -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
+  end
+  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "yum -y downgrade #{package}"
-        elsif host.include? 'ubuntu'
-    "apt-get --assume-yes install #{package} --allow-downgrades"
-        else
-    "zypper --non-interactive install --oldpackage -y #{package}"
-        end
-  node.run(cmd, error_control.empty?)
+  if host.include? 'ceos'
+    cmd = "yum -y downgrade #{package}"
+    successcodes = [0]
+  elsif host.include? 'ubuntu'
+    cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
+    successcodes = [0]
+  else
+    cmd = "zypper --non-interactive install --oldpackage -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
+  end
+  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "yum -y remove #{package}"
-        elsif host.include? 'ubuntu'
-    "dpkg --remove #{package}"
-        else
-    "zypper --non-interactive remove -y #{package}"
-        end
-  node.run(cmd, error_control.empty?)
+  if host.include? 'ceos'
+    cmd = "yum -y remove #{package}"
+    successcodes = [0]
+  elsif host.include? 'ubuntu'
+    cmd = "dpkg --remove #{package}"
+    successcodes = [0]
+  else
+    cmd = "zypper --non-interactive remove -y #{package}"
+    successcodes = [0, 100, 101, 102, 103, 104, 106]
+  end
+  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
@@ -820,7 +831,9 @@ When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/
   node = get_target(host)
   os_version, _os_family = get_os_version(node)
   cmd = 'false'
-  if (os_version.include? '12') || (os_version.include? '15')
+  if (os_version.include? '15') && (host.include? 'proxy')
+    cmd = "mgr-create-bootstrap-repo -c SUMA-41-PROXY-#{arch}"
+  elsif (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
   elsif os_version.include? '11'
     sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
@@ -979,8 +992,8 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   disk_path = "/tmp/#{vm_name}_disk.qcow2"
 
   # Create the throwable overlay image
-  raise 'not found: qemu-img or /var/testsuite-data/disk-image-template.qcow2' unless file_exists?(node, '/usr/bin/qemu-img') and file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
-  node.run("qemu-img create -f qcow2 -b /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
+  raise '/var/testsuite-data/disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
+  node.run("cp /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')

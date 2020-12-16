@@ -25,12 +25,13 @@ def twopence_init(target)
 end
 
 # Define common twopence objects
+$localhost = twopence_init("ssh:#{ENV['HOSTNAME']}") unless $debug_mode
 $proxy = twopence_init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = twopence_init("ssh:#{ENV['SERVER']}")
 $kvm_server = twopence_init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
 $xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
-$nodes = [$server, $proxy, $kvm_server, $xen_server]
+$nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
 if $qam_test
   # Define twopence objects for QAM environment
@@ -52,6 +53,8 @@ if $qam_test
   $ceos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $ceos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $ceos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
+  $ceos8_minion = twopence_init("ssh:#{ENV['CENTOS8_MINION']}") if ENV['CENTOS8_MINION']
+  $ceos8_ssh_minion = twopence_init("ssh:#{ENV['CENTOS8_SSHMINION']}") if ENV['CENTOS8_SSHMINION']
   $ubuntu1604_minion = twopence_init("ssh:#{ENV['UBUNTU1604_MINION']}") if ENV['UBUNTU1604_MINION']
   $ubuntu1604_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
@@ -70,6 +73,7 @@ if $qam_test
              $sle15sp1_minion, $sle15sp1_ssh_minion, $sle15sp1_client,
              $ceos6_minion, $ceos6_ssh_minion, $ceos6_client,
              $ceos7_minion, $ceos7_ssh_minion, $ceos7_client,
+             $ceos8_minion, $ceos8_ssh_minion,
              $ubuntu1604_ssh_minion, $ubuntu1604_minion,
              $ubuntu1804_ssh_minion, $ubuntu1804_minion,
              $ubuntu2004_ssh_minion, $ubuntu2004_minion,
@@ -197,7 +201,8 @@ if ENV['SCC_CREDENTIALS']
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
 end
-$node_by_host = { 'server'                => $server,
+$node_by_host = { 'localhost'             => $localhost,
+                  'server'                => $server,
                   'proxy'                 => $proxy,
                   'ceos_minion'           => $ceos_minion,
                   'ceos_ssh_minion'       => $ceos_minion,
@@ -219,6 +224,8 @@ $node_by_host = { 'server'                => $server,
                   'ceos7_minion'          => $ceos7_minion,
                   'ceos7_ssh_minion'      => $ceos7_ssh_minion,
                   'ceos7_client'          => $ceos7_client,
+                  'ceos8_minion'          => $ceos8_minion,
+                  'ceos8_ssh_minion'      => $ceos8_ssh_minion,
                   'ubuntu1604_minion'     => $ubuntu1604_minion,
                   'ubuntu1604_ssh_minion' => $ubuntu1604_ssh_minion,
                   'ubuntu1804_minion'     => $ubuntu1804_minion,

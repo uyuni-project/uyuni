@@ -3,7 +3,6 @@
 
 Feature: Register a traditional client
   In order to register a traditional client to the SUSE Manager server
-  As the root user
   I want to create, parametrize and run boostrap script from proxy
 
   Scenario: Register a traditional client

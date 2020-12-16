@@ -12,7 +12,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I install package "virgo-dummy-1.0" on this "ceos_minion"
 
 @centos_minion
-  Scenario: Pre-requisite: refresh package list and check newly installed packages on Centos minion
+  Scenario: Pre-requisite: refresh package list and check newly installed packages on CentOS minion
     When I refresh packages list via spacecmd on "ceos_minion"
     And I wait until refresh package list on "ceos_minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "ceos_minion"
@@ -32,7 +32,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @centos_minion
-  Scenario: Schedule errata refresh to reflect channel assignment on Centos minion
+  Scenario: Schedule errata refresh to reflect channel assignment on CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
@@ -46,7 +46,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
 @centos_minion
-  Scenario: Install a patch on the Centos minion
+  Scenario: Install a patch on the CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
@@ -57,7 +57,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I wait for "virgo-dummy-2.0-1.1" to be installed on "ceos_minion"
 
 @centos_minion
-  Scenario: Install a package on the Centos minion
+  Scenario: Install a package on the CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Install"
@@ -68,7 +68,7 @@ Feature: Install a patch on the CentOS minion via Salt through the UI
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
 @centos_minion
-  Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Centos minion
+  Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"

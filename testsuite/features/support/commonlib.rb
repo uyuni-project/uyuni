@@ -70,7 +70,6 @@ end
 # This is a safety net only, the best thing to do is to not start the reposync at all.
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/BlockLength
-# rubocop:disable Metrics/CyclomaticComplexity
 def compute_list_to_leave_running
   do_not_kill = []
   [$minion, $build_host, $sshminion].each do |node|
@@ -115,11 +114,23 @@ def compute_list_to_leave_running
            sle-module-containers15-sp2-updates-x86_64
            sle-module-basesystem15-sp2-updates-x86_64
            sle-module-server-applications15-sp2-updates-x86_64]
+      when '15-SP3'
+        %w[sle-product-sles15-sp3-pool-x86_64
+           sle-manager-tools15-pool-x86_64-sp3
+           sle-module-containers15-sp3-pool-x86_64
+           sle-module-basesystem15-sp3-pool-x86_64
+           sle-module-server-applications15-sp3-pool-x86_64
+           sle-product-sles15-sp3-updates-x86_64
+           sle-manager-tools15-updates-x86_64-sp3
+           sle-module-containers15-sp3-updates-x86_64
+           sle-module-basesystem15-sp3-updates-x86_64
+           sle-module-server-applications15-sp3-updates-x86_64]
+      else
+        raise "Can't build list of reposyncs to leave running"
       end
   end
   do_not_kill.uniq
 end
-# rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/BlockLength
 # rubocop:enable Metrics/MethodLength
 

@@ -203,7 +203,8 @@ end
 Given(/^I am on the Systems page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    When I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > Overview"
+    And I wait until I see "System Overview" text
   )
 end
 
@@ -459,7 +460,7 @@ When(/^I select "([^\"]*)" as a product$/) do |product|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
-And(/^I open the sub-list of the product "(.*?)"$/) do |product|
+When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
   #   raise unless find('i.fa-angle-down').click

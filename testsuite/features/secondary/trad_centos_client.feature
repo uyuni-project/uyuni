@@ -118,6 +118,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ceos_minion" as "hostname"
     And I enter "22" as "port"
+    And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"

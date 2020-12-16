@@ -9,7 +9,7 @@
 Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
 @centos_minion
-  Scenario: Delete the CentOS minion before SSH-managed minion tests
+  Scenario: Delete the CentOS minion before SSH minion tests
     When I am on the Systems overview page of this "ceos_minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -49,7 +49,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Then I should see "ceos_ssh_minion" hostname
 
 @centos_minion
-  Scenario: Re-subscribe the SSH-managed CentOS minion to a base channel
+  Scenario: Subscribe the SSH-managed CentOS minion to a base channel
     Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -97,7 +97,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Then "ceos_ssh_minion" should not be registered
 
 @centos_minion
-  Scenario: Cleanup: bootstrap a CentOS minion after SSH-managed minion tests
+  Scenario: Cleanup: bootstrap a CentOS minion after SSH minion tests
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text

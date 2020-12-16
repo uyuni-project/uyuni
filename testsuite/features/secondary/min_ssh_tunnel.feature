@@ -4,7 +4,7 @@
 @scope_salt_ssh
 Feature: Register a salt system to be managed via SSH tunnel
 
-  Scenario: Delete the salt minion for SSH reverse bootstrap
+  Scenario: Delete the salt minion for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -57,7 +57,7 @@ Feature: Register a salt system to be managed via SSH tunnel
     When I force picking pending events on "sle_ssh_tunnel_minion" if necessary
     Then I wait until event "Package Removal scheduled by admin" is completed
 
-  Scenario: Run a remote command on this SSH reverse minion
+  Scenario: Run a remote command on this SSH tunnel minion
     Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
