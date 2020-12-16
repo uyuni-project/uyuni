@@ -551,6 +551,12 @@ Then(/^the SLE15 products should be added$/) do
   raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-SP2-Pool for x86_64 Server Applications Module 15 SP2 x86_64 [sle-module-server-applications15-sp2-pool-x86_64]'
 end
 
+Then(/^the SLE15-SP1 products should be added$/) do
+  output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
+  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-SP1-Pool for x86_64 SUSE Linux Enterprise Server 15 SP1 x86_64 [sle-product-sles15-sp1-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-SP1-Updates for x86_64 Basesystem Module 15 SP1 x86_64 [sle-module-basesystem15-sp1-updates-x86_64]'
+end
+
 Then(/^the SLE15SP2 base products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   raise unless output[:stdout].include? '[I] SLE-Product-SLES15-SP2-Pool for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle-product-sles15-sp2-pool-x86_64]'

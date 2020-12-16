@@ -73,4 +73,8 @@
 - features/secondary/trad_sp_migration.feature
 - features/secondary/trad_check_registration.feature
 
+# NOT IDEMPOTENT
+
+- features/secondary/minssh_sp_migration.feature
+
 ## Parallelizable Secondary features END ##

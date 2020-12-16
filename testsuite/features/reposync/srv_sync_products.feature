@@ -60,3 +60,30 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
     Then the SLE15 products should be added
+
+@ssh_minion
+@scc_credentials
+  Scenario: Add a 15 SP1 product
+    Given I am on the Products page
+    When I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
+    And I select "x86_64" in the dropdown list of the architecture filter
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP1 x86_64"
+    Then I should see a "Basesystem Module 15 SP1 x86_64" text
+    When I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
+    And I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
+    Then the SLE15-SP1 products should be added
+
+@ssh_minion
+@scc_credentials
+  Scenario: Create an activation key for service pack migration a SSH minion
+    Given I am on the Systems page
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Create Key"
+    And I enter "SUSE SSH SPACK MIGRATION Test Key x86_64" as "description"
+    And I enter "SUSE-SSH-SP-MIGRATION-x86_64" as "key"
+    And I enter "20" as "usageLimit"
+    And I select "SLE-Product-SLES15-SP1-Pool" from "selectedBaseChannel"
+    And I select "Push via SSH tunnel" from "contact-method"
+    And I click on "Create Activation Key"
+    Then I should see a "SUSE SSH SPACK MIGRATION Test Key x86_64" text
