@@ -18515,7 +18515,7 @@ You can, however, download this file.
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.download" xml:space="preserve">
         <source>
-&lt;a href="{0}"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
+&lt;a href="{0}" data-senna-off="true"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
@@ -18523,7 +18523,7 @@ You can, however, download this file.
 _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           </context>
         </context-group>
-        <target state="translated">
+        <target state="needs-adaptation">
 &lt;a href="{0}"&gt;{1} のダウンロード&lt;/a&gt; (リビジョン {2}, {3})
 </target>
       </trans-unit>
@@ -25123,7 +25123,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-        <target state="needs-adaptation">システムプロファイル固有のアクティベーションキーを使用することで、このシステムを 'rhnreg_ks' コマンドラインユーティリティで再登録できるようになります。  このシステムは同じ ID とグループ、そしてチャンネルで再登録を行ないます (ただし、システムのベースチャンネルが変更された場合を除きます) 。</target>
+        <target state="translated">システムプロファイル固有のアクティベーションキーを使用することで、このシステムを同じ ID と履歴、グループとチャンネルで再登録を行なうことができます (ただし、システムのベースチャンネルが変更された場合を除きます) 。</target>
       </trans-unit>
       <trans-unit id="sdc.details.activation.key" xml:space="preserve">
         <source>Key:</source>

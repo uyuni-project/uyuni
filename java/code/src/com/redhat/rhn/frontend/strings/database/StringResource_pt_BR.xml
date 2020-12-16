@@ -292,8 +292,8 @@
         <target>(GMT+0930) Austrália (Central/Darwin)</target>
       </trans-unit>
       <trans-unit id="Australia/Adelaide" xml:space="preserve">
-        <source>Australia Adelaide</source>
-        <target>(GMT+0930) Austrália (Adelaide)</target>
+        <source>(GMT+0930) Australia Adelaide</source>
+        <target state="needs-adaptation">(GMT+0930) Austrália (Adelaide)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>

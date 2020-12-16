@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-09-02 07:44+0000\n"
+"PO-Revision-Date: 2020-12-15 03:26+0000\n"
 "Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "es/>\n"
@@ -72,7 +72,6 @@ msgid "R&epeat Password"
 msgstr "R&epetir contraseña"
 
 #: ../yast/susemanager_cert.rb:132
-#, fuzzy
 msgid ""
 "<p>Here, enter data needed for the creation of an SSL certificate. The "
 "certificate is used for a number of purposes like connections to a SUSE "
@@ -152,7 +151,6 @@ msgid "&IP Address of the #{@product_name} Server"
 msgstr "Dirección &IP del #{@product_name} Server"
 
 #: ../yast/susemanager_manager.rb:94
-#, fuzzy
 msgid "#{@product_name} &Administrator e-mail address"
 msgstr "Correo electrónico del &administrador de #{@product_name}"
 
@@ -161,7 +159,6 @@ msgid "Advertise #{@product_name} via SLP"
 msgstr "Anunciar #{@product_name} con SLP"
 
 #: ../yast/susemanager_manager.rb:112
-#, fuzzy
 msgid ""
 "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
@@ -170,7 +167,6 @@ msgstr ""
 "usa para notificaciones de #{@product_name}.</p>"
 
 #: ../yast/susemanager_manager.rb:152
-#, fuzzy
 msgid "The Administrator e-mail address is not valid."
 msgstr "La dirección de correo electrónico del administrador es inválida."
 
@@ -271,12 +267,10 @@ msgstr ""
 "instalarse. Si continúa, el producto no funcionará correctamente."
 
 #: ../yast/susemanager_reqs.rb:158
-#, fuzzy
 msgid "Hostname command failed"
 msgstr "El comando hostname ha fallado"
 
 #: ../yast/susemanager_reqs.rb:160
-#, fuzzy
 msgid ""
 "The execution of 'hostname -f' failed. The product will not install "
 "correctly."
@@ -286,12 +280,10 @@ msgstr ""
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
-#, fuzzy
 msgid "Illegal FQHN"
 msgstr "FQHN ilegal"
 
 #: ../yast/susemanager_reqs.rb:180
-#, fuzzy
 msgid ""
 "The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
@@ -300,21 +292,19 @@ msgstr ""
 "correctamente."
 
 #: ../yast/susemanager_reqs.rb:200
-#, fuzzy
 msgid ""
 "The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
 msgstr ""
-"El FQHN no puede contener el carćter '_' (subrayado). El producto no "
+"El FQHN no puede contener el carácter '_' (subrayado). El producto no "
 "funcionará correctamente."
 
 #: ../yast/susemanager_reqs.rb:240
-#, fuzzy
 msgid ""
 "The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
 msgstr ""
-"La salida de 'hostname -f' no coincide con el nombre de máquin real. El "
+"La salida de 'hostname -f' no coincide con el nombre de máquina real. El "
 "producto no funcionará correctamente."
 
 #: ../yast/susemanager_reqs.rb:254

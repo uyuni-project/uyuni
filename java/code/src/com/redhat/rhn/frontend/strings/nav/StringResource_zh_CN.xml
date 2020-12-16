@@ -35,7 +35,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target state="translated">取消激活</target>
+        <target state="translated">停用</target>
       </trans-unit>
       <trans-unit id="User" xml:space="preserve">
         <source>User</source>
@@ -49,7 +49,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target state="translated">恢复补丁</target>
+        <target state="translated">撤销补丁</target>
       </trans-unit>
       <trans-unit id="action.nav.install" xml:space="preserve">
         <source>Install Patches</source>

@@ -10346,8 +10346,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <target state="new" />
   </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
-        <source>Label must not exceed 128 characters</source>
-      <target state="new" />
+        <source>Name must not exceed 128 characters</source>
+      <target state="needs-adaptation" />
   </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
@@ -10363,6 +10363,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+        <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
       <target state="new" />
   </trans-unit>
       </body>

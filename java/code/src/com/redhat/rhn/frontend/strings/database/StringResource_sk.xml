@@ -292,8 +292,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Adelaide" xml:space="preserve">
-        <source>Australia Adelaide</source>
-        <target>Austrália Adelaide</target>
+        <source>(GMT+0930) Australia Adelaide</source>
+        <target state="needs-adaptation">Austrália Adelaide</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -1037,7 +1037,7 @@
       </trans-unit>
       <trans-unit id="Critical Traffic" xml:space="preserve">
         <source>Critical Traffic</source>
-        <target />
+        <target>Kritická prevádzka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1058,105 +1058,105 @@
       </trans-unit>
       <trans-unit id="Critical Users" xml:space="preserve">
         <source>Critical Users</source>
-        <target />
+        <target>Kritickí používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Value" xml:space="preserve">
         <source>Critical Value</source>
-        <target />
+        <target>Kritická hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Virtual Mem Pct Free" xml:space="preserve">
         <source>Critical Virtual Mem Pct Free</source>
-        <target />
+        <target>Kritické percento voľnej virtuálnej pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Virtual Memory Used" xml:space="preserve">
         <source>Critical Virtual Memory Used</source>
-        <target />
+        <target>Kritická použitá virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Waiters" xml:space="preserve">
         <source>Critical Waiters</source>
-        <target />
+        <target>Kritické Waiters</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Write Rate" xml:space="preserve">
         <source>Critical Write Rate</source>
-        <target />
+        <target>Kritická rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Write rate" xml:space="preserve">
         <source>Critical Write rate</source>
-        <target />
+        <target>Kritická rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Database" xml:space="preserve">
         <source>Database</source>
-        <target />
+        <target>Databáza</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Device" xml:space="preserve">
         <source>Device</source>
-        <target />
+        <target>Zariadenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Disk number or disk name (from iostat)" xml:space="preserve">
         <source>Disk number or disk name (from iostat)</source>
-        <target />
+        <target>Číslo disku alebo názov disku (z iostat)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect" xml:space="preserve">
         <source>Expect</source>
-        <target />
+        <target>Očakávať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect Content" xml:space="preserve">
         <source>Expect Content</source>
-        <target />
+        <target>Očakávať obsah</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expect Header" xml:space="preserve">
         <source>Expect Header</source>
-        <target />
+        <target>Očakávať hlavičku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Expected DB Name (V$DATABASE.NAME)" xml:space="preserve">
         <source>Expected DB Name (V$DATABASE.NAME)</source>
-        <target />
+        <target>Očakávaný názov DB (V$DATABASE.NAME)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FTP Port" xml:space="preserve">
         <source>FTP Port</source>
-        <target />
+        <target>Port FTP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1170,77 +1170,77 @@
       </trans-unit>
       <trans-unit id="HTTP Port" xml:space="preserve">
         <source>HTTP Port</source>
-        <target />
+        <target>Port HTTP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="HTTPS Port" xml:space="preserve">
         <source>HTTPS Port</source>
-        <target />
+        <target>Port HTTPS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Host or Address to Look Up" xml:space="preserve">
         <source>Host or Address to Look Up</source>
-        <target />
+        <target>Hostiteľ alebo adresa na vyhľadanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IMAP Port" xml:space="preserve">
         <source>IMAP Port</source>
-        <target />
+        <target>Port IMAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IP Address (optional; defaults to host IP)" xml:space="preserve">
         <source>IP Address (optional; defaults to host IP)</source>
-        <target />
+        <target>IP adresa (voliteľné; predvolené pre hostiteľské IP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Include reclaimable memory" xml:space="preserve">
         <source>Include reclaimable memory</source>
-        <target />
+        <target>Zahrnúť pamäť, ktorá sa dá získať späť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Name" xml:space="preserve">
         <source>Index Name</source>
-        <target />
+        <target>Názov indexu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Owner" xml:space="preserve">
         <source>Index Owner</source>
-        <target />
+        <target>Vlastník indexu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Input Traffic Critical" xml:space="preserve">
         <source>Input Traffic Critical</source>
-        <target />
+        <target>Kritická vstupná prevádzka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Interface" xml:space="preserve">
         <source>Interface</source>
-        <target />
+        <target>Rozhranie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="JDBC Pool Name" xml:space="preserve">
         <source>JDBC Pool Name</source>
-        <target />
+        <target>Názov fondu JDBC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1254,35 +1254,35 @@
       </trans-unit>
       <trans-unit id="Local port number filter" xml:space="preserve">
         <source>Local port number filter</source>
-        <target />
+        <target>Filter miestnych čísel portov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log file" xml:space="preserve">
         <source>Log file</source>
-        <target />
+        <target>Súbor záznamu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MySQL Port" xml:space="preserve">
         <source>MySQL Port</source>
-        <target />
+        <target>Port MySQL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Critical if Above" xml:space="preserve">
         <source>Number of Allocated Extents Critical if Above</source>
-        <target />
+        <target>Počet pridelených rozsahov je kritický, ak je vyšší ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Warn if Above" xml:space="preserve">
         <source>Number of Allocated Extents Warn if Above</source>
-        <target />
+        <target>Počet pridelených rozsahov je varovný, ak je vyšší ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1296,105 +1296,105 @@
       </trans-unit>
       <trans-unit id="ORACLE_HOME" xml:space="preserve">
         <source>ORACLE_HOME</source>
-        <target />
+        <target state="translated">ORACLE_HOME</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Hostname or IP" xml:space="preserve">
         <source>Oracle Hostname or IP</source>
-        <target />
+        <target>Názov hostiteľa Oracle alebo IP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Password" xml:space="preserve">
         <source>Oracle Password</source>
-        <target />
+        <target>Heslo Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Port" xml:space="preserve">
         <source>Oracle Port</source>
-        <target />
+        <target>Port Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle SID" xml:space="preserve">
         <source>Oracle SID</source>
-        <target />
+        <target>SID Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle Username" xml:space="preserve">
         <source>Oracle Username</source>
-        <target />
+        <target>Používateľské meno Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Output Traffic Critical" xml:space="preserve">
         <source>Output Traffic Critical</source>
-        <target />
+        <target>Kritická výstupná prevádzka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PID file (overrides command name)" xml:space="preserve">
         <source>PID file (overrides command name)</source>
-        <target />
+        <target>Súbor file (prepíše názov príkazu)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Packets to send" xml:space="preserve">
         <source>Packets to send</source>
-        <target />
+        <target>Pakety na odoslanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Password" xml:space="preserve">
         <source>Password</source>
-        <target />
+        <target>Heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pathname" xml:space="preserve">
         <source>Pathname</source>
-        <target />
+        <target>Názov cesty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Critical if Above" xml:space="preserve">
         <source>Percent of Available Extents Critical if Above</source>
-        <target />
+        <target>Percento dostupných rozsahov je kritické, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Warn if Above" xml:space="preserve">
         <source>Percent of Available Extents Warn if Above</source>
-        <target />
+        <target>Percento dostupných rozsahov je varovné, ak je vyššie ako</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Port" xml:space="preserve">
         <source>Port</source>
-        <target />
+        <target>Port</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Protocol (TCP/UDP)" xml:space="preserve">
         <source>Protocol (TCP/UDP)</source>
-        <target />
+        <target>Protokol (TCP/UDP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1415,7 +1415,7 @@
       </trans-unit>
       <trans-unit id="RHNMD User" xml:space="preserve">
         <source>RHNMD User</source>
-        <target />
+        <target>Používateľ RHNMD</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1443,7 +1443,7 @@
       </trans-unit>
       <trans-unit id="Remote port number filter" xml:space="preserve">
         <source>Remote port number filter</source>
-        <target />
+        <target>Filter vzdialených čísel portov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1576,14 +1576,14 @@
       </trans-unit>
       <trans-unit id="UserAgent" xml:space="preserve">
         <source>UserAgent</source>
-        <target />
+        <target>Agent používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Username" xml:space="preserve">
         <source>Username</source>
-        <target />
+        <target>Používateľské meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1632,7 +1632,7 @@
       </trans-unit>
       <trans-unit id="Warn Users" xml:space="preserve">
         <source>Warn Users</source>
-        <target />
+        <target>Varovní používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2101,7 +2101,7 @@
       </trans-unit>
       <trans-unit id="Warning Traffic" xml:space="preserve">
         <source>Warning Traffic</source>
-        <target />
+        <target>Varovná prevádzka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2122,42 +2122,42 @@
       </trans-unit>
       <trans-unit id="Warning Users" xml:space="preserve">
         <source>Warning Users</source>
-        <target />
+        <target>Varovní používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Value" xml:space="preserve">
         <source>Warning Value</source>
-        <target />
+        <target>Varovná hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Mem Pct Free" xml:space="preserve">
         <source>Warning Virtual Mem Pct Free</source>
-        <target />
+        <target>Varovné percento voľnej virtuálnej pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Memory Used" xml:space="preserve">
         <source>Warning Virtual Memory Used</source>
-        <target />
+        <target>Varovná použitá virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Waiters" xml:space="preserve">
         <source>Warning Waiters</source>
-        <target />
+        <target>Varovné Waiters</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Write Rate" xml:space="preserve">
         <source>Warning Write Rate</source>
-        <target />
+        <target>Varovná rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2718,7 +2718,7 @@
       </trans-unit>
       <trans-unit id="metrics.Traffic" xml:space="preserve">
         <source>Traffic</source>
-        <target />
+        <target>Prevádzka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2732,49 +2732,49 @@
       </trans-unit>
       <trans-unit id="metrics.Users" xml:space="preserve">
         <source>Users</source>
-        <target />
+        <target>Používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Value" xml:space="preserve">
         <source>Value</source>
-        <target />
+        <target>Hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual mem pct free" xml:space="preserve">
         <source>Virtual mem pct free</source>
-        <target />
+        <target>Percento voľnej virtuálnej pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual memory used" xml:space="preserve">
         <source>Virtual memory used</source>
-        <target />
+        <target>Použitá virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Waiters" xml:space="preserve">
         <source>Waiters</source>
-        <target />
+        <target>Waiters</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Write rate" xml:space="preserve">
         <source>Write rate</source>
-        <target />
+        <target>Rýchlosť zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.value" xml:space="preserve">
         <source>value</source>
-        <target />
+        <target>hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3026,7 +3026,7 @@
       </trans-unit>
       <trans-unit id="Database Accessibility" xml:space="preserve">
           <source>Database Accessibility</source>
-        <target />
+        <target>Prístupnosť databázy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3117,7 +3117,7 @@
       </trans-unit>
       <trans-unit id="Index Extents" xml:space="preserve">
           <source>Index Extents</source>
-        <target />
+        <target>Rozsahy indexov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3131,14 +3131,14 @@
       </trans-unit>
       <trans-unit id="Interface Traffic" xml:space="preserve">
           <source>Interface Traffic</source>
-        <target />
+        <target>Prevádzka rozhrania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="JDBC Connection Pool" xml:space="preserve">
           <source>JDBC Connection Pool</source>
-        <target />
+        <target>Fond pripojení JDBC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3404,7 +3404,7 @@
       </trans-unit>
       <trans-unit id="Table Extents" xml:space="preserve">
           <source>Table Extents</source>
-        <target />
+        <target>Rozsahy tabuliek</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3446,42 +3446,42 @@
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
           <source>Users</source>
-        <target />
+        <target>Používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Virtual Memory" xml:space="preserve">
           <source>Virtual Memory</source>
-        <target />
+        <target>Virtuálna pamäť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Web server (HTTP)" xml:space="preserve">
           <source>Web server (HTTP)</source>
-        <target />
+        <target>Web server (HTTP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Red Hat Enterprise Linux 4" xml:space="preserve">
           <source>Red Hat Enterprise Linux 4</source>
-        <target />
+        <target>Red Hat Enterprise Linux 4</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Red Hat Enterprise Linux 3" xml:space="preserve">
           <source>Red Hat Enterprise Linux 3</source>
-        <target />
+        <target>Red Hat Enterprise Linux 3</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Red Hat Enterprise Linux 2.1" xml:space="preserve">
           <source>Red Hat Enterprise Linux 2.1</source>
-        <target />
+        <target>Red Hat Enterprise Linux 2.1</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3495,14 +3495,14 @@
       </trans-unit>
       <trans-unit id="kickstart.state.deployed" xml:space="preserve">
           <source>Files required for autoinstallation action have been installed.</source>
-        <target />
+        <target>Boli nainštalované súbory potrebné na akciu automatickej inštalácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.injected" xml:space="preserve">
           <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-        <target />
+        <target>Konfigurácia systému bola upravená tak, aby sa automatická inštalácia spustila pri ďalšom štarte systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3610,21 +3610,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">(GMT+0200) Izrael</target>
       </trans-unit>
       <trans-unit id="Asia/Singapore" xml:space="preserve">
         <source>(GMT+0800) Singapore</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">(GMT+0800) Singapur</target>
       </trans-unit>
       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
         <source>(GMT+0800) Malaysia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new" />
+        <target state="translated">(GMT+0800) Malajzia</target>
       </trans-unit>
     </body>
   </file>
