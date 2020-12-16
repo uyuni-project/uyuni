@@ -7,10 +7,10 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 
 create type evr_t as (
@@ -30,11 +30,11 @@ returns int as $$
 begin
   if a.type = b.type then
       if a.type = 'rpm' then
-         return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
-       elsif a.type = 'deb' then
-        return 0;
-       else
-         raise notice 'unknown evr type';
+        return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+      elsif a.type = 'deb' then
+        return deb.debvercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+      else
+        raise notice 'unknown evr type';
       end if;
   else
      raise notice 'cant compare incompatible evr types';
