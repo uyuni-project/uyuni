@@ -17557,9 +17557,9 @@ You can, however, download this file.
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.download" xml:space="preserve">
         <source>
-&lt;a href="{0}"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
+&lt;a href="{0}" data-senna-off="true"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
 </source>
-        <target />
+        <target state="needs-adaptation" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">

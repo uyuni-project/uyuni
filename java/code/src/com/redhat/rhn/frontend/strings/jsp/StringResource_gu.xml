@@ -17460,7 +17460,7 @@ You can, however, download this file.
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.download" xml:space="preserve">
         <source>
-&lt;a href="{0}"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
+&lt;a href="{0}" data-senna-off="true"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
@@ -17468,6 +17468,7 @@ You can, however, download this file.
 _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- header.jspf -->
       <trans-unit id="filedetails.header.jspf.download" xml:space="preserve">
