@@ -3565,7 +3565,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.complete" xml:space="preserve">
           <source>Autoinstallation complete.</source>
-        <target state="translated">自动安装已完成。</target>
+        <target state="translated">自动安装完成。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3610,21 +3610,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">（GMT+0200）以色列</target>
       </trans-unit>
       <trans-unit id="Asia/Singapore" xml:space="preserve">
         <source>(GMT+0800) Singapore</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">（GMT+0800）新加坡</target>
       </trans-unit>
       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
         <source>(GMT+0800) Malaysia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">（GMT+0800）马来西亚</target>
       </trans-unit>
     </body>
   </file>
