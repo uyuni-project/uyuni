@@ -97,7 +97,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Then "ceos_ssh_minion" should not be registered
 
 @centos_minion
-  Scenario: Cleanup: bootstrap a CentOS minion after normal minion tests
+  Scenario: Cleanup: bootstrap a CentOS minion after SSH minion tests
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text

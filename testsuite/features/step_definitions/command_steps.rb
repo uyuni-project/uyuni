@@ -441,29 +441,29 @@ end
 When(/^the server starts mocking an IPMI host$/) do
   ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
-    dest = "/etc/ipmi/" + file
+    dest = '/etc/ipmi/' + file
     return_code = file_inject($server, source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
-  $server.run("chmod +x /etc/ipmi/fake_ipmi_host.sh")
-  $server.run("ipmi_sim -n < /dev/null > /dev/null &")
+  $server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh')
+  $server.run('ipmi_sim -n < /dev/null > /dev/null &')
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  $server.run("kill $(pidof ipmi_sim)")
-  $server.run("kill $(pidof -x fake_ipmi_host.sh)")
+  $server.run('kill $(pidof ipmi_sim)')
+  $server.run('kill $(pidof -x fake_ipmi_host.sh)')
 end
 
 When(/^the server starts mocking a Redfish host$/) do
-  $server.run("mkdir -p /root/Redfish-Mockup-Server/")
+  $server.run('mkdir -p /root/Redfish-Mockup-Server/')
   ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
-    dest = "/root/Redfish-Mockup-Server/" + file
+    dest = '/root/Redfish-Mockup-Server/' + file
     return_code = file_inject($server, source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
-  $server.run("curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip")
-  $server.run("unzip DSP2043_2019.1.zip")
+  $server.run('curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
+  $server.run('unzip DSP2043_2019.1.zip')
   cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
         "-H #{$server.full_hostname} -p 8443 " \
         "-S -D /root/DSP2043_2019.1/public-catfish/ " \
@@ -473,7 +473,7 @@ When(/^the server starts mocking a Redfish host$/) do
 end
 
 When(/^the server stops mocking a Redfish host$/) do
-  $server.run("pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py")
+  $server.run('pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py')
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -505,18 +505,18 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |arg1, host|
+Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
   node = get_target(host)
   output = sshcmd("cobbler system report --name #{node.full_hostname}:1", ignore_err: true)[:stdout]
-  raise "Not found:\n#{output}" unless output.include?(arg1)
+  raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |arg1, name|
+Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
   output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
-  raise "Not found:\n#{output}" unless output.include?(arg1)
+  raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-Then(/^I clean the search index on the server$/) do
+When(/^I clean the search index on the server$/) do
   output = sshcmd('/usr/sbin/rcrhn-search cleanindex', ignore_err: true)
   raise 'The output includes an error log' if output[:stdout].include?('ERROR')
 end
@@ -544,7 +544,7 @@ end
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
-  repeat_until_timeout(timeout: 900, message: "'mgr-sync refresh' did not finish") do
+  repeat_until_timeout(timeout: 1800, message: "'mgr-sync refresh' did not finish") do
     result, code = $server.run(cmd, false)
     break if result.include? "SLES"
     sleep 5

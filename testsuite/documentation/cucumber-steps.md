@@ -35,8 +35,8 @@ Possible values are currently:
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
 | SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` or ```"sle_ssh_tunnel_client"```| ```"client"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` or ```"sle_ssh_tunnel_minion"```| ```"minion"``` |
+| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` or ```"sle_ssh_tunnel_client"``` | ```"client"``` |
+| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` or ```"sle_ssh_tunnel_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
 | CentOS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ```"ceos_ssh_minion"``` | ```"minion"``` |
@@ -375,9 +375,9 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I enter "SUSE Test Key x86_64" as "description"
+  When I enter "SUSE Test Key x86_64" as "description" text area
   When I enter "CVE-1999-12345" as "search_string" in the content area
   When I enter the hostname of "proxy" as "hostname"
-  When I enter "SUSE Test Key x86_64" as "description" text area
 ```
 
 Note that the text area variant handles the new lines characters while the others don't.
