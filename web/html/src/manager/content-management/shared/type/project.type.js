@@ -27,6 +27,7 @@ export type ProjectEnvironmentType = {
   description: string,
   status: string,
   version: number,
+  hasProfiles: boolean,
   builtTime: ?string
 }
 
