@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Be able to bootstrap a Salt minion via the GUI
+Feature: Bootstrap a Salt minion via the GUI
 
   Scenario: Create the bootstrap repository for a Salt client
      Given I am authorized

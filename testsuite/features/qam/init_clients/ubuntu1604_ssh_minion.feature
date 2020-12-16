@@ -5,7 +5,7 @@
 #  2) subscribe it to a base channel for testing
 
 @ubuntu1604_ssh_minion
-Feature: Bootstrap a SSH-managed Ubuntu 16.04 minion and do some basic operations on it
+Feature: Bootstrap a Ubuntu 16.04 Salt SSH minion
 
   Scenario: Clean up sumaform leftovers on a Ubuntu 16.04 Salt SSH minion
     When I perform a full salt minion cleanup on "ubuntu1604_ssh_minion"

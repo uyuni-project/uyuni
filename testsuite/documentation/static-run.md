@@ -52,21 +52,21 @@ export CLIENT="${PREFIX}cli-sles15.tf.local"
 export MINION="${PREFIX}min-sles15.tf.local"
 ...
 ```
-Before you are able to run your tests in local, you must assure that your ssh connection to any of the nodes can be done without adding user/pass.
-I recommend you to configure your `.ssh/config` to use a ssh private key. 
-In case you deployed the environment with sumaform, just use the ssh key `.ssh/id_rsa` stored in the controller.
+Before you are able to run your tests in local, you must assure that your SSH connection to any of the nodes can be done without adding user/pass.
+It is recommended to configure your `.ssh/config` to use a SSH private key.
+In case you deployed the environment with sumaform, just use the SSH key `.ssh/id_rsa` stored in the controller.
 Example:
 ```console
-# cat .ssh/config 
+# cat .ssh/config
 Host *.tf.local
     User root
     IdentityFile ~/.ssh/id_rsa_test_env
 ```
 ```console
-rake -T # List all different possibilities i.e. rake cucumber:sanity_check 
+rake -T # List all different possibilities i.e. rake cucumber:sanity_check
 ```
 
-- To debug your tests, you might want to see the browser in your Desktop from where the Cucumber actions will happen. 
+- To debug your tests, you might want to see the browser in your Desktop from where the Cucumber actions will happen.
   To enable it:
 ```console
 export DEBUG=1

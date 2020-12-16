@@ -33,12 +33,11 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
 DEFAULT_TIMEOUT = 250
 
-# QAM test-suite will provide a json including all client repositories with format :
-# {"client_type" : { "salt" : "salt_repo" , "traditional" : "traditional_repo" }}
-mu_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'mu_repositories.json'
-if File.exist?(mu_repos_path)
-  mu_repos_file = File.read(mu_repos_path)
-  $mu_repositories = JSON.parse(mu_repos_file)
+# QAM test suite will provide a json file including all client repositories
+custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+if File.exist?(custom_repos_path)
+  custom_repos_file = File.read(custom_repos_path)
+  $custom_repositories = JSON.parse(custom_repos_file)
   Capybara.default_max_wait_time = 30
   DEFAULT_TIMEOUT = 1800
   $qam_test = true

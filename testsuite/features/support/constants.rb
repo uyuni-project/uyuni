@@ -140,7 +140,7 @@ PACKAGE_BY_CLIENT = { 'ceos_minion' => 'autoconf',
                       'sle15sp2_minion' => 'bison',
                       'sle15sp2_client' => 'bison' }.freeze
 
-BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool',
+BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'sle_client' => 'SLES12-SP4-Pool',
                            'sle_minion' => 'SLES12-SP4-Pool',
                            'ssh_minion' => 'SLES12-SP4-Pool',
@@ -176,7 +176,7 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool',
                            'ubuntu2004_ssh_minion' => 'ubuntu-20.04-pool',
                            'ubuntu2004_minion' => 'ubuntu-20.04-pool' }.freeze
 
-LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-product-suse-manager-proxy-4.1-pool-x86_64',
+LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
                           'SLES11-SP4-Pool' => 'sles11-sp4-pool-x86_64',
                           'SLES12-SP4-Pool' => 'sles12-sp4-pool-x86_64',
                           'SLES15-Pool' => 'sle-product-sles15-pool-x86_64',

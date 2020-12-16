@@ -48,7 +48,7 @@ Feature: Setup SUSE Manager proxy
     Then I should see a "Proxy" link in the content area
 
 @proxy
-  Scenario: Install expect package on proxy for bootstrapping minion with GUI via script
+  Scenario: Install expect package on proxy for bootstrapping minion with GUI
     When I enable repositories before installing branch server
     And I install package "expect" on this "proxy"
     And I disable repositories after installing branch server

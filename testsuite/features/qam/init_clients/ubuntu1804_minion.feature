@@ -5,7 +5,7 @@
 #  2) subscribe it to a base channel for testing
 
 @ubuntu1804_minion
-Feature: Bootstrap a Ubuntu 18.04 minion and do some basic operations on it
+Feature: Bootstrap a Ubuntu 18.04 Salt minion
 
   Scenario: Clean up sumaform leftovers on a Ubuntu 18.04 Salt minion
     When I perform a full salt minion cleanup on "ubuntu1804_minion"
