@@ -77,7 +77,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target state="translated">无主机的虚拟机</target>
+        <target state="translated">无主机 Guest</target>
       </trans-unit>
       <trans-unit id="Virtualization" xml:space="preserve">
         <source>Virtualization</source>
