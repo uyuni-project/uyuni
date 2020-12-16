@@ -34,6 +34,7 @@
                              icon="${fileIcon}"
                              helpUrl=""
                              miscUrl="${downloadUrl}"
+                             miscSpaOff="true"
                              miscIcon="item-download"
                              miscText="filedetails.header.jspf.download">
                                         ${toolbarText}
@@ -46,6 +47,7 @@
                                         deletionType="configfile"
                                         deletionAcl="config_channel_editable(${channel.id})"
                                         miscUrl="${downloadUrl}"
+                                        miscSpaOff="true"
                                         miscIcon="item-download"
                                         miscText="filedetails.header.jspf.download"
                                         aclMixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">

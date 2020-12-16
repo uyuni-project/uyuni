@@ -239,6 +239,10 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <name>miscSpaOff</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
             <name>creationUrl</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
