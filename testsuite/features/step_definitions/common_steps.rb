@@ -203,8 +203,8 @@ end
 Given(/^I am on the Systems page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    When I follow the left menu "Systems > Overview"
-    When I wait until I see "System Overview" text
+    And I follow the left menu "Systems > Overview"
+    And I wait until I see "System Overview" text
   )
 end
 

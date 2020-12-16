@@ -33,7 +33,7 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
 DEFAULT_TIMEOUT = 250
 
-# QAM test-suite will provide a json including all client repositories
+# QAM test suite will provide a json file including all client repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)

@@ -19,14 +19,14 @@ Feature: Bootstrap a CentOS 7 traditional client
     Given I am authorized
     And I wait until onboarding is completed for "ceos7_client"
 
-  @proxy
+@proxy
   Scenario: Check connection from CentOS 7 traditional client to proxy
     Given I am on the Systems overview page of this "ceos7_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
-  @proxy
+@proxy
   Scenario: Check registration on proxy of CentOS 7 traditional client
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area

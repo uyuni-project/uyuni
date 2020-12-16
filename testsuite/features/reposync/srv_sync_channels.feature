@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to list available channels and enable them
@@ -23,6 +23,7 @@ Feature: Be able to list available channels and enable them
     And I shouldn't get "sles11-extras"
 
 @scc_credentials
+@susemanager
   Scenario: List products
     When I execute mgr-sync "list products"
     Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
@@ -36,13 +37,6 @@ Feature: Be able to list available channels and enable them
     And I should get "[ ] SUSE Manager Proxy 4.0 x86_64"
     And I should get "  [ ] (R) SUSE Linux Enterprise Client Tools RES 7 x86_64"
     And I should get "  [ ] (R) SUSE Manager Tools 15 x86_64"
-
-@scc_credentials
-@uyuni
-  Scenario: List all products for Uyuni
-    When I execute mgr-sync "list products --expand"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
-    And I should get "[ ] SUSE Manager Proxy 4.0 x86_64"
 
 @scc_credentials
   Scenario: List products with filter

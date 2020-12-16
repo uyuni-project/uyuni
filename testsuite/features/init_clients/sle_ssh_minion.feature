@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Be able to bootstrap a Salt host managed via salt-ssh
+Feature: Bootstrap a Salt host managed via salt-ssh
 
 @ssh_minion
   Scenario: Bootstrap a SLES system managed via salt-ssh
