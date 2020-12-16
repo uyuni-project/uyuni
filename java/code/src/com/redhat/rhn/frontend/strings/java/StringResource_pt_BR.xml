@@ -1978,11 +1978,11 @@
       </trans-unit>
       <trans-unit id="message.range.withtypedescription" xml:space="preserve">
         <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
-          {3} displayed</source>
+{3} displayed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target state="translated">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
+        <target state="needs-adaptation">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
           {3} exibido</target>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
@@ -2255,31 +2255,31 @@
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
-          &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
-          &lt;ul&gt;
-          &lt;li&gt;
-          Is the client tools channel for this kickstart profile's base
-          channel available to your organization? If it is not, you will need to request
-          entitlements for the client tools channel from your @@PRODUCT_NAME@@ administrator.
-          &lt;/li&gt;
-          &lt;li&gt;
-          Make sure that the client tools channel for this kickstart profile's base
-          channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-          @@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the client tools channel
-          and try again.
-          &lt;/li&gt;
-          &lt;li&gt;
-          Make sure the spacewalk-koan package corresponding to this kickstart are
-          available in the kickstart's base channel's tools channel. If not, you
-          will need to make them available for this kickstart profile to function properly.
-          &lt;/li&gt;
-          &lt;li&gt;
-          Are the packages listed above available in this kickstart's base channel? If not, you will need to make them
-          available for this kickstart profile to function properly.
-          &lt;/li&gt;
-          &lt;/ul&gt;
-          &lt;/div&gt;
-        </source>
+&lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Is the client tools channel for this kickstart profile's base
+channel available to your organization? If it is not, you will need to request
+entitlements for the client tools channel from your @@PRODUCT_NAME@@ administrator.
+&lt;/li&gt;
+&lt;li&gt;
+Make sure that the client tools channel for this kickstart profile's base
+channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the client tools channel
+and try again.
+&lt;/li&gt;
+&lt;li&gt;
+Make sure the spacewalk-koan package corresponding to this kickstart are
+available in the kickstart's base channel's tools channel. If not, you
+will need to make them available for this kickstart profile to function properly.
+&lt;/li&gt;
+&lt;li&gt;
+Are the packages listed above available in this kickstart's base channel? If not, you will need to make them
+available for this kickstart profile to function properly.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2301,22 +2301,22 @@
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
-          &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
-          &lt;ul&gt;
-          &lt;li&gt;
-          Is the 'appstream' child software channel for this kickstart profile's base
-          channel available to your organization? If it is not, you will need to request
-          entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator.
-          &lt;/li&gt;
-          &lt;li&gt;
-          Make sure that the 'appstream' child channel for this kickstart profile's base
-          channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-          @@PRODUCT_NAME@@ administrator and request a cdn-sync for the appstream channel
-          and try again.
-          &lt;/li&gt;
-          &lt;/ul&gt;
-          &lt;/div&gt;
-        </source>
+&lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Is the 'appstream' child software channel for this kickstart profile's base
+channel available to your organization? If it is not, you will need to request
+entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator.
+&lt;/li&gt;
+&lt;li&gt;
+Make sure that the 'appstream' child channel for this kickstart profile's base
+channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
+@@PRODUCT_NAME@@ administrator and request a cdn-sync for the appstream channel
+and try again.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</source>
         <target state="needs-adaptation">&lt;div style="text-align: left;"&gt; &lt;p&gt;Para resolver esse problema, verifique o seguinte:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; O canal de software filho 'appstream' para o canal base deste perfil do kickstart está disponível para sua organização? Caso contrário, você precisará solicitar direitos para o canal de software 'appstream' do seu administrador do @@PRODUCT_NAME@@ &lt;/li&gt; &lt;li&gt;Verifique se o canal filho 'appstream' desse canal base do perfil do kickstart está disponível para o seu @@PRODUCT_NAME@@. Caso contrário, entre em contato com o administrador do satélite e solicite um cdn-sync para o canal appstream e tente novamente. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
@@ -3501,8 +3501,8 @@
       </trans-unit>
       <trans-unit id="userdisable.error.orgadmin" xml:space="preserve">
         <source>You cannot deactivate another organization
-          administrator. Please remove the 'Organization Administrator' role from this
-          user before attempting to deactivate their account.</source>
+administrator. Please remove the 'Organization Administrator' role from this
+user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
@@ -6272,16 +6272,16 @@
       </trans-unit>
       <trans-unit id="taskomatic.msg.awolservers" xml:space="preserve">
         <source>Systems Not Checking In:
-          -------------------------
-          The following systems recently stopped checking in with @@PRODUCT_NAME@@:
+-------------------------
+The following systems recently stopped checking in with @@PRODUCT_NAME@@:
 
-          {0}
+{0}
 
 
-          Please note that inactive systems cannot receive any updates.
+Please note that inactive systems cannot receive any updates.
 
-          Follow this url to see the full list of inactive systems:
-          {1}</source>
+Follow this url to see the full list of inactive systems:
+{1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -9469,8 +9469,8 @@
       </trans-unit>
       <trans-unit id="package.remove.cant.rollback" xml:space="preserve">
         <source>One or more of the packages you have selected for removal below are not contained in
-          a software channel that this system is subscribed to.  If you choose to continue with the removal
-          you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
+            a software channel that this system is subscribed to.  If you choose to continue with the removal
+            you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
         <target state="needs-adaptation">Um ou mais pacotes que você selecionou para a remoção abaixo não estão contidos no
           canal do software, no qual este sistema está suscrito. Caso escolha continuar com a remoção
           você não poderá retornar este sistema à este snapshot ou à qualquer outro.</target>
@@ -9954,21 +9954,21 @@
       </trans-unit>
       <trans-unit id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
         <source>
-          The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to
-          synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler.
-          These errors must be corrected for the distributions to be available for
-          autoinstalling systems:
+The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to
+synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler.
+These errors must be corrected for the distributions to be available for
+autoinstalling systems:
 
-          {0}
+{0}
 
-          Please check:
+Please check:
 
-          /var/log/rhn/rhn_taskomatic_daemon.log and
-          /var/log/rhn/rhn_web_ui.log
-          /var/log/cobbler/cobbler.log
+/var/log/rhn/rhn_taskomatic_daemon.log and
+/var/log/rhn/rhn_web_ui.log
+/var/log/cobbler/cobbler.log
 
-          for more detailed errors.  If you don't resolve the errors the autoinstallable
-          tree will not be usable for autoinstalling.
+for more detailed errors.  If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.
         </source>
         <target state="needs-adaptation">A seguir, é apresentada uma lista de erros coletados enquanto o @@PRODUCT_NAME@@ tenta sincronizar distribuições instaláveis automaticamente de @@PRODUCT_NAME@@ para o Cobbler. Esses erros devem ser corrigidos para que as distribuições estejam disponíveis para sistemas de instalação automática: {0} Verifique: /var/log/rhn/rhn_taskomatic_daemon.log e /var/log/rhn/rhn_web_ui.log /var/log/ cobbler/cobbler.log para erros mais detalhados. Se você não resolver os erros, a árvore auto-instalável não será utilizável na instalação automática.</target>
       </trans-unit>
@@ -10062,20 +10062,20 @@
         <source>
 
 
-          Thank you for using @@PRODUCT_NAME@@.
-          --the @@PRODUCT_NAME@@ Team
-        </source>
+Thank you for using @@PRODUCT_NAME@@.
+--the @@PRODUCT_NAME@@ Team
+</source>
         <target state="needs-adaptation">Obrigado por usar o @@PRODUCT_NAME@@. --a equipe @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="email.satellitecert.satbodyend" xml:space="preserve">
         <source>
-          Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information
-          on how to renew your @@PRODUCT_NAME@@ Certificate.
+Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information
+on how to renew your @@PRODUCT_NAME@@ Certificate.
 
 
-          Thank you for using @@PRODUCT_NAME@@.
-          --the @@PRODUCT_NAME@@ Team
-        </source>
+Thank you for using @@PRODUCT_NAME@@.
+--the @@PRODUCT_NAME@@ Team
+</source>
         <target state="needs-adaptation">Entre em contato com o representante regional de atendimento ao cliente @@VENDOR_NAME@@ para obter informações sobre como renovar seu certificado @@PRODUCT_NAME@@. Obrigado por usar o @@PRODUCT_NAME@@. --a equipe @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="alphabar.label" xml:space="preserve">
@@ -10112,9 +10112,9 @@
       </trans-unit>
       <trans-unit id="isodownload.rest.description" xml:space="preserve">
         <source>
-          Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}.
-          Note that only one set of ISO images is necessary to install any particular release of {0}.
-        </source>
+Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}.
+Note that only one set of ISO images is necessary to install any particular release of {0}.
+</source>
         <target state="needs-adaptation">Abaixo por favor encontre conjuntos completos de imagens ISO para as &lt;strong&gt;versões mais antigas&lt;/strong&gt; de {0}. Observe que apenas um conjunto de imagens ISO é necessário para instalar qualquer versão específica de {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
@@ -10136,8 +10136,8 @@
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1" xml:space="preserve">
         <source>
-          Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
-        </source>
+Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+</source>
         <target state="needs-adaptation">Abaixo estão todos os ISOs de conteúdo do canal disponíveis para uso com o canal {0}. Se algum ISO de conteúdo de canal parecer estar ausente abaixo, verifique se o seu Certificado de titularidade @@PRODUCT_NAME@@ foi enviado para @@PRODUCT_NAME@@ e identifique corretamente os canais de destino.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -10145,10 +10145,10 @@
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr2" xml:space="preserve">
         <source>
-          There are two types of channel content ISOs: Base Channel Content ISOs and Incremental Channel Content ISOs.
-          You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt; if you need to initially populate a new @@PRODUCT_NAME@@ with channel content.
-          Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.
-        </source>
+There are two types of channel content ISOs: Base Channel Content ISOs and Incremental Channel Content ISOs.
+You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt; if you need to initially populate a new @@PRODUCT_NAME@@ with channel content.
+Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.
+</source>
         <target state="needs-adaptation">Existem dois tipos de ISOs de conteúdo de canal: ISOs de conteúdo de canal base e ISOs de conteúdo de canal incremental. Você vai querer baixar &lt;strong&gt;ISOs de conteúdo do canal base&lt;/strong&gt; se você precisar preencher inicialmente um novo @@PRODUCT_NAME@@ com o conteúdo do canal. Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteúdo de canal incremental&lt;/strong&gt; se você deseja atualizar os canais que você já importou para o seu @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -10156,8 +10156,8 @@
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-note" xml:space="preserve">
         <source>
-          &lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.
-        </source>
+&lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.
+</source>
         <target state="needs-adaptation">&lt;strong&gt;Nota:&lt;/strong&gt;Documentação adicional sobre como usar os ISOs de conteúdo do canal @@PRODUCT_NAME@@ está disponível no  &lt;em&gt; Guia de instalação @@PRODUCT_NAME@@&lt;/em&gt;, seção 6.2.2.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -10944,8 +10944,8 @@
         <target state="new" />
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
-        <source>Label must not exceed 128 characters</source>
-        <target state="new" />
+        <source>Name must not exceed 128 characters</source>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
@@ -10963,6 +10963,10 @@
         <source>Name must not exceed 128 characters</source>
         <target state="new" />
       </trans-unit>
-    </body>
+    <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+        <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>
