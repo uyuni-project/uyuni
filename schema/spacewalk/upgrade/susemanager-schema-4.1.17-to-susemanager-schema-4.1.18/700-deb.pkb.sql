@@ -1,5 +1,5 @@
 -- oracle equivalent source sha1 539cb03eb177b7e87992701071488bbb32bb0624
-create schema if not exists deb;
+create schema deb;
 
 --update pg_setting
 update pg_settings set setting = 'deb,' || setting where name = 'search_path';
