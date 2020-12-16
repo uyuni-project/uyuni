@@ -14,7 +14,13 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
+
+import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -40,7 +46,7 @@ public class RpmVersionComparatorTest extends TestCase {
         // Some equality
         assertCompareSymm(0, "0", "0");
         assertCompareSymm(0, "1-a.1", "1-a.1");
-        assertCompareSymm(0, "1_a.1", "1.a_1");
+        assertCompareSymm(0, "1-a.1", "1.a-1");
         assertCompareSymm(0, "", "");
 
         // all not alphanum signs are treated as the same
@@ -102,82 +108,6 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(1, "1.0^20160102", "1.0^20160101^git1");
     }
 
-    public void testUbuntuBugzilla1150113() {
-        assertCompareSymm(-1, "8-20180414", "8.3.0");
-        assertCompareSymm(-1, "2.7.15~rc1", "2.7.15");
-        assertCompareSymm(-1, "1.20.4", "14.1");
-        assertCompareSymm(1, "1.0.0~alpha+201804191824-24b36a9", "0.99");
-        assertCompareSymm(0, "0.2017-01-15.gdad1bbc69", "0.2017-01-15.gdad1bbc69");
-        assertCompareSymm(1, "0.2017-01-15.gdad1bbc69", "0.2016-08-15.cafecafe");
-        assertCompareSymm(-1, "0.2017-01-15.gdad1bbc69", "1.0");
-        assertCompareSymm(0, "8-20180414", "8");
-        assertCompareSymm(-1, "8.0.9", "8.0.9.22");
-        assertCompareSymm(-1, "8.0.9.22-abcd", "8.0.9.22-abcd-expr1");
-        // TODO: implement new deb comparator and uncomment the following test
-        // assertCompareSymm(-1, "8.0.9", "a.8.0.9-22");
-        // The lexical comparison is a comparison of ASCII values modified so that all the letters sort earlier
-        // than all the non-letters
-        //
-        // Debian dpkg test cases follow [ https://git.dpkg.org/cgit/dpkg/dpkg.git/tree/scripts/t/Dpkg_Version.t ]
-        // Commented out tests are the one that should be working with the new comparator
-        // (to be developed, see TODO above)
-        assertCompareSymm(-1, "1.0-1", "2.0-2");
-        assertCompareSymm(-1, "2.2~rc-4", "2.2-1");
-        assertCompareSymm(1, "2.2-1", "2.2~rc-4");
-        assertCompareSymm(0, "1.0000-1", "1.0-1");
-        assertCompareSymm(0, "1", "1");
-        assertCompareSymm(0, "0", "0-0");
-        assertCompareSymm(-1, "2.5", "7.5");
-        assertCompareSymm(0, "0foo", "0foo");
-        assertCompareSymm(0, "0foo-0", "0foo");
-        assertCompareSymm(0, "0foo", "0foo-0");
-        assertCompareSymm(1, "0foo", "0fo");
-//        assertCompareSymm(-1, "0foo-0", "0foo+");
-        assertCompareSymm(-1, "0foo~1", "0foo");
-        assertCompareSymm(-1, "0foo~foo+Bar", "0foo~foo+bar");
-        assertCompareSymm(-1, "0foo~~", "0foo~");
-        assertCompareSymm(-1, "1~", "1");
-        assertCompareSymm(-1, "12345+that-really-is-some-ver-0", "12345+that-really-is-some-ver-10");
-        assertCompareSymm(-1, "0foo-0", "0foo-01");
-//        assertCompareSymm(1, "0foo.bar", "0foobar");
-//        assertCompareSymm(1, "0foo.bar", "0foo1bar");
-//        assertCompareSymm(1, "0foo.bar", "0foo0bar");
-        assertCompareSymm(-1, "0foo1bar-1", "0foobar-1");
-        assertCompareSymm(1, "0foo2.0", "0foo2");
-        assertCompareSymm(-1, "0foo2.0.0", "0foo2.10.0");
-        assertCompareSymm(-1, "0foo2.0", "0foo2.0.0");
-        assertCompareSymm(-1, "0foo2.0", "0foo2.10");
-        assertCompareSymm(-1, "0foo2.1", "0foo2.10");
-        assertCompareSymm(0, "1.09", "1.9");
-        assertCompareSymm(1, "1.0.8+nmu1", "1.0.8");
-        assertCompareSymm(1, "3.11", "3.10+nmu1");
-        assertCompareSymm(1, "0.9j-20080306-4", "0.9i-20070324-2");
-        assertCompareSymm(1, "1.2.0~b7-1", "1.2.0~b6-1");
-        assertCompareSymm(1, "1.011-1", "1.06-2");
-        assertCompareSymm(1, "0.0.9+dfsg1-1", "0.0.8+dfsg1-3");
-        assertCompareSymm(1, "4.6.99+svn6582-1", "4.6.99+svn6496-1");
-        assertCompareSymm(1, "53", "52");
-        assertCompareSymm(1, "0.9.9~pre122-1", "0.9.9~pre111-1");
-        assertCompareSymm(1, "2.3.2-2+lenny2", "2.3.2-2");
-        assertCompareSymm(1, "3.8.1-1", "3.8.GA-1");
-        assertCompareSymm(1, "1.0.1+gpl-1", "1.0.1-2");
-        assertCompareSymm(-1, "1a", "1000a");
-        assertCompareSymm(1, "3.1-20170329", "3.1-20150325");
-    }
-
-    public void testBugzilla1173201() {
-        assertCompareSymm(-1, "1.27+1.3.9", "1.27.1ubuntu1+1.3.9");
-        assertCompareSymm(-1, "1.27+1.3.9", "1.27.1+1.3.9");
-        assertCompareSymm(-1, "1.27+1.3.9", "1.27.1ubuntu2+1.3.11");
-        assertCompareSymm(1, "1.27+1.3.9", "1.3.11");
-        assertCompareSymm(1, "1.27", "1.3.11");
-        assertCompareSymm(1, "1.27+1.3.9", "1.3.9");
-        assertCompareSymm(-1, "1.27+1.3.9", "5.18.4.1");
-        assertCompareSymm(1, "2.27+1.3.9", "1.10~ubuntu18.04.4+1.2.10");
-        assertCompareSymm(1, "3.27", "1.10~ubuntu18.04.4+1.2.10");
-        assertCompareSymm(1, "4.27~test", "1.10~ubuntu18.04.4+1.2.10");
-    }
-
     /**
      * Test comparing strings of modular package releases.
      */
@@ -186,8 +116,15 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(-1, "7.module_el8.2.0+305+5e198a41", "7.module_el8.2.0+458+dab581ed");
         // some packages have "module+el8" in the release
         assertCompareSymm(-1, "10.module+el8.2.0+7749+4a513fb2", "10.module+el8.2.0+7749+5a513fb2");
-
         assertCompareSymm(-1, "6.module+el8+1645+8d4014a6", "7.module_el8.2.0+458+dab581ed");
+    }
+
+    /*
+     * Test for https://github.com/uyuni-project/uyuni/issues/2531
+     */
+    public void testUyuniIssue2531() {
+        assertCompareSymm(1, "1.27+1.3.9", "1.27.1+1.3.9");
+        assertCompareSymm(1, "1.27", "1.3.11");
     }
 
     /* from official rpm tests */
@@ -210,5 +147,20 @@ public class RpmVersionComparatorTest extends TestCase {
         assertEquals(exp, cmp.compare(v1, v2));
         assertEquals(0, cmp.compare(v1, v1));
         assertEquals(0, cmp.compare(v2, v2));
+        assertEquals(exp, testRPMVersionCompareInDatabase(
+                v1, v2));
+    }
+
+    private int testRPMVersionCompareInDatabase(String operand1, String operand2) {
+        // test the stored function
+        CallableMode m = ModeFactory.getCallableMode("test_queries", "rpmstrcmp");
+        Map inParams = new HashMap();
+        Map outParams = new HashMap();
+        outParams.put("compareResult", Types.INTEGER);
+        Integer result;
+        inParams.put("operand1", operand1);
+        inParams.put("operand2", operand2);
+        result = (Integer) m.execute(inParams, outParams).get("compareResult");
+        return result;
     }
 }

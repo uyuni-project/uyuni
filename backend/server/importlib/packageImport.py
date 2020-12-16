@@ -46,6 +46,7 @@ class ChannelPackageSubscription(GenericPackageImport):
             self.caller = caller
         self._strict_subscription = strict
         self.repogen = repogen
+        self.package_type = None
 
     def preprocess(self):
         # Processes the package batch to a form more suitable for database
@@ -71,9 +72,13 @@ class ChannelPackageSubscription(GenericPackageImport):
                 # Unsupported channel
                 continue
             self.channel_package_arch_compat[channel_row['channel_arch_id']] = None
+        for label, aid in self.package_arches.items():
+            self.package_type = self.backend.lookupPackageArchType(aid)
+            if self.package_type:
+                break
         self.backend.lookupChannelPackageArchCompat(self.channel_package_arch_compat)
         self.backend.lookupPackageNames(self.names)
-        self.backend.lookupEVRs(self.evrs)
+        self.backend.lookupEVRs(self.evrs, self.package_type)
         self.backend.lookupChecksums(self.checksums)
 
         # Fix the package information up, and uniquify the packages too
@@ -300,7 +305,7 @@ class PackageImport(ChannelPackageSubscription):
                 evrtuple = (prodFile['epoch'], prodFile['version'], prodFile['release'])
                 evr = {evrtuple : None}
                 archhash = {prodFile['arch'] : None}
-                self.backend.lookupEVRs(evr)
+                self.backend.lookupEVRs(evr, 'rpm')
                 self.backend.lookupPackageArches(archhash)
                 prodFile['evr'] = evr[evrtuple]
                 prodFile['package_arch_id'] = archhash[prodFile['arch']]

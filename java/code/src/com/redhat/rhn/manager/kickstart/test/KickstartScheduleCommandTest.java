@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.kickstart.test.KickstartSessionTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -317,7 +318,8 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         Package p = PackageManagerTest.
                 addPackageToChannel("up2date", c);
         PackageEvr pevr = PackageEvrFactory.lookupOrCreatePackageEvr("0",
-                KickstartScheduleCommand.UP2DATE_VERSION, "0");
+                KickstartScheduleCommand.UP2DATE_VERSION, "0",
+                c.getChannelArch().getArchType().getPackageType());
         p.setPackageEvr(pevr);
         TestUtils.saveAndFlush(p);
     }

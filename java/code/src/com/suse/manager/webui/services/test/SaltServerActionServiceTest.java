@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -213,7 +214,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
-        p.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X"));
+        p.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X", PackageType.DEB));
 
         Map<String, Long> pkgMap = new HashMap<>();
         pkgMap.put("name_id", p.getPackageName().getId());
@@ -256,9 +257,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p1 = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
-        p1.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X"));
+        p1.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X", PackageType.DEB));
         Package p2 = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
-        p2.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr("1", "1.2", "1ubuntu1"));
+        p2.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr("1", "1.2", "1ubuntu1", PackageType.DEB));
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
         Map<String, Long> pkgMap = new HashMap<>();

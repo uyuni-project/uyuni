@@ -378,7 +378,8 @@ public class ErrataTestUtils {
         String version = previousEvr.getVersion();
         String release = (Integer.parseInt(previousEvr.getRelease()) + 1) + "";
         PackageEvr pevr =
-                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release);
+                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release,
+                        previous.getPackageEvr().getPackageType());
 
         result.setRpmVersion(previous.getRpmVersion());
         result.setDescription(previous.getDescription());

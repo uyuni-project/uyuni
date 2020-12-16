@@ -862,7 +862,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // Will be used for both errata types. Represents an upgraded version of a package
         // that comes with the errata.
         PackageEvr upgradedPackageEvr =
-            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2");
+            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
         upgradedPackageEvr =
             TestUtils.saveAndReload(upgradedPackageEvr);
 
