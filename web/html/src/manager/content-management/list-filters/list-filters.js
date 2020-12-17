@@ -110,4 +110,4 @@ const ListFilters = (props: Props) => {
   );
 }
 
-export default hot(module)(withPageWrapper<Props>(ListFilters));
+export default hot(withPageWrapper<Props>(ListFilters));

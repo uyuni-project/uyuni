@@ -96,4 +96,4 @@ const JoinCluster = (props: Props) => {
             </TopPanel>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(JoinCluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(JoinCluster)));

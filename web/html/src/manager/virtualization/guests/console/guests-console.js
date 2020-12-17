@@ -1,6 +1,6 @@
 // @flow
 
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { Loading } from 'components/utils/Loading';
 import { PopUp } from 'components/popup';
@@ -219,4 +219,4 @@ class GuestsConsole extends React.Component<Props, State> {
   }
 }
 
-export default hot(module)(GuestsConsole);
+export default hot(GuestsConsole);

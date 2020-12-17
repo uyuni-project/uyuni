@@ -15,7 +15,7 @@ import { TopPanel } from 'components/panels/TopPanel';
 import escapeHtml from 'html-react-parser';
 import { Dialog } from 'components/dialog/Dialog';
 import { showDialog } from 'components/dialog/util';
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 
 const _MESSAGE_TYPE = {
   OnboardingFailed: {
@@ -470,7 +470,7 @@ const ErrorMessage = (props) => <MessageContainer items={
   } />
 ;
 
-const HotNotificationMessages = hot(module)(NotificationMessages);
+const HotNotificationMessages = hot(NotificationMessages);
 
 export {
   HotNotificationMessages as NotificationMessages,

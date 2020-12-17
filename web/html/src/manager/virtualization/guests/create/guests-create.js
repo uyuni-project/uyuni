@@ -3,7 +3,7 @@
 import type { ActionChain } from 'components/action-schedule';
 
 import * as React from 'react';
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import { TopPanel } from 'components/panels/TopPanel';
 import { Utils as MessagesUtils } from 'components/messages';
 import { getOrderedItemsFromModel } from 'components/input/FormMultiInput';
@@ -105,7 +105,7 @@ class GuestsCreate extends React.Component<Props, State> {
   }
 }
 
-const HotGuestsCreate = hot(module)(GuestsCreate);
+const HotGuestsCreate = hot(GuestsCreate);
 
 export {
   HotGuestsCreate as GuestsCreate,

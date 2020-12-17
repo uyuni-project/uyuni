@@ -57,4 +57,4 @@ const CreateProject = () => {
   )
 }
 
-export default hot(module)(withPageWrapper<{}>(CreateProject));
+export default hot(withPageWrapper<{}>(CreateProject));

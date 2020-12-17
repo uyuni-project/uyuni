@@ -346,4 +346,4 @@ const PackageStates = ({serverId}: PropsType) => {
   );
 };
 
-export default hot(module)(withPageWrapper<PropsType>(PackageStates));
+export default hot(withPageWrapper<PropsType>(PackageStates));
