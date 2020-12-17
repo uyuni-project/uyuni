@@ -4,16 +4,16 @@ test
 tests
 powered-test
 
-# documentation and examples directories
+# asset directories
 docs
 doc
 website
 images
+assets
+
+# examples
 example
 examples
-
-# NB! don't autoclean this, some packages keeps scripts in assets
-# assets
 
 # code coverage directories
 coverage
