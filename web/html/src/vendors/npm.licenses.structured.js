@@ -29,7 +29,7 @@ const npmDependencies = [
   { name: "immer", license: "MIT",  version: "3.3.0" }, 
   { name: "inline-style-parser", license: "MIT",  version: "0.1.1" }, 
   { name: "jexl", license: "MIT",  version: "2.2.2" }, 
-  { name: "lodash", license: "MIT",  version: "4.17.20" }, 
+  { name: "lodash", license: "MIT",  version: "4.17.19" }, 
   { name: "lodash.get", license: "MIT",  version: "4.4.2" }, 
   { name: "memoize-one", license: "MIT",  version: "5.1.1" }, 
   { name: "metal", license: "BSD-3-Clause",  version: "2.16.8" }, 
