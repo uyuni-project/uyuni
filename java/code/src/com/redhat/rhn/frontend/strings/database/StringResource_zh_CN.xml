@@ -1292,7 +1292,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">确定退出状态</target>
+        <target state="translated">正常退出状态</target>
       </trans-unit>
       <trans-unit id="ORACLE_HOME" xml:space="preserve">
         <source>ORACLE_HOME</source>
@@ -1516,7 +1516,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target state="translated">状态（确定/警告/临界/未知）</target>
+        <target state="translated">状态（正常/警告/临界/未知）</target>
       </trans-unit>
       <trans-unit id="TNS Listener Port" xml:space="preserve">
         <source>TNS Listener Port</source>
@@ -2819,7 +2819,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="translated">确定</target>
+        <target state="translated">正常</target>
       </trans-unit>
       <trans-unit id="UNKNOWN" xml:space="preserve">
         <source>UNKNOWN</source>
@@ -2833,7 +2833,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target state="translated">未完成</target>
+        <target state="translated">待处理</target>
       </trans-unit>
       <trans-unit id="WARNING" xml:space="preserve">
         <source>WARNING</source>
