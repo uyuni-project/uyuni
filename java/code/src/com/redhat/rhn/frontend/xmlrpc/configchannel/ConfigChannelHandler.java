@@ -54,6 +54,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,9 +114,40 @@ public class ConfigChannelHandler extends BaseHandler {
      * $ConfigChannelSerializer
      */
     public ConfigChannel create(User user, String label, String name, String description, String channelType) {
+        return create(user, label, name, description, channelType, new HashMap<>());
+    }
+
+    /**
+     * Creates a new global config channel based on the values provided..
+     * @param user The current user
+     * @param label label of the config channel
+     * @param name name of the config channel
+     * @param description description of the config channel
+     * @param channelType type of config channel(possible values are 'state', 'normal')
+     * @param data a map containing 'content' and 'contents_enc64' (only applicable for channelType 'state')
+     * @return the newly created config channel
+     *
+     * @xmlrpc.doc Create a new global config channel. Caller must be at least a
+     * config admin or an organization admin.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "channelLabel")
+     * @xmlrpc.param #param("string", "channelName")
+     * @xmlrpc.param #param("string", "channelDescription")
+     * @xmlrpc.param #param_desc("string", "channelType", "The channel type either 'normal' or 'state'.")
+     * @xmlrpc.param
+     *  #struct_begin("path info")
+     *      #prop_desc("string", "contents", "Contents of the init.sls file")
+     *      #prop_desc("boolean", "contents_enc64", "Identifies base64 encoded content(default: disabled)")
+     *  #struct_end()
+     * @xmlrpc.returntype
+     * $ConfigChannelSerializer
+     */
+    public ConfigChannel create(User user, String label, String name, String description, String channelType,
+                                Map<String, Object> data) {
         ensureConfigAdmin(user);
 
         ConfigChannelCreationHelper helper = new ConfigChannelCreationHelper();
+        XmlRpcConfigChannelHelper ccHelper = XmlRpcConfigChannelHelper.getInstance();
         try {
             helper.validate(label, name, description);
             ConfigChannelType ct = helper.getGlobalChannelType(channelType);
@@ -123,7 +155,16 @@ public class ConfigChannelHandler extends BaseHandler {
             helper.update(cc, name, label, description);
             ConfigurationManager.getInstance().save(cc, empty());
             cc  = (ConfigChannel) HibernateFactory.reload(cc);
-            helper.createInitSlsFile(user, cc, "");
+            String contents = "";
+            if (data.containsKey(ConfigRevisionSerializer.CONTENTS)) {
+                try {
+                    contents = ccHelper.getContents(data);
+                }
+                catch (UnsupportedEncodingException e) {
+                    throw new ConfigFileErrorException(e.getMessage());
+                }
+            }
+            helper.createInitSlsFile(user, cc, contents);
             return cc;
         }
         catch (ValidatorException ve) {

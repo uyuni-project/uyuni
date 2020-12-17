@@ -653,12 +653,36 @@ Then(/^"([^"]*)" should not be subscribed to channel "([^"]*)"$/) do |host, chan
   assert_equal(0, result.count { |item| item['name'] == system_name })
 end
 
+When(/^I create state channel "([^"]*)" via XML\-RPC$/) do |channel|
+  @configuration_channel_api.create_channel(channel, channel, channel, 'state')
+end
+
+When(/^I create state channel "([^"]*)" containing "([^"]*)" via XML\-RPC$/) do |channel, contents|
+  @configuration_channel_api.create_channel_with_data(channel, channel, channel, 'state', { 'contents' => contents })
+end
+
+When(/^I call configchannel.get_file_revision with file "([^"]*)", revision "([^"]*)" and channel "([^"]*)" via XML\-RPC$/) do |file_path, revision, channel|
+  @get_file_revision_result = @configuration_channel_api.get_file_revision(channel, file_path, revision.to_i)
+end
+
+Then(/^I should get file contents "([^\"]*)"$/) do |contents|
+  assert_equal(contents, @get_file_revision_result['contents'])
+end
+
 When(/^I add file "([^"]*)" containing "([^"]*)" to channel "([^"]*)"$/) do |file, contents, channel|
   @configuration_channel_api.create_or_update_path(channel, file, contents)
 end
 
 When(/^I deploy all systems registered to channel "([^"]*)"$/) do |channel|
   @configuration_channel_api.deploy_all_systems(channel)
+end
+
+When(/^I delete channel "([^"]*)" via XML\-RPC((?: without error control)?)$/) do |channel, error_control|
+  begin
+    @configuration_channel_api.delete_channels([channel])
+  rescue XMLRPC::FaultException => e
+    raise format('Error delete_channels: XML-RPC failure, code %s: %s', e.faultCode, e.faultString) if error_control.empty?
+  end
 end
 
 When(/^I logout from XML\-RPC configchannel namespace$/) do
