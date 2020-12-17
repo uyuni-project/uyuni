@@ -4064,7 +4064,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target state="translated">已成功 &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;预订&lt;/a&gt;&lt;/strong&gt;  &lt;strong&gt;{2}&lt;/strong&gt; 使用 &lt;strong&gt;{3}&lt;/strong&gt; 进行软件包配置同步。</target>
+        <target state="translated">您已成功为 &lt;strong&gt;{2}&lt;/strong&gt;（从 &lt;strong&gt;{3}&lt;/strong&gt;）&lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;&lt;/strong&gt;进行软件包配置文件同步。</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
@@ -4072,7 +4072,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;注：&lt;/strong&gt;@@PRODUCT_NAME@@ 已经为 &lt;strong&gt;{2}&lt;/strong&gt; &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;预订&lt;/a&gt;&lt;/strong&gt;了一个硬件刷新来在同步软件包配置前运行。这需要检查系统有比较软件包的能力。</target>
+        <target state="translated">&lt;strong&gt;备注：&lt;/strong&gt;@@PRODUCT_NAME@@ 已经为 &lt;strong&gt;{2}&lt;/strong&gt; &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排了&lt;/a&gt;&lt;/strong&gt;在同步软件包配置文件前运行一次硬件刷新。此操作需要校验系统是否能够比较软件包。</target>
       </trans-unit>
       <trans-unit id="filterCreate.success" xml:space="preserve">
         <source>The filter {0} was successfully created</source>
