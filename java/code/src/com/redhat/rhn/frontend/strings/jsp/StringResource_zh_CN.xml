@@ -1140,7 +1140,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="translated">真名</target>
+        <target state="translated">真实姓名</target>
       </trans-unit>
       <trans-unit id="password.displayname" xml:space="preserve">
         <source>Password &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
