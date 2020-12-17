@@ -1147,14 +1147,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">密码&lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
+        <target state="translated">口令 &lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
       </trans-unit>
       <trans-unit id="confirmpass.displayname" xml:space="preserve">
         <source>Confirm Password &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">确认密码 &lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
+        <target state="translated">确认口令 &lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
       </trans-unit>
       <trans-unit id="message.Update" xml:space="preserve">
         <source>Update</source>
@@ -1255,7 +1255,7 @@
             1 action archived.
           </context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 动作被归档。</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 项操作已存档。</target>
       </trans-unit>
       <trans-unit id="message.actionsArchived" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; actions archived.</source>
@@ -1267,7 +1267,7 @@
             2 actions archived.
           </context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 动作被归档。</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 项操作已存档。</target>
       </trans-unit>
       <trans-unit id="message.actionCancelled" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; action cancelled.</source>
@@ -1277,7 +1277,7 @@
             1 action cancelled.
           </context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 动作被取消。</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 项操作已取消。</target>
       </trans-unit>
       <trans-unit id="message.actionsCancelled" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; actions cancelled.</source>
@@ -1287,7 +1287,7 @@
             2 actions cancelled.
           </context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 动作被取消。</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 项操作已取消。</target>
       </trans-unit>
       <trans-unit id="message.actionDeleted" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; action deleted.</source>
@@ -1297,7 +1297,7 @@
             1 action deleted.
           </context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 动作被删除。</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 项操作已删除。</target>
       </trans-unit>
       <trans-unit id="message.actionsDeleted" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; actions deleted.</source>
@@ -1307,7 +1307,7 @@
             2 actions deleted.
           </context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 动作被删除。</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 项操作已删除。</target>
       </trans-unit>
       <!-- preferences.jsp -->
       <trans-unit id="preferences.jsp.alt" xml:space="preserve">
@@ -1329,7 +1329,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 会在与您的系统相关的勘误发行时发送电子邮件通知，并为您的系统发送每日的事件总结。</target>
+        <target state="translated">@@PRODUCT_NAME@@ 会在与您的系统相关的补丁发布时发送电子邮件通知，并每日为您发送系统事件摘要电子邮件。</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivenote" xml:space="preserve">
         <source> Receive email notifications</source>
@@ -1350,7 +1350,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 列表页大小</target>
+        <target state="translated">@@PRODUCT_NAME@@ 列表页面大小</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.controlentry" xml:space="preserve">
         <source>This controls how many entries, like systems, would be displayed per page in a list context.</source>
@@ -1379,7 +1379,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated"> 指向 @@PRODUCT_NAME@@ 用户界面不同区域的快速链接的任务导向式菜单。</target>
+        <target state="translated"> 由指向 @@PRODUCT_NAME@@ 用户界面不同区域的快速链接组成的任务导向式菜单。</target>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.name" xml:space="preserve">
         <source>Most Critical Systems</source>
@@ -1400,14 +1400,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">系统组群</target>
+        <target state="translated">系统组</target>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.description" xml:space="preserve">
         <source> Preview the overall status of your system groups.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated"> 预览系统组的总体运行状态。</target>
+        <target state="translated"> 预览系统组的总体状态。</target>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.name" xml:space="preserve">
         <source>Relevant Security Errata</source>
@@ -1428,7 +1428,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">不活跃的系统</target>
+        <target state="translated">非活动系统</target>
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.description" xml:space="preserve">
         <source> Lists the registered @@PRODUCT_NAME@@ systems that recently stopped checking in.</source>
@@ -1442,7 +1442,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">最近调度的动作</target>
+        <target state="translated">最近安排的操作</target>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.description" xml:space="preserve">
         <source> Lists the scheduled actions of the user.</source>
@@ -1485,14 +1485,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">日期和时间（如系统的登录时间）将会根据选择的时区时间来显示。</target>
+        <target state="translated">日期和时间（如系统的签入时间）将会根据选择的时区显示。</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.displaytimesas" xml:space="preserve">
         <source>Display all times as</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">显示所有的时间</target>
+        <target state="translated">将所有时间显示为</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.lang" xml:space="preserve">
         <source>Interface Language</source>
@@ -1513,14 +1513,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">"概述" 起始页</target>
+        <target state="translated">"概览" 起始页</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagedesc" xml:space="preserve">
         <source>Display the following information on my "Overview" page upon login:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="translated">登录时在 "概述" 页中显示以下信息：</target>
+        <target state="translated">登录时在我的 "概览" 页面中显示以下信息：</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvtitle" xml:space="preserve">
         <source>CSV Files</source>
@@ -1528,7 +1528,7 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.csvdesc" xml:space="preserve">
         <source>Configure a separator character to be used in downloadable CSV files:</source>
-        <target state="translated">设置在可下载 CSV 文件中使用的分隔符：</target>
+        <target state="translated">配置在可下载 CSV 文件中使用的分隔符：</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvcomma" xml:space="preserve">
         <source>Comma (",", default)</source>
@@ -1536,7 +1536,7 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.csvsemicolon" xml:space="preserve">
         <source>Semicolon (";", compatible with Microsoft® Excel®)</source>
-        <target state="translated">分号（“;”，兼容 Microsoft® Excel®）</target>
+        <target state="translated">分号（“;”，与 Microsoft® Excel® 兼容）</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.submitvalue" xml:space="preserve">
         <source>Save Preferences</source>
@@ -1586,7 +1586,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
-        <target state="translated">机构：</target>
+        <target state="translated">组织：</target>
       </trans-unit>
       <trans-unit id="header.jsp.preferences" xml:space="preserve">
         <source>Preferences</source>
@@ -1624,7 +1624,7 @@
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="translated">我的机构</target>
+        <target state="translated">我的组织</target>
       </trans-unit>
       <trans-unit id="header.jsp.satellite_wide" xml:space="preserve">
         <source>@@PRODUCT_NAME@@-Wide</source>
@@ -1639,14 +1639,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
-        <target state="translated">勘误</target>
+        <target state="translated">补丁</target>
       </trans-unit>
       <trans-unit id="header.jsp.singleSystemSelected" xml:space="preserve">
         <source>system selected</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
-        <target state="translated">所选系统</target>
+        <target state="translated">个系统已选定</target>
       </trans-unit>
       <trans-unit id="header.jsp.systemsSelected" xml:space="preserve">
         <source>systems selected</source>
@@ -1656,7 +1656,7 @@
             5 systems selected
           </context>
         </context-group>
-        <target state="translated">所选系统</target>
+        <target state="translated">个系统已选定</target>
       </trans-unit>
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright" xml:space="preserve">
@@ -1688,7 +1688,7 @@
             @@PRODUCT_NAME@@ release 3.7.1
           </context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 发行版本 &lt;a href="{0}"&gt;{1}&lt;/a&gt;</target>
+        <target state="translated">@@PRODUCT_NAME@@ 发行版 &lt;a href="{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <!-- legends -->
       <trans-unit id="errata-legend.jsp.title" xml:space="preserve">
@@ -1696,7 +1696,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
         </context-group>
-        <target state="translated">勘误说明</target>
+        <target state="translated">补丁图例</target>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.security" xml:space="preserve">
         <source>Security</source>
@@ -1713,7 +1713,7 @@
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
           <context context-type="sourcefile">/rhn/errata/details/Details.do</context>
         </context-group>
-        <target state="translated">Bug 修正</target>
+        <target state="translated">Bug 修复</target>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.enhancement" xml:space="preserve">
         <source>Enhancement</source>
@@ -1728,7 +1728,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">系统说明</target>
+        <target state="translated">系统图例</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.fully" xml:space="preserve">
         <source>OK</source>
@@ -1756,49 +1756,49 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">锁定</target>
+        <target state="translated">已锁定</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.kickstarting" xml:space="preserve">
         <source>Autoinstalling</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">Kickstarting</target>
+        <target state="translated">自动安装</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.pending" xml:space="preserve">
         <source>Pending Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">等待处理的动作</target>
+        <target state="translated">待执行的操作</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.notcheckingin" xml:space="preserve">
         <source>Unknown</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">未知的</target>
+        <target state="translated">未知</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.unentitled" xml:space="preserve">
         <source>No System Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">未授权</target>
+        <target state="translated">无系统类型</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.monitoring" xml:space="preserve">
         <source>Monitoring Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">监测状态</target>
+        <target state="translated">监控状态</target>
       </trans-unit>
       <trans-unit id="system-group-legend.jsp.title" xml:space="preserve">
         <source>System Group Legend</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
-        <target state="translated">系统组群说明</target>
+        <target state="translated">系统组图例</target>
       </trans-unit>
       <trans-unit id="system-group-legend.jsp.fully" xml:space="preserve">
         <source>OK</source>
@@ -1826,21 +1826,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
-        <target state="translated">概述说明</target>
+        <target state="translated">概览图例</target>
       </trans-unit>
       <trans-unit id="yourrhn-legend.jsp.failedactions" xml:space="preserve">
         <source>Failed Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
-        <target state="translated">失败的动作</target>
+        <target state="translated">失败的操作</target>
       </trans-unit>
       <trans-unit id="yourrhn-legend.jsp.completedactions" xml:space="preserve">
         <source>Completed Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
-        <target state="translated">完成的动作</target>
+        <target state="translated">完成的操作</target>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.title" xml:space="preserve">
         <source>Visualization Hierarchy</source>
@@ -1934,7 +1934,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">取消管理状态</target>
+        <target state="translated">频道管理状态</target>
       </trans-unit>
       <!-- addresses.jsp -->
       <trans-unit id="addresses.summary" xml:space="preserve">
@@ -1963,7 +1963,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">帐户取消激活</target>
+        <target state="translated">帐户停用</target>
       </trans-unit>
       <trans-unit id="disableself.jsp.message" xml:space="preserve">
         <source>You may deactivate your @@PRODUCT_NAME@@ account below. &lt;b&gt;This will remove your ability
@@ -1971,7 +1971,7 @@ to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">您可以停用您的以下 @@PRODUCT_NAME@@ 帐户。&lt;b&gt;这会导致您无法
+        <target state="translated">您可以在下方停用您的 @@PRODUCT_NAME@@ 帐户。&lt;b&gt;这会导致您无法
 登录到 @@PRODUCT_NAME@@。&lt;/b&gt;</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning" xml:space="preserve">
@@ -1980,7 +1980,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">在按下面的 '取消激活帐户' 按钮后您将马上会被注销。
+        <target state="translated">在按下面的 "停用帐户" 按钮后，您立即会被注销。
 并且&lt;b&gt;无法再重新登录&lt;/b&gt;。</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning_question" xml:space="preserve">
@@ -1988,14 +1988,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">您确定要取消激活您的帐户吗？</target>
+        <target state="translated">您确定要停用您的帐户吗？</target>
       </trans-unit>
       <trans-unit id="disableself.jsp.deactivate" xml:space="preserve">
         <source>Deactivate Account</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">取消激活帐户</target>
+        <target state="translated">停用帐户</target>
       </trans-unit>
       <trans-unit id="details.jsp.account_details" xml:space="preserve">
         <source> My Account </source>
@@ -2031,21 +2031,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">通过机构／频道管理状态，或全局可订阅的频道获得权限</target>
+        <target state="translated">通过组织/频道管理状态授予的权限或全局可订阅的频道</target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.permGranted.short" xml:space="preserve">
         <source>Permission granted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">获得的权限</target>
+        <target state="translated">授予的权限</target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.channelname" xml:space="preserve">
         <source>Channel Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">频道名</target>
+        <target state="translated">频道名称</target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.permission" xml:space="preserve">
         <source>Permission</source>
@@ -2059,7 +2059,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target state="translated">取消管理状态</target>
+        <target state="translated">频道管理状态</target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.permGlobal" xml:space="preserve">
         <source>Globally subscribable channel</source>
@@ -2095,7 +2095,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="translated">登录：</target>
+        <target state="translated">登录名：</target>
       </trans-unit>
       <trans-unit id="usercreate.accountInfo" xml:space="preserve">
         <source>Account Information:</source>
@@ -2116,7 +2116,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="translated">必填项目</target>
+        <target state="translated">必填字段</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.createlogin" xml:space="preserve">
         <source>Create Login</source>
@@ -2124,28 +2124,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate.do</context>
           <context context-type="sourcefile">/rhn/newlogin/CreatePersonal.do</context>
         </context-group>
-        <target state="translated">创建登录</target>
+        <target state="translated">创建登录名</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam" xml:space="preserve">
         <source>Pluggable Authentication Modules (PAM): </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target state="translated">可插拔身份验证模块 (PAM)： </target>
+        <target state="translated">可插入身份验证模块 (PAM)： </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions" xml:space="preserve">
         <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target state="translated">使用 PAM 对 LDAP、Kerberos 和其他基于网络的身份验证系统进行身份验证。 </target>
+        <target state="translated">使用 PAM 根据 LDAP、Kerberos 和其他基于网络的身份验证系统进行身份验证。 </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions.note" xml:space="preserve">
         <source>Note: The password fields above are not required when this box is checked; however you may fill in a password that will work only when PAM authentication for this user account is disabled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target state="translated">注意：当选择此复选框时，则不需要上述密码项；您可以填写一个密码，但它只在这个用户帐户的 PAM 验证被禁用时才起作用。</target>
+        <target state="translated">注意：如果选中此复选框，则无需填写上述口令字段；不过，您可以填写一个密码，但它只在此用户帐户的 PAM 身份验证禁用时才起作用。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
         <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
@@ -2166,7 +2166,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 网页界面禁止只读 API 用户，只允许公用 API 的有限子网访问。</target>
+        <target state="translated">@@PRODUCT_NAME@@ Web 界面禁止只读 API 用户访问，只允许此类用户访问公用 API 的限定子集。</target>
       </trans-unit>
       <!-- userdetails.jsp -->
       <trans-unit id="userdetails.jsp.header" xml:space="preserve">
@@ -2174,7 +2174,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">用户详情</target>
+        <target state="translated">用户细节</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
         <source>No email address</source>
@@ -2188,7 +2188,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">取消激活用户</target>
+        <target state="translated">停用用户</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.enable" xml:space="preserve">
         <source>Reactivate User</source>
@@ -2202,7 +2202,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated"> 可以使用下面提供的表单编辑此用户的信息。标有星号 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 的项是&lt;strong&gt;必填的&lt;/strong&gt;。 </target>
+        <target state="translated"> 可以使用下面提供的表单编辑此用户的信息。标有星号 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 的项是&lt;strong&gt;必填项&lt;/strong&gt;。 </target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles" xml:space="preserve">
         <source>Roles</source>
@@ -2223,14 +2223,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">以上角色是通过机构管理员角色赋予的。</target>
+        <target state="translated">以上角色是通过组织管理员角色赋予的。</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.temporaryroles" xml:space="preserve">
         <source>Roles granted temporarily due to external authentication configuration:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">根据外部认证设置临时分配角色：</target>
+        <target state="translated">根据外部身份验证配置临时授予的角色：</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.lastsign" xml:space="preserve">
         <source>Last Sign In</source>
@@ -2244,21 +2244,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">这个用户是最后一个机构管理员，因此不能删除这个用户的机构管理员角色。</target>
+        <target state="translated">这个用户是最后一个组织管理员，因此不能去除其组织管理员角色。</target>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.lastsatadmin" xml:space="preserve">
         <source>The user {0} is the last @@PRODUCT_NAME@@ Administrator and cannot be removed from the @@PRODUCT_NAME@@ Administrator role.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="translated">用户 {0} 是最后的 @@PRODUCT_NAME@@ 管理员，因此不能删除 @@PRODUCT_NAME@@ 机构管理员角色。</target>
+        <target state="translated">用户 {0} 是最后一个 @@PRODUCT_NAME@@ 管理员，因此不能去除其 @@PRODUCT_NAME@@ 管理员角色。</target>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.notsatadmin" xml:space="preserve">
         <source>The user {0} is the not a @@PRODUCT_NAME@@ Administrator. Only users with @@PRODUCT_NAME@@ Administrator role can grant  or revoke @@PRODUCT_NAME@@ Administrator roles from other users.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="translated">用户 {0}  不是 @@PRODUCT_NAME@@ 管理员。只有具有 @@PRODUCT_NAME@@ 管理员角色的用户才可为其它用户授予或者取消 @@PRODUCT_NAME@@ 管理员角色。</target>
+        <target state="translated">用户 {0}  不是 @@PRODUCT_NAME@@ 管理员。只有具有 @@PRODUCT_NAME@@ 管理员角色的用户才可为其他用户授予或者撤消 @@PRODUCT_NAME@@ 管理员角色。</target>
       </trans-unit>
       <trans-unit id="userdetails.usepam" xml:space="preserve">
         <source>Use PAM: </source>
@@ -2273,7 +2273,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="translated">用户概述</target>
+        <target state="translated">用户概览</target>
       </trans-unit>
       <trans-unit id="userlist.jsp.status" xml:space="preserve">
         <source>Status</source>
@@ -2287,14 +2287,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="translated">激活的</target>
+        <target state="translated">活动</target>
       </trans-unit>
       <trans-unit id="userlist.jsp.disabled" xml:space="preserve">
         <source>Deactivated</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="translated">取消激活的</target>
+        <target state="translated">已停用</target>
       </trans-unit>
       <!-- activelist.jsp -->
       <trans-unit id="users.jsp.imgAlt" xml:space="preserve">
@@ -2311,7 +2311,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
-        <target state="translated">激活的用户</target>
+        <target state="translated">活动用户</target>
       </trans-unit>
       <trans-unit id="activelist.jsp.noUsers" xml:space="preserve">
         <source>No active users.</source>
@@ -2333,28 +2333,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
-        <target state="translated">取消激活的用户</target>
+        <target state="translated">已停用用户</target>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.noUsers" xml:space="preserve">
         <source>No deactivated users.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
-        <target state="translated">没有取消激活的用户。</target>
+        <target state="translated">没有已停用用户。</target>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.disabledBy" xml:space="preserve">
         <source>Deactivated By</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
-        <target state="translated">取消激活</target>
+        <target state="translated">停用者</target>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.disabledOn" xml:space="preserve">
         <source>Deactivated Date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
-        <target state="translated">取消激活的日期</target>
+        <target state="translated">停用日期</target>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.reactivate" xml:space="preserve">
         <source>Reactivate</source>
@@ -2369,14 +2369,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
-        <target state="translated">确认用户取消激活</target>
+        <target state="translated">确认用户重新激活</target>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.summary" xml:space="preserve">
         <source>The following users will be reactivated.  These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
-        <target state="translated">以下用户将被重新激活。这些用户将可以访问 @@PRODUCT_NAME@@ 并获得在他们被取消激活前所拥有的权限、角色和数据。</target>
+        <target state="translated">以下用户将被重新激活。这些用户将可以访问 @@PRODUCT_NAME@@ 并获得在他们被停用前所拥有的所有权限、角色和数据。</target>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -2405,7 +2405,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target state="translated">&lt;p&gt;这将&lt;strong&gt;永久&lt;/strong&gt;删除这个用户。&lt;/p&gt;&lt;p&gt;目前所有与此用户关联的调度动作都会改变，而且不再与此用户捆绑。&lt;/p&gt; &lt;p&gt;&lt;strong&gt;请只点一次这个按钮，完成删除的过程需要一定的时间。&lt;/strong&gt;&lt;/p&gt;</target>
+        <target state="translated">&lt;p&gt;这样将会&lt;strong&gt;永久&lt;/strong&gt;删除此用户。&lt;/p&gt;&lt;p&gt;目前已安排的与此用户关联的所有操作都会改变，而且不再与此用户捆绑。&lt;/p&gt; &lt;p&gt;&lt;strong&gt;请只单击一次此按钮，系统需要一段时间才能完成删除过程。&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <!-- disableuser.jsp -->
       <trans-unit id="disableuser.jsp.disable" xml:space="preserve">
@@ -2413,21 +2413,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target state="translated">取消激活用户</target>
+        <target state="translated">停用用户</target>
       </trans-unit>
       <trans-unit id="disableuser.jsp.confirm" xml:space="preserve">
         <source>Confirm User Deactivation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target state="translated">确认用户取消激活</target>
+        <target state="translated">确认用户停用</target>
       </trans-unit>
       <trans-unit id="disableuser.jsp.body" xml:space="preserve">
         <source>&lt;p&gt;This action will deactivate this user.  This user will no longer be able to log in or perform actions unless it is reactivated.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target state="translated">&lt;p&gt;这个动作将取消激活这个用户。这个用户在被重新激活前将不能登录或执动作作。&lt;/p&gt;</target>
+        <target state="translated">&lt;p&gt;此操作将会停用此用户。此用户在被重新激活前将不再能登录或执行操作。&lt;/p&gt;</target>
       </trans-unit>
       <!-- disableuser.jsp -->
       <trans-unit id="enableuser.jsp.enable" xml:space="preserve">
@@ -2442,14 +2442,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
-        <target state="translated">确认用户取消激活</target>
+        <target state="translated">确认用户重新激活</target>
       </trans-unit>
       <trans-unit id="enableuser.jsp.body" xml:space="preserve">
         <source>&lt;p&gt;This action will allow this user to access @@PRODUCT_NAME@@.  This user will retain all permissions, roles, and data that he or she had before being deactivated.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
-        <target state="translated">&lt;p&gt;这个动作将允许这个用户访问 @@PRODUCT_NAME@@。这个用户将保留被取消激活前的所有权限、角色和数据。&lt;/p&gt;</target>
+        <target state="translated">&lt;p&gt;此操作将允许该用户访问 @@PRODUCT_NAME@@。此用户将拥有被停用前的所有权限、角色和数据。&lt;/p&gt;</target>
       </trans-unit>
       <!-- systemsadmin.jsp -->
       <trans-unit id="systemsadmined.jsp.header" xml:space="preserve">
@@ -2467,21 +2467,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
               &lt;a href="/rhn/users/AssignedSystemGroups.do?uid=2266493"&gt;change the groups&lt;/a&gt;
               to which this user is assigned.</context>
         </context-group>
-        <target state="translated">要修改这个用户的访问级别，请 &lt;a href="{0}"&gt;修改为这个用户分配的组群&lt;/a&gt;。</target>
+        <target state="translated">要修改这个用户的访问级别，请&lt;a href="{0}"&gt;更改为此用户指派的组&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.headertwo" xml:space="preserve">
         <source>Systems Administered by this User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
-        <target state="translated">这个用户管理的系统</target>
+        <target state="translated">此用户管理的系统</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.summarytwo" xml:space="preserve">
         <source>You can select from the systems below for use in the System Set Manager.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
-        <target state="translated">您可以从以下的系统中选择在系统设置管理程序中使用的系统。</target>
+        <target state="translated">您可以从下面的系统中选择要在系统集管理器中使用的系统。</target>
       </trans-unit>
       <trans-unit id="Update List" xml:space="preserve">
         <source>Update List</source>
@@ -2495,28 +2495,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
-        <target state="translated">选择所有</target>
+        <target state="translated">全选</target>
       </trans-unit>
       <trans-unit id="Unselect All" xml:space="preserve">
         <source>Unselect All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
-        <target state="translated">取消选择所有</target>
+        <target state="translated">取消全选</target>
       </trans-unit>
       <trans-unit id="Add to SSM" xml:space="preserve">
         <source>Add Selected to SSM</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
-        <target state="translated">在 SSM 中添加选择的</target>
+        <target state="translated">将所选项添加到 SSM 中</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.access" xml:space="preserve">
         <source>Access Granted Through</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
-        <target state="translated">批准的访问</target>
+        <target state="translated">通过以下方式授予的访问权限</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.name" xml:space="preserve">
         <source>Name</source>
@@ -2539,7 +2539,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target state="translated">这个用户的信息可以通过以下提供的表格被编辑。以星号（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）标注的项是&lt;strong&gt;必填的&lt;/strong&gt;。</target>
+        <target state="translated">此用户的地址信息可以通过下面提供的表单编辑。标有星号（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）的项是&lt;strong&gt;必填项&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone" xml:space="preserve">
         <source>Phone</source>
@@ -2579,7 +2579,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
-        <target state="translated">（美国或加拿大要求）</target>
+        <target state="translated">（美国或加拿大用户必须填写）</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.zipcode" xml:space="preserve">
         <source>Zipcode</source>
@@ -2595,14 +2595,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
-        <target state="translated">国家</target>
+        <target state="translated">国家/地区</target>
       </trans-unit>
       <trans-unit id="yourdetails.jsp.summary" xml:space="preserve">
         <source> Please enter your information in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated"> 请在下面提供的表单中输入您的信息。标有星号 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 的项是&lt;strong&gt;必填的&lt;/strong&gt;。</target>
+        <target state="translated"> 请在下面提供的表单中输入您的信息。标有星号 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 的项是&lt;strong&gt;必填项&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
@@ -2616,7 +2616,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
-        <target state="translated">请在以下提供的表格中输入您的信息。以星号（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）标记的项是 &lt;strong&gt;必填的&lt;/strong&gt;。</target>
+        <target state="translated">请在下面提供的表单中输入您的信息。标有星号（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）的项是&lt;strong&gt;必填项&lt;/strong&gt;。</target>
       </trans-unit>
       <!-- assignenedgroups.jsp -->
       <trans-unit id="assignedgroups.jsp.header" xml:space="preserve">
@@ -2624,14 +2624,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">分配的系统组群</target>
+        <target state="translated">指派的系统组</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.summary" xml:space="preserve">
         <source>A list of system groups follows. Use the check boxes to set this user's access permissions to each system group.  Org Admins have permissions to all system groups. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">随后会显示系统组列表。请使用复选框来设置此用户对每个系统组的访问权限。组织管理员对所有系统组拥有权限。 </target>
+        <target state="translated">随后会显示系统组列表。请使用复选框来设置此用户对每个系统组的访问权限。组织管理员拥有访问所有系统组的权限。 </target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.asadmin" xml:space="preserve">
         <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups. </source>
@@ -2652,14 +2652,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">默认系统组群：</target>
+        <target state="translated">默认系统组：</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.nogroups" xml:space="preserve">
         <source>Your organization has no system groups.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">您的机构没有系统组群。</target>
+        <target state="translated">您的组织没有系统组。</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.submitpermissions" xml:space="preserve">
         <source>Update Permissions</source>
@@ -2673,14 +2673,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">更新默认设置</target>
+        <target state="translated">更新默认值</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.group" xml:space="preserve">
         <source>Group</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">组群</target>
+        <target state="translated">组</target>
       </trans-unit>
       <trans-unit id="filter" xml:space="preserve">
         <source>filter</source>
@@ -2701,14 +2701,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
-        <target state="translated">选择所有</target>
+        <target state="translated">全选</target>
       </trans-unit>
       <trans-unit id="unselectall" xml:space="preserve">
         <source>unselectall</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
-        <target state="translated">取消选择所有</target>
+        <target state="translated">取消全选</target>
       </trans-unit>
       <!-- Scheduled Actions pages -->
       <trans-unit id="actiondetails.jsp.heading2" xml:space="preserve">
