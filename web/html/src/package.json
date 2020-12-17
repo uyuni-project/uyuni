@@ -54,7 +54,7 @@
 
     "rename-if-old": "TODO",
 
-    "migrate": "./build/migrate-ts/index.sh"
+    "migrate": "node build/migrate-ts/index.js"
   },
   "engines": {
     "node": ">=10.0.0",

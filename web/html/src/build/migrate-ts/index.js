@@ -14,10 +14,12 @@ const args = require("./args");
     console.log(`got inputs:\n${inputPaths.join("\n")}`);
   }
 
-  console.log('migrate flow');
+  console.log("migrate flow");
   try {
-      // await exec(`yarn flow-to-ts ${inputPaths}`);
-  } catch(error) {
-
+    const output = await exec(`yarn flow-to-ts ${inputPaths}`);
+    console.log(output);
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
   }
 })();
