@@ -1009,7 +1009,7 @@
       </trans-unit>
       <trans-unit id="Critical TIME_WAIT Connections" xml:space="preserve">
         <source>Critical TIME_WAIT Connections</source>
-        <target>Kritické spojenia TIME_WAIT</target>
+        <target>Kritické pripojenia TIME_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1499,21 +1499,21 @@
       </trans-unit>
       <trans-unit id="Service Name" xml:space="preserve">
         <source>Service Name</source>
-        <target/>
+        <target>Názov služby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Servlet Name" xml:space="preserve">
         <source>Servlet Name</source>
-        <target/>
+        <target>Názov servletu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Status (OK/WARNING/CRITICAL/UNKNOWN)" xml:space="preserve">
         <source>Status (OK/WARNING/CRITICAL/UNKNOWN)</source>
-        <target/>
+        <target>Stav (OK/VAROVNÝ/KRITICKÝ/NEZNÁMY)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1688,7 +1688,7 @@
       </trans-unit>
       <trans-unit id="Warning CLOSE_WAIT Connections" xml:space="preserve">
         <source>Warning CLOSE_WAIT Connections</source>
-        <target/>
+        <target>Varovné pripojenia CLOSE_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1751,7 +1751,7 @@
       </trans-unit>
       <trans-unit id="Warning Connections" xml:space="preserve">
         <source>Warning Connections</source>
-        <target/>
+        <target>Varovné pripojenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1786,7 +1786,7 @@
       </trans-unit>
       <trans-unit id="Warning ESTABLISHED Connections" xml:space="preserve">
         <source>Warning ESTABLISHED Connections</source>
-        <target/>
+        <target>Varovné pripojenia ESTABLISHED</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1807,7 +1807,7 @@
       </trans-unit>
       <trans-unit id="Warning FIN_WAIT Connections" xml:space="preserve">
         <source>Warning FIN_WAIT Connections</source>
-        <target/>
+        <target>Varovné pripojenia FIN_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2024,7 +2024,7 @@
       </trans-unit>
       <trans-unit id="Warning SYN_RCVD Connections" xml:space="preserve">
         <source>Warning SYN_RCVD Connections</source>
-        <target/>
+        <target>Varovné pripojenia SYN_RCVD</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2073,7 +2073,7 @@
       </trans-unit>
       <trans-unit id="Warning TIME_WAIT Connections" xml:space="preserve">
         <source>Warning TIME_WAIT Connections</source>
-        <target/>
+        <target>Varovné pripojenia TIME_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2284,7 +2284,7 @@
       </trans-unit>
       <trans-unit id="metrics.Connections" xml:space="preserve">
         <source>Connections</source>
-        <target/>
+        <target>Pripojenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2725,7 +2725,7 @@
       </trans-unit>
       <trans-unit id="metrics.Used Sessions" xml:space="preserve">
         <source>Used Sessions</source>
-        <target/>
+        <target>Použité sedenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3362,7 +3362,7 @@
       </trans-unit>
       <trans-unit id="Servlet" xml:space="preserve">
           <source>Servlet</source>
-        <target/>
+        <target>Servlet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3390,7 +3390,7 @@
       </trans-unit>
       <trans-unit id="TCP Connections by State" xml:space="preserve">
           <source>TCP Connections by State</source>
-        <target/>
+        <target>Pripojenia TCP podľa stavu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3488,7 +3488,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.created" xml:space="preserve">
           <source>Autoinstallation session created but has not yet been used.</source>
-        <target/>
+        <target>Sedenie automatickej inštalácie bolo vytvorené, ale zatiaľ sa nepoužilo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
