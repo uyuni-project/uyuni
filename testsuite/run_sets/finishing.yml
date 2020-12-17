@@ -14,5 +14,6 @@
 # these features are needed for gathering log/debug info
 - features/finishing/srv_debug.feature
 - features/finishing/allcli_debug.feature
+- features/finishing/minssh_sp_migration.feature
 
 ## Post run features END ##
