@@ -8,14 +8,14 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/PackageList</context>
           </context-group>
-        <target state="translated">构架</target>
+        <target state="translated">体系结构</target>
       </trans-unit>
       <trans-unit id="column.release" xml:space="preserve">
           <source>Release</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channels/manage/DistChannelMap</context>
           </context-group>
-        <target state="translated">发行本</target>
+        <target state="translated">版本</target>
       </trans-unit>
       <trans-unit id="column.basechannel" xml:space="preserve">
           <source>Base Channel</source>
@@ -29,7 +29,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
-        <target state="translated">已创建</target>
+        <target state="translated">创建时间</target>
       </trans-unit>
       <trans-unit id="column.name" xml:space="preserve">
           <source>Name</source>
@@ -71,7 +71,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
           </context-group>
-        <target state="translated">标签名称</target>
+        <target state="translated">标记名称</target>
       </trans-unit>
       <trans-unit id="column.reason" xml:space="preserve">
           <source>Reason</source>
@@ -92,7 +92,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
-        <target state="translated">已创建标签</target>
+        <target state="translated">标记创建时间</target>
       </trans-unit>
       <!-- Generic row labels. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="row.name" xml:space="preserve">
@@ -206,7 +206,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
-        <target state="translated">调度动作不早于：</target>
+        <target state="translated">安排操作不早于：</target>
       </trans-unit>
       <trans-unit id="schedule-options.selection" xml:space="preserve">
         <source>Date Selection</source>
@@ -220,14 +220,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
-        <target state="translated">添加到动作链：</target>
+        <target state="translated">添加到：</target>
       </trans-unit>
       <trans-unit id="schedule-options.placeholder" xml:space="preserve">
         <source>new action chain</source>
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
-        <target state="translated">新动作链</target>
+        <target state="translated">新操作链</target>
       </trans-unit>
       <!--# Struts Validator Error Messages-->
       <trans-unit id="errors.invalid.value" xml:space="preserve">
@@ -247,28 +247,28 @@
           <context context-type="sourcefile">Any page with required fields</context>
           <context context-type="paramnotes">Login is required</context>
         </context-group>
-        <target state="translated">需要 {0}。</target>
+        <target state="translated">必须指定 {0}。</target>
       </trans-unit>
       <trans-unit id="errors.ascii" xml:space="preserve">
         <source>{0} contains invalid characters.  Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required ascii fields</context>
         </context-group>
-        <target state="translated">{0} 含有无效的字符。只允许使用字母和数字、'-'、'_'、'.' 和 '@'。</target>
+        <target state="translated">{0} 含有无效的字符。只允许使用字母和数字、"-"、"_"、"." 和 "@"。</target>
       </trans-unit>
       <trans-unit id="errors.username" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', '.', and '@' are allowed. Please try again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required username fields</context>
         </context-group>
-        <target state="translated">{0} 含有无效的字符。只允许使用字母和数字、'-'、'_'、'.' 和 '@'。请再试一次。</target>
+        <target state="translated">{0} 含有无效的字符。只允许使用字母和数字、"-"、"_"、"." 和 "@"。请再试一次。</target>
       </trans-unit>
       <trans-unit id="errors.posix" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required posix name fields</context>
         </context-group>
-        <target state="translated">{0} 含有无效的字符。除了字母和数字外，还允许使用'-'、'_'、'.' 和 '@'。</target>
+        <target state="translated">{0} 含有无效的字符。除了字母和数字外，还允许使用 "-"、"_"、"." 和 "@"。</target>
       </trans-unit>
       <trans-unit id="errors.config_channel_label" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
@@ -299,7 +299,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
         </context-group>
-        <target state="translated">{0} 必须是一个有效的数字。</target>
+        <target state="translated">{0} 必须是有效的数字。</target>
       </trans-unit>
       <trans-unit id="errors.decimalvalue" xml:space="preserve">
         <source>{0} must not contain decimal values.</source>
@@ -307,7 +307,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
         </context-group>
-        <target state="translated">{0} 不能包括十进制值。</target>
+        <target state="translated">{0} 不能包含十进制值。</target>
       </trans-unit>
       <trans-unit id="errors.minlength" xml:space="preserve">
         <source>{0} cannot be less than {1} characters.</source>
@@ -323,7 +323,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be greater than 4 characters</context>
         </context-group>
-        <target state="translated">{0} 不能多于 {1} 个字符（注：不支持双位字符）。</target>
+        <target state="translated">{0} 不能多于 {1} 个字符（注意：不支持双字节字符）。</target>
       </trans-unit>
       <trans-unit id="errors.invalid" xml:space="preserve">
         <source>{0} is invalid.</source>
@@ -331,7 +331,7 @@
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Email is invalid</context>
         </context-group>
-        <target state="translated">{0} 是无效的。</target>
+        <target state="translated">{0} 无效。</target>
       </trans-unit>
       <trans-unit id="errors.integer" xml:space="preserve">
         <source>{0} must be a whole number.</source>
@@ -339,7 +339,7 @@
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
         </context-group>
-        <target state="translated">{0} 必须是一个整数。</target>
+        <target state="translated">{0} 必须是整数。</target>
       </trans-unit>
       <trans-unit id="errors.integer.minmax" xml:space="preserve">
         <source>{0} must be a whole number between {1} and {2}.</source>
@@ -355,7 +355,7 @@
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
         </context-group>
-        <target state="translated">{0} 必须是一个浮点数。</target>
+        <target state="translated">{0} 必须是十进制数。</target>
       </trans-unit>
       <trans-unit id="errors.float.minmax" xml:space="preserve">
         <source>{0} must be a decimal number between {1} and {2}.</source>
@@ -388,91 +388,91 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.title.user" xml:space="preserve">
           <source>We're sorry, but the user could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该用户。</target>
+        <target state="translated">抱歉，找不到该用户。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.profile" xml:space="preserve">
           <source>We're sorry, but the system profile could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该系统侧写。</target>
+        <target state="translated">抱歉，找不到该系统配置文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.channel" xml:space="preserve">
           <source>We're sorry, but the channel could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该频道。</target>
+        <target state="translated">抱歉，找不到该频道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.action" xml:space="preserve">
           <source>We're sorry, but the action could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该动作。</target>
+        <target state="translated">抱歉，找不到该操作。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.errata" xml:space="preserve">
           <source>We're sorry, but the patch could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该勘误。</target>
+        <target state="translated">抱歉，找不到该补丁。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.system" xml:space="preserve">
           <source>We're sorry, but the system could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该系统。</target>
+        <target state="translated">抱歉，找不到该系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.crash" xml:space="preserve">
           <source>We're sorry, but the software crash could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该软件崩溃。</target>
+        <target state="translated">抱歉，找不到该软件崩溃。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.title" xml:space="preserve">
           <source>We're sorry, but a required data object could not be found.</source>
-        <target state="translated">非常抱歉，无法找到所需数据对象。</target>
+        <target state="translated">抱歉，找不到所需数据对象。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configchan.title" xml:space="preserve">
           <source>We're sorry, but the configuration channel could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该配置频道。</target>
+        <target state="translated">抱歉，找不到该配置频道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.title" xml:space="preserve">
           <source>We're sorry, but the configuration file could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该配置文件。</target>
+        <target state="translated">抱歉，找不到该配置文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.title" xml:space="preserve">
           <source>We're sorry, but the configuration revision could not be found.</source>
-        <target state="translated">非常抱歉，无法找到该配置修订。</target>
+        <target state="translated">抱歉，找不到该配置修订版。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.title" xml:space="preserve">
           <source>We're sorry, but the activation key could not be found.</source>
-        <target state="translated">对不起，无法找到该激活码。</target>
+        <target state="translated">抱歉，找不到该激活密钥。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.title" xml:space="preserve">
           <source>We're sorry, but the system group could not be found.</source>
-        <target state="translated">对不起，无法找到该系统组群。</target>
+        <target state="translated">抱歉，找不到该系统组。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -486,14 +486,14 @@
       </trans-unit>
       <trans-unit id="lookup.scapfile.title" xml:space="preserve">
           <source>We're sorry, but the requested SCAP results file could not be found.</source>
-        <target state="translated">非常抱歉，无法找到要求的 SCAP 结果文件。</target>
+        <target state="translated">抱歉，找不到请求的 SCAP 结果文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.header" xml:space="preserve">
           <source>Missing Capabilities</source>
-        <target state="translated">缺少的功能</target>
+        <target state="translated">缺少功能</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -626,21 +626,21 @@
       </trans-unit>
       <trans-unit id="lookup.activationkey.reason2" xml:space="preserve">
           <source>You do not have permission to view this activation key.</source>
-        <target state="translated">您没有查看这个激活码的权限。</target>
+        <target state="translated">您没有查看这个激活密钥的权限。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.reason2" xml:space="preserve">
           <source>You do not have permission to view this system group.</source>
-        <target state="translated">您没有查看这个系统组群的权限。</target>
+        <target state="translated">您没有查看这个系统组的权限。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.profile" xml:space="preserve">
           <source>You do not have permission to view this system profile.</source>
-        <target state="translated">您没有查看这个系统侧写的权限。</target>
+        <target state="translated">您没有查看这个系统配置文件的权限。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -654,14 +654,14 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.errata" xml:space="preserve">
           <source>You do not have permission to view this patch.</source>
-        <target state="translated">您没有查看这个勘误的权限。</target>
+        <target state="translated">您没有查看这个补丁的权限。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.action" xml:space="preserve">
           <source>You do not have permission to view this action.</source>
-        <target state="translated">您没有查看这个动作的权限。</target>
+        <target state="translated">您没有查看这个操作的权限。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -703,14 +703,14 @@
       </trans-unit>
       <trans-unit id="lookup.configrev.reason2" xml:space="preserve">
           <source>You do not have permission to view this configuration revision.</source>
-        <target state="translated">您没有查看这个配置修订的权限。</target>
+        <target state="translated">您没有查看这个配置修订版的权限。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason3" xml:space="preserve">
           <source>You've found an error in our site.</source>
-        <target state="translated">您已经在我们的网站上发现了一个错误。</target>
+        <target state="translated">您使用我们的网站时发生了错误。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -724,7 +724,7 @@
       </trans-unit>
       <trans-unit id="lookup.issslave.reason1" xml:space="preserve">
           <source>No slave with the name {0} is identified on this master.</source>
-        <target state="translated">在这台主服务器中没有名为 {0} 的辅服务器。</target>
+        <target state="translated">在这台主服务器中没有名为 {0} 的从属服务器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -809,14 +809,14 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.removerole" xml:space="preserve">
           <source>Cannot remove role.</source>
-        <target state="translated">无法删除角色。</target>
+        <target state="translated">无法去除角色。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.disableuser" xml:space="preserve">
           <source>Cannot deactivate user.</source>
-        <target state="translated">无法取消激活用户。</target>
+        <target state="translated">无法停用用户。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -851,7 +851,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.channel" xml:space="preserve">
           <source>You must be a channel administrator in order to edit a channel.</source>
-        <target state="translated">您必须是一个频道管理员才可以编辑频道。</target>
+        <target state="translated">您必须是频道管理员才可以编辑频道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -865,7 +865,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.subscribechannel" xml:space="preserve">
           <source>You cannot subscribe or unsubscribe systems to this channel.</source>
-        <target state="translated">您不能订阅或退订这个频道。</target>
+        <target state="translated">您不能为系统订阅或取消订阅此频道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -875,49 +875,49 @@
         <context-group name="ctx">
             <context context-type="paramnotes">You cannot remove the Organization Administrator role from the last Organization Administrator.</context>
           </context-group>
-        <target state="translated">您无法在上一个 {0} 中删除 {0} 角色。</target>
+        <target state="translated">您不能去除最后一个 {0} 中的 {0} 角色。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.deleteuser" xml:space="preserve">
           <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source>
-        <target state="translated">您必须是一个 satellite 的机构管理员才可以删除用户。</target>
+        <target state="translated">您必须是 @@PRODUCT_NAME@@ 的组织管理员才能删除用户。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.disableuser" xml:space="preserve">
           <source>You must be an organization administrator to deactivate a user.</source>
-        <target state="translated">您必须是一个机构管理员才可以取消激活用户。</target>
+        <target state="translated">您必须是组织管理员才能停用用户。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.enableuser" xml:space="preserve">
           <source>You must be an organization administrator to reactivate a user.</source>
-        <target state="translated">您必须是一个机构管理员才可以重新激活用户。</target>
+        <target state="translated">您必须是组织管理员才能重新激活用户。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.userlist" xml:space="preserve">
           <source>You must be an organization administrator to view this page. Contact your organization administrator to get information on the users in this system.</source>
-        <target state="translated">您必须是一个机构管理员才可以查看本页。请联系您的机构管理员来获得这个系统中的用户信息。</target>
+        <target state="translated">您必须是组织管理员才能查看此页面。请联系您的组织管理员获得此系统中的用户信息。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.lookupuser" xml:space="preserve">
           <source>You must be an organization administrator to view information on users in this organization.</source>
-        <target state="translated">您必须是一个机构管理员才可以查看这个机构内的用户信息。</target>
+        <target state="translated">您必须是组织管理员才能查看此组织内的用户信息。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.header" xml:space="preserve">
           <source>You do not have the appropriate permission set to access the requested page. You may have reached this error page in one of several ways:</source>
-        <target state="translated">您没有合适的权限设定来访问请求的页面。您可能是通过下面几个途径之一进入本错误页面的：</target>
+        <target state="translated">您无权访问请求的页面。您可能是通过以下几种方式进入此错误页面的：</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -927,7 +927,7 @@
         <context-group name="ctx">
             <context context-type="paramnotes">Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after 15 minutes of inactivity. To sign in again, click _here_.</context>
           </context-group>
-        <target state="translated">您的登录会话已经过期。基于安全原因，@@PRODUCT_NAME@@ 会在处于不活动状态 {0} 分钟后终止您的登录会话。要重新登录，请点击&lt;a href="{1}"&gt;这里&lt;/a&gt;。</target>
+        <target state="translated">您的登录会话已过期。出于安全原因，@@PRODUCT_NAME@@ 会在处于不活动状态 {0} 分钟后终止您的登录会话。要重新登录，请单击&lt;a href="{1}"&gt;此处&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -937,7 +937,7 @@
         <context-group name="ctx">
             <context context-type="paramnotes">You've found an error in our site. Please help us by filling out _this form_ with details of how you received this message.</context>
           </context-group>
-        <target state="translated">您已经在我们的网站发现了一个错误。请联系您的支持代表，并附带您如何获得此信息的详情。</target>
+        <target state="translated">您使用我们的网站时发生了错误。请联系您的支持代表并描述您是如何收到此讯息的。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -958,21 +958,21 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.orglist" xml:space="preserve">
           <source>Can not display Organization List</source>
-        <target state="translated">无法显示机构列表</target>
+        <target state="translated">无法显示组织列表</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.orgdetail" xml:space="preserve">
           <source>Can not display Organization Details</source>
-        <target state="translated">无法显示机构详情</target>
+        <target state="translated">无法显示组织细节</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.general" xml:space="preserve">
           <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source>
-        <target state="translated">您必须是 Satellite 管理员才可以查看本页。请联系您的 Satellite 管理员来获得这个系统中该机构的信息。</target>
+        <target state="translated">您必须是  @@PRODUCT_NAME@@ 管理员才能查看此页面。请联系您的  @@PRODUCT_NAME@@ 管理员获得此系统中该组织的信息。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -982,14 +982,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
-        <target state="translated">页请求错误</target>
+        <target state="translated">页面请求错误</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.summary" xml:space="preserve">
         <source>We could not display the requested page because of a missing parameter.  This error could have occurred several ways:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
-        <target state="translated">因为缺少一个参数，我们无法显示您所要求的页。这个错误可能在以下的情况下发生：</target>
+        <target state="translated">因为缺少一个参数，我们无法显示您请求的页面。此错误可能会在您使用以下方式时发生：</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason1" xml:space="preserve">
         <source>An incorrect or out-of-date bookmark.</source>
@@ -1003,28 +1003,28 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
-        <target state="translated">不正确或过时的链接。</target>
+        <target state="translated">不正确或过时的超链接。</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason3" xml:space="preserve">
         <source>Your browser encountered an error handling request parameters.  Continued use of this browser may yield unexpected results.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
-        <target state="translated">您的浏览器在处理需要的参数时发生错误。继续使用这个浏览器可能会获得不正常的结果。</target>
+        <target state="translated">您的浏览器在处理请求参数时发生错误。继续使用这个浏览器可能会获得非预期的结果。</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason4" xml:space="preserve">
         <source>You've found an error in our site.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
-        <target state="translated">您已经在我们的网站上发现了一个错误。</target>
+        <target state="translated">您使用我们的网站时发生了错误。</target>
       </trans-unit>
       <trans-unit id="404.jsp.title" xml:space="preserve">
         <source>Page Not Found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target state="translated">没有找到页</target>
+        <target state="translated">找不到页面</target>
       </trans-unit>
       <trans-unit id="404.jsp.summary" xml:space="preserve">
         <source>The page you requested, {0}, was not found.</source>
@@ -1034,7 +1034,7 @@
               The page you requested, https://rhn.redhat.com/rhn/YourRhn.do, was not found.
           </context>
         </context-group>
-        <target state="translated">未找到您请求的页 {0}。</target>
+        <target state="translated">未找到您请求的页面 {0}。</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason1" xml:space="preserve">
         <source>If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated.</source>
@@ -1070,7 +1070,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target state="translated">如果您觉得该页面有错误，请联系我们并描述您是如何接收到这个信息的。</target>
+        <target state="translated">如果您觉得该页面有错误，请联系我们并描述您是如何收到此讯息的。</target>
       </trans-unit>
       <trans-unit id="500.jsp.imgAlt" xml:space="preserve">
         <source>error</source>
@@ -1091,14 +1091,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
-        <target state="translated">服务器问题导致您无法填写您的请求。现在可能无法执行这个动作。</target>
+        <target state="translated">服务器问题导致您无法填写您的请求。现在可能无法执行此操作。</target>
       </trans-unit>
       <trans-unit id="500.jsp.message" xml:space="preserve">
         <source>Please help us correct this problem by contacting us with details of how you received this message.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
-        <target state="translated">请提供您如何接受这个消息的详情，以帮助我们纠正这个问题。</target>
+        <target state="translated">请联系我们并描述您是如何收到此讯息的，以帮助我们纠正这个问题。</target>
       </trans-unit>
       <trans-unit id="common.jsp.noscript" xml:space="preserve">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
@@ -1112,7 +1112,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="translated">机构管理员？*</target>
+        <target state="translated">组织管理员？*</target>
       </trans-unit>
       <trans-unit id="satadmin.displayname" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Admin?</source>
@@ -2152,7 +2152,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-<target state="translated">如果要将 Satellite 设定为根据 LDAP、Kerberos 以及其它基于网络的认证系统认证，请访问 &lt;a href={0}&gt;参考指南&lt;/a&gt; 查看设定 PAM 的步骤。</target>
+        <target state="translated">如果要将 Satellite 设定为根据 LDAP、Kerberos 以及其它基于网络的认证系统认证，请访问 &lt;a href={0}&gt;参考指南&lt;/a&gt; 查看设定 PAM 的步骤。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly" xml:space="preserve">
         <source>Read-only API user:</source>
@@ -17595,7 +17595,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">当前的版本</target>
       </trans-unit>
@@ -17603,7 +17603,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">最后修改</target>
       </trans-unit>
@@ -17632,7 +17632,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">这个频道中没有可部署的系统</target>
       </trans-unit>
@@ -17640,7 +17640,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">动作</target>
       </trans-unit>
@@ -17648,7 +17648,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17656,7 +17656,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所有的文件</target>
       </trans-unit>
@@ -17664,7 +17664,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署选择的文件</target>
       </trans-unit>
@@ -17672,7 +17672,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件</target>
       </trans-unit>
@@ -17680,7 +17680,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">您可以从下面的列表中选择您要部署的文件。会要求您选择部署到哪个系统。</target>
       </trans-unit>
@@ -17688,7 +17688,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17696,7 +17696,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">确认并部署到选定的系统</target>
       </trans-unit>
@@ -17704,7 +17704,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件：选择部署的系统</target>
       </trans-unit>
@@ -17712,7 +17712,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">请选择您要部署所选文件的系统。</target>
       </trans-unit>
@@ -17720,7 +17720,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;请注意，如果您试图从 {0} 配置频道部署的任何文件被更高级别的频道里具有相同名字的文件覆盖或级别比之要低，该文件的覆盖/高级别版本而不是 {0} 配置频道里的版本将被部署至这个系统。</target>
       </trans-unit>
@@ -30015,34 +30015,34 @@ given channel.</source>
         <source>Allow Vendor Change</source>
         <target state="translated">允许供应商更改</target>
       </trans-unit>
-    <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
+      <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
         <source>Documentation Language</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.docs.langs" xml:space="preserve">
         <source>Please select your preferred documentation language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ documentation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.newToolbar.stateType" xml:space="preserve">
         <source>New Config State Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
         <source>Create Config State Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
