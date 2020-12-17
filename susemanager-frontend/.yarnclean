@@ -12,7 +12,7 @@ images
 example
 examples
 
-# NB! don't autoclean this, snowpack keeps scripts in assets
+# NB! don't autoclean this, some packages keeps scripts in assets
 # assets
 
 # code coverage directories

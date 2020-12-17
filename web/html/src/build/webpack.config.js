@@ -113,7 +113,7 @@ module.exports = (env, argv) => {
     },
     resolve: {
       alias: webpackAlias,
-      extensions: ['.ts', '.tsx', '.js', '.json']
+      extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
     },
     plugins: pluginsInUse,
     devServer: {
