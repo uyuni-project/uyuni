@@ -59,21 +59,23 @@ const args = require("./args");
       console.log(`the following files need manual review:\n\t${needsReview.join("\n\t")}`);
     }
 
-    // At this point, our input paths are no longer correct since they're js or jsx files, but we have output ts or tsx files
-    const tsPaths = [];
+    // At this point, our input paths are no longer correct since they're js or jsx files, but previous ops output ts or tsx files
     console.log("finding outputs");
+    const tsPaths = [];
     for (const item of inputPaths) {
       try {
-        // This is the most likely output
+        // Check if we have a tsx file with a matching name, this is the most likely scenario
         const tsxPath = item.replace(/.jsx?$/, ".tsx");
         await fs.promises.access(tsxPath);
         tsPaths.push(tsxPath);
       } catch {
         try {
+          // If no tsx is found, check for ts
           const tsPath = item.replace(/.jsx?$/, ".ts");
           await fs.promises.access(tsPath);
           tsPaths.push(tsPath);
         } catch (error) {
+          // If there's no match, give up on this one, but keep trying to work with the rest of the files
           console.error(`failed to find output for: ${item}`);
         }
       }
@@ -84,6 +86,12 @@ const args = require("./args");
     }
     const tsInputs = tsPaths.join(" ");
 
+    /**
+     * A collection of automatic fixes for some of the most prevalent issues across the whole codebase.
+     * Most of these are semantic differences between Flow and TS, others are issues because TS is stricter with types than Flow is.
+     */
+
+    // In Flow, the widest possible type is `Object`, in TS the equivalent type is `any`
     // const foo: Object -> const foo: any
     console.log("migrate object to any");
     await execAndLog(`sed -i '' -e 's/: Object\\([^\\.]\\)/: any\\1/g' ${tsInputs}`);
@@ -101,19 +109,21 @@ const args = require("./args");
     console.log("migrate object array to any array");
     await execAndLog(`sed -i '' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
 
+    // In strict TS, an empty untyped object is of type `{}` and can't have keys added to it
     // let foo = {}; -> let foo: any = {};
     console.log("migrate untyped object initializations");
     await execAndLog(`sed -i '' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
 
+    // In strict TS, an empty untyped array is of type `never[]` and you can't push to it without adding a type
     // let foo = []; -> let foo: any[] = [];
     console.log("migrate untyped array initializations");
     await execAndLog(`sed -i '' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
 
-    // Find which imported files have type annotations but were not included originally
+    // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
     {
       const { stdout } = await execAndLog(

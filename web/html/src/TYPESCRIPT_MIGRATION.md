@@ -51,7 +51,7 @@ To fix, change the target's props to accept `JSX.Element` which among other thin
 
 ### `import type {Node} from 'react';`
 
-TODO: I will fix this myself. About 10 files need manual `Node` -> `JSX.Element` (or `React.ReactNode`) migration.
+TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `JSX.Element` (or `React.ReactNode`) migration.
 
 ## Technical tidbits
 

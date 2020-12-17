@@ -26,8 +26,6 @@
         "es5",
         "dom",
         "dom.iterable",
-        // TODO: Check if this is still relevant or not
-        // "esnext"
       ],
       "strict": true,
       // Should eventually be false
