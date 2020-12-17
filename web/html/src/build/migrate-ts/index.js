@@ -9,6 +9,7 @@ const args = require("./args");
   try {
     const { inputs: rawInputs, isVerbose } = args.parse(process.argv);
 
+    /** Execute shell command and log the output if verbose, always log errors */
     async function execAndLog(...args) {
       const result = await exec(...args);
       const { stdout, stderr } = result;
@@ -35,6 +36,7 @@ const args = require("./args");
       console.log(`got inputs:\n${inputPaths.join("\n")}`);
     }
 
+    // Run an automatic tool that performs basic syntax transforms
     console.log("migrate flow");
     await execAndLog(`yarn flow-to-ts ${inputs}`);
 
@@ -82,19 +84,28 @@ const args = require("./args");
     }
     const tsInputs = tsPaths.join(" ");
 
+    // const foo: Object -> const foo: any
     console.log("migrate object to any");
-
     await execAndLog(`sed -i '' -e 's/: Object\\([^\\.]\\)/: any\\1/g' ${tsInputs}`);
 
+    // React.useState(undefined) -> React.useState<any>(undefined)
     console.log("migrate untyped use state");
     await execAndLog(`sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
 
+    // React.ReactNode -> JSX.Element
     console.log("migrate React.ReactNode to JSX.Element");
     await execAndLog(`sed -i '' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
 
+    // Array<Object> -> Array<any>
     console.log("migrate object array to any array");
     await execAndLog(`sed -i '' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
+
+    // let foo = {}; -> let foo: any = {};
+    console.log("migrate untyped object initializations");
+    await execAndLog(`sed -i '' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
 
     // Find which imported files have type annotations but were not included originally
     console.log("finding untyped annotated imports");
@@ -105,7 +116,7 @@ const args = require("./args");
       const paths = stdout.split("\n").filter(item => !!item.trim());
       if (paths.length) {
         console.log(
-          `found following imported files that have annotations but are not mared as typed:\n\t${paths.join("\n\t")}`
+          `the following imported files have annotations but are not marked as typed:\n\t${paths.join("\n\t")}`
         );
         console.log(`to try and migrate them, run\n\tyarn migrate ${paths.join(" ")}`);
       }
