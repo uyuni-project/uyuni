@@ -26,34 +26,7 @@
     "test:watch": "BABEL_ENV=test jest --watch",
     "storybook": "start-storybook -s ./.storybook/public",
     "tsc": "tsc",
-
-    "find-js-jsx": "find components core manager utils -path ./node_modules -prune -false -o -path ./build -prune -false -o -name '*.js' -o -name '*.jsx'",
-    "find-ts-tsx": "find components core manager utils -path ./node_modules -prune -false -o -path ./build -prune -false -o -name '*.ts' -o -name '*.tsx'",
-
-    "find-flow": "yarn --silent find-js-jsx | xargs grep -l '@flow'",
     "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
-    "migrate-flow": "yarn --silent find-flow | xargs yarn flow-to-ts",
-
-    "tsc-grep-untyped-annotated": "(yarn --silent tsc 2>&1 || true) | tee | grep 'can only be used in TypeScript files'",
-    "find-untyped-annotated": "yarn --silent tsc-grep-untyped-annotated | sed -e 's/\\.js.*/.js/' | uniq",
-    "migrate-untyped-annotated": "yarn --silent find-untyped-annotated | xargs yarn flow-to-ts",
-
-    "find-object-to-any": "yarn --silent find-ts-tsx | xargs grep -l ': Object[^\\.]'",
-    "migrate-object-to-any": "yarn --silent find-object-to-any | xargs -I {} sed -i '' -e 's/: Object\\([^\\.]\\)/: any\\1/g' {}",
-
-    "find-untyped-use-state": "yarn --silent find-ts-tsx | xargs grep -l 'React.useState(undefined)'",
-    "migrate-untyped-use-state": "yarn --silent find-untyped-use-state | xargs -I {} sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' {}",
-
-    "find-react-node-jsx-element": "yarn --silent find-ts-tsx | xargs grep -l '=> React.ReactNode'",
-    "migrate-react-node-jsx-element": "yarn --silent find-react-node-jsx-element | xargs -I {} sed -i '' -e 's/=> React.ReactNode/=> JSX.Element/' {}",
-    "find-react-node-jsx-element-2": "yarn --silent find-ts-tsx | xargs grep -l ': React.ReactNode {'",
-    "migrate-react-node-jsx-element-2": "yarn --silent find-react-node-jsx-element-2 | xargs -I {} sed -i '' -e 's/: React.ReactNode {/: JSX.Element {/' {}",
-
-    "find-array-object-array-any": "yarn --silent find-ts-tsx | xargs grep -l 'Array<Object>'",
-    "migrate-array-object-array-any": "yarn --silent find-array-object-array-any | xargs -I {} sed -i '' -e 's/Array<Object>/Array<any>/' {}",
-
-    "rename-if-old": "TODO",
-
     "migrate": "node build/migrate-ts/index.js"
   },
   "engines": {

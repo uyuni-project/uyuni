@@ -38,8 +38,9 @@ const args = require("./args");
     console.log("migrate flow");
     await execAndLog(`yarn flow-to-ts ${inputs}`);
 
-    // Find which files we failed to migrate and rename them so other toolsets can work with them
+    // Find which files we failed to migrate and rename them so other matchers can work with them
     console.log("finding orphans");
+    const needsReview = [];
     for (const item of inputPaths) {
       try {
         // If the file exists, it needs to be renamed
@@ -47,10 +48,13 @@ const args = require("./args");
         // Blindly move to tsx, the content will need to be manually inspected anyway
         const newName = item.replace(/.jsx?$/, ".tsx");
         await fs.promises.rename(item, newName);
-        console.warn(`needs manual review: ${newName}`);
+        needsReview.push(newName);
       } catch {
         // File was already migrated to a new name, do nothing
       }
+    }
+    if (needsReview.length) {
+      console.log(`the following files need manual review:\n\t${needsReview.join("\n\t")}`);
     }
 
     // At this point, our input paths are no longer correct since they're js or jsx files, but we have output ts or tsx files
@@ -92,7 +96,22 @@ const args = require("./args");
     console.log("migrate object array to any array");
     await execAndLog(`sed -i '' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
 
-    console.log('\ndone with automations, try running `yarn tsc` to find any remaining issues\n');
+    // Find which imported files have type annotations but were not included originally
+    console.log("finding untyped annotated imports");
+    {
+      const { stdout } = await execAndLog(
+        `(yarn --silent tsc 2>&1 || true) | tee | grep "can only be used in TypeScript files" | sed -e 's/\\.js.*/.js/' | uniq`
+      );
+      const paths = stdout.split("\n").filter(item => !!item.trim());
+      if (paths.length) {
+        console.log(
+          `found following imported files that have annotations but are not mared as typed:\n\t${paths.join("\n\t")}`
+        );
+        console.log(`to try and migrate them, run\n\tyarn migrate ${paths.join(" ")}`);
+      }
+    }
+
+    console.log("\ndone with automations, try running `yarn tsc` to find any remaining issues\n");
   } catch (error) {
     console.error(error);
     process.exit(1);
