@@ -24,7 +24,20 @@ cp /root/rhn.conf /etc/rhn/rhn.conf
 cd /manager/java
 ant -f manager-build.xml ivy
 
+
 cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
+
+# wait here
+echo "rut this: ant -f manager-build.xml refresh-branding-jar test"
+
+# todo: get rid of these (build new containers)
+zypper rm -y ant-junit
+zypper in -y ant-junit5
+zypper ar https://download.opensuse.org/tumbleweed/repo/oss/ factory
+zypper up -y ant-junit5
+
+/bin/bash
+
 ant -f manager-build.xml refresh-branding-jar $TARGET
 
 # Postgres shutdown (avoid stale memory by shmget())
