@@ -121,4 +121,4 @@ const Cluster = (props: Props) => {
       </React.Fragment>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(Cluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(Cluster)));

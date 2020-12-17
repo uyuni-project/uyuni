@@ -86,4 +86,4 @@ class FormulaCatalog extends React.Component {
     }
 }
 
-export default hot(module)(withPageWrapper(FormulaCatalog));
+export default hot(withPageWrapper(FormulaCatalog));
