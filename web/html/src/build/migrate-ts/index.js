@@ -107,6 +107,12 @@ const args = require("./args");
     await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
 
+    // let foo = []; -> let foo: any[] = [];
+    console.log("migrate untyped array initializations");
+    await execAndLog(`sed -i '' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
+
     // Find which imported files have type annotations but were not included originally
     console.log("finding untyped annotated imports");
     {
