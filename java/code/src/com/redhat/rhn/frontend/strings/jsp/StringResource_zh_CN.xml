@@ -2716,28 +2716,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
-        <target state="translated">动作详情</target>
+        <target state="translated">操作细节</target>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.actiontype" xml:space="preserve">
         <source>Action Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
-        <target state="translated">动作类型</target>
+        <target state="translated">操作类型</target>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.scheduler" xml:space="preserve">
         <source>Scheduler</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
-        <target state="translated">调度程序</target>
+        <target state="translated">日程安排程序</target>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.earliestexecution" xml:space="preserve">
         <source>Earliest execution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
-        <target state="translated">最早的执行</target>
+        <target state="translated">最早执行时间</target>
       </trans-unit>
       <trans-unit id="actiondetails.jsp.notes" xml:space="preserve">
         <source>Notes</source>
@@ -2745,7 +2745,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="translated">注释</target>
+        <target state="translated">备注</target>
       </trans-unit>
       <trans-unit id="actions.jsp.action" xml:space="preserve">
         <source>Action</source>
@@ -2754,7 +2754,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target state="translated">动作</target>
+        <target state="translated">操作</target>
       </trans-unit>
       <trans-unit id="actions.jsp.earliest" xml:space="preserve">
         <source>Scheduled Time</source>
@@ -2763,7 +2763,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target state="translated">调度的时间</target>
+        <target state="translated">安排的时间</target>
       </trans-unit>
       <trans-unit id="actions.jsp.succeeded" xml:space="preserve">
         <source>Succeeded</source>
@@ -2772,7 +2772,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target state="translated">成功的</target>
+        <target state="translated">成功</target>
       </trans-unit>
       <trans-unit id="actions.jsp.failed" xml:space="preserve">
         <source>Failed</source>
@@ -2782,7 +2782,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">失败的</target>
+        <target state="translated">失败</target>
       </trans-unit>
       <trans-unit id="actions.jsp.inprogress" xml:space="preserve">
         <source>Pending</source>
@@ -2791,7 +2791,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target state="translated">待定的</target>
+        <target state="translated">待处理</target>
       </trans-unit>
       <trans-unit id="actions.jsp.total" xml:space="preserve">
         <source>Total</source>
@@ -2807,21 +2807,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
-        <target state="translated">删除动作</target>
+        <target state="translated">删除操作</target>
       </trans-unit>
       <trans-unit id="actions.jsp.archiveactions" xml:space="preserve">
         <source>Archive Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
-        <target state="translated">归档动作</target>
+        <target state="translated">存档操作</target>
       </trans-unit>
       <trans-unit id="actions.jsp.cancelactions" xml:space="preserve">
         <source>Cancel Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
-        <target state="translated">取消动作</target>
+        <target state="translated">取消操作</target>
       </trans-unit>
       <trans-unit id="actions.jsp.confirmcancelactions" xml:space="preserve">
         <source>Confirm</source>
@@ -2858,14 +2858,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
-        <target state="translated">未调度的动作</target>
+        <target state="translated">未安排的操作</target>
       </trans-unit>
       <trans-unit id="actions.jsp.imgAlt" xml:space="preserve">
         <source>Action Icon</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
-        <target state="translated">动作图标</target>
+        <target state="translated">操作图标</target>
       </trans-unit>
       <trans-unit id="actions.jsp.totalnote" xml:space="preserve">
         <source>
@@ -2889,7 +2889,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target state="translated">等待处理的动作</target>
+        <target state="translated">待执行操作</target>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.summary" xml:space="preserve">
         <source> The following actions have been scheduled, and are awaiting execution by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
@@ -2904,21 +2904,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target state="translated">没有等待处理的动作。</target>
+        <target state="translated">没有待执行操作。</target>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.confirm_cancel_actions" xml:space="preserve">
         <source>Confirm Cancel Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActionsDeleteConfirm</context>
         </context-group>
-        <target state="translated">确认取消动作</target>
+        <target state="translated">确认取消操作</target>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.confirm_cancel_actions_summary" xml:space="preserve">
         <source>Click on the "confirm" button below to cancel the listed actions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target state="translated">点下面的 '确认' 按钮来取消列出的动作。</target>
+        <target state="translated">单击下面的 "确认" 按钮取消列出的操作。</target>
       </trans-unit>
       <!-- failedactions.jsp -->
       <trans-unit id="failedactions.jsp.failed_actions" xml:space="preserve">
@@ -2926,7 +2926,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
-        <target state="translated">失败的动作</target>
+        <target state="translated">失败的操作</target>
       </trans-unit>
       <trans-unit id="failedactions.jsp.summary" xml:space="preserve">
         <source> The following actions have failed to execute properly on one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
@@ -2940,7 +2940,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
-        <target state="translated">没有失败的动作。</target>
+        <target state="translated">没有失败的操作。</target>
       </trans-unit>
       <!-- completedactions.jsp -->
       <trans-unit id="completedactions.jsp.completed_actions" xml:space="preserve">
@@ -2948,7 +2948,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
-        <target state="translated">完成的动作</target>
+        <target state="translated">完成的操作</target>
       </trans-unit>
       <trans-unit id="completedactions.jsp.summary" xml:space="preserve">
         <source> The following actions have been completed by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
@@ -2962,7 +2962,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
-        <target state="translated">没有完成的动作。</target>
+        <target state="translated">没有完成的操作。</target>
       </trans-unit>
       <!-- archivedactions.jsp -->
       <trans-unit id="archivedactions.jsp.archived_actions" xml:space="preserve">
@@ -2970,7 +2970,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
-        <target state="translated">归档的动作</target>
+        <target state="translated">存档的操作</target>
       </trans-unit>
       <trans-unit id="archivedactions.jsp.summary" xml:space="preserve">
         <source> The following actions have been archived. </source>
@@ -2984,7 +2984,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
-        <target state="translated">没有归档的动作。</target>
+        <target state="translated">没有存档的操作。</target>
       </trans-unit>
       <!-- actionchains.jsp -->
       <trans-unit id="actionchains.jsp.title" xml:space="preserve">
@@ -2992,14 +2992,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
-        <target state="translated">动作链列表</target>
+        <target state="translated">操作链列表</target>
       </trans-unit>
       <trans-unit id="actionchains.jsp.summary" xml:space="preserve">
         <source>Below is a list of all Action Chains available to the current user. Click on a label to view or edit it.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
-        <target state="translated">以下是当前用户可使用的所有动作链列表。点击标签查看或者编辑。</target>
+        <target state="translated">以下是当前用户可使用的所有操作链列表。单击标签可查看或编辑相应操作链。</target>
       </trans-unit>
       <trans-unit id="actionchains.jsp.summarydetail" xml:space="preserve">
         <source>
@@ -3034,28 +3034,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
-        <target state="translated">上一次修改</target>
+        <target state="translated">上次修改</target>
       </trans-unit>
       <trans-unit id="actionchains.jsp.entry_count" xml:space="preserve">
         <source>Total Action Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
-        <target state="translated">动作计数总计</target>
+        <target state="translated">操作数总计</target>
       </trans-unit>
       <trans-unit id="actionchains.jsp.delete" xml:space="preserve">
         <source>Delete Action Chains</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
-        <target state="translated">删除动作链</target>
+        <target state="translated">删除操作链</target>
       </trans-unit>
       <trans-unit id="actionchains.jsp.empty" xml:space="preserve">
         <source>No Action Chains found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
-        <target state="translated">未找到动作链。</target>
+        <target state="translated">未找到操作链。</target>
       </trans-unit>
       <!-- actionchain.jsp -->
       <trans-unit id="actionchain.jsp.title" xml:space="preserve">
@@ -3063,14 +3063,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">动作链</target>
+        <target state="translated">操作链</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.summary" xml:space="preserve">
         <source>Below is a list of Actions in this Action Chain. You can change the order by &lt;em&gt;drag and drop&lt;/em&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">以下是这个动作链中的动作列表。您可以通过&lt;em&gt;拖拽&lt;/em&gt;更改顺序。</target>
+        <target state="translated">以下是这个操作链中的操作列表。您可以通过&lt;em&gt;拖放&lt;/em&gt;更改顺序。</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.summarydetail" xml:space="preserve">
         <source>
@@ -3092,7 +3092,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">动作</target>
+        <target state="translated">操作</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.delete" xml:space="preserve">
         <source>Delete</source>
@@ -3106,7 +3106,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">打开</target>
+        <target state="translated">在以下系统上</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.system" xml:space="preserve">
         <source>system</source>
@@ -3155,7 +3155,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">应用勘误 {0}</target>
+        <target state="translated">应用补丁 {0}</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.script.run" xml:space="preserve">
         <source>Run a remote command on</source>
@@ -3169,7 +3169,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">重启</target>
+        <target state="translated">重引导</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.configfiles.deploy" xml:space="preserve">
         <source>Deploy {0} to</source>
@@ -3190,14 +3190,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">删除动作链？</target>
+        <target state="translated">删除操作链？</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.modalbody" xml:space="preserve">
         <source>All Actions in this Action Chain will also be deleted. Are you sure?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">将删除这个动作链中的所有动作。您确定吗？</target>
+        <target state="translated">此操作链中的所有操作也会被删除。您确定吗？</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.states.apply" xml:space="preserve">
         <source>Apply Highstate</source>
@@ -3211,7 +3211,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">已删除动作链 {0}。</target>
+        <target state="translated">已删除操作链 {0}。</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.save" xml:space="preserve">
         <source>Save</source>
@@ -3225,21 +3225,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">取消舍弃所有更改</target>
+        <target state="translated">取消丢弃所有更改</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.saved" xml:space="preserve">
         <source>Changes saved.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">保存更改。</target>
+        <target state="translated">更改已保存。</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.labelexists" xml:space="preserve">
         <source>Could not save the Action Chain, a chain with the same label already exists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">无法保存该动作链，已存在使用同样标签的链。</target>
+        <target state="translated">无法保存该操作链，已存在使用相同标签的链。</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.labeltoolong" xml:space="preserve">
         <source>Could not save the Action Chain, chain label is too long (&gt;= 256 chars).</source>
@@ -3253,7 +3253,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">可为以下操作调度这个动作链：</target>
+        <target state="translated">可在下面安排此操作链的执行时间：</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.edit" xml:space="preserve">
         <source>Edit</source>
@@ -3267,28 +3267,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">调度</target>
+        <target state="translated">日程安排</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.saveandschedule" xml:space="preserve">
         <source>Save and Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">保存及调度</target>
+        <target state="translated">保存并安排</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.stayorleave" xml:space="preserve">
         <source>You made some changes in this Action Chain and they are not saved yet.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">您修改了这个动作链但尚未保存。</target>
+        <target state="translated">您修改了此操作链但尚未保存。</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.scheduled" xml:space="preserve">
         <source>Action Chain {0} has been scheduled for execution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="translated">已调度动作链 {0} 以便进行操作。</target>
+        <target state="translated">已安排执行操作链 {0}。</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.channels.subscribe" xml:space="preserve">
         <source>Change channels subscription on</source>
@@ -3317,7 +3317,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">以下的软件包与这个动作关联：</target>
+        <target state="translated">以下软件包与此操作关联：</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.nopackages" xml:space="preserve">
         <source>No packages.</source>
@@ -3353,7 +3353,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/AddPackagesConfirm.do</context>
         </context-group>
-        <target state="translated">体系构架</target>
+        <target state="translated">体系结构</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.notspecified" xml:space="preserve">
         <source>not specified</source>
@@ -3363,42 +3363,42 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/AddPackagesConfirm.do</context>
         </context-group>
-        <target state="translated">没有指定的</target>
+        <target state="translated">未指定</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installtime" xml:space="preserve">
         <source>Installed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已安装的</target>
+        <target state="translated">已安装</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removepagesummary" xml:space="preserve">
         <source>The following packages are installed on this system.  Packages may be scheduled for removal by selecting them and clicking "Remove Packages" below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target state="translated">在这个系统中安装了以下软件包。选择软件包并点下面的“删除软件包”可以调度删除软件包。</target>
+        <target state="translated">此系统中安装了以下软件包。选择软件包并单击下面的 "去除软件包" 可以安排去除软件包。</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepackages" xml:space="preserve">
         <source>Removable Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target state="translated">可删除的软件包</target>
+        <target state="translated">可去除的软件包</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removepackages" xml:space="preserve">
         <source>Remove Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target state="translated">删除软件包</target>
+        <target state="translated">去除软件包</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installedpagesummary" xml:space="preserve">
         <source>The following packages are installed on this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target state="translated">在这个系统中安装了以下软件包。</target>
+        <target state="translated">此系统中安装了以下软件包。</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installedpackages" xml:space="preserve">
         <source>Installed Packages</source>
@@ -3416,7 +3416,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="packagelist.jsp.thischannel" xml:space="preserve">
         <source>This Channel</source>
-        <target state="translated">这个频道</target>
+        <target state="translated">此频道</target>
       </trans-unit>
       <trans-unit id="installpkgs.jsp.header" xml:space="preserve">
         <source>Installable Packages</source>
@@ -3444,14 +3444,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
-        <target state="translated">以下的补丁安装在这个系统中。您可以使用选择框并点下面的“恢复”按钮来恢复到原来的补丁版本。如果一个补丁不能被选择，它将不能被恢复到以前的版本。</target>
+        <target state="translated">此系统中安装了以下补丁。您可以使用复选框并单击下面的 "恢复" 按钮将补丁恢复到先前的版本。如果无法选择某个补丁，则表明它无法恢复到以前的版本。</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatchsummary" xml:space="preserve">
         <source>The following patches may be installed on this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchInstallList</context>
         </context-group>
-        <target state="translated">以下的补丁可以安装在这个系统中。</target>
+        <target state="translated">此系统中可以安装以下补丁。</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.nopatches" xml:space="preserve">
         <source>No patches.</source>
@@ -3479,7 +3479,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
-        <target state="translated">最新安装的</target>
+        <target state="translated">最新安装</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.emptytimestamp" xml:space="preserve">
         <source>Not Available</source>
@@ -3528,42 +3528,42 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target state="translated">点击下面的 "确认" 按钮在下一次登录到 @@PRODUCT_NAME@@ 时恢复 &lt;a href="/network/systems/details/index.pxt?sid={3}"&gt;{0}&lt;/a&gt; 中列出的补丁。（上一次登录时间：&lt;b&gt;{1}&lt;/b&gt;；预期下一次检查时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
+        <target state="translated">单击下面的 "确认" 按钮在 &lt;a href="/network/systems/details/index.pxt?sid={3}"&gt;{0}&lt;/a&gt; 下次签入 @@PRODUCT_NAME@@ 时恢复其中列出的补丁。（上次签入时间：&lt;b&gt;{1}&lt;/b&gt;；预期下次签入时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
       </trans-unit>
       <trans-unit id="packagelist.confirmpatchsummary" xml:space="preserve">
         <source>Click on the "confirm" button below to back out the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target state="translated">点击下面的 "确认" 按钮在下一次登录到 @@PRODUCT_NAME@@ 时恢复 &lt;a href="/rhn/systems/details/Oerview.do?sid={3}"&gt;{0}&lt;/a&gt; 中列出的补丁。（上一次登录时间：&lt;b&gt;{1}&lt;/b&gt;；预期下一次检查时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
+        <target state="translated">单击下面的 "确认" 按钮在 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; 下次签入 @@PRODUCT_NAME@@ 时恢复其中列出的补丁。（上次签入时间：&lt;b&gt;{1}&lt;/b&gt;；预期下次签入时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary.plural" xml:space="preserve">
         <source>Click on the "confirm" button below to install the listed patches on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in time: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirmInstall</context>
         </context-group>
-        <target state="translated">点击下面的 "确认" 按钮在下一次登录到 @@PRODUCT_NAME@@ 时安装 &lt;a href="/rhn/systems/details/Oerview.do?sid={3}"&gt;{0}&lt;/a&gt; 中列出的补丁。（上一次登录时间：&lt;b&gt;{1}&lt;/b&gt;；预期下一次检查时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
+        <target state="translated">单击下面的 "确认" 按钮在 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; 下次签入 @@PRODUCT_NAME@@ 时恢复其中列出的补丁。（上次签入时间：&lt;b&gt;{1}&lt;/b&gt;；预期下次签入时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary" xml:space="preserve">
         <source>Click on the "confirm" button below to install the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target state="translated">点击下面的 "确认" 按钮在下一次登录到 @@PRODUCT_NAME@@ 时安装 &lt;a href="/network/systems/details/index.pxt?sid={3}"&gt;{0}&lt;/a&gt; 中列出的补丁。（上一次登录时间：&lt;b&gt;{1}&lt;/b&gt;；预期下一次检查时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
+        <target state="translated">单击下面的 "确认" 按钮在 &lt;a href="/network/systems/details/index.pxt?sid={3}"&gt;{0}&lt;/a&gt; 下次签入 @@PRODUCT_NAME@@ 时恢复其中列出的补丁。（上次签入时间：&lt;b&gt;{1}&lt;/b&gt;；预期下次签入时间：&lt;b&gt;{2}&lt;/b&gt;。）</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackages" xml:space="preserve">
         <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target state="translated">额外软件包</target>
+        <target state="translated">不合规</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackagessummary" xml:space="preserve">
         <source>The following packages are installed on this system and are not present in any of its channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/ForeignPackages</context>
         </context-group>
-        <target state="translated">在这个系统中安装以下软件包且不再其任何频道中出现。</target>
+        <target state="translated">此系统中已安装以下软件包，其所有频道中都不会显示这些软件包。</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
         <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
@@ -3582,7 +3582,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target state="translated">以下列出的这个系统上的软件包过期的，它们可以被升级。</target>
+        <target state="translated">此系统上的下列软件包已过期，可以升级。</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
         <source>Latest Package</source>
@@ -3603,7 +3603,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target state="translated">相关勘误</target>
+        <target state="translated">相关补丁</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.upgrade" xml:space="preserve">
         <source>Upgrade Packages</source>
@@ -3633,14 +3633,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedSystems</context>
         </context-group>
-        <target state="translated">没有系统完成了这个动作。</target>
+        <target state="translated">没有已完成此操作的系统。</target>
       </trans-unit>
       <trans-unit id="completedsystems.jsp.completed" xml:space="preserve">
         <source>Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedSystems</context>
         </context-group>
-        <target state="translated">完成的</target>
+        <target state="translated">已完成</target>
       </trans-unit>
       <!-- inprogresssystems.jsp -->
       <trans-unit id="inprogresssystems.jsp.inprogresssystems" xml:space="preserve">
@@ -3655,7 +3655,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
-        <target state="translated">没有为任何系统等待决定这个动作。</target>
+        <target state="translated">此操作未在等待任何系统执行。</target>
       </trans-unit>
       <!-- failedsystems.jsp -->
       <trans-unit id="failedsystems.jsp.failedsystems" xml:space="preserve">
@@ -3670,42 +3670,42 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target state="translated">以下系统已经中的这个动作已失败。您可以重新调度这个动作，但请在重新调度前确定已经解决了导致这个动作失败的问题。</target>
+        <target state="translated">以下系统未能执行此操作。您可以重新安排此操作，但请在重新安排前确保已解决导致此操作失败的问题。</target>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.nosystems" xml:space="preserve">
         <source>No systems have failed this action.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target state="translated">这个动作没有在任何系统中运行失败。</target>
+        <target state="translated">没有执行此操作失败的系统。</target>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.failed" xml:space="preserve">
         <source>Failed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target state="translated">失败的</target>
+        <target state="translated">失败</target>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.message" xml:space="preserve">
         <source>Message</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target state="translated">消息</target>
+        <target state="translated">讯息</target>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.rescheduleactions" xml:space="preserve">
         <source>Reschedule All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target state="translated">重新调度所有</target>
+        <target state="translated">重新安排所有</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.allerrata" xml:space="preserve">
         <source>All Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target state="translated">所有勘误</target>
+        <target state="translated">所有类型</target>
       </trans-unit>
       <!-- == AUDIT == -->
       <trans-unit id="audit.overview.jsp.header" xml:space="preserve">
@@ -3743,7 +3743,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target state="translated">没有勘误</target>
+        <target state="translated">没有补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory" xml:space="preserve">
         <source>Advisory</source>
@@ -3751,7 +3751,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target state="translated">顾问</target>
+        <target state="translated">建议</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.synopsis" xml:space="preserve">
         <source>Synopsis</source>
@@ -3760,21 +3760,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="translated">简介</target>
+        <target state="translated">摘要</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.relevanterrata" xml:space="preserve">
         <source>Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
-        <target state="translated">与您系统相关的勘误</target>
+        <target state="translated">与您系统相关的补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.norelevanterrata" xml:space="preserve">
         <source>No Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
-        <target state="translated">没有与您系统相关的勘误</target>
+        <target state="translated">没有与您系统相关的补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.type" xml:space="preserve">
         <source>Type</source>
@@ -3806,7 +3806,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target state="translated">更新的</target>
+        <target state="translated">已更新</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.securityadvisory" xml:space="preserve">
         <source>Security Advisory</source>
@@ -3814,7 +3814,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target state="translated">安全顾问</target>
+        <target state="translated">安全建议</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.bugadvisory" xml:space="preserve">
         <source>Bug Fix Advisory</source>
@@ -3822,7 +3822,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target state="translated">错误修正顾问</target>
+        <target state="translated">Bug 修复建议</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.productenhancementadvisory" xml:space="preserve">
         <source>Product Enhancement Advisory</source>
@@ -3830,21 +3830,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target state="translated">产品功能增强顾问</target>
+        <target state="translated">产品功能增强建议</target>
       </trans-unit>
       <trans-unit id="errata.jsp.header" xml:space="preserve">
         <source>Relevant Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target state="translated">相关勘误</target>
+        <target state="translated">相关补丁</target>
       </trans-unit>
       <trans-unit id="errata.jsp.summary" xml:space="preserve">
         <source>The following patches may currently be applied to this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target state="translated">目前在这个系统中应用了以下勘误。</target>
+        <target state="translated">目前在此系统中应用了以下补丁。</target>
       </trans-unit>
       <trans-unit id="errata.jsp.status" xml:space="preserve">
         <source>Status</source>
@@ -3858,28 +3858,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target state="translated">应用勘误</target>
+        <target state="translated">应用补丁</target>
       </trans-unit>
       <trans-unit id="errata.jsp.scheduled" xml:space="preserve">
         <source>Update Scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target state="translated">被调度的更新</target>
+        <target state="translated">安排的更新</target>
       </trans-unit>
       <trans-unit id="errata.jsp.affected" xml:space="preserve">
         <source>Affected</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target state="translated">受影响的</target>
+        <target state="translated">受影响</target>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Patch Updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
-        <target state="translated">确认勘误更新</target>
+        <target state="translated">确认补丁更新</target>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -3893,7 +3893,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target state="translated">创建勘误 {0}-{1}。</target>
+        <target state="translated">已创建补丁 {0}-{1}。</target>
       </trans-unit>
       <trans-unit id="errata.edit.toolbar" xml:space="preserve">
         <source>Patch: </source>
@@ -3908,21 +3908,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
-        <target state="translated">编辑勘误</target>
+        <target state="translated">编辑补丁</target>
       </trans-unit>
       <trans-unit id="errata.edit.instructions" xml:space="preserve">
         <source>Edit patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">在这里编辑勘误。使用（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）标记必填的项目。</target>
+        <target state="translated">在此处编辑补丁。必填项标有（&lt;span class="required-form-field"&gt;*&lt;/span&gt;）。</target>
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata" xml:space="preserve">
         <source>Update Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">更新勘误</target>
+        <target state="translated">更新补丁</target>
       </trans-unit>
       <trans-unit id="errata.edit.submit" xml:space="preserve">
         <source>Submit</source>
@@ -3943,14 +3943,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">您可以现在发布这个勘误。</target>
+        <target state="translated">您现在可以发布此补丁。</target>
       </trans-unit>
       <trans-unit id="errata.edit.publisherrata" xml:space="preserve">
         <source>Publish Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">发布勘误</target>
+        <target state="translated">发布补丁</target>
       </trans-unit>
       <trans-unit id="errata.edit.sendnotification" xml:space="preserve">
         <source>Send Notification</source>
@@ -3965,21 +3965,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">您可以发送这个勘误的电子邮件通知。</target>
+        <target state="translated">您可以发送有关此补丁的电子邮件通知。</target>
       </trans-unit>
       <trans-unit id="errata.edit.senderratamail" xml:space="preserve">
         <source>Send Patch Mail</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">发送勘误邮件</target>
+        <target state="translated">发送补丁邮件</target>
       </trans-unit>
       <trans-unit id="errata.edit.updated" xml:space="preserve">
         <source>Patches updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">已更新的勘误。</target>
+        <target state="translated">已更新补丁。</target>
       </trans-unit>
       <trans-unit id="errata.edit.deletebug" xml:space="preserve">
         <source>Delete Bug</source>
@@ -3993,7 +3993,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">被从勘误 &lt;strong&gt;{1}&lt;/strong&gt; 中删除 bug &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">Bug &lt;strong&gt;{0}&lt;/strong&gt; 已从补丁 &lt;strong&gt;{1}&lt;/strong&gt; 中去除。</target>
       </trans-unit>
       <trans-unit id="errata.edit.commadelimited" xml:space="preserve">
         <source>(Comma delimited)</source>
@@ -4007,28 +4007,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">使用这个顾问名的勘误已存在。</target>
+        <target state="translated">已存在使用此建议名称的补丁。</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.rhAdvisoryName" xml:space="preserve">
         <source>A Patch Advisory cannot begin with the letters 'RH'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">勘误顾问不能以字母 'RH' 开始</target>
+        <target state="translated">补丁建议不能以字母 "RH" 开头</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.id" xml:space="preserve">
         <source>Bug ID is required</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">必须填写 bug ID</target>
+        <target state="translated">必须填写 Bug ID</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.summary" xml:space="preserve">
         <source>Bug Summary is required</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">必须填写 bug 概述</target>
+        <target state="translated">必须填写 Bug 摘要</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.idNonNumeric" xml:space="preserve">
         <source>Bug ID must be numeric</source>
@@ -4049,14 +4049,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">Bug 概述不能超过4000个字符。</target>
+        <target state="translated">Bug 摘要不能超过 4000 个字符。</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.idLength" xml:space="preserve">
         <source>Bug Id cannot be greater than 18 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">Bug Id 不能超过18个字符。</target>
+        <target state="translated">Bug ID 不能超过 18 个字符。</target>
       </trans-unit>
       <trans-unit id="errata.channels.updatechannels" xml:space="preserve">
         <source>Update Channels</source>
@@ -4070,7 +4070,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
-        <target state="translated">选择应与以下勘误关连的频道。由此勘误用来参考的软件包数目显示在频道名的后面。如果您不希望将此勘误应用到一个特定的频道，在下面取消选择它。</target>
+        <target state="translated">请在下面选择应与此补丁关联的频道。此补丁所指代软件包的数量显示在频道名称后面。如果您不希望将此补丁应用到某个特定频道，请在下面将其取消选择。</target>
       </trans-unit>
       <trans-unit id="errata.channels.updated.singular" xml:space="preserve">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
@@ -4079,7 +4079,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="paramnotes">Errata foobar has been
                 successfully assigned to 1 channel.</context>
         </context-group>
-        <target state="translated">已成功将勘误 &lt;strong&gt;{0}&lt;/strong&gt; 分配给 &lt;strong&gt;{1} 个&lt;/strong&gt; 频道。</target>
+        <target state="translated">已成功将补丁 &lt;strong&gt;{0}&lt;/strong&gt; 指派给 &lt;strong&gt;{1} &lt;/strong&gt; 个频道。</target>
       </trans-unit>
       <trans-unit id="errata.channels.updated.plural" xml:space="preserve">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
@@ -4088,7 +4088,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="paramnotes">Errata foobar has been
                 successfully assigned to 3 channels.</context>
         </context-group>
-        <target state="translated">已将勘误 &lt;strong&gt;{0}&lt;/strong&gt; 成功地分配给 &lt;strong&gt;{1} 个&lt;/strong&gt; 频道。</target>
+        <target state="translated">已成功将补丁 &lt;strong&gt;{0}&lt;/strong&gt; 指派给 &lt;strong&gt;{1} &lt;/strong&gt; 个频道。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageaddition" xml:space="preserve">
         <source>Confirm Package Addition</source>
@@ -4106,7 +4106,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target state="translated">以下是您已经选择要添加到这个勘误的软件包列表。</target>
+        <target state="translated">以下是您已经选择要添加到此补丁的软件包列表。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageremoval" xml:space="preserve">
         <source>Confirm Package Removal</source>
@@ -4115,7 +4115,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target state="translated">确认软件包删除</target>
+        <target state="translated">确认软件包去除</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.remove.instructions" xml:space="preserve">
         <source>Below is the list of packages which you have selected to remove from this patch.  Click 'Confirm' to remove them.</source>
@@ -4124,7 +4124,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target state="translated">以下是您已经选择从这个勘误中删除的软件包列表。点 '确认' 来删除它们。</target>
+        <target state="translated">以下是您已经选择要从此补丁中去除的软件包列表。请单击 "确认" 去除它们。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -4142,7 +4142,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/ListPackages.do
             </context>
         </context-group>
-        <target state="translated">勘误软件包</target>
+        <target state="translated">补丁包含的软件包</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.removepackages" xml:space="preserve">
         <source>Remove Packages</source>
@@ -4151,7 +4151,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/ListPackages.do
             </context>
         </context-group>
-        <target state="translated">删除软件包</target>
+        <target state="translated">去除软件包</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.instructions" xml:space="preserve">
         <source>The following packages are associated with this patch. To remove packages from this patch, select them, and click 'Remove Packages' below. To add packages to this patch, click 'add' above.</source>
@@ -4160,7 +4160,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/ListPackages.do
             </context>
         </context-group>
-        <target state="translated">以下的软件包与这个勘误关联。要从这个勘误中删除软件包，选择它们后点下面的 '删除软件包'。要把软件包添加到这个勘误中，点上面的 '添加'。</target>
+        <target state="translated">以下软件包与此补丁关联。要从此补丁中去除软件包，请选择它们后单击下面的 "去除软件包"。要将软件包添加到此补丁中，请单击上面的 "添加"。</target>
       </trans-unit>
       <trans-unit id="errata.publish.toolbar" xml:space="preserve">
         <source>Publish Patch: </source>
@@ -4178,7 +4178,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target state="translated">请确认您希望发布这个勘误。发布这个勘误将使它对以下所有选择的频道有效。</target>
+        <target state="translated">请确认您希望发布此补丁。发布此补丁后，它将可用于下面选择的所有频道。</target>
       </trans-unit>
       <trans-unit id="errata.publish.channelname" xml:space="preserve">
         <source>Channel Name</source>
@@ -4187,7 +4187,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target state="translated">频道名</target>
+        <target state="translated">频道名称</target>
       </trans-unit>
       <trans-unit id="errata.publish.relevantpackages" xml:space="preserve">
         <source>Relevant Packages</source>
@@ -4205,7 +4205,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target state="translated">发布勘误</target>
+        <target state="translated">发布补丁</target>
       </trans-unit>
       <trans-unit id="errata.publish.nochannels" xml:space="preserve">
         <source>There are no channels available.</source>
@@ -4223,7 +4223,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target state="translated">发布的勘误必须至少属于一个频道。</target>
+        <target state="translated">必须至少选择一个频道。</target>
       </trans-unit>
       <trans-unit id="errata.notify.senderratanotification" xml:space="preserve">
         <source>Send Patch Notification</source>
@@ -4232,7 +4232,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target state="translated">发送勘误通知</target>
+        <target state="translated">发送补丁通知</target>
       </trans-unit>
       <trans-unit id="errata.notify.instructions" xml:space="preserve">
         <source>You can send email to the administrators of systems to which this patch applies.</source>
@@ -4241,7 +4241,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target state="translated">您可以向应用这个勘误系统的管理员发送电子邮件。</target>
+        <target state="translated">您可以向需应用此补丁的系统的管理员发送电子邮件。</target>
       </trans-unit>
       <trans-unit id="errata.notify.success" xml:space="preserve">
         <source>A patch mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
@@ -4250,7 +4250,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target state="translated">已经为 &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt; 调度了勘误电子邮件更新。</target>
+        <target state="translated">已为 &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt; 安排了补丁邮件更新。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages" xml:space="preserve">
         <source>Patches Packages</source>
@@ -4259,7 +4259,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/Packages.do
             </context>
         </context-group>
-        <target state="translated">勘误软件包</target>
+        <target state="translated">补丁包含的软件包</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.addpackages" xml:space="preserve">
         <source>Add Packages</source>
@@ -4277,7 +4277,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target state="translated">以下是您可以在这个勘误中添加的软件包列表。"查看"选择框允许您限制有效的软件包组。要在这个勘误中添加软件包，请选择它们，并点击下面的'添加软件包'。</target>
+        <target state="translated">以下是可用的软件包列表。要将软件包添加到此补丁中，请选择它们，并单击 "添加软件包"。&lt;br/&gt;您可以使用下面的下拉列表限制频道可用的软件包集。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel" xml:space="preserve">
         <source>View: </source>
@@ -4374,28 +4374,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
-        <target state="translated">以下的勘误最少可以应用到一个您有管理访问权限的系统。</target>
+        <target state="translated">以下补丁至少会应用到一个您有管理访问权限的系统。</target>
       </trans-unit>
       <trans-unit id="errata.all.jsp.summary" xml:space="preserve">
         <source>The following patch list represents all patches accessible by your organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
-        <target state="translated">以下勘误列表代表您机构可以访问的所有勘误。</target>
+        <target state="translated">下面的补丁列表代表您的组织可以访问的所有补丁。</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary" xml:space="preserve">
         <source>Below is a list of systems affected by this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">以下是受这个勘误影响的系统列表。</target>
+        <target state="translated">以下是受此补丁影响的系统列表。</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl" xml:space="preserve">
         <source>You can select one or more systems and apply this patch to them.  Only systems with Management system type can be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">您可以选择一个或多个系统并在其中应用这个勘误。只能选择有管理服务权利的系统。</target>
+        <target state="translated">您可以选择一个或多个系统并对其应用此补丁。只能选择系统类型为 "管理" 的系统。</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.header" xml:space="preserve">
         <source>Affected Systems</source>
@@ -4409,7 +4409,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">应用勘误</target>
+        <target state="translated">应用补丁</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.status" xml:space="preserve">
         <source>Status</source>
@@ -4423,35 +4423,35 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">权利</target>
+        <target state="translated">系统类型</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.none" xml:space="preserve">
         <source>N/A</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">N/A</target>
+        <target state="translated">不适用</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.pending" xml:space="preserve">
         <source>Pending</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">待定的</target>
+        <target state="translated">待处理</target>
       </trans-unit>
       <trans-unit id="affectedsystems.applynone" xml:space="preserve">
         <source>No Systems Selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target state="translated">没有系统被选择。</target>
+        <target state="translated">没有选择任何系统。</target>
       </trans-unit>
       <trans-unit id="confirm.jsp.header" xml:space="preserve">
         <source>Confirm Patch Update:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
-        <target state="translated">确认勘误更新：</target>
+        <target state="translated">确认补丁更新：</target>
       </trans-unit>
       <trans-unit id="confirm.jsp.summary" xml:space="preserve">
         <source>The following systems will have &lt;strong&gt;{0}&lt;/strong&gt; applied to them:</source>
@@ -4480,21 +4480,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
-        <target state="translated">以下是这个 @@PRODUCT_NAME@@ 中跨机构的所有用户列表。请注意：您只能访问您目前登录的机构（{0}）成员用户并修改其详情，而且您必须还拥有该机构的机构管理员特权。</target>
+        <target state="translated">以下是此 @@PRODUCT_NAME@@ 中各组织的所有用户列表。请注意：您只能修改您目前所登录组织（{0}）的成员用户细节，并且您还必须拥有此组织的组织管理员特权。</target>
       </trans-unit>
       <trans-unit id="org.allusers.title" xml:space="preserve">
         <source>Users Across @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
-        <target state="translated">用户访问 @@PRODUCT_NAME@@</target>
+        <target state="translated">@@PRODUCT_NAME@@ 中的用户</target>
       </trans-unit>
       <trans-unit id="org.allusers.title1" xml:space="preserve">
         <source>Users Across @@PRODUCT_NAME@@ - External Authentication</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 中的用户 - 外部认证</target>
+        <target state="translated">@@PRODUCT_NAME@@ 中的用户 - 外部身份验证</target>
       </trans-unit>
       <trans-unit id="systemgroup.config.title" xml:space="preserve">
         <source>System Group Configuration</source>
@@ -4508,14 +4508,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ExtAuthSgMapping.do</context>
         </context-group>
-        <target state="translated">系统组配置 - 外部认证</target>
+        <target state="translated">系统组配置 - 外部身份验证</target>
       </trans-unit>
       <trans-unit id="orgdetails.jsp.header" xml:space="preserve">
         <source>Organization Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">机构详情</target>
+        <target state="translated">组织细节</target>
       </trans-unit>
       <trans-unit id="satconfig.jsp.header" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration</source>
@@ -4536,7 +4536,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="translated">机构配置</target>
+        <target state="translated">组织配置</target>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
         <source>Below you configure your organization to use staging content, errata e-mail notifications, software crash reporting (Crash file upload limit is a non negative number, zero means no limit) and SCAP settings.</source>
@@ -4557,14 +4557,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">机构名称</target>
+        <target state="translated">组织名称</target>
       </trans-unit>
       <trans-unit id="org.active.users.jsp" xml:space="preserve">
         <source>Active Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">激活的用户</target>
+        <target state="translated">活动用户</target>
       </trans-unit>
       <trans-unit id="org.systems.jsp" xml:space="preserve">
         <source>Systems</source>
@@ -4578,7 +4578,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">系统组群</target>
+        <target state="translated">系统组</target>
       </trans-unit>
       <trans-unit id="org-config.orgadm-mgmt.jsp" xml:space="preserve">
         <source>Allow Organization Admin to manage Organization Configuration</source>
@@ -4592,7 +4592,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="translated">启用分级内容</target>
+        <target state="translated">启用暂存内容</target>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp" xml:space="preserve">
         <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
@@ -4613,14 +4613,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="translated">启用上传崩溃文件</target>
+        <target state="translated">启用崩溃文件上载</target>
       </trans-unit>
       <trans-unit id="org-config.crashfile-sizelimit.jsp" xml:space="preserve">
         <source>Crash File Upload Size Limit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="translated">崩溃文件上传大小限制</target>
+        <target state="translated">崩溃文件上载大小限制</target>
       </trans-unit>
       <trans-unit id="org-config.sizelimit-hint.jsp" xml:space="preserve">
         <source>Enter the limit size in bytes. Zero means no limit.</source>
@@ -4634,14 +4634,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="translated">启用上传详细的 SCAP 文件</target>
+        <target state="translated">启用详细 SCAP 文件上载</target>
       </trans-unit>
       <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
         <source>SCAP File Upload Size Limit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="translated">SCAP 文件上传大小限制</target>
+        <target state="translated">SCAP 文件上载大小限制</target>
       </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
@@ -4655,28 +4655,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="translated">允许之后删除（以天为单位的时间段）</target>
+        <target state="translated">允许以下天数后删除</target>
       </trans-unit>
       <trans-unit id="org.id.jsp" xml:space="preserve">
         <source>Organization ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">机构 ID</target>
+        <target state="translated">组织 ID</target>
       </trans-unit>
       <trans-unit id="org.actkeys.jsp" xml:space="preserve">
         <source>Activation Keys</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">激活码</target>
+        <target state="translated">激活密钥</target>
       </trans-unit>
       <trans-unit id="org.kickstart.profiles.jsp" xml:space="preserve">
         <source>Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">Kickstart 侧写</target>
+        <target state="translated">自动安装配置文件</target>
       </trans-unit>
       <trans-unit id="org.config.channels.jsp" xml:space="preserve">
         <source>Configuration Channels</source>
@@ -4690,42 +4690,42 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target state="translated">机构</target>
+        <target state="translated">组织</target>
       </trans-unit>
       <trans-unit id="org.displayname" xml:space="preserve">
         <source>Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
-        <target state="translated">机构</target>
+        <target state="translated">组织</target>
       </trans-unit>
       <trans-unit id="orgdetails.jsp.submit" xml:space="preserve">
         <source>Update Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">更新机构</target>
+        <target state="translated">更新组织</target>
       </trans-unit>
       <trans-unit id="orgchannel.jsp.submit" xml:space="preserve">
         <source>Modify Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/channels/OrgList.do</context>
         </context-group>
-        <target state="translated">修改访问</target>
+        <target state="translated">修改访问权限</target>
       </trans-unit>
       <trans-unit id="orgdelete.jsp.submit" xml:space="preserve">
         <source>Delete Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/DeleteOrg.do</context>
         </context-group>
-        <target state="translated">删除机构</target>
+        <target state="translated">删除组织</target>
       </trans-unit>
       <trans-unit id="orgname.jsp.error" xml:space="preserve">
         <source>Organization Name must be between 3 and 128 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target state="translated">机构名称必须在 3 到 128 个字符之间。</target>
+        <target state="translated">组织名称包含的字符数量必须在 3 到 128 个之间。</target>
       </trans-unit>
       <trans-unit id="org.users.summary" xml:space="preserve">
         <source>The following is a list of all users in the {0} organization. Note that you will only have access to modify the details of these users if you are logged into the {0} organization and have organization administrator privileges.</source>
@@ -4753,7 +4753,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organization</context>
         </context-group>
-        <target state="translated">机构</target>
+        <target state="translated">组织</target>
       </trans-unit>
       <trans-unit id="org.nopunc.sharedchannels" xml:space="preserve">
         <source>Channels Shared</source>
@@ -4782,10 +4782,10 @@ not be modified on this page. Instead, please visit the "Users" top-level
 navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
-        <target state="translated">&lt;strong&gt;*窍门：&lt;/strong&gt;在本页中可修改
-机构管理员权限。您还可以访问以上最上层导航标签中的“用户”
-来访问您机构中各个用户的侧写。在每个用户侧写的“详情”标签的“角色”部分
-可能会赋予您删除机构管理员角色的权利。</target>
+        <target state="translated">&lt;strong&gt;*提示：&lt;/strong&gt;在此页面中无法修改
+组织管理员特权。不过，您可以通过上面的最上层导航选项卡 "用户" 
+来访问您组织中各个用户的配置文件。您可以在每个用户配置文件的 "细节" 选项卡
+的 "角色" 部分授予或去除组织管理员角色。</target>
       </trans-unit>
       <trans-unit id="organizations.tip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
@@ -4793,11 +4793,11 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="softwareEntitlements.unlimited" xml:space="preserve">
         <source>unlimited</source>
-        <target state="translated">无限制的</target>
+        <target state="translated">无限制</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.notApplicable" xml:space="preserve">
         <source>N/A</source>
-        <target state="translated">N/A</target>
+        <target state="translated">不适用</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementDetails.header.entitlementUsage" xml:space="preserve">
         <source>Entitlement Usage</source>
@@ -4816,35 +4816,35 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
-        <target state="translated">颁发开始日期： </target>
+        <target state="translated">发布起始日期： </target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.end_date" xml:space="preserve">
         <source>Issue End Date: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
-        <target state="translated">颁发结束日期： </target>
+        <target state="translated">发布终止日期： </target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip" xml:space="preserve">
         <source>'kernel', 'slessp1-glibc'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
-        <target state="translated">'kernel', 'RHBA-2007:0113'</target>
+        <target state="translated">"kernel", "slessp1-glibc"</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.toolbar" xml:space="preserve">
         <source>Advanced Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
-        <target state="translated">勘误搜索</target>
+        <target state="translated">高级搜索</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary" xml:space="preserve">
         <source>Advanced Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">勘误搜索将返回来自 @@PRODUCT_NAME@@ 发布的完整勘误组中的结果。</target>
+        <target state="translated">高级搜索将返回取自 @@PRODUCT_NAME@@ 所发布的完整补丁集的结果。</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
@@ -4858,42 +4858,42 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">搜索：</target>
+        <target state="translated">搜索内容：</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">搜索什么：</target>
+        <target state="translated">搜索范围：</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.errata_advisory" xml:space="preserve">
         <source>Patch Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">勘误顾问</target>
+        <target state="translated">补丁建议</target>
       </trans-unit>
       <trans-unit id="simple_errata_search" xml:space="preserve">
         <source>Synopsis</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">简介</target>
+        <target state="translated">摘要</target>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory" xml:space="preserve">
         <source>Patch Advisory (ex: slessp1-glibc)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">勘误顾问（如：RHSA-2007:0113）</target>
+        <target state="translated">补丁建议（例如 slessp1-glibc）</target>
       </trans-unit>
       <trans-unit id="errata_search_by_package_name" xml:space="preserve">
         <source>Package Name (ex: kernel)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">软件包名称（如：kernel）</target>
+        <target state="translated">软件包名称（例如：kernel）</target>
       </trans-unit>
       <trans-unit id="errata_search_by_cve" xml:space="preserve">
         <source>CVE (ex: CVE-2006-4535)</source>
@@ -4907,14 +4907,14 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">搜索发布日期：</target>
+        <target state="translated">按发布日期搜索：</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.issue_date" xml:space="preserve">
         <source>Issue Dates to Search:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">指示要搜索的日期：</target>
+        <target state="translated">要搜索的发布日期：</target>
       </trans-unit>
       <trans-unit id="errata_search_by_all_fields" xml:space="preserve">
         <source>All Fields </source>
@@ -4935,14 +4935,14 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">没有勘误。</target>
+        <target state="translated">没有补丁。</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch.tip" xml:space="preserve">
         <source>Use 'all fields' to search synopsis, description, topic, or solution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">使用‘所有项目’搜索概述、描述、标题或者解决方案。</target>
+        <target state="translated">使用 "所有字段" 搜索摘要、描述、主题或解决方案。</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.types_to_search" xml:space="preserve">
         <source>Types of Patches to Search:.</source>
@@ -4960,35 +4960,35 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary" xml:space="preserve">
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
-        <target state="translated"> &lt;p&gt;以下的勘误列表代表了您的机构所拥有的勘误。&lt;/p&gt; &lt;p&gt;点击一个勘误的概要来编辑勘误的详情或可以应用这个勘误的软件包列表。&lt;/p&gt;</target>
+        <target state="translated"> &lt;p&gt;下面的补丁列表代表您的组织所拥有的补丁。&lt;/p&gt; &lt;p&gt;单击补丁的建议可编辑补丁细节或此补丁适用的软件包列表。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
         <source>Unpublished Patches</source>
-        <target state="translated">没有发行的勘误</target>
+        <target state="translated">未发布补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
-        <target state="translated">勘误管理</target>
+        <target state="translated">补丁管理</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
         <source>No Unpublished Patches</source>
-        <target state="translated">没有发行的勘误</target>
+        <target state="translated">没有未发布补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
         <source>No Published Patches</source>
-        <target state="translated">没有发行的勘误</target>
+        <target state="translated">没有已发布补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
         <source>Published Patches</source>
-        <target state="translated">发行的勘误</target>
+        <target state="translated">已发布补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
-        <target state="translated">删除勘误</target>
+        <target state="translated">删除补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.cloneerrata" xml:space="preserve">
         <source>Clone Patches</source>
-        <target state="translated">克隆勘误</target>
+        <target state="translated">克隆补丁</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -4996,7 +4996,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.pagesummary" xml:space="preserve">
         <source>Are you sure you wish to delete these patches?</source>
-        <target state="translated">您确定要删除这些勘误吗？</target>
+        <target state="translated">您确定要删除这些补丁吗？</target>
       </trans-unit>
       <trans-unit id="details.jsp.topic" xml:space="preserve">
         <source>Topic</source>
@@ -5038,7 +5038,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="translated">修正</target>
+        <target state="translated">修复</target>
       </trans-unit>
       <trans-unit id="details.jsp.keywords" xml:space="preserve">
         <source>Keywords</source>
@@ -5073,14 +5073,14 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="translated">发行的：</target>
+        <target state="translated">发布日期：</target>
       </trans-unit>
       <trans-unit id="details.jsp.updated" xml:space="preserve">
         <source>Updated:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="translated">更新的：</target>
+        <target state="translated">更新日期：</target>
       </trans-unit>
       <trans-unit id="details.jsp.bugnumber" xml:space="preserve">
         <source>Bug# {0}</source>
@@ -5088,14 +5088,14 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
           <context context-type="paramnotes">Numerical id of a bug</context>
         </context-group>
-        <target state="translated">Bug# {0}</target>
+        <target state="translated">Bug 编号 {0}</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.createerrata" xml:space="preserve">
         <source>Create Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target state="translated">创建勘误</target>
+        <target state="translated">创建补丁</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions" xml:space="preserve">
         <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
