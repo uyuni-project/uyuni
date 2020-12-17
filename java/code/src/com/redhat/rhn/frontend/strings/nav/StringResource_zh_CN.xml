@@ -525,7 +525,7 @@
       </trans-unit>
       <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
           <source>Schedule</source>
-        <target state="translated">调度</target>
+        <target state="translated">日程安排</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
@@ -726,7 +726,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">群组角色映射</target>
+        <target state="translated">组角色映射</target>
       </trans-unit>
       <trans-unit id="System Group Configuration" xml:space="preserve">
         <source>System Group Configuration</source>
@@ -747,7 +747,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">辅设置</target>
+        <target state="translated">从属设置</target>
       </trans-unit>
       <trans-unit id="Remote Command" xml:space="preserve">
         <source>Remote Command</source>
@@ -796,7 +796,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">未完成</target>
+        <target state="translated">待处理</target>
       </trans-unit>
       <trans-unit id="Patches" xml:space="preserve">
         <source>Patches</source>
@@ -817,35 +817,35 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">补丁集合</target>
+        <target state="translated">补丁群集</target>
       </trans-unit>
       <trans-unit id="Notes" xml:space="preserve">
         <source>Notes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">注记</target>
+        <target state="translated">备注</target>
       </trans-unit>
       <trans-unit id="Managed Files" xml:space="preserve">
         <source>Managed Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">管理的文件</target>
+        <target state="translated">受管文件</target>
       </trans-unit>
       <trans-unit id="List / Remove" xml:space="preserve">
         <source>List / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">列出/删除</target>
+        <target state="translated">列出/去除</target>
       </trans-unit>
       <trans-unit id="Add / Remove" xml:space="preserve">
         <source>Add / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">添加/删除</target>
+        <target state="translated">添加/去除</target>
       </trans-unit>
       <trans-unit id="List / Leave" xml:space="preserve">
         <source>List / Leave</source>
@@ -873,14 +873,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">不同</target>
+        <target state="translated">差异</target>
       </trans-unit>
       <trans-unit id="Custom Info" xml:space="preserve">
         <source>Custom Info</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">定制信息</target>
+        <target state="translated">自定义信息</target>
       </trans-unit>
       <trans-unit id="Configuration" xml:space="preserve">
         <source>Configuration</source>
@@ -908,21 +908,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">恢复</target>
+        <target state="translated">回滚</target>
       </trans-unit>
       <trans-unit id="Supported" xml:space="preserve">
         <source>Supported</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">支持的</target>
+        <target state="translated">受支持</target>
       </trans-unit>
       <trans-unit id="Retired" xml:space="preserve">
         <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">过期的</target>
+        <target state="translated">已淘汰</target>
       </trans-unit>
       <trans-unit id="Connection" xml:space="preserve">
         <source>Connection</source>
