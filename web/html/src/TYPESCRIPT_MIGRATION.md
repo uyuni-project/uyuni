@@ -25,10 +25,6 @@ $ yarn tsc
 # Get a list of remaining errors that need to be resolved manually
 ```
 
-Notes:
- - a number of types are declared but not actually exported for other modules to use
- - untyped object initializations `let websocket = {};` could be fixed by adding `any`
-
 ## Common problems you may encounter:
 
 ### `Argument of type 'Foo' is not assignable to parameter of type 'never'` when pushing into an empty array
