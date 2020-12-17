@@ -13,7 +13,7 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target state="translated">您的 @@PRODUCT_NAME@@ 帐户已经准备好</target>
+        <target state="translated">您的 @@PRODUCT_NAME@@ 帐户已就绪</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
@@ -138,12 +138,12 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
         <target state="translated">您好，
 
-已经由 {0} {1} 为您创建了一个红帽登录。 您的
-红帽登录以及一个激活的红帽订阅为您在 @@PRODUCT_NAME@@ 提供
-了管理系统的功能。
+{0} {1} 已经为您创建了 @@PRODUCT_NAME@@ 登录名。将您的
+@@PRODUCT_NAME@@ 登录名与有效的 @@VENDOR_NAME@@ 订阅相结合，
+您可以获得 @@PRODUCT_NAME@@ 上管理系统所需的访问权限。
 
-  红帽登录： {2}
-  电子邮件：{4}
+    @@PRODUCT_NAME@@ 登录名：{2}
+           电子邮件地址：{4}
 
   {5}
 
@@ -163,7 +163,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target state="translated">用户创建的 @@PRODUCT_NAME@@： {0} ({1}, {2}, &lt;{3}&gt;)</target>
+        <target state="translated">已创建 @@PRODUCT_NAME@@ 用户：{0} ({1}, {2}, &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body" xml:space="preserve">
         <source>Hello,
@@ -197,7 +197,7 @@ Thank you for using @@PRODUCT_NAME@@.
 
 {0}
 
-要查看所有与您的帐户关联的所有激活的用户和红帽登录，
+要查看与您的帐户关联的所有活动用户和 @@PRODUCT_NAME@@ 登录名，
 请访问：
 
   {1}
@@ -399,7 +399,7 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 每日状态报告 {0}</target>
+        <target state="translated">{0} 的 @@PRODUCT_NAME@@ 每日状态报告</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
@@ -434,21 +434,21 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="translated">只是到 {1} 为止，您的帐号 {0} 的 @@PRODUCT_NAME@@ 状态报告。
+        <target state="translated">截至 {1}，您帐户 {0} 的 @@PRODUCT_NAME@@ 状态报告。
 
-如果下列情况之一发生，这封电子邮件将被发送：
+如果发生下列情况之一，便会发送此电子邮件：
 
-1. 系统在 24 小时内用 @@PRODUCT_NAME@@ 检入失败。
-2. 系统注册了已被调度的 action 活动。
+1. 系统在 24 小时内无法签入 @@PRODUCT_NAME@@。
+2. 系统注册了安排的操作活动。
 
 {2}
 {3}
-禁用这封邮件：
+禁用此电子邮件：
 ----------------------
 
-要学习如何禁用这封邮件：
+要为系统禁用此电子邮件，请访问以下网址的“首选项”页面：
 
-https://{4}/rhn/help/reference/en-US/ref.webui.overview.jsp
+https://{4}/rhn/account/UserPreferences.do
 
 
 感谢您使用 @@PRODUCT_NAME@@。
@@ -526,21 +526,21 @@ Thank you for using @@PRODUCT_NAME@@.
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
         <target state="translated">
-[  这是根据您的要求自动发送给 {0} 的电子邮件。 ]
+[  这是一封根据您的请求自动发送到 {0} 的电子邮件。 ]
 
-您要求列出所有与电子邮件 {0} 关联的
-@@PRODUCT_NAME@@ 登录。
+您请求获取与电子邮件地址 {0} 关联的所有
+@@PRODUCT_NAME@@ 登录名的列表。
 
-现有登录：
+现有登录名：
 
 {1}
-您可以在下面的地址重置所有上述 @@PRODUCT_NAME@@ 登录的密码：
+您可以在下面的网址中重设置所有上述 @@PRODUCT_NAME@@ 登录名的口令：
 
   https://{2}/rhn/help/ForgotCredentials.do
 
-如果登录仍有问题，请联络
-您的 @@PRODUCT_NAME@@ 管理员活动进一步的帮助。
-如果不想发送这封电子邮件，请忽略此信息。
+如果登录仍有问题，请联系
+您的 @@PRODUCT_NAME@@ 管理员以获得进一步的帮助。
+如果您并未请求发送此电子邮件，请忽略此消息。
 
 感谢您使用 @@PRODUCT_NAME@@。
         </target>
