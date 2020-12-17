@@ -1,52 +1,47 @@
 {
-    "include": [
-      "components/**/*.ts",
-      "components/**/*.tsx",
-      "core/**/*.ts",
-      "core/**/*.tsx",
-      "manager/**/*.ts",
-      "manager/**/*.tsx",
-      "utils/**/*.ts",
-      "utils/**/*.tsx",
-      "global.d.ts",
-      "imports.d.ts"
-    ],
-    "exclude": ["**/node_modules", "**/\\.*/"],
-    "compilerOptions": {
-      // See: https://github.com/microsoft/TypeScript/issues/25430
-      "baseUrl": "./",
-      "paths": {
-        "components/*": [ "./components/*" ],
-        "core/*": [ "./core/*" ],
-        "manager/*": [ "./manager/*" ],
-        "utils/*": [ "./utils/*" ]
-      },
-      "target": "es5",
-      "lib": [
-        "es5",
-        "dom",
-        "dom.iterable",
-      ],
-      "strict": true,
-      // Should eventually be false
-      "allowJs": true,
-      // Should eventually be true
-      "noImplicitAny": false,
-      // See https://mariusschulz.com/blog/downlevel-iteration-for-es3-es5-in-typescript
-      "downlevelIteration": true,
-      "importHelpers": true,
-      // Below are CRA defaults for a good baseline
-      "skipLibCheck": true,
-      "esModuleInterop": true,
-      "allowSyntheticDefaultImports": true,
-      "forceConsistentCasingInFileNames": true,
-      "noFallthroughCasesInSwitch": true,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": true,
-      "jsx": "react-jsx"
-    }
+  "include": [
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "core/**/*.ts",
+    "core/**/*.tsx",
+    "manager/**/*.ts",
+    "manager/**/*.tsx",
+    "utils/**/*.ts",
+    "utils/**/*.tsx",
+    "global.d.ts",
+    "imports.d.ts"
+  ],
+  "exclude": ["**/node_modules", "**/\\.*/", "flow-typed/**"],
+  "compilerOptions": {
+    // See: https://github.com/microsoft/TypeScript/issues/25430
+    "baseUrl": "./",
+    "paths": {
+      "components/*": ["./components/*"],
+      "core/*": ["./core/*"],
+      "manager/*": ["./manager/*"],
+      "utils/*": ["./utils/*"]
+    },
+    "target": "es5",
+    "lib": ["es5", "dom", "dom.iterable"],
+    "strict": true,
+    // Should eventually be false
+    "allowJs": true,
+    // Should eventually be true
+    "noImplicitAny": false,
+    // See https://mariusschulz.com/blog/downlevel-iteration-for-es3-es5-in-typescript
+    "downlevelIteration": true,
+    "importHelpers": true,
+    // Below are CRA defaults for a good baseline
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   }
-  
+}

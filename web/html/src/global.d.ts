@@ -3,9 +3,8 @@ declare global {
     _IS_UYUNI: boolean;
   }
 
-  // jQuery(...args: any): any;
   function t(msg: string, ...args: Array<any>): string;
-  // TODO: Specify
+  // TODO: Type this this in https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
 }
 
