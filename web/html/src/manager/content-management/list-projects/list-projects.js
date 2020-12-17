@@ -124,4 +124,4 @@ const ListProjects = (props: Props) => {
     );
 }
 
-export default hot(module)(withPageWrapper<Props>(ListProjects));
+export default hot(withPageWrapper<Props>(ListProjects));

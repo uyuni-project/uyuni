@@ -90,4 +90,4 @@ const RemoveNode = (props: Props) => {
             </TopPanel>);                
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(RemoveNode)));
+export default hot(withPageWrapper<Props>(withErrorMessages(RemoveNode)));

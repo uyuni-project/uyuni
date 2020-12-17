@@ -173,4 +173,4 @@ const Project = (props: Props) => {
   );
 };
 
-export default hot(module)(withPageWrapper<Props>(Project));
+export default hot(withPageWrapper<Props>(Project));

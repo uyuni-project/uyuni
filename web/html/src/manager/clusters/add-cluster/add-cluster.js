@@ -93,4 +93,4 @@ const AddCluster = (props: Props) => {
             </TopPanel>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(AddCluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(AddCluster)));
