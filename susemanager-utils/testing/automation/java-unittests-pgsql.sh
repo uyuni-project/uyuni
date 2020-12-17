@@ -36,5 +36,7 @@ CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -
 
 docker pull $REGISTRY/$PGSQL_CONTAINER
 docker run --privileged --rm=true -v "$GITROOT:/manager" \
+    -it \
+    -e PG_TMPFS_DIR=/tmp/tmpfsdb \
     $REGISTRY/$PGSQL_CONTAINER \
     /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
