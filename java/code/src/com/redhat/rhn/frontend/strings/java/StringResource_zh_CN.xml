@@ -3633,7 +3633,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">
             /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target state="translated">概要</target>
+        <target state="translated">摘要</target>
       </trans-unit>
       <trans-unit id="advisoryName" xml:space="preserve">
         <source>Advisory</source>
