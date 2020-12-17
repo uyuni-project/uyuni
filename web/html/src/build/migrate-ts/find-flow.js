@@ -4,11 +4,11 @@ const util = require("util");
 const glob = util.promisify(require("glob"));
 const exec = util.promisify(require("child_process").exec);
 
-const parser = require("./parser");
+const args = require("./args");
 
 /** Given a list of files & directories, find JS files with Flow annotations */
 (async () => {
-  const { inputs, isVerbose } = parser.parse(process.argv);
+  const { inputs, isVerbose } = args.parse(process.argv);
 
   const cwd = process.cwd();
   const searchPaths = inputs.map(item => path.resolve(cwd, item));

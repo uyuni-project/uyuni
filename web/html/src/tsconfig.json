@@ -1,9 +1,13 @@
 {
     "include": [
-      "components/**/*.tsx?",
-      "core/**/*.tsx?",
-      "manager/**/*.tsx?",
-      "utils/**/*.tsx?",
+      "components/**/*.ts",
+      "components/**/*.tsx",
+      "core/**/*.ts",
+      "core/**/*.tsx",
+      "manager/**/*.ts",
+      "manager/**/*.tsx",
+      "utils/**/*.ts",
+      "utils/**/*.tsx",
       "global.d.ts"
     ],
     "exclude": ["**/node_modules", "**/.*/"],
