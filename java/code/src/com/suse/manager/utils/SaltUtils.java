@@ -1296,7 +1296,7 @@ public class SaltUtils {
                 .collect(Collectors.toMap(
                         SaltUtils::packageToKey,
                         Function.identity(),
-                        (first, duplicate) -> first // Deal with duplicates: ignore additional entries
+                        (first, second) -> resolveDuplicatePackage(first, second)
                 ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
@@ -1309,6 +1309,26 @@ public class SaltUtils {
         ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(createPackagesFromSalt(packagesToAdd, server));
+    }
+
+    private static Map.Entry<String, Info> resolveDuplicatePackage(Map.Entry<String, Info> firstEntry,
+            Map.Entry<String, Info> secondEntry) {
+        Info first = firstEntry.getValue();
+        Info second = secondEntry.getValue();
+
+        if (first.getInstallDateUnixTime().isEmpty() && second.getInstallDateUnixTime().isEmpty()) {
+            LOG.warn(String.format("Got duplicate packages NEVRA and the install timestamp is missing." +
+                    " Taking the first one. First:  %s, second: %s", first, second));
+            return firstEntry;
+        }
+
+        // the later one wins
+        if (first.getInstallDateUnixTime().get() > second.getInstallDateUnixTime().get()) {
+            return firstEntry;
+        }
+        else {
+            return secondEntry;
+        }
     }
 
     /**
