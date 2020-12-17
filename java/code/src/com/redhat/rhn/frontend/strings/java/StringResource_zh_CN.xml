@@ -4079,7 +4079,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.FilterCreateAction</context>
         </context-group>
-        <target state="translated">过滤器 {0} 被成功地创建</target>
+        <target state="translated">已成功创建过滤器 {0}</target>
       </trans-unit>
       <trans-unit id="filterEdit.success" xml:space="preserve">
         <source>The filter {0} was successfully changed</source>
