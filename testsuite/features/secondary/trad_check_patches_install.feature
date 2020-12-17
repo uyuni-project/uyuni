@@ -1,6 +1,8 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_traditional_client
+@scope_onboarding
 Feature: Display patches
 
   Scenario: Pre-require: enable old packages to fake a possible installation

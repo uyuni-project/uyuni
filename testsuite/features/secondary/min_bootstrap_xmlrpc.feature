@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_onboarding
 Feature: Register a Salt minion via XML-RPC API
 
   Scenario: Delete SLES minion system profile before XML-RPC bootstrap test

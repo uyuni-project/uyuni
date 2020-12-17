@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Manage a group of systems
 
   Scenario: Fail to create a group with only its name

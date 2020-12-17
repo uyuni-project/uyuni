@@ -11,6 +11,8 @@
 # which means "between 3 and 1 minutes before package installation or patching"
 
 @ubuntu_minion
+@scope_ubuntu
+@scope_content_staging
 Feature: Install a package on the Ubuntu minion with staging enabled
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present on Ubuntu minion

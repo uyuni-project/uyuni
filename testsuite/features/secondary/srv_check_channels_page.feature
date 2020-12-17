@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_configuration_channels
 Feature: The channels page
   In Order to use the channels page and its subpages
   As an authorized user

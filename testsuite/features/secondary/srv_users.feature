@@ -5,6 +5,7 @@
 #  2) create and delete users
 #  3) Change permissions and roles in web UI
 
+@scope_visualization
 Feature: Manage users
 
   Scenario: Display active users page

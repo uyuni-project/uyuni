@@ -1,6 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_res
 Feature: Remote command on CentOS Salt minion
   In order to manage a CentOS Salt minion
   As an authorized user

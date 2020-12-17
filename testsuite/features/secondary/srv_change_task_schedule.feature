@@ -1,6 +1,7 @@
 # Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_recurring_actions
 Feature: Change the schedule of a task
 
   Scenario: Change the schedule of task sandbox-cleanup-default to weekly

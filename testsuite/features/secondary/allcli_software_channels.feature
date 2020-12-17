@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_changing_software_channels
 Feature: Chanel subscription via SSM
 
 @sle_minion

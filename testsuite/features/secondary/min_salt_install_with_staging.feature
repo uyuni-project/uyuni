@@ -11,6 +11,7 @@
 # which means "beetwen 3 and 1 minutes before package installation or patching"
 
 @sle_minion
+@scope_content_staging
 Feature: Install a package on the SLES minion with staging enabled
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present

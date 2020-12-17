@@ -2,6 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 @sle_client
+@scope_traditional_client
+@scope_action_chains
 Feature: Action chain on traditional clients
 
   Scenario: Pre-requisite: downgrade repositories to lower version on traditional client

@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@scope_salt
 Feature: Verify that Salt mgrcompat state works when the new module.run syntax is enabled
 
   Scenario: Remove mgrcompat module from minion synced modules and schedule Hardware Refresh

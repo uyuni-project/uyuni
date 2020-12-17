@@ -7,6 +7,7 @@
 # 3) install and remove a package
 
 @sle_minion
+@scope_onboarding
 Feature: Register a Salt minion via Bootstrap-script
 
   Scenario: Delete SLES minion system profile before script bootstrap test
