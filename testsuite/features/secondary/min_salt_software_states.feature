@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_salt
 Feature: Salt package states
 
   Scenario: Pre-requisite: install old packages on SLES minion

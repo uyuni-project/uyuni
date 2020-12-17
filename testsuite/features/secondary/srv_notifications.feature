@@ -1,6 +1,7 @@
 # Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Test the notification/notification-messages feature
 
   Scenario: Check the unread notification counter is correct

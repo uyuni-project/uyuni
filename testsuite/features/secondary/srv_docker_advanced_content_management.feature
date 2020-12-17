@@ -1,6 +1,7 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_building_container_images
 Feature: Advanced content management
 
 @no_auth_registry

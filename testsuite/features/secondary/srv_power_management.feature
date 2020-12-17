@@ -1,7 +1,8 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Power management
+@scope_power_management
+Feature: IPMI Power management
 
   Scenario: Fake an IPMI host
     Given the server starts mocking an IPMI host

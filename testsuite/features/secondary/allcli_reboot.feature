@@ -7,6 +7,7 @@
 # * However, beware that firmware, kernel or library updates might be activated by the reboot
 #   (thus making changes in the behaviour of the system after the reboot)
 
+@scope_onboarding
 Feature: Reboot systems managed by SUSE Manager
 
 @ssh_minion

@@ -4,6 +4,7 @@
 # In order to use different end-point to download rpms other than the manager instance itself, one can do so with
 # setting pillar data values as mentioned in upload_files/rpm_enpoint.sls. These scenarios test this feature
 
+@scope_onboarding
 Feature: Repos file generation based on custom pillar data
 
   Scenario: Subscribe the SLES minion to a channel

@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @buildhost
+@scope_building_container_images
 Feature: Build image with authenticated registry
 
 @auth_registry

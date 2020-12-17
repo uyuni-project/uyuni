@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_traditional_client
+@scope_onboarding
 Feature: Install a package to the traditional client
 
   Scenario: Pre-requisite: remove packages before traditional client package test

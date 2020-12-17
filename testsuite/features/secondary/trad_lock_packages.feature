@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_traditional_client
 Feature: Lock packages on traditional client
 
   Background:

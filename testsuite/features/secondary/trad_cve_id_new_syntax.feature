@@ -1,6 +1,8 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_cve_audit
+@scope_traditional_client
 Feature: Support for new CVE-ID syntax
 
   Scenario: Check perseus-dummy-7891 patches

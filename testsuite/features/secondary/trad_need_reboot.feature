@@ -4,6 +4,7 @@
 # TODO: This feature must run before install a patch in the client
 # Feature dependency: trad_action_chain.feature
 
+@scope_traditional_client
 Feature: Reboot required after patch
   In order to avoid systems with different running/installed kernel
   As an authorized user

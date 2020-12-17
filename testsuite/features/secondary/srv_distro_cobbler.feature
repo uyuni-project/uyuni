@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@scope_cobbler
 Feature: Cobbler and distribution autoinstallation
 
   Background:

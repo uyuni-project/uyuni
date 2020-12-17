@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Web UI - Main landing page menu, texts and links
 
   Background:

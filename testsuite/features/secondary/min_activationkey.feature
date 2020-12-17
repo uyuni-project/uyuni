@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Delete SLES minion system profile

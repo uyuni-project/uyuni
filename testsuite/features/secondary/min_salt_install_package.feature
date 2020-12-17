@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_salt
 Feature: Install a patch on the client via Salt through the UI
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package on SLE minion

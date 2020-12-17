@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@scope_configuration_channels
 Feature: State Configuration channels
   In order to configure systems through Salt
   I want to be able to use channels from the state tab

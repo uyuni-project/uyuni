@@ -1,6 +1,7 @@
 # Copyright (c) 2017 SUSE LLC
 # License under the terms of the MIT License.
 
+@scope_configuration_channels
 Feature: Clone a channel
 
   Scenario: Clone a channel without patches

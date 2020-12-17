@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_onboarding
 Feature: Empty minion profile operations
 
   Scenario: Create an empty minion profile with HW address via XML-RPC API

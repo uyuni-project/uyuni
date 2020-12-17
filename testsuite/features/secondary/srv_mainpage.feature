@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Main landing page options and preferences
 
   Scenario: Access the Login page

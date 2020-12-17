@@ -16,6 +16,7 @@
 @proxy
 @private_net
 @pxeboot_minion
+@scope_retail
 Feature: PXE boot a Retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator

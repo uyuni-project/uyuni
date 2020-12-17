@@ -8,6 +8,8 @@
 # 5) reboot
 # 6) delete the traditional client and register as Centos minion
 
+@scope_traditional_client
+@scope_res
 Feature: Be able to register a CentOS 7 traditional client and do some basic operations on it
 
 @centos_minion
