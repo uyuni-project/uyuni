@@ -323,6 +323,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals("13.2+git20140911.61c1681", pkg.getEvr().getVersion());
                 assertEquals("12.1", pkg.getEvr().getRelease());
                 assertEquals("x86_64", pkg.getArch().getName());
+                assertEquals(1459866434000L, pkg.getInstallTime().toInstant().toEpochMilli());
             }
             else if (pkg.getName().getName().equals("bash")) {
                 if (pkg.getArch().getName().equals("x86_64")) {
