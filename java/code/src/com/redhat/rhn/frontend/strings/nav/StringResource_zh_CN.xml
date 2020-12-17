@@ -49,7 +49,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target state="translated">撤销补丁</target>
+        <target state="translated">恢复补丁</target>
       </trans-unit>
       <trans-unit id="action.nav.install" xml:space="preserve">
         <source>Install Patches</source>
@@ -126,7 +126,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target state="translated">不兼容</target>
+        <target state="translated">不合规</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips" xml:space="preserve">
         <source>Duplicate IP Address</source>
@@ -957,7 +957,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target state="translated">Kickstart 信息</target>
+        <target state="translated">自动安装细节</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.edit.nav" xml:space="preserve">
         <source>Edit</source>
@@ -978,7 +978,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target state="translated">系统详情</target>
+        <target state="translated">系统细节</target>
       </trans-unit>
       <trans-unit id="Scripts" xml:space="preserve">
         <source>Scripts</source>
@@ -992,7 +992,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target state="translated">Kickstart 文件</target>
+        <target state="translated">自动安装文件</target>
       </trans-unit>
       <trans-unit id="Operating System" xml:space="preserve">
         <source>Operating System</source>
@@ -1006,14 +1006,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target state="translated">全新系统的 kickstart</target>
+        <target state="translated">未置备的自动安装</target>
       </trans-unit>
       <trans-unit id="Bare Metal" xml:space="preserve">
         <source>Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
-        <target state="translated">全新的系统</target>
+        <target state="translated">未置备</target>
       </trans-unit>
       <trans-unit id="Advanced Options" xml:space="preserve">
         <source>Advanced Options</source>
@@ -1027,7 +1027,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target state="translated">语言版本</target>
+        <target state="translated">区域设置</target>
       </trans-unit>
       <trans-unit id="Partitioning" xml:space="preserve">
         <source>Partitioning</source>
@@ -1048,7 +1048,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target state="translated">故障排除</target>
+        <target state="translated">查错</target>
       </trans-unit>
       <trans-unit id="Package Groups" xml:space="preserve">
         <source>Package Groups</source>
@@ -1062,7 +1062,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
-        <target state="translated">软件包配置档案</target>
+        <target state="translated">软件包配置文件</target>
       </trans-unit>
       <trans-unit id="Critical" xml:space="preserve">
         <source>Critical</source>
@@ -1083,14 +1083,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target state="translated">最近注册的</target>
+        <target state="translated">最近注册</target>
       </trans-unit>
       <trans-unit id="Target Systems" xml:space="preserve">
         <source>Target Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target state="translated">目的系统</target>
+        <target state="translated">目标系统</target>
       </trans-unit>
       <trans-unit id="Admins" xml:space="preserve">
         <source>Admins</source>
@@ -1111,7 +1111,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">库</target>
+        <target state="translated">储存库</target>
       </trans-unit>
       <trans-unit id="Managers" xml:space="preserve">
         <source>Managers</source>
@@ -1153,21 +1153,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target state="translated">机构</target>
+        <target state="translated">组织</target>
       </trans-unit>
       <trans-unit id="Trusts" xml:space="preserve">
         <source>Trusts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target state="translated">信托</target>
+        <target state="translated">信任</target>
       </trans-unit>
       <trans-unit id="Channels Consumed" xml:space="preserve">
         <source>Channels Consumed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target state="translated">消耗的频道</target>
+        <target state="translated">使用的频道</target>
       </trans-unit>
       <trans-unit id="Channels Provided" xml:space="preserve">
         <source>Channels Provided</source>
