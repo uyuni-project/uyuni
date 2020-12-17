@@ -703,7 +703,12 @@ public class ContentSyncManager {
                 .forEach(a -> SCCCachingFactory.deleteRepositoryAuth(a));
         }
         allRepoAuths = null;
+        List<SCCRepository> oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
         for (SCCRepositoryJson jrepo : repositories) {
+            if (oesRepos.stream().anyMatch(oes -> oes.getSccId().equals(jrepo.getSCCId()))) {
+                // OES repos are handled later
+                continue;
+            }
             SCCRepository repo = availableRepos.get(jrepo.getSCCId());
             if (repo == null) {
                 log.error("No repository with ID '" + jrepo.getSCCId() + "' found");
@@ -811,7 +816,7 @@ public class ContentSyncManager {
         }
 
         // OES
-        repoIdsFromCredential.addAll(refreshOESRepositoryAuth(c, mirrorUrl));
+        repoIdsFromCredential.addAll(refreshOESRepositoryAuth(c, mirrorUrl, oesRepos));
 
         // check if we have to remove auths which exists before
         List<SCCRepositoryAuth> authList = SCCCachingFactory.lookupRepositoryAuthByCredential(c);
@@ -864,14 +869,17 @@ public class ContentSyncManager {
      *
      * @param c credential to use for the check
      * @param mirrorUrl optional mirror url
+     * @param oesRepos cached list of OES Repositories or NULL
      * @return list of available repository ids
      */
-    public List<Long> refreshOESRepositoryAuth(Credentials c, String mirrorUrl) {
+    public List<Long> refreshOESRepositoryAuth(Credentials c, String mirrorUrl, List<SCCRepository> oesRepos) {
         List<Long> oesRepoIds = new LinkedList<>();
         if (!(c == null || accessibleUrl(OES_URL, c.getUsername(), c.getPassword()))) {
             return oesRepoIds;
         }
-        List<SCCRepository> oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
+        if (oesRepos == null) {
+            oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
+        }
         for (SCCRepository repo : oesRepos) {
             Set<SCCRepositoryAuth> allAuths = repo.getRepositoryAuth();
             Set<SCCRepositoryAuth> authsThisCred = allAuths.stream()
