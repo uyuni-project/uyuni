@@ -1,3 +1,4 @@
+- harden extratag key import by execute_values to ignore conflicts
 - internal code cleanup (dropping unused table rhnErrataTmp)
 - Fix Debian package version comparison
 - Removal of python-gzipstream since it's no longer used
