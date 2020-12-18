@@ -88,23 +88,23 @@ public class ContentPropertiesValidator {
         ValidatorResult result = new ValidatorResult();
 
         if (StringUtils.isEmpty(label)) {
-            result.addError("contentmanagement.label_required");
+            result.addFieldError("label", "contentmanagement.label_required");
         }
 
         if (StringUtils.isEmpty(name)) {
-            result.addError("contentmanagement.name_required");
+            result.addFieldError("name", "contentmanagement.name_required");
         }
 
         if (!isLabelValid(label)) {
-            result.addError("contentmanagement.label_invalid");
+            result.addFieldError("label", "contentmanagement.label_invalid");
         }
 
         if (label.length() > 16) {
-            result.addError("contentmanagement.environment_lbl_too_long");
+            result.addFieldError("label", "contentmanagement.environment_lbl_too_long");
         }
 
         if (name.length() > 128) {
-            result.addError("contentmanagement.environment_name_too_long");
+            result.addFieldError("name", "contentmanagement.environment_name_too_long");
         }
 
         if (result.hasErrors()) {
