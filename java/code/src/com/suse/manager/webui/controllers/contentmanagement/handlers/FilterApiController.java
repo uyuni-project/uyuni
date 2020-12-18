@@ -31,16 +31,18 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
+import com.google.gson.Gson;
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
-import com.google.gson.Gson;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -166,11 +168,16 @@ public class FilterApiController {
             );
         }
         catch (EntityExistsException error) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error("contentmanagement.filter_exists"));
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(
+                    new LinkedList<>(),
+                    Collections.singletonMap("filter_name",
+                            Arrays.asList(LOC.getMessage("contentmanagement.filter_exists")))
+            ));
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e),
+                            ValidationUtils.convertFieldValidationErrors(e)));
         }
 
         if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
@@ -210,7 +217,8 @@ public class FilterApiController {
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e),
+                            ValidationUtils.convertFieldValidationErrors(e)));
         }
 
         if (!StringUtils.isEmpty(updateFilterRequest.getProjectLabel())) {

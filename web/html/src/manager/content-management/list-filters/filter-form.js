@@ -15,6 +15,7 @@ import produce from "immer";
 
 type Props = {
   filter: FilterFormType,
+  errors: Object,
   onChange: Function,
   onClientValidate: Function,
   editing?: boolean
@@ -51,6 +52,7 @@ const FilterForm = (props: Props) => {
   return (
     <Form
       model={{...props.filter}}
+      errors={props.errors}
       onValidate={props.onClientValidate}
       onChange={model => {
         props.onChange(model);

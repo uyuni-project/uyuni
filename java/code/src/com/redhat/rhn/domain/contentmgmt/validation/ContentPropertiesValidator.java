@@ -122,11 +122,11 @@ public class ContentPropertiesValidator {
         ValidatorResult result = new ValidatorResult();
 
         if (StringUtils.isEmpty(name)) {
-            result.addError("contentmanagement.name_required");
+            result.addFieldError("filter_name", "contentmanagement.name_required");
         }
 
         if (name.length() > 128) {
-            result.addError("contentmanagement.filter_name_too_long");
+            result.addFieldError("filter_name", "contentmanagement.filter_name_too_long");
         }
 
         if (result.hasErrors()) {
