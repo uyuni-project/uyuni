@@ -1,3 +1,4 @@
+- harden extratag key import by execute_values to ignore conflicts
 - Fix Debian package version comparison
 - Use sanitized repo label to build reposync repo cache path (bsc#1179410)
 - Quote the proxy settings to be used by Zypper (bsc#1179087)
