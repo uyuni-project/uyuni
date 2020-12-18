@@ -117,7 +117,7 @@ const FilterEdit = (props: FilterEditProps) => {
                               props.onChange(updatedListOfFilters);
                             })
                             .catch((error) => {
-                              showErrorToastr(error, {autoHide: false});
+                              showErrorToastr(error.messages, {autoHide: false});
                             })
                         }}
                       />
@@ -159,7 +159,7 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error, {autoHide: false});
+                                  showErrorToastr(error.messages, {autoHide: false});
                                 })
                             } else {
                               onAction(mapFilterFormToRequest(item, props.projectLabel, localTime), "create")
@@ -173,7 +173,7 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error, {autoHide: false});
+                                  showErrorToastr(error.messages, {autoHide: false});
                                 })
                             }
                           }

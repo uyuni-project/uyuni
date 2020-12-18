@@ -47,28 +47,28 @@ public class ContentPropertiesValidator {
         ValidatorResult result = new ValidatorResult();
 
         if (StringUtils.isEmpty(label)) {
-            result.addError("contentmanagement.label_required");
+            result.addFieldError("label", "contentmanagement.label_required");
         }
 
         if (!isLabelValid(label)) {
-            result.addError("contentmanagement.label_invalid");
+            result.addFieldError("label", "contentmanagement.label_invalid");
         }
 
         if (label.length() > 24) {
-            result.addError("contentmanagement.project_label_too_long");
+            result.addFieldError("label", "contentmanagement.project_label_too_long");
         }
 
         if (StringUtils.isEmpty(name)) {
-            result.addError("contentmanagement.name_required");
+            result.addFieldError("name", "contentmanagement.name_required");
         }
 
         if (name.length() > 128) {
-            result.addError("contentmanagement.project_name_too_long");
+            result.addFieldError("name", "contentmanagement.project_name_too_long");
         }
 
         ContentManager.lookupProjectByNameAndOrg(name, user).ifPresent(cp -> {
             if (!cp.getLabel().equals(label)) {
-                result.addError("contentmanagement.name_already_exists");
+                result.addFieldError("name", "contentmanagement.name_already_exists");
             }
         });
 

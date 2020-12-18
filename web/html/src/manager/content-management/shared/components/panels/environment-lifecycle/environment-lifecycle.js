@@ -55,7 +55,7 @@ const EnvironmentLifecycle = (props: Props) => {
             props.onChange(projectWithCreatedEnvironment)
           })
           .catch((error) => {
-            showErrorToastr(error, {autoHide: false});
+            showErrorToastr(error.messages, {autoHide: false});
           })}
       onOpen={({ setItem }) => setItem({})}
       onCancel={() => cancelAction()}
@@ -105,7 +105,7 @@ const EnvironmentLifecycle = (props: Props) => {
                             showSuccessToastr(t("Environment updated successfully"));
                           })
                           .catch((error) => {
-                            showErrorToastr(error, {autoHide: false});
+                            showErrorToastr(error.messages, {autoHide: false});
                           })}
                       onOpen={({ setItem }) => setItem(environment)}
                       onCancel={() => cancelAction()}
@@ -120,7 +120,7 @@ const EnvironmentLifecycle = (props: Props) => {
                             showSuccessToastr(t("Environment {0} deleted successfully", environment.label));
                           })
                           .catch((error) => {
-                            showErrorToastr(error, {autoHide: false});
+                            showErrorToastr(error.messages, {autoHide: false});
                           })
                       }}
                       renderCreationContent={({ open, item, setItem }) => {

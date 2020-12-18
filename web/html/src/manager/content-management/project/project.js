@@ -110,7 +110,7 @@ const Project = (props: Props) => {
                           window.pageRenderers.spaengine.navigate(`/rhn/manager/contentmanagement/projects`);
                         })
                         .catch((error) => {
-                          showErrorToastr(error, {autoHide: false});
+                          showErrorToastr(error.messages, {autoHide: false});
                         })
                     }
       />

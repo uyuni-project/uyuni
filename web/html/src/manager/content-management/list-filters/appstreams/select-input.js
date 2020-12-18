@@ -21,7 +21,7 @@ export default function SelectInput(props: SelectInputProps) {
       setShowInputs(true);
       onAction(null, "get", value)
         .then(setModules)
-        .catch(showErrorToastr);
+        .catch((error) => showErrorToastr(error.messages));
     } else {
       setModules({});
     }

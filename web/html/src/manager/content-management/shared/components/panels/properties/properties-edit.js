@@ -54,9 +54,13 @@ const PropertiesEdit = (props: Props) => {
         title={t('Project Properties')}
         collapsible
         customIconClass="fa-small"
-        onOpen={({ setItem }) => setItem(props.properties)}
+        onOpen={({ setItem, setErrors }) => {
+            setItem(props.properties);
+            setErrors(null);
+          }
+        }
         disableOperations={isLoading}
-        onSave={({ item, closeDialog }) => {
+        onSave={({ item, closeDialog, setErrors}) => {
           return onAction(item, "update", props.projectId)
             .then((editedProject) => {
               closeDialog();
@@ -64,7 +68,8 @@ const PropertiesEdit = (props: Props) => {
               props.onChange(editedProject)
             })
             .catch((error) => {
-              showErrorToastr(error, {autoHide: false});
+              setErrors(error.errors);
+              showErrorToastr(error.messages, {autoHide: false});
             })
         }}
         onCancel={() => cancelAction()}
@@ -74,7 +79,7 @@ const PropertiesEdit = (props: Props) => {
             <PropertiesView properties={propertiesToShow}/>
           </React.Fragment>
         }
-        renderCreationContent={({ open, item, setItem }) => {
+        renderCreationContent={({ open, item, setItem, errors }) => {
 
           if (isLoading) {
             return (
@@ -85,6 +90,7 @@ const PropertiesEdit = (props: Props) => {
           return (
             <PropertiesForm
               properties={{...item}}
+              errors={errors}
               onChange={(editedProperties) => setItem(editedProperties)}
               editing
             />

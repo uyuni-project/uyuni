@@ -110,7 +110,7 @@ const Sources = (props: SourcesProps) => {
             props.onChange(projectWithUpdatedSources)
           })
           .catch((error) => {
-            showErrorToastr(error, {autoHide: false});
+            showErrorToastr(error.messages, {autoHide: false});
           });
       }}
       renderCreationContent={({setItem}) => {
