@@ -1520,21 +1520,21 @@
       </trans-unit>
       <trans-unit id="TNS Listener Port" xml:space="preserve">
         <source>TNS Listener Port</source>
-        <target/>
+        <target>Port načúvania TNS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Table Name" xml:space="preserve">
         <source>Table Name</source>
-        <target/>
+        <target>Názov tabuľky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Table Owner" xml:space="preserve">
         <source>Table Owner</source>
-        <target/>
+        <target>Vlastník tabuľky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1548,28 +1548,28 @@
       </trans-unit>
       <trans-unit id="Time Blocking (seconds)" xml:space="preserve">
         <source>Time Blocking (seconds)</source>
-        <target/>
+        <target>Čas blokovania (sekundy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Time Idle (seconds)" xml:space="preserve">
         <source>Time Idle (seconds)</source>
-        <target/>
+        <target>Doba nečinnosti (sekundy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Timeout (seconds)" xml:space="preserve">
         <source>Timeout (seconds)</source>
-        <target/>
+        <target>Časový limit (sekundy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="URL Path" xml:space="preserve">
         <source>URL Path</source>
-        <target/>
+        <target>Cesta URL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1590,7 +1590,7 @@
       </trans-unit>
       <trans-unit id="Virtual Host" xml:space="preserve">
         <source>Virtual Host</source>
-        <target/>
+        <target>Virtuálny hostiteľ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
