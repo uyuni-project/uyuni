@@ -1,8 +1,14 @@
+const { defaults } = require("jest-config");
+
 module.exports = {
-  "moduleNameMapper": {
+  verbose: true,
+  moduleFileExtensions: [...defaults.moduleFileExtensions, "ts", "tsx"],
+  moduleNameMapper: {
     "^core/(.*)$": "<rootDir>/core/$1",
     "^components/(.*)$": "<rootDir>/components/$1",
-    "^utils/(.*)$": "<rootDir>/utils/$1"
+    "^utils/(.*)$": "<rootDir>/utils/$1",
   },
-  setupFiles: ["./utils/test-utils/setup.js"]
-}
+  modulePaths: ["<rootDir>"],
+  moduleDirectories: ["node_modules"],
+  setupFiles: ["./utils/test-utils/setup.js"],
+};

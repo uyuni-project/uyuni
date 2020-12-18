@@ -1,3 +1,4 @@
+- Upgrade core-js to 3.8.1
 - Added nodejs_folder if it is not defined.
 - Disabled auto-dependency generation in SPEC file.
 
