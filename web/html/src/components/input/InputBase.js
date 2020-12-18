@@ -43,6 +43,10 @@ export type Props = {
 type State = {
   isValid: boolean,
   showErrors: boolean,
+  /** Error message received from FormContext
+   *  (typically an error message received from server response)
+   */
+  error: string
 };
 
 export class InputBase extends React.Component<Props, State> {
@@ -63,6 +67,7 @@ export class InputBase extends React.Component<Props, State> {
     this.state = {
       isValid: true,
       showErrors: false,
+      error: null
     };
   }
 
@@ -110,9 +115,14 @@ export class InputBase extends React.Component<Props, State> {
     return this.state.isValid;
   }
 
-  validate (value: string): void {
+  validate (value: string, errors: Array<string>): void {
     const results = [];
     let isValid = true;
+
+    const error = errors && errors.length > 0 ? errors[0] : null;
+    if (error != null) {
+      isValid = false;
+    }
 
     if (!this.props.disabled && (value || this.props.required)) {
       if (this.props.required && !value) {
@@ -129,7 +139,11 @@ export class InputBase extends React.Component<Props, State> {
       result.forEach((r) => {
         isValid = isValid && r;
       });
-      this.setState({isValid}, () => {
+      this.setState((state) => ({
+          isValid: isValid,
+          error: error,
+          showErrors: state.showErrors || error != null
+        }), () => {
         if (this.context.validateForm != null) {
           this.context.validateForm();
         }
@@ -149,7 +163,7 @@ export class InputBase extends React.Component<Props, State> {
   render() {
     const isError = this.state.showErrors && !this.state.isValid;
     const invalidHint = isError && (
-      this.props.invalidHint || (this.props.required && (`${this.props.label} is required.`))
+      this.state.error || this.props.invalidHint || (this.props.required && (`${this.props.label} is required.`))
     );
     const hint = [this.props.hint, (invalidHint && this.props.hint && <br />), invalidHint];
     return (

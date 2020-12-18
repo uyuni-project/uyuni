@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.contentmanagement.handlers;
 import com.redhat.rhn.common.validator.ValidatorException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -35,5 +36,17 @@ public class ValidationUtils {
         return exc.getResult().getErrors().stream()
                 .map(e -> e.getLocalizedMessage())
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Extract field validation errors from {@link ValidatorException} and convert them into localized messages.
+     * @param exc the {@link ValidatorException}
+     * @return the map with the list of localized messages for each field
+     */
+    public static Map<String, List<String>> convertFieldValidationErrors(ValidatorException exc) {
+        return exc.getResult().getFieldErrors().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, m -> m.getValue().stream()
+                        .map(e -> e.getLocalizedMessage())
+                        .collect(Collectors.toList())));
     }
 }

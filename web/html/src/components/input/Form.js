@@ -7,6 +7,8 @@ type Props = {
    *  Each field name in the form needs to map to a property of this
    *  object. The value is the one displayed in the form */
   model: Object,
+  /** Object storing form field errors */
+  errors: Object,
   /** Function to trigger when the Submit button is clicked */
   onSubmit?: Function,
   /** Function to trigger when the Submit button is clicked while the model is invalid */
@@ -33,6 +35,7 @@ type Props = {
 
 type FormContextType = {
   model: Object,
+  errors: Object,
   setModelValue: Function,
   registerInput: Function,
   unregisterInput: Function,
@@ -54,13 +57,16 @@ export class Form extends React.Component<Props> {
   inputs = {};
 
   setModelValue(name: string, value: any) {
-    const { model } = this.props;
+    const { model, errors } = this.props;
     if (value == null && model[name] != null) {
       delete model[name];
       this.props.onChange(model);
     } else if (value != null) {
       model[name] = value;
       this.props.onChange(model);
+    }
+    if (errors) {
+      delete errors[name];
     }
   }
 
@@ -99,8 +105,9 @@ export class Form extends React.Component<Props> {
   }
 
   componentDidUpdate(prevProps: Object) {
-    if (prevProps.model !== this.props.model) {
-      Object.keys(this.inputs).forEach(name => this.inputs[name].validate(this.props.model[name]));
+    if (prevProps.model !== this.props.model ||
+        prevProps.errors !== this.props.errors) {
+      Object.keys(this.inputs).forEach(name => this.inputs[name].validate(this.props.model[name], this.props.errors && this.props.errors[name]));
     }
   }
 
@@ -109,6 +116,7 @@ export class Form extends React.Component<Props> {
       <FormContext.Provider value={
         {
           model: this.props.model,
+          errors: this.props.errors,
           setModelValue: this.setModelValue.bind(this),
           registerInput: this.registerInput.bind(this),
           unregisterInput: this.unregisterInput.bind(this),
