@@ -1,3 +1,4 @@
+- Improves misleading UI message displayed on systems with modules activated (bsc#1179525)
 - Fix availability check for debian repositories (bsc#1180127)
 - Added 'contents' argument to the 'configchannel.create' XMLRPC API method (bsc#1179566)
 - Ignore duplicate NEVRAs in package profile update (bsc#1176018)
