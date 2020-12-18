@@ -1,3 +1,4 @@
+- Fix availability check for debian repositories (bsc#1180127)
 - Ignore duplicate NEVRAs in package profile update (bsc#1176018)
 - Prevent deletion of CLM environments if they're used in an autoinstallation
   profile (bsc#1179552)

@@ -1728,8 +1728,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         String repourl = "http://localhost/pub/myrepo/";
         ContentSyncManager csm = new ContentSyncManager();
 
-        assertEquals(repourl + "Release", csm.buildRepoFileUrl(repourl, debrepo));
-        assertEquals(repourl + "repodata/repomd.xml", csm.buildRepoFileUrl(repourl, rpmrepo));
+        assertContains(csm.buildRepoFileUrl(repourl, rpmrepo), repourl + "repodata/repomd.xml");
+        assertEquals(1, csm.buildRepoFileUrl(repourl, rpmrepo).size());
+
+        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Packages.xz");
+        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Packages.gz");
+        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Packages");
+        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Release");
+        assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "InRelease");
+        assertEquals(5, csm.buildRepoFileUrl(repourl, debrepo).size());
     }
 
 
