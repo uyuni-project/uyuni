@@ -706,7 +706,12 @@ public class ContentSyncManager {
                 .forEach(a -> SCCCachingFactory.deleteRepositoryAuth(a));
         }
         allRepoAuths = null;
+        List<SCCRepository> oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
         for (SCCRepositoryJson jrepo : repositories) {
+            if (oesRepos.stream().anyMatch(oes -> oes.getSccId().equals(jrepo.getSCCId()))) {
+                // OES repos are handled later
+                continue;
+            }
             SCCRepository repo = availableRepos.get(jrepo.getSCCId());
             if (repo == null) {
                 log.error("No repository with ID '" + jrepo.getSCCId() + "' found");
@@ -748,7 +753,7 @@ public class ContentSyncManager {
             }
             else {
                 try {
-                    String fullUrl = buildRepoFileUrl(url, repo);
+                    List<String> fullUrl = buildRepoFileUrl(url, repo);
                     if (accessibleUrl(fullUrl)) {
                         URI uri = new URI(url);
                         if (uri.getUserInfo() == null) {
@@ -814,7 +819,7 @@ public class ContentSyncManager {
         }
 
         // OES
-        repoIdsFromCredential.addAll(refreshOESRepositoryAuth(c, mirrorUrl));
+        repoIdsFromCredential.addAll(refreshOESRepositoryAuth(c, mirrorUrl, oesRepos));
 
         // check if we have to remove auths which exists before
         List<SCCRepositoryAuth> authList = SCCCachingFactory.lookupRepositoryAuthByCredential(c);
@@ -867,14 +872,17 @@ public class ContentSyncManager {
      *
      * @param c credential to use for the check
      * @param mirrorUrl optional mirror url
+     * @param oesRepos cached list of OES Repositories or NULL
      * @return list of available repository ids
      */
-    public List<Long> refreshOESRepositoryAuth(Credentials c, String mirrorUrl) {
+    public List<Long> refreshOESRepositoryAuth(Credentials c, String mirrorUrl, List<SCCRepository> oesRepos) {
         List<Long> oesRepoIds = new LinkedList<>();
         if (!(c == null || accessibleUrl(OES_URL, c.getUsername(), c.getPassword()))) {
             return oesRepoIds;
         }
-        List<SCCRepository> oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
+        if (oesRepos == null) {
+            oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
+        }
         for (SCCRepository repo : oesRepos) {
             Set<SCCRepositoryAuth> allAuths = repo.getRepositoryAuth();
             Set<SCCRepositoryAuth> authsThisCred = allAuths.stream()
@@ -994,28 +1002,42 @@ public class ContentSyncManager {
     }
 
     /**
-     * Build URL pointing to a file to test availablity of a repository.
+     * Build a list of URLs pointing to a file to test availablity of a repository.
      * Support either repomd or Debian style repos.
+     * The first accessible defines that the repo exists and is valid
      *
      * @param url the repo url
      * @param repo the repo object
-     * @return full URL pointing to a file which should be available depending on the repo type
+     * @return List of full URLs pointing to a file which should be available depending on the repo type
      * @throws URISyntaxException in case of an error
      */
-    public String buildRepoFileUrl(String url, SCCRepository repo) throws URISyntaxException {
+    public List<String> buildRepoFileUrl(String url, SCCRepository repo) throws URISyntaxException {
         if (url.contains("mirrorlist")) {
-            return url;
+            return Arrays.asList(url);
         }
         URI uri = new URI(url);
-        String relFile = "/repodata/repomd.xml";
+        List<String> relFiles = new LinkedList<>();
+        List<String> urls = new LinkedList<>();
 
         // Debian repo
         if (repo.getDistroTarget() != null && repo.getDistroTarget().equals("amd64")) {
-            relFile = "Release";
+            // There is not only 1 file we can test.
+            // https://wiki.debian.org/DebianRepository/Format
+            relFiles.add("Packages.xz");
+            relFiles.add("Release");
+            relFiles.add("Packages.gz");
+            relFiles.add("Packages");
+            relFiles.add("InRelease");
         }
-        Path urlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"), relFile).toPath();
-        return new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
-                uri.getQuery(), null).toString();
+        else {
+            relFiles.add("/repodata/repomd.xml");
+        }
+        for (String relFile : relFiles) {
+            Path urlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"), relFile).toPath();
+            urls.add(new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
+                    uri.getQuery(), null).toString());
+        }
+        return urls;
     }
 
     /**
@@ -2149,6 +2171,26 @@ public class ContentSyncManager {
     }
 
     /**
+     * Check if one of the given URLs can be reached.
+     * @param urls the urls
+     * @return Returns true in case we can access at least one of this URLs, otherwise false
+     */
+    protected boolean accessibleUrl(List<String> urls) {
+        return urls.stream().anyMatch(u -> accessibleUrl(u));
+    }
+
+    /**
+     * Check if one of the given URLs can be reached.
+     * @param urls the urls
+     * @param user the username
+     * @param password the password
+     * @return Returns true in case we can access at least one of this URLs, otherwise false
+     */
+    protected boolean accessibleUrl(List<String> urls, String user, String password) {
+        return urls.stream().anyMatch(u -> accessibleUrl(u, user, password));
+    }
+
+    /**
      * Check if the given URL can be reached.
      * @param url the url
      * @return Returns true in case we can access this URL, otherwise false
@@ -2170,6 +2212,7 @@ public class ContentSyncManager {
         }
         return false;
     }
+
     /**
      * Check if the given URL can be reached using provided username and password
      * @param url the url
