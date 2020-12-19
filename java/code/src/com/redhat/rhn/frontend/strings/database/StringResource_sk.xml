@@ -1597,21 +1597,21 @@
       </trans-unit>
       <trans-unit id="Warn 1 min" xml:space="preserve">
         <source>Warn 1 min</source>
-        <target/>
+        <target>Varovné 1 min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn 15 min" xml:space="preserve">
         <source>Warn 15 min</source>
-        <target/>
+        <target>Varovné 15 min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warn 5 min" xml:space="preserve">
         <source>Warn 5 min</source>
-        <target/>
+        <target>Varovné 5 min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1639,7 +1639,7 @@
       </trans-unit>
       <trans-unit id="Warning Accesses" xml:space="preserve">
         <source>Warning Accesses</source>
-        <target/>
+        <target>Varovné prístupy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1695,21 +1695,21 @@
       </trans-unit>
       <trans-unit id="Warning CPU Load 1-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 1-Min Ave</source>
-        <target/>
+        <target>Varovné priemerné zaťaženie CPU 1-Min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 15-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 15-Min Ave</source>
-        <target/>
+        <target>Varovné priemerné zaťaženie CPU 15-Min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 5-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 5-Min Ave</source>
-        <target/>
+        <target>Varovné priemerné zaťaženie CPU 5-Min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2031,14 +2031,14 @@
       </trans-unit>
       <trans-unit id="Warning Seconds" xml:space="preserve">
         <source>Warning Seconds</source>
-        <target/>
+        <target>Varovné sekundy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Size" xml:space="preserve">
         <source>Warning Size</source>
-        <target/>
+        <target>Varovná veľkosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
