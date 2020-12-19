@@ -8,63 +8,68 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-12-19 14:26+0000\n"
+"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/susemanager/"
+"it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../yast/susemanager_ask.rb:38
 msgid "Set up #{@product_name} from scratch"
-msgstr ""
+msgstr "Installa #{@product_name} da zero"
 
 #: ../yast/susemanager_ask.rb:48
 msgid "Migrate a #{@product_name} compatible server"
-msgstr ""
+msgstr "Migra un server compatibile #{@product_name}"
 
 #: ../yast/susemanager_ask.rb:60
 msgid ""
 "<p>Choose if you are setting up #{@product_name} from scratch or migrating "
 "to #{@product_name} from a #{@product_name} compatible server.</p>"
 msgstr ""
+"<p>Scegli se stai configurando #{@nome_prodotto} da zero o se stai migrando "
+"a #{@nome_prodotto} da un server compatibile #{@nome_prodotto}.</p>"
 
 #: ../yast/susemanager_ask.rb:65
 msgid "#{@product_name} Setup"
-msgstr ""
+msgstr "Configurazione di #{@product_name}"
 
 #: ../yast/susemanager_cert.rb:43
 msgid "Organization"
-msgstr ""
+msgstr "Organizzazione"
 
 #: ../yast/susemanager_cert.rb:45
 msgid "Organization Unit"
-msgstr ""
+msgstr "Unità organizzativa"
 
 #: ../yast/susemanager_cert.rb:47
 msgid "City"
-msgstr ""
+msgstr "Città"
 
 #: ../yast/susemanager_cert.rb:49
 msgid "State"
-msgstr ""
+msgstr "Stato"
 
 #: ../yast/susemanager_cert.rb:51
 msgid "Country"
-msgstr ""
+msgstr "Paese"
 
 #: ../yast/susemanager_cert.rb:53
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 #: ../yast/susemanager_cert.rb:114
 msgid "SSL Pass&word"
-msgstr ""
+msgstr "Pass&word SSL"
 
 #: ../yast/susemanager_cert.rb:121 ../yast/susemanager_db.rb:106
 msgid "R&epeat Password"
-msgstr ""
+msgstr "Rip&eti password"
 
 #: ../yast/susemanager_cert.rb:132
 msgid ""
@@ -72,19 +77,23 @@ msgid ""
 "certificate is used for a number of purposes like connections to a SUSE "
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
+"<p>Inserire i dati necessari per la creazione di un certificato SSL. Il "
+"certificato viene utilizzato per una serie di scopi, come le connessioni a "
+"un server proxy SUSE Manager Proxy, il protocollo HTTPS nei browser e altro "
+"ancora.</p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
-msgstr ""
+msgstr "Configurazione del certificato"
 
 #: ../yast/susemanager_cert.rb:169
 msgid "The value of '%1' is empty."
-msgstr ""
+msgstr "Il valore di '%1' è vuoto."
 
 #: ../yast/susemanager_cert.rb:180 ../yast/susemanager_db.rb:140
 #: ../yast/susemanager_migration.rb:146
 msgid "Password is missing."
-msgstr ""
+msgstr "La password non è presente."
 
 #: ../yast/susemanager_cert.rb:185 ../yast/susemanager_db.rb:145
 #: ../yast/susemanager_migration.rb:163
