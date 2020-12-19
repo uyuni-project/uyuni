@@ -111,7 +111,7 @@ module Yast
           Password(
             Id("CERT_PASS"),
             Opt(:hstretch),
-            _("SSL Pass&word"),
+            _("SSL Password"),
             Ops.get(@settings, "CERT_PASS", "")
           ),
           # text entry label
