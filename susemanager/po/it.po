@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-12-19 17:26+0000\n"
+"PO-Revision-Date: 2020-12-19 21:26+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "it/>\n"
@@ -133,20 +133,24 @@ msgstr "&Password del database"
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
 msgstr ""
+"<p>Per impostazione predefinita SUSE Manager utilizza un database interno "
+"postgresql chiamato '"
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
-msgstr ""
+msgstr "Impostazioni del database"
 
 #: ../yast/susemanager_db.rb:178
 msgid ""
 "The password failed the cracklib check with:\n"
 "'%1'"
 msgstr ""
+"La password non ha superato il controllo cracklib con:\n"
+"'%1'"
 
 #: ../yast/susemanager_manager.rb:84
 msgid "&IP Address of the #{@product_name} Server"
-msgstr ""
+msgstr "Indirizzo &IP di #{@product_name} Server"
 
 #: ../yast/susemanager_manager.rb:94
 msgid "#{@product_name} &Administrator e-mail address"
