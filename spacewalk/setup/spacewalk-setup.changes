@@ -1,3 +1,4 @@
+- Added dynamic path for trust store and doc root.
 - Updated SPEC for RHEL and Fedora.
 
 -------------------------------------------------------------------

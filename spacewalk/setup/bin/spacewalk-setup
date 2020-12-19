@@ -747,9 +747,17 @@ sub setup_ssl_certs {
 
   print Spacewalk::Setup::loc("** SSL: Deploying CA certificate.\n");
 
+  # Set the document root depending on OS.
+  my $DOC_ROOT = $Spacewalk::Setup::DEFAULT_DOC_ROOT;
+  $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT if(is_suse_like());
+
+  # Set the trust store folder depending on OS.
+  my $CA_TRUST_DIR = $Spacewalk::Setup::CA_TRUST_DIR;
+  $CA_TRUST_DIR = $Spacewalk::Setup::SUSE_CA_TRUST_DIR if(is_suse_like());
+
   deploy_ca_cert("-source-dir" => $answers->{'ssl-dir'},
-                 "-target-dir" => $Spacewalk::Setup::DEFAULT_DOC_ROOT."/pub",
-                 "-trust-dir" => $Spacewalk::Setup::CA_TRUST_DIR);
+                 "-target-dir" => $DOC_ROOT."/pub",
+                 "-trust-dir" => $CA_TRUST_DIR);
 
   if (!$use_own_certs) {
       print Spacewalk::Setup::loc("** SSL: Generating server certificate.\n");
@@ -937,6 +945,10 @@ sub populate_initial_configs {
     # Define some db specific settings:
     Spacewalk::Setup::set_hibernate_conf($answers);
 
+    # Set the document root depending on OS.
+    my $DOC_ROOT = $Spacewalk::Setup::DEFAULT_DOC_ROOT;
+    $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT if(is_suse_like());
+
   my %config_opts =
     (
      mount_point => $answers->{'mount-point'} || '/var/spacewalk',
@@ -944,7 +956,7 @@ sub populate_initial_configs {
      serverDOTsatelliteDOThttp_proxy => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy'} : $answers->{'rhn-http-proxy'}) || '',
      serverDOTsatelliteDOThttp_proxy_username => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-username'} : $answers->{'rhn-http-proxy-username'}) || '',
      serverDOTsatelliteDOThttp_proxy_password => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-password'} :$answers->{'rhn-http-proxy-password'}) || '',
-     osadispatcherDOTosa_ssl_cert => $Spacewalk::Setup::DEFAULT_DOC_ROOT."/pub/RHN-ORG-TRUSTED-SSL-CERT",
+     osadispatcherDOTosa_ssl_cert => $DOC_ROOT."/pub/RHN-ORG-TRUSTED-SSL-CERT",
      encrypted_passwords => 1,
      db_backend => $answers->{'db-backend'},
      db_user => $answers->{'db-user'},
