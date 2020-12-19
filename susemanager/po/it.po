@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2020-12-19 14:26+0000\n"
+"PO-Revision-Date: 2020-12-19 17:26+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "it/>\n"
@@ -98,11 +98,11 @@ msgstr "La password non è presente."
 #: ../yast/susemanager_cert.rb:185 ../yast/susemanager_db.rb:145
 #: ../yast/susemanager_migration.rb:163
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Le password non corrispondono."
 
 #: ../yast/susemanager_cert.rb:193 ../yast/susemanager_db.rb:153
 msgid "The password should have at least %1 characters."
-msgstr ""
+msgstr "La password dovrebbe contenere almeno %1 carratteri."
 
 #: ../yast/susemanager_cert.rb:204 ../yast/susemanager_db.rb:164
 #: ../yast/susemanager_migration.rb:154
@@ -110,22 +110,24 @@ msgid ""
 "The password contains invalid characters.\n"
 "The invalid characters are: %1"
 msgstr ""
+"La password contiene caratteri non validi.\n"
+"I caratteri non validi sono: %1"
 
 #: ../yast/susemanager_congratulate.rb:35
 msgid "<p>#{@product_name} Setup is now complete.</p><br>\n"
-msgstr ""
+msgstr "<p>La configurazione di #{@product_name} è completa.</p><br>\n"
 
 #: ../yast/susemanager_congratulate.rb:51
 msgid "Setup Completed"
-msgstr ""
+msgstr "Configurazione terminata"
 
 #: ../yast/susemanager_db.rb:90
 msgid "Database &User"
-msgstr ""
+msgstr "&Utente del database"
 
 #: ../yast/susemanager_db.rb:98
 msgid "Database &Password"
-msgstr ""
+msgstr "&Password del database"
 
 #: ../yast/susemanager_db.rb:115
 msgid ""
