@@ -37,10 +37,10 @@ import types
 import urlgrabber
 
 try:
-    from urllib import urlencode, unquote
+    from urllib import urlencode, quote, unquote
     from urlparse import urlsplit, urlparse, urlunparse
 except:
-    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, unquote
+    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, quote, unquote
 
 import xml.etree.ElementTree as etree
 
