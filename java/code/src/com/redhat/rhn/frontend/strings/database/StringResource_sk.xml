@@ -2200,49 +2200,49 @@
       </trans-unit>
       <trans-unit id="metrics.CLOSE_WAIT conns" xml:space="preserve">
         <source>CLOSE_WAIT conns</source>
-        <target/>
+        <target>Pripojenia CLOSE_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min ave" xml:space="preserve">
         <source>CPU load 1-min ave</source>
-        <target/>
+        <target>Priemerné zaťaženie CPU 1-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min avg" xml:space="preserve">
         <source>CPU load 1-min avg</source>
-        <target/>
+        <target>1-min priemer pre zaťaženie CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min ave" xml:space="preserve">
         <source>CPU load 15-min ave</source>
-        <target/>
+        <target>Priemerné zaťaženie CPU 15-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min avg" xml:space="preserve">
         <source>CPU load 15-min avg</source>
-        <target/>
+        <target>15-min priemer pre zaťaženie CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min ave" xml:space="preserve">
         <source>CPU load 5-min ave</source>
-        <target/>
+        <target>Priemerné zaťaženie CPU 5-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min avg" xml:space="preserve">
         <source>CPU load 5-min avg</source>
-        <target/>
+        <target>5-min priemer pre zaťaženie CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2291,7 +2291,7 @@
       </trans-unit>
       <trans-unit id="metrics.Consistent get rate" xml:space="preserve">
         <source>Consistent get rate</source>
-        <target/>
+        <target>Konzistentná miera získania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2305,7 +2305,7 @@
       </trans-unit>
       <trans-unit id="metrics.DB block get rate" xml:space="preserve">
         <source>DB block get rate</source>
-        <target/>
+        <target>Rýchlosť získania bloku DB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
