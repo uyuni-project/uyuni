@@ -22,7 +22,8 @@ require 'pp'
 # SimpleCov.start
 
 server = ENV['SERVER']
-$long_tests_enabled = !ENV['LONG_TESTS'].nil?
+$debug_mode = true if ENV['DEBUG']
+$long_tests_enabled = true if ENV['LONG_TESTS']
 puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
@@ -55,9 +56,12 @@ Capybara.register_driver(:headless_chrome) do |app|
   client = Selenium::WebDriver::Remote::Http::Default.new
   # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
   client.read_timeout = 180
+  # Chrome driver options
+  chrome_options = %w[no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
+  chrome_options << 'headless' unless $debug_mode
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: {
-      args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048],
+      args: chrome_options,
       w3c: false,
       prefs: {
         'download.default_directory': '/tmp/downloads'
