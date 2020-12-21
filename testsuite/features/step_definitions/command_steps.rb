@@ -788,7 +788,7 @@ end
 
 When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     pkgs = 'openscap-utils openscap-content'
   elsif os_family =~ /^centos/
