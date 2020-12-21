@@ -59,4 +59,4 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Basesystem Module 15 SP2 x86_64" selected
     And I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
-    Then the SLE15 products should be added
+    Then the SLE15 SP2 products should be added
