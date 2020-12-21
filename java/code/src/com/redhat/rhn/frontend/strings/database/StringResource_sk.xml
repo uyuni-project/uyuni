@@ -2291,7 +2291,7 @@
       </trans-unit>
       <trans-unit id="metrics.Consistent get rate" xml:space="preserve">
         <source>Consistent get rate</source>
-        <target>Konzistentná miera získania</target>
+        <target>Konzistentná rýchlosť získania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2312,7 +2312,7 @@
       </trans-unit>
       <trans-unit id="metrics.Data dict hit ratio" xml:space="preserve">
         <source>Data dict hit ratio</source>
-        <target/>
+        <target>Pomer záznamov dátového slovníka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2340,7 +2340,7 @@
       </trans-unit>
       <trans-unit id="metrics.ESTABLISHED conns" xml:space="preserve">
         <source>ESTABLISHED conns</source>
-        <target/>
+        <target>Pripojenia ESTABLISHED</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2368,7 +2368,7 @@
       </trans-unit>
       <trans-unit id="metrics.FIN_WAIT conns" xml:space="preserve">
         <source>FIN_WAIT conns</source>
-        <target/>
+        <target>Pripojenia FIN_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2382,7 +2382,7 @@
       </trans-unit>
       <trans-unit id="metrics.Get rate" xml:space="preserve">
         <source>Get rate</source>
-        <target/>
+        <target>Rýchlosť získania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2424,7 +2424,7 @@
       </trans-unit>
       <trans-unit id="metrics.Invocation rate" xml:space="preserve">
         <source>Invocation rate</source>
-        <target/>
+        <target>Miera vyvolania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2480,21 +2480,21 @@
       </trans-unit>
       <trans-unit id="metrics.Memory sort rate" xml:space="preserve">
         <source>Memory sort rate</source>
-        <target/>
+        <target>Miera triedenia pamäte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Open objects" xml:space="preserve">
         <source>Open objects</source>
-        <target/>
+        <target>Otvorené objekty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Opened objects" xml:space="preserve">
         <source>Opened objects</source>
-        <target/>
+        <target>Otvárané objekty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2543,21 +2543,21 @@
       </trans-unit>
       <trans-unit id="metrics.Probe exec time ave" xml:space="preserve">
         <source>Probe exec time ave</source>
-        <target/>
+        <target>Zistiť priemerný čas vykonania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probe latency ave" xml:space="preserve">
         <source>Probe latency ave</source>
-        <target/>
+        <target>Zistiť priemerné oneskorenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probes" xml:space="preserve">
         <source>Probes</source>
-        <target/>
+        <target>Zisťovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -3236,7 +3236,7 @@
       </trans-unit>
       <trans-unit id="Probe Count" xml:space="preserve">
           <source>Probe Count</source>
-        <target/>
+        <target>Počet zisťovaní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
