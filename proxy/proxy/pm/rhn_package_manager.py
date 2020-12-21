@@ -174,10 +174,7 @@ class UploadClass(uploadLib.UploadClass):
         if not CFG.RHN_PARENT:
             self.die(-1, "rhn_parent not set in the configuration file")
         self.url = CFG.RHN_PARENT
-        scheme = 'http://'
-        if CFG.USE_SSL:
-            # i.e., --no-ssl overrides the USE_SSL config variable.
-            scheme = 'https://'
+        scheme = 'https://'
         self.url = CFG.RHN_PARENT or ''
         self.url = parseUrl(self.url)[1].split(':')[0]
         self.url = scheme + self.url + path

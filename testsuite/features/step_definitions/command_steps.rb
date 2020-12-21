@@ -975,7 +975,6 @@ When(/^I configure the proxy$/) do
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
-             "USE_SSL=y\n" \
              "USE_EXISTING_CERTS=n\n" \
              "INSTALL_MONITORING=n\n" \
              "SSL_PASSWORD=spacewalk\n" \
