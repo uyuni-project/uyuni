@@ -2396,8 +2396,6 @@ public class SaltServerActionService {
                         // Wait until next "minion/start/event" to set it to COMPLETED.
                         if (action.get().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
                                 success && retcode == 0) {
-                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                            sa.setPickupTime(new Date());
                             return;
                         }
                         else if (action.get().getActionType().equals(ActionFactory.TYPE_KICKSTART_INITIATE) &&
