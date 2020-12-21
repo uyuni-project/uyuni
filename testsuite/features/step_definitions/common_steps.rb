@@ -42,7 +42,7 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{kernel_version.strip}" text)
   os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
-  step %(I should see a "#{os_version}" text) if os_family.include? 'sles'
+  step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
 
 Then(/^I should see the terminals imported from the configuration file$/) do
@@ -669,7 +669,7 @@ end
 # Enable tools repositories (both stable and development)
 When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
@@ -683,7 +683,7 @@ end
 
 When(/^I disable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
@@ -857,7 +857,7 @@ Then(/^I should see "([^"]*)" as link$/) do |host|
 end
 
 Then(/^I should see a text describing the OS release$/) do
-  os_version, os_family = get_os_version($client)
+  _os_version, os_family = get_os_version($client)
   release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
   step %(I should see a "OS: #{release}" text)
 end
