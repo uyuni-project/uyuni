@@ -90,16 +90,6 @@
                                        styleId="mount_point" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="web|ssl_available">
-                            <bean:message key="general.jsp.defaultTo_ssl"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                <html:checkbox property="web|ssl_available" styleId="ssl_available" />
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group hidden">
                         <label class="col-lg-3 control-label" for="disconnected">
                             <bean:message key="general.jsp.disconnected"/>

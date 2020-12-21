@@ -507,7 +507,6 @@ fi
 if [ -e "$BOOTSTRAP_CCO" ]
 then
     backup_file ${BOOTSTRAP_CCO}
-    sed -i "s/\(noSSLServerURL=https\?:\/\/\).*\(\/XMLRPC\)/\1$HOSTNAME\2/" ${BOOTSTRAP_CCO}
     sed -i "s/\(serverURL=https\?:\/\/\).*\(\/XMLRPC\)/\1$HOSTNAME\2/" ${BOOTSTRAP_CCO}
 fi
 print_status 0  # just simulate end

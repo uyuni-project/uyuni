@@ -48,9 +48,6 @@ Incrementally synchronize a SUSE Manager Server DB data and RPM repository with 
         <arg>--no-packages</arg>
     </cmdsynopsis>
     <cmdsynopsis>
-        <arg>--no-ssl</arg>
-    </cmdsynopsis>
-    <cmdsynopsis>
         <arg>--force-all-errata</arg>
     </cmdsynopsis>
 <!--
@@ -115,9 +112,6 @@ Incrementally synchronize a SUSE Manager Server DB data and RPM repository with 
     </cmdsynopsis>
     <cmdsynopsis>
         <arg>--list-error-codes</arg>
-    </cmdsynopsis>
-    <cmdsynopsis>
-        <arg>--no-ssl</arg>
     </cmdsynopsis>
     <cmdsynopsis>
         <arg>--sync-to-temp</arg>
@@ -251,12 +245,6 @@ Incrementally synchronize a SUSE Manager Server DB data and RPM repository with 
         <term>-p, --print-configuration</term>
         <listitem>
             <para>print the current configuration and exit.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
-        <term>--no-ssl</term>
-        <listitem>
-            <para>turn off SSL (not recommended).</para>
         </listitem>
     </varlistentry>
     <varlistentry>

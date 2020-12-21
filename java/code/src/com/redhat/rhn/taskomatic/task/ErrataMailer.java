@@ -41,10 +41,7 @@ import java.util.Map;
 
 /**
  * This is a port of the ErrataEngine taskomatic task
- *
- * @version $Rev.$
  */
-
 public class ErrataMailer extends RhnJavaJob {
 
     /**
@@ -191,16 +188,7 @@ public class ErrataMailer extends RhnJavaJob {
         StringBuilder body = new StringBuilder();
 
         //Build the hostname with protocol. Used to create urls for the email.
-        String host;
-        //The protocol from configuration.
-        if (ConfigDefaults.get().isSSLAvailable()) {
-            host = "https://";
-        }
-        else {
-            host = "http://";
-        }
-        //Add the hostname
-        host = host + ConfigDefaults.get().getHostname();
+        String host = "https://" + ConfigDefaults.get().getHostname();
 
         //Build the email body
         body.append(getEmailBodySummary(errata, host));

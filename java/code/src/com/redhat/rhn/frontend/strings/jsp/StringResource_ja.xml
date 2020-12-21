@@ -9854,13 +9854,6 @@ administrator privileges.</source>
         </context-group>
         <target>RPM リポジトリのマウントポイント</target>
       </trans-unit>
-      <trans-unit id="general.jsp.defaultTo_ssl" xml:space="preserve">
-        <source>Default To SSL</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
-        </context-group>
-        <target>SSL をデフォルトに設定</target>
-      </trans-unit>
       <trans-unit id="general.jsp.solaris" xml:space="preserve">
         <source>Enable Solaris Support</source>
         <context-group name="ctx">
@@ -9960,13 +9953,6 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.ssl" xml:space="preserve">
-        <source>Enable SSL</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>SSL を有効にする</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.gpg" xml:space="preserve">
         <source>Enable Client GPG checking</source>

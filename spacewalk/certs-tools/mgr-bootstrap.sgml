@@ -142,12 +142,6 @@
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>--no-ssl</term>
-        <listitem>
-            <para>(not recommended) boolean; turn off SSL authentication by the clients.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
         <term>--no-gpg</term>
         <listitem>
             <para>(not recommended) boolean; turn off GPG verification by the clients.</para>

@@ -9721,13 +9721,6 @@ zuweisen oder entfernen.</target>
         </context-group>
         <target>RPM Repository-Einhängepunkt</target>
       </trans-unit>
-      <trans-unit id="general.jsp.defaultTo_ssl" xml:space="preserve">
-        <source>Default To SSL</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
-        </context-group>
-        <target>SSL als Standardeinstellung</target>
-      </trans-unit>
       <trans-unit id="general.jsp.solaris" xml:space="preserve">
         <source>Enable Solaris Support</source>
         <context-group name="ctx">
@@ -9826,13 +9819,6 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.ssl" xml:space="preserve">
-        <source>Enable SSL</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-        <target>SSL aktivieren</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.gpg" xml:space="preserve">
         <source>Enable Client GPG checking</source>

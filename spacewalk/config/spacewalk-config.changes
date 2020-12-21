@@ -1,3 +1,5 @@
+- Drop the ssl_available option (SSL is always present)
+
 -------------------------------------------------------------------
 Thu Dec 03 13:45:30 CET 2020 - jgonzalez@suse.com
 

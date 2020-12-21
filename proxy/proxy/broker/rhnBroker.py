@@ -127,15 +127,12 @@ class BrokerHandler(SharedHandler):
                 - GET requests:
                       . are non-SSLed (potentially SSLed by the redirect)
                       . use the local cache
-                      . CFG.HTTP_PROXY or CFG.USE_SSL:
-                          . use the SSL Redirect
-                            (i.e., parent is now 127.0.0.1)
-                          . NOTE: the reason we use the SSL Redirect if we
-                                  are going through an outside HTTP_PROXY:
-                                  o CFG.HTTP_PROXY is ONLY used by an SSL
-                                    redirect - maybe should rethink that.
-                      . not CFG.USE_SSL and not CFG.HTTP_PROXY:
-                          . bypass the SSL Redirect (performance)
+                      . use the SSL Redirect
+                        (i.e., parent is now 127.0.0.1)
+                        . NOTE: the reason we use the SSL Redirect if we
+                                are going through an outside HTTP_PROXY:
+                                o CFG.HTTP_PROXY is ONLY used by an SSL
+                                redirect - maybe should rethink that.
                 - POST and HEAD requests (not GET) bypass both the local cache
                        and SSL redirect (we SSL it directly)
         """
@@ -180,20 +177,9 @@ class BrokerHandler(SharedHandler):
             scheme = 'http'
             self.httpProxy = CFG.SQUID
             self.caChain = self.httpProxyUsername = self.httpProxyPassword = ''
-            if CFG.HTTP_PROXY or CFG.USE_SSL or re.search('^' + URI_PREFIX_KS_CHECKSUM, effectiveURI_parts[2]):
-                # o if we need to go through an outside HTTP proxy, use the
-                #   redirect
-                # o if an SSL request, use the redirect
-                # o otherwise (non-ssl and not going through an outside HTTP
-                #   proxy) bypass that redirect for performance
-                self.rhnParent = self.proxyAuth.hostname
+            self.rhnParent = self.proxyAuth.hostname
         else:
-            # !GET: bypass cache, bypass redirect
-            if CFG.USE_SSL:
-                scheme = 'https'
-            else:
-                scheme = 'http'
-                self.caChain = ''
+            scheme = 'https'
 
         self.rhnParentXMLRPC = urlunparse((scheme, self.rhnParent, '/XMLRPC', '', '', ''))
         self.rhnParent = urlunparse((scheme, self.rhnParent) + effectiveURI_parts[2:])

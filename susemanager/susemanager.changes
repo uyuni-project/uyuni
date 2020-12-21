@@ -1,3 +1,4 @@
+- Drop the ssl_available option (SSL is always present)
 - remove the virtpoller beacon
 
 -------------------------------------------------------------------

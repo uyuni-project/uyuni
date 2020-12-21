@@ -180,12 +180,6 @@ provide a required response, default answer is used.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>--use-ssl=USE_SSL</term>
-        <listitem>
-            <para>1 if Spacewalk Proxy Server should communicate with parent over SSL. 0 otherwise. Even if disabled, client can still use SSL to connect to Spacewalk Proxy Server.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
         <term>--ssl-use-existing-certs=USE_EXISTING_CERTS</term>
         <listitem>
             <para>Use custom SSL certificates instead of generating new ones (use --ssl-ca-cert, --ssl-server-key and --ssl-server-cert parameters or corresponding variables to specify paths).</para>
@@ -243,12 +237,6 @@ provide a required response, default answer is used.</para>
         <term>TRACEBACK_EMAIL</term>
         <listitem>
            <para>Email to which tracebacks should be sent.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
-        <term>USE_SSL</term>
-        <listitem>
-           <para>1 if &RHNPROXY; should communicate with parent over SSL. 0 otherwise. Even if disabled, client can still use SSL to connect to &RHNPROXY;</para>
         </listitem>
     </varlistentry>
     <varlistentry>

@@ -47,16 +47,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 control-label" for="ssl">
-                            <bean:message key="bootstrap.jsp.ssl"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                    <html:checkbox property="ssl" styleId="ssl" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-lg-3 control-label" for="gpg">
                             <bean:message key="bootstrap.jsp.gpg"/>
                         </label>

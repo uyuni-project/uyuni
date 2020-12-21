@@ -177,7 +177,6 @@ def getDefaultOptions():
             'http-proxy-password': "",
             'allow-config-actions': 0,
             'allow-remote-commands': 0,
-            'no-ssl': 0,
             'no-gpg': 0,
             'no-up2date': 0,
             'up2date': 0,
@@ -247,9 +246,6 @@ def getOptionsTable():
         Option('--allow-remote-commands',
                action='store_true',
                help='boolean; allow arbitrary remote commands - requires installing certain rhncfg-* RPMs probably via an activation key. (currently: %s)' % getSetString(defopts['allow-remote-commands'])),
-        Option('--no-ssl',
-               action='store_true',
-               help='(not recommended) boolean; turn off SSL in the clients (currently %s)' % getSetString(defopts['no-ssl'])),
         Option('--no-gpg',
                action='store_true',
                help='(not recommended) boolean; turn off GPG checking by the clients (currently %s)' % getSetString(defopts['no-gpg'])),
@@ -318,7 +314,6 @@ Note: for mgr-bootstrap to work, certain files are expected to be
             # "not not" forces the integer value
             'allow-config-actions': not not options.allow_config_actions,
             'allow-remote-commands': not not options.allow_remote_commands,
-            'no-ssl': not not options.no_ssl,
             'no-gpg': not not options.no_gpg,
             'no-up2date': not not options.no_up2date,
             'up2date': not not options.up2date,
@@ -375,7 +370,7 @@ ERROR: the value of --overrides and --script cannot be the same!
             sys.exit(errnoNotFQDN)
 
     processCACertPath(options)
-    if not options.no_ssl and options.ssl_cert and not os.path.exists(options.ssl_cert):
+    if options.ssl_cert and not os.path.exists(options.ssl_cert):
         sys.stderr.write("ERROR: CA SSL certificate file or RPM not found\n")
         sys.exit(errnoCANotFound)
 
@@ -395,7 +390,7 @@ ERROR: the value of --overrides and --script cannot be the same!
         options.http_proxy_password = ''
 
     # forcing numeric values
-    for opt in ['allow_config_actions', 'allow_remote_commands', 'no_ssl',
+    for opt in ['allow_config_actions', 'allow_remote_commands',
         'no_gpg', 'no_up2date', 'traditional', 'up2date', 'verbose']:
         # operator.truth should return (0, 1) or (False, True) depending on
         # the version of python; passing any of those values through int()
@@ -433,7 +428,7 @@ def copyFiles(options):
         shutil.copy(file0, file1)
 
     # CA SSL cert
-    if not options.no_ssl and options.ssl_cert:
+    if options.ssl_cert:
         writeYN = 1
         dest = os.path.join(pubDir, os.path.basename(options.ssl_cert))
         if os.path.dirname(options.ssl_cert) != pubDir:
@@ -485,11 +480,7 @@ def writeClientConfigOverrides(options):
 
     d = {}
     if options.hostname:
-        scheme = 'https'
-        if options.no_ssl:
-            scheme = 'http'
-        d['serverURL'] = scheme + '://' + options.hostname + '/XMLRPC'
-        d['noSSLServerURL'] = 'http://' + options.hostname + '/XMLRPC'
+        d['serverURL'] = 'https://' + options.hostname + '/XMLRPC'
 
     # if proxy, enable it
     # if "", disable it
@@ -517,8 +508,6 @@ def writeClientConfigOverrides(options):
     _isRpmYN = processCACertPath(options)
     if not options.ssl_cert:
         sys.stderr.write("WARNING: no SSL CA certificate or RPM found in %s\n" % options.pub_tree)
-        if not options.no_ssl:
-            sys.stderr.write("         Fix it by hand or turn off SSL in the clients (--no-ssl)\n")
     _certname = os.path.basename(options.ssl_cert) or CA_CRT_NAME
     _certdir = os.path.dirname(DEFAULT_CA_CERT_PATH)
     if _isRpmYN:
