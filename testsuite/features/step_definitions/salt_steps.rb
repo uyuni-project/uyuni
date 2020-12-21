@@ -95,7 +95,7 @@ end
 
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
