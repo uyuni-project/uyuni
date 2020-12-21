@@ -896,8 +896,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testCloneAll() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(admin, false);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(
-                admin.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         original.addPackage(pack);
         original.addErrata(errata);
 
@@ -926,7 +925,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testCloneWithOverrideGPGCheck() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(admin, false);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(
+        Errata errata = ErrataFactoryTest.createTestErrata(
                 admin.getOrg().getId());
         original.addPackage(pack);
         original.addErrata(errata);
@@ -958,7 +957,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testCloneOriginal() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(admin);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(
+        Errata errata = ErrataFactoryTest.createTestErrata(
                 admin.getOrg().getId());
         original.addPackage(pack);
         original.addErrata(errata);

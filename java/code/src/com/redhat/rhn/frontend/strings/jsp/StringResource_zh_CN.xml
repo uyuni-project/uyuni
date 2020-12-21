@@ -3938,20 +3938,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">删除</target>
       </trans-unit>
-      <trans-unit id="errata.edit.youmaypublish" xml:space="preserve">
-        <source>You may now publish this patch.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target state="translated">您可以现在发布这个勘误。</target>
-      </trans-unit>
-      <trans-unit id="errata.edit.publisherrata" xml:space="preserve">
-        <source>Publish Patch</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target state="translated">发布勘误</target>
-      </trans-unit>
       <trans-unit id="errata.edit.sendnotification" xml:space="preserve">
         <source>Send Notification</source>
         <context-group name="ctx">
@@ -4962,23 +4948,15 @@ organization. You may grant or remove the organization administrator role in the
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target state="translated"> &lt;p&gt;以下的勘误列表代表了您的机构所拥有的勘误。&lt;/p&gt; &lt;p&gt;点击一个勘误的概要来编辑勘误的详情或可以应用这个勘误的软件包列表。&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target state="translated">没有发行的勘误</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target state="translated">勘误管理</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target state="translated">没有发行的勘误</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target state="translated">没有发行的勘误</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target state="translated">发行的勘误</target>
       </trans-unit>

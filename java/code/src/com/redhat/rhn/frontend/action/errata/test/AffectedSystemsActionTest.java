@@ -111,7 +111,7 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         User user = ah.getUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         for (int i = 0; i < 4; i++) {
             Server server = ServerFactoryTest.createTestServer(user, true);

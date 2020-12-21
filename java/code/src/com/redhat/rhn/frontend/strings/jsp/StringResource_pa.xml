@@ -3796,20 +3796,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>ਹਟਾਓ</target>
       </trans-unit>
-      <trans-unit id="errata.edit.youmaypublish" xml:space="preserve">
-        <source>You may now publish this patch.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>ਤੁਸੀਂ ਹੁਣ ਇਹ ਇੱਰਟੱਮ ਪਰਕਾਸ਼ਤ ਕਰ ਸਕਦੇ ਹੋ।</target>
-      </trans-unit>
-      <trans-unit id="errata.edit.publisherrata" xml:space="preserve">
-        <source>Publish Patch</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>ਇਰੱਟਾ ਪ੍ਰਕਾਸ਼ਤ ਕਰੋ</target>
-      </trans-unit>
       <trans-unit id="errata.edit.sendnotification" xml:space="preserve">
         <source>Send Notification</source>
         <context-group name="ctx">
@@ -4797,23 +4783,15 @@ organization. You may grant or remove the organization administrator role in the
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target> &lt;p&gt; ਹੇਠਲੀ ਇਰੱਟਾ ਸੂਚੀ ਤੁਹਾਡੇ ਸੰਗਠਨ ਨਾਲ ਸਬੰਧ ਇਰੱਟਾ ਵੇਖਾਉਂਦਾ ਹੈ।&lt;/p&gt;&lt;p&gt;ਇੱਰਟੱਮ ਦੀ ਸਾਰ ਝਲਕ ਨੂੰ ਇੱਰਟੱਮ ਵੇਰਵਾ ਸੋਧਣ ਜਾਂ ਪੈਕੇਜਾਂ ਦੀ ਸੂਚੀ, ਜਿੰਨਾਂ ਉੱਤੇ ਇਰੱਟਾ ਲਾਗੂ ਹੁੰਦਾ ਹੈ, ਨੂੰ ਬਦਲਣ ਲਈ ਦਬਾਓ।&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>ਨਾ-ਪਰਾਕਿਸ਼ਤ ਇਰੱਟਾ</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>ਇਰੱਟਾ ਪਰਬੰਧਨ</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>ਕੋਈ ਨਾ-ਪਰਕਾਸ਼ਤ ਇਰੱਟਾ ਨਹੀਂ</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target>ਕੋਈ ਇਰੱਟਾ ਪਰਾਕਸ਼ਤ ਨਹੀਂ</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target>ਪਰਕਾਸ਼ਤ ਇਰੱਟਾ</target>
       </trans-unit>

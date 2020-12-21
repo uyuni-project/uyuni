@@ -3899,20 +3899,6 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         </context-group>
         <target>Remover</target>
       </trans-unit>
-      <trans-unit id="errata.edit.youmaypublish" xml:space="preserve">
-        <source>You may now publish this patch.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>Agora você pode publicar esta errata.</target>
-      </trans-unit>
-      <trans-unit id="errata.edit.publisherrata" xml:space="preserve">
-        <source>Publish Patch</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>Publicar Errata</target>
-      </trans-unit>
       <trans-unit id="errata.edit.sendnotification" xml:space="preserve">
         <source>Send Notification</source>
         <context-group name="ctx">
@@ -4915,23 +4901,15 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target state="needs-adaptation"> &lt;p&gt; A seguinte lista de erratas representa a errata de sua organização.&lt;/p&gt; &lt;p&gt; Clique na sinopse de uma errata para editar seus detalhes ou a lista de pacotes aos quais a errata se aplica. &lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>Erratas Não Publicadas</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>Administração de Errata</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>Nenhuma Errata Não Publicada.</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target>Nenhuma Errata Publicada.</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target>Erratas Publicadas</target>
       </trans-unit>

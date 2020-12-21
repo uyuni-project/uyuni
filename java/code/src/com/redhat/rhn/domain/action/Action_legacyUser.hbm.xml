@@ -49,7 +49,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         <set name="errata" outer-join="false" table="rhnActionErrataUpdate">
                                 <key column="action_id" />
                                 <many-to-many column="errata_id" outer-join="false"
-                                        class="com.redhat.rhn.domain.errata.impl.PublishedErrata" />
+                                        class="com.redhat.rhn.domain.errata.Errata" />
                         </set>
                 </subclass>
         <subclass name="com.redhat.rhn.domain.action.image.DeployImageAction"

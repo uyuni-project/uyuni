@@ -140,8 +140,8 @@ public class PackageDetailsAction extends RhnAction {
                     PackageFactory.findPackagesWithDifferentArch(pkg));
             request.setAttribute("pid", pid);
 
-            request.setAttribute("erratumEmpty", pkg.getPublishedErrata().isEmpty());
-            request.setAttribute("erratum", pkg.getPublishedErrata());
+            request.setAttribute("erratumEmpty", pkg.getErrata().isEmpty());
+            request.setAttribute("erratum", pkg.getErrata());
 
             request.setAttribute("extraTags", pkg.getExtraTags()
                     .entrySet().stream().map(e -> Map.entry(e.getKey().getName(), e.getValue()))

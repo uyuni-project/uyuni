@@ -14,22 +14,6 @@
  */
 package com.redhat.rhn.manager.rhnpackage;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -59,8 +43,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageComparison;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageFileDto;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -71,6 +55,22 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * PackageManager
@@ -418,18 +418,9 @@ public class PackageManager extends BaseManager {
      * @return Returns the list of packages available for this particular errata.
      */
     public static DataResult packagesAvailableToErrata(Errata errata) {
-        Org org = errata.getOrg();
-
-        // Get the correct query depending on whether or not this errata is published.
-        String mode = "packages_available_to_tmp_errata";
-        if (errata.isPublished()) {
-            mode = "packages_available_to_errata";
-        }
-
-        // Setup the params and execute the query
-        SelectMode m = ModeFactory.getMode("Package_queries", mode);
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata");
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", org.getId());
+        params.put("org_id", errata.getOrg().getId());
         params.put("eid", errata.getId());
 
         return makeDataResult(params, params, null, m);
@@ -447,14 +438,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packagesAvailableToErrataInChannel(Errata errata,
                                                                 Long cid,
                                                                 User user) {
-        //Set the mode depending on if the errata is published
-        String mode = "packages_available_to_tmp_errata_in_channel";
-        if (errata.isPublished()) {
-            mode = "packages_available_to_errata_in_channel";
-        }
-
-        //Setup params and execute query
-        SelectMode m = ModeFactory.getMode("Package_queries", mode);
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata_in_channel");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("target_eid", errata.getId());
         params.put("source_cid", cid);
@@ -544,18 +528,8 @@ public class PackageManager extends BaseManager {
      * @param pc The page control for the logged in user
      * @return The packages associated with this errata
      */
-    public static DataResult packagesInErrata(Errata errata,
-                                              PageControl pc) {
-        //Get the correct query depending on whether or not this
-        //errata is published
-        String mode = "packages_in_tmp_errata";
-        if (errata.isPublished()) {
-            mode = "packages_in_errata";
-        }
-
-        SelectMode m = ModeFactory.getMode("Package_queries", mode);
-
-        //setup the params and execute the query
+    public static DataResult packagesInErrata(Errata errata, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_errata");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("eid", errata.getId());
         params.put("org_id", errata.getOrg().getId());

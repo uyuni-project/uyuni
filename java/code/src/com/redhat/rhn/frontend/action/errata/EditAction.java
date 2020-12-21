@@ -23,8 +23,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -61,7 +61,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditAction
- * @version $Rev$
  */
 public class EditAction extends LookupDispatchAction {
 
@@ -131,14 +130,6 @@ public class EditAction extends LookupDispatchAction {
      */
     public ActionForward setupPage(HttpServletRequest request, ActionMapping mapping,
                                    Errata errata) {
-
-        //What type of errata is this? we need to set isPublished
-        if (errata.isPublished()) {
-        request.setAttribute("isPublished", "true");
-        }
-        else {
-        request.setAttribute("isPublished", "false");
-        }
         //set the list of bugs
         request.setAttribute("bugs", errata.getBugs());
         //set advisory for toolbar
@@ -150,24 +141,6 @@ public class EditAction extends LookupDispatchAction {
                 (ErrataFactory.ERRATA_TYPE_SECURITY));
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-    }
-
-    /**
-     * This method handles changing an UnpublishedErrata to a PublishedErrata
-     * @param mapping Action mapping
-     * @param formIn Form
-     * @param request The request
-     * @param response The response
-     * @return Returns an ActionForward for either published or failure
-     */
-    public ActionForward publish(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
-        //forward to the channels page so user can associate channels
-        //with this errata.
-        return getStrutsDelegate().forwardParam(mapping.findForward("published"),
-                "eid", request.getParameter("eid"));
     }
 
     /**
@@ -269,13 +242,7 @@ public class EditAction extends LookupDispatchAction {
             Long bugid = Long.valueOf(bug[0]);
             String summary = bug[1];
             String url = bug[2];
-            //should this be a published or unpublished bug?
-            if (e.isPublished()) {
-                e.addBug(ErrataManager.createNewPublishedBug(bugid, summary, url));
-            }
-            else { //add a new UnpublishedBug
-                e.addBug(ErrataManager.createNewUnpublishedBug(bugid, summary, url));
-            }
+            e.addBug(ErrataFactory.createBug(bugid, summary, url));
         }
 
         //add keywords... split on commas and add separately to list
@@ -293,7 +260,7 @@ public class EditAction extends LookupDispatchAction {
         }
 
         //Save errata back to db
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
 
         ActionMessages messages = new ActionMessages();
         messages.add(ActionMessages.GLOBAL_MESSAGE,
@@ -438,7 +405,6 @@ public class EditAction extends LookupDispatchAction {
      */
     protected Map getKeyMethodMap() {
         Map map = new HashMap();
-        map.put("errata.edit.publisherrata", "publish");
         map.put("errata.edit.sendnotification", "notify");
         map.put("errata.edit.submit", "addBug");
         map.put("errata.edit.delete", "deleteBug");

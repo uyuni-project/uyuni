@@ -110,10 +110,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         this.server.addChannel(channel);
 
         // Add errata available to the installation
-        this.errata = ErrataFactoryTest.createTestPublishedErrata(
-                this.admin.getOrg().getId());
-        this.errata2 = ErrataFactoryTest.createTestPublishedErrata(
-                this.admin.getOrg().getId());
+        this.errata = ErrataFactoryTest.createTestErrata(this.admin.getOrg().getId());
+        this.errata2 = ErrataFactoryTest.createTestErrata(this.admin.getOrg().getId());
 
         // Install one package on the server
         InstalledPackage ipkg = new InstalledPackage();

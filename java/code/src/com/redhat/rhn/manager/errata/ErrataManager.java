@@ -41,7 +41,6 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -55,7 +54,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -81,6 +80,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.utils.MinionServerUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -175,41 +175,18 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Takes an unpublished errata and returns a published errata into the
-     * channels we pass in. NOTE:  This method does NOT update the errata cache for
+     * Takes an errata and adds it into the channels we pass in.
+     * NOTE: this method does NOT update the errata cache for
      * the channels.  That is done when packages are pushed as part of the errata
      * publication process (which is not done here)
      *
-     * @param unpublished The errata to publish
-     * @param channelIds The Long channelIds we want to publish this Errata to.
-     * @param user who is publishing errata
-     * @return Returns a published errata.
+     * @param errata The errata
+     * @param channelIds The Long channelIds we want to add this Errata to.
+     * @param user who is adding the errata to channels
+     * @return Returns the errata
      */
-    public static Errata publish(Errata unpublished, Collection channelIds, User user) {
-        //pass on to the factory
-        Errata retval = ErrataFactory.publish(unpublished);
-        log.debug("publish - errata published");
-
-        retval = addChannelsToErrata(retval, channelIds, user);
-        log.debug("publish - updateErrataCacheForChannelsAsync called");
-
-        // update the search server
-        updateSearchIndex();
-        return retval;
-    }
-
-    /**
-     * Takes an unpublished errata and returns a published errata
-     *
-     * @param unpublished The errata to publish
-     * @return Returns a published errata.
-     */
-    public static Errata publish(Errata unpublished) {
-        //pass on to the factory
-        Errata retval = ErrataFactory.publish(unpublished);
-        log.debug("publish - errata published");
-
-        // update the search server
+    public static Errata addToChannels(Errata errata, Collection<Long> channelIds, User user) {
+        Errata retval = addChannelsToErrata(errata, channelIds, user);
         updateSearchIndex();
         return retval;
     }
@@ -240,7 +217,7 @@ public class ErrataManager extends BaseManager {
 
         //Save the errata
         log.debug("addChannelsToErrata - storing errata");
-        storeErrata(errata);
+        ErrataFactory.save(errata);
 
         errata = (Errata) HibernateFactory.reload(errata);
         log.debug("addChannelsToErrata - errata reloaded from DB");
@@ -277,9 +254,12 @@ public class ErrataManager extends BaseManager {
         Set<Errata> errataToMerge = new HashSet<>(errataToMergeIn);
 
         // find errata that we do not need to merge
-        List<Errata> same = listSamePublishedInChannels(user, fromChannel, toChannel);
-        List<Errata> brothers = listPublishedBrothersInChannels(user, fromChannel, toChannel);
-        List<Errata> clones = listPublishedClonesInChannels(user, fromChannel, toChannel);
+        List<Errata> same = ErrataFactory.listErrataInBothChannels(user.getOrg(),
+                fromChannel, toChannel);
+        List<Errata> brothers = ErrataFactory.listSiblingsInChannels(user.getOrg(),
+                fromChannel, toChannel);
+        List<Errata> clones = ErrataFactory.listClonesInChannels(user.getOrg(),
+                fromChannel, toChannel);
         // and remove them
         errataToMerge.removeAll(same);
         errataToMerge.removeAll(brothers);
@@ -330,36 +310,6 @@ public class ErrataManager extends BaseManager {
             return Optional.of((ClonedErrata) e);
         }
         return Optional.empty();
-    }
-
-    /**
-     * Creates a new (Unpublished) Errata object.
-     * @return Returns a fresh errata
-     */
-    public static Errata createNewErrata() {
-        return ErrataFactory.createUnpublishedErrata();
-    }
-
-    /**
-     * Creates a new Unpublished Bug with the id and summary given.
-     * @param id The id for the new bug.
-     * @param summary The summary for the new bug.
-     * @param url The url for the new bug.
-     * @return Returns a Bug object.
-     */
-    public static Bug createNewUnpublishedBug(Long id, String summary, String url) {
-        return ErrataFactory.createUnpublishedBug(id, summary, url);
-    }
-
-    /**
-     * Creates a new PublishedBug with the id and summary given.
-     * @param id The id for the new bug
-     * @param summary The summary for the new bug
-     * @param url The url for the new bug.
-     * @return Returns a Bug object
-     */
-    public static Bug createNewPublishedBug(Long id, String summary, String url) {
-        return ErrataFactory.createPublishedBug(id, summary, url);
     }
 
     /**
@@ -536,53 +486,26 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Returns all of the unpublished errata.
+     * Returns all errata from this user.
      * @param user Currently logged in user.
      * @return all of the errata.
      */
-    public static DataResult unpublishedOwnedErrata(User user) {
-        return unpublishedOwnedErrata(user, null);
+    public static DataResult ownedErrata(User user) {
+        SelectMode m = ModeFactory.getMode("Errata_queries", "owned_errata");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("org_id", user.getOrg().getId());
+        return makeDataResult(params, new HashMap(), null, m);
     }
 
     /**
-     * Returns all of the unpublished errata.
-     * @param user Currently logged in user.
-     * @param clazz The class you would like the return values represented as
-     * @return all of the errata.
-     */
-    public static DataResult unpublishedOwnedErrata(User user, Class clazz) {
-        return ownedErrata(user, "unpublished_owned_errata", clazz);
-    }
-
-    /**
-     * Returns all of the unpublished errata in the given set.
+     * Returns all of the errata.
      * @param user Currently logged in user.
      * @param pc PageControl
      * @param label Set label
      * @return all of the errata.
      */
-    public static DataResult unpublishedInSet(User user, PageControl pc, String label) {
-        return errataInSet(user, pc, "unpublished_in_set", label);
-    }
-
-    /**
-     * Returns all of the published errata.
-     * @param user Currently logged in user.
-     * @return all of the errata.
-     */
-    public static DataResult publishedOwnedErrata(User user) {
-        return ownedErrata(user, "published_owned_errata");
-    }
-
-    /**
-     * Returns all of the published errata.
-     * @param user Currently logged in user.
-     * @param pc PageControl
-     * @param label Set label
-     * @return all of the errata.
-     */
-    public static DataResult publishedInSet(User user, PageControl pc, String label) {
-        return errataInSet(user, pc, "published_in_set", label);
+    public static DataResult allInSet(User user, PageControl pc, String label) {
+        return errataInSet(user, pc, "all_in_set", label);
     }
 
     /**
@@ -613,40 +536,10 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Helper method to get the unpublished/published errata
-     * @param user Currently logged in user
-     * @param mode Tells which mode (published/unpublished) we need to run
-     * @return all of the errata
-     */
-    private static DataResult ownedErrata(User user, String mode) {
-        return ownedErrata(user, mode, null);
-    }
-
-    /**
-     * Helper method to get the unpublished/published errata
-     * @param user Currently logged in user
-     * @param mode Tells which mode (published/unpublished) we need to run
-     * @param clazz The class you would like the return values represented as
-     * @return all of the errata
-     */
-    private static DataResult ownedErrata(User user, String mode, Class clazz) {
-        SelectMode m;
-        if (clazz == null) {
-            m = ModeFactory.getMode("Errata_queries", mode);
-        }
-        else {
-            m = ModeFactory.getMode("Errata_queries", mode, clazz);
-        }
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", user.getOrg().getId());
-        return makeDataResult(params, new HashMap(), null, m);
-    }
-
-    /**
-     * Helper method to get the unpublished/published errata in the set
+     * Helper method to get the errata in the set
      * @param user Currently logged in user
      * @param pc PageControl
-     * @param mode Tells which mode (published/unpublished) we need to run
+     * @param mode Tells which mode we need to run
      * @param label Set label
      * @return all of the errata
      */
@@ -663,22 +556,12 @@ public class ErrataManager extends BaseManager {
 
 
     /**
-     * Delete published errata in the set named as label
+     * Delete errata in the set named as label
      * @param user User performing the operation
      * @param label name of the set that contains the id's of the errata to be deleted
      */
-    public static void deletePublishedErrata(User user, String label) {
-        DataResult dr = publishedInSet(user, null, label);
-        deleteErrata(user, dr);
-    }
-
-    /**
-     * Delete unpublished errata in the set named as label
-     * @param user User performing the operation
-     * @param label name of the set that contains the id's of the errata to be deleted
-     */
-    public static void deleteUnpublishedErrata(User user, String label) {
-        DataResult dr = unpublishedInSet(user, null, label);
+    public static void deleteErrataInSet(User user, String label) {
+        DataResult dr = allInSet(user, null, label);
         deleteErrata(user, dr);
     }
 
@@ -708,7 +591,6 @@ public class ErrataManager extends BaseManager {
                 "deleteChannelErrataPackagesBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataFileBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataPackageBulk"));
-        modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataTmpBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries",
                 "deleteServerErrataPackageCacheBulk"));
         modes.add(ModeFactory.getWriteMode("Errata_queries", "deleteErrataBulk"));
@@ -853,15 +735,6 @@ public class ErrataManager extends BaseManager {
      */
     public static List lookupErrataByType(String advisoryType) {
         return ErrataFactory.lookupErratasByAdvisoryType(advisoryType);
-    }
-
-    /**
-     * Looks up published errata by errata id
-     * @param id errata id
-     * @return Errata if found, otherwise null
-     */
-    public static Errata lookupPublishedErrata(Long id) {
-        return ErrataFactory.lookupPublishedErrataById(id);
     }
 
     /**
@@ -1097,14 +970,6 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Stores an errata to the db
-     * @param errataIn The errata to store.
-     */
-    public static void storeErrata(Errata errataIn) {
-        ErrataFactory.save(errataIn);
-    }
-
-    /**
      * Sees if there is an errata with the same advisory name as the errata with eid
      * @param eid The id of the errata you're checking
      * @param name The advisory name you're checking
@@ -1201,75 +1066,13 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Create a clone of the errata
-     * @param user user performing the cloning
-     * @param e errata to be cloned
-     * @return clone of the errata
-     */
-    public static Errata createClone(User user, Errata e) {
-        return ErrataFactory.createClone(user.getOrg(), e);
-    }
-
-    /**
      * Lookup all the clones of a particular errata
-     *      looks up unpublished first, and then if none of those
-     *      exist, it looks up published ones
      * @param user User that is performing the cloning operation
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
     public static List lookupByOriginal(User user, Errata original) {
         return ErrataFactory.lookupByOriginal(user.getOrg(), original);
-    }
-
-    /**
-     * Lookup all the clones of a particular errata
-     * @param user User that is performing the cloning operation
-     * @param original Original errata that the clones are clones of
-     * @return list of clones of the errata
-     */
-    public static List lookupPublishedByOriginal(User user, Errata original) {
-        return ErrataFactory.lookupPublishedByOriginal(user.getOrg(), original);
-    }
-
-    /**
-     * Lists errata present in both channels
-     * @param user user
-     * @param channelFrom channel1
-     * @param channelTo channel2
-     * @return list of errata
-     */
-    public static List listSamePublishedInChannels(User user,
-            Channel channelFrom, Channel channelTo) {
-        return ErrataFactory.listSamePublishedInChannels(user.getOrg(),
-                channelFrom, channelTo);
-    }
-
-    /**
-     * Lists errata from channelFrom, that are cloned from the same original
-     * as errata in channelTo
-     * @param user user
-     * @param channelFrom channel1
-     * @param channelTo channel2
-     * @return list of errata
-     */
-    public static List listPublishedBrothersInChannels(User user,
-            Channel channelFrom, Channel channelTo) {
-        return ErrataFactory.listPublishedBrothersInChannels(user.getOrg(),
-                channelFrom, channelTo);
-    }
-
-    /**
-     * Lists errata from channelFrom, that have clones in channelTo
-     * @param user user
-     * @param channelFrom channel1
-     * @param channelTo channel2
-     * @return list of errata
-     */
-    public static List listPublishedClonesInChannels(User user,
-            Channel channelFrom, Channel channelTo) {
-        return ErrataFactory.listPublishedClonesInChannels(user.getOrg(),
-                channelFrom, channelTo);
     }
 
     /**
@@ -1532,7 +1335,7 @@ public class ErrataManager extends BaseManager {
      * @param user the user doing the push
      * @param inheritPackages inherit packages from the original bug (instaed of the
      * clone in the case of a clone of a clone)
-     * @return an array of Errata that have been published
+     * @return an array of Errata that have been added to chan
      */
     public static Object[] cloneErrataApi(Channel chan, Collection<Errata> errata,
             User user, boolean inheritPackages) {
@@ -1549,35 +1352,34 @@ public class ErrataManager extends BaseManager {
      * @param performPostActions true (default) if you want to refresh newest package
      * cache and schedule repomd regeneration. False only if you're going to do those
      * things yourself.
-     * @return an array of Errata that have been published
+     * @return an array of Errata that have been added to chan
      */
     public static Object[] cloneErrataApi(Channel chan, Collection<Errata> errata,
             User user, boolean inheritPackages, boolean performPostActions) {
-        List<Errata> errataToPublish = new ArrayList<Errata>();
+        List<Errata> errataToAdd = new ArrayList<Errata>();
+
         // For each errata look up existing clones, or manually clone it
         for (Errata toClone : errata) {
             if (toClone.isCloned()) {
-                errataToPublish.add(toClone);
+                errataToAdd.add(toClone);
             }
             else {
-                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(
-                        user, toClone);
+                List<Errata> clones = ErrataFactory.lookupErrataByOriginal(user.getOrg(), toClone);
                 if (clones.isEmpty()) {
-                    errataToPublish.add(PublishErrataHelper.cloneErrataFast(
-                            toClone, user.getOrg()));
+                    errataToAdd.add(ErrataHelper.cloneErrataFast(toClone, user.getOrg()));
                 }
                 else {
-                    errataToPublish.add(clones.get(0));
+                    errataToAdd.add(clones.get(0));
                 }
             }
         }
 
-        List<Errata> published = ErrataFactory.publishToChannel(errataToPublish, chan,
-                user, inheritPackages, performPostActions);
-        for (Errata e : published) {
+        List<Errata> added = ErrataFactory.addToChannel(errataToAdd, chan, user, inheritPackages,
+                performPostActions);
+        for (Errata e : added) {
             ErrataFactory.save(e);
         }
-        return published.toArray();
+        return added.toArray();
     }
 
     /**
@@ -1595,23 +1397,22 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Clone errata as necessary and link cloned errata with new channel.
+     * Clone errata as necessary and add cloned errata to new channel.
      * Warning: this does not clone packages or schedule channel repomd regeneration.
      * You must do that yourself!
      * @param toClone List of ErrataOverview to clone
      * @param toCid Channel id to clone them into
      * @param user the requesting user
-     * @return list of errata ids that were published into channel
+     * @return list of errata ids that were added to the channel
      */
     public static Set<Long> cloneChannelErrata(List<ErrataOverview> toClone, Long toCid,
             User user) {
-        List<OwnedErrata> owned = ErrataFactory
-                .listPublishedOwnedUnmodifiedClonedErrata(user.getOrg().getId());
+        List<OwnedErrata> owned = ErrataFactory.listOwnedUnmodifiedClonedErrata(user.getOrg().getId());
         Set<Long> eids = new HashSet<Long>();
 
-        // add published, cloned, owned errata to mapping. we want the oldest owned
-        // clone to reuse. listPublishedOwnedUnmodifiedClonedErrata orders by created,
-        // so we just add the first one we come across to the mapping and skip others
+        // add cloned and owned errata to mapping. we want the oldest owned
+        // clone to reuse. ErrataFactory orders by created, so we just add the
+        // first one we come across to the mapping and skip others
         Map<Long, OwnedErrata> eidToClone = new HashMap<Long, OwnedErrata>();
         for (OwnedErrata erratum : owned) {
             if (!eidToClone.containsKey(erratum.getFromErrataId())) {
@@ -1625,12 +1426,11 @@ public class ErrataManager extends BaseManager {
 
         for (ErrataOverview erratum : toClone) {
             if (!eidToClone.containsKey(erratum.getId())) {
-                // no published owned clones yet, lets make our own
+                // no owned clones yet, lets make our own
                 // hibernate was too slow, had to rewrite in mode queries
-                Long cloneId = PublishErrataHelper.cloneErrataFaster(erratum.getId(), user
+                Long cloneId = ErrataHelper.cloneErrataFaster(erratum.getId(), user
                         .getOrg());
                 eids.add(cloneId);
-
             }
             else {
                 // we have one already, reuse it
@@ -2285,11 +2085,11 @@ public class ErrataManager extends BaseManager {
                     ErrataCacheManager.addErrataRefreshing(cids, eid);
                 }
                 else {
-                    List<Errata> clones = lookupPublishedByOriginal(user, errata);
+                    List<Errata> clones = ErrataFactory.lookupErrataByOriginal(user.getOrg(), errata);
                     if (clones.size() == 0) {
                         log.debug("Cloning errata");
-                        var publishedId = PublishErrataHelper.cloneErrataFaster(eid, user.getOrg());
-                        ErrataCacheManager.addErrataRefreshing(cids, publishedId);
+                        var clonedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
+                        ErrataCacheManager.addErrataRefreshing(cids, clonedId);
                     }
                     else {
                         log.debug("Re-publishing clone");

@@ -14,30 +14,75 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.Serializable;
 
 /**
  * Keyword
- * @version $Rev$
  */
-public interface Keyword {
+public class Keyword extends BaseDomainHelper implements Serializable {
+
+    private String keyword;
+    private Errata errata;
 
     /**
      * @return Returns the keyword.
      */
-    String getKeyword();
+    public String getKeyword() {
+        return keyword;
+    }
 
     /**
      * @param k The keyword to set.
      */
-    void setKeyword(String k);
+    public void setKeyword(String k) {
+        this.keyword = k;
+    }
 
     /**
      * @return Returns the errata.
      */
-    Errata getErrata();
+    public Errata getErrata() {
+        return errata;
+    }
 
     /**
      * @param errataIn The errata to set.
      */
-    void setErrata(Errata errataIn);
+    public void setErrata(Errata errataIn) {
+        this.errata = errataIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        return keyword;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(final Object other) {
+        if (!(other instanceof Keyword)) {
+            return false;
+        }
+        Keyword castOther = (Keyword) other;
+        return new EqualsBuilder().append(keyword, castOther.keyword)
+                                  .append(errata, castOther.errata)
+                                  .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode() {
+        return new HashCodeBuilder().append(keyword)
+                                    .append(errata)
+                                    .toHashCode();
+    }
 }

@@ -1122,13 +1122,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Unpublished" xml:space="preserve">
-        <source>Unpublished</source>
-        <target>অপ্রকাশিত</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Unentitled" xml:space="preserve">
         <source>Without System Type</source>
         <target>এনটাইটেলমেন্টবিহীন</target>
@@ -2742,7 +2735,7 @@ and try again.
       <trans-unit id="toolbar.create.erratum" xml:space="preserve">
         <source>Create Patch</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
+          <context context-type="sourcefile">/rhn/errata/Errata</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.group" xml:space="preserve">

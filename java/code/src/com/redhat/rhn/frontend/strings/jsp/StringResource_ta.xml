@@ -3796,20 +3796,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>அழிக்கவும்</target>
       </trans-unit>
-      <trans-unit id="errata.edit.youmaypublish" xml:space="preserve">
-        <source>You may now publish this patch.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>இப்போது இந்தப் பிழைத்திருத்தத்தை வெளியிடலாம்.</target>
-      </trans-unit>
-      <trans-unit id="errata.edit.publisherrata" xml:space="preserve">
-        <source>Publish Patch</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>பிழைத்திருத்தங்களை வெளியிடவும்</target>
-      </trans-unit>
       <trans-unit id="errata.edit.sendnotification" xml:space="preserve">
         <source>Send Notification</source>
         <context-group name="ctx">
@@ -4797,23 +4783,15 @@ organization. You may grant or remove the organization administrator role in the
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target> &lt;p&gt; பின்வரும் பிழைத்திருத்த பட்டியல் உங்கள் நிறுவனத்தின் சொந்தமான பிழைத்திருத்தங்களை குறிப்பதாகும்.&lt;/p&gt; &lt;p&gt; ஒரு பிழைத்திருத்தத்தின் சுருக்கத்தை சொடுக்கி பிழைத்திருத்த விவரங்கள் அல்லது பிழைத்திருத்த செயல்படுத்தும் தொகுப்புகளின் பட்டியலை திருத்தவும். &lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>வெளியிடப்படாத பிழைத்திருத்தங்கள்</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>பிழைத்திருத்த மேலாண்மை</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>வெளியிடப்படாத பிழைத்திருத்தங்கள் ஒன்றுமில்லை</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Published Patches</source>
         <target>வெளியிடப்பட்ட பிழைத்திருத்தங்கள் ஒன்றுமில்லை</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.publishederrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Published Patches</source>
         <target>வெளியிடப்பட்ட பிழைத்திருத்தங்கள்</target>
       </trans-unit>

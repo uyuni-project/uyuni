@@ -23,7 +23,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.org.OrgFactory;
 
 import com.suse.manager.utils.MailHelper;
@@ -116,7 +115,7 @@ public class ErrataMailer extends RhnJavaJob {
     }
 
     private void sendEmails(Long errataId, Long orgId, Long channelId) {
-        Errata errata = (Errata) HibernateFactory.getSession().load(PublishedErrata.class,
+        Errata errata = (Errata) HibernateFactory.getSession().load(Errata.class,
                 errataId);
         List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 

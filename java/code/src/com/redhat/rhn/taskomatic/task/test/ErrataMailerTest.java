@@ -29,7 +29,7 @@ import java.util.Map;
 public class ErrataMailerTest extends BaseTestCaseWithUser {
 
     public void testErrataMailer() throws Exception {
-        final Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        final Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         final Channel c = ChannelFactoryTest.createBaseChannel(user);
         // Override the methods that make the size of the task grow really huge
         // We still test the majority of the stuff in ErrataMailer(), just not

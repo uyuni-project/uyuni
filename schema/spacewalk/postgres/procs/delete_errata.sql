@@ -25,7 +25,6 @@ begin
         delete from rhnErrataFile where errata_id = errata_id_in;
         delete from rhnErrataPackage where errata_id = errata_id_in;
         delete from rhnErrata where id = errata_id_in;
-        delete from rhnErrataTmp where id = errata_id_in;
 end;
 
 $$ language plpgsql;

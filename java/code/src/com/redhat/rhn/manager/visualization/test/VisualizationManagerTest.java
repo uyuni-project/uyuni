@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.manager.visualization.test;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
@@ -47,8 +49,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Test for basic scenarios in VisualizationControllerTest.
@@ -248,7 +248,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testPatchCountSystemsWithGroups() throws Exception {
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
         Channel c = ChannelTestUtils.createTestChannel(user);
         Package p = PackageManagerTest.addPackageToChannel("some-errata-package", c);

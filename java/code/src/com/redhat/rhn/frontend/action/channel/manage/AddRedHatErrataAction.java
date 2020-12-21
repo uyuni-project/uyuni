@@ -90,7 +90,7 @@ public class AddRedHatErrataAction extends RhnListAction {
         Channel selectedChannel = null;
 
 
-        PublishErrataHelper.checkPermissions(user, cid);
+        ErrataHelper.checkPermissions(user, cid);
 
         request.setAttribute(CID, cid);
         request.setAttribute("user", user);

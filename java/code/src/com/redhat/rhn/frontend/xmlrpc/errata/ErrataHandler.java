@@ -34,13 +34,13 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -85,7 +85,6 @@ import java.util.stream.Collectors;
 
 /**
  * ErrataHandler - provides methods to access errata information.
- * @version $Rev$
  * @xmlrpc.namespace errata
  * @xmlrpc.doc Provides methods to access and modify errata.
  */
@@ -353,9 +352,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("bugs");
         validKeys.add("keywords");
         validKeys.add("severity");
-        if (errata.isPublished()) {
-            validKeys.add("cves");
-        }
+        validKeys.add("cves");
         validateMap(validKeys, details);
 
         validKeys.clear();
@@ -492,7 +489,7 @@ public class ErrataHandler extends BaseHandler {
                         url = (String) bugMap.get("url");
                     }
 
-                    Bug bug = ErrataFactory.createPublishedBug(
+                    Bug bug = ErrataFactory.createBug(
                             Long.valueOf((Integer) bugMap.get("id")),
                             (String) bugMap.get("summary"), url);
 
@@ -530,7 +527,7 @@ public class ErrataHandler extends BaseHandler {
                 errata.getAdvisoryRel().toString());
 
         //Save the errata
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         return 1;
     }
@@ -794,14 +791,13 @@ public class ErrataHandler extends BaseHandler {
         }
 
         //Update Errata Cache
-        if ((packagesAdded > 0) && errata.isPublished() &&
-                (errata.getChannels() != null)) {
+        if (packagesAdded > 0 && errata.getChannels() != null) {
             ErrataCacheManager.updateCacheForChannelsAsync(
                     errata.getChannels());
         }
 
         //Save the errata
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         return packagesAdded;
     }
@@ -844,14 +840,13 @@ public class ErrataHandler extends BaseHandler {
         }
 
         //Update Errata Cache
-        if ((packagesRemoved > 0) && errata.isPublished() &&
-                (errata.getChannels() != null)) {
+        if (packagesRemoved > 0 && errata.getChannels() != null) {
             ErrataCacheManager.updateCacheForChannelsAsync(
                     errata.getChannels());
         }
 
         //Save the errata
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         return packagesRemoved;
     }
@@ -1123,7 +1118,7 @@ public class ErrataHandler extends BaseHandler {
      * @param bugs a List of maps consisting of 'id' Integers and 'summary' strings
      * @param keywords a List of keywords for the errata
      * @param packageIds a List of package Id packageId Integers
-     * @param channelLabels an array of channel labels to publish to
+     * @param channelLabels an array of channel labels to add patches to
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return The errata created
      *
@@ -1194,7 +1189,7 @@ public class ErrataHandler extends BaseHandler {
             validateMap(validKeys, bugMap);
         }
 
-        //Don't want them to publish an errata without any channels,
+        //Don't want them to add an errata without any channels,
         //so check first before creating anything
         List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
@@ -1221,7 +1216,7 @@ public class ErrataHandler extends BaseHandler {
         if (newErrata != null) {
             throw new DuplicateErrataException(advisoryName);
         }
-        newErrata = ErrataManager.createNewErrata();
+        newErrata = new Errata();
         newErrata.setOrg(loggedInUser.getOrg());
 
         //all required
@@ -1261,7 +1256,7 @@ public class ErrataHandler extends BaseHandler {
                 url = (String) bugMap.get("url");
             }
 
-            Bug bug = ErrataFactory.createPublishedBug(
+            Bug bug = ErrataFactory.createBug(
                     ((Integer)bugMap.get("id")).longValue(),
                     (String)bugMap.get("summary"), url);
             newErrata.addBug(bug);
@@ -1291,7 +1286,7 @@ public class ErrataHandler extends BaseHandler {
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }
 
-        return publish(newErrata, channels, loggedInUser, false);
+        return addToChannels(newErrata, channels, loggedInUser, false);
     }
 
     /**
@@ -1316,17 +1311,17 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Publishes an existing errata to a set of channels
+     * Adds an existing errata to a set of channels
      * @param loggedInUser The current user
-     * @param advisory The advisory Name of the errata to publish
-     * @param channelLabels List of channels to publish the errata to
-     * @return the published errata
+     * @param advisory The advisory Name of the errata to add
+     * @param channelLabels List of channels to add the errata to
+     * @return the added errata
      *
-     * @xmlrpc.doc Publish an existing errata to a set of channels.
+     * @xmlrpc.doc Adds an existing errata to a set of channels.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
-     *      #array_single("string", "channelLabel - list of channel labels to publish to")
+     *      #array_single("string", "channelLabel - list of channel labels to add to")
      * @xmlrpc.returntype
      *          $ErrataSerializer
      */
@@ -1339,24 +1334,24 @@ public class ErrataHandler extends BaseHandler {
             log.warn("Errata " + toPublish.getAdvisory() + " added to vendor channels " +
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }
-        return publish(toPublish, channels, loggedInUser, false);
+        return addToChannels(toPublish, channels, loggedInUser, false);
     }
 
     /**
-     * Publishes an existing cloned errata to a set of cloned channels
+     * Adds an existing cloned errata to a set of cloned channels
      * according to its original erratum
      * @param loggedInUser The current user
-     * @param advisory The advisory Name of the errata to publish
-     * @param channelLabels List of channels to publish the errata to
+     * @param advisory The advisory Name of the errata to add
+     * @param channelLabels List of channels to add the errata to
      * @throws InvalidChannelRoleException if the user perms are incorrect
-     * @return the published errata
+     * @return the added errata
      *
-     * @xmlrpc.doc Publishes an existing cloned errata to a set of cloned
+     * @xmlrpc.doc Adds an existing cloned errata to a set of cloned
      * channels according to its original erratum
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
-     *      #array_single("string", "channelLabel - list of channel labels to publish to")
+     *      #array_single("string", "channelLabel - list of channel labels to add to")
      * @xmlrpc.returntype
      *          $ErrataSerializer
      */
@@ -1392,13 +1387,13 @@ public class ErrataHandler extends BaseHandler {
         if (!toPublish.isCloned()) {
             throw new InvalidErrataException("Cloned errata expected.");
         }
-        return publish(toPublish, channels, loggedInUser, true);
+        return addToChannels(toPublish, channels, loggedInUser, true);
     }
 
     /**
      * Verify a list of channels labels, and populate their corresponding
-     *      Channel objects into a List.  This is primarily used before publishing
-     *      to verify all channels are valid before starting the errata creation
+     * Channel objects into a List.  This is primarily used before adding errata
+     * to verify all channels are valid before starting the errata creation
      * @param channelsLabels the List of channel labels to verify
      * @param vendorChannelOverride list of vendor channel labels to allow without permission.
      * @return a List of channel objects
@@ -1429,24 +1424,17 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * private helper method to publish the errata
-     * @param errata the errata to publish
+     * private helper method to add the errata to channels
+     * @param errata the errata to add
      * @param channels A list of channel objects
-     * @return The published Errata
+     * @return The added Errata
      */
-    private Errata publish(Errata errata, List<Channel> channels, User user,
-            boolean inheritPackages) {
-        Errata published = ErrataFactory.publish(errata);
+    private Errata addToChannels(Errata errata, List<Channel> channels, User user, boolean inheritPackages) {
         for (Channel chan : channels) {
-            List<Errata> list = new ArrayList<Errata>();
-            list.add(published);
-            published = ErrataFactory.publishToChannel(list, chan, user,
-                    inheritPackages).get(0);
-
+            errata = ErrataFactory.addToChannel(List.of(errata), chan, user, inheritPackages).get(0);
         }
-        return published;
+        return errata;
     }
-
 
     /**
      * list errata by date

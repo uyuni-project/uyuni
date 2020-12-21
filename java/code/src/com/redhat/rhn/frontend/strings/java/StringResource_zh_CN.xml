@@ -1159,13 +1159,6 @@
         </context-group>
         <target state="translated">Unix 发行说明</target>
       </trans-unit>
-      <trans-unit id="Unpublished" xml:space="preserve">
-        <source>Unpublished</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target state="translated">未发布</target>
-      </trans-unit>
       <trans-unit id="Unentitled" xml:space="preserve">
         <source>Without System Type</source>
         <context-group name="ctx">
@@ -2910,8 +2903,7 @@ and try again.
       <trans-unit id="toolbar.create.erratum" xml:space="preserve">
         <source>Create Patch</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
-          <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
+          <context context-type="sourcefile">/rhn/errata/Errata</context>
         </context-group>
         <target state="translated">创建补丁</target>
       </trans-unit>

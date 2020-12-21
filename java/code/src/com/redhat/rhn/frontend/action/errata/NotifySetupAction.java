@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
-import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.frontend.action.common.BadParameterException;
-import com.redhat.rhn.frontend.struts.RequestContext;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -27,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * NotifySetupAction
- * @version $Rev$
  */
 public class NotifySetupAction extends BaseErrataSetupAction {
 
@@ -38,16 +33,6 @@ public class NotifySetupAction extends BaseErrataSetupAction {
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
-
-        /*
-         * Notifications can only be sent for a published errata.
-         */
-        Errata errata = new RequestContext(request).lookupErratum();
-        if (!errata.isPublished()) {
-            throw new BadParameterException("Unpublished errata.");
-        }
-
-        //return the default for errata
         return super.execute(mapping, formIn, request, response);
     }
 }

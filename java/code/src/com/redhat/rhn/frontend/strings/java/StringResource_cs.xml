@@ -1166,13 +1166,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Unpublished" xml:space="preserve">
-        <source>Unpublished</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Unentitled" xml:space="preserve">
         <source>Without System Type</source>
         <target />
@@ -2875,8 +2868,7 @@ and try again.
         <source>Create Patch</source>
         <target />
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
-          <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
+          <context context-type="sourcefile">/rhn/errata/Errata</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.group" xml:space="preserve">

@@ -35,29 +35,15 @@
             <rhn:submitted />
             <rhn:hidden name="eid" value="${param.eid}" />
 
-            <c:if test="${isPublished == true}">
-                <h2><bean:message key="errata.edit.senderratamail"/></h2>
-                <p><bean:message key="errata.edit.youmaynotify" /></p>
-                <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
-                        <html:submit property="dispatch" styleClass="btn btn-success">
-                            <bean:message key="errata.edit.sendnotification" />
-                        </html:submit>
-                    </div>
+            <h2><bean:message key="errata.edit.senderratamail"/></h2>
+            <p><bean:message key="errata.edit.youmaynotify" /></p>
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-6">
+                    <html:submit property="dispatch" styleClass="btn btn-success">
+                        <bean:message key="errata.edit.sendnotification" />
+                    </html:submit>
                 </div>
-            </c:if>
-
-            <c:if test="${isPublished == false}">
-                <h2><bean:message key="errata.edit.publisherrata"/></h2>
-                <p><bean:message key="errata.edit.youmaypublish" /></p>
-                <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-6">
-                        <html:submit property="dispatch" styleClass="btn btn-default">
-                            <bean:message key="errata.edit.publisherrata" />
-                        </html:submit>
-                    </div>
-                </div>
-            </c:if>
+            </div>
         </html:form>
 
         <html:form action="/errata/manage/Edit" styleClass="form-horizontal">

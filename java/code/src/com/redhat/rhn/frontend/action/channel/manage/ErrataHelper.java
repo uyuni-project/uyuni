@@ -20,31 +20,27 @@ package com.redhat.rhn.frontend.action.channel.manage;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Keyword;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
-import com.redhat.rhn.manager.errata.ErrataManager;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
- * PublishErrataHelper
- * @version $Rev$
+ * ErrataHelper
  */
-public class PublishErrataHelper {
+public class ErrataHelper {
 
     private static final String DEFAULT_ERRATA_CLONE_PREFIX = "CL-";
     private static final String REDHAT_ERRATA_PREFIX = "RH";
 
-    private PublishErrataHelper() {
-
+    private ErrataHelper() {
     }
 
     /**
@@ -83,9 +79,7 @@ public class PublishErrataHelper {
 
 
     /**
-     * Clones an errata Similarly to ErrataFactory.createClone, but creates a published
-     *      errata instead of going through the stupid process of being unpublished and
-     *       then copying all the data to 4 tables
+     * Clones an errata
      * @param original the original errata to clone
      * @param org the org to clone it for
      * @deprecated this function is deprecated by cloneErrataFaster
@@ -94,7 +88,7 @@ public class PublishErrataHelper {
     @Deprecated
     public static Errata cloneErrataFast(Errata original, Org  org) {
 
-        Errata clone = new PublishedClonedErrata();
+        Errata clone = new ClonedErrata();
 
         setUniqueAdvisoryCloneName(original, clone);
         clone.setAdvisoryType(original.getAdvisoryType());
@@ -122,15 +116,12 @@ public class PublishErrataHelper {
         }
 
 
-        for (Bug bugIn : (Set<Bug>) original.getBugs()) {
-            Bug bClone;
-                bClone = ErrataManager.createNewPublishedBug(bugIn.getId(),
-                                                             bugIn.getSummary(),
-                                                             bugIn.getUrl());
-           clone.addBug(bClone);
+        for (Bug bugIn : original.getBugs()) {
+            var bClone = ErrataFactory.createBug(bugIn.getId(), bugIn.getSummary(), bugIn.getUrl());
+            clone.addBug(bClone);
         }
 
-        ((PublishedClonedErrata) clone).setOriginal(original);
+        ((ClonedErrata) clone).setOriginal(original);
         clone.setOrg(org);
         ErrataFactory.save(clone);
 

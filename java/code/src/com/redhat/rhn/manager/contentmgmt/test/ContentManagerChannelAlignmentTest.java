@@ -85,7 +85,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         // create objects needed in all tests:
         // we need at least a package, errata associated with it and a channel
         pkg = PackageTest.createTestPackage(user.getOrg());
-        errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errata.addPackage(pkg);
 
         srcChannel = ChannelFactoryTest.createTestChannel(user, false);
@@ -325,9 +325,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         srcChan.addPackage(pack1);
         srcChan.addPackage(pack2);
 
-        Errata errata1 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errata1.addPackage(pack1);
-        Errata errata2 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errata2.addPackage(pack2);
 
         srcChan.addErrata(errata1);
@@ -376,7 +376,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      */
     public void testErrataRemoved() throws Exception {
         // this errata is in the target channel and is supposed to be removed after align
-        Errata toRemove = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());;
+        Errata toRemove = ErrataFactoryTest.createTestErrata(user.getOrg().getId());;
         tgtChannel.addErrata(toRemove);
 
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
@@ -415,12 +415,12 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
         Channel tgtChan = ChannelFactoryTest.createTestChannel(user, false);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        Errata e2 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        Errata e3 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        Errata e4 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        Errata e5 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        Errata e6 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e4 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e5 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e6 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         // src
         srcChan.addErrata(e1);
@@ -505,15 +505,15 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     public void testAllowDenyFiltersErrata2() throws Exception {
         Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e1.setIssueDate(new Date(1000));
-        Errata e2 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e2.setIssueDate(new Date(2000));
         String advisoryName = "my-advisory-name";
-        Errata e3 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e3.setIssueDate(new Date(3000));
         e3.setAdvisoryName(advisoryName);
-        Errata e4 = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e4 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e4.setIssueDate(new Date(4000));
 
         srcChan.addErrata(e1);

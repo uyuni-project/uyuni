@@ -18,13 +18,13 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.context.Context;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -69,7 +69,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
         for (int i = 0; i < 5; i++) {
             Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
             e.addChannel(channel);
-            ErrataManager.storeErrata(e);
+            ErrataFactory.save(e);
             errata.addElement(e.getId());
             ErrataFactoryTest.updateNeedsErrataCache(
                     e.getPackages().iterator().next().getId(),

@@ -18,10 +18,10 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
@@ -97,8 +97,8 @@ public class CreateAction extends RhnSetAction {
             return mapping.findForward("failure");
         }
 
-        //Create a new unpublished errata
-        Errata e = ErrataFactory.createPublishedErrata();
+        //Create a new errata
+        Errata e = new Errata();
         e.setSynopsis(form.getString("synopsis"));
         e.setAdvisoryName(form.getString("advisoryName"));
         e.setAdvisoryRel(Long.valueOf(form.getString("advisoryRelease")));
@@ -147,8 +147,8 @@ public class CreateAction extends RhnSetAction {
         //Set the org for the errata to the logged in user's org
         e.setOrg(user.getOrg());
 
-        ErrataManager.storeErrata(e);
-        ErrataManager.publish(e, channelAction.getChannelIdsFromRhnSet(set), user);
+        ErrataFactory.save(e);
+        ErrataManager.addToChannels(e, channelAction.getChannelIdsFromRhnSet(set), user);
 
         ActionMessages msgs = new ActionMessages();
         msgs.add(ActionMessages.GLOBAL_MESSAGE,
@@ -173,7 +173,7 @@ public class CreateAction extends RhnSetAction {
             Long id = Long.valueOf(form.getString("buglistId"));
             String summary = form.getString("buglistSummary");
             String url = form.getString("buglistUrl");
-            return ErrataFactory.createPublishedBug(id, summary, url);
+            return ErrataFactory.createBug(id, summary, url);
         }
         return null;
     }

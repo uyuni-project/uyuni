@@ -46,11 +46,9 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- *
- * PublishErrataAction
- * @version $Rev$
+ * AddErrataToChannelAction
  */
-public class PublishErrataAction extends RhnListAction {
+public class AddErrataToChannelAction extends RhnListAction {
 
 
     private static final String CID = "cid";
@@ -72,7 +70,7 @@ public class PublishErrataAction extends RhnListAction {
         Map<String, Object> forwardParams = new HashMap<String, Object>();
         forwardParams.put(CID, cid);
 
-        PublishErrataHelper.checkPermissions(user, cid);
+        ErrataHelper.checkPermissions(user, cid);
 
         RhnSet  packageSet = RhnSetDecl.setForChannelPackages(currentChan).get(user);
         Set<Long> packageIds = packageSet.getElementValues();

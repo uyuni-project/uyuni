@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.software;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -32,7 +35,7 @@ import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.org.Org;
@@ -106,9 +109,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
 
 /**
  * ChannelSoftwareHandler
@@ -231,12 +231,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         for (Long eid : eids) {
             Errata e = ErrataManager.lookupErrata(eid, loggedInUser);
-            if (e.isPublished() && e.isCloned()) {
-                ErrataFactory.syncErrataDetails((PublishedClonedErrata) e);
+            if (e.isCloned()) {
+                ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
-                log.fatal("Tried to sync errata with id " + eid +
-                        " But it was not published or was not cloned");
+                log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
             }
         }
         return 1;
