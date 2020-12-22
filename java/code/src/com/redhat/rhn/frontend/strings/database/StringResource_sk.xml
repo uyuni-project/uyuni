@@ -2620,7 +2620,7 @@
       </trans-unit>
       <trans-unit id="metrics.Reload rate" xml:space="preserve">
         <source>Reload rate</source>
-        <target/>
+        <target>Rýchlosť opätovného načítania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2641,14 +2641,14 @@
       </trans-unit>
       <trans-unit id="metrics.SYN_RCVD conns" xml:space="preserve">
         <source>SYN_RCVD conns</source>
-        <target/>
+        <target>Pripojenia SYN_RCVD</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Size" xml:space="preserve">
         <source>Size</source>
-        <target/>
+        <target>Veľkosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2690,7 +2690,7 @@
       </trans-unit>
       <trans-unit id="metrics.TIME_WAIT conns" xml:space="preserve">
         <source>TIME_WAIT conns</source>
-        <target/>
+        <target>Pripojenia TIME_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2711,7 +2711,7 @@
       </trans-unit>
       <trans-unit id="metrics.Total conns" xml:space="preserve">
         <source>Total conns</source>
-        <target/>
+        <target>Celkové pripojenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2781,28 +2781,28 @@
       </trans-unit>
       <trans-unit id="METOO" xml:space="preserve">
         <source>Supplemental Notification</source>
-        <target/>
+        <target>Dodatočné oznámenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BLACKHOLE" xml:space="preserve">
         <source>Suspend Standard Notifications</source>
-        <target/>
+        <target>Pozastaviť štandardné oznámenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ACK" xml:space="preserve">
         <source>Automatic Acknowledgement</source>
-        <target/>
+        <target>Automatické prijatie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REDIR" xml:space="preserve">
         <source>Redirect Standard Notifications</source>
-        <target/>
+        <target>Presmerovať štandardné upozornenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
@@ -2956,7 +2956,7 @@
       </trans-unit>
       <trans-unit id="Satellite" xml:space="preserve">
           <source>@@PRODUCT_NAME@@</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3432,14 +3432,14 @@
       </trans-unit>
       <trans-unit id="Uptime" xml:space="preserve">
           <source>Uptime</source>
-        <target/>
+        <target>Doba prevádzky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Uptime (SNMP)" xml:space="preserve">
           <source>Uptime (SNMP)</source>
-        <target/>
+        <target>Doba prevádzky (SNMP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
