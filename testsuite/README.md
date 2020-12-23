@@ -1,8 +1,8 @@
-# SUSE Manager automated test suite
+# Uyuni automated test suite
 
 # Introduction
 
-This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/).
+This is the automated testsuite for [Uyuni](https://www.uyuni-project.org/).
 
 Before you start, make sure you know about the [**basic concepts**](https://cucumber.io/docs/gherkin/reference) of Cucumber that we are using in this testsuite: features, scenarios and steps.
 
@@ -11,9 +11,8 @@ Apart from Cucumber, the testsuite relies on a number of [software components](d
 
 # Running the testsuite
 
-You can run the SUSE Manager testsuite [with sumaform](https://github.com/uyuni-project/sumaform/blob/master/README_TESTING.md#running-the-testsuite).
+You can run the Uyuni testsuite [with sumaform](https://github.com/uyuni-project/sumaform/blob/master/README_TESTING.md#running-the-testsuite).
 
-If you want to run the testsuite for [Uyuni](https://www.uyuni-project.org), nothing special needs to be done. The testuite will autodetect it.
 
 ## Core features, idempotency and tests order
 
