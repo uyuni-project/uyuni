@@ -1,9 +1,8 @@
+- Changed to versioned Python3 to SPEC file.
 - Python3 port for blend tool
 - internal code cleanup (dropping unused table rhnErrataTmp)
 - Fix Debian package version comparison
-- Use versioned Python2 for RHEL8 and Fedora.
 - Move dist upgrade SQL file to the correct directory so it gets picked up in schema upgrades (bsc#1179759)
-- Changed to versioned Python2 to SPEC file.
 
 -------------------------------------------------------------------
 Thu Dec 03 13:58:08 CET 2020 - jgonzalez@suse.com

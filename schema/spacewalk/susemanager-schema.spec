@@ -35,7 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
-BuildRequires:  python2
+BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
 Requires:       %{sbinpath}/restorecon
 
@@ -64,9 +64,6 @@ Provides schema-source-sanity-check.pl script for external usage.
 %prep
 
 %setup -q
-%if 0%{?rhel} || 0%{?fedora}
-sed -i '1s/python\b/python2/' blend
-%endif
 
 %build
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
