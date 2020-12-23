@@ -39,7 +39,7 @@ def __check_headers(h):
         to = h["To"]
     if "Content-Type" not in h:
         h["Content-Type"] = "text/plain; charset=utf-8"
-    if isinstance(to, (type([]), type(()))):
+    if isinstance(to, (list, tuple)):
         toaddrs = to
         to = ', '.join(to)
     else:
@@ -51,7 +51,10 @@ def __check_headers(h):
 
 
 def send(headers, body, sender=None):
-    (headers, toaddrs) = __check_headers(headers)
+    try:
+        (headers, toaddrs) = __check_headers(headers)
+    except:
+        return
     if sender is None:
         sender = headers["From"]
     joined_headers = ''
