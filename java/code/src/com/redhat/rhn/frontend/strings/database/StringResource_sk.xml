@@ -2809,35 +2809,35 @@
       </trans-unit>
       <trans-unit id="CRITICAL" xml:space="preserve">
         <source>CRITICAL</source>
-        <target/>
+        <target>KRITICKÉ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OK" xml:space="preserve">
         <source>OK</source>
-        <target/>
+        <target>OK</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="UNKNOWN" xml:space="preserve">
         <source>UNKNOWN</source>
-        <target/>
+        <target>NEZNÁME</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PENDING" xml:space="preserve">
         <source>PENDING</source>
-        <target/>
+        <target>ČAKAJÚCE</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="WARNING" xml:space="preserve">
         <source>WARNING</source>
-        <target/>
+        <target>VAROVNÉ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2851,7 +2851,7 @@
       </trans-unit>
       <trans-unit id="oracle" xml:space="preserve">
           <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target/>
+        <target>Kontroly Oracle vyžadujú konfiguráciu databázy a verejných asociácií vytvorených spustením $ORACLE_HOME/rdbms/admin/catalog.sql. Okrem toho v každej inštancii Oracle musí mať používateľ Oracle nakonfigurovaný pri kontrole minimálne oprávnenia CONNECT a SELECT_CATALOG_ROLE.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2865,84 +2865,84 @@
       </trans-unit>
       <trans-unit id="bea61_snmp" xml:space="preserve">
           <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
-        <target/>
+        <target>Túto kontrolu je možné nakonfigurovať na spravovanom serveri BEA, ak je uvedená adresa IP servera správy domény. SNMP musí byť tiež povolený na serveri správy domény, čo je možné urobiť pomocou konzoly Weblogic.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="npunix_oracle" xml:space="preserve">
           <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target/>
+        <target>Na vykonanie tejto kontroly musí byť na monitorovanom hostiteľovi spustené RHNMD. Kontroly Oracle vyžadujú konfiguráciu databázy a verejných asociácií vytvorených spustením $ORACLE_HOME/rdbms/admin/catalog.sql. Okrem toho v každej inštancii Oracle musí mať používateľ Oracle nakonfigurovaný pri kontrole minimálne oprávnenia CONNECT a SELECT_CATALOG_ROLE.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="apache1_3" xml:space="preserve">
           <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
-        <target/>
+        <target>Aby táto kontrola fungovala správne, musí byť direktíva ExtendedStatus v súbore httpd.conf tohto webservera nastavená na On.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="All" xml:space="preserve">
           <source>All</source>
-        <target/>
+        <target>Všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Apache" xml:space="preserve">
           <source>Apache</source>
-        <target/>
+        <target>Apache</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEA Weblogic" xml:space="preserve">
           <source>BEA Weblogic</source>
-        <target/>
+        <target>BEA Weblogic</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="General" xml:space="preserve">
           <source>General</source>
-        <target/>
+        <target>Všeobecné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Linux" xml:space="preserve">
           <source>Linux</source>
-        <target/>
+        <target>Linux</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log Agent" xml:space="preserve">
           <source>Log Agent</source>
-        <target/>
+        <target>Agent záznamu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MySQL" xml:space="preserve">
           <source>MySQL</source>
-        <target/>
+        <target>MySQL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Network Services" xml:space="preserve">
           <source>Network Services</source>
-        <target/>
+        <target>Sieťové služby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Oracle" xml:space="preserve">
           <source>Oracle</source>
-        <target/>
+        <target>Oracle</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2970,7 +2970,7 @@
       </trans-unit>
       <trans-unit id="Availability" xml:space="preserve">
           <source>Availability</source>
-        <target/>
+        <target>Dostupnosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3425,7 +3425,7 @@
       </trans-unit>
       <trans-unit id="UDP Check" xml:space="preserve">
           <source>UDP Check</source>
-        <target/>
+        <target>Kontrola UDP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
