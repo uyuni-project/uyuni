@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the (LGPL) GNU Lesser General Public License as
 # published by the Free Software Foundation; either version 3 of the
@@ -97,6 +97,7 @@ end.sql -   If found in the current directory, the contents of this file is
 
 import sys, os, re
 from getopt import getopt, GetoptError
+from functools import cmp_to_key
 
 verbose = False
 aggregated = False
@@ -271,7 +272,7 @@ class DepTab:
         result = ([],[])
         for key in keyset:
             if key in history:
-                print 'circular (alias) reference:%s' % history
+                print('circular (alias) reference:%s' % history)
                 continue
             alias = self.aliases.get(key)
             if alias is None:
@@ -350,10 +351,12 @@ class Reader:
         for n in os.walk(d):
             for f in n[2]:
                 files.append((f, n[0]))
-        files = sorted(files, self.fsort)
+        files = sorted(files, key=cmp_to_key(self.fsort))
         return files
 
     def fsort(self, a, b):
+        def cmp(a, b):
+            return (a > b) - (a < b) 
         try:
             A = a[0].rsplit('.', 1)
             B = b[0].rsplit('.', 1)
@@ -447,7 +450,10 @@ class DepList:
             while len(self.stack):
                 try:
                     top = self.top()
-                    ref = top[1].next()
+                    try:
+                        ref = top[1].__next__()
+                    except AttributeError:
+                        ref = top[1].next()
                     refd = self.find(ref)
                     if refd is None:
                         info = top[0][1].info
@@ -502,24 +508,24 @@ def generate(path, reader, writer, output, directories):
     reader.read(ds)
     sorted = reader.sort()
     overrides = reader.overrides
-    print '\nOVERRIDES (%d):' % len(overrides)
+    print('\nOVERRIDES (%d):' % len(overrides))
     for entry in overrides:
-        print '\t"%s" overridden by "%s"' % entry
+        print('\t"%s" overridden by "%s"' % entry)
     unused = \
         [x for x in reader.deptab.content if x.hits == 0]
-    print '\nUNUSED RULES (%d):' % len(unused)
+    print('\nUNUSED RULES (%d):' % len(unused))
     for entry in unused:
         if entry.hits == 0:
-            print '\t%s @%s' % (entry.subject,entry.info)
+            print('\t%s @%s' % (entry.subject,entry.info))
     unfound = reader.deplist.unfound
-    print '\nUNFOUND (rule) REFERENCES (%d):' % len(unfound)
+    print('\nUNFOUND (rule) REFERENCES (%d):' % len(unfound))
     for unf in unfound:
-        print '\t"%s" @%s' % unf
+        print('\t"%s" @%s' % unf)
     if verbose:
         ln = 1
-        print '\n\nFILES (%d):' % len(sorted)
+        print('\n\nFILES (%d):' % len(sorted))
         for p in sorted:
-            print '\t%d %s' % (ln, p)
+            print('\t%d %s' % (ln, p))
             ln += 1
     writer.write(sorted, out)
     out.close()
@@ -543,7 +549,7 @@ def usage():
     s.append('      The output file.  Default: main.sql')
     s.append('  -d, --directory')
     s.append('      The working directory to process.')
-    print '\n'.join(s)
+    print('\n'.join(s))
 
 def main(argv):
     path = '.'
@@ -586,8 +592,8 @@ def main(argv):
         writer.aggregated = aggregated
         errnum = generate(path, reader, writer, output, args)
         sys.exit(errnum)
-    except GetoptError, e:
-        print e
+    except GetoptError as e:
+        print(e)
         usage()
         sys.exit(2)
 

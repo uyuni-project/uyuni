@@ -1,3 +1,5 @@
+- Changed to versioned Python3 to SPEC file.
+- Python3 port for blend tool
 - Fix Debian package version comparison
 - add new valid countries and timezones (jsc#PM-2081)
 - add the VirtualPC type in rhnVirtualInstanceType table(bsc#1178990)
