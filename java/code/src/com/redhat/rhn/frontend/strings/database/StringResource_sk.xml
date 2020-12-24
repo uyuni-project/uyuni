@@ -2998,21 +2998,21 @@
       </trans-unit>
       <trans-unit id="Check Nothing" xml:space="preserve">
           <source>Check Nothing</source>
-        <target/>
+        <target>Nič nekontrolovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Client Connectivity" xml:space="preserve">
           <source>Client Connectivity</source>
-        <target/>
+        <target>Pripojenie klientov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DNS Lookup" xml:space="preserve">
           <source>DNS Lookup</source>
-        <target/>
+        <target>Vyhľadávanie DNS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3033,7 +3033,7 @@
       </trans-unit>
       <trans-unit id="Disk I/O Throughput" xml:space="preserve">
           <source>Disk I/O Throughput</source>
-        <target/>
+        <target>Disková V/V priepustnosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3075,7 +3075,7 @@
       </trans-unit>
       <trans-unit id="FTP" xml:space="preserve">
           <source>FTP</source>
-        <target/>
+        <target>FTP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3089,21 +3089,21 @@
       </trans-unit>
       <trans-unit id="Host Availability" xml:space="preserve">
           <source>Host Availability</source>
-        <target/>
+        <target>Dostupnosť hostiteľov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ICMP Blocked" xml:space="preserve">
           <source>ICMP Blocked</source>
-        <target/>
+        <target>ICMP blokovaný</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IMAP Mail" xml:space="preserve">
           <source>IMAP Mail</source>
-        <target/>
+        <target>Pošta IMAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3159,14 +3159,14 @@
       </trans-unit>
       <trans-unit id="Load" xml:space="preserve">
           <source>Load</source>
-        <target/>
+        <target>Zaťaženie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Locks" xml:space="preserve">
           <source>Locks</source>
-        <target/>
+        <target>Zámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3180,21 +3180,21 @@
       </trans-unit>
       <trans-unit id="Log Size Growth" xml:space="preserve">
           <source>Log Size Growth</source>
-        <target/>
+        <target>Rast veľkosti záznamov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LongLegs" xml:space="preserve">
           <source>LongLegs</source>
-        <target/>
+        <target>LongLegs</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Mail Transfer (SMTP)" xml:space="preserve">
           <source>Mail Transfer (SMTP)</source>
-        <target/>
+        <target>Prenos pošty (SMTP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3222,14 +3222,14 @@
       </trans-unit>
       <trans-unit id="POP Mail" xml:space="preserve">
           <source>POP Mail</source>
-        <target/>
+        <target>Pošta POP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Ping" xml:space="preserve">
           <source>Ping</source>
-        <target/>
+        <target>Ping</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3264,7 +3264,7 @@
       </trans-unit>
       <trans-unit id="Process Health" xml:space="preserve">
           <source>Process Health</source>
-        <target/>
+        <target>Zdravie procesov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3292,7 +3292,7 @@
       </trans-unit>
       <trans-unit id="RPC Service" xml:space="preserve">
           <source>RPC Service</source>
-        <target/>
+        <target>Služba RPC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3306,21 +3306,21 @@
       </trans-unit>
       <trans-unit id="Remote Ping" xml:space="preserve">
           <source>Remote Ping</source>
-        <target/>
+        <target>Vzdialený ping</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Program" xml:space="preserve">
           <source>Remote Program</source>
-        <target/>
+        <target>Vzdialený program</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Program with Data" xml:space="preserve">
           <source>Remote Program with Data</source>
-        <target/>
+        <target>Vzdialený program s dátami</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3334,28 +3334,28 @@
       </trans-unit>
       <trans-unit id="SNMP Check" xml:space="preserve">
           <source>SNMP Check</source>
-        <target/>
+        <target>Kontrola SNMP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SSH" xml:space="preserve">
           <source>SSH</source>
-        <target/>
+        <target>SSH</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Secure Web server (HTTPS)" xml:space="preserve">
           <source>Secure Web server (HTTPS)</source>
-        <target/>
+        <target>Bezpečný webový server (HTTPS)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Server State" xml:space="preserve">
           <source>Server State</source>
-        <target/>
+        <target>Stav servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3383,7 +3383,7 @@
       </trans-unit>
       <trans-unit id="TCP Check" xml:space="preserve">
           <source>TCP Check</source>
-        <target/>
+        <target>Kontrola TCP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3397,7 +3397,7 @@
       </trans-unit>
       <trans-unit id="TNS Ping" xml:space="preserve">
           <source>TNS Ping</source>
-        <target/>
+        <target>Ping TNS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
