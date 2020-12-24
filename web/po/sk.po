@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-10-02 21:48+0000\n"
+"PO-Revision-Date: 2020-12-24 13:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -21,17 +21,19 @@ msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "zostávajúce"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
+"Prehliadač Internet Explorer nie je podporovaný. Skúste použiť Firefox, "
+"Chrome, alebo Edge"
 
 #: ../html/src/components/action-schedule.js:53
 msgid "new action chain"
-msgstr ""
+msgstr "nový akčný reťazec"
 
 #: ../html/src/components/action-schedule.js:196
 msgid ""
@@ -1507,7 +1509,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:943
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:335
 msgid "Action has been successfully added to the Action Chain "
-msgstr ""
+msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:26
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:22
