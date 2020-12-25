@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-24 13:26+0000\n"
+"PO-Revision-Date: 2020-12-25 18:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -41,38 +41,41 @@ msgid ""
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
 msgstr ""
+"Pre vybrané systémy existuje viacero plánov údržby. Ak chcete plánovať podľa "
+"dátumu alebo okna údržby, uistite sa, že systémy v sade používajú najviac 1 "
+"plán údržby."
 
 #: ../html/src/components/action-schedule.js:203
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "Žiadne nadchádzajúce okná údržby"
 
 #: ../html/src/components/action-schedule.js:248
 msgid "Earliest:"
-msgstr ""
+msgstr "Najskôr:"
 
 #: ../html/src/components/action-schedule.js:248
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "Okno údržby:"
 
 #: ../html/src/components/action-schedule.js:273
 msgid "Add to:"
-msgstr ""
+msgstr "Pridať k:"
 
 #: ../html/src/components/action-schedule.js:289
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "Načítava sa plánovač..."
 
 #: ../html/src/components/config-channels.js:22
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "Kanál konfigurácie stavu"
 
 #: ../html/src/components/config-channels.js:25
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Normálny konfiguračný kanál"
 
 #: ../html/src/components/config-channels.js:50
 msgid "Configuration Channel: {0}"
-msgstr ""
+msgstr "Konfiguračný kanál: {0}"
 
 #: ../html/src/components/config-channels.js:54
 #: ../html/src/manager/images/image-profiles.js:160
@@ -87,32 +90,34 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:176
 msgid "Edit"
-msgstr ""
+msgstr "Upraviť"
 
 #: ../html/src/components/config-channels.js:55
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "Upraviť konfiguračný kanál"
 
 #: ../html/src/components/config-channels.js:107
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "Existujú neuložené zmeny. Chcete pokračovať?"
 
 #: ../html/src/components/config-channels.js:145
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "Priradenia stavov boli uložené."
 
 #: ../html/src/components/config-channels.js:154
 msgid "An error occurred on save."
-msgstr ""
+msgstr "Pri ukladaní sa vyskytla chyba."
 
 #: ../html/src/components/config-channels.js:277
 #: ../html/src/manager/minion/packages/package-states.js:273
 msgid "No current changes."
-msgstr ""
+msgstr "Žiadne aktuálne zmeny."
 
 #: ../html/src/components/config-channels.js:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
+"Neboli priradené žiadne stavy. Na nájdenie a priradenie stavov použite "
+"vyhľadávanie."
 
 #: ../html/src/components/config-channels.js:337
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:51
@@ -129,7 +134,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
 msgid "Back"
-msgstr ""
+msgstr "Späť"
 
 #: ../html/src/components/config-channels.js:338
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:167
@@ -3106,7 +3111,7 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:118
 msgid "Upcoming Maintenance Windows"
-msgstr ""
+msgstr "Nadchádzajúce okná údržby"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:124
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
@@ -3249,6 +3254,8 @@ msgid ""
 "Any pending maintenance-only actions for these systems will be cancelled "
 "unless they are inside the new maintenance windows."
 msgstr ""
+"Všetky čakajúce akcie iba na údržbu týchto systémov budú zrušené, pokiaľ "
+"nebudú vo vnútri nových okien údržby."
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
 msgid "Are you sure you want to proceed?"
@@ -3297,7 +3304,7 @@ msgstr ""
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurácia"
 
 #: ../html/src/manager/minion/packages/package-states.js:274
 msgid "No package states."
