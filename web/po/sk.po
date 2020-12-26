@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-25 18:26+0000\n"
+"PO-Revision-Date: 2020-12-26 18:27+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -142,36 +142,36 @@ msgstr "Späť"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:587
 msgid "Confirm"
-msgstr ""
+msgstr "Potvrdiť"
 
 #: ../html/src/components/config-channels.js:345
 #: ../html/src/manager/maintenance/details/schedule-details.js:181
 #: ../html/src/manager/maintenance/details/schedule-details.js:188
 msgid "Save Changes"
-msgstr ""
+msgstr "Uložiť zmeny"
 
 #: ../html/src/components/config-channels.js:351
 msgid "Apply"
-msgstr ""
+msgstr "Použiť"
 
 #: ../html/src/components/config-channels.js:356
 msgid "Reorder"
-msgstr ""
+msgstr "Preusporiadať"
 
 #: ../html/src/components/config-channels.js:368
 #: ../html/src/components/config-channels.js:372
 msgid "Changes"
-msgstr ""
+msgstr "Zmeny"
 
 #: ../html/src/components/config-channels.js:370
 msgid "1 Change"
-msgstr ""
+msgstr "1 zmena"
 
 #: ../html/src/components/config-channels.js:379
 #: ../html/src/components/config-channels.js:408
 #: ../html/src/manager/minion/packages/package-states.js:242
 msgid "Search"
-msgstr ""
+msgstr "Hľadať"
 
 #: ../html/src/components/config-channels.js:385
 #: ../html/src/manager/admin/config/monitoring-admin.js:44
@@ -183,31 +183,31 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
-msgstr ""
+msgstr "Systém"
 
 #: ../html/src/components/config-channels.js:395
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Konfiguračné kanály"
 
 #: ../html/src/components/config-channels.js:405
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "Hľadať v konfiguračných kanáloch"
 
 #: ../html/src/components/config-channels.js:419
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr ""
+msgstr "Upravte poradie konfiguračných kanálov ich pretiahnutím."
 
 #: ../html/src/components/config-channels.js:420
 msgid "There are no states assigned."
-msgstr ""
+msgstr "Nie sú priradené žiadne stavy."
 
 #: ../html/src/components/config-channels.js:427
 msgid "Channel Name"
-msgstr ""
+msgstr "Názov kanála"
 
 #: ../html/src/components/config-channels.js:428
 msgid "Channel Label"
-msgstr ""
+msgstr "Označenie kanála"
 
 #: ../html/src/components/config-channels.js:429
 msgid "Assign"
@@ -1483,7 +1483,7 @@ msgstr ""
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:75
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
 msgid "Label:"
-msgstr ""
+msgstr "Označenie:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:82
 msgid "Description:"
@@ -1599,7 +1599,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:256
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
 msgid "Label"
-msgstr ""
+msgstr "Označenie"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:260
 msgid "Cluster provider"
@@ -2535,6 +2535,8 @@ msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
 msgstr ""
+"Označenie je povinné a musí to byť jedinečný reťazec, ktorý nesmie obsahovať "
+"žiadne dvojbodky (:)."
 
 #: ../html/src/manager/images/image-profiles.js:21
 msgid "Dockerfile"
@@ -2612,7 +2614,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.js:191
 msgid "Label is required and must be unique."
-msgstr ""
+msgstr "Označenie je povinné a musí byť jedinečné."
 
 #: ../html/src/manager/images/image-store-edit.js:192
 msgid "Store URI"
@@ -4585,7 +4587,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:574
 msgid "SELinux label"
-msgstr ""
+msgstr "Označenie SELinux"
 
 #: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
 msgid ""
