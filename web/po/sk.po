@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-26 18:27+0000\n"
+"PO-Revision-Date: 2020-12-27 18:27+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -211,20 +211,20 @@ msgstr "Označenie kanála"
 
 #: ../html/src/components/config-channels.js:429
 msgid "Assign"
-msgstr ""
+msgstr "Priradiť"
 
 #: ../html/src/components/config-channels.js:451
 #: ../html/src/components/table/TableDataHandler.js:289
 msgid "There are no entries to show."
-msgstr ""
+msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
 #: ../html/src/components/dialog/ActionConfirm.js:71
 msgid "Are you sure you want to {0} {1} "
-msgstr ""
+msgstr "Naozaj chcete {0} {1} "
 
 #: ../html/src/components/dialog/ActionConfirm.js:81
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
-msgstr ""
+msgstr "Naozaj chcete {0} vybrané položky {1}? ({2} položiek {1} vybraných)"
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
@@ -243,7 +243,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušiť"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
 #: ../html/src/components/panels/CreatorPanel.js:92
@@ -273,19 +273,19 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
-msgstr ""
+msgstr "Vymazať"
 
 #: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
-msgstr ""
+msgstr "Vymazať projekt"
 
 #: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
-msgstr ""
+msgstr "Naozaj chcete vymazať projekt "
 
 #: ../html/src/components/FormulaForm.js:17
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
+msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
 #: ../html/src/components/FormulaForm.js:79
 msgid ""
@@ -2362,7 +2362,7 @@ msgstr ""
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
 msgid "Highstate"
-msgstr ""
+msgstr "Highstate"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:18
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
@@ -2500,7 +2500,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profile-edit.js:344
 msgid "Remove entry"
-msgstr ""
+msgstr "Odstrániť záznam"
 
 #: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Custom Info Values"
@@ -3597,7 +3597,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
-msgstr ""
+msgstr "Vzorec"
 
 #: ../html/src/manager/salt/keys/key-management.js:33
 msgid "Accept"
@@ -3651,7 +3651,7 @@ msgstr ""
 
 #: ../html/src/manager/state/display-highstate.js:30
 msgid "Highstate for {0}"
-msgstr ""
+msgstr "Highstate pre {0}"
 
 #: ../html/src/manager/state/display-highstate.js:125
 msgid "There are no applicable systems."
@@ -3663,7 +3663,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "Applying the highstate has been "
-msgstr ""
+msgstr "Použitie highstate bolo "
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "scheduled."
@@ -3671,7 +3671,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.js:95
 msgid "Apply Highstate"
-msgstr ""
+msgstr "Použiť Highstate"
 
 #: ../html/src/manager/state/highstate.js:107
 msgid "Create Recurring"
