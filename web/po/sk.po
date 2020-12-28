@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-27 18:27+0000\n"
+"PO-Revision-Date: 2020-12-28 20:37+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -292,32 +292,38 @@ msgid ""
 "Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
 "on each system!"
 msgstr ""
+"Bolo zistené viacnásobné skupinové vzorce. V každom systéme je možné použiť "
+"iba jeden vzorec pre \"{0}\"!"
 
 #: ../html/src/components/FormulaForm.js:107
 #: ../html/src/manager/clusters/cluster/cluster-config.js:50
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:61
 msgid "Please input required fields: {0}"
-msgstr ""
+msgstr "Prosím, zadajte požadované polia: {0}"
 
 #: ../html/src/components/FormulaForm.js:110
 #: ../html/src/manager/clusters/cluster/cluster-config.js:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:64
 msgid "Invalid format of fields: {0}"
-msgstr ""
+msgstr "Neplatný formát polí: {0}"
 
 #: ../html/src/components/FormulaForm.js:157
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
+"Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
+"a konfiguráciu softvéru."
 
 #: ../html/src/components/formulas/EditGroup.js:266
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
+"Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových "
+"údajoch."
 
 #: ../html/src/components/formula-selection.js:128
 msgid " No group"
-msgstr ""
+msgstr " Žiadna skupina"
 
 #: ../html/src/components/formula-selection.js:228
 msgid ""
@@ -325,6 +331,9 @@ msgid ""
 "then be configured on group and system level. This allows you to "
 "automatically install and configure software."
 msgstr ""
+"Na tejto stránke môžete vybrať vzorce Salt  pre túto skupinu/systém, ktoré "
+"je potom možné nakonfigurovať na úrovni skupiny a systému. To vám umožňuje "
+"automaticky inštalovať a konfigurovať softvér."
 
 #: ../html/src/components/formula-selection.js:234
 #: ../html/src/components/panels/CreatorPanel.js:117
@@ -333,17 +342,17 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:144
 #: ../html/src/manager/minion/packages/package-states.js:199
 msgid "Save"
-msgstr ""
+msgstr "Uložiť"
 
 #: ../html/src/components/formula-selection.js:242
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
 msgid "Formulas"
-msgstr ""
+msgstr "Vzorce"
 
 #: ../html/src/components/formulas/PasswordInput.js:52
 msgid "Generate new password"
-msgstr ""
+msgstr "Vygenerovať nové heslo"
 
 #: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
@@ -2355,7 +2364,7 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
 msgid "Formula saved. Apply the "
-msgstr ""
+msgstr "Vzorec bol uložený. Použiť "
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
@@ -2377,6 +2386,8 @@ msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
 msgstr ""
+"Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
+"použiť "
 
 #: ../html/src/manager/images/image-build.js:27
 msgid "An unknown error has occurred."
@@ -3589,11 +3600,11 @@ msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
-msgstr ""
+msgstr "Katalóg vzorcov"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
 msgid "Filter by formula name"
-msgstr ""
+msgstr "Filtrovať podľa názvu vzorca"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
