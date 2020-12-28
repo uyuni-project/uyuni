@@ -1,3 +1,4 @@
+- Updated file permissions in mgr-setup.
 - internal code cleanup (dropping unused table rhnErrataTmp)
 - Drop the ssl_available option (SSL is always present)
 - remove the virtpoller beacon

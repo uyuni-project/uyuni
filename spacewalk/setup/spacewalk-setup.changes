@@ -1,3 +1,4 @@
+- Added RHEL Apache gid handling.
 - Drop the ssl_available option (SSL is always present)
 - Added dynamic path for trust store and doc root.
 - Updated SPEC for RHEL and Fedora.
