@@ -284,7 +284,7 @@ There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
         <target state="translated">
-在 '概述' 中注册了 1 个受影响的系统（只显示
+"概览" 中有 1 个受影响的已注册系统（只显示
 已为其显式启用了补丁警报的系统）。
     </target>
         <context-group name="ctx">
@@ -302,7 +302,7 @@ which you have explicitly enabled Patch Alerts are shown).
       </context>
           </context-group>
         <target state="translated">
-在 '概述' 中注册{0} 个受影响的系统（只显示
+"概览" 中有 {0} 个受影响的已注册系统（只显示
 已为其显式启用了补丁警报的系统）。
     </target>
         <context-group name="ctx">
@@ -375,7 +375,7 @@ click the "Details" tab.
 更改通知首选项
 ---------------------------------
 要全局启用/禁用补丁警报首选项，请登录到 @@PRODUCT_NAME@@
-并从 "概述" / "我的帐户"导航到 "首选项" 选项卡。
+并从 "概览" / "我的帐户"导航到 "首选项" 选项卡。
 
         URL：{0}
 
