@@ -32,8 +32,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-25 10:58+0100\n"
-"PO-Revision-Date: 2020-11-09 14:50+0000\n"
-"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"PO-Revision-Date: 2020-12-29 08:37+0000\n"
+"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -982,9 +982,9 @@ msgid "Cannot contact selected server"
 msgstr "无法联系所选服务器"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "无法联系 '%s' 上的从属服务器或代理。"
+msgstr "无法联系 ”{HOST}\" 上的 {PRODUCT_NAME} 或 Proxy。"
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -1198,14 +1198,14 @@ msgstr ""
 "您拥有 %s。"
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
 "program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
-"此错误不应发生。如果您想要帮助我们改进此程序，请在 bugzilla.redhat.com 上报"
-"告 bug。最好是在您的报告中包含 '%s' 的相关部分。谢谢！"
+"此错误不应发生。如果您想帮助我们改进此程序，请在 bugzilla.suse.com 上报告 Bug。最好是在您的报告中包含 \"%s\" "
+"的相关部分。谢谢！"
 
 #: ../src/up2date_client/rhnreg.py:76
 msgid "Warning: unable to enable rhnsd with systemd"
@@ -2373,14 +2373,12 @@ msgid "RHN Registration"
 msgstr "RHN 注册"
 
 #: ../rhn_register.desktop.in.h:2
-#, fuzzy
 msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
-"注册 Spacewalk/Red Hat Satellite/Red Hat Network Classic 提供的软件更新"
+msgstr "注册以接收来自 Spacewalk/Uyuni/SUSE Manager 的软件更新"
 
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+msgstr "注册到 Spacewalk/Uyuni/SUSE Manager"
 
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 #~ msgstr "注册到 Spacewalk/Red Hat Satellite/Red Hat Network Classic。"
