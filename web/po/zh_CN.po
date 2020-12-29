@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-18 06:26+0000\n"
+"PO-Revision-Date: 2020-12-29 08:37+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -1559,7 +1559,7 @@ msgstr "这不会销毁该群集，而只会将它从 Uyuni 中去除"
 #: ../html/src/manager/images/image-view.js:669
 #: ../html/src/manager/maintenance/details/schedule-details.js:61
 msgid "Overview"
-msgstr "概述"
+msgstr "概览"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:32
 #: ../html/src/manager/virtualization/pools/pool-properties.js:181
@@ -2371,7 +2371,7 @@ msgstr ""
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
-msgstr "已为此组中的每个附属服务器安排了配置频道应用"
+msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
@@ -3508,7 +3508,7 @@ msgstr "授权错误，请重新装载页面或重试注销/登录。"
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
-msgstr "已为此组中的每个附属服务器安排了配置频道应用"
+msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:48
 #: ../html/src/manager/salt/keys/key-management.js:55
@@ -3541,7 +3541,7 @@ msgstr "停止等待"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:161
 msgid "Stop waiting for all the minions to respond"
-msgstr "停止等待所有附属设备做出响应"
+msgstr "停止等待所有受控端做出响应"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:164
 msgid "Find targets"
@@ -3550,7 +3550,7 @@ msgstr "查找目标"
 #: ../html/src/manager/salt/cmd/remote-commands.js:166
 #: ../html/src/manager/salt/cmd/remote-commands.js:172
 msgid "Check which minions match the target expression"
-msgstr "检查哪些附属设备与目标表达式匹配"
+msgstr "检查哪些受控端与目标表达式匹配"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:174
 msgid "Run command"
@@ -3558,7 +3558,7 @@ msgstr "运行命令"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:176
 msgid "Run the command on the target minions"
-msgstr "在目标附属设备上运行命令"
+msgstr "在目标受控端上运行命令"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:183
 msgid "Remote Commands"
@@ -3586,11 +3586,11 @@ msgstr "未找到目标系统"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:393
 msgid "Not all minions responded on time."
-msgstr "并非所有附属设备都按时做出了响应。"
+msgstr "并非所有受控端都按时做出了响应。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:418
 msgid "No minions matched the target expression."
-msgstr "没有任何附属设备与目标表达式匹配。"
+msgstr "没有任何受控端与目标表达式匹配。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:420
 msgid "Server returned an error: {0}"
@@ -3599,7 +3599,7 @@ msgstr "服务器返回了错误：{0}"
 #: ../html/src/manager/salt/cmd/remote-commands.js:487
 #: ../html/src/manager/salt/cmd/remote-commands.js:491
 msgid "Matching ssh-push minions..."
-msgstr "正在匹配 ssh-push 附属设备..."
+msgstr "正在匹配 ssh-push 受控端..."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
@@ -3794,8 +3794,7 @@ msgstr "必需"
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
-msgstr ""
-"请求已中断，或者从服务器收到了无效响应。请检查您的附属设备是否已正常引导。"
+msgstr "请求已中断，或者从服务器收到了无效响应。请检查您的受控端是否已正常引导。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "Successfully bootstrapped host! Your system should appear in"
@@ -3846,7 +3845,7 @@ msgstr "留空表示无通行口令"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
 msgid "Bootstrap Minions"
-msgstr "引导附属设备"
+msgstr "引导受控端"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid ""
@@ -4036,7 +4035,7 @@ msgstr " （系统默认）"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:618
 msgid "Channel Changes Overview"
-msgstr "频道更改概述"
+msgstr "频道更改概览"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:661
 msgid "Channel Changes Actions"
