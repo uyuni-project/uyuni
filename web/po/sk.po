@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-28 20:37+0000\n"
+"PO-Revision-Date: 2020-12-29 14:37+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -356,11 +356,11 @@ msgstr "Vygenerovať nové heslo"
 
 #: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
-msgstr ""
+msgstr "Zobraziť/skryť heslo"
 
 #: ../html/src/components/formulas/SectionToggle.js:15
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "Prepnúť viditeľnosť sekcie"
 
 #: ../html/src/components/input/Check.stories.js:31
 #: ../html/src/components/input/DateTime.stories.js:35
@@ -374,65 +374,65 @@ msgstr ""
 #: ../html/src/components/input/Select.stories.js:38
 #: ../html/src/components/input/Text.stories.js:36
 msgid "Submit"
-msgstr ""
+msgstr "Podať"
 
 #: ../html/src/components/input/Combo.stories.js:31
 msgid "Flavor"
-msgstr ""
+msgstr "Druh"
 
 #: ../html/src/components/input/Combo.stories.js:33
 msgid "Start typing..."
-msgstr ""
+msgstr "Začať písať..."
 
 #: ../html/src/components/input/Combo.stories.js:34
 msgid "No flavors"
-msgstr ""
+msgstr "Žiadne druhy"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
-msgstr ""
+msgstr "Čas"
 
 #: ../html/src/components/input/FormMultiInput.js:122
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:59
 msgid "Add"
-msgstr ""
+msgstr "Pridať"
 
 #: ../html/src/components/input/FormMultiInput.js:134
 #: ../html/src/manager/clusters/remove-node/remove-node.js:82
 msgid "Remove"
-msgstr ""
+msgstr "Odstrániť"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 msgid "Users"
-msgstr ""
+msgstr "Používatelia"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
 #: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
-msgstr ""
+msgstr "Krstné meno"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
 #: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/Text.stories.js:28
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "Minimálne 2 znaky"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
-msgstr ""
+msgstr "Priezvisko"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
-msgstr ""
+msgstr "Heslo"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
-msgstr ""
+msgstr "Minimálne 4 znaky"
 
 #: ../html/src/components/input/Radio.stories.js:26
 #: ../html/src/components/input/Radio.stories.js:55
@@ -440,14 +440,14 @@ msgstr ""
 #: ../html/src/components/input/Radio.stories.js:116
 #: ../html/src/components/input/Select.stories.js:26
 msgid "Level"
-msgstr ""
+msgstr "Úroveň"
 
 #: ../html/src/components/input/Radio.stories.js:31
 #: ../html/src/components/input/Radio.stories.js:61
 #: ../html/src/components/input/Radio.stories.js:91
 #: ../html/src/components/input/Radio.stories.js:122
 msgid "Beginner"
-msgstr ""
+msgstr "Začiatočník"
 
 #: ../html/src/components/input/Radio.stories.js:32
 #: ../html/src/components/input/Radio.stories.js:62
@@ -4694,7 +4694,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
-msgstr ""
+msgstr "Pridajte úroveň zoskupenia"
 
 #: ../html/src/manager/visualization/ui/components.js:187
 msgid "Select a system group"
