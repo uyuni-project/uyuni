@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-30 13:37+0000\n"
+"PO-Revision-Date: 2020-12-30 21:37+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -529,14 +529,16 @@ msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr ""
+"Dni sú obmedzené na 28, aby bol k dispozícii opakujúci sa plán pre všetky "
+"mesiace"
 
 #: ../html/src/components/picker/recurring-event-picker.js:370
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "Vlastný formát Quartz:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:373
 msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
+msgstr "napr. \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:222
@@ -3731,7 +3733,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.js:126
 msgid "Quartz format string"
-msgstr ""
+msgstr "Reťazec formátu Quartz"
 
 #: ../html/src/manager/state/recurring-states-details.js:174
 #: ../html/src/manager/state/recurring-states-list.js:136
@@ -3815,7 +3817,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
-msgstr ""
+msgstr "napr. ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:216
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:275
@@ -3848,7 +3850,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
 msgid "e.g., host.domain.com"
-msgstr ""
+msgstr "napr. host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:248
 msgid "Port range: 1 - 65535"
@@ -4656,7 +4658,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "e.g., client.nue.sles"
-msgstr ""
+msgstr "napr. client.nue.sles"
 
 #. Base channel filter
 #: ../html/src/manager/visualization/hierarchy.js:121
@@ -4665,7 +4667,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
-msgstr ""
+msgstr "napr. SLE12"
 
 #. Installed products filter
 #: ../html/src/manager/visualization/hierarchy.js:127
@@ -4674,7 +4676,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
-msgstr ""
+msgstr "napr. SLES"
 
 #: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
@@ -4714,4 +4716,4 @@ msgstr ""
 
 #: ../html/src/utils/network.js:63
 msgid "HTTP Error code "
-msgstr ""
+msgstr "Kód chyby HTTP "
