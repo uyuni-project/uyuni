@@ -14,10 +14,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-25 10:58+0100\n"
-"PO-Revision-Date: 2020-11-20 20:26+0000\n"
+"PO-Revision-Date: 2020-12-30 13:37+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -983,7 +983,7 @@ msgstr "Chyba"
 
 #: ../src/up2date_client/rhnreg_constants.py:307
 msgid "Next"
-msgstr "Ďalej"
+msgstr "Nasledujúca"
 
 #: ../src/up2date_client/rhnreg_constants.py:308
 msgid "Back"
