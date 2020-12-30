@@ -307,12 +307,12 @@ class Backend:
             missing AS (
               SELECT nextval('rhn_package_extra_tags_keys_id_seq') AS id, wanted.name
                 FROM wanted
-           LEFT JOIN rhnPackageExtraTagKey ON rhnPackageExtraTagKey.name = wanted.name
+                    LEFT JOIN rhnPackageExtraTagKey ON rhnPackageExtraTagKey.name = wanted.name
                WHERE rhnPackageExtraTagKey.id IS NULL
             )
             INSERT INTO rhnPackageExtraTagKey (id, name)
-            SELECT * from missing
-            ON CONFLICT DO NOTHING
+                SELECT * from missing
+                ON CONFLICT DO NOTHING
         """
         values = [key for key in extraTags.keys() if key != '']
         if not values:
