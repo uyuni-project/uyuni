@@ -8,7 +8,6 @@ import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
 import AppStreamsForm from "./appstreams/appstreams";
 import type {FilterFormType} from "../shared/type/filter.type";
-import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/filters.enum";
 import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
 import useUserLocalization from "core/user-localization/use-user-localization";
 import {Utils} from "utils/functions";
@@ -83,19 +82,10 @@ const FilterForm = (props: Props) => {
           divClass="col-md-6"
           required
           disabled={props.editing}
-        >
-          <option disabled selected value=""> -- select a filter type -- </option>
-          {
-            getClmFiltersOptions().map((filter: ClmFilterOptionType) =>
-              <option
-                key={filter.key}
-                value={filter.key}
-              >
-                {`${filter.entityType.text} (${filter.text})`}
-              </option>
-            )
-          }
-        </Select>
+          options={getClmFiltersOptions()}
+          getOptionValue={filter => filter.key}
+          formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
+        />
 
         {
           selectedFilterMatchers &&
@@ -106,19 +96,10 @@ const FilterForm = (props: Props) => {
             divClass="col-md-6"
             required
             disabled={props.editing}
-          >
-            <option disabled selected value=""> -- select a matcher -- </option>
-            {
-              selectedFilterMatchers.map((matcher: FilterMatcherType) =>
-                <option
-                  key={matcher.key}
-                  value={matcher.key}
-                >
-                  {matcher.text}
-                </option>
-              )
-            }
-          </Select>
+            options={selectedFilterMatchers}
+            getOptionValue={matcher => matcher.key}
+            getOptionLabel={matcher => matcher.text}
+          />
         }
 
         {

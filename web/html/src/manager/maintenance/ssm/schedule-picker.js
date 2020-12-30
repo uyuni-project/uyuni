@@ -133,11 +133,11 @@ export function SchedulePicker(props: {schedules: ScheduleType[]}) {
         divClass="col-md-6"
         required
         defaultValue=""
-      >
-        <option key="-1" value="" disabled>Select a schedule</option>
-        <option key="0" value="0">None - clear schedule</option>
-        {props.schedules.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-      </Select>
+        options={
+          [{value: "0", label: t('None - clear schedule')}].concat(
+              props.schedules.map(s => ({value: s.id, label: s.name})))
+        }
+      />
       { context.model.scheduleId !== "0" &&
         <Check
           name="cancelActions"

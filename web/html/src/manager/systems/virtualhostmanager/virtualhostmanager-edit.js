@@ -243,12 +243,18 @@ class VirtualHostManagerEdit extends React.Component {
     renderKubernetesForm() {
         var contextSelect;
         if (this.state.model.contexts) {
-            contextSelect = <Select name="module_context" label={t("Current Context")} required labelClass="col-md-3" divClass="col-md-6"
-                value={this.state.model.module_context}>
-                <option value="">---</option>
-            { this.state.model.contexts.map(k => k === "" ? "<default>" : k).map(k =>
-                <option key={k} value={k} selected={k === this.state.model.module_context ? true : null }>{k}</option>) }
-            </Select>
+            contextSelect = (
+              <Select
+                name="module_context"
+                label={t("Current Context")}
+                required
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                value={this.state.model.module_context}
+                isClearable
+                options={this.state.model.contexts.map(k => k === "" ? "<default>" : k)}
+              />
+            )
         }
 
         return (
