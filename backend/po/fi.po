@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:30+0100\n"
-"PO-Revision-Date: 2020-12-30 21:37+0000\n"
+"PO-Revision-Date: 2020-12-31 00:37+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/backend/fi/>"
 "\n"
@@ -54,88 +54,91 @@ msgstr ""
 #: ../server/handlers/applet/applet.py:78
 #, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr ""
+msgstr "Järjestelmääsi ei löytynyt {PRODUCT_NAME} -tietokannasta"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
-msgstr ""
+msgstr "ISS ei ole käytössä tällä palvelimella."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
-msgstr ""
+msgstr "Palvelin ”%s” ei ole aktivoinut ISS:ää."
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
-msgstr ""
+msgstr "Virheellinen järjestelmä/toimintatunniste-pari."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "Odotettiin paketin nimeä, ei: %s"
 
 #: ../server/handlers/xmlrpc/errata.py:115
 #, python-format
 msgid "Expected a package, not: %s"
-msgstr ""
+msgstr "Odotettiin pakettia, ei: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
+"SUSE Managerin välityspalvelinpalvelua ei ole otettu käyttöön "
+"palvelinprofiilissa: ”%s”"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
-msgstr ""
+msgstr "Virheellinen istuntoavain"
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "Tätä palvelintunnistetta ei enää ole"
 
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr ""
+msgstr "Virheellinen toiminnon arvon tyyppi %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:464
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr ""
+msgstr "Toiminto %s ei kuulu palvelimeen %s"
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
-msgstr ""
+msgstr "Virheellinen arvo %s (%s)"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
-msgstr ""
+msgstr "Vaadittua tietoa puuttuu"
 
 #: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
-msgstr ""
+msgstr "Vaadittuja jäseniä puuttuu"
 
 #: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Yritettiin rekisteröidä järjestelmä virheelliselle käyttäjätunnukselle"
 
 #: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
-msgstr ""
+msgstr "Pyydettiin virheellistä järjestelmän julkaisuversiota"
 
 #: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Kelvollista verkkoliittymää ei löydy: IP- tai IPv6-osoitetta ei löytynyt."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "{PRODUCT_NAME} – tervetuloa"
 
 #: ../server/handlers/xmlrpc/registration.py:1127
 msgid "Privacy Statement"
-msgstr ""
+msgstr "Tietosuojailmoitus"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
