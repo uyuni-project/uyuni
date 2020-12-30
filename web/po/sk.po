@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-29 14:37+0000\n"
+"PO-Revision-Date: 2020-12-30 13:37+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -454,18 +454,18 @@ msgstr "Začiatočník"
 #: ../html/src/components/input/Radio.stories.js:92
 #: ../html/src/components/input/Radio.stories.js:123
 msgid "Normal"
-msgstr ""
+msgstr "Normálny"
 
 #: ../html/src/components/input/Radio.stories.js:33
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
-msgstr ""
+msgstr "Expert"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
-msgstr ""
+msgstr "Prvá"
 
 #: ../html/src/components/pagination.js:16
 #: ../html/src/manager/admin/setup/products/products.js:357
@@ -477,52 +477,52 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:492
 msgid "Next"
-msgstr ""
+msgstr "Nasledujúca"
 
 #: ../html/src/components/pagination.js:54
 msgid "Page"
-msgstr ""
+msgstr "Stránka"
 
 #: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:362
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:766
 msgid "of"
-msgstr ""
+msgstr "z"
 
 #: ../html/src/components/pagination.js:72
 msgid "Page {0} of {1}"
-msgstr ""
+msgstr "Stránka {0} z {1}"
 
 #: ../html/src/components/picker/recurring-event-picker.js:303
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:85
 #: ../html/src/manager/maintenance/list/schedule-list.js:37
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
-msgstr ""
+msgstr "Názov plánu"
 
 #: ../html/src/components/picker/recurring-event-picker.js:307
 msgid "Select a Schedule"
-msgstr ""
+msgstr "Vybrať plán"
 
 #: ../html/src/components/picker/recurring-event-picker.js:314
 msgid "Hourly:"
-msgstr ""
+msgstr "Každú hodinu:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:320
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "Akcia sa vykoná každú hodinu v stanovenú minútu"
 
 #: ../html/src/components/picker/recurring-event-picker.js:326
 msgid "Daily:"
-msgstr ""
+msgstr "Denne:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:335
 msgid "Weekly:"
-msgstr ""
+msgstr "Týždenne:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:351
 msgid "Monthly:"
-msgstr ""
+msgstr "Mesačne:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:364
 msgid ""
