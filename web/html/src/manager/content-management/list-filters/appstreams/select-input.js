@@ -35,10 +35,10 @@ export default function SelectInput(props: SelectInputProps) {
         labelClass="col-md-3"
         divClass="col-md-6"
         onChange={onChannelChange}
-      >
-        <option disabled value="">{t("Select a channel to browse available modules")}</option>
-        {props.channels.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-      </Select>
+        options={props.channels}
+        getOptionValue={c => c.id}
+        getOptionLabel={c => c.name}
+      />
       { isShowInputs &&
           <ModuleSelector modules={modules} isLoading={isLoading}/>
       }

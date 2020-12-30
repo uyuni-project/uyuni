@@ -39,11 +39,8 @@ export function GuestDiskFileFields(props: Props) : React.Node {
           divClass="col-md-6"
           disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`)}
           defaultValue={default_format}
-        >
-          {
-            format_values.map(opt => <option key={opt} value={opt}>{opt}</option>)
-          }
-        </Select>
+          options={format_values}
+        />
       }
     </>
   );

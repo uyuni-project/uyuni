@@ -150,11 +150,8 @@ export function GuestProperties(props: Props) : React.Node {
                                             name="vmType"
                                             required
                                             defaultValue={vmTypes.includes('kvm') ? 'kvm' : vmTypes[0]}
-                                          >
-                                            {
-                                              vmTypes.map(k => <option key={k} value={k}>{k}</option>)
-                                            }
-                                          </Select>)
+                                            options={vmTypes}
+                                          />)
                                         }
                                         { initialModel.osType === undefined
                                           && (
@@ -165,11 +162,8 @@ export function GuestProperties(props: Props) : React.Node {
                                             name="osType"
                                             required
                                             defaultValue={osTypes[0]}
-                                          >
-                                            {
-                                              osTypes.map(k => <option key={k} value={k}>{osTypesLabels[k]}</option>)
-                                            }
-                                          </Select>)
+                                            options={osTypes.map(item => ({value: item, label: osTypesLabels[item]}))}
+                                          />)
                                         }
                                         <Text
                                           name="memory"
@@ -198,13 +192,12 @@ export function GuestProperties(props: Props) : React.Node {
                                             name="arch"
                                             required
                                             defaultValue={props.host.cpu.arch}
-                                          >
-                                            {
-                                              domainsCaps.map(cap => cap.arch)
+                                            options={
+                                              domainsCaps
+                                                .map(cap => cap.arch)
                                                 .filter((item, index, array) => array.indexOf(item) === index)
-                                                .map(k => <option key={k} value={k}>{k}</option>)
                                             }
-                                          </Select>)
+                                          />)
                                         }
                                         { initialModel.vmType === undefined && props.cobblerProfiles !== {}
                                           && (
@@ -216,14 +209,13 @@ export function GuestProperties(props: Props) : React.Node {
                                                 name="cobbler_profile"
                                                 defaultValue=""
                                                 onChange={onChangeProfile}
-                                              >
-                                                <option key="" value=""></option>
-                                                {
+                                                isClearable
+                                                options={
                                                   Object.keys(props.cobblerProfiles)
                                                     .sort((k1, k2) => props.cobblerProfiles[k1].localeCompare(props.cobblerProfiles[k2]))
-                                                    .map(k => <option key={k} value={k}>{props.cobblerProfiles[k]}</option>)
+                                                    .map(k => ({value: k, label: props.cobblerProfiles[k]}))
                                                 }
-                                              </Select>
+                                              />
                                               <Text
                                                 name="kernel_options"
                                                 label={t('Kernel options')}
@@ -248,19 +240,14 @@ export function GuestProperties(props: Props) : React.Node {
                                           divClass="col-md-6"
                                           label={t('Type')}
                                           name="graphicsType"
-                                        >
-                                          {
-                                            [{ key: 'vnc', display: 'VNC', osTypes: ['hvm', 'xen', 'xenpvh'] },
-                                             { key: 'spice', display: 'Spice', osTypes: ['hvm'] }]
+                                          isClearable
+                                          options={
+                                            [{ value: 'vnc', label: 'VNC', osTypes: ['hvm', 'xen', 'xenpvh'] },
+                                             { value: 'spice', label: 'Spice', osTypes: ['hvm'] }]
                                               .filter(entry => caps !== undefined
-                                                && caps.devices.graphics.type.includes(entry.key) && entry.osTypes.includes(model.osType))
-                                              .map(entry => (
-                                                <option key={entry.key} value={entry.key}>
-                                                  {entry.display}
-                                                </option>))
+                                                && caps.devices.graphics.type.includes(entry.value) && entry.osTypes.includes(model.osType))
                                           }
-                                          <option key="" value="">{t('None')}</option>
-                                        </Select>
+                                        />
                                       </Panel>,
                                     ];
                                   }

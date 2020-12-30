@@ -58,6 +58,11 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
   const volume = formContext.model[`disk${props.index}_source_file`];
   const useCobblerProfile = !!(formContext.model['cobbler_profile']);
 
+  let volumes = volume ? [volume] : [];
+  if (selected_pool && (selected_pool.volumes || []).length !== 0) {
+    volumes = (selected_pool.volumes || []).map(vol => vol.name);
+  }
+
   return (
     <>
       <Select
@@ -70,11 +75,8 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
         required
         defaultValue={props.pools.find(pool => pool.name === 'default') ? 'default' : first_pool}
         onChange={onPoolChange}
-      >
-        {
-          props.pools.map(k => <option key={k.name} value={k.name}>{k.name}</option>)
-        }
-      </Select>
+        options={props.pools.map(k => k.name)}
+      />
       <Select
         key={`disk${props.index}_source_file`}
         name={`disk${props.index}_source_file`}
@@ -83,17 +85,9 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
         divClass="col-md-6"
         disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`) }
         onChange={onVolumeChange}
-      >
-        <option></option>
-        {/* Adding the value is needed in case the pool is shut down and we don't have the volumes */}
-        { (!selected_pool || (selected_pool.volumes ||[]).length === 0) && volume &&
-          <option key={volume} value={volume}>{volume}</option>
-        }
-        {
-            selected_pool &&
-              (selected_pool.volumes || []).map(vol => <option key={vol.name} value={vol.name}>{vol.name}</option>)
-        }
-      </Select>
+        isClearable
+        options={volumes}
+      />
       { Object.keys(formContext.model).includes(`disk${props.index}_editable`) &&
         <>
           <Text
@@ -122,11 +116,8 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
         divClass="col-md-6"
         disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`) || volume}
         defaultValue={default_format}
-      >
-        {
-          format_values.map(opt => <option key={opt} value={opt}>{opt}</option>)
-        }
-      </Select>
+        options={format_values}
+      />
     </>
   );
 }

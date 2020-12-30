@@ -41,11 +41,8 @@ function guestNicFields(model: Object, index: number, networks: Array<Object>,
             disabled={!onlyHandledNics}
             required
             defaultValue={networks.find(net => net.name === 'default') ? 'default' : first_nic}
-          >
-            {
-              networks.map(k => <option key={k.name} value={k.name}>{k.name}</option>)
-            }
-          </Select>
+            options={networks.map(k => k.name)}
+          />
         )
       }
       <Text

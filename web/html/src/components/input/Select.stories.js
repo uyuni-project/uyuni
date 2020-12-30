@@ -27,11 +27,12 @@ export const Example = () => (
       required
       labelClass="col-md-3"
       divClass="col-md-6"
-    >
-      <option key="beginner" value="beginner">Beginner</option>
-      <option key="normal" value="normal">Normal</option>
-      <option key="expert" value="expert">Expert</option>
-    </Select>
+      options={[
+        {value: "beginner", label: "Beginner"},
+        {value: "normal", label: "Normal"},
+        {value: "expert", label: "Expert"},
+      ]}
+    />
     <SubmitButton
       id="submit-btn"
       className="btn-success"

@@ -181,13 +181,15 @@ class CreateImageStore extends React.Component {
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
-          <Select labelClass="col-md-3" divClass="col-md-6" label={t("Store Type")} name="storeType" required disabled={this.isEdit()}>
-            {
-              this.state.storeTypes.map(k =>
-                <option key={k} value={k}>{ typeMap[k] }</option>
-              )
-            }
-          </Select>
+          <Select
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            label={t("Store Type")}
+            name="storeType"
+            required
+            disabled={this.isEdit()}
+            options={this.state.storeTypes.map(k => ({value: k, label: typeMap[k]}))}
+          />
           <Text name="label" label={t("Label")} required validators={this.isLabelUnique} invalidHint={t("Label is required and must be unique.")} labelClass="col-md-3" divClass="col-md-6"/>
           <Text name="uri" label={t("Store URI")} required hint={<span>The URI to the store's API endpoint (without scheme - use 'registry.suse.com' instead of 'https://registry.suse.com')</span>} labelClass="col-md-3" divClass="col-md-6"/>
           { this.renderTypeInputs(this.state.model.storeType) }

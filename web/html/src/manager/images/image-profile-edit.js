@@ -11,6 +11,7 @@ import { Form } from 'components/input/Form';
 import { FormGroup } from 'components/input/FormGroup';
 import { Label } from 'components/input/Label';
 import { Select } from 'components/input/Select';
+import { default as ReactSelect } from 'react-select';
 import { Text } from 'components/input/Text';
 import { Utils } from 'utils/functions';
 import SpaRenderer from 'core/spa/spa-renderer';
@@ -256,14 +257,9 @@ class CreateImageProfile extends React.Component {
         disabled={type === "kiwi"} labelClass="col-md-3" divClass="col-md-6" hint={this.state.storeUri} invalidHint={
           <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
         }
-      >
-        <option value="" disabled key="0">{t("Select an image store")}</option>
-        {
-          this.state.imageStores.map(k =>
-            <option key={k.id} value={k.label}>{ k.label }</option>
-          )
-        }
-      </Select>
+        isClearable
+        options={this.state.imageStores.map(k => k.label)}
+      />
     ];
 
     switch (type) {
@@ -308,14 +304,8 @@ class CreateImageProfile extends React.Component {
     return (
       <Select name="activationKey" label={t("Activation Key")} invalidHint={t("Activation key is required for kiwi images.")}
         onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
-        hint={hint} required={isRequired}>
-        <option key="0" value="">{t("None")}</option>
-        {
-          activationKeys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map(k =>
-            <option key={k} value={k}>{k}</option>
-          )
-        }
-      </Select>
+        hint={hint} required={isRequired} isClearable
+        options={activationKeys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))}/>
     );
   }
 
@@ -351,15 +341,12 @@ class CreateImageProfile extends React.Component {
     const select = <FormGroup>
       <Label className="col-md-3" name={t("Custom Info Values")}/>
       <div className="col-md-6">
-        <select value="" onChange={(e) => this.addCustomData(e.target.value)}
-          className="form-control">
-          <option key="0" value="" disabled="disabled">{t("Select a custom info key")}</option>
-          {
+        <ReactSelect value="" onChange={({value}) => this.addCustomData(value)}
+          isClearable options={
             customDataKeys
               .filter(k => !Object.keys(this.state.customData).includes(k.label))
-              .map(k => <option key={k.label} value={k.label}>{ k.label }</option>)
-          }
-        </select>
+              .map(k => ({value: k.label, label: k.label}))
+          }/>
         <div className="help-block">
           These key-value pairs will be added to the build command as 'buildarg' values<br/>
           <a href={"/rhn/systems/customdata/CustomDataList.do"} target="_blank">{t("Create additional custom info keys")}</a>
@@ -392,10 +379,8 @@ class CreateImageProfile extends React.Component {
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
           <Text name="label" label={t("Label")} required validators={[this.isLabelValid]} invalidHint={t("Label is required and must be a unique string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
-          <Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
-            { this.state.imageTypes.map(k =>
-              <option key={k} value={k}>{ typeMap[k].name }</option>) }
-          </Select>
+          <Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}
+            options={this.state.imageTypes.map(k => ({value:k, label: typeMap[k].name}))}/>
           { this.renderTypeInputs(this.state.model.imageType) }
           <hr/>
           { this.renderCustomDataFields() }

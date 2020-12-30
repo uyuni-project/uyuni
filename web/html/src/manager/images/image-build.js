@@ -259,27 +259,19 @@ class BuildImage extends React.Component {
 
           <Select name="profileId" required label={t("Image Profile")}
             onChange={this.handleProfileChange} labelClass="col-md-3"
-            divClass="col-md-9" invalidHint={<span>Image Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}>
-            <option key="0" disabled="disabled" value="">Select an image profile</option>
-            {
-              this.state.profiles.map(k =>
-                <option key={k.profileId} value={k.profileId}>{ k.label }</option>
-              )
-            }
-          </Select>
+            divClass="col-md-9" invalidHint={<span>Image Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}
+            options={this.state.profiles}
+            getOptionValue={option => option.profileId}
+          />
 
           { this.state.profile.imageType === "dockerfile" &&
             <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
           }
 
-          <Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9">
-            <option key="0" disabled="disabled" value="">Select a build host</option>
-            {
-              this.state.hosts.map(h =>
-                <option key={h.id} value={h.id}>{ h.name }</option>
-              )
-            }
-          </Select>
+          <Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9"
+            getOptionLabel={option => option.name} getOptionValue={option => option.id}
+            options={this.state.hosts}
+          />
 
           <ActionSchedule timezone={timezone} localTime={localTime}
              earliest={this.state.model.earliest}
