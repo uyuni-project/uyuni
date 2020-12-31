@@ -22959,13 +22959,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target state="translated">定义一个可 Kickstart 的发布版本，下面的细节需要被指定。『tree path』字段应该是一个位于该 @@PRODUCT_NAME@@ 服务器上的合理路径。Kickstart RPM 应该是包含 kickstart 部署描述符的 RPM 的名字。这些 RPM 由 @@PRODUCT_NAME@@ 提供并位于 @@PRODUCT_NAME@@ 工具子频道里。&lt;br/&gt;&lt;br/&gt;
+        <target state="translated">下面是定义可自动安装的发行套件需要提供的细节。"树路径" 字段应该是位于该 @@PRODUCT_NAME@@ 服务器上的安装树的有效路径。&lt;br/&gt;&lt;br/&gt;
 
-『Distribution Label』字段应该只包含字母、数字、连字符、句点和下划线。它至少要有 4 个字符长。&lt;br/&gt;&lt;br/&gt;
+"发行套件标签" 字段应该只包含字母、数字、连字符、句点和下划线。至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
 
-树路径、Kickstart RPM、基础频道和安装程序生成（Installer Generation）都因该匹配。这通常意味着每个字段的版本应该来自相同的红帽 企业级 Linux。&lt;br/&gt;&lt;br/&gt;
+树路径、基础频道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;树路径（Tree Path）应该是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含完整的 Kickstart 树、内核、initrd 和库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取这个目录。从指定的树路径里，内核应该位 "./images/pxeboot/vmlinuz"，而 initrd 映像应该位于 "./images/pxeboot/initrd.img"。例如，如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt; 的媒体文件，你可以指定该路径为树路径，内核和 initrd 应该位于：&lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; &lt;/p&gt;
+&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和储存库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
 </target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2" xml:space="preserve">
@@ -23032,7 +23032,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
         <target state="translated">
- &lt;strong&gt;在所选的基础频道里没有找到适用的安装程序生成。&lt;/strong&gt;
+ &lt;strong&gt;在所选的基础频道中未找到适用的安装程序代系。&lt;/strong&gt;
 </target>
       </trans-unit>
       <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
