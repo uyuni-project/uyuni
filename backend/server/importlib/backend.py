@@ -301,37 +301,38 @@ class Backend:
         if not extraTags:
             return
         sql = """
-            WITH wanted (name) AS (
+            WITH wanted (ordering, name) AS (
               VALUES %s
-            )
+            ),
             missing AS (
-              SELECT nextval('rhn_package_extra_tags_keys_id_seq') AS id, wanted.name
+              SELECT nextval('rhn_package_extra_tags_keys_id_seq') AS id, wanted.*
                 FROM wanted
                     LEFT JOIN rhnPackageExtraTagKey ON rhnPackageExtraTagKey.name = wanted.name
                WHERE rhnPackageExtraTagKey.id IS NULL
             )
             INSERT INTO rhnPackageExtraTagKey (id, name)
-                SELECT * from missing
+                SELECT id, name from missing
+                ORDER BY ordering
                 ON CONFLICT DO NOTHING
         """
-        values = [key for key in extraTags.keys() if key != '']
+        values = [(i, key) for i, key in enumerate(sorted(extraTags.keys()))]
         if not values:
             return
         h = self.dbmodule.prepare(sql)
         r = h.execute_values(sql, values, fetch=False)
 
         sql = """
-            WITH wanted (name) AS (
+            WITH wanted (ordering, name) AS (
               VALUES %s
             )
-            SELECT wanted.id, wanted.name
+            SELECT rhnPackageExtraTagKey.name, rhnPackageExtraTagKey.id
               FROM wanted
               JOIN rhnPackageExtraTagKey ON rhnPackageExtraTagKey.name = wanted.name
         """
         h = self.dbmodule.prepare(sql)
         tags = h.execute_values(sql, values)
         for tag in tags:
-            extraTags[tag[1]] = tag[0]
+            extraTags[tag[0]] = tag[1]
 
     def lookupErrataFileTypes(self, hash):
         hash.clear()
