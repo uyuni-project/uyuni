@@ -18,11 +18,11 @@
 
 
 %if 0%{?suse_version}
-%define www_path /srv/
+%define www_path /srv/www/htdocs
 %define apache_user wwwrun
 %define apache_group www
 %else
-%define www_path %{_var}
+%define www_path %{_var}/www/html
 %if 0%{?rhel}
 %define apache_user root
 %define apache_group root
@@ -200,13 +200,13 @@ sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%
 
 %install
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-make -C html install PREFIX=$RPM_BUILD_ROOT INSTALL_DEST=%{www_path}/www/htdocs
+make -C html install PREFIX=$RPM_BUILD_ROOT INSTALL_DEST=%{www_path}
 make -C po install PREFIX=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
 
-mkdir -p $RPM_BUILD_ROOT/%{www_path}/www/htdocs/pub
+mkdir -p $RPM_BUILD_ROOT/%{www_path}/pub
 mkdir -p $RPM_BUILD_ROOT/%{_prefix}/share/rhn/config-defaults
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
@@ -216,26 +216,26 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
-%{__mkdir_p} %{buildroot}/%{www_path}/www/htdocs/javascript/manager
-cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/www/htdocs/javascript
+%{__mkdir_p} %{buildroot}/%{www_path}/javascript/manager
+cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
-%{__mkdir_p} %{buildroot}/%{www_path}/www/htdocs/vendors
-cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/%{www_path}/www/htdocs/vendors/vendors.bundle.js
-cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/%{www_path}/www/htdocs/vendors/vendors.bundle.js.map
-cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/www/htdocs/vendors/vendors.bundle.js.LICENSE
+%{__mkdir_p} %{buildroot}/%{www_path}/vendors
+cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/%{www_path}/vendors/vendors.bundle.js
+cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/%{www_path}/vendors/vendors.bundle.js.map
+cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vendors/vendors.bundle.js.LICENSE
 
 %find_lang spacewalk-web
 
 %files -n susemanager-web-libs
 %defattr(644,root,root,755)
-%dir %{www_path}/www/htdocs/vendors
-%{www_path}/www/htdocs/vendors/*.js
-%{www_path}/www/htdocs/vendors/*.js.LICENSE
+%dir %{www_path}/vendors
+%{www_path}/vendors/*.js
+%{www_path}/vendors/*.js.LICENSE
 
 %files -n susemanager-web-libs-debug
 %defattr(644,root,root,755)
-%dir %{www_path}/www/htdocs/vendors
-%{www_path}/www/htdocs/vendors/*.map
+%dir %{www_path}/vendors
+%{www_path}/vendors/*.map
 
 %files -n spacewalk-base
 %defattr(644,root,root,755)
@@ -270,18 +270,18 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/www/
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)
-%dir %{www_path}/www/htdocs/javascript
-%dir %{www_path}/www/htdocs/javascript/manager
-%{www_path}/www/htdocs/robots.txt
-%{www_path}/www/htdocs/pub
-%{www_path}/www/htdocs/javascript/manager/*.js
-%{www_path}/www/htdocs/javascript/*.js
+%dir %{www_path}/javascript
+%dir %{www_path}/javascript/manager
+%{www_path}/robots.txt
+%{www_path}/pub
+%{www_path}/javascript/manager/*.js
+%{www_path}/javascript/*.js
 %doc LICENSE
 
 %files -n spacewalk-html-debug
 %defattr(644,root,root,755)
-%dir %{www_path}/www/htdocs/javascript
-%dir %{www_path}/www/htdocs/javascript/manager
-%{www_path}/www/htdocs/javascript/manager/*.map
+%dir %{www_path}/javascript
+%dir %{www_path}/javascript/manager
+%{www_path}/javascript/manager/*.map
 
 %changelog
