@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-30 21:37+0000\n"
+"PO-Revision-Date: 2020-12-31 11:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -543,7 +543,7 @@ msgstr "napr. \"0 15 2 ? * 7\""
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:222
 msgid "Security Advisory"
-msgstr ""
+msgstr "Bezpečnostné upozornenie"
 
 #: ../html/src/components/systems.js:58
 msgid "System Locked"
@@ -1882,20 +1882,20 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:209
 msgid "Advisory name"
-msgstr ""
+msgstr "Názov upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:223
 msgid "Bug Fix Advisory"
-msgstr ""
+msgstr "Upozornenie na opravu chyby"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:224
 msgid "Product Enhancement Advisory"
-msgstr ""
+msgstr "Upozornenie na vylepšenia produktu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:226
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
-msgstr ""
+msgstr "Typ upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:235
 msgid "Issued"
@@ -1917,7 +1917,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:264
 msgid "Advisory Keywords"
-msgstr ""
+msgstr "Kľúčové slová upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:294
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
@@ -2077,7 +2077,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:102
 msgid "Advisory Name"
-msgstr ""
+msgstr "Názov upozornenia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:120
 msgid "Keyword"
@@ -2952,15 +2952,15 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
-msgstr ""
+msgstr "Bezpečnostné upozornenie"
 
 #: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "Upozornenie na opravu chyby"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "Upozornenie na vylepšenia produktu"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
@@ -2972,7 +2972,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
-msgstr ""
+msgstr "Upozornenie"
 
 #: ../html/src/manager/images/image-view-patches.js:92
 msgid "Updated"
