@@ -1835,7 +1835,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target state="translated">您已成功为 &lt;strong&gt;{0}&lt;/strong&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排&lt;/a&gt;了硬件配置文件刷新。</target>
+        <target state="translated">您已成功为 &lt;strong&gt;{0}&lt;/strong&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排&lt;/a&gt;硬件配置文件刷新。</target>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
         <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
@@ -2329,12 +2329,12 @@ and try again.
 &lt;p&gt;要解决此问题，请检查以下事项：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-此 kickstart 配置文件的基础频道的 'appstream' 子软件
+此 kickstart 配置文件的基础频道的 "appstream" 子软件
 频道是否适用于您的组织？如果不适用，则您需要
-向 @@PRODUCT_NAME@@ 管理员请求 'appstream' 子软件频道的权利。
+向 @@PRODUCT_NAME@@ 管理员请求 "appstream" 子软件频道的权利。
 &lt;/li&gt;
 &lt;li&gt;
-确保此 kickstart 配置文件的基础频道的 'appstream' 子软件
+确保此 kickstart 配置文件的基础频道的 "appstream" 子软件
 频道适用于您的 @@PRODUCT_NAME@@。如果不适用，请联系
 您的 @@PRODUCT_NAME@@ 管理员并请求对 appstream 频道运行 cdn-sync，
 然后重试。
@@ -2660,7 +2660,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errata.schedule" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target>已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; &lt;strong&gt;{0}&lt;/strong&gt; 个补丁的更新。</target>
+        <target>已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; &lt;strong&gt;{0}&lt;/strong&gt; 个补丁的更新。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2668,7 +2668,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errata.schedule.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target>已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排了&lt;/a&gt; &lt;strong&gt;{0}&lt;/strong&gt; 个补丁的更新。</target>
+        <target>已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; &lt;strong&gt;{0}&lt;/strong&gt; 个补丁的更新。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2676,7 +2676,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errataconfirm.schedule" xml:space="preserve">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
-        <target>已为 &lt;strong&gt;{1}&lt;/strong&gt; 个系统&lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;安排了&lt;/a&gt;补丁 &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt;</target>
+        <target>已为 &lt;strong&gt;{1}&lt;/strong&gt; 个系统&lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;安排&lt;/a&gt;补丁 &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
@@ -2684,7 +2684,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural" xml:space="preserve">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
-        <target>已为 &lt;strong&gt;{1}&lt;/strong&gt; 个系统&lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;安排了&lt;/a&gt;补丁 &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt;</target>
+        <target>已为 &lt;strong&gt;{1}&lt;/strong&gt; 个系统&lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;安排&lt;/a&gt;补丁 &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -3954,7 +3954,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="paramnotes">You have successfully scheduled a package profile refresh
             for workstation3.</context>
         </context-group>
-        <target state="translated">您已成功为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;安排了&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;软件包配置文件刷新&lt;/a&gt;。</target>
+        <target state="translated">您已成功为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;安排&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;软件包配置文件刷新&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.bulkremovecustomdata" xml:space="preserve">
         <source>Value removed for &lt;strong&gt;{0}&lt;/strong&gt; from {1} systems.</source>
@@ -4062,7 +4062,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target state="translated">您已成功为 &lt;strong&gt;{2}&lt;/strong&gt;（从 &lt;strong&gt;{3}&lt;/strong&gt;）&lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;&lt;/strong&gt;进行软件包配置文件同步。</target>
+        <target state="translated">您已成功为 &lt;strong&gt;{2}&lt;/strong&gt;（从 &lt;strong&gt;{3}&lt;/strong&gt;）&lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;&lt;/strong&gt;软件包配置文件同步。</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
@@ -4070,7 +4070,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;备注：&lt;/strong&gt;@@PRODUCT_NAME@@ 已经为 &lt;strong&gt;{2}&lt;/strong&gt; &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排了&lt;/a&gt;&lt;/strong&gt;在同步软件包配置文件前运行一次硬件刷新。此操作需要校验系统是否能够比较软件包。</target>
+        <target state="translated">&lt;strong&gt;备注：&lt;/strong&gt;@@PRODUCT_NAME@@ 已为 &lt;strong&gt;{2}&lt;/strong&gt; &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;&lt;/strong&gt;在同步软件包配置文件前运行硬件刷新。此操作需要校验系统是否能够比较软件包。</target>
       </trans-unit>
       <trans-unit id="filterCreate.success" xml:space="preserve">
         <source>The filter {0} was successfully created</source>
@@ -4112,7 +4112,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
-        <target state="translated">系统配置 &lt;strong&gt;{0}&lt;/strong&gt; 已经被删除了。</target>
+        <target state="translated">系统配置文件 &lt;strong&gt;{0}&lt;/strong&gt; 已被删除。</target>
       </trans-unit>
       <trans-unit id="message.serverdeleted" xml:space="preserve">
         <source>System profile deleted.</source>
@@ -4148,7 +4148,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="paramnotes">System group DumpPile created.</context>
         </context-group>
-        <target state="translated">系统组群 &lt;strong&gt;{0}&lt;/strong&gt; 被创建。</target>
+        <target state="translated">已创建系统组 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="daterangepicker.error.invalid" xml:space="preserve">
         <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
@@ -4831,7 +4831,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target state="translated">南乔治亚和南桑德韦奇群岛</target>
+        <target state="translated">南乔治亚岛和南桑威奇群岛</target>
       </trans-unit>
       <trans-unit id="GT" xml:space="preserve">
         <source>Guatemala</source>
@@ -6042,7 +6042,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">已作为外部认证的 &lt;strong&gt;{0}&lt;/strong&gt; 用户记录。要使用这个帐户的登录和密码登录，请在 &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} 用户页面&lt;/strong&gt;&lt;/a&gt; 设置密码。</target>
+        <target state="translated">您是以在外部经过身份验证的 &lt;strong&gt;{0}&lt;/strong&gt; 用户身份登录的。要使用此帐户的登录名和口令登录，请在 &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} 用户页面&lt;/strong&gt;&lt;/a&gt;设置口令。</target>
       </trans-unit>
       <trans-unit id="hostname" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ server hostname</source>
@@ -6127,7 +6127,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="translated">重启 Satellite 时出错。它可以通过在终端中使用以下命令手动重启：/usr/sbin/service rhn-satellite restart。请联系技术支持获得更多信息。</target>
+        <target state="translated">重启动 @@PRODUCT_NAME@@ 时出错。可以在控制台中使用以下命令来手动将其重启动：&lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;。请联系支持人员获得详细信息。</target>
       </trans-unit>
       <trans-unit id="config.storeconfig.error" xml:space="preserve">
         <source>An error occurred and your @@PRODUCT_NAME@@ configuration changes could not be stored. Please contact support for more information</source>
@@ -6141,7 +6141,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="translated">'@@PRODUCT_NAME@@ 正在重启动。如果本页面在 5 分钟内未刷新，请单击&lt;a href="/rhn/YourRhn.do"&gt;此处&lt;/a&gt;尝试手动刷新。 </target>
+        <target state="translated">@@PRODUCT_NAME@@ 正在重启动。如果本页面在 5 分钟内未刷新，请单击&lt;a href="/rhn/YourRhn.do"&gt;此处&lt;/a&gt;尝试手动刷新。 </target>
       </trans-unit>
       <trans-unit id="restart.config.norestart" xml:space="preserve">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6575,7 +6575,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">系统{0} 不能够进行 kickstart，因为它没有 {1} 网络设备。</target>
+        <target state="translated">无法自动安装系统 {0}，因为它没有 &lt;strong&gt; {1} &lt;/strong&gt; 网络设备。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
         <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
@@ -6589,21 +6589,21 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">您没有属于这个系统当前基本频道的 @@PRODUCT_NAME@@ provisioning 频道的剩余订阅。</target>
+        <target state="translated">您没有属于 &lt;strong&gt;{0}&lt;/strong&gt; 当前基础频道的 @@PRODUCT_NAME@@ 置备频道的剩余订阅。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
         <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">您在此系统的当前基本频道中没有可用于频道 {0} 的剩余的订阅。</target>
+        <target state="translated">您在 &lt;strong&gt;{1}&lt;/strong&gt; 当前基础频道中没有频道 {0} 的剩余订阅。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">没有为 {1} ({0}) 调度 kickstart，因为这个软件包配置不包括 'up2date' 软件包。可能会需要对那个系统软件包配置进行更新。</target>
+        <target state="translated">没有为 &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; 安排自动安装，因为软件包配置文件未包含 "up2date" 软件包。可能需要更新该系统的软件包配置文件。</target>
       </trans-unit>
       <trans-unit id="kickstart.session.newsession" xml:space="preserve">
         <source>A new autoinstall session was initiated for this system.</source>
@@ -6645,14 +6645,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">要 kickstart 系统，我们需要 up2date 版本 {0} 或更高的版本。这个系统安装了 {1}，但是我们无法在这个系统的频道中找到 up2date 的版本将其升级到所需的版本或更高的版本。</target>
+        <target state="translated">要以无人值守方式安装系统，需要使用 up2date {0} 或更高版本。&lt;strong&gt;{2}&lt;/strong&gt; 已安装 {1}，但我们在此系统的频道中未找到 up2date 版本，无法将其升级到所需或更高的版本。</target>
       </trans-unit>
       <trans-unit id="kickstart.state.guesttimedout" xml:space="preserve">
         <source>&lt;p&gt;The guest system has not communicated with @@PRODUCT_NAME@@ in the past {0} minutes. The install process might be progressing slowly due to hardware constraints, or it might be frozen.&lt;/p&gt; &lt;p&gt;You may wish to troubleshoot this issue by running &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; on the host system. This command will allow you to connect to the text console of the guest as it is installing, which may provide additional information about this guest system's installation status.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="translated">&lt;p&gt;客户系统在过去 {0} 分钟内未与 @@PRODUCT_NAME@@ 沟通。由于硬件的限制，安装过程可能比较慢，甚至冻结。&lt;/p&gt;&lt;p&gt;您可能想要通过在主机系统运行 &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; 解决问题。这个命令允许您连接到正在进行安装的客户系统的文本控制台，这样可为您提供客户系统安装状态详情。&lt;/p&gt;</target>
+        <target state="translated">&lt;p&gt;该 Guest 系统在过去 {0} 分钟内未与 @@PRODUCT_NAME@@ 通讯。由于硬件限制，安装过程可能比较慢，甚至可能会冻结。&lt;/p&gt;&lt;p&gt;您可以通过在主机系统运行 &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; 来解决此问题。此命令可让您连接到正在进行安装的 Guest 系统的文本控制台，这样可为您提供其他有关 Guest 系统安装状态的信息。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="tree.edit.success" xml:space="preserve">
         <source>Autoinstallable Distribution Updated</source>
@@ -6729,7 +6729,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target state="translated">系统 {0} 有一个未完成的 kickstart。</target>
+        <target state="translated">系统 &lt;strong&gt;{0}&lt;/strong&gt; 有一个安排待执行的自动安装。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.schedule.on.bootstrap.jsp" xml:space="preserve">
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; is bare-metal, no scheduling is possible.</source>
@@ -6776,7 +6776,7 @@ Follow this url to see the full list of inactive systems:
       <!-- Activation Keys -->
       <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve">
         <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-        <target state="translated">激活密钥标签 &lt;strong&gt;{0}&lt;/strong&gt; 有一个或者多个下述无效字符 &lt;strong&gt;{1}&lt;/strong&gt;。请从标签中删除这些字符。</target>
+        <target state="translated">激活密钥标签 &lt;strong&gt;{0}&lt;/strong&gt; 包含以下一个或多个无效字符 &lt;strong&gt;{1}&lt;/strong&gt;。请从标签中去除这些字符。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -6790,35 +6790,35 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="activation-key.java.created" xml:space="preserve">
         <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
-        <target state="translated">已生成激活码 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已创建激活密钥 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.deleted" xml:space="preserve">
         <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target state="translated">激活码 &lt;strong&gt;{0}&lt;/strong&gt; 已经被删除。</target>
+        <target state="translated">已删除激活密钥 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.cloned" xml:space="preserve">
         <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
-        <target state="translated">已克隆激活码 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已克隆激活密钥 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.modified" xml:space="preserve">
         <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
-        <target state="translated">已修改激活码 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已修改激活密钥 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
         <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target state="translated">请注意：已经将 &lt;strong&gt;{0}&lt;/strong&gt; 改为 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
+        <target state="translated">已将密钥 &lt;strong&gt;{0}&lt;/strong&gt; 的名称修改为 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -7071,7 +7071,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Deploy.do</context>
         </context-group>
-        <target state="translated">已为 &lt;strong&gt;1 个系统&lt;/strong&gt;预定了配置部署操作。</target>
+        <target state="translated">正在为 &lt;strong&gt;1 个系统&lt;/strong&gt;安排配置部署操作。</target>
       </trans-unit>
       <trans-unit id="scheduledeploy.ssm.successes" xml:space="preserve">
         <source>Configuration Deploy Actions are being scheduled for &lt;strong&gt;{0} systems&lt;/strong&gt;, it may take several minutes for this to complete.</source>
@@ -7079,7 +7079,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/ssm/config/Deploy.do</context>
           <context context-type="paramnotes">Configuration Deploy Actions scheduled successfully for {0} systems.</context>
         </context-group>
-        <target state="translated">已为 &lt;strong&gt;{0} 个系统&lt;/strong&gt;预定了配置部署操作，可能需要几分钟方可完成。</target>
+        <target state="translated">正在为 &lt;strong&gt;{0} 个系统&lt;/strong&gt;安排配置部署操作，此过程可能需要几分钟才能完成。</target>
       </trans-unit>
       <trans-unit id="scheduledeploy.ssm.failure" xml:space="preserve">
         <source>Failed to schedule Configuration Deploy Action.</source>
@@ -7093,7 +7093,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
         </context-group>
-        <target state="translated">已为 &lt;strong&gt;1 个系统&lt;/strong&gt;预定了配置对比操作。</target>
+        <target state="translated">正在为 &lt;strong&gt;1 个系统&lt;/strong&gt;安排配置比较操作。</target>
       </trans-unit>
       <trans-unit id="schedulediff.ssm.successes" xml:space="preserve">
         <source>Configuration Comparison Actions are being scheduled for &lt;strong&gt;{0} systems&lt;/strong&gt;, it may take several minutes for this to complete.</source>
@@ -7101,7 +7101,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/ssm/config/Diff.do</context>
           <context context-type="paramnotes">Configuration Comparison Action scheduled successfully for {0} systems.</context>
         </context-group>
-        <target state="translated">已为 &lt;strong&gt;{0} 个系统&lt;/strong&gt;预定了配置对比操作，可能需要几分钟方可完成。</target>
+        <target state="translated">正在为 &lt;strong&gt;{0} 个系统&lt;/strong&gt;安排配置比较操作，此过程可能需要几分钟才能完成。</target>
       </trans-unit>
       <trans-unit id="schedulediff.ssm.failure" xml:space="preserve">
         <source>Failed to schedule Configuration Comparison Action</source>
@@ -7256,7 +7256,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="configdiff.schedule.success" xml:space="preserve">
         <source>&lt;a href="{0}"&gt;Configuration file compare actions&lt;/a&gt; are being scheduled for {1} systems, it may take several minutes for this to complete.</source>
-        <target>正在为 {1} 个系统安排&lt;a href="{0}"&gt;配置文件比较操作&lt;/a&gt;，这可能需要几分钟才能完成。</target>
+        <target>正在为 {1} 个系统安排&lt;a href="{0}"&gt;配置文件比较操作&lt;/a&gt;，此过程可能需要几分钟才能完成。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 8 systems.</context>
@@ -7334,7 +7334,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 已经被锁定</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 已被锁定</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unlocked.alert" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; has been unlocked</source>
@@ -7342,7 +7342,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">已解锁 &lt;strong&gt;{0}&lt;/strong&gt;</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; 已解锁</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.pinged" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; has been pinged. OSA Status will be updated within the next minute.</source>
@@ -7350,7 +7350,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">已 ping 通 &lt;strong&gt;{0}&lt;/strong&gt;。OSA 状态将马上更新。</target>
+        <target state="translated">已 ping 通 &lt;strong&gt;{0}&lt;/strong&gt;。OSA 状态将立即更新。</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.applet.scheduled" xml:space="preserve">
         <source>RHN Applet @@PRODUCT_NAME@@ activation &lt;a href="{0}"&gt;scheduled&lt;/a&gt;</source>
@@ -7358,7 +7358,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">&lt;a href="{0}"&gt;已安排&lt;/a&gt; RHN Applet @@PRODUCT_NAME@@ 激活</target>
+        <target state="translated">&lt;a href="{0}"&gt;已安排&lt;/a&gt; RHN 小程序 @@PRODUCT_NAME@@ 激活</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none" xml:space="preserve">
         <source>None</source>
@@ -7380,7 +7380,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">为 &lt;strong&gt;{0}&lt;/strong&gt; 修改的系统属性。</target>
+        <target state="translated">已更改 &lt;strong&gt;{0}&lt;/strong&gt; 的系统属性。</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.propertieschangedupdate" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
@@ -7388,7 +7388,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">为 &lt;strong&gt;{0}&lt;/strong&gt; 修改的系统属性。&lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; 将按照自动勘误更新首选项被&lt;strong&gt;完全更新&lt;/strong&gt;。</target>
+        <target state="translated">将根据 "自动更新补丁" 首选项对 &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; 进行&lt;strong&gt;全面更新&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="sdc.config.deploy.noaction" xml:space="preserve">
         <source>No deploy action completed.</source>
@@ -7399,14 +7399,14 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="sdc.config.deploy.failure" xml:space="preserve">
         <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">所有的文件和/或目录 ({0}) 都部署失败。 [&lt;a href="{1}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">所有文件和/或目录 ({0}) 均部署失败。 [&lt;a href="{1}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.deploy.success" xml:space="preserve">
         <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">所有的文件和/或目录 ({0}) 都部署成功。 [&lt;a href="{1}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">所有文件和/或目录 ({0}) 均部署成功。 [&lt;a href="{1}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7420,189 +7420,189 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0" xml:space="preserve">
         <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">没有文件、目录或 symlink 被用于比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
+        <target state="translated">未选择要进行比较的文件、目录或符号链接。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1" xml:space="preserve">
         <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">{4} 系统里的 1 symlink 的{4} 成功地和 @@PRODUCT_NAME@@-Managed 文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2" xml:space="preserve">
         <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {5} 个 symlink 中的 {4} 个成功和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0" xml:space="preserve">
         <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个目录中的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {2} 个目录（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1" xml:space="preserve">
         <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个目录中的 {2} 个以及 1 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {2} 个目录（共 1 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2" xml:space="preserve">
         <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个目录中的 {2} 个以及 {5} 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {2} 个目录（共 1 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0" xml:space="preserve">
         <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里{3} 个目录中的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {2} 个目录（共 {3} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1" xml:space="preserve">
         <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里{3} 个目录中的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {2} 个目录（共 {3} 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2" xml:space="preserve">
         <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里{3} 个目录中的 {2} 个以及 {5} 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {2} 个目录（共 {3} 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0" xml:space="preserve">
         <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件的 {0} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1" xml:space="preserve">
         <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve">
         <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve">
         <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）和 {2} 个目录（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve">
         <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）、{2} 个目录（共 1 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve">
         <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）、{2} 个目录（共 1 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
         <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个以及 {3} 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）和 {2} 个目录（共 {3} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
         <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）、{2} 个目录（共 {3} 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
         <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 1 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 1 个）、{2} 个目录（共 {3} 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0" xml:space="preserve">
         <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
         <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
         <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
         <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）和 {2} 个目录（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
         <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）、{2} 个目录（共 1 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
         <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）、{2} 个目录（共 1 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
         <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个以及 {3} 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）和 {2} 个目录（共 {3} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
         <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）、{2} 个目录（共 {3} 个）和 {4} 个符号链接（共 1 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
         <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target state="translated">系统里 {1} 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
+        <target state="translated">已成功将系统上的 {0} 个文件（共 {1} 个）、{2} 个目录（共 {3} 个）和 {4} 个符号链接（共 {5} 个）与 @@PRODUCT_NAME@@ 管理的文件进行比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -8443,14 +8443,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target state="translated">预定了一个动作。</target>
+        <target state="translated">安排了一个操作，请参见&lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;待执行操作&lt;/strong&gt;&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.actions.scheduled" xml:space="preserve">
         <source>Scheduled {0} actions, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target state="translated">预定了 {0} 个动作。</target>
+        <target state="translated">安排了 {0} 个操作，请参见&lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;待执行操作&lt;/strong&gt;&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.no.virt.deleted" xml:space="preserve">
         <source>No virtual systems deleted.</source>
@@ -9295,7 +9295,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="filter.clearfilter" xml:space="preserve">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
-        <target state="translated">过滤以下列表。&lt;a href="{0}"&gt; &lt;strong&gt;清除过滤器以便查看所有项。&lt;/strong&gt; &lt;/a&gt;</target>
+        <target state="translated">下面的列表经过过滤。&lt;a href="{0}"&gt; &lt;strong&gt;清除过滤器可查看所有项。&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter" xml:space="preserve">
         <source>Clear filter </source>
@@ -9311,7 +9311,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="listtag.all_items_in_filter" xml:space="preserve">
         <source>The list below is not filtered, because the term you entered to filter by, '&lt;strong&gt;{0}&lt;/strong&gt;', returned matches for every item in the list. Try to filter by a more unique term.</source>
-        <target state="translated">以下列表是未经过滤的，因为您输入的过滤条件 '&lt;strong&gt;{0}&lt;/strong&gt;' 将返回与列表中所有项目都匹配的结果。请试一下更具体的过滤条件。</target>
+        <target state="translated">下面的列表未过滤，因为您输入的过滤词 "&lt;strong&gt;{0}&lt;/strong&gt;" 返回了与列表中所有项都匹配的结果。请尝试按更独特的词汇过滤。</target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessageempty" xml:space="preserve">
         <source>The empty list below is filtered.</source>
@@ -9343,7 +9343,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicateipaddressvalue" xml:space="preserve">
         <source>IP Addresses must be unique, and IP Address for &lt;strong&gt;{0}&lt;/strong&gt; has already been recorded. Please choose a different IP Address.</source>
-        <target state="translated">IP 地址必须是唯一的。这个 IP 地址已有记录。请选择不同的 IP 地址。</target>
+        <target state="translated">IP 地址必须唯一，&lt;strong&gt;{0}&lt;/strong&gt; 的 IP 地址已被记录。请选择其他 IP 地址。</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidregexp" xml:space="preserve">
         <source>Guest name can only contain alphanumeric characters, hyphens ('-'), periods ('.') and underscores ('_')</source>
@@ -9706,7 +9706,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.configuration.channel.deleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
-        <target>已删除频道 &lt;strong&gt;'{0}'&lt;/strong&gt;。</target>
+        <target>已删除频道 &lt;strong&gt;"{0}"&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="distribution.tree.exists" xml:space="preserve">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
@@ -9730,19 +9730,19 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.channelcreated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target state="translated">生成了频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已创建频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.channelcloned" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target state="translated">频道 &lt;strong&gt;{0}&lt;/strong&gt; 已从频道 &lt;strong&gt;{1}&lt;/strong&gt; 克隆。</target>
+        <target state="translated">已从频道 &lt;strong&gt;{1}&lt;/strong&gt; 克隆频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.cloneselect" xml:space="preserve">
         <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target state="translated">现在，您可能希望克隆与 &lt;strong&gt;{0}&lt;/strong&gt; 相关的勘误表。</target>
+        <target state="translated">您现在可能想要克隆与 &lt;strong&gt;{0}&lt;/strong&gt; 关联的补丁。</target>
       </trans-unit>
       <trans-unit id="message.channeldeleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target state="translated">频道 &lt;strong&gt;{0}&lt;/strong&gt; 已被删除。</target>
+        <target state="translated">已删除频道 &lt;strong&gt;{0}lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.channel.delete.systemssubscribed" xml:space="preserve">
         <source>There are currently systems subscribed to this channel. Please confirm system channel removal by selecting the unsubscribe checkbox.</source>
@@ -9758,7 +9758,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.channelupdated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target state="translated">更新了频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已更新频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.failactionsuccess" xml:space="preserve">
         <source>Status of action &lt;strong&gt;{0}&lt;/strong&gt; has been set to failed.</source>
@@ -9778,23 +9778,23 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.bunch.singlescheduled" xml:space="preserve">
         <source>Single run of &lt;strong&gt;{0}&lt;/strong&gt; bunch was scheduled for {1}.</source>
-        <target state="translated">已为 {1} 调度单次运行 &lt;strong&gt;{0}&lt;/strong&gt; 束。</target>
+        <target state="translated">已为 {1} 安排单轮 &lt;strong&gt;{0}&lt;/strong&gt; 组。</target>
       </trans-unit>
       <trans-unit id="message.schedulecreated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target state="translated">已创建调度 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已创建日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.scheduleupdated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been updated.</source>
-        <target state="translated">更新已更新调度 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已更新日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target state="translated">已删除调度 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已删除日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
-        <target state="translated">调度 &lt;strong&gt;{0}&lt;/strong&gt; 不再活跃。它作为系统的一部分只是用于信息参考，会被自动删除。</target>
+        <target state="translated">日程安排 &lt;strong&gt;{0}&lt;/strong&gt; 不再处于活动状态。它作为系统的一部分只是用于信息参考，会被自动删除。</target>
       </trans-unit>
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
@@ -10035,11 +10035,11 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="images.message.error.nocreds" xml:space="preserve">
         <source>It looks like you did not enter valid credentials for talking to SUSE Studio, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
-        <target state="translated">您并没有为访问 SUSE Studio 输入有效凭据，请检查 &lt;a href="/rhn/account/Credentials.do"&gt;这里&lt;/a&gt;。</target>
+        <target state="translated">您输入的用于连接 SUSE Studio 的身份凭证似乎无效，请检查&lt;a href="/rhn/account/Credentials.do"&gt;此处&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="images.message.error.connection" xml:space="preserve">
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
-        <target state="translated">连接到 SUSE Studio 存在一个问题，您可能想重新检查&lt;a href="/rhn/account/Credentials.do"&gt;配置&lt;/a&gt;或稍后重试。</target>
+        <target state="translated">连接 SUSE Studio 时发生问题，您可能需要在&lt;a href="/rhn/account/Credentials.do"&gt;此处&lt;/a&gt;检查您的配置，或稍后再试。</target>
       </trans-unit>
       <trans-unit id="images.message.success.scheduled" xml:space="preserve">
         <source>Image deployment scheduled: {0}</source>
@@ -10203,9 +10203,9 @@ You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt;
 Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.
 </source>
         <target state="translated">
-有两种类型的频道内容 ISO：基础频道内容 ISO 和增量频道内容 ISO。
+频道内容 ISO分为两种类型：基础频道内容 ISO 和增量频道内容 ISO。
 如果您最初只是需要在新的 @@PRODUCT_NAME@@ 中填充频道内容，请下载&lt;strong&gt;基础频道内容 ISO&lt;/strong&gt;。
-或者，如果您想要更新已导入 @@PRODUCT_NAME@@ 的频道，请下载&lt;strong&gt;增量频道内容 ISO&lt;/strong&gt;。
+或者，如果您要更新已导入 @@PRODUCT_NAME@@ 的频道，请下载&lt;strong&gt;增量频道内容 ISO&lt;/strong&gt;。
 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -10315,11 +10315,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
-        <target>&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;已安排好&lt;/a&gt;将此系统迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;已安排&lt;/a&gt;将此系统迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
-        <target state="translated">已安排好将此系统试行迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。成功完成该操作后，即可在&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;此处&lt;/a&gt;安排完整迁移</target>
+        <target state="translated">已安排将此系统试行迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。成功完成该操作后，即可在&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;此处&lt;/a&gt;安排完整迁移</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-register" xml:space="preserve">
         <source>Run mgr-register</source>
@@ -10459,7 +10459,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
-        <target>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;添加或删除&lt;/a&gt;附加系统类型</target>
+        <target>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;添加或去除&lt;/a&gt;附加系统类型</target>
       </trans-unit>
       <trans-unit id="system_entitlements.invalid" xml:space="preserve">
         <source>Invalid system type selected.</source>
@@ -10467,15 +10467,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="system_entitlements.addon.error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target>有 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无法设置为 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 个系统无法设置为 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="system_entitlements.addon.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target>有 &lt;strong&gt;{0}&lt;/strong&gt; 个系统已设置为 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 个系统已设置为 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="system_entitlements.addon.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target>已从 &lt;strong&gt;{0}&lt;/strong&gt; 个系统中删除 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
+        <target>已从 &lt;strong&gt;{0}&lt;/strong&gt; 个系统中去除 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host" xml:space="preserve">
         <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
