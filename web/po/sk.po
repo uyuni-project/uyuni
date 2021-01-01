@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-31 11:38+0000\n"
+"PO-Revision-Date: 2021-01-01 20:37+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -547,24 +547,24 @@ msgstr "Bezpečnostné upozornenie"
 
 #: ../html/src/components/systems.js:58
 msgid "System Locked"
-msgstr ""
+msgstr "Systém uzamknutý"
 
 #: ../html/src/components/table/SearchPanel.js:39
 msgid "Items {0} - {1} of {2}"
-msgstr ""
+msgstr "Položky {0} - {1} z {2}"
 
 #: ../html/src/components/table/SearchPanel.js:42
 msgid "({0} selected)"
-msgstr ""
+msgstr "(Vybrané {0})"
 
 #: ../html/src/components/table/SearchPanel.js:43
 #: ../html/src/manager/admin/setup/products/products.js:287
 msgid "Clear"
-msgstr ""
+msgstr "Vyčistiť"
 
 #: ../html/src/components/table/SearchPanel.js:48
 msgid "Select All"
-msgstr ""
+msgstr "Vybrať všetko"
 
 #: ../html/src/components/table/TableDataHandler.js:290
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
@@ -573,29 +573,29 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:271
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
 msgid "Loading..."
-msgstr ""
+msgstr "Načítava sa..."
 
 #: ../html/src/components/table/TableDataHandler.js:318
 msgid "items per page"
-msgstr ""
+msgstr "položiek na stránku"
 
 #: ../html/src/components/tree/tree.js:117
 msgid "Invalid data"
-msgstr ""
+msgstr "Neplatné dáta"
 
 #: ../html/src/components/tree/tree.js:125
 msgid "No data"
-msgstr ""
+msgstr "Žiadne dáta"
 
 #: ../html/src/components/utils/HelpLink.js:20
 msgid "Help"
-msgstr ""
+msgstr "Pomocník"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:10
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
 msgid "Base channel not found or not authorized."
-msgstr ""
+msgstr "Základný kanál sa nenašiel alebo nemá oprávnenie."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:11
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
@@ -3054,7 +3054,7 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
-msgstr ""
+msgstr "Naozaj chcete zmazať vybranú položku?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:38
 #: ../html/src/manager/maintenance/details/schedule-details.js:52
