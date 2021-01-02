@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2021-01-01 20:37+0000\n"
+"PO-Revision-Date: 2021-01-02 21:37+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -601,30 +601,30 @@ msgstr "Základný kanál sa nenašiel alebo nemá oprávnenie."
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
 msgid "Child channel not found or not authorized."
-msgstr ""
+msgstr "Kanál potomka sa nenašiel alebo nemá oprávnenie."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:12
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:30
 msgid "Invalid channel id"
-msgstr ""
+msgstr "Neplatné id kanála"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 msgid "Required channels"
-msgstr ""
+msgstr "Požadované kanály"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "none"
-msgstr ""
+msgstr "žiaden"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "Require this channel"
-msgstr ""
+msgstr "Vyžadovať tento kanál"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:18
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr ""
+msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "An internal error has occured. See the server logs for details."
@@ -1655,6 +1655,8 @@ msgid ""
 "Container as a Service Platform (CaaSP) channels assigned - or any children "
 "channels of CaaSP channels"
 msgstr ""
+"Priradené kanály Container as a Service Platform (CaaSP) - alebo akékoľvek "
+"kanály potomkov z kanálov CaaSP"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:44
 msgid ""
@@ -2312,7 +2314,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:526
 msgid "Child Channels"
-msgstr ""
+msgstr "Kanály potomkov"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:119
 msgid "Clear Search"
@@ -2320,7 +2322,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
 msgid "no child channels"
-msgstr ""
+msgstr "žiadne kanály potomkov"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
 msgid "This channel is recommended"
@@ -3778,7 +3780,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
 msgid "Child Channels:"
-msgstr ""
+msgstr "Kanály potomkov:"
 
 #: ../html/src/manager/systems/activation-key/child-channels.js:140
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:478
@@ -4076,7 +4078,7 @@ msgstr ""
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:610
 msgid "No child channels available."
-msgstr ""
+msgstr "Nie sú k dispozícii žiadne kanály potomkov."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:572
 msgid "Confirm Software Channel Change"
@@ -4625,7 +4627,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
-msgstr ""
+msgstr "Pridať potomkov do SSM"
 
 #: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
