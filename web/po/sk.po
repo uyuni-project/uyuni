@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2021-01-02 21:37+0000\n"
+"PO-Revision-Date: 2021-01-03 20:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -628,35 +628,41 @@ msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "An internal error has occured. See the server logs for details."
-msgstr ""
+msgstr "Nastala interná chyba. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:22
 msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
+"Povolenie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:23
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
 msgstr ""
+"Nepodarilo sa povoliť všetky monitorovacie služby. Niektoré služby sú stále "
+"zakázané. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:24
 msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
+"Zakázanie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:25
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
 msgstr ""
+"Nepodarilo sa zakázať všetky monitorovacie služby. Niektoré služby sú stále "
+"povolené. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:26
 msgid "Monitoring enabled successfully."
-msgstr ""
+msgstr "Monitorovanie bolo úspešne povolené."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:27
 msgid "Monitoring disabled successfully."
-msgstr ""
+msgstr "Monitorovanie bolo úspešne zakázané."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:28
 msgid ""
@@ -688,11 +694,11 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "Monitoring status hasn't changed."
-msgstr ""
+msgstr "Stav monitorovania sa nezmenil."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:40
 msgid "An error occured. Monitoring status unknown. Refresh the page."
-msgstr ""
+msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:45
 msgid "Tomcat (Java JMX)"
@@ -708,7 +714,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:48
 msgid "Server self monitoring"
-msgstr ""
+msgstr "Vlastné monitorovanie servera"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:57
 #: ../html/src/manager/admin/config/monitoring-admin.js:59
@@ -752,11 +758,11 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:219
 msgid "SUSE Manager Configuration - Monitoring"
-msgstr ""
+msgstr "Konfigurácia SUSE Manager - Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:225
 msgid "Setup your SUSE Manager server monitoring."
-msgstr ""
+msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:230
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
@@ -790,7 +796,7 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.js:241
 #: ../html/src/manager/admin/config/monitoring-admin.js:253
 msgid "Monitoring"
-msgstr ""
+msgstr "Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:264
 msgid ""
@@ -3887,7 +3893,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:31
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
 msgid "Error scheduling job in Taskomatic. Please check the logs."
-msgstr ""
+msgstr "Chyba pri plánovaní úlohy v Taskomatic. Prosím, skontrolujte záznamy."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
 msgid "Could not determine system default channel."
