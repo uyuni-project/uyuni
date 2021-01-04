@@ -46,6 +46,7 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -387,6 +388,13 @@ public class JobReturnEventMessageAction implements MessageAction {
                         // Wait until next "minion/start/event" to set it to COMPLETED.
                         if (action.get().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
                                 success && retcode == 0) {
+                            // In action chains at this point the action is still queued so we have
+                            // to set it to picked up.
+                            // This could still lead to the race condition on when event processing is slow.
+                            if (sa.getPickupTime() == null) {
+                                sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                                sa.setPickupTime(new Date());
+                            }
                             return;
                         }
                         else if (action.get().getActionType().equals(ActionFactory.TYPE_KICKSTART_INITIATE) &&
