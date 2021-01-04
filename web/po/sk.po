@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2021-01-03 20:38+0000\n"
+"PO-Revision-Date: 2021-01-04 12:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -670,6 +670,9 @@ msgid ""
 "Click the Enable button to enable the JMX configuration or click Disable to "
 "stop the Prometheus exporter."
 msgstr ""
+"Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. "
+"Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo kliknutím na "
+"Zakázať sa zastaví exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:30
 msgid ""
@@ -677,6 +680,9 @@ msgid ""
 "Click the Disable button to disable the JMX configuration or click Enable to "
 "start the Prometheus exporter."
 msgstr ""
+"Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je "
+"povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo "
+"kliknutím na Povoliť sa spustí exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:32
 msgid ""
@@ -684,6 +690,9 @@ msgid ""
 "disabled. Click the Enable button to enable the JMX configuration of click "
 "Disable to stop the Prometheus exporter."
 msgstr ""
+"Exportér Taskomatic Prometheus je pripravený, ale konfigurácia JMX je "
+"zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo "
+"kliknutím na Zakázať sa zastaví exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:34
 msgid ""
@@ -691,6 +700,9 @@ msgid ""
 "enabled. Click the Disable button to disable the JMX configuration of click "
 "Enable to start the Prometheus exporter."
 msgstr ""
+"Exportér Taskomatic Prometheus nie je pripravený, ale konfigurácia JMX je "
+"povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo "
+"kliknutím na Povoliť sa spustí exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "Monitoring status hasn't changed."
@@ -702,15 +714,15 @@ msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:45
 msgid "Tomcat (Java JMX)"
-msgstr ""
+msgstr "Tomcat (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:46
 msgid "Taskomatic (Java JMX)"
-msgstr ""
+msgstr "Taskomatic (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:47
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "Databáza PostgreSQL"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:48
 msgid "Server self monitoring"
@@ -719,12 +731,12 @@ msgstr "Vlastné monitorovanie servera"
 #: ../html/src/manager/admin/config/monitoring-admin.js:57
 #: ../html/src/manager/admin/config/monitoring-admin.js:59
 msgid "Enabled"
-msgstr ""
+msgstr "Povolené"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:65
 #: ../html/src/manager/admin/config/monitoring-admin.js:67
 msgid "Disabled"
-msgstr ""
+msgstr "Zakázané"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "The server uses "
@@ -747,14 +759,14 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.js:189
 #: ../html/src/manager/admin/config/monitoring-admin.js:202
 msgid "Enable"
-msgstr ""
+msgstr "Povoliť"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:173
 #: ../html/src/manager/admin/config/monitoring-admin.js:182
 #: ../html/src/manager/admin/config/monitoring-admin.js:191
 #: ../html/src/manager/admin/config/monitoring-admin.js:207
 msgid "Disable"
-msgstr ""
+msgstr "Zakázať"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:219
 msgid "SUSE Manager Configuration - Monitoring"
@@ -2105,7 +2117,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:169
 msgid "enable module"
-msgstr ""
+msgstr "povoliť modul"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
 msgid "Build ({0})"
@@ -4059,7 +4071,7 @@ msgstr ""
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:219
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:398
 msgid "(none, disable service)"
-msgstr ""
+msgstr "(žiadne, zakázať službu)"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "Changing the channels has been "
