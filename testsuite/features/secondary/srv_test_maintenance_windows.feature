@@ -32,7 +32,7 @@ Feature: Maintenance Windows
         When I enter "singleschedule" as "name"
         And I choose "SINGLE"
         And I click on "Add Calendar"
-        And I select "singlecalendar" from the Combobox "calendarSelect"
+        And I select "singlecalendar" from "calendarSelect"
         And I click on "Create Schedule"
         Then I should see a "Schedule successfully created" text
 
@@ -44,14 +44,14 @@ Feature: Maintenance Windows
         When I enter "SAP Maintenance Window" as "name"
         And I choose "MULTI"
         And I click on "Add Calendar"
-        And I select "multicalendar" from the Combobox "calendarSelect"
+        And I select "multicalendar" from "calendarSelect"
         And I click on "Create Schedule"
         Then I should see a "Schedule successfully created" text
         When I click on "Create"
         And I enter "Core Server Window" as "name"
         And I choose "MULTI"
         And I click on "Add Calendar"
-        And I select "multicalendar" from the Combobox "calendarSelect"
+        And I select "multicalendar" from "calendarSelect"
         And I click on "Create Schedule"
         Then I should see a "Schedule successfully created" text
 
