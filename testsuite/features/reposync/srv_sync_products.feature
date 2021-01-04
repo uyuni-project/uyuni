@@ -1,4 +1,4 @@
-# Copyright 2017-2020 SUSE LLC
+# Copyright 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -41,7 +41,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Legacy Module 12 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
-    Then the SLE12 products should be added
+    Then the SLE12 SP5 product should be added
 
 @scc_credentials
   Scenario: Add a product with recommended enabled
@@ -59,4 +59,4 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Basesystem Module 15 SP2 x86_64" selected
     And I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
-    Then the SLE15 SP2 products should be added
+    Then the SLE15 SP2 product should be added
