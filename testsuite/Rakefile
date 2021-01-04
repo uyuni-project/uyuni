@@ -48,48 +48,56 @@ namespace :utils do
 
   desc 'Generate smoke tests for all the clients'
   task :generate_smoke_tests do
-    clients = Rake::FileList['features/qam/init_clients/*.feature']
+    clients = Rake::FileList['features/build_validation/init_clients/*.feature']
     clients.reject! { |client| client.include? 'proxy' }
     clients.each do |client|
-      Rake::Task['utils:generate_feature'].invoke('features/qam/smoke_tests/smoke_tests.template',
+      Rake::Task['utils:generate_feature'].invoke('features/build_validation/smoke_tests/smoke_tests.template',
                                            File.basename(client,'.feature'),
-                                           'features/qam/smoke_tests',
-                                           'run_sets/qam_smoke_tests.yml')
+                                           'features/build_validation/smoke_tests',
+                                           'run_sets/build_validation_smoke_tests.yml')
       Rake::Task['utils:generate_feature'].reenable
     end
   end
 
-  desc 'Generate feature to add Custom Channels and repositories for all the clients'
-  task :generate_add_custom_repository_features do
-    clients = Rake::FileList['features/qam/init_clients/*.feature']
+  desc 'Generate feature to add Maintenance Update Channels and repositories for all the clients'
+  task :generate_add_maintenance_update_repository_features do
+    clients = Rake::FileList['features/build_validation/init_clients/*.feature']
     clients.reject! { |client| client.include? 'ssh'}
     clients.each do |client|
-      Rake::Task['utils:generate_feature'].invoke('features/qam/add_custom_repositories/add_mu_repository.template',
+      Rake::Task['utils:generate_feature'].invoke('features/build_validation/add_custom_repositories/add_maintenance_update_repository.template',
                                            File.basename(client,'.feature'),
-                                           'features/qam/add_custom_repositories',
-                                           'run_sets/qam_add_custom_repositories.yml')
+                                           'features/build_validation/add_custom_repositories',
+                                           'run_sets/build_validation_add_custom_repositories.yml')
       Rake::Task['utils:generate_feature'].reenable
     end
   end
 
   desc 'Generate feature to add Activation Keys for all the clients'
   task :generate_add_activation_keys_features do
-    clients = Rake::FileList['features/qam/init_clients/*.feature']
+    clients = Rake::FileList['features/build_validation/init_clients/*.feature']
     clients.each do |client|
-      Rake::Task['utils:generate_feature'].invoke('features/qam/add_activation_keys/add_activation_key.template',
+      Rake::Task['utils:generate_feature'].invoke('features/build_validation/add_activation_keys/add_activation_key.template',
                                                   File.basename(client,'.feature'),
-                                                  'features/qam/add_activation_keys',
-                                                  'run_sets/qam_add_activation_keys.yml')
+                                                  'features/build_validation/add_activation_keys',
+                                                  'run_sets/build_validation_add_activation_keys.yml')
       Rake::Task['utils:generate_feature'].reenable
     end
   end
 
-  desc 'Generate all the features need for QAM from templates'
-  task :generate_features do
+  desc 'Generate all the features need for Build Validation from templates'
+  task :generate_build_validation_features do
     Rake::Task['utils:generate_smoke_tests'].invoke
     Rake::Task['utils:generate_smoke_tests'].reenable
-    Rake::Task['utils:generate_add_custom_repository_features'].invoke
-    Rake::Task['utils:generate_add_custom_repository_features'].reenable
+    Rake::Task['utils:generate_add_activation_keys_features'].invoke
+    Rake::Task['utils:generate_add_activation_keys_features'].reenable
+  end
+
+  desc 'Generate all the features need for QAM from templates'
+  task :generate_qam_features do
+    Rake::Task['utils:generate_smoke_tests'].invoke
+    Rake::Task['utils:generate_smoke_tests'].reenable
+    Rake::Task['utils:generate_add_maintenance_update_repository_features'].invoke
+    Rake::Task['utils:generate_add_maintenance_update_repository_features'].reenable
     Rake::Task['utils:generate_add_activation_keys_features'].invoke
     Rake::Task['utils:generate_add_activation_keys_features'].reenable
   end
