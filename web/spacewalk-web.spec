@@ -51,7 +51,6 @@ BuildRequires:  susemanager-nodejs-sdk-devel
 %if 0%{?suse_version}
 BuildRequires:  apache2
 BuildRequires:  nodejs-packaging
-BuildRequires:  nodejs
 
 %endif
 
@@ -69,7 +68,6 @@ BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  nodejs-packaging
 BuildRequires:  susemanager-nodejs-sdk-devel
-BuildRequires:  nodejs
 
 %description -n susemanager-web-libs
 This package contains Vendor bundles needed for spacewalk-web
