@@ -825,6 +825,32 @@ SELECT P.id, P.summary, PP.name as provider
   </query>
 </mode>
 
+<mode name="system_set_locked_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
+  <query params="sid, aid">
+  SELECT DISTINCT
+    pn.id || '|' || pe.id || '|' || pa.id AS id_combo,
+    pn.name AS name,
+    pe.version AS version,
+    pe.release AS release,
+    pe.epoch AS epoch,
+    pa.label AS arch,
+  FROM rhnActionPackage ap
+    JOIN rhnLockedPackages lp
+      ON ap.name_id = lp.name_id AND
+         ap.evr_id  = lp.evr_id AND
+         ap.package_arch_id = lp.arch_id
+    LEFT JOIN rhnPackageArch pa
+      ON ap.package_arch_id = pa.id,
+         rhnPackageName pn,
+         rhnPackageEVR pe
+    WHERE ap.evr_id    = pe.id
+      AND ap.name_id   = pn.id
+      AND (lp.pending IS NULL OR lp.pending = 'L')
+      AND lp.server_id = :sid
+      AND ap.action_id = :aid
+      order by id_combo
+  </query>
+</mode>
 
 <mode name="system_locked_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
@@ -878,7 +904,8 @@ WHERE l.server_id = :sid
 <write-mode name="remove_orphan_lock_on_action_cancel">
   <query params="sid, action_id">
 DELETE FROM rhnlockedpackages l
-      WHERE l.pkg_id IN (SELECT lck.pkg_id
+      WHERE l.pending in ('L', 'U')
+      AND l.pkg_id IN (SELECT lck.pkg_id
                            FROM rhnaction act
                       LEFT JOIN rhnactionpackage ack ON ack.action_id = act.id
                       LEFT JOIN rhnlockedpackages lck ON lck.name_id = ack.name_id
@@ -886,6 +913,43 @@ DELETE FROM rhnlockedpackages l
                                                      AND lck.arch_id = ack.package_arch_id
                           WHERE lck.server_id = :sid AND act.id = :action_id)
   </query>
+</write-mode>
+
+<write-mode name="update_pkg_lock_on_action">
+  <query params="sid, action_id">
+    UPDATE rhnLockedPackages
+      SET pending = NULL
+      WHERE rhnLockedPackages.server_id = :sid AND
+        rhnLockedPackages.pkg_id IN (
+        SELECT pkg_id
+          FROM rhnLockedPackages JOIN rhnActionPackage
+            ON rhnLockedPackages.name_id = rhnActionPackage.name_id
+            AND rhnLockedPackages.evr_id = rhnActionPackage.evr_id
+            AND rhnLockedPackages.arch_id = rhnActionPackage.package_arch_id
+          WHERE rhnActionPackage.action_id = :action_id
+            AND rhnLockedPackages.server_id = :sid
+            AND rhnActionPackage.parameter = 'lock'
+            AND rhnLockedPackages.pending = 'L'
+        )
+  </query>
+</write-mode>
+
+<write-mode name="update_pkg_unlock_on_action">
+  <query params="sid, action_id">
+    DELETE FROM rhnLockedPackages
+      WHERE rhnLockedPackages.server_id = :sid
+        AND rhnLockedPackages.pkg_id IN (
+        SELECT pkg_id
+          FROM rhnLockedPackages
+          JOIN rhnActionPackage ON rhnLockedPackages.name_id = rhnActionPackage.name_id
+                               AND rhnLockedPackages.evr_id = rhnActionPackage.evr_id
+                               AND rhnLockedPackages.arch_id = rhnActionPackage.package_arch_id
+          WHERE rhnActionPackage.action_id = :action_id
+            AND rhnLockedPackages.server_id = :sid
+            AND rhnActionPackage.parameter = 'lock'
+            AND rhnLockedPackages.pending = 'U'
+        )
+ </query>
 </write-mode>
 
 <write-mode name="set_pending_lock_status">

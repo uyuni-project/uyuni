@@ -633,6 +633,24 @@ public class PackageManager extends BaseManager {
     }
 
     /**
+     * Get the list of packages which should be locked on a particular system.
+     *
+     * @param sid System ID.
+     * @param aid Action ID.
+     * @param pc Page control object.
+     * @return  DataResult containing locked packages data.
+     */
+    public static DataResult<PackageListItem> systemSetLockedPackages(
+            Long sid, Long aid, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "system_set_locked_packages");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        params.put("aid", aid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
      * Lock packages.
      * If the package object has lock pending, then the package will be only half-locked.
      *
@@ -675,14 +693,38 @@ public class PackageManager extends BaseManager {
      *
      * @param sid System ID
      * @param actionId Action ID
-     * @throws java.lang.Exception in case of unknown pending status
      */
-    public static void syncLockedPackages(Long sid, Long actionId)
-            throws Exception {
+    public static void syncLockedPackages(Long sid, Long actionId) {
         Map params = new HashMap();
         params.put("sid", sid);
         params.put("action_id", actionId);
         ModeFactory.getWriteMode("Package_queries", "remove_orphan_lock_on_action_cancel").executeUpdate(params);
+    }
+
+    /**
+     * Update locked packages, when action succeeded.
+     *
+     * @param sid System ID
+     * @param actionId Action ID
+     */
+    public static void updateLockedPackages(Long sid, Long actionId) {
+        Map params = new HashMap();
+        params.put("sid", sid);
+        params.put("action_id", actionId);
+        ModeFactory.getWriteMode("Package_queries", "update_pkg_lock_on_action").executeUpdate(params);
+    }
+
+    /**
+     * Update unlocked packages, when action succeeded.
+     *
+     * @param sid System ID
+     * @param actionId Action ID
+     */
+    public static void updateUnlockedPackages(Long sid, Long actionId) {
+        Map params = new HashMap();
+        params.put("sid", sid);
+        params.put("action_id", actionId);
+        ModeFactory.getWriteMode("Package_queries", "update_pkg_unlock_on_action").executeUpdate(params);
     }
 
     /**
