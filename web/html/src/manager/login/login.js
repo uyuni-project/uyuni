@@ -1,7 +1,7 @@
 //@flow
 
-import * as React from 'react';
 import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
 import { useInputValue } from 'components/hooks/forms/useInputValue';
 import { Messages } from '../../components/messages';
 import { AsyncButton } from '../../components/buttons';

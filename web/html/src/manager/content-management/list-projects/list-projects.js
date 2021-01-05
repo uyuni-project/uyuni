@@ -1,4 +1,5 @@
 // @flow
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {useEffect} from 'react';
 import {TopPanel} from 'components/panels/TopPanel';
@@ -9,7 +10,6 @@ import {Utils} from 'utils/functions';
 import {LinkButton} from 'components/buttons';
 import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import { hot } from 'react-hot-loader/root';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import _truncate from "lodash/truncate";
