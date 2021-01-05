@@ -15,7 +15,7 @@ import {ModalButton} from "components/dialog/ModalButton";
 import withPageWrapper from 'components/general/with-page-wrapper';
 
 import type {ProjectType} from '../shared/type/project.type';
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import _last from "lodash/last";
 import _groupBy from "lodash/groupBy";
 import useRoles from "core/auth/use-roles";

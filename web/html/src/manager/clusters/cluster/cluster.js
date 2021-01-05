@@ -1,5 +1,5 @@
 // @flow
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import * as React from 'react';
 import {useEffect, useState} from 'react';
