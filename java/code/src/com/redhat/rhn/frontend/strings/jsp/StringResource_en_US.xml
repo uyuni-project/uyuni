@@ -9636,7 +9636,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.summary2">
-        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_blank" rel="noreferrer noopener"&gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
