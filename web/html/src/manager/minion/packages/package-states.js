@@ -1,4 +1,5 @@
 // @flow
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {useEffect, useState, useRef} from "react";
 import {useImmer} from 'use-immer';
@@ -7,7 +8,6 @@ import {InnerPanel} from 'components/panels/InnerPanel';
 import {TextField} from "components/fields";
 import {Messages} from "components/messages";
 import withPageWrapper from "components/general/with-page-wrapper";
-import { hot } from 'react-hot-loader/root';
 import {showErrorToastr} from "components/toastr/toastr";
 import usePackageStatesApi from "./use-package-states.api";
 import type {

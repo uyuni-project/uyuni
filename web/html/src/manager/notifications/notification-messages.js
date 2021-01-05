@@ -1,6 +1,7 @@
 /* eslint-disable */
 "use strict";
 
+import { hot } from 'react-hot-loader/root';
 import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
 import * as React from 'react';
 import { Messages as MessageContainer } from 'components/messages';
@@ -15,7 +16,6 @@ import { TopPanel } from 'components/panels/TopPanel';
 import escapeHtml from 'html-react-parser';
 import { Dialog } from 'components/dialog/Dialog';
 import { showDialog } from 'components/dialog/util';
-import { hot } from 'react-hot-loader/root';
 
 const _MESSAGE_TYPE = {
   OnboardingFailed: {
