@@ -2,8 +2,8 @@
 
 import type { ActionChain } from 'components/action-schedule';
 
-import * as React from 'react';
 import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
 import { TopPanel } from 'components/panels/TopPanel';
 import { Utils as MessagesUtils } from 'components/messages';
 import { getOrderedItemsFromModel } from 'components/input/FormMultiInput';

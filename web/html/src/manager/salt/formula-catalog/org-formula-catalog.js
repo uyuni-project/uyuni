@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {Table} from "components/table/Table";
 import {Column} from "components/table/Column";
@@ -8,7 +9,6 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Messages } from "components/messages";
 import Network from 'utils/network';
 import withPageWrapper from "../../../components/general/with-page-wrapper";
-import { hot } from 'react-hot-loader/root';
 
 class FormulaCatalog extends React.Component {
     constructor(props) {
