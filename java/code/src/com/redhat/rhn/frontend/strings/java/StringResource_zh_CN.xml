@@ -2961,7 +2961,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
-        <target state="translated">与组协作</target>
+        <target state="translated">使用组</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.errata" xml:space="preserve">
         <source>Delete Patch</source>
