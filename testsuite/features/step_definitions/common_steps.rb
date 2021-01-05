@@ -875,11 +875,10 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     # Ubuntu minion clients need more time to finish all onboarding events
     node = get_target(host)
     _os_version, os_family = get_os_version(node)
-    onboarding_timeout = os_family.include?('ubuntu') ? DEFAULT_TIMEOUT * 2 : DEFAULT_TIMEOUT
     steps %(
-      And I wait at most #{onboarding_timeout} seconds until event "Hardware List Refresh" is completed
-      And I wait at most #{onboarding_timeout} seconds until event "Apply states" is completed
-      And I wait at most #{onboarding_timeout} seconds until event "Package List Refresh" is completed
+      And I wait at most 500 seconds until event "Hardware List Refresh" is completed
+      And I wait at most 250 seconds until event "Apply states" is completed
+      And I wait at most 250 seconds until event "Package List Refresh" is completed
     )
   end
 end
