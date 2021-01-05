@@ -2907,7 +2907,7 @@
       </trans-unit>
       <trans-unit id="General" xml:space="preserve">
           <source>General</source>
-        <target state="translated">一般</target>
+        <target state="translated">常规</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
