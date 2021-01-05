@@ -8,7 +8,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Messages } from "components/messages";
 import Network from 'utils/network';
 import withPageWrapper from "../../../components/general/with-page-wrapper";
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 
 class FormulaCatalog extends React.Component {
     constructor(props) {
