@@ -1,4 +1,4 @@
-- Fix inconsistent HMR and key usage bug (bsc#1180580)
+- Fix Package States page display error (bsc#1180580)
 - Fixed variable installation location.
 - Drop the ssl_available option (SSL is always present)
 - Prevent deletion of CLM environments if they're used in an autoinstallation
