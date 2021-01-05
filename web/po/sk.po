@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2021-01-05 10:38+0000\n"
+"PO-Revision-Date: 2021-01-05 23:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1139,6 +1139,8 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
+"Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
+"aktuálne údaje."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
@@ -3511,6 +3513,8 @@ msgid ""
 "Session expired, please reload the page to receive notifications in real-"
 "time."
 msgstr ""
+"Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste dostávali "
+"upozornenia v reálnom čase."
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
@@ -3619,6 +3623,8 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
 msgstr ""
+"Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste spustili príkaz v "
+"systémoch."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
@@ -4728,11 +4734,11 @@ msgstr ""
 
 #: ../html/src/utils/network.js:55
 msgid "Session expired, please reload the page."
-msgstr ""
+msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku."
 
 #: ../html/src/utils/network.js:59
 msgid "Resource not found."
-msgstr ""
+msgstr "Zdroj sa nenašiel."
 
 #: ../html/src/utils/network.js:63
 msgid "HTTP Error code "
