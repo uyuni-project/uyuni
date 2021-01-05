@@ -8,7 +8,7 @@ import {Table} from 'components/table/Table';
 import {Utils} from 'utils/functions';
 import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import FilterEdit from "./filter-edit";
 import {mapResponseToFilterForm} from "./filter.utils";
 import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";

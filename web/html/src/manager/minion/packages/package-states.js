@@ -7,7 +7,7 @@ import {InnerPanel} from 'components/panels/InnerPanel';
 import {TextField} from "components/fields";
 import {Messages} from "components/messages";
 import withPageWrapper from "components/general/with-page-wrapper";
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import {showErrorToastr} from "components/toastr/toastr";
 import usePackageStatesApi from "./use-package-states.api";
 import type {
@@ -198,10 +198,8 @@ const PackageStates = ({serverId}: PropsType) => {
   const buttons = [
     <AsyncButton id="save" action={save} text={t("Save")} disabled={!isApplyButtonDisabled}
                  key={"save"}/>,
-    <span {...(isApplyButtonDisabled) ? {title: t("Please save all your changes before applying!")} : {}}>
-      <AsyncButton id="apply" action={applyPackageState} text={t("Apply changes")}
-                   disabled={isApplyButtonDisabled} key={"apply"}
-      />
+    <span {...(isApplyButtonDisabled) ? {title: t("Please save all your changes before applying!")} : {}} key="apply">
+      <AsyncButton id="apply" action={applyPackageState} text={t("Apply changes")} disabled={isApplyButtonDisabled} />
     </span>
   ];
 

@@ -6,7 +6,7 @@ import TopPanelButtons from "./top-panel-buttons";
 import PropertiesCreate from "../shared/components/panels/properties/properties-create";
 import {showErrorToastr} from "components/toastr/toastr";
 import withPageWrapper from 'components/general/with-page-wrapper';
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
