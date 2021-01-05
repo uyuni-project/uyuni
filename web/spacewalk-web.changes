@@ -1,4 +1,4 @@
-- Fix inconsistent HMR and key usage bug (bsc#1180580)
+- Fix Package States page display error (bsc#1180580)
 - Fix incorrect password autocompletions (bsc#1148357)
 - Migrate CommonJS based React components to ES6
 - Prevent deletion of CLM environments if they're used in an autoinstallation
