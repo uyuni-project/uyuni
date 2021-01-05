@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-25 10:58+0100\n"
-"PO-Revision-Date: 2020-12-17 20:26+0000\n"
+"PO-Revision-Date: 2021-01-05 19:38+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/cs/>\n"
@@ -991,7 +991,7 @@ msgstr "Chyba"
 
 #: ../src/up2date_client/rhnreg_constants.py:307
 msgid "Next"
-msgstr "Vpřed"
+msgstr "Další"
 
 #: ../src/up2date_client/rhnreg_constants.py:308
 msgid "Back"
