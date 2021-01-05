@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2021-01-04 12:38+0000\n"
+"PO-Revision-Date: 2021-01-05 10:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -740,19 +740,19 @@ msgstr "Zakázané"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "The server uses "
-msgstr ""
+msgstr "Server používa "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "Prometheus"
-msgstr ""
+msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "Refer to the "
-msgstr ""
+msgstr "Pozrite si "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "documentation"
-msgstr ""
+msgstr "dokumentácia"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:171
 #: ../html/src/manager/admin/config/monitoring-admin.js:180
@@ -781,28 +781,28 @@ msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:234
 msgid "General"
-msgstr ""
+msgstr "Všeobecné"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Bootstrap Script"
-msgstr ""
+msgstr "Skript Bootstrap"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
 msgid "Organizations"
-msgstr ""
+msgstr "Organizácie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:233
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
-msgstr ""
+msgstr "Reštart"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:235
 msgid "Bare-metal systems"
-msgstr ""
+msgstr "Systémy Bare-metal"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:236
 #: ../html/src/manager/admin/config/monitoring-admin.js:241
@@ -3399,7 +3399,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
-msgstr ""
+msgstr "Vytvorenie repozitára Bootstrap zlyhalo"
 
 #: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
@@ -3833,7 +3833,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
