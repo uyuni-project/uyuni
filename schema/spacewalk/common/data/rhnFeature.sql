@@ -115,3 +115,6 @@ values (sequence_nextval('rhn_feature_seq'), 'ftr_system_lock', 'Lock System',
 insert into rhnFeature (id, label, name, created, modified)
 values (sequence_nextval('rhn_feature_seq'), 'ftr_system_audit', 'Audit System',
         current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_package_lock', 'Lock Packages',
+        current_timestamp, current_timestamp);
