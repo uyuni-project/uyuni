@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-29 08:37+0000\n"
+"PO-Revision-Date: 2021-01-05 05:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -4259,7 +4259,7 @@ msgstr "内核选项"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:245
 msgid "Graphics"
-msgstr "图形"
+msgstr "显卡"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
