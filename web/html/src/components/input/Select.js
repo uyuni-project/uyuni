@@ -16,6 +16,10 @@ type Props = {
   formatOptionLabel?: (option: Object, meta: Object) => React.Node,
   /** Placeholder for the select value */
   placeholder?: React.Node,
+  /** whether the component's data is loading or not (async) */
+  isLoading?: boolean,
+  /** text to display when there are no options to list */
+  emptyText: string | null,
   /** Set to true to allow removing the selected value */
   isClearable: boolean,
   /** Value placeholder to display when no value is entered */
@@ -52,12 +56,39 @@ export function Select(props: Props) {
     getOptionValue,
     formatOptionLabel,
     placeholder,
+    isLoading,
+    emptyText,
     isClearable,
     ...propsToPass
   } = props;
   const formContext = React.useContext(FormContext);
   const convertedOptions = (options || []).map(item => typeof item === 'string' ? { label: item, value: item } : item);
   const defaultValue = convertedOptions.find(item => getOptionValue(item) === props.defaultValue);
+
+  const bootstrapStyles = {
+    control: (styles: {}) => ({
+      ...styles,
+      minHeight: '34px',
+      display: 'flex'
+    }),
+    clearIndicator: (styles: {}) => ({
+      ...styles,
+      padding: '2px 8px',
+    }),
+    dropdownIndicator: (styles: {}) => ({
+      ...styles,
+      padding: '2px 8px',
+    }),
+    loadingIndicator: (styles: {}) => ({
+      ...styles,
+      padding: '2px 8px',
+    }),
+    menu: (styles: {}) => ({
+      ...styles,
+      zIndex: 3,
+    }),
+  };
+
   return (
     <InputBase {...propsToPass}>
       {
@@ -85,10 +116,10 @@ export function Select(props: Props) {
               getOptionValue={(option) => option != null ? getOptionValue(option) : ""}
               formatOptionLabel={formatOptionLabel}
               placeholder={placeholder}
+              isLoading={isLoading}
+              noOptionsMessage={() => emptyText}
               isClearable={isClearable}
-              styles={
-                {menu: (provided) => ({...provided, zIndex: 3})}
-              }
+              styles={bootstrapStyles}
             />
           );
         }
@@ -101,6 +132,8 @@ Select.defaultProps = {
   isClearable: false,
   getOptionValue: (option) => option instanceof Object ? option.value : option,
   getOptionLabel: (option) => option instanceof Object ? option.label : option,
+  isLoading: false,
+  emptyText: "No options",
   inputClass: undefined,
   defaultValue: undefined,
   label: undefined,
