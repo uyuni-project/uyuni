@@ -52,6 +52,9 @@ Group:          System/Fhs
 %if 0%{?suse_version} >= 1500
 Requires(pre):  group(www)
 %endif
+%if 0%{?rhel} || 0%{?fedora}
+Requires(pre):  httpd
+%endif
 
 %description common
 Basic filesystem hierarchy for Uyuni server and proxy.
@@ -68,6 +71,9 @@ Requires(pre):  tomcat
 Requires(pre):  salt
 %if 0%{?suse_version} >= 1500
 Requires(pre):  user(wwwrun)
+%endif
+%if 0%{?rhel} || 0%{?fedora}
+Requires(pre):  httpd
 %endif
 
 %description server
