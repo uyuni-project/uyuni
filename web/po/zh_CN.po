@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2021-01-06 08:38+0000\n"
+"PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -2649,11 +2649,11 @@ msgstr "已删除映像储存。"
 
 #: ../html/src/manager/images/image-stores.js:23
 msgid "Image stores have been deleted."
-msgstr "已删除映像储存。"
+msgstr "已删除映像存储区。"
 
 #: ../html/src/manager/images/image-stores.js:120
 msgid "Image Stores"
-msgstr "映像储存"
+msgstr "映像存储区"
 
 #: ../html/src/manager/images/image-stores.js:176
 msgid "Delete Store"
@@ -2673,7 +2673,7 @@ msgstr "您确定要删除选定的储存吗？"
 
 #: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
-msgstr "您确定要删除选定的储存吗？（已选择 {0} 个储存）"
+msgstr "您确定要删除选定的存储区吗？（已选择 {0} 个存储区）"
 
 #: ../html/src/manager/images/image-view.js:282
 msgid "Deleted successfully."
