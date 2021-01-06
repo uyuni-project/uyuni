@@ -10485,7 +10485,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
         <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
-        <target state="translated">分发频道映射定义为客户端根据注册的操作系统和体系结构所选的默认基础频道。这些映射可以被覆盖，但无法删除。</target>
+        <target state="translated">分发频道映射定义为客户端根据注册的操作系统和体系结构所应用的默认基础频道。这些映射可以被覆盖，但无法删除。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
@@ -15345,7 +15345,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="system.event.details.statusPicked Up" xml:space="preserve">
           <source>Picked Up</source>
-        <target state="translated">已选取</target>
+        <target state="translated">已提取</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15373,7 +15373,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="system.event.failwarning" xml:space="preserve">
           <source>Forcibly changing status of Picked Up action is potentially &lt;strong&gt;dangerous&lt;/strong&gt;. Are you sure you want to continue?</source>
-        <target>强制更改 "已选取" 操作状态有可能会带来&lt;strong&gt;风险&lt;/strong&gt;。您确定要继续吗？</target>
+        <target>强制更改 "已提取" 操作状态有可能会带来&lt;strong&gt;风险&lt;/strong&gt;。您确定要继续吗？</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15394,14 +15394,14 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="system.event.details.pickup" xml:space="preserve">
           <source>The client picked up this action on {0}</source>
-        <target state="translated">该客户端在 {0} 选取了此操作</target>
+        <target state="translated">该客户端在 {0} 提取了此操作</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.event.details.notPickedUp" xml:space="preserve">
           <source>This action has not yet been picked up.</source>
-        <target state="translated">此操作尚未被选取。</target>
+        <target state="translated">此操作尚未被提取。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -28499,7 +28499,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
-        <target state="translated">已选取</target>
+        <target state="translated">已提取</target>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync" xml:space="preserve">
         <source>Sync Patches</source>
