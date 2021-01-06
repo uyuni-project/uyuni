@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Class for generating minion pillar data containing general information of minions
@@ -86,6 +87,9 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);
         }
+
+        pillar.add("custom_info", minion.getCustomDataValues().stream()
+                .collect(Collectors.toMap(a -> a.getKey().getLabel(), a -> a.getValue())));
         return Optional.of(pillar);
     }
 

@@ -170,6 +170,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import org.apache.commons.lang3.StringUtils;
@@ -2012,6 +2013,10 @@ public class SystemHandler extends BaseHandler {
                 skippedKeys.add(label);
             }
         }
+
+        server.asMinionServer().ifPresent(minion -> {
+            MinionPillarManager.INSTANCE.generatePillar(minion);
+        });
 
         // If we skipped any keys, we need to throw an exception and let the user know.
         if (skippedKeys.size() > 0) {

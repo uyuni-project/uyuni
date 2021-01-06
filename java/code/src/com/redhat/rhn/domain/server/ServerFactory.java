@@ -40,6 +40,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -115,6 +116,9 @@ public class ServerFactory extends HibernateFactory {
             SINGLETON.removeObject(value);
         }
         server.getCustomDataValues().clear();
+        server.asMinionServer().ifPresent(minion -> {
+           MinionPillarManager.INSTANCE.generatePillar(minion);
+        });
     }
 
     /**
@@ -129,6 +133,9 @@ public class ServerFactory extends HibernateFactory {
         if (value != null) {
             SINGLETON.removeObject(value);
         }
+        server.asMinionServer().ifPresent(minion -> {
+           MinionPillarManager.INSTANCE.generatePillar(minion);
+        });
     }
 
     /**
@@ -682,7 +689,12 @@ public class ServerFactory extends HibernateFactory {
         List<CustomDataValue> values = lookupCustomDataValues(keyIn);
         for (Iterator itr = values.iterator(); itr.hasNext();) {
             CustomDataValue value = (CustomDataValue) itr.next();
+            Server server = value.getServer();
+            server.getCustomDataValues().remove(value);
             SINGLETON.removeObject(value);
+            server.asMinionServer().ifPresent(minion -> {
+                MinionPillarManager.INSTANCE.generatePillar(minion);
+            });
         }
 
         SINGLETON.removeObject(keyIn);

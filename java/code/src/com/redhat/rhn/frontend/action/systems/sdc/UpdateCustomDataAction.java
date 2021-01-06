@@ -27,6 +27,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -134,6 +135,9 @@ public class UpdateCustomDataAction extends RhnAction {
             cdv.setCreator(user);
             cdv.setLastModifier(user);
             request.setAttribute(VAL_PARAM, form.get(VAL_PARAM));
+            server.asMinionServer().ifPresent(minion -> {
+                MinionPillarManager.INSTANCE.generatePillar(minion);
+            });
             return getStrutsDelegate().forwardParams(mapping.findForward("updated"),
                     params);
         }
