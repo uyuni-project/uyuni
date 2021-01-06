@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
@@ -91,9 +91,9 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
   step %(I wait until I see "#{system_name}" text, refreshing the page)
 end
 
-When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
+When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshing the page$/) do |timeout, text|
   next unless has_content?(text)
-  repeat_until_timeout(message: "Text '#{text}' is still visible") do
+  repeat_until_timeout(timeout: timeout.to_i, message: "Text '#{text}' is still visible") do
     break unless has_content?(text)
     begin
       accept_prompt do
@@ -103,6 +103,10 @@ When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text
       # ignored
     end
   end
+end
+
+When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until I do not see "#{text}" text, refreshing the page)
 end
 
 When(/^I wait until I do not see the name of "([^"]*)", refreshing the page$/) do |host|
