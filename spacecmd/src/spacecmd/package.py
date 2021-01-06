@@ -164,7 +164,7 @@ def do_package_search(self, args, doreturn=False):
         # the APIs for searching; this is done because the fuzzy
         # search on the server gives a lot of garbage back
         packages = filter_results(self.get_package_names(True),
-                                  [args], search=True)
+                                  _args, search=True)
 
     if doreturn:
         return packages
