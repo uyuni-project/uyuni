@@ -877,8 +877,8 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     _os_version, os_family = get_os_version(node)
     steps %(
       And I wait at most 500 seconds until event "Hardware List Refresh" is completed
-      And I wait at most 250 seconds until event "Apply states" is completed
-      And I wait at most 250 seconds until event "Package List Refresh" is completed
+      And I wait at most 500 seconds until event "Apply states" is completed
+      And I wait at most 500 seconds until event "Package List Refresh" is completed
     )
   end
 end
