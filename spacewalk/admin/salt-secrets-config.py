@@ -69,5 +69,5 @@ if (not all([os.path.isfile(f) for f in ["/etc/salt/pki/api/salt-api.crt", "/etc
     # Detect CA management tool.
     if os.system("update-ca-certificates"):
         print('Using "update-ca-trust" instead of "update-ca-certificates".')
-        os.system("update-ca-trust")
+        os.system("update-ca-trust extract")
 
