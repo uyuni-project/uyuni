@@ -293,9 +293,7 @@ def do_package_listinstalledsystems(self, args):
         self.help_package_listinstalledsystems()
         return 1
 
-    packages = []
-    for package in args:
-        packages.extend(self.do_package_search(package, True))
+    packages = self.do_package_search(' '.join(args), True)
 
     if not packages:
         logging.warning(_N('No packages found'))
