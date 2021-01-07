@@ -866,9 +866,6 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   if get_client_type(host) == 'traditional'
     get_target(host).run('rhn_check -vvv')
   else
-    # Ubuntu minion clients need more time to finish all onboarding events
-    node = get_target(host)
-    _os_version, os_family = get_os_version(node)
     steps %(
       And I wait at most 500 seconds until event "Hardware List Refresh" is completed
       And I wait at most 500 seconds until event "Apply states" is completed
