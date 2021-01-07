@@ -2990,7 +2990,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/Kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="translated">删除分发包</target>
+        <target state="translated">删除发行套件</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.profile" xml:space="preserve">
         <source>Delete Profile</source>
