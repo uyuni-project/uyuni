@@ -1,3 +1,5 @@
+- Fixed duplicate results when using multiple search criteria (bsc#1180585)
+
 -------------------------------------------------------------------
 Wed Jan 27 12:57:11 CET 2021 - jgonzalez@suse.com
 

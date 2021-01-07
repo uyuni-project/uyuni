@@ -214,6 +214,125 @@ class TestSCPackage:
             exp.pop(0)
         assert not exp
 
+    def test_package_details_multiple_packages(self, shell):
+        """
+        Test do_package_details with two arguments of package names.
+
+        :param shell:
+        :return:
+        """
+        shell.help_package_details = MagicMock()
+        shell.do_package_search = MagicMock(side_effect=[
+            ["emacs-data", "emacs-x11"]
+        ])
+        shell.get_package_id = MagicMock(return_value=[
+            "id1" # IDs are bogus here
+        ])
+        shell.client.packages.listProvidingChannels = MagicMock(side_effect=[
+            [
+                {
+                    "label": "base-channel"
+                },
+                {
+                    "label": "emacs-channel"
+                },
+            ],
+            [
+                {
+                    "label": "base-channel"
+                },
+                {
+                    "label": "emacs-channel"
+                },
+                {
+                    "label": "x11-stuff-channel"
+                },
+            ]
+        ])
+        shell.client.system.listSystemsWithPackage = MagicMock(return_value=[
+            "system-a", "system-b", "system-c"
+        ])
+        shell.client.packages.getDetails = MagicMock(side_effect=[
+            {
+                "name": "emacs-data", "version": "24.5.7", "release": "42.1", "epoch": "2",
+                "arch_label": "x86", "file": "emacs-x11.rpm", "path": "/tmp", "size": "22000",
+                "checksum_type": "md5", "checksum": "9d188ed99c1114eba7a8e499798da47c",
+                "description": "Better editor than Vim, using X11"
+            },
+            {
+                "name": "emacs-x11", "version": "24.5.7", "release": "42.1", "epoch": "2",
+                "arch_label": "x86", "file": "emacs-x11.rpm", "path": "/tmp", "size": "22000",
+                "checksum_type": "md5", "checksum": "9d188ed99c1114eba7a8e499798da47c",
+                "description": "Better editor than Vim, using X11"
+            },
+        ])
+
+        shell.SEPARATOR = "###"
+
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.package.print", mprint) as prn, \
+                patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_details(shell, "emacs-data emacs-x11")
+
+        assert not shell.help_package_details.called
+        assert not logger.warning.called
+        assert shell.do_package_search.called
+        assert shell.get_package_id.called
+        assert shell.client.packages.listProvidingChannels.called
+        assert shell.client.system.listSystemsWithPackage.called
+
+        exp = [
+            'Name:    emacs-data',
+            'Version: 24.5.7',
+            'Release: 42.1',
+            'Epoch:   2',
+            'Arch:    x86',
+            '',
+            'File:    emacs-x11.rpm',
+            'Path:    /tmp',
+            'Size:    22000',
+            'MD5:     9d188ed99c1114eba7a8e499798da47c',
+            '',
+            'Installed Systems: 3',
+            '',
+            'Description',
+            '-----------',
+            'Better editor than Vim, using X11',
+            '',
+            'Available From Channels',
+            '-----------------------',
+            'base-channel\nemacs-channel',
+            '',
+            '###',
+            'Name:    emacs-x11',
+            'Version: 24.5.7',
+            'Release: 42.1',
+            'Epoch:   2',
+            'Arch:    x86',
+            '',
+            'File:    emacs-x11.rpm',
+            'Path:    /tmp',
+            'Size:    22000',
+            'MD5:     9d188ed99c1114eba7a8e499798da47c',
+            '',
+            'Installed Systems: 3',
+            '',
+            'Description',
+            '-----------',
+            'Better editor than Vim, using X11',
+            '',
+            'Available From Channels',
+            '-----------------------',
+            'base-channel\nemacs-channel\nx11-stuff-channel',
+            ''
+        ]
+        for call in mprint.call_args_list:
+            assert_expect([call], next(iter(exp)))
+            exp.pop(0)
+        assert not exp
+
     def test_package_search_noargs(self, shell):
         """
         Test do_package_search without arguments.
@@ -823,6 +942,56 @@ class TestSCPackage:
 
         assert_list_args_expect(mprint.call_args_list, expectations)
 
+    def test_package_listerrata_multiple_packages(self, shell):
+        """
+        Test do_package_listerrata with two package names.
+
+            :param shell:
+            :param args:
+        """
+        shell.do_package_search = MagicMock(return_value=[
+            "xemacs", "emacs-nox"
+        ])
+        shell.client.packages.listProvidingErrata = MagicMock(side_effect=[
+            [
+                {"advisory": "RHBA-2019:4231"},
+                {"advisory": "RHBA-2019:4232"},
+                {"advisory": "RHBA-2019:4233"},
+            ],
+            [
+                {"advisory": "CVE-2018:152-5"}
+            ]
+        ])
+        shell.get_package_id = MagicMock(return_value=[
+            "bogus-package-id"
+        ])
+        shell.help_package_listerrata = MagicMock()
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+                patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listerrata(shell, "xemacs emacs-nox")
+
+        assert not logger.warning.called
+        assert not shell.help_package_listerrata.called
+        assert shell.client.packages.listProvidingErrata.called
+        assert shell.get_package_id.called
+        assert mprint.called
+        assert shell.do_package_search.called
+
+        expectations = [
+            'xemacs',
+            '------',
+            'RHBA-2019:4231\nRHBA-2019:4232\nRHBA-2019:4233',
+            '----------',
+            'emacs-nox',
+            '---------',
+            'CVE-2018:152-5'
+        ]
+
+        assert_list_args_expect(mprint.call_args_list, expectations)
+
     def test_package_listdependencies_noargs(self, shell):
         """
         Test do_packge_listdependencies without arguments.
@@ -1002,3 +1171,114 @@ class TestSCPackage:
             "----------"]
         assert_list_args_expect(mprint.call_args_list, expectations=expectations)
         assert_expect(logger.warning.call_args_list, "vim is not a valid package")
+
+    def test_package_listdependencies_multiple_packages(self, shell):
+        """
+        Test do_package_listdependencies with two packages
+            :param self:
+            :param shell:
+        """
+        shell.do_package_search = MagicMock(return_value=[
+            "emacs", "xemacs", "vim", "emacs-x11"
+        ])
+        shell.help_package_listdependencies = MagicMock()
+        shell.get_package_id = MagicMock(side_effect=[
+            ["1"], ["2"], ["3"], ["4"]
+        ])
+        shell.client.packages.list_dependencies = MagicMock(side_effect=[
+            [
+                {
+                    "dependency": "libxml2.so.2",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "> 1.0"
+                },
+                {
+                    "dependency": "mimehandler(application/x-shellscript)",
+                    "dependency_type": "provides",
+                    "dependency_modifier": ""
+                },
+            ],
+            [
+                {
+                    "dependency": "libasound.so.2",
+                    "dependency_type": "requires",
+                    "dependency_modifier": ""
+                },
+                {
+                    "dependency": "emacs_program",
+                    "dependency_type": "provides",
+                    "dependency_modifier": "= 24.3-19.2"
+                },
+            ],
+            [
+                {
+                    "dependency": "libacl.so.1",
+                    "dependency_type": "requires",
+                    "dependency_modifier": ""
+                },
+                {
+                    "dependency": "libc.so.6",
+                    "dependency_type": "requires",
+                    "dependency_modifier": ""
+                },
+            ],
+            [
+                {
+                    "dependency": "libc.so.6",
+                    "dependency_type": "requires",
+                    "dependency_modifier": ""
+                },
+                {
+                    "dependency": "rpmlib (CompressedFileNames)",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "<= 3.0.4-1"
+                },
+                {
+                    "dependency": "rpmlib (PayloadFilesHavePrefix)",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "<= 4.0-1"
+                },
+                {
+                    "dependency": "rpmlib (PayloadIsLzma)",
+                    "dependency_type": "requires",
+                    "dependency_modifier": "<= 4.4.6-1"
+                },
+            ],
+        ])
+
+        mprint = MagicMock()
+        logger = MagicMock()
+        with patch("spacecmd.package.print", mprint) as prn, \
+                patch("spacecmd.package.logging", logger) as lgr:
+            spacecmd.package.do_package_listdependencies(shell, "emacs vim")
+
+        assert not shell.help_package_listdependencies.called
+        assert shell.client.packages.list_dependencies.called
+        assert mprint.called
+        assert shell.do_package_search.called
+        assert not logger.warning.called
+        assert shell.get_package_id.called
+
+        expectations = [
+            "Package Name: emacs",
+            "Dependency: libxml2.so.2 Type: requires Modifier: > 1.0",
+            "Dependency: mimehandler(application/x-shellscript) Type: provides Modifier: ",
+            "----------",
+            "----------",
+            "Package Name: xemacs",
+            "Dependency: libasound.so.2 Type: requires Modifier: ",
+            "Dependency: emacs_program Type: provides Modifier: = 24.3-19.2",
+            "----------",
+            "----------",
+            "Package Name: vim",
+            "Dependency: libacl.so.1 Type: requires Modifier: ",
+            "Dependency: libc.so.6 Type: requires Modifier: ",
+            "----------",
+            "----------",
+            "Package Name: emacs-x11",
+            "Dependency: libc.so.6 Type: requires Modifier: ",
+            "Dependency: rpmlib (CompressedFileNames) Type: requires Modifier: <= 3.0.4-1",
+            "Dependency: rpmlib (PayloadFilesHavePrefix) Type: requires Modifier: <= 4.0-1",
+            "Dependency: rpmlib (PayloadIsLzma) Type: requires Modifier: <= 4.4.6-1",
+            "----------"]
+        assert_list_args_expect(mprint.call_args_list, expectations=expectations)

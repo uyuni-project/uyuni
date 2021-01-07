@@ -61,9 +61,7 @@ def do_package_details(self, args):
         self.help_package_details()
         return
 
-    packages = []
-    for package in args:
-        packages.extend(self.do_package_search(' '.join(args), True))
+    packages = self.do_package_search(' '.join(args), True)
 
     if not packages:
         logging.warning(_N('No packages found'))
@@ -344,9 +342,7 @@ def do_package_listerrata(self, args):
         self.help_package_listerrata()
         return 1
 
-    packages = []
-    for package in args:
-        packages.extend(self.do_package_search(' '.join(args), True))
+    packages = self.do_package_search(' '.join(args), True)
 
     if not packages:
         logging.warning(_N('No packages found'))
@@ -388,9 +384,7 @@ def do_package_listdependencies(self, args):
         self.help_package_listdependencies()
         return 1
 
-    packages = []
-    for package in args:
-        packages.extend(self.do_package_search(' '.join(args), True))
+    packages = self.do_package_search(' '.join(args), True)
 
     if not packages:
         logging.warning(_N('No packages found'))
