@@ -22,6 +22,8 @@ type Props = {
   emptyText: string | null,
   /** Set to true to allow removing the selected value */
   isClearable: boolean,
+  /** Set to true to allow multiple selected values */
+  isMulti: boolean,
   /** Value placeholder to display when no value is entered */
   inputClass?: string,
   /** name of the field to map in the form model */
@@ -97,10 +99,15 @@ export function Select(props: Props) {
           onBlur,
         }) => {
           const onChange = (newValue) => {
-            setValue(props.name, getOptionValue(newValue));
+            const value = Array.isArray(newValue) ?
+              newValue.map(item => getOptionValue(item)) :
+              getOptionValue(newValue);
+            setValue(props.name, value);
           };
           const value = (formContext.model || {})[props.name];
-          const valueOption = convertedOptions.find(option => getOptionValue(option) === value);
+          const optionFinder = (needle) => convertedOptions.find(option => getOptionValue(option) === needle);
+          const valueOption = Array.isArray(value) ?
+            value.map(item => optionFinder(item)) : optionFinder(value);
           return (
             <ReactSelect
               className={inputClass ? ` ${inputClass}` : ''}
@@ -120,6 +127,7 @@ export function Select(props: Props) {
               noOptionsMessage={() => emptyText}
               isClearable={isClearable}
               styles={bootstrapStyles}
+              isMulti={props.isMulti}
             />
           );
         }
@@ -144,4 +152,5 @@ Select.defaultProps = {
   disabled: false,
   invalidHint: undefined,
   onChange: undefined,
+  isMulti: false,
 };
