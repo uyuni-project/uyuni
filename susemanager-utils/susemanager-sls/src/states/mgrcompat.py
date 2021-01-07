@@ -54,7 +54,6 @@ def module_run(**kwargs):
     This function execute the Salt "module.run" state passing the arguments
     in the right way according to the supported syntax depending on the Salt
     minion version and configuration
-
     '''
 
     # The new syntax will be used as the default
@@ -74,18 +73,8 @@ def module_run(**kwargs):
         use_new_syntax = False
 
     if use_new_syntax:
-        log.debug("Minion is using the new syntax for 'module.run' state. Tailoring parameters.")
-        log.debug("Old parameters: {}".format(kwargs))
-        old_name = kwargs.pop('name')
-        new_kwargs = _tailor_kwargs_to_new_syntax(old_name, **kwargs)
-        log.debug("New parameters for 'module.run' state: {}".format(new_kwargs))
+       ret = module._run(**kwargs)
     else:
-        new_kwargs = kwargs
+       ret = module.run(**kwargs)
 
-    ret = module.run(**new_kwargs)
-    if use_new_syntax:
-        if ret['changes']:
-            changes = ret['changes'].pop(old_name)
-            ret['changes']['ret'] = changes
-        ret['name'] = old_name
     return ret
