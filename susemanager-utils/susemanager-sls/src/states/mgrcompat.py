@@ -54,27 +54,38 @@ def module_run(**kwargs):
     This function execute the Salt "module.run" state passing the arguments
     in the right way according to the supported syntax depending on the Salt
     minion version and configuration
+
     '''
 
     # The new syntax will be used as the default
     use_new_syntax = True
 
-    if __grains__['saltversioninfo'][0] > 3000:
-        # Only new syntax - default behavior for Sodium and future releases
+    if __grains__['saltversioninfo'][0] > 3002:
+        # Only new syntax - default behavior for Phosphorus and future releases
         pass
     elif __grains__['saltversioninfo'][0] > 2016 and 'module.run' in __opts__.get('use_superseded', []):
-        # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3, 2019.2 and 3000.x
+        # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3, 2019.2, 3000.x and 3002.x
         pass
     elif __grains__['saltversioninfo'][0] > 2016 and not 'module.run' in __opts__.get('use_superseded', []):
-        # Old syntax - default behavior for 2018.3, 2019.2 and 3000.x
+        # Old syntax - default behavior for 2018.3, 2019.2, 3000.x and 3002.x
         use_new_syntax = False
     elif __grains__['saltversioninfo'][0] <= 2016:
         # Only old syntax - the new syntax is not available for 2016.11 and 2015.8
         use_new_syntax = False
 
     if use_new_syntax:
-       ret = module._run(**kwargs)
+        log.debug("Minion is using the new syntax for 'module.run' state. Tailoring parameters.")
+        log.debug("Old parameters: {}".format(kwargs))
+        old_name = kwargs.pop('name')
+        new_kwargs = _tailor_kwargs_to_new_syntax(old_name, **kwargs)
+        log.debug("New parameters for 'module.run' state: {}".format(new_kwargs))
     else:
-       ret = module.run(**kwargs)
+        new_kwargs = kwargs
 
+    ret = module.run(**new_kwargs)
+    if use_new_syntax:
+        if ret['changes']:
+            changes = ret['changes'].pop(old_name)
+            ret['changes']['ret'] = changes
+        ret['name'] = old_name
     return ret
