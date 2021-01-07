@@ -40,7 +40,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.CompressionUtil;
-import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.DistChannelMap;
@@ -758,40 +757,6 @@ public class PackageManager extends BaseManager {
         }
     }
 
-
-    /**
-     * Compares an evr to another evr.
-     * @param epoch1 Epoch 1
-     * @param version1 Version 1
-     * @param release1 Release 1
-     * @param epoch2 Epoch 2
-     * @param version2 Version 2
-     * @param release2 Release 2
-     * @return {@literal Returns 1 if EVR1 > EVR2, -1 if EVR1 < EVR2,
-     *  and 0 if EVR1 == EVR2.}
-     */
-    public static int verCmp(String epoch1, String version1, String release1,
-                             String epoch2, String version2, String release2) {
-
-        // Compare the Epochs
-        int c = compareEpochs(epoch1, epoch2);
-        if (c != 0) {
-            return c;
-        }
-
-        // Compare the Versions
-        RpmVersionComparator cmp = new RpmVersionComparator();
-        c = cmp.compare(StringUtils.defaultString(version1),
-                        StringUtils.defaultString(version2));
-        if (c != 0) {
-            return c;
-        }
-
-        // Compare the Releases
-        return cmp.compare(StringUtils.defaultString(release1),
-                           StringUtils.defaultString(release2));
-    }
-
     /**
      * Deletes a package from the system
      * @param user calling user
@@ -867,43 +832,6 @@ public class PackageManager extends BaseManager {
                     "cleanup_package_" + CLEANUP_QUERIES[x]);
             writeMode.executeUpdate(params);
         }
-    }
-
-    /**
-     * Helper method to compare two epoch strings according to the algorithm contained
-     * in: modules/rhn/RHN/DB/Package.pm --> sub vercmp
-     * @param epoch1 Epoch 1
-     * @param epoch2 Epoch 2
-     * @return Returns 1 if epoch1 > epoch2, -1 if epoch1 < epoch2,
-     * and 0 if epoch1 == epoch2
-     */
-    private static int compareEpochs(String epoch1, String epoch2) {
-        //Trim the epoch strings to null
-        epoch1 = StringUtils.trimToNull(epoch1);
-        epoch2 = StringUtils.trimToNull(epoch2);
-
-        //Check the epochs
-        Integer e1 = null;
-        Integer e2 = null;
-        if (epoch1 != null && StringUtils.isNumeric(epoch1)) {
-            e1 = Integer.valueOf(epoch1);
-        }
-        if (epoch2 != null && StringUtils.isNumeric(epoch2)) {
-            e2 = Integer.valueOf(epoch2);
-        }
-        //handle null cases
-        if (e1 != null && e2 == null) {
-            return 1;
-        }
-        if (e1 == null && e2 != null) {
-            return -1;
-        }
-        if (e1 == null && e2 == null) {
-            return 0;
-        }
-
-        // If we made it here, it is safe to do an Integer comparison between the two
-        return e1.compareTo(e2);
     }
 
     private static void schedulePackageFileForDeletion(String fileName) {

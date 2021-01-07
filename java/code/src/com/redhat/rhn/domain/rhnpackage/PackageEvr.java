@@ -29,7 +29,6 @@ public class PackageEvr implements Comparable<PackageEvr> {
 
     private static final RpmVersionComparator RPMVERCMP = new RpmVersionComparator();
     private static final DebVersionComparator DEBVERCMP = new DebVersionComparator();
-    private static final Integer ZERO = 0;
 
     private Long id;
     private String epoch;
@@ -191,7 +190,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
         // does almost the same, but has a subtle difference when it comes
         // to null epochs (the RHN::DB::Package version does not treat null
         // epochs the same as epoch == 0, but sorts them as Integer.MIN_VALUE)
-        int result = epochAsInteger().compareTo(other.epochAsInteger());
+        int result = Integer.compare(epochAsInteger(), other.epochAsInteger());
         if (result != 0) {
             return result;
         }
@@ -209,7 +208,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
     }
 
     private int debCompareTo(PackageEvr other) {
-        int result = epochAsInteger().compareTo(other.epochAsInteger());
+        int result = Integer.compare(epochAsInteger(), other.epochAsInteger());
         if (result != 0) {
             return result;
         }
@@ -248,12 +247,13 @@ public class PackageEvr implements Comparable<PackageEvr> {
         }
     }
 
-    private Integer epochAsInteger() {
-        Integer result = ZERO;
-        if (getEpoch() != null) {
-            result = Integer.valueOf(getEpoch());
+    private int epochAsInteger() {
+        if (getEpoch() == null) {
+            return 0;
         }
-        return result;
+        else {
+            return Integer.parseInt(getEpoch());
+        }
     }
 
     /**
