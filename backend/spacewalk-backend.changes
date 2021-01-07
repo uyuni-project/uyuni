@@ -1,3 +1,5 @@
+- Truncate author name in the changelog (bsc#1180285)
+
 -------------------------------------------------------------------
 Tue Jan 12 12:56:04 CET 2021 - jgonzalez@suse.com
 
