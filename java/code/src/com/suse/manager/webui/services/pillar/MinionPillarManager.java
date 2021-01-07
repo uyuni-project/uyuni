@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.log4j.Logger;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -79,6 +80,13 @@ public class MinionPillarManager {
      */
     public void removePillar(String minionId) {
         this.pillarFileManagers.stream().forEach(m -> m.removePillarFile(minionId));
+    }
+
+    /**
+     * @param pillarDataPathIn the root path where pillar files are generated
+     */
+    public void setPillarDataPath(Path pillarDataPathIn) {
+        this.pillarFileManagers.stream().forEach(m -> m.setPillarDataPath(pillarDataPathIn));
     }
 
 }

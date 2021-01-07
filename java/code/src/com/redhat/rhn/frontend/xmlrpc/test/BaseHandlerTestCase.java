@@ -26,6 +26,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.nio.file.Files;
@@ -88,6 +89,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         minionGeneralPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
+        MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 
