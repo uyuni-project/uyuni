@@ -65,6 +65,7 @@ const ListFilters = (props: Props) => {
         data={displayedFilters}
         identifier={row => row.filter_name}
         initialSortColumnKey="filter_name"
+        initialItemsPerPage={userPrefPageSize}
         searchField={(
           <SearchField
             filter={searchData}
