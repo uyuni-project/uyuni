@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-07 10:11+0100\n"
-"PO-Revision-Date: 2021-01-06 15:38+0000\n"
+"PO-Revision-Date: 2021-01-07 17:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -868,6 +868,9 @@ msgid ""
 "your                   Organization credentials (Mirror credentials) as well "
 "as your SUSE subscriptions."
 msgstr ""
+"Produkty zobrazené v tomto zozname sú priamo spojené s "
+"vašimi                   prihlasovacími údajmi organizácie (prihlasovacími "
+"údajmi zrkadla) ako aj vaším predplatným SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.js:329
 msgid ""
@@ -875,31 +878,36 @@ msgid ""
 "correct                   Organization credentials in the previous wizard "
 "step."
 msgstr ""
+"Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali "
+"správne                   prihlasovacie údaje organizácie v predchádzajúcom "
+"kroku sprievodcu."
 
 #: ../html/src/manager/admin/setup/products/products.js:338
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
+"Tento server je nakonfigurovaný ako podriadený Inter-Server Synchronisation "
+"(ISS). Produkty je možné spravovať iba na hlavnom serveri ISS."
 
 #: ../html/src/manager/admin/setup/products/products.js:351
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
-msgstr ""
+msgstr "Predchádzajúce"
 
 #: ../html/src/manager/admin/setup/products/products.js:401
 msgid "Filter by architecture"
-msgstr ""
+msgstr "Filtrovať podľa architektúry"
 
 #: ../html/src/manager/admin/setup/products/products.js:488
 msgid "Filter by product Description"
-msgstr ""
+msgstr "Filtrovať podľa popisu produktu"
 
 #: ../html/src/manager/admin/setup/products/products.js:538
 msgid "Product Description"
-msgstr ""
+msgstr "Popis produktu"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
@@ -907,15 +915,15 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:197
 msgid "Architecture"
-msgstr ""
+msgstr "Architektúra"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 msgid "Arch"
-msgstr ""
+msgstr "Arch"
 
 #: ../html/src/manager/admin/setup/products/products.js:540
 msgid "Channels"
-msgstr ""
+msgstr "Kanály"
 
 #: ../html/src/manager/admin/setup/products/products.js:704
 msgid " channels sync failed"
@@ -1424,7 +1432,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
-msgstr ""
+msgstr "Popis"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:97
@@ -1443,7 +1451,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:59
 msgid "Filter by description"
-msgstr ""
+msgstr "Filtrovať podľa popisu"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:82
 msgid "Matched/Total"
@@ -1523,7 +1531,7 @@ msgstr "Označenie:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:82
 msgid "Description:"
-msgstr ""
+msgstr "Popis:"
 
 #: ../html/src/manager/clusters/add-cluster/select-provider.js:21
 msgid "Available cluster providers"
@@ -3878,6 +3886,9 @@ msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
 msgstr ""
+"Systémy, ktoré sa majú spravovať, môžete pridať iba poskytnutím "
+"prihlasovacích údajov SSH. {0} pripraví systém vzdialene a vykoná "
+"registráciu."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
 msgid "e.g., host.domain.com"
@@ -4735,7 +4746,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
-msgstr ""
+msgstr "Rozdeliť do skupín"
 
 #: ../html/src/utils/network.js:55
 msgid "Session expired, please reload the page."
