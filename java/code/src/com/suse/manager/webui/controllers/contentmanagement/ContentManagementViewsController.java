@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.contentmanagement;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTemplate;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -68,10 +69,11 @@ public class ContentManagementViewsController {
         get("/manager/contentmanagement/project/:label",
                 withCsrfToken(withRolesTemplate(ContentManagementViewsController::editProjectView)), jade);
         get("/manager/contentmanagement/projects",
-                withRolesTemplate(ContentManagementViewsController::listProjectsView), jade);
+                withUserPreferences(withRolesTemplate(ContentManagementViewsController::listProjectsView)), jade);
 
         get("/manager/contentmanagement/filters",
-                withCsrfToken(withRolesTemplate(ContentManagementViewsController::listFiltersView)), jade);
+                withUserPreferences(withCsrfToken(withRolesTemplate(
+                        ContentManagementViewsController::listFiltersView))), jade);
     }
 
     /**
