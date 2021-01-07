@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-16 10:31+0100\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -102,7 +102,7 @@ msgid "An error occurred on save."
 msgstr ""
 
 #: ../html/src/components/config-channels.js:277
-#: ../html/src/manager/minion/packages/package-states.js:273
+#: ../html/src/manager/minion/packages/package-states.js:271
 msgid "No current changes."
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:167
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:18
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:587
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 
 #: ../html/src/components/config-channels.js:379
 #: ../html/src/components/config-channels.js:408
-#: ../html/src/manager/minion/packages/package-states.js:242
+#: ../html/src/manager/minion/packages/package-states.js:240
 msgid "Search"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgstr ""
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
-#: ../html/src/components/panels/CreatorPanel.js:106
+#: ../html/src/components/panels/CreatorPanel.js:107
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:166
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:131
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
@@ -237,10 +237,10 @@ msgid "Cancel"
 msgstr ""
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
-#: ../html/src/components/panels/CreatorPanel.js:92
+#: ../html/src/components/panels/CreatorPanel.js:93
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:110
+#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
-#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.js:106
 #: ../html/src/manager/images/image-profiles.js:166
 #: ../html/src/manager/images/image-stores.js:109
@@ -318,7 +318,7 @@ msgid ""
 msgstr ""
 
 #: ../html/src/components/formula-selection.js:234
-#: ../html/src/components/panels/CreatorPanel.js:117
+#: ../html/src/components/panels/CreatorPanel.js:118
 #: ../html/src/manager/clusters/cluster/cluster-config.js:81
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:174
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:144
@@ -457,7 +457,7 @@ msgstr ""
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:44
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:969
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:492
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
 msgstr ""
 
@@ -547,8 +547,8 @@ msgid "Select All"
 msgstr ""
 
 #: ../html/src/components/table/TableDataHandler.js:290
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:547
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:271
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
@@ -573,19 +573,19 @@ msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:10
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
 msgid "Base channel not found or not authorized."
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:11
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
 msgid "Child channel not found or not authorized."
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:12
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:30
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
 msgid "Invalid channel id"
 msgstr ""
 
@@ -842,7 +842,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.js:351
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:580
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
 msgstr ""
 
@@ -902,7 +902,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.js:135
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:473
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
 msgstr ""
 
@@ -910,7 +910,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.js:166
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:515
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
 msgstr ""
 
@@ -1496,14 +1496,14 @@ msgstr ""
 #: ../html/src/manager/images/image-build.js:178
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:338
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "scheduled"
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.js:25
 #: ../html/src/manager/images/image-build.js:175
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:943
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:335
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
 msgstr ""
 
@@ -1836,7 +1836,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-form.js:178
 #: ../html/src/manager/content-management/list-filters/filter-form.js:274
 #: ../html/src/manager/images/image-view-packages.js:42
-#: ../html/src/manager/minion/packages/package-states.js:337
+#: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr ""
 
@@ -1934,23 +1934,23 @@ msgid "Content Lifecycle Projects"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:106
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:40
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:55
+#: ../html/src/manager/content-management/project/project.js:54
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:90
+#: ../html/src/manager/content-management/project/project.js:89
 msgid "Content Lifecycle Project - {0}"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:104
 msgid "Delete Project"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:106
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Are you sure you want to delete project"
 msgstr ""
 
@@ -2117,27 +2117,27 @@ msgstr ""
 msgid "Insert before"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:41
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:43
 msgid "Add Environment"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:52
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:54
 msgid "Environment created successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:68
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:70
 msgid "Creating the environment..."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:85
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:87
 msgid "No environments created"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:103
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:105
 msgid "Environment updated successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:117
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:120
 msgid "Environment {0} deleted successfully"
 msgstr ""
 
@@ -2290,7 +2290,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:105
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:526
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
 msgstr ""
 
@@ -2902,7 +2902,7 @@ msgid "Reinspect Image"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-packages.js:54
-#: ../html/src/manager/minion/packages/package-states.js:313
+#: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
 msgstr ""
 
@@ -3295,35 +3295,35 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:274
+#: ../html/src/manager/minion/packages/package-states.js:272
 msgid "No package states."
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:293
+#: ../html/src/manager/minion/packages/package-states.js:291
 msgid "Latest"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:294
+#: ../html/src/manager/minion/packages/package-states.js:292
 msgid "Any"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:301
+#: ../html/src/manager/minion/packages/package-states.js:299
 msgid "Undo"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:312
+#: ../html/src/manager/minion/packages/package-states.js:310
 msgid "Unmanaged"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:314
+#: ../html/src/manager/minion/packages/package-states.js:312
 msgid "Removed"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:330
+#: ../html/src/manager/minion/packages/package-states.js:328
 msgid "Package States"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:338
+#: ../html/src/manager/minion/packages/package-states.js:336
 #: ../html/src/manager/salt/keys/key-management.js:171
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
@@ -3755,7 +3755,7 @@ msgid "Child Channels:"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/child-channels.js:140
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:478
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
 msgid "mandatory"
 msgstr ""
 
@@ -3857,7 +3857,7 @@ msgid "Confirm Deletion"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:31
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
 msgid "Error scheduling job in Taskomatic. Please check the logs."
 msgstr ""
 
@@ -3896,7 +3896,7 @@ msgid "System Default Base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:144
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:503
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
 msgstr ""
 
@@ -3928,12 +3928,12 @@ msgid "Desired base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:196
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:410
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
 msgid "SUSE Channels"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:202
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:431
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
 msgstr ""
 
@@ -4022,37 +4022,37 @@ msgstr ""
 msgid "Channel changes scheduled."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:219
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:398
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
 msgid "(none, disable service)"
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
 msgid "Changing the channels has been "
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:507
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:530
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
 
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:610
 msgid "No child channels available."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:572
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
 msgid "Confirm Software Channel Change"
 msgstr ""
 
