@@ -1,3 +1,6 @@
+- Added salt-secrets-config to the default service list.
+- Updated salt certificate script to use variable certificate path and alternative certificate manager.
+- Updated source URL in spec file.
 - Added RHEL Apache permissions.
 
 -------------------------------------------------------------------
