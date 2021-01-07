@@ -83,6 +83,25 @@
   <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
   <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
+  <!-- com.sun.xml.bind replacement (jaxb) -->
+  <condition property="jaxb-api" value="jaxb-api" else="">
+    <available file="${java.lib.dir}/jaxb-api.jar" />
+  </condition>
+  <condition property="jaxb-core" value="glassfish-jaxb/jaxb-core" else="">
+    <available file="${java.lib.dir}/glassfish-jaxb/jaxb-core.jar" />
+  </condition>
+  <condition property="jaxb-runtime" value="glassfish-jaxb/jaxb-runtime" else="">
+    <available file="${java.lib.dir}/glassfish-jaxb/jaxb-runtime.jar" />
+  </condition>
+  <condition property="txw2" value="glassfish-jaxb/txw2" else="">
+    <available file="${java.lib.dir}/glassfish-jaxb/txw2.jar" />
+  </condition>
+  <condition property="istack-commons" value="istack-commons-runtime" else="">
+    <available file="${java.lib.dir}/istack-commons-runtime.jar" />
+  </condition>
+  <property name="jaxb" value="${jaxb-api} ${jaxb-core} ${jaxb-runtime} ${txw2} ${istack-commons}"/>
+
+
   <property name="hibernate3.2deps" value="hibernate3"/>
 
   <property name="hibernate3.6deps" value="hibernate3/hibernate-ehcache-3 hibernate3/hibernate-c3p0-3 hibernate3/hibernate-core-3 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ${ehcache} hibernate-jpa-2.0-api"/>
@@ -180,7 +199,7 @@
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
              ${commons-validator} concurrent dom4j ${hibernate} ${jta11-jars}
-             jaf ${jasper-jars} ${javamail} jcommon jdom ${other-jars}
+             jaf ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec

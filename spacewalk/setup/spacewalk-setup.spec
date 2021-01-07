@@ -148,17 +148,19 @@ sed -i "s/'python'/'python3'/g" lib/Spacewalk/Setup.pm
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
+
 %if 0%{?rhel} == 6
 cat share/tomcat.java_opts.rhel6 >>share/tomcat.java_opts
 %endif
 #if java -version 2>&1 | grep -q IBM ; then
 #    cat share/tomcat.java_opts.ibm >>share/tomcat.java_opts
 #fi
-rm -f share/tomcat.java_opts.*
 %if 0%{?suse_version}
+cat share/tomcat.java_opts.suse >>share/tomcat.java_opts | tr '\n' ' '
 # SLES12 tomcat has only tomcat.conf
 cat share/tomcat.1 >share/tomcat.conf.1
 %endif
+rm -f share/tomcat.java_opts.*
 
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/

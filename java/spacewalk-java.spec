@@ -110,8 +110,13 @@ BuildRequires:  apache-commons-el
 BuildRequires:  %{apache_commons_fileupload}
 BuildRequires:  %{apache_commons_validator}
 %if 0%{?rhel} >= 8 || 0%{?fedora}
+BuildRequires:  (glassfish-jaxb-api or jaxb-api)
+BuildRequires:  glassfish-jaxb-core
+BuildRequires:  glassfish-jaxb-runtime
+BuildRequires:  glassfish-jaxb-txw2
+BuildRequires:  istack-commons-runtime
 BuildRequires:  java-11-openjdk-devel
-BuildRequires:	maven-javadoc-plugin
+BuildRequires:  maven-javadoc-plugin
 %else
 BuildRequires:  java-devel >= %{java_version}
 %endif
@@ -181,6 +186,13 @@ Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       %{ehcache}
 Requires:       (jaf or gnu-jaf)
+%if 0%{?rhel} || 0%{?fedora}
+Requires:       (glassfish-jaxb-api or jaxb-api)
+Requires:       glassfish-jaxb-core
+Requires:       glassfish-jaxb-runtime
+Requires:       glassfish-jaxb-txw2
+Requires:       istack-commons-runtime
+%endif
 Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
@@ -432,7 +444,7 @@ sed -i 's/apache2.service/%{apache2}.service/' scripts/taskomatic.service
 
 %build
 PRODUCT_NAME="SUSE Manager"
-%if !0%{?sle_version} || 0%{?is_opensuse}
+%if !0%{?sle_version} || 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora}
 PRODUCT_NAME="Uyuni"
 %endif
 
@@ -491,9 +503,14 @@ popd
 echo "Building apidoc asciidoc sources"
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT init-install apidoc-asciidoc
 
+# Don't use Java module com.sun.xml.bind if it isn't available. (only SUSE has it)
+if [[ ! `java --list-modules | grep com.sun.xml.bind` ]]; then
+    sed -i 's/--add-modules java.annotation,com.sun.xml.bind//' conf/default/rhn_taskomatic_daemon.conf
+fi
+
 %install
 PRODUCT_NAME="SUSE Manager"
-%if !0%{?sle_version} || 0%{?is_opensuse}
+%if !0%{?sle_version} || 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora}
 PRODUCT_NAME="Uyuni"
 %endif
 
@@ -808,6 +825,13 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/taglibs-standard-impl.jar
 %{jardir}/taglibs-standard-jstlel.jar
 %{jardir}/taglibs-standard-spec.jar
+%if !0%{?suse_version}
+%{jardir}/glassfish-jaxb_jaxb-core.jar
+%{jardir}/glassfish-jaxb_jaxb-runtime.jar
+%{jardir}/glassfish-jaxb_txw2.jar
+%{jardir}/istack-commons-runtime.jar
+%{jardir}/jaxb-api.jar
+%endif
 
 # owned by cobbler needs cobbler permissions
 %attr(755,root,root) %dir %{cobprofdir}
