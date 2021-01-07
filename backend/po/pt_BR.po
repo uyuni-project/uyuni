@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-16 10:30+0100\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -70,16 +70,6 @@ msgstr "O servidor \"%s\" não está ativado para o ISS."
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
 msgstr "Par system_id / action_id inválido."
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Esperado um nome de pacote, não: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Esperado um pacote, não: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -151,6 +141,16 @@ msgstr "Esperado um dicionário como argumento do produto"
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Valor inválido '%s' para %s (%s)"
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Esperado um nome de pacote, não: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Esperado um pacote, não: %s"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -1110,6 +1110,19 @@ msgstr "Explicação: %s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "formato de %s deve ser pelo menos AAAAMMDD.\n"
 
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ enviar log como um email +++"
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s sincronizado. relatório de %s"
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email solicitado, mas não há nada para enviar +++"
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1175,28 +1188,20 @@ msgstr ""
 msgid "Skipping..."
 msgstr "Pulando..."
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:111
-msgid "+++ sending log as an email +++"
-msgstr "+++ enviar log como um email +++"
-
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Sincronização do SUSE Manager Inter Server. relatório de %s"
 
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:124
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email solicitado, mas não há nada para enviar +++"
-
-#: ../satellite_tools/satsync.py:521
+#: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
 msgstr " - sincronização do sistema de arquivos"
 
-#: ../satellite_tools/satsync.py:533 ../satellite_tools/satsync.py:541
+#: ../satellite_tools/satsync.py:532 ../satellite_tools/satsync.py:540
 msgid " - live synchronization"
 msgstr " - sincronização ao vivo"
 
-#: ../satellite_tools/satsync.py:534
+#: ../satellite_tools/satsync.py:533
 #, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
@@ -1211,48 +1216,48 @@ msgstr ""
 "sincronizar de outro {PRODUCT_NAME} via Inter-Server-Sync (ISS), ou de "
 "conteúdo local no disco via Channel Dump ISOs."
 
-#: ../satellite_tools/satsync.py:542
+#: ../satellite_tools/satsync.py:541
 #, python-format
 msgid "   url: %s"
 msgstr "   url: %s"
 
-#: ../satellite_tools/satsync.py:543
+#: ../satellite_tools/satsync.py:542
 #, python-format
 msgid "   debug/output level: %s"
 msgstr "   depuração/nível de saída: %s"
 
-#: ../satellite_tools/satsync.py:553
+#: ../satellite_tools/satsync.py:552
 msgid "ERROR: this server must be registered with SUSE Manager."
 msgstr "ERRO: este servidor deve ser registrado no SUSE Manager."
 
-#: ../satellite_tools/satsync.py:575
+#: ../satellite_tools/satsync.py:574
 #, python-format
 msgid "Retrieving / parsing %s data"
 msgstr "Recuperando/analisando %s dados"
 
-#: ../satellite_tools/satsync.py:585 ../satellite_tools/satsync.py:600
+#: ../satellite_tools/satsync.py:584 ../satellite_tools/satsync.py:599
 msgid "*** SYSTEM INTERRUPT CALLED ***"
 msgstr "*** INTERRUPÇÃO DO SISTEMA CHAMADO ***"
 
-#: ../satellite_tools/satsync.py:593
+#: ../satellite_tools/satsync.py:592
 msgid "ERROR: fatal parser exception occurred "
 msgstr "ERRO: ocorreu uma exceção fatal do analisador "
 
-#: ../satellite_tools/satsync.py:594
+#: ../satellite_tools/satsync.py:593
 #, python-format
 msgid "(line: %s, col: %s msg: %s)"
 msgstr "(linha: %s, col: %s msg: %s)"
 
-#: ../satellite_tools/satsync.py:598
+#: ../satellite_tools/satsync.py:597
 #, python-format
 msgid "ERROR: parser exception occurred: %s"
 msgstr "ERRO: ocorreu uma exceção do analisador: %s"
 
-#: ../satellite_tools/satsync.py:603
+#: ../satellite_tools/satsync.py:602
 msgid "ERROR: exception (during parse) occurred: "
 msgstr "ERRO: ocorreu uma exceção (durante a análise): "
 
-#: ../satellite_tools/satsync.py:604
+#: ../satellite_tools/satsync.py:603
 #, python-format
 msgid ""
 "   Encountered some errors with %s data (see logs (%s) for more information)"
@@ -1260,190 +1265,190 @@ msgstr ""
 "   Foram encontrados alguns erros com os dados %s (consulte os logs (%s) "
 "para obter mais informações)"
 
-#: ../satellite_tools/satsync.py:606
+#: ../satellite_tools/satsync.py:605
 #, python-format
 msgid "   Encountered some errors with %s data:"
 msgstr "   Foram encontrados alguns erros com %s dados:"
 
-#: ../satellite_tools/satsync.py:607
+#: ../satellite_tools/satsync.py:606
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
 msgstr "   ------- %s ANALISAR/IMPORTAR ERRO -------"
 
-#: ../satellite_tools/satsync.py:609
+#: ../satellite_tools/satsync.py:608
 msgid "   ---------------------------------------"
 msgstr "   ---------------------------------------"
 
-#: ../satellite_tools/satsync.py:612
+#: ../satellite_tools/satsync.py:611
 #, python-format
 msgid "%s data complete"
 msgstr "%s dados concluídos"
 
-#: ../satellite_tools/satsync.py:665
+#: ../satellite_tools/satsync.py:664
 msgid "Retrieving / parsing channel data"
 msgstr "Recuperando / analisando dados do canal"
 
-#: ../satellite_tools/satsync.py:718
+#: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
 msgstr "Dados do canal concluídos"
 
-#: ../satellite_tools/satsync.py:736
+#: ../satellite_tools/satsync.py:735
 #, python-format
 msgid "%10s import from %s"
 msgstr "%10s importado de %s"
 
-#: ../satellite_tools/satsync.py:739
+#: ../satellite_tools/satsync.py:738
 #, python-format
 msgid "%10s import from %s - %s"
 msgstr "%10s importado de %s - %s"
 
-#: ../satellite_tools/satsync.py:743
+#: ../satellite_tools/satsync.py:742
 #, python-format
 msgid "%10s"
 msgstr "%10s"
 
-#: ../satellite_tools/satsync.py:750
+#: ../satellite_tools/satsync.py:749
 msgid "p"
 msgstr "p"
 
-#: ../satellite_tools/satsync.py:752
+#: ../satellite_tools/satsync.py:751
 msgid "."
 msgstr "."
 
-#: ../satellite_tools/satsync.py:758
+#: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
 msgstr "   p = canal importado/sincronizado anteriormente"
 
-#: ../satellite_tools/satsync.py:759
+#: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
 msgstr "   . = canal ainda não importado/sincronizado"
 
-#: ../satellite_tools/satsync.py:765
+#: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
 msgstr "   e = canal não é mais suportado (fim de serviço)"
 
-#: ../satellite_tools/satsync.py:767
+#: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
 msgstr "   ? = etiqueta do canal inválida --- erro de digitação?"
 
-#: ../satellite_tools/satsync.py:771
+#: ../satellite_tools/satsync.py:770
 #, python-format
 msgid "   %s:"
 msgstr "   %s:"
 
-#: ../satellite_tools/satsync.py:772
+#: ../satellite_tools/satsync.py:771
 #, python-format
 msgid "      %s %-40s %4s %s"
 msgstr "      %s %-40s %4s %s"
 
-#: ../satellite_tools/satsync.py:773
+#: ../satellite_tools/satsync.py:772
 msgid "base-channels"
 msgstr "canais-base"
 
-#: ../satellite_tools/satsync.py:786 ../satellite_tools/satsync.py:1603
+#: ../satellite_tools/satsync.py:785 ../satellite_tools/satsync.py:1619
 msgid "NONE RELEVANT"
 msgstr "NADA RELEVANTE"
 
-#: ../satellite_tools/satsync.py:808
+#: ../satellite_tools/satsync.py:807
 msgid "end-of-service"
 msgstr "fim-do-serviço"
 
-#: ../satellite_tools/satsync.py:809
+#: ../satellite_tools/satsync.py:808
 msgid "e"
 msgstr "e"
 
-#: ../satellite_tools/satsync.py:815
+#: ../satellite_tools/satsync.py:814
 msgid "   typos:"
 msgstr "   erros de digitação:"
 
-#: ../satellite_tools/satsync.py:816
+#: ../satellite_tools/satsync.py:815
 msgid "?"
 msgstr "?"
 
-#: ../satellite_tools/satsync.py:831
+#: ../satellite_tools/satsync.py:830
 #, python-format
 msgid "XXX: imported channels: %s"
 msgstr "XXX: canais importados: %s"
 
-#: ../satellite_tools/satsync.py:832
+#: ../satellite_tools/satsync.py:831
 #, python-format
 msgid "XXX:   cached channels: %s"
 msgstr "XXX:   canais em cache: %s"
 
-#: ../satellite_tools/satsync.py:837
+#: ../satellite_tools/satsync.py:836
 msgid "XXX: list channels called"
 msgstr "XXX: listar canais cancelados"
 
-#: ../satellite_tools/satsync.py:855
+#: ../satellite_tools/satsync.py:854
 msgid "ERROR: these channels either do not exist or are not available:"
 msgstr "ERRO: esses canais não existem ou não estão disponíveis:"
 
-#: ../satellite_tools/satsync.py:859
+#: ../satellite_tools/satsync.py:858
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
 msgstr "       (para ver uma lista de rótulos de canais: %s --list-channels)"
 
-#: ../satellite_tools/satsync.py:904
+#: ../satellite_tools/satsync.py:903
 #, python-format
 msgid "   Retrieving / parsing short package metadata: %s (%s)"
 msgstr "   Recuperando/analisando metadados curtos do pacote: %s (%s)"
 
-#: ../satellite_tools/satsync.py:965
+#: ../satellite_tools/satsync.py:981
 #, python-format
 msgid "Diffing package metadata (what's missing locally?): %s"
 msgstr ""
 "Diferenciar os metadados do pacote (o que está faltando localmente?): %s"
 
-#: ../satellite_tools/satsync.py:971 ../satellite_tools/satsync.py:1254
+#: ../satellite_tools/satsync.py:987 ../satellite_tools/satsync.py:1270
 msgid "Diffing:    "
 msgstr "Diferença:    "
 
-#: ../satellite_tools/satsync.py:988
+#: ../satellite_tools/satsync.py:1004
 msgid "ERROR: incremental dump skipped"
 msgstr "ERRO: despejo incremental ignorado"
 
-#: ../satellite_tools/satsync.py:1079
+#: ../satellite_tools/satsync.py:1095
 msgid "Downloading rpm packages"
 msgstr "Fazendo download de pacotes rpm"
 
-#: ../satellite_tools/satsync.py:1084
+#: ../satellite_tools/satsync.py:1100
 #, python-format
 msgid "   Fetching any missing RPMs: %s (%s)"
 msgstr "   Buscando RPMs ausentes: %s (%s)"
 
-#: ../satellite_tools/satsync.py:1085 ../satellite_tools/satsync.py:1153
+#: ../satellite_tools/satsync.py:1101 ../satellite_tools/satsync.py:1169
 msgid "NONE MISSING"
 msgstr "NENHUM AUSENTE"
 
-#: ../satellite_tools/satsync.py:1094
+#: ../satellite_tools/satsync.py:1110
 msgid "Processing rpm packages complete"
 msgstr "Processando pacotes rpm completos"
 
-#: ../satellite_tools/satsync.py:1121
+#: ../satellite_tools/satsync.py:1137
 msgid "Downloading package metadata"
 msgstr "Fazendo Download de Metadados do Pacote"
 
-#: ../satellite_tools/satsync.py:1146
+#: ../satellite_tools/satsync.py:1162
 msgid "Downloading srpm packages"
 msgstr "Fazendo download de pacotes srpm"
 
-#: ../satellite_tools/satsync.py:1152
+#: ../satellite_tools/satsync.py:1168
 #, python-format
 msgid "   Fetching any missing SRPMs: %s (%s)"
 msgstr "   Buscando quaisquer SRPMs ausentes: %s (%s)"
 
-#: ../satellite_tools/satsync.py:1249
+#: ../satellite_tools/satsync.py:1265
 #, python-format
 msgid "Diffing source package metadata (what's missing locally?): %s"
 msgstr ""
 "Diferenciar os metadados do pacote de origem (o que está faltando "
 "localmente?): %s"
 
-#: ../satellite_tools/satsync.py:1260
+#: ../satellite_tools/satsync.py:1276
 msgid "Downloading source package metadata"
 msgstr "Fazendo Download de Metadados do Pacote de Origem"
 
-#: ../satellite_tools/satsync.py:1338 ../satellite_tools/satsync.py:2027
+#: ../satellite_tools/satsync.py:1354 ../satellite_tools/satsync.py:2043
 #, python-format
 msgid "Unable to save file %s: %s"
 msgstr "Não foi possível salvar o arquivo %s: %s"
@@ -1451,94 +1456,94 @@ msgstr "Não foi possível salvar o arquivo %s: %s"
 #. for
 #. Retried a number of times and it still failed; log the
 #. file as being failed and move on
-#: ../satellite_tools/satsync.py:1345
+#: ../satellite_tools/satsync.py:1361
 #, python-format
 msgid "Failed to fetch file %s"
 msgstr "Falha ao buscar o arquivo %s"
 
-#: ../satellite_tools/satsync.py:1350
+#: ../satellite_tools/satsync.py:1366
 msgid "Downloading kickstartable trees metadata"
 msgstr "Download de metadados de árvores kickstartable"
 
-#: ../satellite_tools/satsync.py:1365
+#: ../satellite_tools/satsync.py:1381
 msgid "Downloading kickstartable trees files"
 msgstr "Download de arquivos de árvores kickstartable"
 
-#: ../satellite_tools/satsync.py:1504
+#: ../satellite_tools/satsync.py:1520
 #, python-format
 msgid "Grabbing all patches for channel %s"
 msgstr "Transferindo todos os patches para o canal %s"
 
-#: ../satellite_tools/satsync.py:1554
+#: ../satellite_tools/satsync.py:1570
 msgid "Downloading patch data"
 msgstr "Fazendo download de dados de patch"
 
-#: ../satellite_tools/satsync.py:1556
+#: ../satellite_tools/satsync.py:1572
 msgid "Forcing download of all patch data for requested channels."
 msgstr ""
 "Forçar o download de todos os dados do patch para os canais solicitados."
 
-#: ../satellite_tools/satsync.py:1571
+#: ../satellite_tools/satsync.py:1587
 msgid "Downloading patch data complete"
 msgstr "Download dos dados do patch concluídos"
 
-#: ../satellite_tools/satsync.py:1576 ../satellite_tools/satsync.py:1597
+#: ../satellite_tools/satsync.py:1592 ../satellite_tools/satsync.py:1613
 msgid "Downloading:"
 msgstr "Baixando:"
 
-#: ../satellite_tools/satsync.py:1579
+#: ../satellite_tools/satsync.py:1595
 msgid " - complete"
 msgstr " - completo"
 
-#: ../satellite_tools/satsync.py:1624
+#: ../satellite_tools/satsync.py:1640
 msgid "Importing source package metadata"
 msgstr "Importando Metadados do Pacote de Origem"
 
-#: ../satellite_tools/satsync.py:1627
+#: ../satellite_tools/satsync.py:1643
 msgid "Importing package metadata"
 msgstr "Importando Metadados do Pacote"
 
-#: ../satellite_tools/satsync.py:1635
+#: ../satellite_tools/satsync.py:1651
 msgid "Importing:  "
 msgstr "Importação:  "
 
 #. not in the cache
-#: ../satellite_tools/satsync.py:1703
+#: ../satellite_tools/satsync.py:1719
 msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
 msgstr "Pacote não encontrado no cache, limpe o cache para regenerá-lo."
 
-#: ../satellite_tools/satsync.py:1709
+#: ../satellite_tools/satsync.py:1725
 msgid "Importing channel patches"
 msgstr "Importando patches de canal"
 
-#: ../satellite_tools/satsync.py:1714
+#: ../satellite_tools/satsync.py:1730
 #, python-format
 msgid "Importing %s patches for channel %s."
 msgstr "Importando %s patches para o canal %s."
 
 #. Incomplete configuration
-#: ../satellite_tools/satsync.py:2113
+#: ../satellite_tools/satsync.py:2129
 msgid "ERROR: server.mount_point not set in the configuration file"
 msgstr "ERRO: server.mount_point não definido no arquivo de configuração"
 
-#: ../satellite_tools/satsync.py:2117
+#: ../satellite_tools/satsync.py:2133
 #, python-format
 msgid "ERROR: server.mount_point %s do not exist"
 msgstr "ERRO: server.mount_point %s não existe"
 
-#: ../satellite_tools/satsync.py:2122
+#: ../satellite_tools/satsync.py:2138
 #, python-format
 msgid "ERROR: path under server.mount_point (%s)  do not exist"
 msgstr "ERRO: o caminho em server.mount_point (%s) não existe"
 
-#: ../satellite_tools/satsync.py:2199
+#: ../satellite_tools/satsync.py:2215
 #, python-format
 msgid "Commandline: %s"
 msgstr "Linha de comando: %s"
 
-#: ../satellite_tools/satsync.py:2202
+#: ../satellite_tools/satsync.py:2218
 #, python-format
 msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
@@ -1548,16 +1553,16 @@ msgstr ""
 "XML/banco de dados (1..%s).\"man mgr-inter-sync\" para obter mais "
 "informações."
 
-#: ../satellite_tools/satsync.py:2205
+#: ../satellite_tools/satsync.py:2221
 msgid "alternative SSL CA Cert (fullpath to cert file)"
 msgstr ""
 "certificado alternativo da CA SSL (caminho completo para o arquivo cert)"
 
-#: ../satellite_tools/satsync.py:2207
+#: ../satellite_tools/satsync.py:2223
 msgid "process data for this channel only"
 msgstr "processar dados apenas para este canal"
 
-#: ../satellite_tools/satsync.py:2209
+#: ../satellite_tools/satsync.py:2225
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
@@ -1565,13 +1570,13 @@ msgstr ""
 "despejo de disco será considerado uma exportação completa; veja \"man mgr-"
 "inter-sync\" para mais informações."
 
-#: ../satellite_tools/satsync.py:2212
+#: ../satellite_tools/satsync.py:2228
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr ""
 "os canais personalizados existentes também serão sincronizados (a menos que -"
 "c seja usado)"
 
-#: ../satellite_tools/satsync.py:2214
+#: ../satellite_tools/satsync.py:2230
 #, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
@@ -1579,111 +1584,107 @@ msgstr ""
 "substitua o nível de depuração definido em /etc/rhn/rhn.conf (atualmente "
 "definido em %s)."
 
-#: ../satellite_tools/satsync.py:2216
+#: ../satellite_tools/satsync.py:2232
 #, python-format
 msgid "requested version of XML dump (default: %s)"
 msgstr "versão solicitada do dump XML (padrão: %s)"
 
-#: ../satellite_tools/satsync.py:2218
+#: ../satellite_tools/satsync.py:2234
 msgid "e-mail a report of what was synced/imported"
 msgstr "envie por e-mail um relatório do que foi sincronizado/importado"
 
-#: ../satellite_tools/satsync.py:2220
+#: ../satellite_tools/satsync.py:2236
 msgid "forcibly process all (not a diff of) patch metadata"
 msgstr "forçosamente processar todos os metadados (não diferentes) dos patches"
 
-#: ../satellite_tools/satsync.py:2222
+#: ../satellite_tools/satsync.py:2238
 msgid "Do not use an http proxy under any circumstances."
 msgstr "Não use um proxy http em nenhuma circunstância."
 
-#: ../satellite_tools/satsync.py:2224
+#: ../satellite_tools/satsync.py:2240
 msgid "alternative http proxy (hostname:port)"
 msgstr "http proxy alternativo (hostname:port)"
 
-#: ../satellite_tools/satsync.py:2226
+#: ../satellite_tools/satsync.py:2242
 msgid "alternative http proxy username"
 msgstr "nome de usuário do proxy http alternativo"
 
-#: ../satellite_tools/satsync.py:2228
+#: ../satellite_tools/satsync.py:2244
 msgid "alternative http proxy password"
 msgstr "senha alternativa do proxy http"
 
-#: ../satellite_tools/satsync.py:2230
+#: ../satellite_tools/satsync.py:2246
 msgid "parent SUSE Manager to import content from"
 msgstr "SUSE Manager pai para importar conteúdo de"
 
-#: ../satellite_tools/satsync.py:2232
+#: ../satellite_tools/satsync.py:2248
 msgid "list all available channels and exit"
 msgstr "listar todos os canais disponíveis e sair"
 
-#: ../satellite_tools/satsync.py:2234
+#: ../satellite_tools/satsync.py:2250
 msgid "help on all error codes mgr-inter-sync returns"
 msgstr "ajuda em todos os códigos de erro retornos de mgr-inter-sync"
 
-#: ../satellite_tools/satsync.py:2236
+#: ../satellite_tools/satsync.py:2252
 msgid "source mount point for import - disk update only"
 msgstr ""
 "ponto de montagem de origem para importação - somente atualização de disco"
 
-#: ../satellite_tools/satsync.py:2238
+#: ../satellite_tools/satsync.py:2254
 msgid "do not process patch data"
 msgstr "não processe dados de correção"
 
-#: ../satellite_tools/satsync.py:2240
+#: ../satellite_tools/satsync.py:2256
 msgid "do not process kickstart data (provisioning only)"
 msgstr "não processe dados do kickstart (apenas provisionamento)"
 
-#: ../satellite_tools/satsync.py:2242
+#: ../satellite_tools/satsync.py:2258
 msgid "do not process full package metadata"
 msgstr "não processe metadados de pacote completo"
 
-#: ../satellite_tools/satsync.py:2244
+#: ../satellite_tools/satsync.py:2260
 msgid "do not download, or process any RPMs"
 msgstr "não faça o download ou processe quaisquer RPMs"
 
-#: ../satellite_tools/satsync.py:2246
-msgid "turn off SSL (not recommended)"
-msgstr "desativar o SSL (não recomendado)"
-
-#: ../satellite_tools/satsync.py:2248
+#: ../satellite_tools/satsync.py:2262
 msgid "org to which the sync imports data. defaults to the admin account"
 msgstr ""
 "organização para a qual a sincronização importa dados. o padrão é a conta de "
 "administrador"
 
-#: ../satellite_tools/satsync.py:2250
+#: ../satellite_tools/satsync.py:2264
 msgid "print the configuration and exit"
 msgstr "imprima a configuração e saia"
 
-#: ../satellite_tools/satsync.py:2252
+#: ../satellite_tools/satsync.py:2266
 msgid "alternative server with which to connect (hostname)"
 msgstr "servidor alternativo ao qual se conectar (nome do host)"
 
-#: ../satellite_tools/satsync.py:2254
+#: ../satellite_tools/satsync.py:2268
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
 msgstr "sincronize com esta etapa (man mgr-inter-sync para mais informações)"
 
-#: ../satellite_tools/satsync.py:2256
+#: ../satellite_tools/satsync.py:2270
 msgid "write complete data to tempfile before streaming to remainder of app"
 msgstr ""
 "gravar dados completos no arquivo temporário antes de transmitir para o "
 "restante do aplicativo"
 
-#: ../satellite_tools/satsync.py:2258
+#: ../satellite_tools/satsync.py:2272
 msgid "DEBUG ONLY: alternative path to digital system id"
 msgstr ""
 "APENAS DEBUG: caminho alternativo para a identificação do sistema digital"
 
-#: ../satellite_tools/satsync.py:2260
+#: ../satellite_tools/satsync.py:2274
 msgid "alternative email address(es) for sync output (--email option)"
 msgstr ""
 "endereços de email alternativos para saída de sincronização (opção --email)"
 
-#: ../satellite_tools/satsync.py:2262
+#: ../satellite_tools/satsync.py:2276
 msgid "do not remove rpms when importing from local dump"
 msgstr "não remova rpms ao importar do dump local"
 
-#: ../satellite_tools/satsync.py:2264
+#: ../satellite_tools/satsync.py:2278
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
@@ -1692,64 +1693,64 @@ msgstr ""
 "apenas com --mount-point. Necessário se você deseja importar dados da "
 "organização e permissões de canal."
 
-#: ../satellite_tools/satsync.py:2274
+#: ../satellite_tools/satsync.py:2288
 #, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
 msgstr ""
 "ERRO: esses argumentos não fazem sentido neste contexto (tente --help): %s"
 
 #. An SQL error is fatal... crash and burn
-#: ../satellite_tools/satsync.py:2286
+#: ../satellite_tools/satsync.py:2300
 #, python-format
 msgid "ERROR: Can't connect to the database: %s"
 msgstr "ERRO: Não é possível conectar ao banco de dados: %s"
 
-#: ../satellite_tools/satsync.py:2287
+#: ../satellite_tools/satsync.py:2301
 msgid "ERROR: Check if your database is running."
 msgstr "ERRO: Verifique se o seu banco de dados está em execução."
 
-#: ../satellite_tools/satsync.py:2322
+#: ../satellite_tools/satsync.py:2336
 #, python-format
 msgid "ERROR: --debug-level takes an in integer value within the range %s."
 msgstr "ERRO: --debug-level aceita um valor inteiro dentro do intervalo %s."
 
-#: ../satellite_tools/satsync.py:2324
+#: ../satellite_tools/satsync.py:2338
 msgid "  0  - little logging/messaging."
 msgstr "  0  - pouco registro/mensagens."
 
-#: ../satellite_tools/satsync.py:2325
+#: ../satellite_tools/satsync.py:2339
 msgid "  1  - minimal logging/messaging."
 msgstr "  1  - registro/mensagens mínimos."
 
-#: ../satellite_tools/satsync.py:2326
+#: ../satellite_tools/satsync.py:2340
 msgid "  2  - normal level of logging/messaging."
 msgstr "  2  - nível normal de registro/mensagens."
 
-#: ../satellite_tools/satsync.py:2327
+#: ../satellite_tools/satsync.py:2341
 msgid "  3  - lots of logging/messaging."
 msgstr "  3  - muitos registros/mensagens."
 
-#: ../satellite_tools/satsync.py:2328
+#: ../satellite_tools/satsync.py:2342
 msgid "  4+ - excessive logging/messaging."
 msgstr "  4+ - registro/mensagens excessivos."
 
-#: ../satellite_tools/satsync.py:2341
+#: ../satellite_tools/satsync.py:2355
 msgid "ERROR: The --master option is only valid with the --mount-point option"
 msgstr "ERRO: A opção --master é válida apenas com a opção --mount-point"
 
-#: ../satellite_tools/satsync.py:2351
+#: ../satellite_tools/satsync.py:2365
 #, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
 msgstr "ERRO: Não foi possível procurar a ID da organização %s"
 
-#: ../satellite_tools/satsync.py:2360
+#: ../satellite_tools/satsync.py:2374
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
 "AVISO: a opção --list-channels substitui qualquer opção --step. - passo "
 "ignorado."
 
-#: ../satellite_tools/satsync.py:2375
+#: ../satellite_tools/satsync.py:2389
 #, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
@@ -1757,7 +1758,7 @@ msgstr ""
 "ERRO: '%s' não é uma etapa válida. Veja 'man mgr-inter-sync' para mais "
 "detalhes."
 
-#: ../satellite_tools/satsync.py:2407
+#: ../satellite_tools/satsync.py:2421
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
@@ -1767,94 +1768,94 @@ msgstr ""
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
-#: ../satellite_tools/satsync.py:2457 ../satellite_tools/satsync.py:2461
+#: ../satellite_tools/satsync.py:2470 ../satellite_tools/satsync.py:2474
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
 msgstr "ERRO: - o tamanho do lote deve ter um valor dentro do intervalo: 1..50"
 
-#: ../satellite_tools/satsync.py:2469
+#: ../satellite_tools/satsync.py:2482
 #, python-format
 msgid "ERROR: no such directory %s"
 msgstr "ERRO: nenhum diretório %s"
 
-#: ../satellite_tools/satsync.py:2474
+#: ../satellite_tools/satsync.py:2487
 msgid "Error Codes: Returned codes means:"
 msgstr "Códigos de erro: códigos retornados significa:"
 
-#: ../satellite_tools/satsync.py:2475
+#: ../satellite_tools/satsync.py:2488
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
 msgstr ""
 " -1  - Não foi possível bloquear o arquivo ou KeyboardInterrupt ou SystemExit"
 
-#: ../satellite_tools/satsync.py:2476
+#: ../satellite_tools/satsync.py:2489
 msgid "  0  - User interrupted or intentional exit"
 msgstr "  0  - Saída interrompida ou intencional pelo usuário"
 
-#: ../satellite_tools/satsync.py:2477
+#: ../satellite_tools/satsync.py:2490
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
 msgstr "  1  - tentando executar mais de uma instância do mgr-inter-sync."
 
-#: ../satellite_tools/satsync.py:2478
+#: ../satellite_tools/satsync.py:2491
 msgid "  2  - Unable to find synchronization tools."
 msgstr "  2  - Não foi possível encontrar as ferramentas de sincronização."
 
-#: ../satellite_tools/satsync.py:2479
+#: ../satellite_tools/satsync.py:2492
 msgid "  3  - a general socket exception occurred"
 msgstr "  3  - ocorreu uma exceção geral do soquete"
 
-#: ../satellite_tools/satsync.py:2480
+#: ../satellite_tools/satsync.py:2493
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
 msgstr ""
 "  4  - ocorreu um erro de SSL. Verifique novamente suas configurações de SSL."
 
-#: ../satellite_tools/satsync.py:2481
+#: ../satellite_tools/satsync.py:2494
 msgid "  5  - ISS error"
 msgstr "  5  - Erro ISS"
 
-#: ../satellite_tools/satsync.py:2482
+#: ../satellite_tools/satsync.py:2495
 msgid "  6  - unhandled exception occurred"
 msgstr "  6  - ocorreu uma exceção não tratada"
 
-#: ../satellite_tools/satsync.py:2483
+#: ../satellite_tools/satsync.py:2496
 msgid "  7  - unknown sync error"
 msgstr "  7  - erro de sincronização desconhecido"
 
-#: ../satellite_tools/satsync.py:2484
+#: ../satellite_tools/satsync.py:2497
 msgid "  8  - ERROR: must be root to execute"
 msgstr "  8  - ERRO: deve ser root para executar"
 
-#: ../satellite_tools/satsync.py:2485
+#: ../satellite_tools/satsync.py:2498
 msgid "  9  - rpclib fault during synchronization init"
 msgstr "  9  - falha rpclib durante a sincronização init"
 
-#: ../satellite_tools/satsync.py:2486
+#: ../satellite_tools/satsync.py:2499
 msgid "  10 - synchronization init error"
 msgstr "  10 - erro de inicialização de sincronização"
 
-#: ../satellite_tools/satsync.py:2487
+#: ../satellite_tools/satsync.py:2500
 msgid "  11 - Error parsing XML stream"
 msgstr "  11 - Erro ao analisar o fluxo XML"
 
-#: ../satellite_tools/satsync.py:2488
+#: ../satellite_tools/satsync.py:2501
 msgid "  12 - Channel do not exist"
 msgstr "  12 - O canal não existe"
 
-#: ../satellite_tools/satsync.py:2489
+#: ../satellite_tools/satsync.py:2502
 msgid "  13 - SQL error during importing package metadata"
 msgstr "  13 - Erro SQL durante a importação de metadados do pacote"
 
-#: ../satellite_tools/satsync.py:2490
+#: ../satellite_tools/satsync.py:2503
 msgid "  14 - SQL error during linking channel packages"
 msgstr "  14 - Erro SQL durante a vinculação de pacotes de canais"
 
-#: ../satellite_tools/satsync.py:2491
+#: ../satellite_tools/satsync.py:2504
 msgid "  15 - SQL error during xml processing"
 msgstr "  15 - Erro SQL durante o processamento xml"
 
-#: ../satellite_tools/satsync.py:2492
+#: ../satellite_tools/satsync.py:2505
 msgid "  16 - server.mount_point not set in the configuration file"
 msgstr "  16 - server.mount_point não definido no arquivo de configuração"
 
-#: ../satellite_tools/satsync.py:2493
+#: ../satellite_tools/satsync.py:2506
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
@@ -1862,55 +1863,50 @@ msgstr ""
 "  17 - Erro SQL durante a recuperação dos canais já importados no banco de "
 "dados do SUSE Manager"
 
-#: ../satellite_tools/satsync.py:2494
+#: ../satellite_tools/satsync.py:2507
 msgid "  18 - Wrong db connection string in rhn.conf"
 msgstr "  18 - Cadeia de conexão db incorreta no rhn.conf"
 
-#: ../satellite_tools/satsync.py:2495
+#: ../satellite_tools/satsync.py:2508
 msgid "  19 - Bad arguments"
 msgstr "  19 - Argumentos incorretos"
 
-#: ../satellite_tools/satsync.py:2496
+#: ../satellite_tools/satsync.py:2509
 msgid "  20 - Could not connect to db."
 msgstr "  20 - Não foi possível conectar ao db."
 
-#: ../satellite_tools/satsync.py:2497
+#: ../satellite_tools/satsync.py:2510
 msgid "  21 - Bad debug level"
 msgstr "  21 - Nível de depuração incorreto"
 
-#: ../satellite_tools/satsync.py:2498
+#: ../satellite_tools/satsync.py:2511
 msgid "  22 - Not valid step"
 msgstr "  22 - Etapa inválida"
 
-#: ../satellite_tools/satsync.py:2499
+#: ../satellite_tools/satsync.py:2512
 msgid "  24 - no such file"
 msgstr "  24 - arquivo inexistente"
 
-#: ../satellite_tools/satsync.py:2500
+#: ../satellite_tools/satsync.py:2513
 msgid "  25 - no such directory"
 msgstr "  25 - nenhum diretório"
 
-#: ../satellite_tools/satsync.py:2501
+#: ../satellite_tools/satsync.py:2514
 msgid "  26 - mount_point does not exist"
 msgstr "  26 - mount_point não existe"
 
-#: ../satellite_tools/satsync.py:2502
+#: ../satellite_tools/satsync.py:2515
 msgid "  27 - No such org"
 msgstr "  27 - Essa organização não existe"
 
-#: ../satellite_tools/satsync.py:2503
+#: ../satellite_tools/satsync.py:2516
 msgid "  28 - error: --master is only valid with --mount-point"
 msgstr "  28 - erro: --master é válido apenas com --mount-point"
 
-#: ../satellite_tools/satsync.py:2510
+#: ../satellite_tools/satsync.py:2523
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERRO: versão de despejo desconhecida, tente um dos %s"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s sincronizado. relatório de %s"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -2125,6 +2121,9 @@ msgstr "Importando árvores kickstartable (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Árvores kickstartable importadas (%d)"
+
+#~ msgid "turn off SSL (not recommended)"
+#~ msgstr "desativar o SSL (não recomendado)"
 
 #~ msgid ""
 #~ "\n"

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-11-19 02:25+0000\n"
-"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
+"PO-Revision-Date: 2021-01-07 08:42+0000\n"
+"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -574,9 +574,9 @@ msgid "does not exist, skipping!"
 msgstr "不存在，正在跳过！"
 
 #: ../src/spacecmd/activationkey.py:1581
-#, fuzzy, python-format
+#, python-format
 msgid "Cloning key %s as %s"
-msgstr "正在将密钥 %s 导出到 %s"
+msgstr "正在将密钥 %s 克隆为 %s"
 
 #: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1442
 #, python-format
@@ -639,9 +639,8 @@ msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "用法：activationkey_setcontactmethod KEY CONTACT_METHOD"
 
 #: ../src/spacecmd/api.py:45
-#, fuzzy
 msgid "api: call server API with arguments directly"
-msgstr "api：结合参数直接调用 RHN API"
+msgstr "api：结合参数直接调用服务器 API"
 
 #: ../src/spacecmd/api.py:46
 #, python-format
@@ -1160,7 +1159,6 @@ msgid "configchannel_updateinitsls: Update init.sls file"
 msgstr "configchannel_updateinitsls：更新 init.sls 文件"
 
 #: ../src/spacecmd/configchannel.py:847
-#, fuzzy
 msgid ""
 "usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1174,6 +1172,7 @@ msgstr ""
 "\n"
 "选项：\n"
 "  -c 频道\n"
+"  -r 修订版\n"
 "  -f 文件内容的本地路径\n"
 "  -y 自动继续处理文件内容\n"
 
@@ -1183,9 +1182,9 @@ msgid "No existing file information found for %s"
 msgstr "未找到 %s 的现有文件信息"
 
 #: ../src/spacecmd/configchannel.py:945
-#, fuzzy, python-format
+#, python-format
 msgid "revision:                 %s"
-msgstr "密钥：%s"
+msgstr "修订版：                   %s"
 
 #: ../src/spacecmd/configchannel.py:946
 #, python-format
@@ -1333,9 +1332,9 @@ msgid "Importing config channel  %s"
 msgstr "正在导入配置频道 %s"
 
 #: ../src/spacecmd/configchannel.py:1280
-#, fuzzy, python-format
+#, python-format
 msgid "Found %s %s for cc %s"
-msgstr "已找到 ks %s"
+msgstr "发现 %s%s（针对 cc %s）"
 
 #: ../src/spacecmd/configchannel.py:1308
 #, python-format
@@ -1649,7 +1648,7 @@ msgstr ""
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
-msgstr "必须指定分发包的名称"
+msgstr "必须指定发行套件的名称"
 
 #: ../src/spacecmd/distribution.py:74
 msgid "Path to Kickstart Tree:"
@@ -1706,7 +1705,7 @@ msgstr "用法：distribution_delete LABEL"
 #: ../src/spacecmd/distribution.py:194 ../src/spacecmd/distribution.py:233
 #, python-format
 msgid "No distributions matched argument %s"
-msgstr "没有任何分发包与参数 %s 相匹配"
+msgstr "没有与参数 %s 匹配的发行套件"
 
 #: ../src/spacecmd/distribution.py:200
 msgid "Delete distribution tree(s) [y/N]:"
@@ -1826,9 +1825,9 @@ msgid "Apply these patches [y/N]:"
 msgstr "应用这些补丁 [y/N]："
 
 #: ../src/spacecmd/errata.py:197
-#, fuzzy, python-format
+#, python-format
 msgid "Scheduled %i system(s) for %s"
-msgstr "已安排 %i 个系统"
+msgstr "已安排 %i 个系统（针对 %s）"
 
 #: ../src/spacecmd/errata.py:218
 #, python-format
@@ -2283,7 +2282,7 @@ msgstr ""
 "\n"
 "选项：\n"
 "  -n 名称\n"
-"  -d 分发包\n"
+"  -d 发行套件\n"
 "  -p ROOT 口令\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
@@ -2297,7 +2296,7 @@ msgstr "虚拟化类型 [none]："
 
 #: ../src/spacecmd/kickstart.py:128 ../src/spacecmd/kickstart.py:264
 msgid "Distributions"
-msgstr "分发包"
+msgstr "发行套件"
 
 #: ../src/spacecmd/kickstart.py:138
 msgid "Root Password: "
@@ -2325,7 +2324,7 @@ msgstr "必须指定 Kickstart 名称"
 
 #: ../src/spacecmd/kickstart.py:153 ../src/spacecmd/kickstart.py:276
 msgid "The distribution is required"
-msgstr "必须指定分发包"
+msgstr "必须指定发行套件"
 
 #: ../src/spacecmd/kickstart.py:160
 msgid "A root password is required"
@@ -2380,7 +2379,7 @@ msgstr ""
 "选项：\n"
 "  -f 文件\n"
 "  -n 名称\n"
-"  -d 分发包\n"
+"  -d 发行套件\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:280 ../src/spacecmd/kickstart.py:1986
@@ -2407,7 +2406,7 @@ msgstr ""
 "选项：\n"
 "  -f 文件\n"
 "  -n 名称\n"
-"  -d 分发包\n"
+"  -d 发行套件\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:327
@@ -3067,9 +3066,9 @@ msgid "Actvationkey %s does not exist on the "
 msgstr "激活密钥 %s 不存在于 "
 
 #: ../src/spacecmd/kickstart.py:2463
-#, fuzzy, python-format
+#, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
-msgstr "GPG/SSL 密钥 %s 不存在于 "
+msgstr "Spacewalk 服务器上不存在 GPG/SSL 密钥 %s，正在跳过"
 
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
@@ -3870,9 +3869,8 @@ msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
 msgstr "示例：name:kernel AND version:2.6.18 AND -description:devel"
 
 #: ../src/spacecmd/package.py:179
-#, fuzzy
 msgid "package_remove: Remove a package from Spacewalk"
-msgstr "package_remove：从 Satellite 中去除软件包"
+msgstr "package_remove：从 Spacewalk 中去除软件包"
 
 #: ../src/spacecmd/package.py:180
 msgid "usage: package_remove PACKAGE ..."
@@ -4646,7 +4644,7 @@ msgstr "%s：未找到事件"
 
 #: ../src/spacecmd/snippet.py:43
 msgid "snippet_list: List the available Kickstart snippets"
-msgstr "snippet_list：列出可用的 Kickstart 片段"
+msgstr "snippet_list：列出可用的 Kickstart 代码段"
 
 #: ../src/spacecmd/snippet.py:44
 msgid "usage: snippet_list"
@@ -4654,7 +4652,7 @@ msgstr "用法：snippet_list"
 
 #: ../src/spacecmd/snippet.py:61
 msgid "snippet_details: Show the contents of a snippet"
-msgstr "snippet_details：显示片段的内容"
+msgstr "snippet_details：显示代码段内容"
 
 #: ../src/spacecmd/snippet.py:62
 msgid "usage: snippet_details SNIPPET ..."
@@ -4663,7 +4661,7 @@ msgstr "用法：snippet_details SNIPPET ..."
 #: ../src/spacecmd/snippet.py:91
 #, python-format
 msgid "%s is not a valid snippet"
-msgstr "%s 不是有效片段"
+msgstr "%s 不是有效代码段"
 
 #: ../src/spacecmd/snippet.py:98
 #, python-format
@@ -4682,7 +4680,7 @@ msgstr "文件：%s"
 
 #: ../src/spacecmd/snippet.py:111
 msgid "snippet_create: Create a Kickstart snippet"
-msgstr "snippet_create：创建 Kickstart 片段"
+msgstr "snippet_create：创建 Kickstart 代码段"
 
 #: ../src/spacecmd/snippet.py:112
 msgid ""
@@ -4700,7 +4698,7 @@ msgstr ""
 
 #: ../src/spacecmd/snippet.py:150
 msgid "A name is required for the snippet"
-msgstr "必须指定片段的名称"
+msgstr "必须指定代码段的名称"
 
 #: ../src/spacecmd/snippet.py:154
 msgid "A file is required"
@@ -4709,11 +4707,11 @@ msgstr "必须指定文件"
 #: ../src/spacecmd/snippet.py:161
 #, python-format
 msgid "Snippet: %s"
-msgstr "片段：%s"
+msgstr "代码段：%s"
 
 #: ../src/spacecmd/snippet.py:177
 msgid "snippet_update: Update a Kickstart snippet"
-msgstr "snippet_update：更新 Kickstart 片段"
+msgstr "snippet_update：更新 Kickstart 代码段"
 
 #: ../src/spacecmd/snippet.py:178
 msgid "usage: snippet_update NAME"
@@ -4721,7 +4719,7 @@ msgstr "用法：snippet_update NAME"
 
 #: ../src/spacecmd/snippet.py:200
 msgid "snippet_delete: Delete a Kickstart snippet"
-msgstr "snippet_delete：删除 Kickstart 片段"
+msgstr "snippet_delete：删除 Kickstart 代码段"
 
 #: ../src/spacecmd/snippet.py:201
 msgid "usage: snippet_delete NAME"
@@ -4729,7 +4727,7 @@ msgstr "用法：snippet_delete NAME"
 
 #: ../src/spacecmd/snippet.py:219
 msgid "Remove this snippet [y/N]:"
-msgstr "去除此片段 [y/N]："
+msgstr "去除此代码段 [y/N]："
 
 #: ../src/spacecmd/softwarechannel.py:58
 msgid "softwarechannel_list: List all available software channels"
@@ -5434,9 +5432,9 @@ msgid "called without prefix or regex option!"
 msgstr "在未指定前缀或正则表达式选项的情况下调用！"
 
 #: ../src/spacecmd/softwarechannel.py:1301
-#, fuzzy, python-format
+#, python-format
 msgid "Cloning %s as %s"
-msgstr "已连接到 %s（作为 %s）"
+msgstr "正在将 %s 克隆为 %s"
 
 #: ../src/spacecmd/softwarechannel.py:1349
 msgid "softwarechannel_addpackages: Add packages to a software channel"
@@ -6011,19 +6009,16 @@ msgid "If <SCHEDULE> is left empty, it will be disabled."
 msgstr "如果将 <日程安排> 留空，则会禁用日程安排。"
 
 #: ../src/spacecmd/softwarechannel.py:2707
-#, fuzzy
 msgid "softwarechannel_removesyncschedule: "
-msgstr "softwarechannel_setsyncschedule： "
+msgstr "softwarechannel_removesyncschedule： "
 
 #: ../src/spacecmd/softwarechannel.py:2708
-#, fuzzy
 msgid "Removes the repo sync schedule for a software channel"
-msgstr "设置软件频道的储存库同步日程安排"
+msgstr "去除软件频道的储存库同步日程安排"
 
 #: ../src/spacecmd/softwarechannel.py:2710
-#, fuzzy
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
-msgstr "用法：softwarechannel_setsyncschedule <频道> <日程安排>"
+msgstr "用法：softwarechannel_removesyncschedule <频道>"
 
 #: ../src/spacecmd/softwarechannel.py:2735
 msgid ""
@@ -6123,7 +6118,7 @@ msgstr "交集："
 
 #: ../src/spacecmd/ssm.py:56
 msgid "Using the SSM:"
-msgstr ""
+msgstr "使用 SSM："
 
 #: ../src/spacecmd/ssm.py:64
 msgid "ssm_add: Add systems to the SSM"
@@ -6681,9 +6676,9 @@ msgstr ""
 "  -q/--quiet：静默模式（省略标头）"
 
 #: ../src/spacecmd/system.py:1405
-#, fuzzy, python-format
+#, python-format
 msgid "Error, unexpected channel type label %s"
-msgstr "错误：未传递频道标签！"
+msgstr "错误，%s 是非预期的频道类型标签"
 
 #: ../src/spacecmd/system.py:1417
 msgid "system_addconfigfile: Create a configuration file"
@@ -6759,9 +6754,8 @@ msgid "Must choose system-sandbox or locally-managed option"
 msgstr "必须选择系统沙箱或本地管理选项"
 
 #: ../src/spacecmd/system.py:1519
-#, fuzzy
 msgid "Must provide system"
-msgstr "%s 不是有效的系统"
+msgstr "必须提供系统"
 
 #: ../src/spacecmd/system.py:1553
 msgid "system_addconfigchannels: Add config channels to a system"
@@ -6985,9 +6979,9 @@ msgid "No notes to delete"
 msgstr "没有可删除的笔记"
 
 #: ../src/spacecmd/system.py:2335
-#, fuzzy, python-format
+#, python-format
 msgid "%s is not a valid note ID"
-msgstr "\"%s\" 不是有效 ID"
+msgstr "%s 不是有效的备注 ID"
 
 #: ../src/spacecmd/system.py:2347
 msgid "system_listnotes: List the available notes for a system"
@@ -7573,8 +7567,8 @@ msgid ""
 "system_scheduleapplyconfigchannels: Schedule applying the assigned config "
 "channels to the System (Minion only)"
 msgstr ""
-"system_scheduleapplyconfigchannels：安排将指派的配置频道应用到系统（仅限附属"
-"设备）"
+"system_scheduleapplyconfigchannels：安排将指派的配置频道应用到系统（仅限受控"
+"端）"
 
 #: ../src/spacecmd/system.py:4184
 msgid ""
@@ -7607,9 +7601,8 @@ msgid "WARN: Cannot find system "
 msgstr "警告：找不到系统 "
 
 #: ../src/spacecmd/system.py:4283
-#, fuzzy
 msgid "System "
-msgstr "系统"
+msgstr "系统 "
 
 #: ../src/spacecmd/system.py:4287
 msgid "  No migration targets"
@@ -7945,9 +7938,9 @@ msgid "Invalid time provided"
 msgstr "提供了无效时间"
 
 #: ../src/spacecmd/utils.py:456
-#, fuzzy, python-format
+#, python-format
 msgid "%s is an unknown errata type"
-msgstr "未知文件类型 "
+msgstr "%s 是未知勘误类型"
 
 #: ../src/spacecmd/utils.py:464
 msgid "Security Errata"
