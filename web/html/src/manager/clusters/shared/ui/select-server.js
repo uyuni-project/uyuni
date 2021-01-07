@@ -138,7 +138,7 @@ const SelectServer = (props: Props) => {
                         }
                     />
                     <Column
-                        columnKey="name"
+                        columnKey="messages"
                         width="77%"
                         cell={(row: ServerType) =>
                                 row.messages ? 

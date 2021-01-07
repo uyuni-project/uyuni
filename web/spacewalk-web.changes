@@ -1,3 +1,5 @@
+- Fix sorting in content lifecycle projects and cluster tables (bsc#1180558)
+
 -------------------------------------------------------------------
 Tue Jan 12 13:17:24 CET 2021 - jgonzalez@suse.com
 

@@ -100,8 +100,11 @@ const ListClusters = (props) => {
                         cell={(row: ClusterType) => row.provider.name}
                     />
                     <Column
-                        columnKey="type"
-                        comparator={Utils.sortByText}
+                        columnKey="managementNode"
+                        comparator={(a, b, ck, sd) => Utils.sortByText(
+                            {managementNode: a.managementNode.name},
+                            {managementNode: b.managementNode.name},
+                            ck, sd)}
                         header={t('Management node')}
                         cell={(row: ClusterType) => <SystemLink id={row.managementNode.id}>{row.managementNode.name}</SystemLink> }
                     />                

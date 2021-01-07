@@ -106,19 +106,6 @@ const ListProjects = (props: Props) => {
             header={t('Environment Lifecycle')}
             cell={row => row.environmentLifecycle}
           />
-          <Column
-            columnKey="name"
-            cell={
-              row => row.needRebuild
-                && (
-                  <LinkButton
-                    className="btn-primary"
-                    text="Re-Build"
-                    href={`/rhn/manager/contentmanagement/project/${row.id}`}
-                  />
-                )
-            }
-          />
         </Table>
       </TopPanel>
     );
