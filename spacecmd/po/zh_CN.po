@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-12-29 08:39+0000\n"
+"PO-Revision-Date: 2021-01-07 08:42+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -1648,7 +1648,7 @@ msgstr ""
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
-msgstr "必须指定分发包的名称"
+msgstr "必须指定发行套件的名称"
 
 #: ../src/spacecmd/distribution.py:74
 msgid "Path to Kickstart Tree:"
@@ -1705,7 +1705,7 @@ msgstr "用法：distribution_delete LABEL"
 #: ../src/spacecmd/distribution.py:194 ../src/spacecmd/distribution.py:233
 #, python-format
 msgid "No distributions matched argument %s"
-msgstr "没有任何分发包与参数 %s 相匹配"
+msgstr "没有与参数 %s 匹配的发行套件"
 
 #: ../src/spacecmd/distribution.py:200
 msgid "Delete distribution tree(s) [y/N]:"
@@ -2282,7 +2282,7 @@ msgstr ""
 "\n"
 "选项：\n"
 "  -n 名称\n"
-"  -d 分发包\n"
+"  -d 发行套件\n"
 "  -p ROOT 口令\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
@@ -2296,7 +2296,7 @@ msgstr "虚拟化类型 [none]："
 
 #: ../src/spacecmd/kickstart.py:128 ../src/spacecmd/kickstart.py:264
 msgid "Distributions"
-msgstr "分发包"
+msgstr "发行套件"
 
 #: ../src/spacecmd/kickstart.py:138
 msgid "Root Password: "
@@ -2324,7 +2324,7 @@ msgstr "必须指定 Kickstart 名称"
 
 #: ../src/spacecmd/kickstart.py:153 ../src/spacecmd/kickstart.py:276
 msgid "The distribution is required"
-msgstr "必须指定分发包"
+msgstr "必须指定发行套件"
 
 #: ../src/spacecmd/kickstart.py:160
 msgid "A root password is required"
@@ -2379,7 +2379,7 @@ msgstr ""
 "选项：\n"
 "  -f 文件\n"
 "  -n 名称\n"
-"  -d 分发包\n"
+"  -d 发行套件\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:280 ../src/spacecmd/kickstart.py:1986
@@ -2406,7 +2406,7 @@ msgstr ""
 "选项：\n"
 "  -f 文件\n"
 "  -n 名称\n"
-"  -d 分发包\n"
+"  -d 发行套件\n"
 "  -v 虚拟化类型 ['none'、'para_host'、'qemu'、'xenfv'、'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:327
