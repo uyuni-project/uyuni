@@ -12,8 +12,8 @@ export default class PageControl {
     constructor(
         page: number,
         pageSize: number,
-        query: string | null | undefined,
-        sortColumn: string | null | undefined,
+        query?: string | null | undefined,
+        sortColumn?: string | null | undefined,
         sortDirection: number = 1
     ) {
         this.page = page;
