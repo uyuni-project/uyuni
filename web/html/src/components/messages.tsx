@@ -1,4 +1,3 @@
-/* eslint-disable */
 import * as React from "react";
 
 type Severity = "info" | "success" | "warning" | "error";
