@@ -43,8 +43,8 @@ To fix, either change the input or the expected input format.
 ### `Type '(props: Props) => JSX.Element' is not assignable to type 'string'`  
 
 Usually it means the target expects a string, but you want to pass an element.  
-To fix, change the target's props to accept `JSX.Element` which among other things is a superset of `string`.
-
+To fix, change the target's props to accept `React.ReactNode` which among other things is a superset of `string`.
+Depending on the context, `JSX.Element` can be an alternative option in some cases though.  
 
 ### `import type {Node} from 'react';`
 
