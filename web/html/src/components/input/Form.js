@@ -81,15 +81,27 @@ export class Form extends React.Component<Props> {
     }
   }
 
+  getComponentName(component: React.ElementRef<any>) {
+    return Array.isArray(component.props.name) ? component.props.name.join() : component.props.name;
+  }
+
+  splitComponentName(name: string) {
+    return name.split(',');
+  }
+
   unregisterInput(component: React.ElementRef<any>) {
-    if (component.props && component.props.name && this.inputs[component.props.name] === component) {
-      delete this.inputs[component.props.name];
+    if (component.props && component.props.name){
+      const name = this.getComponentName(component);
+      if (this.inputs[name] === component) {
+        delete this.inputs[name];
+      }
     }
   }
 
   registerInput(component: React.ElementRef<any>) {
     if (component.props && component.props.name) {
-      this.inputs[component.props.name] = component;
+      const name = this.getComponentName(component);
+      this.inputs[name] = component;
     } else {
       throw new Error('Can not add input without "name" attribute');
     }
@@ -107,7 +119,26 @@ export class Form extends React.Component<Props> {
   componentDidUpdate(prevProps: Object) {
     if (prevProps.model !== this.props.model ||
         prevProps.errors !== this.props.errors) {
-      Object.keys(this.inputs).forEach(name => this.inputs[name].validate(this.props.model[name], this.props.errors && this.props.errors[name]));
+      Object.keys(this.inputs).forEach(name => {
+        const names = this.splitComponentName(name);
+        if (names.length === 1) {
+          this.inputs[name].validate(this.props.model[name], this.props.errors && this.props.errors[name])
+        } else {
+          const values = Object.keys(this.props.model).reduce((filtered, key) => {
+            if (names.includes(key)) {
+              filtered[key] = this.props.model[key];
+            }
+            return filtered;
+          }, {});
+          const errors = Object.keys(this.props.errors).reduce((filtered, key) => {
+            if (names.includes(key)) {
+              return filtered.concat(this.props.errors[key]);
+            }
+            return filtered;
+          }, []);
+          this.inputs[name].validate(values, errors);
+        }
+      });
     }
   }
 

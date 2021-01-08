@@ -5,10 +5,16 @@ import { FormGroup } from './FormGroup';
 import { FormContext } from './Form';
 
 export type Props = {
-  /** name of the field to map in the form model */
-  name: string,
-  /** Default value if none is set */
-  defaultValue?: string,
+  /** name of the field to map in the form model.
+   * The value can be an array of names if multiple inputs are contained in this field.
+   */
+  name: string | Array<string>,
+  /** Default value if none is set.
+   * In the case of multiple properties managed by this input, an object with the properties
+   * as keys and defaults as values should be passed. If a single value is passed it will be
+   * set to all keys.
+   */
+  defaultValue?: string | Object,
   /** Label to display for the field */
   label?: string,
   /** Hint string to display */
@@ -78,14 +84,25 @@ export class InputBase extends React.Component<Props, State> {
       }
 
       const model = this.context.model || {};
-      const value = model[this.props.name] || this.props.defaultValue || '';
-      const valueChanged =
-        (value instanceof Date && model[this.props.name] instanceof Date
-          && value.getTime() !== model[this.props.name].getTime())
-        || value !== model[this.props.name];
+      const checkValueChange = (name, defaultValue) => {
+        const value = model[name] || defaultValue || '';
+        const valueChanged =
+          (value instanceof Date && model[name] instanceof Date
+            && value.getTime() !== model[name].getTime())
+          || value !== model[name];
 
-      if (valueChanged) {
-        this.setValue(this.props.name, value);
+        if (valueChanged) {
+          this.setValue(name, value);
+        }
+      };
+      if (this.props.name instanceof Array) {
+        this.props.name.forEach(name => {
+          const defaultValue = this.props.defaultValue instanceof Object ?
+            this.props.defaultValue[name] : this.props.defaultValue;
+          checkValueChange(name, defaultValue);
+        });
+      } else {
+        checkValueChange(this.props.name, this.props.defaultValue);
       }
     }
   }
@@ -94,14 +111,28 @@ export class InputBase extends React.Component<Props, State> {
     // Support validation when changing the following props on-the-fly
     if (this.props.required !== prevProps.required ||
         this.props.disabled !== prevProps.disabled) {
-      this.validate(this.context.model[this.props.name]);
+      if (this.props.name instanceof Array) {
+        const values = Object.keys(this.context.model).reduce((filtered, key) => {
+          if (this.props.name.includes(key)) {
+            filtered[key] = this.context.model[key];
+          }
+          return filtered;
+        }, {});
+        this.validate(values);
+      } else {
+        this.validate(this.context.model[this.props.name]);
+      }
     }
   }
 
   componentWillUnmount() {
     if (Object.keys(this.context).length > 0) {
       this.context.unregisterInput(this);
-      this.context.setModelValue(this.props.name, undefined);
+      if (this.props.name instanceof Array) {
+        this.props.name.forEach(name => this.context.setModelValue(name, undefined));
+      } else {
+        this.context.setModelValue(this.props.name, undefined);
+      }
     }
   }
 
@@ -115,7 +146,7 @@ export class InputBase extends React.Component<Props, State> {
     return this.state.isValid;
   }
 
-  validate (value: string, errors: Array<string>): void {
+  validate (value: string | Object, errors: Array<string> | Object): void {
     const results = [];
     let isValid = true;
 
@@ -129,7 +160,7 @@ export class InputBase extends React.Component<Props, State> {
       } else if (this.props.validators) {
         const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
         validators.forEach((v) => {
-          results.push(Promise.resolve(v(`${value || ''}`)));
+          results.push(Promise.resolve(v(value instanceof Object ? value : `${value || ''}`)));
         });
       }
     }
@@ -154,7 +185,17 @@ export class InputBase extends React.Component<Props, State> {
     if (this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }
-    this.validate(value);
+    if (this.props.name instanceof Array) {
+        const values = Object.keys(this.context.model).reduce((filtered, key) => {
+          if (this.props.name.includes(key)) {
+            filtered[key] = this.context.model[key];
+          }
+          return filtered;
+        }, {});
+        this.validate(Object.assign({}, values, {[name]: value}));
+    } else {
+      this.validate(value);
+    }
 
     if (this.props.onChange) this.props.onChange(name, value);
   }
@@ -181,7 +222,7 @@ export class InputBase extends React.Component<Props, State> {
       this.pushHint(hints, invalidHint);
     }
     return (
-      <FormGroup isError={isError}>
+      <FormGroup isError={isError} key={`${this.props.name}-group`}>
         {
           this.props.label
           && (
@@ -189,7 +230,8 @@ export class InputBase extends React.Component<Props, State> {
               name={this.props.label}
               className={this.props.labelClass}
               required={this.props.required}
-              htmlFor={this.props.name}
+              key={`${this.props.name}-label`}
+              htmlFor={typeof this.props.name === "string" ? this.props.name : null}
             />)
         }
         <div className={this.props.divClass}>
