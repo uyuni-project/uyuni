@@ -1,7 +1,7 @@
 "use strict";
 
 import {Utils} from "../utils/functions";
-import {Messages, Utils as MessagesUtils} from "../components/messages";
+import {Utils as MessagesUtils} from "../components/messages";
 
 import {Cancelable} from "../utils/functions";
 import {MessageType} from "components/messages";
