@@ -39,15 +39,15 @@ Most commonly with `string` and `number`, but there are other similar instances 
 This means you're passing in an array of strings while the input is expected to be an array of numbers.  
 To fix, either change the input or the expected input format.  
 
-### `Type '(props: Props) => JSX.Element' is not assignable to type 'string'`  
+### `Type '(props: Props) => React.ReactNode' is not assignable to type 'string'`  
 
 Usually it means the target expects a string, but you want to pass an element.  
-To fix, change the target's props to accept `JSX.Element` which among other things is a superset of `string`.
+To fix, change the target's props to accept `React.ReactNode` which among other things is a superset of `string`.
 
 
 ### `import type {Node} from 'react';`
 
-TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `JSX.Element` (or `React.ReactNode`) migration.
+TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `React.ReactNode`.
 
 ## Technical tidbits
 

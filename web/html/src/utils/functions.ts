@@ -1,11 +1,11 @@
 /* eslint-disable */
-// @flow
+
 export type Cancelable = {
-  promise: Promise<any>,
-  cancel: (any) => void
+    promise: Promise<any>;
+    cancel: (arg0: any) => void;
 };
 
-function cancelable(promise: Promise<any>, onCancel: (Error|void) => void): Cancelable {
+function cancelable(promise: Promise<any>, onCancel: (arg0: Error | void) => void): Cancelable {
     var rejectFn;
     var isCanceled = false;
 
@@ -14,7 +14,7 @@ function cancelable(promise: Promise<any>, onCancel: (Error|void) => void): Canc
     });
 
     const race = Promise.race([promise, cancelPromise]).catch(error => {
-        if(isCanceled) {
+        if (isCanceled) {
             onCancel(error);
         }
         throw error;
@@ -25,15 +25,16 @@ function cancelable(promise: Promise<any>, onCancel: (Error|void) => void): Canc
         cancel: (reason: any) => {
             isCanceled = true;
             rejectFn(reason);
-        }
+        },
     };
 }
 
 function dateWithTimezone(dateString: string): Date {
-    const offsetNum = dateString[dateString.length - 1].toUpperCase() === "Z"
-      ? 0
-      : parseInt(dateString.substring(dateString.length - 6).replace(':', ''), 10);
-    const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
+    const offsetNum =
+        dateString[dateString.length - 1].toUpperCase() === "Z"
+            ? 0
+            : parseInt(dateString.substring(dateString.length - 6).replace(":", ""), 10);
+    const serverOffset = Math.trunc(offsetNum / 100) * 60 + (offsetNum % 100);
     const orig = new Date(dateString);
     const clientOffset = -orig.getTimezoneOffset();
 
@@ -43,52 +44,65 @@ function dateWithTimezone(dateString: string): Date {
 
 // it does the opposite of dateWithTimezone: transforms its result on the original date
 function dateWithoutTimezone(dateStringToTransform: string, originalDateString: string): Date {
-  const offsetNum = originalDateString[originalDateString.length - 1].toUpperCase() === "Z"
-    ? 0
-    : parseInt(originalDateString.substring(originalDateString.length - 6).replace(':', ''), 10);
-  const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
-  const dateToTransform = new Date(dateStringToTransform);
-  const clientOffset = -dateToTransform.getTimezoneOffset();
+    const offsetNum =
+        originalDateString[originalDateString.length - 1].toUpperCase() === "Z"
+            ? 0
+            : parseInt(originalDateString.substring(originalDateString.length - 6).replace(":", ""), 10);
+    const serverOffset = Math.trunc(offsetNum / 100) * 60 + (offsetNum % 100);
+    const dateToTransform = new Date(dateStringToTransform);
+    const clientOffset = -dateToTransform.getTimezoneOffset();
 
-  const final = new Date(dateToTransform.getTime() - (serverOffset - clientOffset) * 60000);
-  return final;
+    const final = new Date(dateToTransform.getTime() - (serverOffset - clientOffset) * 60000);
+    return final;
 }
 
 function LocalDateTime(date: Date): string {
-    const padTo = (v) => {
+    const padTo = v => {
         v = v.toString();
-        if(v.length >= 2) return v;
+        if (v.length >= 2) return v;
         else return padTo("0" + v);
-    }
+    };
     const year = date.getFullYear();
     const month = date.getMonth();
     const days = date.getDate();
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    return "" + year + "-" + padTo(month + 1) + "-" + padTo(days) +
-           "T" + padTo(hours) + ":" + padTo(minutes) + ":" + padTo(seconds);
+    return (
+        "" +
+        year +
+        "-" +
+        padTo(month + 1) +
+        "-" +
+        padTo(days) +
+        "T" +
+        padTo(hours) +
+        ":" +
+        padTo(minutes) +
+        ":" +
+        padTo(seconds)
+    );
 }
 
-function sortById(aRaw: Object, bRaw: Object): number {
-  const aId = aRaw["id"];
-  const bId = bRaw["id"];
-  return aId > bId ? 1 : (aId < bId ? -1 : 0);
+function sortById(aRaw: any, bRaw: any): number {
+    const aId = aRaw["id"];
+    const bId = bRaw["id"];
+    return aId > bId ? 1 : aId < bId ? -1 : 0;
 }
 
-function sortByText(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
-  var a = aRaw[columnKey];
-  var b = bRaw[columnKey];
-  var result = (a == null ? "" : a).toLowerCase().localeCompare((b == null ? "" : b).toLowerCase());
-  return (result || sortById(aRaw, bRaw)) * sortDirection;
+function sortByText(aRaw: any, bRaw: any, columnKey: string, sortDirection: number): number {
+    var a = aRaw[columnKey];
+    var b = bRaw[columnKey];
+    var result = (a == null ? "" : a).toLowerCase().localeCompare((b == null ? "" : b).toLowerCase());
+    return (result || sortById(aRaw, bRaw)) * sortDirection;
 }
 
-function sortByNumber(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
-    const result = aRaw[columnKey] > bRaw[columnKey] ? 1 : (aRaw[columnKey] < bRaw[columnKey] ? -1 : 0);
+function sortByNumber(aRaw: any, bRaw: any, columnKey: string, sortDirection: number): number {
+    const result = aRaw[columnKey] > bRaw[columnKey] ? 1 : aRaw[columnKey] < bRaw[columnKey] ? -1 : 0;
     return result * sortDirection;
 }
 
-function sortByDate(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
+function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: number): number {
     /**
      *  HACK
      *
@@ -118,44 +132,56 @@ function sortByDate(aRaw: Object, bRaw: Object, columnKey: string, sortDirection
      */
     const unparsableDateRegex = /(\d{2,4}.\d{2}.\d{2,4}.\d{1,2}.\d{2}.\d{2})( \w+)*/g;
 
-    const aDate = aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
-    const bDate = bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
+    const aDate =
+        aRaw[columnKey] instanceof Date
+            ? aRaw[columnKey]
+            : new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
+    const bDate =
+        bRaw[columnKey] instanceof Date
+            ? bRaw[columnKey]
+            : new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
-    const result = aDate > bDate ? 1 : (aDate < bDate ? -1 : 0);
+    const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;
     return result * sortDirection;
 }
 
 function getQueryStringValue(key: string): string {
-  // See for a standard implementation:
-  // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-  return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" +
-        encodeURIComponent(key).replace(/[.+*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+    // See for a standard implementation:
+    // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+    return decodeURIComponent(
+        window.location.search.replace(
+            new RegExp(
+                "^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[.+*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$",
+                "i"
+            ),
+            "$1"
+        )
+    );
 }
 
 function urlBounce(defaultUrl: string, qstrParamKey?: string): void {
-    window.location = getQueryStringValue(qstrParamKey || "url_bounce") || defaultUrl;
+    window.location.href = getQueryStringValue(qstrParamKey || "url_bounce") || defaultUrl;
 }
 
 /**
  * Replace all "_" and "-" with spaces and capitalize the first letter of each word
  */
 function capitalize(str: string): string {
-    return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    return str.replace(new RegExp("_|-", "g"), " ").replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
 
 function generatePassword(): string {
     const length = Math.floor(Math.random() * 10) + 15;
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-_";
     let password = "";
-    if(window.crypto && window.crypto.getRandomValues) {
+    if (window.crypto && window.crypto.getRandomValues) {
         var rand = new Uint16Array(length);
         window.crypto.getRandomValues(rand);
-        for (let i = 0; i < length; i++)
-            password += charset.charAt(Math.floor(rand[i] * charset.length / 65536));
-    }
-    else {
-        for (let i = 0; i < length; i++)
-            password += charset.charAt(Math.floor(Math.random() * charset.length));
+        for (let i = 0; i < length; i++) password += charset.charAt(Math.floor((rand[i] * charset.length) / 65536));
+    } else {
+        for (let i = 0; i < length; i++) password += charset.charAt(Math.floor(Math.random() * charset.length));
     }
     return password;
 }
@@ -165,7 +191,7 @@ const EditGroupSubtype = Object.freeze({
     PRIMITIVE_LIST: Symbol("primitiveList"),
     PRIMITIVE_DICTIONARY: Symbol("primitiveDictionary"),
     LIST_OF_DICTIONARIES: Symbol("listOfDictionaries"),
-    DICTIONARY_OF_DICTIONARIES: Symbol("dictionaryOfDictionaries")
+    DICTIONARY_OF_DICTIONARIES: Symbol("dictionaryOfDictionaries"),
 });
 
 function getEditGroupSubtype(element) {
@@ -196,8 +222,8 @@ function deepCopy(e) {
     return e;
 }
 
-function getProductName() : string {
-    return window._IS_UYUNI ? "Uyuni" : "SUSE Manager"
+function getProductName(): string {
+    return window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
 }
 
 const Utils = {
@@ -212,20 +238,16 @@ const Utils = {
     capitalize: capitalize,
     generatePassword: generatePassword,
     deepCopy: deepCopy,
-    getProductName: getProductName
+    getProductName: getProductName,
 };
 
 const Formats = {
-    LocalDateTime: LocalDateTime
+    LocalDateTime: LocalDateTime,
 };
 
 const Formulas = {
     EditGroupSubtype: EditGroupSubtype,
-    getEditGroupSubtype: getEditGroupSubtype
+    getEditGroupSubtype: getEditGroupSubtype,
 };
 
-export {
-    Utils,
-    Formats,
-    Formulas,
-};
+export {Utils, Formats, Formulas};

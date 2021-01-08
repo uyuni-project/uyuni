@@ -100,10 +100,11 @@ const args = require("./args");
     console.log("migrate untyped use state");
     await execAndLog(`sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
 
+    // TODO: Review this with https://github.com/typescript-cheatsheets/react
     // React.ReactNode -> JSX.Element
-    console.log("migrate React.ReactNode to JSX.Element");
-    await execAndLog(`sed -i '' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
-    await execAndLog(`sed -i '' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
+    // console.log("migrate React.ReactNode to JSX.Element");
+    // await execAndLog(`sed -i '' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
+    // await execAndLog(`sed -i '' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
 
     // Array<Object> -> Array<any>
     console.log("migrate object array to any array");
@@ -122,6 +123,8 @@ const args = require("./args");
     await execAndLog(`sed -i '' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
+
+    // TODO: React.ReactNode | string and string | React.ReactNode => React.ReactNode
 
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
