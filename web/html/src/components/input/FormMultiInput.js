@@ -155,7 +155,7 @@ export function FormMultiInput (props: Props) {
             )
           }
           return (
-            <PanelRow>
+            <PanelRow key={`${props.prefix}${index}-panelrow`}>
               { children }
               { removeButton }
             </PanelRow>
