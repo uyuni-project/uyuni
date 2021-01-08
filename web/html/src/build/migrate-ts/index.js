@@ -94,34 +94,34 @@ const args = require("./args");
     // In Flow, the widest possible type is `Object`, in TS the equivalent type is `any`
     // const foo: Object -> const foo: any
     console.log("migrate object to any");
-    await execAndLog(`sed -i '' -e 's/: Object\\([^\\.]\\)/: any\\1/g' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/: Object\\([^\\.]\\)/: any\\1/g' ${tsInputs}`);
 
     // React.useState(undefined) -> React.useState<any>(undefined)
     console.log("migrate untyped use state");
-    await execAndLog(`sed -i '' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
 
     // React.ReactNode -> JSX.Element
     console.log("migrate React.ReactNode to JSX.Element");
-    await execAndLog(`sed -i '' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
-    await execAndLog(`sed -i '' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
 
     // Array<Object> -> Array<any>
     console.log("migrate object array to any array");
-    await execAndLog(`sed -i '' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
 
     // In strict TS, an empty untyped object is of type `{}` and can't have keys added to it
     // let foo = {}; -> let foo: any = {};
     console.log("migrate untyped object initializations");
-    await execAndLog(`sed -i '' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`);
-    await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
-    await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
 
     // In strict TS, an empty untyped array is of type `never[]` and you can't push to it without adding a type
     // let foo = []; -> let foo: any[] = [];
     console.log("migrate untyped array initializations");
-    await execAndLog(`sed -i '' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
-    await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
-    await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i'' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
 
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
