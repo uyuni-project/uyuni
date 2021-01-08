@@ -527,7 +527,7 @@ install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/contex
 %else
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
-install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -m 644 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
 
 # check spelling errors in all resources for English if aspell installed
