@@ -23,6 +23,7 @@ const EnvironmentForm = (props: Props) =>
     <React.Fragment>
       <div className="row">
         <Text
+          required
           name="name"
           // ref={nameInputRef}
           label={t("Name")}
@@ -33,6 +34,7 @@ const EnvironmentForm = (props: Props) =>
       </div>
       <div className="row">
         <Text
+          required
           name="label"
           label={t("Label")}
           labelClass="col-md-3"
