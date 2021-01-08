@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-07 10:11+0100\n"
-"PO-Revision-Date: 2021-01-07 17:38+0000\n"
+"PO-Revision-Date: 2021-01-08 13:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -927,15 +927,15 @@ msgstr "Kanály"
 
 #: ../html/src/manager/admin/setup/products/products.js:704
 msgid " channels sync failed"
-msgstr ""
+msgstr " synchronizácia kanálov zlyhala"
 
 #: ../html/src/manager/admin/setup/products/products.js:710
 msgid " channels sync in progress"
-msgstr ""
+msgstr " prebieha synchronizácia kanálov"
 
 #: ../html/src/manager/admin/setup/products/products.js:716
 msgid " channels synced"
-msgstr ""
+msgstr " kanály synchronizované"
 
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "To enable this product, the parent product should be selected first"
@@ -971,15 +971,15 @@ msgstr "Prebieha obnovovanie katalógu výrobkov SCC"
 
 #: ../html/src/manager/admin/setup/products/products.js:828
 msgid "Scheduling channels product resync"
-msgstr ""
+msgstr "Plánovanie opätovnej synchronizácie produktov kanálov"
 
 #: ../html/src/manager/admin/setup/products/products.js:832
 msgid "Channels product resync scheduled"
-msgstr ""
+msgstr "Opätovná synchronizácia produktov kanálov naplánovaná"
 
 #: ../html/src/manager/admin/setup/products/products.js:836
 msgid "Schedule channels product resync"
-msgstr ""
+msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
 
 #: ../html/src/manager/admin/setup/products/products.js:875
 msgid "Show product's channels"
@@ -999,19 +999,19 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.js:931
 msgid "not synced"
-msgstr ""
+msgstr "nesynchronizované"
 
 #: ../html/src/manager/admin/setup/products/products.js:933
 msgid "sync in progress"
-msgstr ""
+msgstr "prebieha synchronizácia"
 
 #: ../html/src/manager/admin/setup/products/products.js:935
 msgid "synced"
-msgstr ""
+msgstr "synchronizované"
 
 #: ../html/src/manager/admin/setup/products/products.js:937
 msgid "sync failed"
-msgstr ""
+msgstr "synchronizácia zlyhala"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
 msgid "Refresh the product catalog from SUSE Customer Center"
@@ -3406,11 +3406,11 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:27
 msgid "Channel sync failed"
-msgstr ""
+msgstr "Synchronizácia kanála zlyhala"
 
 #: ../html/src/manager/notifications/notification-messages.js:31
 msgid "Channel sync finished"
-msgstr ""
+msgstr "Synchronizácia kanála je dokončená"
 
 #: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
@@ -3446,7 +3446,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:322
 msgid "Retry repo sync"
-msgstr ""
+msgstr "Zopakovať synchronizáciu repozitárov"
 
 #: ../html/src/manager/notifications/notification-messages.js:336
 msgid "Unread Messages"
@@ -4318,7 +4318,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Synchronize"
-msgstr ""
+msgstr "Synchronizovať"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Hosted Virtual Systems"
