@@ -1,3 +1,4 @@
+- Document advanced package search on '--help' (bsc#1180583)
 - Fixed advanced search on 'package_listinstalledsystems'
 - Fixed duplicate results when using multiple search criteria (bsc#1180585)
 
