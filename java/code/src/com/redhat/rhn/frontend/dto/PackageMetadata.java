@@ -261,6 +261,16 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     }
 
     /**
+     * @return The package type.
+     */
+    public String getPackageType() {
+        if (comparison == KEY_THIS_ONLY) {
+            return system.getPackageType();
+        }
+        return other.getPackageType();
+    }
+
+    /**
      * Returns the epoch of the Package, if both the system and
      * other PackageListItem are null, returns null.
      * @return the epoch of the Package, if both the system and
