@@ -1,3 +1,5 @@
+- Open raw output in new tab for ScriptRunAction (bsc#1180547)
+
 -------------------------------------------------------------------
 Wed Jan 27 13:04:11 CET 2021 - jgonzalez@suse.com
 

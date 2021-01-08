@@ -64,7 +64,7 @@ public class ScriptRunAction extends ScriptAction {
                         .getReturnCode().toString()));
                 retval.append("</br>");
                 retval.append(ls.getMessage("system.event.scriptRawOutput"));
-                retval.append("<a href=\"" +
+                retval.append("<a data-senna-off=\"true\" target=\"_blank\" href=\"" +
                         DownloadManager.getScriptRawOutputDownloadPath(
                                 this.getId(), sr.getActionScriptId(), currentUser) +
                         "\">");
