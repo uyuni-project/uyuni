@@ -46,6 +46,7 @@ public class PackageListItem extends IdComboDto {
     private Long nameId;
     private Long evrId;
     private Long archId;
+    private String packageType;
     private String path;
     private String arch;
     private List channelName;
@@ -413,6 +414,20 @@ public class PackageListItem extends IdComboDto {
      */
     public void setNvrea(String aNvrea) {
         this.nvrea = aNvrea;
+    }
+
+    /**
+     * @return Returns The package type.
+     */
+    public String getPackageType() {
+        return packageType;
+    }
+
+    /**
+     * @param packageTypeIn The package type to set.
+     */
+    public void setPackageType(String packageTypeIn) {
+        this.packageType = packageTypeIn;
     }
 
     /**

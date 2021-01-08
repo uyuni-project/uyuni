@@ -219,6 +219,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         pli = new PackageListItem();
@@ -230,6 +231,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         List<PackageListItem> b = new ArrayList<>();
@@ -242,6 +244,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         b.add(pli);
 
         List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
@@ -268,6 +271,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         List<PackageListItem> b = new ArrayList<>();
@@ -280,6 +284,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         b.add(pli);
 
         List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
@@ -303,6 +308,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         b.add(pli);
 
         List<PackageListItem> a = new ArrayList<>();
@@ -315,6 +321,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.21-27.EL");
         pli.setVersion("2.4.21");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
@@ -343,6 +350,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli1.setNameId(500000341L);
         pli1.setEvr("kernel-2.4.22-27.EL-bretm");
         pli1.setVersion("2.4.22");
+        pli1.setPackageType("rpm");
 
         List<PackageListItem> b = new ArrayList<PackageListItem>();
         PackageListItem pli2 = new PackageListItem();
@@ -353,6 +361,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli2.setNameId(500000341L);
         pli2.setEvr("kernel-2.4.21-27.EL");
         pli2.setVersion("2.4.21");
+        pli2.setPackageType("rpm");
 
         for (int i = 0; i < pkg1Epochs.length; i++) {
             pli1.setEpoch(pkg1Epochs[i]);
@@ -386,6 +395,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setIdCombo(nameId + "|" + evrString.hashCode());
         pli.setEvr(evrString);
         pli.setNameId((long) nameId);
+        pli.setPackageType("rpm");
         return pli;
     }
 
@@ -432,6 +442,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         PackageArch pa = PackageFactory.lookupPackageArchByLabel("x86_64");
         pli.setArch(pa.getLabel());
         pli.setArchId(pa.getId());
+        pli.setPackageType("rpm");
         return pli;
     }
 
@@ -446,6 +457,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
 
@@ -459,6 +471,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.4.22-27.EL-bretm");
         pli.setVersion("2.4.22");
         pli.setEpoch(null);
+        pli.setPackageType("rpm");
         b.add(pli);
 
         List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
@@ -478,6 +491,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
         pli.setArch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         pli = new PackageListItem();
@@ -490,6 +504,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
         pli.setArch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         pli = new PackageListItem();
@@ -502,6 +517,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
         pli.setArch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         pli = new PackageListItem();
@@ -514,6 +530,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
         pli.setArch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         pli = new PackageListItem();
@@ -526,6 +543,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.4");
         pli.setEpoch("1");
         pli.setArch(null);
+        pli.setPackageType("rpm");
         a.add(pli);
 
         // SETUP B
@@ -540,6 +558,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
         pli.setArch(null);
+        pli.setPackageType("rpm");
         b.add(pli);
 
         pli = new PackageListItem();
@@ -552,6 +571,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
         pli.setArch(null);
+        pli.setPackageType("rpm");
         b.add(pli);
 
         pli = new PackageListItem();
@@ -564,6 +584,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setVersion("2.4");
         pli.setEpoch("1");
         pli.setArch(null);
+        pli.setPackageType("rpm");
         b.add(pli);
 
         List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<PackageListItem>(a),
@@ -588,6 +609,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli3.setEvr("kernel-2.6.9-42.0.2.EL");
         pli3.setVersion("2.6.9");
         pli3.setEpoch(null);
+        pli3.setPackageType("rpm");
         serverList.add(pli3);
 
         List<PackageListItem> otherServerList = new ArrayList<>();
@@ -600,6 +622,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli.setEvr("kernel-2.6.9-22.EL");
         pli.setVersion("2.6.9");
         pli.setEpoch(null);
+        pli3.setPackageType("rpm");
         otherServerList.add(pli);
 
         PackageListItem pli2 = new PackageListItem();
@@ -611,6 +634,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         pli2.setEvr("kernel-2.6.9-42.0.2.EL");
         pli2.setVersion("2.6.9");
         pli2.setEpoch(null);
+        pli3.setPackageType("rpm");
         otherServerList.add(pli2);
 
 
