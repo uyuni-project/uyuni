@@ -124,8 +124,6 @@ const args = require("./args");
     await execAndLog(`sed -i '' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i '' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
 
-    // TODO: React.ReactNode | string and string | React.ReactNode => React.ReactNode
-
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
     {
