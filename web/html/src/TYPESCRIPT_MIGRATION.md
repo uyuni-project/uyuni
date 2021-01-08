@@ -4,6 +4,7 @@ In the long term, we're migrating from Flow to Typescript.
 We have an assistive migration script to assist in this transition.  
 
 ```sh
+$ yarn
 $ yarn migrate [--verbose] files
 ```
 
