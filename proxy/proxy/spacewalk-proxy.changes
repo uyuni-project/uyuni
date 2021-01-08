@@ -1,4 +1,3 @@
-- Fix: slow refresh Ubuntu repos via SUMa proxy (bsc#1176906)
 - fix package manager string compare - python3 porting issue
 
 -------------------------------------------------------------------
