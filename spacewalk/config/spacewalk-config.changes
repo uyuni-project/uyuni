@@ -1,3 +1,5 @@
+- Fixed apache group for RHEL.
+- Updated Source URL in SPEC.
 - Drop the ssl_available option (SSL is always present)
 
 -------------------------------------------------------------------
