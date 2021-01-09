@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-07 10:11+0100\n"
-"PO-Revision-Date: 2021-01-08 13:38+0000\n"
+"PO-Revision-Date: 2021-01-09 20:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -940,6 +940,8 @@ msgstr " kanály synchronizované"
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
+"Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský "
+"produkt"
 
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "Select this product"
@@ -4548,15 +4550,15 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:364
 msgid "Adapter type"
-msgstr ""
+msgstr "Typ adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:394
 msgid "Adapter name"
-msgstr ""
+msgstr "Názov adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "Adapter parent PCI address"
-msgstr ""
+msgstr "Rodičovská PCI adresa adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:407
 #: ../html/src/manager/virtualization/pools/pool-properties.js:418
@@ -4565,15 +4567,15 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:414
 msgid "Adapter parent address unique ID"
-msgstr ""
+msgstr "Jedinečné ID rodičovskej adresy adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:425
 msgid "Adapter parent name"
-msgstr ""
+msgstr "Rodičovský názov adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:433
 msgid "Adapter parent wwnn"
-msgstr ""
+msgstr "Rodičovský wwnn adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:436
 #: ../html/src/manager/virtualization/pools/pool-properties.js:446
@@ -4585,19 +4587,19 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:443
 msgid "Adapter parent wwpn"
-msgstr ""
+msgstr "Rodičovský wwpn adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:453
 msgid "Adapter parent fabric wwn"
-msgstr ""
+msgstr "Rodičovský fabric wwn adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "Adapter wwnn"
-msgstr ""
+msgstr "wwnn adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:474
 msgid "Adapter wwpn"
-msgstr ""
+msgstr "wwpn adaptéra"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:485
 msgid "Manage vHBA deletion"
