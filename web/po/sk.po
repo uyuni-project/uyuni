@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-07 10:11+0100\n"
-"PO-Revision-Date: 2021-01-09 20:38+0000\n"
+"PO-Revision-Date: 2021-01-10 20:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -945,11 +945,11 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "Select this product"
-msgstr ""
+msgstr "Vybrať tento produkt"
 
 #: ../html/src/manager/admin/setup/products/products.js:744
 msgid "This product is mirrored."
-msgstr ""
+msgstr "Tento produkt je zrkadlený."
 
 #: ../html/src/manager/admin/setup/products/products.js:770
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
@@ -957,7 +957,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
-msgstr ""
+msgstr "odporúčané"
 
 #: ../html/src/manager/admin/setup/products/products.js:784
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
@@ -965,7 +965,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
-msgstr ""
+msgstr "zahrnúť odporúčané"
 
 #: ../html/src/manager/admin/setup/products/products.js:824
 msgid "SCC product catalog refresh in progress"
@@ -985,19 +985,19 @@ msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
 
 #: ../html/src/manager/admin/setup/products/products.js:875
 msgid "Show product's channels"
-msgstr ""
+msgstr "Zobraziť kanály produktu"
 
 #: ../html/src/manager/admin/setup/products/products.js:899
 msgid "Product Channels - "
-msgstr ""
+msgstr "Kanály produktov - "
 
 #: ../html/src/manager/admin/setup/products/products.js:904
 msgid "Mandatory Channels"
-msgstr ""
+msgstr "Povinné kanály"
 
 #: ../html/src/manager/admin/setup/products/products.js:909
 msgid "Optional Channels"
-msgstr ""
+msgstr "Voliteľné kanály"
 
 #: ../html/src/manager/admin/setup/products/products.js:931
 msgid "not synced"
@@ -1027,16 +1027,16 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 #: ../html/src/manager/notifications/notification-messages.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
-msgstr ""
+msgstr "Obnoviť"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
 msgid "Please be patient, this might take several minutes."
-msgstr ""
+msgstr "Prosím, buďte trpezliví, môže to trvať niekoľko minút."
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
 #: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
-msgstr ""
+msgstr "Dokončené"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
 msgid "Operation not successful: Empty reply from the server"
@@ -1281,7 +1281,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
 msgid "). "
-msgstr ""
+msgstr "). "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
 msgid "Refresh matching data"
@@ -1741,7 +1741,7 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:249
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:40
 msgid "Remove nodes"
@@ -2024,11 +2024,11 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:16
 msgid "Package"
-msgstr ""
+msgstr "Balík"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:20
 msgid "Patch"
-msgstr ""
+msgstr "Oprava"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:31
 msgid "contains"
