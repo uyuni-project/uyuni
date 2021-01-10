@@ -1,3 +1,4 @@
+- drop Transfer-Encoding header from proxy respone to fix error response messages (bsc#1176906)
 - harden extratag key import by execute_values to ignore conflicts
 - internal code cleanup (dropping unused table rhnErrataTmp)
 - Fix Debian package version comparison
