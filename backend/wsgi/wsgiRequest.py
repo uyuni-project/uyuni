@@ -86,6 +86,15 @@ class WsgiRequest:
         if not self.headers_out.has_key('Content-Type'):
             self.headers_out['Content-Type'] = 'text/xml'
 
+        if self.headers_out.has_key('Transfer-Encoding'):
+            # leave transfer encoding settings to wsgi as at least 'chunked'
+            # create problems
+            hdr = WsgiMPtable()
+            for k,v in list(self.headers_out.items()):
+                if k == 'Transfer-Encoding':
+                    continue
+                hdr[k] = v
+            self.headers_out = hdr
         self.start_response(self.status, list(self.headers_out.items()))
         return
 
