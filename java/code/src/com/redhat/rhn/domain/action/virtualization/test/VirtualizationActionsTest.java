@@ -154,6 +154,9 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         a1.setMemory(1024L);
         a1.setVcpus(2L);
         a1.setOsType("hvm");
+        a1.setKernelOptions("kernelopts");
+        a1.setCobblerSystem("cobbler:system:id");
+        a1.setKickstartHost("https://cobbler.host.local");
 
         List<VirtualizationCreateActionDiskDetails> disks = new ArrayList<>();
         VirtualizationCreateActionDiskDetails disk0 = new VirtualizationCreateActionDiskDetails();
@@ -186,6 +189,9 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertEquals(Long.valueOf(1024), actual.getMemory());
         assertEquals(Long.valueOf(2), actual.getVcpus());
         assertEquals("hvm", actual.getOsType());
+        assertEquals("kernelopts", actual.getKernelOptions());
+        assertEquals("cobbler:system:id", actual.getCobblerSystem());
+        assertEquals("https://cobbler.host.local", actual.getKickstartHost());
 
         assertEquals(1, actual.getDisks().size());
         assertEquals("templateimage.qcow2", actual.getDisks().get(0).getTemplate());

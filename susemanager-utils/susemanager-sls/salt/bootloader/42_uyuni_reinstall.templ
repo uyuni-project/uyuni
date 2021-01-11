@@ -1,12 +1,17 @@
 #!/bin/sh
+set -e
+
+. "$pkgdatadir/grub-mkconfig_lib"
+
+rel_dirname=`make_system_path_relative_to_its_root /boot`
 
 echo "menuentry \"{{ pillar.get('uyuni-reinstall-name') }}\" {"
 if [ -d /sys/firmware/efi ] && [ "x${GRUB_USE_LINUXEFI}" = "xtrue" ]; then
-    echo "    linuxefi /boot/uyuni-reinstall-kernel {{ pillar.get('uyuni-reinstall-kopts') }}"
-    echo "    initrdefi /boot/uyuni-reinstall-initrd"
+    echo "    linuxefi ${rel_dirname}/uyuni-reinstall-kernel {{ pillar.get('kopts') }}"
+    echo "    initrdefi ${rel_dirname}/uyuni-reinstall-initrd"
 else
-    echo "    linux /boot/uyuni-reinstall-kernel {{ pillar.get('uyuni-reinstall-kopts') }}"
-    echo "    initrd /boot/uyuni-reinstall-initrd"
+    echo "    linux ${rel_dirname}/uyuni-reinstall-kernel {{ pillar.get('kopts') }}"
+    echo "    initrd ${rel_dirname}/uyuni-reinstall-initrd"
 fi
 echo "}"
 

@@ -17,7 +17,7 @@ package com.redhat.rhn.manager.content;
 /**
  * Exception to be thrown in case of problems with content synchronization.
  */
-public class ContentSyncException extends Exception {
+public class ContentSyncException extends RuntimeException {
 
     /**
      * Constructor expecting a custom cause.

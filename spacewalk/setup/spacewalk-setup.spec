@@ -17,7 +17,7 @@
 #
 
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel} || 0%{?fedora}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif
@@ -36,7 +36,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.2.1
+Version:        4.2.3
 Release:        1%{?dist}
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
@@ -97,17 +97,13 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
-%if 0%{?suse_version}
 %if 0%{?build_py3}
-Requires:       python3-PyYAML
+Requires:       (python3-PyYAML or python3-pyyaml)
 %else
-Requires:       python-PyYAML
+Requires:       (python-PyYAML or PyYAML)
 %endif
-%else
 %if 0%{?fedora} >= 22
 Recommends:     cobbler20
-%endif
-Requires:       PyYAML
 %endif
 Requires:       /usr/bin/gpg
 Requires:       curl
@@ -152,17 +148,19 @@ sed -i "s/'python'/'python3'/g" lib/Spacewalk/Setup.pm
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
+
 %if 0%{?rhel} == 6
 cat share/tomcat.java_opts.rhel6 >>share/tomcat.java_opts
 %endif
 #if java -version 2>&1 | grep -q IBM ; then
 #    cat share/tomcat.java_opts.ibm >>share/tomcat.java_opts
 #fi
-rm -f share/tomcat.java_opts.*
 %if 0%{?suse_version}
+cat share/tomcat.java_opts.suse >>share/tomcat.java_opts | tr '\n' ' '
 # SLES12 tomcat has only tomcat.conf
 cat share/tomcat.1 >share/tomcat.conf.1
 %endif
+rm -f share/tomcat.java_opts.*
 
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -306,7 +304,11 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/metadata/
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
+%if 0%{?rhel} || 0%{?fedora}
+%{misc_path}/spacewalk
+%else
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
+%endif
 %{_mandir}/man8/spacewalk-make-mount-points*
 %doc LICENSE
 

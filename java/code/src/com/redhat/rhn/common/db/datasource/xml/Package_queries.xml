@@ -15,7 +15,7 @@ SELECT * FROM
 (SELECT distinct pn.name AS NAME,
         pn.name || '-' || evr_t_as_vre_simple(avl.evr) AS NVRE,
         pn.name || '-' || evr_t_as_vre_simple(avl.evr) || '.' || avl.arch_label AS NVREA,
-        pn.id || '|' || lookup_evr((avl.evr).epoch, (avl.evr).version, (avl.evr).release) || '|' || avl.arch_id AS ID_COMBO,
+        pn.id || '|' || lookup_evr((avl.evr).epoch, (avl.evr).version, (avl.evr).release, (avl.evr).type) || '|' || avl.arch_id AS ID_COMBO,
         avl.arch_label as ARCH,
         lck.pending,
         CASE WHEN lck.server_id IS NOT NULL THEN 'Y'
@@ -417,26 +417,6 @@ ORDER BY UPPER(PN.name), PE.version, PE.release, PE.epoch, PA.label, P.id
   <elaborator name="package_channels" />
 </mode>
 
-<mode name="packages_in_tmp_errata" class="com.redhat.rhn.frontend.dto.PackageOverview">
-  <query params="eid">
-SELECT P.id id, PN.name || '-' || PE.version
-       || '-' || PE.release || (CASE WHEN PE.epoch IS NULL THEN '' ELSE ':' || PE.epoch END)
-       || '-' || PA.label package_nvre
- FROM rhnPackageName PN,
-      rhnPackageEVR PE,
-      rhnPackageArch PA,
-      rhnPackage P,
-      rhnErrataPackageTmp EP
-WHERE EP.errata_id = :eid
-  AND EP.package_id = P.id
-  AND PN.id = P.name_id
-  AND PE.id = P.evr_id
-  AND PA.id = P.package_arch_id
-ORDER BY UPPER(PN.name), PE.version, PE.release, PE.epoch, PA.label, P.id
-  </query>
-  <elaborator name="package_channels" />
-</mode>
-
 <mode name="packages_in_channel_by_id_combo" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="cid">
 SELECT PN.id || '|' || PE.id || '|' || PA.id AS ID_COMBO,
@@ -735,34 +715,6 @@ ORDER BY UPPER(X.PACKAGE_NVRE)
   <elaborator name="package_channels" />
 </mode>
 
-<mode name="packages_available_to_tmp_errata"  class="com.redhat.rhn.frontend.dto.PackageOverview">
-  <query params="org_id, eid">
-select * from (
-  SELECT DISTINCT P.id ID,
-                  PN.name || '-' || PE.version || '-' || PE.release
-                    || (CASE WHEN PE.epoch IS NULL THEN '' ELSE ':' || PE.epoch END)
-                    || '-' || PA.label PACKAGE_NVRE
-    FROM rhnPackageName PN,
-         rhnPackageEVR PE,
-         rhnPackageArch PA,
-     rhnArchType PAT,
-         rhnPackage P
-   WHERE P.org_id = :org_id
-     AND PN.id = P.name_id
-     AND PE.id = P.evr_id
-     AND PA.id = P.package_arch_id
-   AND PA.arch_type_id = PAT.id
-   AND PAT.label = 'rpm'
-     AND NOT EXISTS (SELECT 1
-                       FROM rhnErrataPackageTmp EP
-                      WHERE EP.errata_id = :eid
-                        AND EP.package_id = P.id)
-) X
-ORDER BY UPPER(X.PACKAGE_NVRE)
-  </query>
-  <elaborator name="package_channels" />
-</mode>
-
 <mode name="packages_available_to_errata_in_channel" class="com.redhat.rhn.frontend.dto.PackageOverview">
   <query params="source_cid, target_eid">
 SELECT P.id AS ID,
@@ -777,27 +729,6 @@ SELECT P.id AS ID,
    AND PA.id = P.package_arch_id
    AND NOT EXISTS (SELECT 1
               FROM rhnErrataPackage EP
-             WHERE EP.errata_id = :target_eid
-               AND EP.package_id = P.id)
-ORDER BY UPPER(PN.name || '-' || evr_t_as_vre_simple(PE.evr))
-  </query>
-  <elaborator name="package_channels" />
-</mode>
-
-<mode name="packages_available_to_tmp_errata_in_channel" class="com.redhat.rhn.frontend.dto.PackageOverview">
-  <query params="source_cid, target_eid">
-SELECT P.id AS ID,
-       PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS PACKAGE_NVRE,
-       P.summary
-  FROM rhnPackageName PN, rhnPackageEVR PE, rhnPackage P,
-       rhnChannelPackage CP, rhnPackageArch PA
- WHERE CP.channel_id = :source_cid
-   AND CP.package_id = P.id
-   AND P.name_id = PN.id
-   AND P.evr_id = PE.id
-   AND PA.id = P.package_arch_id
-   AND NOT EXISTS (SELECT 1
-              FROM rhnErrataPackagetmp EP
              WHERE EP.errata_id = :target_eid
                AND EP.package_id = P.id)
 ORDER BY UPPER(PN.name || '-' || evr_t_as_vre_simple(PE.evr))
@@ -844,11 +775,11 @@ SELECT P.id, P.summary, PP.name as provider
           pn.name AS NAME,
           pn.name || '-' || evr_t_as_vre_simple(latest.evr) AS NVRE,
           pn.name || '-' || evr_t_as_vre_simple(latest.evr) || '.' || latest.arch_label AS NVREA,
-          pn.id || '|' || lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release) || '|' || latest.arch_id AS ID_COMBO,
+          pn.id || '|' || lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) || '|' || latest.arch_id AS ID_COMBO,
           latest.arch_label AS ARCH,
           pn.id AS name_id,
           latest.arch_id,
-          lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release) AS evr_id,
+          lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
           (latest.evr).release AS release,
           (latest.evr).version AS version
         FROM
@@ -966,7 +897,7 @@ DELETE FROM rhnlockedpackages l
 
 <mode name="lookup_id_combo_by_name">
 <query params="sid, name">
-SELECT  pn.id as name_id, lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release) AS evr_id
+SELECT  pn.id as name_id, lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release, (full_list.evr).type) AS evr_id
   FROM  (
          SELECT  p.name_id name_id, max(pe.evr) evr
            FROM  rhnPackageEVR PE, rhnPackage P,
@@ -1051,7 +982,7 @@ SELECT  COUNT(pn.id) AS COUNT
   <query params="sid">
 SELECT  n.id AS id,
         n.id AS name_id,
-        lookup_evr(((latest.evr)).epoch, (latest.evr).version, (latest.evr).release) AS evr_id,
+        lookup_evr(((latest.evr)).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
         latest.package_arch_id AS arch_id,
         (latest.evr).epoch AS epoch,
         (latest.evr).version AS version,
@@ -1059,7 +990,7 @@ SELECT  n.id AS id,
         n.name AS name,
         n.name ||'-'|| evr_t_as_vre_simple(latest.evr) || '.' || latest_pa.label AS nvrea,
         n.name ||'-'|| evr_t_as_vre_simple(spe.evr) || '.' || spa.label AS installed_package,
-        n.id || '|' || lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release)|| '|' || latest.package_arch_id AS id_combo
+        n.id || '|' || lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type)|| '|' || latest.package_arch_id AS id_combo
   FROM
        rhnServerPackage sp
   join rhnPackageName n
@@ -1149,7 +1080,8 @@ SELECT  n.id AS id,
   join rhnPackageUpgradeArchCompat puac
     on puac.package_arch_id = sp.package_arch_id
    and puac.package_upgrade_arch_id = latest.package_arch_id
- where spe.evr &lt; latest.evr
+ where (spe.evr).type = (latest.evr).type
+   and spe.evr &lt; latest.evr
    and sp.server_id = :sid
   </query>
 </mode>
@@ -1170,8 +1102,8 @@ ORDER BY  UPPER(X.NVRE)
 </mode>
 
 <callable-mode name="lookup_evr">
-    <query params="epoch, version, release">
-        {:evrId = call lookup_evr(:epoch, :version, :release)}
+    <query params="epoch, version, release, type">
+        {:evrId = call lookup_evr(:epoch, :version, :release, :type)}
     </query>
 </callable-mode>
 
@@ -1374,7 +1306,8 @@ WHERE EP.errata_id = :eid
   AND PE2.id = CNP.evr_id
   AND PA2.id = CNP.package_arch_id
   AND PN.id = P1.name_id
-  AND rpm.vercmp(PE1.epoch, PE1.version, PE1.release, PE2.epoch, PE2.version, PE2.release) > 0
+  AND (PE1.evr).type = (PE2.evr).type
+  AND PE1.evr &gt; PE2.evr
   </query>
 </mode>
 
@@ -1418,7 +1351,8 @@ WHERE EP.errata_id = :eid
       AND PE1.id = P1.evr_id
       AND PE2.id = CNP.evr_id
       AND PN.id = P1.name_id
-      AND rpm.vercmp(PE1.epoch, PE1.version, PE1.release, PE2.epoch, PE2.version, PE2.release) != 0)
+      AND (PE1.evr).type = (PE2.evr).type
+      AND PE1.evr != PE2.evr)
   </query>
 </mode>
 
@@ -2083,8 +2017,7 @@ select  pn.name as package_name,
         end as right_nvrea,
         case when ch1.evr_id is null then -2
              when ch2.evr_id is null then 2
-             else rpm.vercmp(ch1.epoch, ch1.version, ch1.release,
-                             ch2.epoch, ch2.version, ch2.release)
+             else evr_t_compare(ch1.evr, ch2.evr)
         end as comparison
   from (select np1.name_id, np1.package_arch_id, np1.evr_id, np1.package_id,
                 pe1.evr, pe1.epoch, pe1.version, pe1.release
@@ -2205,8 +2138,7 @@ select  pn.name as package_name,
         (snapshot_pkgs.max_evr).release as snapshot_release,
         case when server_pkgs.max_evr is null then -2
              when snapshot_pkgs.max_evr is null then 2
-             else rpm.vercmp((server_pkgs.max_evr).epoch, (server_pkgs.max_evr).version, (server_pkgs.max_evr).release,
-                             (snapshot_pkgs.max_evr).epoch, (snapshot_pkgs.max_evr).version, (snapshot_pkgs.max_evr).release)
+             else evr_t_compare(server_pkgs.max_evr, snapshot_pkgs.max_evr)
         end as comparison
   from (select max(pem1.evr) as max_evr, sp.name_id, sp.package_arch_id
           from rhnServerPackage sp
@@ -2235,12 +2167,10 @@ select  pn.name as package_name,
     on pa.id = coalesce(server_pkgs.package_arch_id, snapshot_pkgs.package_arch_id)
  where server_pkgs.max_evr is null
     or snapshot_pkgs.max_evr is null
-    or (rpm.vercmp((coalesce(server_pkgs.max_evr, evr_t('0','0','0'))).epoch,
-                   (coalesce(server_pkgs.max_evr, evr_t('0','0','0'))).version,
-                   (coalesce(server_pkgs.max_evr, evr_t('0','0','0'))).release,
-                   (coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0'))).epoch,
-                   (coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0'))).version,
-                   (coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0'))).release) &lt;&gt; 0)
+    or (evr_t_compare(
+          coalesce(server_pkgs.max_evr, evr_t('0','0','0', coalesce('rpm', (snapshot_pkgs.max_evr).type))),
+          coalesce(snapshot_pkgs.max_evr, evr_t('0','0','0', coalesce('rpm', (server_pkgs.max_evr).type)))
+      ) &lt;&gt; 0)
  order by pn.name
   </query>
 </mode>
@@ -2320,6 +2250,7 @@ SELECT P2.id AS ID, PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '-' ||
    AND p2.evr_id = PE.id
    AND PE2.id = P1.evr_id
    and pe.id != pe2.id
+   AND (PE.evr).type = (PE2.evr).type
    AND PE.evr >= PE2.evr
 -- after here is just for output
    and p2.name_id = pn.id
@@ -2328,34 +2259,7 @@ ORDER BY PE.evr DESC, AC.channel_name, E.issue_date
   </query>
 </mode>
 
-<mode name="channel_errata_intersection_unpublished">
-  <query params="eid, cid">
-SELECT P1.id,
-       PN.name AS NAME,
-       evr_t_as_vre_simple(PE1.evr) || '-' || PA.label AS ERRATA_VERSION,
-       evr_t_as_vre_simple(PE2.evr) || '-' || PA.label AS CHANNEL_VERSION
-  FROM rhnPackageName PN,
-       rhnPackageEVR PE2,
-       rhnChannelNewestPackage CNP,
-       rhnPackageArch PA,
-       rhnPackageEVR PE1,
-       rhnPackage P1,
-       rhnErrataPackageTmp EP
- WHERE 1=1
-   AND EP.errata_id = :eid
-   AND EP.package_id = P1.id
-   AND CNP.channel_id = :cid
-   AND P1.name_id = CNP.name_id
-   AND CNP.evr_id = PE2.id
-   AND P1.package_arch_id = CNP.package_arch_id
-   AND P1.evr_id = PE1.id
-   AND P1.name_id = PN.id
-   AND P1.package_arch_id = PA.id
-ORDER BY PN.name, evr_t_as_vre_simple(PE2.evr) || '-' || PA.label
-  </query>
-</mode>
-
-<mode name="channel_errata_intersection_published">
+<mode name="channel_errata_intersection">
   <query params="eid, cid">
 SELECT P1.id,
        PN.name AS NAME,

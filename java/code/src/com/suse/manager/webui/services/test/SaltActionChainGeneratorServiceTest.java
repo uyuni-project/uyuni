@@ -260,6 +260,11 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    mgrcompat.module_run:\n" +
                         "    -   name: mgractionchains.clean\n" +
                         "    -   onfail:\n" +
+                        "        -   mgrcompat: mgr_actionchain_142_action_1_chunk_1\n" +
+                        "force_restart_if_needed:\n" +
+                        "    cmd.script:\n" +
+                        "    -   source: salt://actionchains/force_restart_minion.sh\n" +
+                        "    -   require:\n" +
                         "        -   mgrcompat: mgr_actionchain_142_action_1_chunk_1\n")
                         .replaceAll("142", actionChain.getId() + ""),
                 fileContent);

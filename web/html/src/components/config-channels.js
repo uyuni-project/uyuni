@@ -1,19 +1,15 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const AceEditor = require("../components/ace-editor").AceEditor;
-const Buttons = require("../components/buttons");
-const { InnerPanel } = require('components/panels/InnerPanel');
-const Fields = require("../components/fields");
-const PopUp = require("../components/popup").PopUp;
-const Messages = require("../components/messages").Messages;
-const MessagesUtils = require("../components/messages").Utils;
-const Network = require("../utils/network");
-
-const AsyncButton = Buttons.AsyncButton;
-const LinkButton = Buttons.LinkButton;
-const TextField = Fields.TextField;
+import * as React from 'react';
+import { AceEditor } from '../components/ace-editor';
+import { AsyncButton, LinkButton } from '../components/buttons';
+import { InnerPanel } from 'components/panels/InnerPanel';
+import { TextField } from '../components/fields';
+import { PopUp } from '../components/popup';
+import { Messages } from '../components/messages';
+import { Utils as MessagesUtils } from '../components/messages';
+import Network from '../utils/network';
 
 function channelKey(channel) {
     return channel.label;
@@ -523,6 +519,6 @@ class RankingTable extends React.Component {
   }
 }
 
-module.exports = {
-    ConfigChannels : ConfigChannels
-}
+export {
+    ConfigChannels,
+};

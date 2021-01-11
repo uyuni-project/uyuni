@@ -5,8 +5,8 @@
 
         "data": {
             "domain": {
-                "uuid": "b99a8176-4f40-498d-8e61-2f6ade654fe2",
-                "name": "sles12sp2",
+                "uuid": "98eef4f7-eb7f-4be8-859d-11658506c496",
+                "name": "sles12sp2-new",
                 "id": 4
             },
             "uri": "qemu:///system",

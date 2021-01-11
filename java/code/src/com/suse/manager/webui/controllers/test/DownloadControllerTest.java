@@ -29,11 +29,12 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.product.Tuple3;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -202,7 +203,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             throws Exception {
         Package dpkg = new Package();
         PackageName pname = PackageNameTest.createTestPackageName();
-        PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(epoch, version, release);
+        PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(epoch, version, release, PackageType.DEB);
         PackageArch parch = PackageFactory.lookupPackageArchByLabel(arch);
         PackageTest.populateTestPackage(dpkg, user.getOrg(), pname, pevr, parch);
         TestUtils.saveAndFlush(dpkg);

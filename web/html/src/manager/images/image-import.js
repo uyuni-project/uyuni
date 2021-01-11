@@ -2,18 +2,18 @@
 // @flow
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const { TopPanel } = require('components/panels/TopPanel');
-const { Text } = require('components/input/Text');
-const { Select } = require('components/input/Select');
-const { Form } = require('components/input/Form');
-const {SubmitButton, Button} = require("components/buttons");
-const Network = require("utils/network");
-const {Messages} = require("components/messages");
-const MessagesUtils = require("components/messages").Utils;
-const {Utils} = require("utils/functions");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Text } from 'components/input/Text';
+import { Select } from 'components/input/Select';
+import { Form } from 'components/input/Form';
+import { SubmitButton, Button } from 'components/buttons';
+import Network from 'utils/network';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { Utils } from 'utils/functions';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 const msgMap = {
   "not_found":
@@ -233,14 +233,9 @@ class ImageImport extends React.Component {
 
     return (
       <Select name="activationKey" label={t("Activation Key")} hint={hint}
-        labelClass="col-md-3" divClass="col-md-6" onChange={this.handleActivationKeyChange}>
-        <option key="0" value="">{t("None")}</option>
-        {
-          this.state.activationkeys ? this.state.activationkeys.map(k =>
-            <option key={k} value={k}>{k}</option>
-          ) : null
-        }
-      </Select>
+        labelClass="col-md-3" divClass="col-md-6" onChange={this.handleActivationKeyChange}
+        isClearable options={this.state.activationkeys ? this.state.activationkeys : []}
+      />
     );
   }
 
@@ -257,30 +252,21 @@ class ImageImport extends React.Component {
                     onValidate={this.onValidate}>
 
                     <Select name="storeId" label={t("Image Store")} required
-                            labelClass="col-md-3" divClass="col-md-6" invalidHint={
-                                <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
-                            }
-                    >
-                        <option value="" disabled key="0">{t("Select an image store")}</option>
-                        {
-                            this.state.imageStores ? this.state.imageStores.map(k =>
-                              <option key={k.id} value={k.id}>{ k.label }</option>
-                            ) : null
-                        }
-                    </Select>
+                      labelClass="col-md-3" divClass="col-md-6" invalidHint={
+                        <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
+                      }
+                      options={this.state.imageStores}
+                      getOptionValue={option => option.id}
+                    />
 
                     <Text name="name" label={t("Image name")} required invalidHint={t("Image name is required.")} labelClass="col-md-3" divClass="col-md-6"/>
 
                     <Text name="version" label={t("Image version")} required invalidHint={t("Image version is required.")} labelClass="col-md-3" divClass="col-md-6"/>
 
-                    <Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-6">
-                        <option key="0" disabled="disabled" value="">Select a build host</option>
-                        {
-                            this.state.hosts ? this.state.hosts.map(h =>
-                                <option key={h.id} value={h.id}>{ h.name }</option>
-                            ) : null
-                        }
-                    </Select>
+                    <Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-6"
+                      isClearable options={this.state.hosts}
+                      getOptionValue={option => option.id} getOptionLabel={option => option.name}
+                    />
 
                     { this.renderActivationKeySelect() }
                     <div className="form-group">

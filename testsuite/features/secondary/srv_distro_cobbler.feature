@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@scope_cobbler
 Feature: Cobbler and distribution autoinstallation
 
   Background:
@@ -25,7 +26,7 @@ Feature: Cobbler and distribution autoinstallation
     And I follow "Create Distribution"
     And I enter "SLE-15-FAKE" as "label"
     And I enter "/install/SLES11-SP1-x86_64/DVD1/" as "basepath"
-    And I select "SLE-Product-SLES15-Pool for x86_64" from "channelid"
+    And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
@@ -146,9 +147,9 @@ Feature: Cobbler and distribution autoinstallation
     When I am logged in via XML-RPC system as user "admin" and password "admin"
     And I create a System Record
     Then I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
-    And the cobbler report contains "testserver.example.com" for system "testserver"
-    And the cobbler report contains "1.1.1.1" for system "testserver"
-    And the cobbler report contains "00:22:22:77:ee:cc" for system "testserver"
+    And the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
+    And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"
+    And the cobbler report should contain "00:22:22:77:ee:cc" for cobbler system name "testserver:1"
 
   Scenario: Cleanup: delete test distro and profiles
     Then I remove kickstart profiles and distros

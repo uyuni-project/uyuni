@@ -27,6 +27,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
     And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4"
+    And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
 
@@ -35,6 +38,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I enter "SUSE Linux Enterprise Server 11 SP3 i586" as the filtered product description
     And I select "SUSE Linux Enterprise Server 11 SP3 i586" as a product
     Then I should see the "SUSE Linux Enterprise Server 11 SP3 i586" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 11 SP3 i586"
+    And I select "SUSE Linux Enterprise Server LTSS 11 SP3 i586" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 11 SP3 i586" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 11 SP3 i586" product has been added
 
@@ -46,6 +52,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "SUSE Linux Enterprise Server 11 SP4 x86_64"
     And I select "SUSE Linux Enterprise Software Development Kit 11 SP4" as a product
     Then I should see the "SUSE Linux Enterprise Software Development Kit 11 SP4" selected
+    And I select "SUSE Linux Enterprise Server LTSS 11 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 11 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 11 SP4 x86_64" product has been added
 
@@ -56,6 +64,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 x86_64"
     Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
+    And I select "SUSE Linux Enterprise Server LTSS 15 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 x86_64" product has been added
 
@@ -82,18 +92,45 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
 
-  Scenario: Add RHEL6 Base x86_64
+  Scenario: SUSE Linux Enterprise Server with Expanded Support 6 x86_64
     Given I am on the Products page
-    And I enter "RHEL6 Base x86_64" as the filtered product description
-    And I select "RHEL6 Base x86_64" as a product
-    Then I should see the "RHEL6 Base x86_64" selected
+    When I enter "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" as the filtered product description
+    And I select "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "RHEL6 Base x86_64" product has been added
+    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" product has been added
 
-  Scenario: Add RHEL7 Base x86_64
+  Scenario: SUSE Linux Enterprise Server with Expanded Support 7 x86_64
     Given I am on the Products page
-    And I enter "RHEL7 Base x86_64" as the filtered product description
-    And I select "RHEL7 Base x86_64" as a product
-    Then I should see the "RHEL7 Base x86_64" selected
+    When I enter "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" as the filtered product description
+    And I select "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "RHEL7 Base x86_64" product has been added
+    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" product has been added
+
+  Scenario: SUSE Linux Enterprise Server with Expanded Support 8 x86_64
+    Given I am on the Products page
+    When I enter "RHEL or SLES ES or CentOS 8 Base x86_64" as the filtered product description
+    And I select "RHEL or SLES ES or CentOS 8 Base x86_64" as a product
+    Then I should see the "RHEL or SLES ES or CentOS 8 Base x86_64" selected
+    When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base x86_64"
+    And I select "SUSE Linux Enterprise Server with Expanded Support 8 x86_64"
+    Then I should see "SUSE Linux Enterprise Server with Expanded Support 8 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL or SLES ES or CentOS 8 Base x86_64" product has been added
+
+  Scenario: SUSE Manager Proxy 4.2 x86_64
+    Given I am on the Products page
+    When I enter "SUSE Manager Proxy 4.2 x86_64" as the filtered product description
+    And I select "SUSE Manager Proxy 4.2 x86_64" as a product
+    Then I should see the "SUSE Manager Proxy 4.2 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Manager Proxy 4.2 x86_64" product has been added
+
+  Scenario: SUSE Manager Retail Branch Server 4.2 x86_64
+    Given I am on the Products page
+    When I enter "SUSE Manager Retail Branch Server 4.2 x86_64" as the filtered product description
+    And I select "SUSE Manager Retail Branch Server 4.2 x86_64" as a product
+    Then I should see the "SUSE Manager Retail Branch Server 4.2 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Manager Retail Branch Server 4.2 x86_64" product has been added

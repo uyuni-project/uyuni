@@ -17,16 +17,12 @@ package com.suse.manager.webui.services.pillar;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.utils.SaltPillar;
 
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -38,13 +34,6 @@ public class MinionVirtualizationPillarGenerator implements MinionPillarGenerato
     private static final Logger LOG = Logger.getLogger(MinionVirtualizationPillarGenerator.class);
 
     public static final MinionVirtualizationPillarGenerator INSTANCE = new MinionVirtualizationPillarGenerator();
-    private static final Map<String, Object> VIRTPOLLER_BEACON_PROPS = new HashMap<>();
-
-    static {
-        VIRTPOLLER_BEACON_PROPS.put("cache_file", Config.get().getString(ConfigDefaults.VIRTPOLLER_CACHE_FILE));
-        VIRTPOLLER_BEACON_PROPS.put("expire_time", Config.get().getInt(ConfigDefaults.VIRTPOLLER_CACHE_EXPIRATION));
-        VIRTPOLLER_BEACON_PROPS.put("interval", Config.get().getInt(ConfigDefaults.VIRTPOLLER_INTERVAL));
-    }
 
 
     /**
@@ -54,21 +43,9 @@ public class MinionVirtualizationPillarGenerator implements MinionPillarGenerato
      */
     @Override
     public Optional<SaltPillar> generatePillarData(MinionServer minion) {
-        LOG.debug("Generating virtualization pillar file for minion: " + minion.getMinionId());
-
-        SaltPillar pillar = null;
-        if (minion.hasVirtualizationEntitlement()) {
-            pillar = new SaltPillar();
-            // this add the configuration for the beacon that tell us about
-            // virtual guests running on that minion
-            // The virtpoller is still usefull with the libvirt events: it will help
-            // synchronizing the DB with the actual guest lists in case we had a temporary shutdown.
-            Map<String, Object> beaconConfig = new HashMap<>();
-            beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
-            pillar.add("beacons", beaconConfig);
-        }
-
-        return Optional.ofNullable(pillar);
+        // The virtpoller pillar data used to be created on minions in the past.
+        // We want to ensure those are not lingering around.
+        return Optional.empty();
     }
 
     @Override

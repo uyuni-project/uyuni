@@ -6,6 +6,8 @@
 
 @sle_minion
 @sle_client
+@scope_proxy
+@scope_retail
 Feature: Setup SUSE Manager for Retail branch network
   In order to deploy SUSE Manager for Retail solution
   As the system administrator

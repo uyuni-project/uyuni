@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
 "PO-Revision-Date: 2018-03-16 11:02+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/spacewalk/"
@@ -997,8 +997,8 @@ msgid "Cannot contact selected server"
 msgstr "선택한 서버에 연결할 수 없음 "
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "'%s'에 있는 Satellite 또는 Proxy에 연결할 수 없습니다."
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1223,10 +1223,10 @@ msgstr ""
 "확인해 주십시오."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "이러한 오류가 발생해서는 안됩니다. 프로그램 기능 향상을 위해 버그를bugzilla."
@@ -2434,16 +2434,17 @@ msgstr "RHN 등록"
 
 #: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "Spacewalk/Satellite/Red Hat Network에서 받는 소프트웨어 업데이트를 등록 "
 
 #: ../rhn_register.desktop.in.h:3
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
 #, fuzzy
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "Spacewalk/Satellite/Red Hat Network에 등록."
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "Spacewalk/Satellite/Red Hat Network에 등록."
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."

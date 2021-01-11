@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.suse.manager.webui.utils.AbstractSaltRequisites;
 import com.suse.manager.webui.utils.ActionSaltState;
 import com.suse.manager.webui.utils.IdentifiableSaltState;
+import com.suse.manager.webui.utils.SaltCmdScript;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPatchInstalled;
@@ -152,6 +153,8 @@ public class SaltActionChainGeneratorService {
                                     prevRequisiteRef(fileStates), sshExtraFileRefs));
                     fileStates.add(state);
                     fileStates.add(stopIfPreviousFailed(prevRequisiteRef(fileStates)));
+                    fileStates.add(forceRestartServiceIfNeeded("force_restart_if_needed",
+                            prevRequisiteRef(Collections.singletonList(state))));
                     saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
                     fileStates.clear();
                     chunk++;
@@ -179,6 +182,12 @@ public class SaltActionChainGeneratorService {
         }
 
         return Collections.singletonMap(minion, chunk);
+    }
+
+    private SaltState forceRestartServiceIfNeeded(String id, Optional<Pair<String, String>> lastRef) {
+        SaltCmdScript cmd = new SaltCmdScript(id, "salt://actionchains/force_restart_minion.sh");
+        lastRef.ifPresent(ref -> cmd.addRequire(ref.getKey(), ref.getValue()));
+        return cmd;
     }
 
     private Optional<Long> nextActionId(List<SaltState> states, int currentPos) {

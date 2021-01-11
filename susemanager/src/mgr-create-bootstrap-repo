@@ -47,12 +47,52 @@ WHERE id IN (
 )
 """;
 
+_sql_filter_root_channel_label = """
+select c.label
+  from suseproducts sp
+  join suseproductchannel spc on sp.id = spc.product_id
+  join rhnchannel c on spc.channel_id = c.id
+ where sp.product_id in ( {0} )
+   and c.label in ( {1} );
+""";
+
 _sql_find_custom_parent_channel_labels = """
 SELECT label
   FROM rhnChannel
  WHERE parent_channel IS NULL
    AND org_id IS NOT NULL
 """;
+
+_sql_find_pkgs_all = """
+SELECT distinct
+       pkg.id AS id,
+       pn.name || '-' || evr_t_as_vre_simple(pevr.evr) || '.' || pa.label AS nvrea,
+       pa.label AS arch,
+       pkg.path
+   FROM rhnPackage pkg
+   JOIN rhnPackageArch pa ON pkg.package_arch_id = pa.id
+   JOIN rhnPackageName pn ON pkg.name_id = pn.id
+   JOIN rhnPackageEVR pevr ON pkg.evr_id = pevr.id
+   JOIN rhnChannelPackage CP ON CP.package_id = pkg.id
+   JOIN rhnChannel c ON CP.channel_id = c.id
+   JOIN (
+          SELECT I_C.*
+            FROM suseProducts I_SP
+            JOIN suseProductChannel I_PC ON I_SP.id = I_PC.product_id
+            JOIN rhnChannel I_C ON I_PC.channel_id = I_C.id
+           WHERE  I_SP.product_id IN ( %s )
+           UNION
+           SELECT *
+             FROM rhnChannel
+            WHERE org_id IS NOT NULL
+              AND parent_channel IN (
+                                     SELECT pc.id
+                                       FROM rhnChannel pc
+                                      WHERE pc.label = :parentchannel)
+        ) spc ON spc.id = c.id
+  WHERE pn.name = :pkgname
+ORDER BY pkg.id
+"""
 
 _sql_find_pkgs = """
 SELECT distinct
@@ -241,6 +281,8 @@ def cli():
                       help='when used in conjuction with --create, deletes the target repository before creating it (default)')
     parser.add_option('--no-flush', action='store_true', dest='noflush',
                       help='when used in conjuction with --create, prevent deletion of the target repository before creating it')
+    parser.add_option('--force', action='store_true', dest='force',
+                      help='Force creation even when not all required channels are available')
     parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
                       help='Take custom channels into account when searching for newest package versions')
     parser.add_option('', '--with-parent-channel', action="store", dest='parentchannel',
@@ -302,7 +344,17 @@ def find_root_channel_labels(pdids):
     :return: list of root channel labels
     """
     h = rhnSQL.Statement( _sql_find_root_channel_label.format(pdids))
-    return [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
+    root_labels = [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
+    log("Root Labels: {}".format(root_labels), 3)
+    if len(root_labels) > 1:
+        h = rhnSQL.Statement( _sql_filter_root_channel_label.format(pdids, ', '.join(["'{}'".format(x) for x in root_labels])))
+        filtered_root_labels = [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
+        log("Filtered Root Labels: {}".format(filtered_root_labels), 3)
+        if len(filtered_root_labels) >= 1:
+            return filtered_root_labels
+        # else: if all are gone, the pids did not contain a base product.
+        #       In this case we return all root labels found by the first query
+    return root_labels
 
 
 def find_custom_parent_channel_labels():
@@ -315,7 +367,7 @@ def find_custom_parent_channel_labels():
     return [x['label'] for x in rhnSQL.fetchall_dict(h) or []]
 
 
-def list_labels(mgr_bootstrap_data, do_print=True):
+def list_labels(mgr_bootstrap_data, force=False, do_print=True):
     """
     Create list of labels and return a structure of them for the menu.
 
@@ -327,7 +379,8 @@ def list_labels(mgr_bootstrap_data, do_print=True):
     label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.keys()):
         if ('PDID' in mgr_bootstrap_data.DATA[label] and mgr_bootstrap_data.DATA[label]['PDID'] and
-            all(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID'])):
+            (all(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID']) or
+                (force and any(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID'])))):
 
             if do_print:
                 print("{0}. {1}".format(label_index, label))
@@ -423,8 +476,10 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     else:
         log("Creating bootstrap repo for {0}".format(label))
 
-    if pdids:
+    if pdids and not options.force:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids)))
+    elif pdids and options.force:
+        h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_all % (pdids)))
     else:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs_custom ))
     packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
@@ -641,7 +696,7 @@ def main():
     if opts.auto:
         r = generate_all(opts, mgr_bootstrap_data, additional=args)
     elif opts.interactive:
-        label_map = list_labels(mgr_bootstrap_data)
+        label_map = list_labels(mgr_bootstrap_data, force=opts.force)
         if not label_map:
             log("No products available")
             sys.exit(0)
@@ -670,7 +725,7 @@ def main():
                     os.rename(destdir, destdirold)
         r = create_repo(elabel, opts, mgr_bootstrap_data, additional=args)
     elif opts.list:
-        list_labels(mgr_bootstrap_data)
+        list_labels(mgr_bootstrap_data, force=opts.force)
     elif opts.create:
         if opts.create not in mgr_bootstrap_data.DATA:
             log_error("'%s' not found" % opts.create)

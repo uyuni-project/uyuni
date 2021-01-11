@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.saltkey;
 
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
 import com.suse.manager.utils.SaltKeyUtils;
 
@@ -39,7 +41,7 @@ public class SaltKeyHandler extends BaseHandler {
      * API endpoint to delete minion keys
      * @param loggedInUser the user
      * @param minionId the key identifier (minionId)
-     * @return 1 on success otherwise 0
+     * @return 1 on success
      *
      * @xmlrpc.doc Delete a minion key
      * @xmlrpc.param #param("string", "sessionKey")
@@ -48,9 +50,12 @@ public class SaltKeyHandler extends BaseHandler {
      */
     public int delete(User loggedInUser, String minionId) {
         ensureOrgAdmin(loggedInUser);
-        if (saltKeyUtils.deleteSaltKey(loggedInUser, minionId)) {
-            return 1;
+        try {
+            saltKeyUtils.deleteSaltKey(loggedInUser, minionId);
         }
-        return 0;
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        return 1;
     }
 }

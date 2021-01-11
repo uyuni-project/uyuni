@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.manager.session.SessionManager;
 
@@ -152,11 +151,9 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
     }
 
     public final void testCreatePxtCookieSetsSecure() {
-        boolean expected = ConfigDefaults.get().isSSLAvailable();
-
         Cookie pxtCookie = manager.createPxtCookie(pxtSessionId, getRequest(), TIMEOUT);
 
-        assertEquals(expected, pxtCookie.getSecure());
+        assertEquals(true, pxtCookie.getSecure());
     }
 
 }

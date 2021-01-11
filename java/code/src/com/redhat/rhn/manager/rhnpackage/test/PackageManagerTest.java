@@ -184,35 +184,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
      * The web code doesn't actually create any of these records, but
      * this will be needed by the backend code.
      * @param srvr Server to associate with the packages
-     * @param pn The package name to associate
-     * @param pe The package evr (version and release).
-     */
-    public static void associateSystemToPackage(Server srvr,
-            PackageName pn, PackageEvr pe) {
-        try {
-            WriteMode m =
-                ModeFactory.
-                getWriteMode("test_queries", "insert_into_rhnServerPackage");
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("server_id", srvr.getId());
-            params.put("pn_id", pn.getId());
-            params.put("p_epoch", pe.getEpoch());
-            params.put("p_version", pe.getVersion());
-            params.put("p_release", pe.getRelease());
-
-            m.executeUpdate(params);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * This method inserts a record into the rhnServerPackage mapping
-     * table to associate a given Server with a particular Package.
-     * The web code doesn't actually create any of these records, but
-     * this will be needed by the backend code.
-     * @param srvr Server to associate with the packages
      * @param p The package
      */
     public static void associateSystemToPackage(Server srvr, Package p) {
@@ -328,7 +299,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testPossiblePackagesForPushingIntoChannel() throws Exception {
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Channel c = ChannelTestUtils.createTestChannel(user);
         DataResult dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);
@@ -353,64 +324,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                                                        new PageControl());
 
         assertNotNull(dr);
-    }
-
-    public void testVerCmp() {
-
-        //epoch
-        int result = testEpoch("1", "2");
-        assertEquals(-1, result);
-
-        result = testEpoch("2", "1");
-        assertEquals(1, result);
-
-        result = testEpoch(null, "1");
-        assertEquals(-1, result);
-
-        result = testEpoch("2", null);
-        assertEquals(1, result);
-
-        //version
-        result = testVersion("1", "2");
-        assertEquals(-1, result);
-
-        result = testVersion("2", "1");
-        assertEquals(1, result);
-
-        result = testVersion(null, "1");
-        assertEquals(-1, result);
-
-        result = testVersion("1", null);
-        assertEquals(1, result);
-
-        //release
-        result = testRelease("1", "2");
-        assertEquals(-1, result);
-
-        result = testRelease("2", "1");
-        assertEquals(1, result);
-
-        result = testRelease(null, "1");
-        assertEquals(-1, result);
-
-        result = testRelease("1", null);
-        assertEquals(1, result);
-
-        //make sure we test alpha-numerics through rpmVersionComparator
-        result = testRelease("1.2b", "1.2c");
-        assertEquals(-1, result);
-
-        result = testRelease("1.2b3a", "1.2b2");
-        assertEquals(1, result);
-
-        //test all nulls
-        result = testEpoch(null, null);
-        assertEquals(0, result);
-
-        //test equals
-        result = PackageManager.verCmp("4", "2.1", "b3",
-                                       "4", "2.1", "b3");
-        assertEquals(0, result);
     }
 
     /**
@@ -445,7 +358,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             p = PackageManagerTest.
             addPackageToSystemAndChannel("up2date", s, c);
             PackageEvr pevr = PackageEvrFactory.lookupOrCreatePackageEvr("0",
-                    version, "0");
+                    version, "0", s.getPackageType());
             p.setPackageEvr(pevr);
             TestUtils.saveAndFlush(p);
         }
@@ -455,18 +368,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
 
         return p;
-    }
-
-    private int testEpoch(String e1, String e2) {
-        return PackageManager.verCmp(e1, null, null, e2, null, null);
-    }
-
-    private int testVersion(String v1, String v2) {
-        return PackageManager.verCmp("1", v1, null, "1", v2, null);
-    }
-
-    private int testRelease(String r1, String r2) {
-        return PackageManager.verCmp("1", "2", r1, "1", "2", r2);
     }
 
     /**
@@ -592,7 +493,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         //   Create upgraded package EVR so package will show up from the query
         PackageEvr upgradedPackageEvr =
-            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2");
+            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
         upgradedPackageEvr =
             (PackageEvr)TestUtils.saveAndReload(upgradedPackageEvr);
 

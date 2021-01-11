@@ -18,7 +18,7 @@ function usage() {
     echo "$1" >&2
   fi
 
-  echo "USAGE: ${ME} --client <client> [--register <bootstrap_script> [--tunnel] [--nostricthostkeychecking]]"
+  echo "USAGE: ${ME} --client <client> [--register <bootstrap_script> [--tunnel] [--nostricthostkeychecking] [--notty]]"
   exit 1
 }
 
@@ -34,7 +34,8 @@ while true; do
     --help|-h) usage;;
     --register) VARIABLE=BOOTSTRAP_ORIG;;
     --tunnel) USE_TUNNEL="Y";;
-    --nostricthostkeychecking) OPTIONS="-o StrictHostKeyChecking=no";;
+    --nostricthostkeychecking) OPTIONS="${OPTIONS} -o StrictHostKeyChecking=no";;
+    --notty) OPTIONS="${OPTIONS} -t";;
     "") break;;
     *) usage "ERROR: Unknown option $1";;
   esac
@@ -165,7 +166,6 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   ${SUDO_CMD} sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(httpProxy=\).*/\1/" ${PATH_OVERRIDES}
-  ${SUDO_CMD} sed -i "s/\(noSSLServerURL=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
   ${SUDO_CMD} sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}

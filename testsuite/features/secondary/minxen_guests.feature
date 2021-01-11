@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_virtualization
 Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
@@ -26,7 +27,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And the virtpoller beacon should be enabled on "xen_server"
     And I restart salt-minion on "xen_server"
 
 @virthost_xen
@@ -78,13 +78,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then I should see "test-vm" virtual machine running on "xen_server"
 
 @virthost_xen
-  Scenario: Show the VNC graphical console for Xen
-    Given I am on the "Virtualization" page of this "xen_server"
-    When I click on "Graphical Console" in row "test-vm"
-    Then I wait until I see the VNC graphical console
-    And I close the window
-
-@virthost_xen
   Scenario: Suspend a Xen virtual machine
     Given I am on the "Virtualization" page of this "xen_server"
     When I wait until table row for "test-vm" contains button "Suspend"
@@ -113,7 +106,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Given I am on the "Virtualization" page of this "xen_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
     And option "VNC" is selected as "graphicsType"
     And option "test-net0" is selected as "network0_source"
@@ -124,7 +116,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I enter "02:34:56:78:9a:bc" as "network0_mac"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen_server" should have 1024MB memory and 2 vcpus
     And "test-vm" virtual machine on "xen_server" should have spice graphics device
     And "test-vm" virtual machine on "xen_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "xen_server" should have a NIC with 02:34:56:78:9a:bc MAC address
@@ -157,12 +148,13 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
+    And I select "test-pool0" from "disk1_source_pool"
     And I click on "add_disk"
     And I select "CDROM" from "disk2_device"
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen_server" should have a "test-vm_disk-1" xen disk from pool "test-pool0"
+    And "test-vm" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm_disk-1" xen disk
     And "test-vm" virtual machine on "xen_server" should have a ide cdrom
 
 @virthost_xen
@@ -192,21 +184,20 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template-xenpv.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
-    And I select "Spice" from "graphicsType"
+    And I select "VNC" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
     And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
-    And "test-vm2" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system" xen disk from pool "test-pool0"
+    And "test-vm2" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm2_system" xen disk
 
 @virthost_xen
-  Scenario: Show the Spice graphical console for Xen
+  Scenario: Show the VNC graphical console for Xen
     Given I am on the "Virtualization" page of this "xen_server"
     When I click on "Graphical Console" in row "test-vm2"
-    Then I wait until I see the spice graphical console
-    And I close the window
+    And I switch to last opened window
+    And I wait until I see the VNC graphical console
 
 @virthost_xen
   Scenario: Create a Xen fully virtualized guest
@@ -218,13 +209,20 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
+    And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm3" text
     And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
-    And "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system" xen disk from pool "test-pool0"
+    And "test-vm3" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm3_system" xen disk
+
+@virthost_xen
+  Scenario: Show the Spice graphical console for Xen
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Graphical Console" in row "test-vm3"
+    And I switch to last opened window
+    And I wait until I see the spice graphical console
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen
@@ -267,5 +265,3 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I delete test-net1 virtual network on "xen_server" without error control
     And I delete test-pool0 virtual storage pool on "xen_server" without error control
     And I delete all "test-vm.*" volumes from "default" pool on "xen_server" without error control
-    # Remove the virtpoller cache to avoid problems
-    And I run "rm /var/cache/virt_state.cache" on "xen_server" without error control

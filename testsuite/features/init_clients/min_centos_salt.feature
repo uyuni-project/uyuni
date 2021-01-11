@@ -4,7 +4,7 @@
 #  1) bootstrap a new CentOS minion via salt
 #  2) subscribe it to a base channel for testing
 
-Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
+Feature: Bootstrap a CentOS minion and do some basic operations on it
 
 @centos_minion
   Scenario: Bootstrap a CentOS minion

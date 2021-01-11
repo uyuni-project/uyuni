@@ -46,7 +46,6 @@
         <arg>--version=<replaceable>RHN_PROXY_VERSION</replaceable></arg>
     </cmdsynopsis>
     <cmdsynopsis>
-        <arg>--no-ssl</arg>
         <arg>--non-interactive</arg>
         <arg>-q</arg>
         <arg>--quiet</arg>
@@ -123,12 +122,6 @@
         <term>--version=<replaceable>RHN_PROXY_VERSION</replaceable></term>
         <listitem>
             <para>version of your &RHNPROXY;. Be very careful with this setting. Example: 3.2</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
-        <term>--no-ssl</term>
-        <listitem>
-            <para>turn off SSL (not recommended).</para>
         </listitem>
     </varlistentry>
     <varlistentry>

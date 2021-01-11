@@ -139,24 +139,6 @@ ORDER BY C.org_id, C.name
     </query>
 </mode>
 
-<mode name="relevant_packages_for_channel_unpublished">
-    <query params="eid, cid">
-SELECT DISTINCT P1.name_id
-  FROM rhnChannel C,
-       rhnChannelPackage CP,
-       rhnPackage P2,
-       rhnPackage P1,
-       rhnErrataPackageTmp EP
- WHERE EP.errata_id = :eid
-   AND EP.package_id = P1.id
-   AND P1.name_id = P2.name_id
-   AND P1.package_arch_id = P2.package_arch_id
-   AND CP.package_id = P2.id
-   AND C.id = CP.channel_id
-   AND C.id = :cid
-    </query>
-</mode>
-
 <mode name="relevant_packages_for_channel_published">
     <query params="eid, cid">
 SELECT DISTINCT P1.name_id

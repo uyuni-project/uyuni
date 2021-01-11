@@ -1,8 +1,10 @@
 // @flow
-import React from 'react';
-import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
+import * as React from 'react';
+import ReactHtmlParser from 'html-react-parser';
 import EnvironmentView from "./environment-view";
 import EnvironmentForm from "./environment-form";
+import {Messages, Utils as MsgUtils} from 'components/messages';
+import CreatorPanel from "components/panels/CreatorPanel";
 import {Loading} from "components/utils/Loading";
 import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
@@ -107,6 +109,7 @@ const EnvironmentLifecycle = (props: Props) => {
                           })}
                       onOpen={({ setItem }) => setItem(environment)}
                       onCancel={() => cancelAction()}
+                      disableDelete={environment.hasProfiles}
                       onDelete={({ item, closeDialog }) => {
                         return onAction(item, "delete", props.projectId)
                           .then((projectWithDeleteddEnvironment) => {
@@ -132,12 +135,20 @@ const EnvironmentLifecycle = (props: Props) => {
                         }
 
                         return (
-                          <EnvironmentForm
-                            environment={{...item}}
-                            environments={props.environments}
-                            onChange={(item) => setItem(item)}
-                            editing
-                          />
+                          <>
+                            {item.hasProfiles && <Messages items={MsgUtils.warning(
+                              <>
+                              {ReactHtmlParser(t("This environment cannot be deleted since it is being used in an {0}autoinstallation distribution{1}.", '<a target="_blank" href="/rhn/kickstart/ViewTrees.do">', '</a>'))}
+                              </>
+                            )}/>
+                            }
+                            <EnvironmentForm
+                              environment={{...item}}
+                              environments={props.environments}
+                              onChange={(item) => setItem(item)}
+                              editing
+                            />
+                          </>
                         )
                       }}
                       renderContent={() => <EnvironmentView

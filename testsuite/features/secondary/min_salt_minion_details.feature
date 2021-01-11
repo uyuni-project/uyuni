@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2018 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@scope_salt
 Feature: Verify the minion registration
   In order to validate the completeness of minion registration
   I want to see minion details and installed packages

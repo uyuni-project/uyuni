@@ -1,6 +1,6 @@
 /* eslint-disable */
 import PropTypes from 'prop-types';
-import React from "react";
+import * as React from 'react';
 
 export class PopUp extends React.Component {
 

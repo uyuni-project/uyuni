@@ -173,11 +173,7 @@ besuchen Sie bitte:
 Vielen Dank, dass Sie @@PRODUCT_NAME@@ verwenden.
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -221,6 +217,9 @@ Zusammenfassung:
 {7}
 ------------------------------------------------------------------------------
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
@@ -232,7 +231,10 @@ this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
-    </source> <target state="needs-adaptation">--------------------- Liste der betroffenen Systeme --------------------- Dieser Errata-Hinweis trifft möglicherweise auf die nachfolgend aufgelisteten Systeme zu. Falls Sie sicher sind, dass dieses Erratum auf keines der aufgelisteten Systeme zutrifft, ist das Paketprofil für diesen Server möglicherweise veraltet. In diesem Fall sollten Sie 'up2date -p' (RHEL 4 und älter) oder 'rhn-profile-sync' (RHEL 5 und neuer) als Root auf dem fraglichen System ausführen, um Ihr Software-Profil zu aktualisieren.</target> </trans-unit>
+    </source> <target state="needs-adaptation">--------------------- Liste der betroffenen Systeme --------------------- Dieser Errata-Hinweis trifft möglicherweise auf die nachfolgend aufgelisteten Systeme zu. Falls Sie sicher sind, dass dieses Erratum auf keines der aufgelisteten Systeme zutrifft, ist das Paketprofil für diesen Server möglicherweise veraltet. In diesem Fall sollten Sie 'up2date -p' (RHEL 4 und älter) oder 'rhn-profile-sync' (RHEL 5 und neuer) als Root auf dem fraglichen System ausführen, um Ihr Software-Profil zu aktualisieren.</target> <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
@@ -241,6 +243,9 @@ which you have explicitly enabled Patch Alerts are shown).
 Es gibt 1 betroffenes System, das in 'Überblick' registriert ist (nur Systeme,
 für die Sie die Errata-Benachrichtigungen explizit aktiviert haben, werden
 angezeigt).</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
@@ -255,6 +260,9 @@ which you have explicitly enabled Patch Alerts are shown).
 Es gibt {0} betroffene Systeme, die in 'Überblick' registriert sind (nur Systeme,
 für die Sie die Errata-Benachrichtigungen explizit aktiviert haben, werden
 angezeigt).</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
@@ -290,6 +298,9 @@ Sie können die in diesem Hinweis skizzierten Themen auf zweierlei Art angehen:
 
      - führen Sie den Update-Agent auf jedem betroffenen Server aus.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
@@ -328,8 +339,10 @@ der Ansicht des Einzelsystems den Tab "Details".
 
 {1}
 {2}</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">

@@ -14,9 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.session.SessionManager;
-
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -70,7 +68,7 @@ public class PxtCookieManager {
             pxtCookie.setMaxAge(timeout);
         }
         pxtCookie.setPath(DEFAULT_PATH);
-        pxtCookie.setSecure(ConfigDefaults.get().isSSLAvailable());
+        pxtCookie.setSecure(true);
 
         return pxtCookie;
     }

@@ -7,7 +7,7 @@
 %><%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"
 %><%@ page contentType="text/html; charset=UTF-8"
 %><!DOCTYPE HTML>
-<html:html>
+<html:html lang="true">
   <head>
     <jsp:include page="layout_head.jsp" />
     <decorator:head />
@@ -37,7 +37,7 @@
             <div class="alert alert-warning">
               <ul>
               <html:messages id="message">
-                <li><c:out value="${message}"/></li>
+                <li><c:out escapeXml="false" value="${message}"/></li>
               </html:messages>
               </ul>
             </div>

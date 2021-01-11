@@ -7,64 +7,69 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2020-11-20 12:55+0100\n"
+"PO-Revision-Date: 2020-12-19 21:26+0000\n"
+"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/susemanager/"
+"it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../yast/susemanager_ask.rb:38
 msgid "Set up #{@product_name} from scratch"
-msgstr ""
+msgstr "Installa #{@product_name} da zero"
 
 #: ../yast/susemanager_ask.rb:48
 msgid "Migrate a #{@product_name} compatible server"
-msgstr ""
+msgstr "Migra un server compatibile #{@product_name}"
 
 #: ../yast/susemanager_ask.rb:60
 msgid ""
 "<p>Choose if you are setting up #{@product_name} from scratch or migrating "
 "to #{@product_name} from a #{@product_name} compatible server.</p>"
 msgstr ""
+"<p>Scegli se stai configurando #{@nome_prodotto} da zero o se stai migrando "
+"a #{@nome_prodotto} da un server compatibile #{@nome_prodotto}.</p>"
 
 #: ../yast/susemanager_ask.rb:65
 msgid "#{@product_name} Setup"
-msgstr ""
+msgstr "Configurazione di #{@product_name}"
 
 #: ../yast/susemanager_cert.rb:43
 msgid "Organization"
-msgstr ""
+msgstr "Organizzazione"
 
 #: ../yast/susemanager_cert.rb:45
 msgid "Organization Unit"
-msgstr ""
+msgstr "Unità organizzativa"
 
 #: ../yast/susemanager_cert.rb:47
 msgid "City"
-msgstr ""
+msgstr "Città"
 
 #: ../yast/susemanager_cert.rb:49
 msgid "State"
-msgstr ""
+msgstr "Stato"
 
 #: ../yast/susemanager_cert.rb:51
 msgid "Country"
-msgstr ""
+msgstr "Paese"
 
 #: ../yast/susemanager_cert.rb:53
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 #: ../yast/susemanager_cert.rb:114
 msgid "SSL Pass&word"
-msgstr ""
+msgstr "Pass&word SSL"
 
 #: ../yast/susemanager_cert.rb:121 ../yast/susemanager_db.rb:106
 msgid "R&epeat Password"
-msgstr ""
+msgstr "Rip&eti password"
 
 #: ../yast/susemanager_cert.rb:132
 msgid ""
@@ -72,28 +77,32 @@ msgid ""
 "certificate is used for a number of purposes like connections to a SUSE "
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
+"<p>Inserire i dati necessari per la creazione di un certificato SSL. Il "
+"certificato viene utilizzato per una serie di scopi, come le connessioni a "
+"un server proxy SUSE Manager Proxy, il protocollo HTTPS nei browser e altro "
+"ancora.</p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
-msgstr ""
+msgstr "Configurazione del certificato"
 
 #: ../yast/susemanager_cert.rb:169
 msgid "The value of '%1' is empty."
-msgstr ""
+msgstr "Il valore di '%1' è vuoto."
 
 #: ../yast/susemanager_cert.rb:180 ../yast/susemanager_db.rb:140
 #: ../yast/susemanager_migration.rb:146
 msgid "Password is missing."
-msgstr ""
+msgstr "La password non è presente."
 
 #: ../yast/susemanager_cert.rb:185 ../yast/susemanager_db.rb:145
 #: ../yast/susemanager_migration.rb:163
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Le password non corrispondono."
 
 #: ../yast/susemanager_cert.rb:193 ../yast/susemanager_db.rb:153
 msgid "The password should have at least %1 characters."
-msgstr ""
+msgstr "La password dovrebbe contenere almeno %1 carratteri."
 
 #: ../yast/susemanager_cert.rb:204 ../yast/susemanager_db.rb:164
 #: ../yast/susemanager_migration.rb:154
@@ -101,41 +110,47 @@ msgid ""
 "The password contains invalid characters.\n"
 "The invalid characters are: %1"
 msgstr ""
+"La password contiene caratteri non validi.\n"
+"I caratteri non validi sono: %1"
 
 #: ../yast/susemanager_congratulate.rb:35
 msgid "<p>#{@product_name} Setup is now complete.</p><br>\n"
-msgstr ""
+msgstr "<p>La configurazione di #{@product_name} è completa.</p><br>\n"
 
 #: ../yast/susemanager_congratulate.rb:51
 msgid "Setup Completed"
-msgstr ""
+msgstr "Configurazione terminata"
 
 #: ../yast/susemanager_db.rb:90
 msgid "Database &User"
-msgstr ""
+msgstr "&Utente del database"
 
 #: ../yast/susemanager_db.rb:98
 msgid "Database &Password"
-msgstr ""
+msgstr "&Password del database"
 
 #: ../yast/susemanager_db.rb:115
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
 msgstr ""
+"<p>Per impostazione predefinita SUSE Manager utilizza un database interno "
+"postgresql chiamato '"
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
-msgstr ""
+msgstr "Impostazioni del database"
 
 #: ../yast/susemanager_db.rb:178
 msgid ""
 "The password failed the cracklib check with:\n"
 "'%1'"
 msgstr ""
+"La password non ha superato il controllo cracklib con:\n"
+"'%1'"
 
 #: ../yast/susemanager_manager.rb:84
 msgid "&IP Address of the #{@product_name} Server"
-msgstr ""
+msgstr "Indirizzo &IP di #{@product_name} Server"
 
 #: ../yast/susemanager_manager.rb:94
 msgid "#{@product_name} &Administrator e-mail address"

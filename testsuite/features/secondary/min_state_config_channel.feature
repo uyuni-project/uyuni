@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@scope_configuration_channels
 Feature: State Configuration channels
   In order to configure systems through Salt
   I want to be able to use channels from the state tab
@@ -10,12 +11,12 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
-    Then I should see a "New Config Channel" text
+    Then I should see a "New Config State Channel" text
     When I enter "My State Channel" as "cofName"
     And I enter "statechannel" as "cofLabel"
     And I enter "This is a state channel" as "cofDescription"
     And I enter "touch /root/statechannel:\n  cmd.run:\n    - creates: /root/statechannel" in the editor
-    And I click on "Create Config Channel"
+    And I click on "Create Config State Channel"
     Then I should see a "State Channel" text
     And I should see a "Channel Properties" text
     And I should see a "Channel Information" text
@@ -25,12 +26,12 @@ Feature: State Configuration channels
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
-    Then I should see a "New Config Channel" text
+    Then I should see a "New Config State Channel" text
     When I enter "My State Channel" as "cofName"
     And I enter "statechannel2" as "cofLabel"
     And I enter "This is a state channel" as "cofDescription"
     And I enter "touch /root/statechannel2:\n  cmd.run:\n    - creates: /root/statechannel2" in the editor
-    And I click on "Create Config Channel"
+    And I click on "Create Config State Channel"
     Then I should see a "State Channel" text
     And I should see a "Channel Properties" text
     And I should see a "Channel Information" text
@@ -39,9 +40,14 @@ Feature: State Configuration channels
   Scenario: Create the 3rd state channel with spacecmd
     Given I am authorized as "admin" with password "admin"
     When I create channel "statechannel3" from spacecmd of type "state"
-    When I follow the left menu "Configuration > Channels"
+    And I follow the left menu "Configuration > Channels"
     Then I should see a "statechannel3" text
-    And  I update init.sls from spacecmd with content "touch /root/statechannel3:\n  cmd.run:\n    - creates: /root/statechannel3" for channel "statechannel3"
+    When I update init.sls from spacecmd with content "touch /tmp/statechannel3:\n  cmd.run:\n    - creates: /tmp/statechannel3" for channel "statechannel3"
+    And I get "/init.sls" file details for channel "statechannel3" via spacecmd
+    Then I should see "Revision: 2" in the output
+    When  I update init.sls from spacecmd with content "touch /root/statechannel3:\n  cmd.run:\n    - creates: /root/statechannel3" for channel "statechannel3" and revision "100"
+    And I get "/init.sls" file details for channel "statechannel3" via spacecmd
+    Then I should see "Revision: 100" in the output
 
   Scenario: Subscribe a minion to 1st and 2nd state channels
     When I am on the Systems overview page of this "sle_minion"

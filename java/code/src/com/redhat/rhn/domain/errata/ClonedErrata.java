@@ -16,18 +16,29 @@ package com.redhat.rhn.domain.errata;
 
 /**
  * ClonedErrata
- * @version $Rev$
  */
-public interface ClonedErrata {
+public class ClonedErrata extends Errata {
+
+    private Errata original;
 
     /**
-     * @return the original Errata the errata was cloned from
+     * {@inheritDoc}
      */
-    Errata getOriginal();
+    public Errata getOriginal() {
+        return original;
+    }
 
     /**
-     * Set the original version of the clone
-     * @param originalIn original Errata this clone was created from
+     * {@inheritDoc}
      */
-    void setOriginal(Errata originalIn);
+    public void setOriginal(Errata originalIn) {
+        this.original = originalIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isCloned() {
+        return true;
+    }
 }

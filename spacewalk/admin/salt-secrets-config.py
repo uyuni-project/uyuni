@@ -14,6 +14,11 @@ initCFG('java')
 
 thread_pool_size = CFG.salt_event_thread_pool_size
 
+# To be moved into a config file in future
+cert_location = "/etc/pki/trust/anchors"
+if not os.path.isdir(cert_location):
+    cert_location = "/etc/pki/ca-trust/source/anchors"
+
 initCFG()
 
 mgr_events_config = {
@@ -54,11 +59,15 @@ if not os.path.isdir("/etc/salt/pki/api"):
     os.chown("/etc/salt/pki/api", pwd.getpwnam("salt").pw_uid, grp.getgrnam("salt").gr_gid)
     os.chmod("/etc/salt/pki/api", 0o750)
 
-if (not os.path.isfile("/etc/salt/pki/api/salt-api.crt")) or (not os.path.isfile("/etc/salt/pki/api/salt-api.crt")):
+if (not all([os.path.isfile(f) for f in ["/etc/salt/pki/api/salt-api.crt", "/etc/pki/trust/anchors/salt-api.crt", "/etc/salt/pki/api/salt-api.key"]])):
     os.system("openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out /etc/salt/pki/api/salt-api.crt -keyout /etc/salt/pki/api/salt-api.key -subj '/CN=localhost'")
     os.chown("/etc/salt/pki/api/salt-api.crt", pwd.getpwnam("salt").pw_uid, grp.getgrnam("salt").gr_gid)
     os.chmod("/etc/salt/pki/api/salt-api.crt", 0o600)
     os.chown("/etc/salt/pki/api/salt-api.key", pwd.getpwnam("salt").pw_uid, grp.getgrnam("salt").gr_gid)
     os.chmod("/etc/salt/pki/api/salt-api.key", 0o600)
-    shutil.copyfile("/etc/salt/pki/api/salt-api.crt", "/etc/pki/trust/anchors/salt-api.crt")
-    os.system("update-ca-certificates")
+    shutil.copyfile("/etc/salt/pki/api/salt-api.crt", cert_location + "/salt-api.crt")
+    # Detect CA management tool.
+    if os.system("update-ca-certificates"):
+        print('Using "update-ca-trust" instead of "update-ca-certificates".')
+        os.system("update-ca-trust extract")
+

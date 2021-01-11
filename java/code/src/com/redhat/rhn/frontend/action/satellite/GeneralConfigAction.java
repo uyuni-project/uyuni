@@ -45,8 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * GeneralConfigAction - Struts action to handle updating config values from
  * the satellte General Config page.
- *
- * @version $Rev: 1 $
  */
 public class GeneralConfigAction extends BaseConfigAction {
 
@@ -61,8 +59,7 @@ public class GeneralConfigAction extends BaseConfigAction {
         "server.satellite.http_proxy_username", "server.satellite.http_proxy_password",
         "mount_point"};
 
-    private static final String[] BOOLEAN_CONFIG_ARRAY = {"web.ssl_available",
-            ConfigDefaults.DISCONNECTED };
+    private static final String[] BOOLEAN_CONFIG_ARRAY = { ConfigDefaults.DISCONNECTED };
 
     private static final List COMBO_LIST = new LinkedList();
     static {

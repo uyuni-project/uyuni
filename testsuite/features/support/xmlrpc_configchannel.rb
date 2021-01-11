@@ -1,3 +1,6 @@
+# Copyright (c) 2020 SUSE LLC.
+# Licensed under the terms of the MIT license.
+#
 require_relative 'xmlrpctest'
 
 # configchannel class
@@ -12,6 +15,18 @@ class XMLRPCConfigChannelTest < XMLRPCBaseTest
 
   def list_subscribed_systems(channel)
     @connection.call('configchannel.list_subscribed_systems', @sid, channel)
+  end
+
+  def get_file_revision(channel, file_path, revision)
+    @connection.call('configchannel.get_file_revision', @sid, channel, file_path, revision)
+  end
+
+  def create_channel(label, name, description, type)
+    @connection.call('configchannel.create', @sid, label, name, description, type)
+  end
+
+  def create_channel_with_data(label, name, description, type, data)
+    @connection.call('configchannel.create', @sid, label, name, description, type, data)
   end
 
   def create_or_update_path(channel, file, contents)
@@ -29,5 +44,9 @@ class XMLRPCConfigChannelTest < XMLRPCBaseTest
 
   def deploy_all_systems(channel)
     @connection.call('configchannel.deploy_all_systems', @sid, channel)
+  end
+
+  def delete_channels(channels)
+    @connection.call('configchannel.delete_channels', @sid, channels)
   end
 end

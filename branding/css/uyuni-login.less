@@ -51,40 +51,40 @@ body.login-page {
   input {
     margin-bottom: 1em;
     background: @blue;
-    color: #ccc;
+    color: @gray-light;
     border: 0;
     -webkit-font-smoothing: antialiased;
-    box-shadow: 0px 1px 0px 0px lighten(@blue-light, 8%), 0px 1px 0px 0px darken(@blue, 3%) inset;
-    -moz-box-shadow: 0px 1px 0px 0px lighten(@blue-light, 8%), 0px 1px 0px 0px darken(@blue, 3%) inset;
-    -webkit-box-shadow: 0px 1px 0px 0px lighten(@blue-light, 8%), 0px 1px 0px 0px darken(@blue, 3%) inset;
+    box-shadow: 0px 1px 0px 0px @blue-light, 0px 1px 0px 0px @blue inset;
+    -moz-box-shadow: 0px 1px 0px 0px @blue-light, 0px 1px 0px 0px @blue inset;
+    -webkit-box-shadow: 0px 1px 0px 0px @blue-light, 0px 1px 0px 0px @blue inset;
   }
   input:focus {
-    color: #fff
+    color: @white;
   }
   hr {
-    background: darken(@blue, 3%);
+    background: @blue, 3%;
     height: 1px;
     border: 0;
-    border-bottom: 1px solid lighten(@blue-light, 8%);
+    border-bottom: 1px solid @blue-light;
   }
   input[type="submit"] {
     background: @green;
-    color: #fff;
+    color: @white;
     margin-bottom: 1em;
     border: 0;
-    box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
-    -moz-box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
-    -webkit-box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
+    box-shadow: 0px 1px 0px 0px @green, 0px 0px 0px 0px @green-dark inset;
+    -moz-box-shadow: 0px 1px 0px 0px @green, 0px 0px 0px 0px @green-dark inset;
+    -webkit-box-shadow: 0px 1px 0px 0px @green, 0px 0px 0px 0px @green-dark inset;
   }
   input[type="submit"]:hover {
-    background: darken(@green, 10%);
+    background: @green-dark;
     -webkit-font-smoothing: antialiased;
   }
   a {
     text-decoration: underline;
   }
   a:hover {
-    color: #00b268
+    color: @green-dark
   }
   .small-text {
     font-size: .8em;

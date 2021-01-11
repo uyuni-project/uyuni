@@ -27,6 +27,7 @@ public class DistUpgradeActionDetails extends ActionChild {
 
     private Long id;
     private boolean dryRun;
+    private boolean allowVendorChange;
     private boolean fullUpdate;
 
     // Set of tasks to perform on single channels
@@ -65,6 +66,21 @@ public class DistUpgradeActionDetails extends ActionChild {
      */
     public void setDryRun(boolean dryRunIn) {
         this.dryRun = dryRunIn;
+    }
+
+    /**
+     * Set if vendor changed allowed or not.
+     * @param allowVendorChangeIn boolean
+     */
+    public void setAllowVendorChange(boolean allowVendorChangeIn) {
+        this.allowVendorChange = allowVendorChangeIn;
+    }
+
+    /**
+     * @return the allowVendorChange as boolean
+     */
+    public boolean isAllowVendorChange() {
+        return allowVendorChange;
     }
 
     /**

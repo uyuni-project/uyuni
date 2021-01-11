@@ -65,10 +65,6 @@ options:
             0 or N to not start services after configuration.
   --traceback-email=TRACEBACK_EMAIL
             Email to which tracebacks should be sent.
-  --use-ssl
-            Let Spacewalk Proxy Server communicate with parent over SSL.
-            Even if it is disabled client can still use SSL to connect
-            to Spacewalk Proxy Server.
   --ssl-use-existing-certs
             Use custom SSL certificates instead of generating new ones (use
             --ssl-ca-cert, --ssl-server-key and --ssl-server-cert parameters to
@@ -139,7 +135,7 @@ INTERACTIVE_RETRIES=3
 CNAME_INDEX=0
 MANUAL_ANSWERS=0
 
-OPTS=$(getopt --longoptions=help,activate-SLP,answer-file:,non-interactive,version:,traceback-email:,use-ssl::,force-own-ca,http-proxy:,http-username:,http-password:,rhn-user:,rhn-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,ssl-use-existing-certs::,ssl-ca-cert:,ssl-server-key:,ssl-server-cert:,rhn-user:,rhn-password:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
+OPTS=$(getopt --longoptions=help,activate-SLP,answer-file:,non-interactive,version:,traceback-email:,force-own-ca,http-proxy:,http-username:,http-password:,rhn-user:,rhn-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,ssl-use-existing-certs::,ssl-ca-cert:,ssl-server-key:,ssl-server-cert:,rhn-user:,rhn-password:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
 
 if [ $? != 0 ] ; then
     print_help
@@ -157,7 +153,6 @@ while : ; do
         --non-interactive) INTERACTIVE=0;;
         --version) set_value "$1" VERSION "$2"; shift;;
         --traceback-email) set_value "$1" TRACEBACK_EMAIL "$2"; shift;;
-        --use-ssl) USE_SSL="${2:-1}"; shift;;
         --force-own-ca) FORCE_OWN_CA=1;;
         --http-proxy) set_value "$1" HTTP_PROXY "$2"; shift;;
         --http-username) set_value "$1" HTTP_USERNAME "$2"; shift;;
@@ -388,13 +383,8 @@ ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "VERSION" "$VERSION")
 
 default_or_input "Traceback email" TRACEBACK_EMAIL ''
 
-default_or_input "Use SSL" USE_SSL 'Y/n'
-USE_SSL=$(yes_no $USE_SSL)
-
-
 cat <<SSLCERT
-Regardless of whether you enabled SSL for the connection to the Spacewalk Parent
-Server, you will be prompted to generate/import an SSL certificate.
+You will now need to either generate or import an SSL certificate.
 This SSL certificate will allow client systems to connect to this Spacewalk Proxy
 securely. Refer to the Spacewalk Proxy Installation Guide for more information.
 SSLCERT
@@ -464,7 +454,6 @@ sed -e "s|\${session.ca_chain:/usr/share/rhn/RHNS-CA-CERT}|$CA_CHAIN|g" \
     -e "s/\${session.http_proxy_password}/$HTTP_PASSWORD/g" \
     -e "s/\${session.rhn_parent}/$RHN_PARENT/g" \
     -e "s/\${session.traceback_mail}/$TRACEBACK_EMAIL/g" \
-    -e "s/\${session.use_ssl:0}/$USE_SSL/g" \
     < $DIR/rhn.conf  > $RHNCONF_DIR/rhn.conf
 
 # systemid need to be readable by apache/proxy
@@ -474,13 +463,7 @@ for file in $SYSTEMID_PATH $UP2DATE_FILE; do
 done
 
 #Setup the cobbler stuff, needed to use koan through a proxy
-PROTO="http";
-if [ $USE_SSL -eq 1 ]; then
-   PROTO="https"
-fi
-sed -e "s/\$PROTO/$PROTO/g" \
-    -e "s/\$RHN_PARENT/$RHN_PARENT/g" < $DIR/cobbler-proxy.conf > $HTTPDCONFD_DIR/cobbler-proxy.conf
-
+sed -e "s/\$RHN_PARENT/$RHN_PARENT/g" < $DIR/cobbler-proxy.conf > $HTTPDCONFD_DIR/cobbler-proxy.conf
 
 # lets do SSL stuff
 FORCE_OWN_CA=$(yes_no $FORCE_OWN_CA)

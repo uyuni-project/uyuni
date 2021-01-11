@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_virtualization
 Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
@@ -26,7 +27,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-    And the virtpoller beacon should be enabled on "kvm_server"
     And I restart salt-minion on "kvm_server"
 
 @virthost_kvm
@@ -80,8 +80,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the VNC graphical console for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm"
+    And I switch to last opened window
     Then I wait until I see the VNC graphical console
-    And I close the window
 
 @virthost_kvm
   Scenario: Suspend a KVM virtual machine
@@ -129,7 +129,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have spice graphics device
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "kvm_server" should have a NIC with 02:34:56:78:9a:bc MAC address
-    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" scsi disk
+    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" SCSI disk from pool "tmp"
 
 @virthost_kvm
   Scenario: Add a network interface to a KVM virtual machine
@@ -221,8 +221,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the Spice graphical console for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm2"
+    And I switch to last opened window
     Then I wait until I see the spice graphical console
-    And I close the window
 
 @virthost_kvm
   Scenario: Show the virtual storage pools and volumes for KVM
@@ -342,6 +342,99 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I wait until I do not see "test-net1" text
     And I should not see a "test-net1" virtual network on "kvm_server"
 
+# Start provisioning scenarios
+
+@long_test
+@virthost_kvm
+@scc_credentials
+  Scenario: Create auto installation distribution
+    Given I am authorized
+    And I install package tftpboot-installation on the server
+    And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be installed on "server"
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "Create Distribution"
+    And I enter "SLE-15-SP2-TFTP" as "label"
+    And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
+    And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
+    And I select "SUSE Linux Enterprise 15" from "installtype"
+    And I enter "useonlinerepo insecure=1" as "kernelopts"
+    And I click on "Create Autoinstallable Distribution"
+    Then I should see a "Autoinstallable Distributions" text
+    And I should see a "SLE-15-SP2-TFTP" link
+
+@long_test
+@virthost_kvm
+@scc_credentials
+  Scenario: Create auto installation profile
+    Given I am authorized
+    And I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "Upload Kickstart/Autoyast File"
+    When I enter "15-sp2-kvm" as "kickstartLabel"
+    And I select "SLE-15-SP2-TFTP" from "kstreeId"
+    And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
+    And I attach the file "/sle-15-sp2-autoyast.xml" to "fileUpload"
+    And I click on "Create"
+    Then I should see a "Autoinstallation: 15-sp2-kvm" text
+    And I should see a "Autoinstallation Details" text
+    When I enter "self_update=0" as "kernel_options"
+    And I click on "Update"
+    And I follow "Variables"
+    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-PKG-x86_64" as "variables" text area
+    And I click on "Update Variables"
+    And I follow "Autoinstallation File"
+    Then I should see a "SLE-15-SP2-TFTP" text
+
+@long_test
+@virthost_kvm
+@scc_credentials
+  Scenario: Create an auto installing KVM virtual machine
+    Given I am on the "Virtualization" page of this "kvm_server"
+    And I wait until the channel "sle-module-basesystem15-sp2-updates-x86_64" has been synced
+    When I follow "Create Guest"
+    And I wait until I see "General" text
+    And I enter "test-vm2" as "name"
+    And I select "15-sp2-kvm" from "cobbler_profile"
+    And I click on "Create"
+    Then I should see a "Hosted Virtual Systems" text
+    When I wait until I see "test-vm2" text
+    And I wait until table row for "test-vm2" contains button "Stop"
+    # Test the VM boot params
+    Then "test-vm2" virtual machine on "kvm_server" should boot using autoyast
+    And "test-vm2" virtual machine on "kvm_server" should stop on reboot
+    And "test-vm2" virtual machine on "kvm_server" should boot on hard disk at next start
+    And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
+    When I click on "Graphical Console" in row "test-vm2"
+    And I switch to last opened window
+    And I wait until I see the VNC graphical console
+    Then I wait at most 500 seconds until I see modal containing "Disconnected" text
+    And I wait at most 500 seconds until Salt master sees "test-vm2" as "unaccepted"
+
+@long_test
+@virthost_kvm
+@scc_credentials
+  Scenario: Cleanup: remove the auto installation profile
+    Given I am authorized
+    And I follow the left menu "Systems > Autoinstallation > Profiles"
+    When I follow "15-sp2-kvm"
+    And I follow "Delete Autoinstallation"
+    And I click on "Delete Autoinstallation"
+    Then I should not see a "15-sp2-kvm" text
+
+@long_test
+@virthost_kvm
+@scc_credentials
+  Scenario: Cleanup: remove the auto installation distribution
+    Given I am authorized
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "SLE-15-SP2-TFTP"
+    And I follow "Delete Distribution"
+    And I click on "Delete Distribution"
+    And I remove package "tftpboot-installation-SLE-15-SP2-x86_64" from this "server"
+    And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be uninstalled on "server"
+    Then I should not see a "SLE-15-SP2-TFTP" text
+
+# End of provisioning scenarios
+
 @virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
@@ -367,5 +460,3 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-pool0 virtual storage pool on "kvm_server" without error control
     And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
-    # Remove the virtpoller cache to avoid problems
-    And I run "rm /var/cache/virt_state.cache" on "kvm_server" without error control

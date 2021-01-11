@@ -5,6 +5,8 @@
 # 2) run a remote command
 # 3) delete Ubuntu SSH minion and register as Ubuntu minion
 
+@scope_ubuntu
+@scope_salt_ssh
 Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on it
 
 @ubuntu_minion
@@ -123,4 +125,3 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
-

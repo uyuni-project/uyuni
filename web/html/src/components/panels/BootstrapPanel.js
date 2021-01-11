@@ -1,6 +1,5 @@
-const React = require('react');
-
-const { Panel } = require('./Panel');
+import * as React from 'react';
+import { Panel } from './Panel';
 
 type Props = {
   title?: string,
@@ -32,6 +31,6 @@ BootstrapPanel.defaultProps = {
   footer: undefined,
 };
 
-module.exports = {
+export {
   BootstrapPanel,
 };

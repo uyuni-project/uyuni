@@ -31,7 +31,7 @@
 </c:if>
 
 <rhn:toolbar base="h1" icon="header-taskomatic" imgAlt="yourrhn.jsp.toolbar.img.alt"
-             helpUrl="/docs/reference/home/home-overview.html">
+             helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/home-overview.html">
   <bean:message key="yourrhn.jsp.toolbar"/>
 </rhn:toolbar>
 

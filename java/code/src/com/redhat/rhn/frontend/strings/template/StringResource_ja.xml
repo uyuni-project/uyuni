@@ -205,11 +205,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -253,6 +249,9 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
@@ -274,6 +273,9 @@ as root on the system in question to refresh your software profile.
  'up2date -p' (RHEL 4 またはそれ以前) もしくは 'rhn-profile-sync' (SLES や RHEL 5,
 またはそれ以降) を実行して、ソフトウェアプロファイルの更新を行なってください。
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
@@ -283,6 +285,9 @@ which you have explicitly enabled Patch Alerts are shown).
 '概要' で登録された 1 つのシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
@@ -297,6 +302,9 @@ which you have explicitly enabled Patch Alerts are shown).
 '概要' で登録された {0} 個のシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
@@ -331,6 +339,9 @@ You may address the issues outlined in this advisory in two ways:
 
      - 影響を受けた各サーバーで Update Agent を実行します。
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
@@ -369,8 +380,10 @@ click the "Details" tab.
 {1}
 {2}
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">

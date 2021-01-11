@@ -67,6 +67,7 @@ import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -75,6 +76,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -121,11 +123,11 @@ import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.MgrClustersResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
-import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.manager.webui.websocket.VirtNotifications;
+import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
@@ -1311,10 +1313,10 @@ public class SaltUtils {
                         Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
                         Optional.of(pkg.getArch()), imageInfo));
                 if ("pxe".equals(ret.getImage().getType())) {
-                    String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(
-                            serverAction.getParentAction().getOrg());
+                    Org org = serverAction.getParentAction().getOrg();
+                    String storeDirectory = OSImageStoreUtils.getOSImageStoreURIForOrg(org);
                     SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(), ret.getBundle(),
-                            ret.getBootImage(), storeDirectory);
+                            ret.getBootImage(), storeDirectory, org);
                 }
             }
             else {
@@ -1479,7 +1481,8 @@ public class SaltUtils {
                 )
                 .collect(Collectors.toMap(
                         SaltUtils::packageToKey,
-                        Function.identity()
+                        Function.identity(),
+                        (first, second) -> resolveDuplicatePackage(first, second)
                 ));
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
@@ -1492,6 +1495,26 @@ public class SaltUtils {
         ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(createPackagesFromSalt(packagesToAdd, server));
+    }
+
+    private static Map.Entry<String, Info> resolveDuplicatePackage(Map.Entry<String, Info> firstEntry,
+            Map.Entry<String, Info> secondEntry) {
+        Info first = firstEntry.getValue();
+        Info second = secondEntry.getValue();
+
+        if (first.getInstallDateUnixTime().isEmpty() && second.getInstallDateUnixTime().isEmpty()) {
+            LOG.warn(String.format("Got duplicate packages NEVRA and the install timestamp is missing." +
+                    " Taking the first one. First:  %s, second: %s", first, second));
+            return firstEntry;
+        }
+
+        // the later one wins
+        if (first.getInstallDateUnixTime().get() > second.getInstallDateUnixTime().get()) {
+            return firstEntry;
+        }
+        else {
+            return secondEntry;
+        }
     }
 
     /**
@@ -1511,13 +1534,13 @@ public class SaltUtils {
         Map<String, PackageName> packageNames = names.stream().collect(Collectors.toMap(Function.identity(),
                 PackageFactory::lookupOrCreatePackageByName));
 
-        String serverArchTypeLabel = server.getServerArch().getArchType().getLabel();
+
         Map<String, PackageEvr> packageEvrsBySaltPackageKey = packageInfoAndNameBySaltPackageKey.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         e -> {
                             Pkg.Info pkgInfo = e.getValue().getB();
                             return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().get(),
-                                    pkgInfo.getRelease(), serverArchTypeLabel);
+                                    pkgInfo.getRelease(), server.getPackageType());
                         }));
 
         return packageInfoAndNameBySaltPackageKey.entrySet().stream().map(e -> createInstalledPackage(
@@ -1546,7 +1569,7 @@ public class SaltUtils {
 
         // Add -deb suffix to architectures for Debian systems
         String pkgArch = pkgInfo.getArchitecture().get();
-        if ("deb".equals(server.getServerArch().getArchType().getLabel())) {
+        if (server.getPackageType() == PackageType.DEB) {
             pkgArch += "-deb";
         }
         pkg.setArch(PackageFactory.lookupPackageArchByLabel(pkgArch));
@@ -1592,7 +1615,8 @@ public class SaltUtils {
                 new PackageEvr(
                         info.getEpoch().orElse(null),
                         info.getVersion().get(),
-                        info.getRelease().orElse("X")
+                        info.getRelease().orElse("X"),
+                        PackageType.RPM
                 ).toUniversalEvrString()
         );
         sb.append(".");
@@ -1608,7 +1632,7 @@ public class SaltUtils {
      * @param entry the package
      * @return the key
      */
-    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
+    private static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
         return packageToKey(entry.getKey(), entry.getValue());
     }
 
@@ -1664,15 +1688,16 @@ public class SaltUtils {
     }
 
     private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
-            String archTypeLabel) {
-
-        if ("deb".equals(archTypeLabel)) {
-            // We need additional parsing for deb package versions
-            return PackageEvrFactory.lookupOrCreatePackageEvr(PackageUtils.parseDebianEvr(version));
+                                              PackageType type) {
+        switch (type) {
+            case DEB:
+                return PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
+            case RPM:
+                return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
+                        version, release.orElse("0"), PackageType.RPM);
+            default:
+                throw new RuntimeException("unreachable");
         }
-
-        return PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null), version,
-                release.orElse("0"));
     }
 
     private static ImagePackage createImagePackageFromSalt(String name, Pkg.Info info, ImageInfo imageInfo) {
@@ -1684,17 +1709,12 @@ public class SaltUtils {
             Optional<String> release, String version, Optional<Long> installDateUnixTime, Optional<String> architecture,
             ImageInfo imageInfo) {
 
-        String archType = imageInfo.getImageArch().getArchType().getLabel();
-        Optional<String> pkgArch = architecture.map(arch -> archType.equals("deb") ? arch + "-deb" : arch);
-        PackageEvr evr = parsePackageEvr(epoch, version, release, archType);
-        return createImagePackageFromSalt(name, evr, installDateUnixTime, pkgArch, imageInfo);
-    }
-
-    private static ImagePackage createImagePackageFromSalt(String name, PackageEvr pkgEvr,
-            Optional<Long> installDateUnixTime, Optional<String> architecture, ImageInfo imageInfo) {
+        PackageType packageType = imageInfo.getPackageType();
+        Optional<String> pkgArch = architecture.map(arch -> packageType == PackageType.DEB ? arch + "-deb" : arch);
+        PackageEvr evr = parsePackageEvr(epoch, version, release, packageType);
         ImagePackage pkg = new ImagePackage();
-        pkg.setEvr(pkgEvr);
-        architecture.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
+        pkg.setEvr(evr);
+        pkgArch.ifPresent(arch -> pkg.setArch(PackageFactory.lookupPackageArchByLabel(arch)));
         installDateUnixTime.ifPresent(udut -> pkg.setInstallTime(new Date(udut * 1000)));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setImageInfo(imageInfo);

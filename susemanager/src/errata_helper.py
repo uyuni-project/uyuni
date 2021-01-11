@@ -45,7 +45,6 @@ def deleteErrata(errata_id):
     This takes care of the following operations:
       * delete all the packages associated with the errata from rhnErrataPackage
       * delete all the files associated with the errata from rhnErrataFile
-      * delete all entries from rhnErrataTmp related with the errata
       * delete all entries from rhnErrataCloned related with the errata
       * finally delete errata from rhnErrata.
     """
@@ -73,13 +72,6 @@ def deleteErrata(errata_id):
     h = rhnSQL.prepare("""
         DELETE FROM rhnErrataFile
          WHERE errata_id = :errata_id
-    """)
-    h.execute(errata_id=errata_id)
-
-    # delete erratatmp
-    h = rhnSQL.prepare("""
-        DELETE FROM rhnErrataTmp
-         WHERE id = :errata_id
     """)
     h.execute(errata_id=errata_id)
 

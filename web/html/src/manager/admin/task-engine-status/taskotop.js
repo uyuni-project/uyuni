@@ -1,18 +1,17 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const MessageContainer = require("components/messages").Messages;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const {Highlight} = require("components/table/Highlight");
-const {HelpLink} = require('components/utils/HelpLink');
-const Network = require("utils/network");
-const Functions = require("utils/functions");
-const Utils = Functions.Utils;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { Messages as MessageContainer } from 'components/messages';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import { HelpLink } from 'components/utils/HelpLink';
+import Network from 'utils/network';
+import { Utils } from 'utils/functions';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 class TaskoTop extends React.Component {
   state = {
@@ -106,7 +105,7 @@ class TaskoTop extends React.Component {
         <h1>
           <i className="fa fa-tachometer"></i>
           {t('Task Engine Status')}
-          <HelpLink url="/docs/reference/admin/task-engine-status.html"/>
+          <HelpLink url="reference/admin/task-engine-status.html"/>
         </h1>
       </div>
     ;

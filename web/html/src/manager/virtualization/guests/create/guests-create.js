@@ -2,22 +2,23 @@
 
 import type { ActionChain } from 'components/action-schedule';
 
-const React = require('react');
-const { hot } = require('react-hot-loader');
-const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require('components/messages').Utils;
-const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { GuestProperties } = require('../GuestProperties');
-const { SimpleActionApi } = require('../../SimpleActionApi');
-const GuestNicsPanel = require('../properties/guest-nics-panel');
-const DiskUtils = require('../properties/disk-utils');
-const Functions = require('utils/functions');
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Utils as MessagesUtils } from 'components/messages';
+import { getOrderedItemsFromModel } from 'components/input/FormMultiInput';
+import { GuestProperties } from '../GuestProperties';
+import { SimpleActionApi } from '../../SimpleActionApi';
+import * as GuestNicsPanel from '../properties/guest-nics-panel';
+import * as DiskUtils from '../properties/disk-utils';
+import { Formats } from 'utils/functions';
 
 type Props = {
   host: Object,
   localTime: string,
   timezone: string,
   actionChains: Array<ActionChain>,
+  cobblerProfiles: {string: string},
 };
 
 type State = {
@@ -46,7 +47,7 @@ class GuestsCreate extends React.Component<Props, State> {
       },
       nics.length !== 0 ? { interfaces: nics } : undefined,
       disks.length !== 0 ? { disks } : undefined,
-      {earliest: Functions.Formats.LocalDateTime(model.earliest)}
+      {earliest: Formats.LocalDateTime(model.earliest)}
     );
   }
 
@@ -93,6 +94,7 @@ class GuestsCreate extends React.Component<Props, State> {
                   localTime={this.props.localTime}
                   timezone={this.props.timezone}
                   actionChains={this.props.actionChains}
+                  cobblerProfiles={this.props.cobblerProfiles}
                 />
               </TopPanel>
             );
@@ -103,6 +105,8 @@ class GuestsCreate extends React.Component<Props, State> {
   }
 }
 
-module.exports = {
-  GuestsCreate: hot(module)(GuestsCreate),
+const HotGuestsCreate = hot(GuestsCreate);
+
+export {
+  HotGuestsCreate as GuestsCreate,
 };

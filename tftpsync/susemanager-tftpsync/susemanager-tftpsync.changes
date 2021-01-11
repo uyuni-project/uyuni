@@ -1,3 +1,6 @@
+- Use Python3 for RHEL.
+- Disabled debug package build.
+
 -------------------------------------------------------------------
 Fri Sep 18 11:52:48 CEST 2020 - jgonzalez@suse.com
 

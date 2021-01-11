@@ -45,6 +45,7 @@ try: # python 3
     from xmlrpc import client as xmlrpclib
 except ImportError: # python2
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -190,7 +191,7 @@ def do_get_session(self, args):
         print(self.session)
         return 0
     else:
-        logging.error(_('No session found'))
+        logging.error(_N('No session found'))
         return 1
 
 ####################
@@ -241,7 +242,7 @@ def do_login(self, args):
 
     # logout before logging in again
     if self.session:
-        logging.warning(_('You are already logged in'))
+        logging.warning(_N('You are already logged in'))
         return True
 
     # an argument passed to the function get precedence
@@ -253,7 +254,7 @@ def do_login(self, args):
 
     # bail out if not server was given
     if not server:
-        logging.warning(_('No server specified'))
+        logging.warning(_N('No server specified'))
         return False
 
     # load the server-specific configuration
@@ -298,7 +299,7 @@ def do_login(self, args):
             e = sys.exc_info()[0]
             logging.exception(e)
 
-        logging.error(_('Failed to connect to %s'), server_url)
+        logging.error(_N('Failed to connect to %s'), server_url)
         logging.debug("Error while connecting to the server %s: %s",
                       server_url, str(exc))
         self.client = None
@@ -306,7 +307,7 @@ def do_login(self, args):
 
     # ensure the server is recent enough
     if float(self.api_version) < self.MINIMUM_API_VERSION:
-        logging.error(_('API (%s) is too old (>= %s required)'),
+        logging.error(_N('API (%s) is too old (>= %s required)'),
                       self.api_version, self.MINIMUM_API_VERSION)
 
         self.client = None
@@ -336,7 +337,7 @@ def do_login(self, args):
 
             sessionfile.close()
         except IOError:
-            logging.error(_('Could not read %s'), session_file)
+            logging.error(_N('Could not read %s'), session_file)
 
     # check the cached credentials by doing an API call
     if self.session:
@@ -345,14 +346,14 @@ def do_login(self, args):
 
             self.client.user.listAssignableRoles(self.session)
         except xmlrpclib.Fault:
-            logging.warning(_('Cached credentials are invalid'))
+            logging.warning(_N('Cached credentials are invalid'))
             self.current_user = ''
             self.session = ''
 
     # attempt to login if we don't have a valid session yet
     if not self.session:
         if username:
-            logging.info(_('Spacewalk Username: %s'), username)
+            logging.info(_N('Spacewalk Username: %s'), username)
         else:
             username = prompt_user(_('Spacewalk Username:'), noblank=True)
 
@@ -371,7 +372,7 @@ def do_login(self, args):
         try:
             self.session = self.client.auth.login(username, password)
         except xmlrpclib.Fault as exc:
-            logging.error(_('Invalid credentials'))
+            logging.error(_N('Invalid credentials'))
             logging.debug("Login error: %s (%s)", exc.faultString, exc.faultCode)
             return False
         try:
@@ -389,7 +390,7 @@ def do_login(self, args):
             sessionfile.write(line)
             sessionfile.close()
         except IOError as exc:
-            logging.error(_('Could not write session file: %s'), str(exc))
+            logging.error(_N('Could not write session file: %s'), str(exc))
 
     # load the system/package/errata caches
     self.load_caches(server, username)
@@ -398,7 +399,7 @@ def do_login(self, args):
     self.current_user = username
     self.server = server
 
-    logging.info(_('Connected to %s as %s'), server_url, username)
+    logging.info(_N('Connected to %s as %s'), server_url, username)
 
     return True
 
@@ -433,7 +434,7 @@ def do_whoami(self, args):
         print(self.current_user)
         return 0
     else:
-        logging.warning(_("You are not logged in"))
+        logging.warning(_N("You are not logged in"))
         return 1
 
 ####################
@@ -449,7 +450,7 @@ def do_whoamitalkingto(self, args):
         print(self.server)
         return 0
     else:
-        logging.warning(_('Yourself'))
+        logging.warning(_N('Yourself'))
         return 1
 
 ####################
@@ -712,7 +713,7 @@ def load_caches(self, server, username):
         if not os.path.isdir(conf_dir):
             os.mkdir(conf_dir, int('0700', 8))
     except OSError:
-        logging.error(_('Could not create directory %s'), conf_dir)
+        logging.error(_N('Could not create directory %s'), conf_dir)
         return
 
     self.ssm_cache_file = os.path.join(conf_dir, 'ssm')
@@ -784,14 +785,14 @@ def get_system_id(self, name):
     if len(systems) == 1:
         return systems[0]
     elif not systems:
-        logging.warning(_("Can't find system ID for %s"), name)
+        logging.warning(_N("Can't find system ID for %s"), name)
         return 0
     else:
         if len(systems) == 2 and systems[0] == systems[1]:
             return systems[0]
-        logging.warning(_('Duplicate system profile names found!'))
-        logging.warning(_("Please reference systems by ID or resolve the"))
-        logging.warning(_("underlying issue with 'system_delete' or 'system_rename'"))
+        logging.warning(_N('Duplicate system profile names found!'))
+        logging.warning(_N("Please reference systems by ID or resolve the"))
+        logging.warning(_N("underlying issue with 'system_delete' or 'system_rename'"))
 
         id_list = '%s = ' % name
 
@@ -857,7 +858,7 @@ def expand_systems(self, args):
             if members:
                 systems.extend([re.escape(m) for m in members])
             else:
-                logging.warning(_('No systems in group %s'), item)
+                logging.warning(_N('No systems in group %s'), item)
         elif re.match('search:', item):
             query = item.split(':', 1)[1]
             results = self.do_system_search(query, True)
@@ -871,7 +872,7 @@ def expand_systems(self, args):
             if members:
                 systems.extend([re.escape(m) for m in members])
             else:
-                logging.warning(_('No systems subscribed to %s'), item)
+                logging.warning(_N('No systems subscribed to %s'), item)
         else:
             # translate system IDs that the user passes
             try:

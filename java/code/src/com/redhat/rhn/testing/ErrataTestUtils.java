@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -39,7 +39,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -262,9 +262,9 @@ public class ErrataTestUtils {
      */
     public static Errata createTestClonedErrata(User user, Errata original, Set<Cve> cves,
             Package aPackage) throws Exception {
-        PublishedClonedErrata clone = new PublishedClonedErrata();
+        ClonedErrata clone = new ClonedErrata();
         copyErrataDetails(clone, original);
-        PublishErrataHelper.setUniqueAdvisoryCloneName(original, clone);
+        ErrataHelper.setUniqueAdvisoryCloneName(original, clone);
         clone.setOriginal(original);
         clone.setOrg(user.getOrg());
         clone.setCves(cves);
@@ -378,7 +378,8 @@ public class ErrataTestUtils {
         String version = previousEvr.getVersion();
         String release = (Integer.parseInt(previousEvr.getRelease()) + 1) + "";
         PackageEvr pevr =
-                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release);
+                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release,
+                        previous.getPackageEvr().getPackageType());
 
         result.setRpmVersion(previous.getRpmVersion());
         result.setDescription(previous.getDescription());

@@ -16,6 +16,9 @@ package com.suse.manager.webui.services.test;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
+
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 import com.redhat.rhn.common.conf.Config;
@@ -23,7 +26,9 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -149,6 +154,33 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel1)));
         assertTrue(includes.contains(
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel2)));
+    }
+
+    public void testImageSyncedPillar() throws Exception {
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+
+        Path filePath = tmpSaltRoot.resolve(SUMA_PILLAR_IMAGES_DATA_PATH)
+                .resolve("group" + group.getId().toString())
+                .resolve("ImageName-1.0.0." + PILLAR_IMAGE_DATA_FILE_EXT);
+
+        SaltStateGeneratorService.INSTANCE.createImageSyncedPillar(group, "ImageName", "1.0.0");
+
+        assertTrue(Files.exists(filePath));
+
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+        assertTrue(map.containsKey("images"));
+        Map<String, Object> images = (Map<String, Object>)map.get("images");
+        assertTrue(images.containsKey("ImageName"));
+        Map<String, Object> image = (Map<String, Object>)images.get("ImageName");
+        assertTrue(image.containsKey("1.0.0"));
+        Map<String, Object> version = (Map<String, Object>)image.get("1.0.0");
+        assertTrue(version.containsKey("synced"));
+
+        SaltStateGeneratorService.INSTANCE.removeImageSyncedPillar(group, "ImageName", "1.0.0");
+        assertFalse(Files.exists(filePath));
     }
 
 }

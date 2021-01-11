@@ -9,19 +9,19 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
- helpUrl="/docs/reference/patches/manage-patches-published.html"
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/patches/manage-patches.html"
  creationUrl="/rhn/errata/manage/Create.do"
  creationType="erratum">
   <bean:message key="erratalist.jsp.erratamgmt"/>
 </rhn:toolbar>
 
-<h2><bean:message key="erratalist.jsp.publishederrata"/></h2>
+<h2><bean:message key="erratalist.jsp.errata"/></h2>
 
 <div class="page-summary">
     <bean:message key="erratalist.jsp.ownederratapagesummary"/>
 </div>
 <c:set var="pageList" value="${requestScope.pageList}" />
-<c:set var="emptyListKey" value="erratalist.jsp.nopublishederrata"/>
+<c:set var="emptyListKey" value="erratalist.jsp.noerrata"/>
 
 <%@ include file="/WEB-INF/pages/common/fragments/errata/ownedlistdisplay.jspf" %>
 

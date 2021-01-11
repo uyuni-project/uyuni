@@ -1,12 +1,12 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const Utils = require("utils/functions").Utils;
-const DateTime = require("components/datetime").DateTime;
+import * as React from 'react';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Utils } from 'utils/functions';
+import { DateTime } from 'components/datetime';
 
 const typeIcons = {
   "Security Advisory": t("fa fa-shield fa-1-5x"),
@@ -97,6 +97,6 @@ class ImageViewPatches extends React.Component {
   }
 }
 
-module.exports = {
-  ImageViewPatches: ImageViewPatches
-}
+export {
+  ImageViewPatches,
+};

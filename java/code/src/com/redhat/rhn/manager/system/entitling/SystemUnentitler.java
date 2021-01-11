@@ -21,10 +21,12 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-
 import com.redhat.rhn.manager.system.ServerGroupManager;
+
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
 
 import org.apache.log4j.Logger;
 
@@ -99,6 +101,7 @@ public class SystemUnentitler {
 
             if (EntitlementManager.VIRTUALIZATION.equals(ent)) {
                 virtManager.updateLibvirtEngine(s);
+                new MinionPillarFileManager(new MinionVirtualizationPillarGenerator()).updatePillarFile(s);
             }
         });
     }

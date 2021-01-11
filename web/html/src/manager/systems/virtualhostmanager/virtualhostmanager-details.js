@@ -1,18 +1,18 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const {Button} = require("components/buttons");
-const {ModalButton} = require("components/dialog/ModalButton");
-const {DeleteDialog} = require("components/dialog/DeleteDialog");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const {Utils} = require("utils/functions");
-const Network = require("utils/network");
-const {Messages} = require("components/messages");
-const MessagesUtils = require("components/messages").Utils;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
+import * as React from 'react';
+import { Button } from 'components/buttons';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { DeleteDialog } from 'components/dialog/DeleteDialog';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
+import { Utils } from 'utils/functions';
+import Network from 'utils/network';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
 
 class VirtualHostManagerDetails extends React.Component {
 
@@ -193,6 +193,6 @@ function ConfigParams(props) {
     );
 }
 
-module.exports = {
-    VirtualHostManagerDetails: VirtualHostManagerDetails
+export {
+    VirtualHostManagerDetails,
 };

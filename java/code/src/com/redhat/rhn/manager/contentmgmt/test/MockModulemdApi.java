@@ -23,12 +23,14 @@ import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleInfo;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleStreams;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.modulemd.RepositoryNotModularException;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
@@ -106,7 +108,11 @@ public class MockModulemdApi extends ModulemdApi {
             }
         }
 
-        return new ModulePackagesResponse(getRpmApis(selectedModules), getPackages(selectedModules), null);
+        return new ModulePackagesResponse(getRpmApis(selectedModules), getPackages(selectedModules),
+                selectedModules.stream()
+                        .map(m -> new ModuleInfo(m.getName(), m.getStream(), "1000000001", "6789abcd", "x86_64"))
+                        .collect(Collectors.toList())
+        );
     }
 
     /**
@@ -151,9 +157,12 @@ public class MockModulemdApi extends ModulemdApi {
             Matcher m = nevraPattern.matcher(nevra);
             if (m.matches()) {
                 Package pkg = PackageTest.createTestPackage(user.getOrg());
+                PackageArch packageArch = PackageFactory.lookupPackageArchByLabel(m.group(5));
                 PackageTest.populateTestPackage(pkg, user.getOrg(), PackageNameTest.createTestPackageName(m.group(1)),
-                        PackageEvrFactoryTest.createTestPackageEvr(m.group(2), m.group(3), m.group(4)),
-                        PackageFactory.lookupPackageArchByLabel(m.group(5)));
+                        PackageEvrFactoryTest.createTestPackageEvr(m.group(2), m.group(3), m.group(4),
+                                packageArch.getArchType().getPackageType()),
+                                packageArch
+                        );
 
                 if (!perlNevra.equals(nevra)) {
                     // Exclude non-modular Perl package mentioned above

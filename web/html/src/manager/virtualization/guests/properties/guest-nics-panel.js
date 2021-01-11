@@ -1,12 +1,13 @@
 // @flow
 
-const React = require('react');
-const { Select } = require('components/input/Select');
-const { Text } = require('components/input/Text');
-const { FormMultiInput } = require('components/input/FormMultiInput');
-const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { Messages } = require('components/messages');
-const { Utils: MessagesUtils } = require('components/messages');
+import * as React from 'react';
+
+import { Select } from 'components/input/Select';
+import { Text } from 'components/input/Text';
+import { FormMultiInput } from 'components/input/FormMultiInput';
+import { getOrderedItemsFromModel } from 'components/input/FormMultiInput';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
 
 function addNic(index: number, model: Object, changeModel: Function, networks: Array<Object>) {
   const first_nic = networks.length > 0 ? networks[0].name : '';
@@ -40,11 +41,8 @@ function guestNicFields(model: Object, index: number, networks: Array<Object>,
             disabled={!onlyHandledNics}
             required
             defaultValue={networks.find(net => net.name === 'default') ? 'default' : first_nic}
-          >
-            {
-              networks.map(k => <option key={k.name} value={k.name}>{k.name}</option>)
-            }
-          </Select>
+            options={networks.map(k => k.name)}
+          />
         )
       }
       <Text
@@ -124,7 +122,7 @@ function getRequestParams(model: Object, index: number): Object {
   };
 }
 
-module.exports = {
+export {
   guestNicsPanel,
   getRequestParams,
   getModelFromDefinition,

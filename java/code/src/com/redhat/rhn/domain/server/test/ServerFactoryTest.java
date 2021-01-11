@@ -32,11 +32,13 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -746,11 +748,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             ss.setOwner("Spacewalk Test Cert");
             ss.setIssued("2007-07-13 00:00:00");
             ss.setExpiration("2020-07-13 00:00:00");
-            ss.setVersion("4.0");
+            ss.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "4.0", "1", ss.getPackageType()));
         }
         else if (type == TYPE_SERVER_PROXY) {
             ProxyInfo info = new ProxyInfo();
-            info.setVersion("10", "10", "10");
+            info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr("10", "10", "10", s.getPackageType()));
             info.setServer(s);
             s.setProxyInfo(info);
         }
@@ -1078,15 +1080,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageArch parch1 = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
 
         Package zypper = new Package();
-        PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"), PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1"), parch1);
+        PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"),
+                PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
         TestUtils.saveAndFlush(zypper);
 
         Package p1v1 = new Package();
-        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1"), parch1);
+        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
+                PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
         TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
-        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1"), parch1);
+        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
+                PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", PackageType.RPM), parch1);
         TestUtils.saveAndFlush(p1v2);
 
         InstalledPackage p1v1InNZ = new InstalledPackage();
@@ -1120,7 +1125,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         zypperSystem.getPackages().add(p1v1InZ);
         zypperSystem.getPackages().add(zypperIn);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         baseChan.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(p1v2);
@@ -1155,6 +1160,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testlistNewestPkgsForServerErrata() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
         PackageName p2Name = PackageNameTest.createTestPackageName("testPackage2-" + TestUtils.randomString());
 
@@ -1162,21 +1168,26 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageArch parch2 = (PackageArch) TestUtils.lookupFromCacheById(101L, "PackageArch.findById");
 
         Package p1v1 = new Package();
-        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1"), parch1);
+        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
+                PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", server.getPackageType()), parch1);
         TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
-        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1"), parch1);
+        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
+                PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", server.getPackageType()), parch1);
         TestUtils.saveAndFlush(p1v2);
 
-        PackageEvr v3 = PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1");
+        PackageEvr v3 = PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
+                server.getPackageType());
 
         Package p1v3 = new Package();
         PackageTest.populateTestPackage(p1v3, user.getOrg(), p1Name, v3, parch1);
         TestUtils.saveAndFlush(p1v3);
 
         Package p1v4 = new Package();
-        PackageTest.populateTestPackage(p1v4, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1"), parch1);
+        PackageTest.populateTestPackage(p1v4, user.getOrg(), p1Name,
+                PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
+                        server.getPackageType()), parch1);
         TestUtils.saveAndFlush(p1v4);
 
         Package p1v3arch2 = new Package();
@@ -1184,7 +1195,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(p1v3arch2);
 
         Package p2v4 = new Package();
-        PackageTest.populateTestPackage(p2v4, user.getOrg(), p2Name, PackageEvrFactoryTest.createTestPackageEvr("1", "4.0.0", "1"), parch1);
+        PackageTest.populateTestPackage(p2v4, user.getOrg(), p2Name,
+                PackageEvrFactoryTest.createTestPackageEvr("1", "4.0.0", "1",
+                        server.getPackageType()), parch1);
         TestUtils.saveAndFlush(p2v4);
 
 
@@ -1196,7 +1209,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<Long> serverIds = new HashSet<>();
         Set<Long> errataIds = new HashSet<>();
 
-        Server server = ServerFactoryTest.createTestServer(user, true);
         serverIds.add(server.getId());
         Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
         server.addChannel(baseChan);
@@ -1206,28 +1218,28 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Channel childChan = ChannelFactoryTest.createTestChannel(user);
         childChan.setParentChannel(baseChan);
 
-        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e1.getId());
         baseChan.addErrata(e1);
         e1.getPackages().add(p1v2);
         e1.getPackages().add(p2v4);
 
-        Errata e2 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e2 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e2.getId());
         baseChan.addErrata(e2);
         e2.getPackages().add(p1v3);
 
-        Errata e3 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e3 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e3.getId());
         baseChan.addErrata(e3);
         e3.getPackages().add(p1v3arch2);
 
-        Errata e4 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e4 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e4.getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v2);
 
-        Errata e5 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e5 = ErrataFactoryTest.createTestErrata(user.getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v4);
 
@@ -1256,12 +1268,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         baseChan.setUpdateTag("SLE-SERVER");
         server.addChannel(baseChan);
 
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e.getId());
         e.setAdvisoryName("SUSE-2016-1234");
         baseChan.addErrata(e);
 
-        Errata ce = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata ce = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(ce.getId());
         ce.setAdvisoryName("CL-SUSE-2016-1234");
         baseChan.addErrata(ce);
@@ -1289,12 +1301,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         baseChan.setUpdateTag("slessp4");
         server.addChannel(baseChan);
 
-        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e.getId());
         e.setAdvisoryName("ecryptfs-utils-12379");
         baseChan.addErrata(e);
 
-        Errata ce = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        Errata ce = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(ce.getId());
         ce.setAdvisoryName("CL-ecryptfs-utils-12379");
         baseChan.addErrata(ce);

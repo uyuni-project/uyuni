@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Be able to bootstrap a Salt build host via the GUI
+Feature: Bootstrap a Salt build host via the GUI
 
 @buildhost
   Scenario: Create the bootstrap repository for a Salt client build host

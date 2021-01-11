@@ -64,6 +64,7 @@
         <html:hidden property="guestName" />
         <html:hidden property="proxyHost" />
 
+        <rhn:require acl="system_has_management_entitlement()">
         <div class="panel panel-default">
             <div class="panel-heading"><h4><bean:message key="kickstart.schedule.heading4.jsp" /></h4></div>
             <div class="panel-body">
@@ -81,6 +82,15 @@
         <c:if test="${empty regularKS}">
             <%@ include file="/WEB-INF/pages/common/fragments/kickstart/schedule/virt-options.jspf"%>
         </c:if>
+        </rhn:require>
+        <rhn:require acl="system_has_salt_entitlement()">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4><bean:message key="kickstart.schedule.heading4.jsp" /></h4></div>
+            <div class="panel-body">
+                <%@ include file="/WEB-INF/pages/common/fragments/kickstart/schedule/kernel-options.jspf"%>
+            </div>
+        </div>
+        </rhn:require>
 
         <div class="panel">
             <div class="row">

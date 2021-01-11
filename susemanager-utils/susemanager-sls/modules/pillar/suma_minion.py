@@ -115,7 +115,7 @@ def ext_pillar(minion_id, *args):
 
     # Including images pillar
     try:
-        ret.update(image_pillars(minion_id))
+        ret.update(image_pillars(minion_id, ret.get("group_ids", []), ret.get("org_id", 1)))
     except Exception as error:
         log.error('Error accessing image pillar data: {}'.format(str(error)))
 
@@ -310,21 +310,42 @@ def get_edit_group_subtype(element):
             return EditGroupSubtype.DICTIONARY_OF_DICTIONARIES
     return None
 
-def image_pillars(minion_id):
+def image_pillars(minion_id, group_ids, org_id):
     '''
     Load image pillars
 
     Image pillars are automatically created after image build and are available to all minions
     '''
     ret = {}
+    group_dirs = []
+    org_dirs = []
+
     for pillar in os.listdir(IMAGES_DATA_PATH):
         pillar_path = os.path.join(IMAGES_DATA_PATH, pillar)
+
+        # read also pilars from top dir, for backward compatibility
         if os.path.isfile(pillar_path) and pillar.endswith('.sls'):
             try:
                 with open(pillar_path) as p:
                     ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read(), Loader=yaml.FullLoader), strategy='recurse')
             except Exception as error:
                 log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
+
+        elif os.path.isdir(pillar_path):
+            if pillar.startswith('org') and int(pillar[3:]) == org_id:
+                org_dirs.append(pillar_path)
+            elif pillar.startswith('group') and int(pillar[5:]) in group_ids:
+                group_dirs.append(pillar_path)
+
+    for pillar_dir in org_dirs + group_dirs:
+        for pillar in os.listdir(pillar_dir):
+            pillar_path = os.path.join(pillar_dir, pillar)
+            if os.path.isfile(pillar_path) and pillar.endswith('.sls'):
+                try:
+                    with open(pillar_path) as p:
+                        ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read(), Loader=yaml.FullLoader), strategy='recurse')
+                except Exception as error:
+                    log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
 
     return ret
 

@@ -205,51 +205,76 @@
         </context-group>
         <target>9</target>
       </trans-unit>
-      <group>
+      <trans-unit id="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target>是</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        <trans-unit id="yes">
-          <source>Yes</source>
-          <target>是</target>
         </trans-unit>
-        <trans-unit id="no">
+        <trans-unit id="no" xml:space="preserve">
           <source>No</source>
           <target>否</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Enabled">
+        <trans-unit id="Enabled" xml:space="preserve">
           <source>Enabled</source>
           <target>已啟用</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Disabled">
+        <trans-unit id="Disabled" xml:space="preserve">
           <source>Disabled</source>
           <target>已停用</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Tip">
+        <trans-unit id="Tip" xml:space="preserve">
           <source>Tip</source>
           <target>提示</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Note">
+        <trans-unit id="Note" xml:space="preserve">
           <source>Note</source>
           <target>注意</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Warning">
+        <trans-unit id="Warning" xml:space="preserve">
           <source>Warning</source>
           <target>警告</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Custom">
+        <trans-unit id="Custom" xml:space="preserve">
           <source>Custom</source>
           <target>自訂</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Examples">
+        <trans-unit id="Examples" xml:space="preserve">
           <source>Examples</source>
           <target>範例</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="none specified">
+        <trans-unit id="none specified" xml:space="preserve">
           <source>none specified</source>
           <target>未指定</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="About Spacewalk" xml:space="preserve">
         <source>About</source>
         <context-group name="ctx">
@@ -1124,13 +1149,6 @@
         </context-group>
         <target>Unix 發行公告</target>
       </trans-unit>
-      <trans-unit id="Unpublished" xml:space="preserve">
-        <source>Unpublished</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>未出版</target>
-      </trans-unit>
       <trans-unit id="Unentitled" xml:space="preserve">
         <source>Without System Type</source>
         <context-group name="ctx">
@@ -1774,19 +1792,20 @@
         </context-group>
         <target>XCCDF 文件的路徑</target>
       </trans-unit>
-      <group>
+      <trans-unit id="first" xml:space="preserve">
+          <source>First Scan Id</source>
+          <target>第一個掃瞄 Id</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
-        <trans-unit id="first">
-          <source>First Scan Id</source>
-          <target>第一個掃瞄 Id</target>
         </trans-unit>
-        <trans-unit id="second">
+        <trans-unit id="second" xml:space="preserve">
           <source>Second Scan Id</source>
           <target>第二個掃瞄 Id</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="message.perms_updated" xml:space="preserve">
         <source>Permissions Updated</source>
         <context-group name="ctx">
@@ -2839,8 +2858,7 @@ and try again.
       <trans-unit id="toolbar.create.erratum" xml:space="preserve">
         <source>Create Patch</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
-          <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
+          <context context-type="sourcefile">/rhn/errata/Errata</context>
         </context-group>
         <target>建立勘誤</target>
       </trans-unit>
@@ -4073,22 +4091,20 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>系統群組 &lt;strong&gt;{0}&lt;/strong&gt; 已建立。</target>
       </trans-unit>
-      <group>
+      <trans-unit id="daterangepicker.error.invalid" xml:space="preserve">
+          <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
+          <target>日期「{0}」不合規定，已經重設為預設值。請檢查該月份有那麼多日。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
-        <note>Error messages for the date range picker, used on monitoring pages for things
-                        like the start and expiration date for notification filters.
-                </note>
-        <trans-unit id="daterangepicker.error.invalid">
-          <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-          <target>日期「{0}」不合規定，已經重設為預設值。請檢查該月份有那麼多日。</target>
         </trans-unit>
-        <trans-unit id="daterangepicker.error.start.before.end">
+        <trans-unit id="daterangepicker.error.start.before.end" xml:space="preserve">
           <source>The start date "{0}" must be before the end date "{1}"</source>
           <target>開始日期「{0}」必須在結束日期「{1}」之前。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="monitoring.services.restarted" xml:space="preserve">
         <source>Configuration updated, Monitoring services restarted.</source>
         <context-group name="ctx">
@@ -6692,66 +6708,103 @@ Follow this url to see the full list of inactive systems:
         <target>為綁定網路介面卡指定的閘道器無效。</target>
       </trans-unit>
       <!-- Activation Keys -->
-      <group>
+      <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve">
+          <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
+          <target>啟動金鑰標籤 &lt;strong&gt;{0}&lt;/strong&gt; 含有一或更多個下列無效字元 &lt;strong&gt;{1}&lt;/strong&gt;。請將這些字元由標籤中移除。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        <trans-unit id="activation-key.java.invalid_chars">
-          <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-          <target>啟動金鑰標籤 &lt;strong&gt;{0}&lt;/strong&gt; 含有一或更多個下列無效字元 &lt;strong&gt;{1}&lt;/strong&gt;。請將這些字元由標籤中移除。</target>
         </trans-unit>
-        <trans-unit id="activation-key.java.exists">
+        <trans-unit id="activation-key.java.exists" xml:space="preserve">
           <source>An activation key with label '{0}' is already taken. Please choose a different label.</source>
           <target>擁有 '{0}' 標籤的啟動金鑰已被使用。請選擇不同的標籤。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="activation-key.java.created">
+        <trans-unit id="activation-key.java.created" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
           <target>啟動金鑰 &lt;strong&gt;{0}&lt;/strong&gt; 已建立。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="activation-key.java.deleted">
+        <trans-unit id="activation-key.java.deleted" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
           <target>啟動金鑰 &lt;strong&gt;{0}&lt;/strong&gt; 已刪除。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="activation-key.java.cloned">
+        <trans-unit id="activation-key.java.cloned" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
           <target>啟動金鑰 &lt;strong&gt;{0}&lt;/strong&gt; 已複製。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="activation-key.java.modified">
+        <trans-unit id="activation-key.java.modified" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
           <target>啟動金鑰 &lt;strong&gt;{0}&lt;/strong&gt; 已修改。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="activation-key.java.org_prefixed">
+        <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
           <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
           <target>請注意 &lt;strong&gt;{0}&lt;/strong&gt; 已經改為 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="activation-key.java.allowed-values">
+        <trans-unit id="activation-key.java.allowed-values" xml:space="preserve">
           <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="system.sdc.missing.config_deploy1">
+        <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
           <target>這部系統還未有配置建置功能。配置建置需要特定軟體被安裝至您的系統上並被啟用。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="system.sdc.missing.config_deploy2">
+        <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
           <target>您可透過在 &lt;a href={0}&gt;{1}&lt;/a&gt; 畫面中點選「{2}」來選擇系統並確認配置建置功能可在此系統上啟用。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="system.sdc.addtossm">
+        <trans-unit id="system.sdc.addtossm" xml:space="preserve">
           <source>System added to the System Set Manager.</source>
           <target>系統已加入系統設定管理員。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="system.sdc.removefromssm">
+        <trans-unit id="system.sdc.removefromssm" xml:space="preserve">
           <source>System removed from the System Set Manager.</source>
           <target>系統已從系統設定管理員中移除。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="usageLimit">
+        <trans-unit id="usageLimit" xml:space="preserve">
           <source>Usage Limit</source>
           <target>使用限制</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="key">
+        <trans-unit id="key" xml:space="preserve">
           <source>Key</source>
           <target>金鑰</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="file_size.b" xml:space="preserve">
         <source>{0} B</source>
         <context-group name="ctx">
@@ -7258,286 +7311,477 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>&lt;strong&gt;{0}&lt;/strong&gt; 的系統屬性已被更改。&lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; 會依照自動化的勘誤更新來被 &lt;strong&gt;完整更新&lt;/strong&gt;。</target>
       </trans-unit>
-      <group>
+      <trans-unit id="sdc.config.deploy.noaction" xml:space="preserve">
+          <source>No deploy action completed.</source>
+          <target>無建置動作被完成。「&lt;a href="{0}"&gt;排程建置動作&lt;/a&gt;」</target>
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <trans-unit id="sdc.config.deploy.noaction">
-          <source>No deploy action completed.</source>
-          <target>無建置動作被完成。「&lt;a href="{0}"&gt;排程建置動作&lt;/a&gt;」</target>
         </trans-unit>
-        <trans-unit id="sdc.config.deploy.failure">
+        <trans-unit id="sdc.config.deploy.failure" xml:space="preserve">
           <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
           <target>所有檔案與/或目錄（{0}）的建置都失敗了。「&lt;a href="{1}"&gt;檢視詳細資料&lt;/a&gt;」</target>
+        <context-group name="sdc_action_deploy_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.deploy.success">
+        <trans-unit id="sdc.config.deploy.success" xml:space="preserve">
           <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
           <target>所有檔案與 / 或目錄（{0}）的建置都成功了。「&lt;a href="{1}"&gt;檢視詳細資料&lt;/a&gt;」</target>
+        <context-group name="sdc_action_deploy_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <group>
+      <trans-unit id="sdc.config.diff.noaction" xml:space="preserve">
+          <source>No system comparisons completed.</source>
+          <target>沒有完成的系統比較。</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <trans-unit id="sdc.config.diff.noaction">
-          <source>No system comparisons completed.</source>
-          <target>沒有完成的系統比較。</target>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>未選擇檔案、目錄或符號連結來進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1" xml:space="preserve">
           <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2" xml:space="preserve">
           <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0" xml:space="preserve">
           <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {2} 個目錄已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1" xml:space="preserve">
           <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {2} 個目錄以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2" xml:space="preserve">
           <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {2} 個目錄以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0" xml:space="preserve">
           <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {3} 之 {2} 個目錄已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1" xml:space="preserve">
           <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {3} 之 {2} 個目錄以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2" xml:space="preserve">
           <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {3} 之 {2} 個目錄以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資料&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案以及 1 之 {2} 個目錄已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案和 1 之 {2} 個目錄以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案和 1 之 {2} 個目錄以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案以及 {3} 之 {2} 個目錄已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案和 {3} 之 {2} 個目錄以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 1 之 {0} 個檔案和 {3} 之 {2} 個目錄以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案以及 1 之 {2} 個目錄已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案和 1 之 {2} 個目錄以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案和 1 之 {2} 個目錄以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0">
+        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案以及 {3} 之 {2} 個目錄已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1">
+        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案和 {3} 之 {2} 個目錄以及 1 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2">
+        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
           <target>系統上有 {1} 之 {0} 個檔案和 {3} 之 {2} 個目錄以及 {5} 之 {4} 個符號連結已成功與 @@PRODUCT_NAME@@ 所管理的檔案進行比較。[&lt;a href="{6}"&gt;檢視詳細資訊&lt;/a&gt;]</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.differing.files_0">
+        <trans-unit id="sdc.config.differing.files_0" xml:space="preserve">
           <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
           <target>現存的系統中沒有任何與 @@PRODUCT_NAME@@ 所管理的檔案相異的檔案存在。</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.differing.files_1">
+        <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
           <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
           <target>系統上有 1 個檔案中的 1 個檔案與 @@PRODUCT_NAME@@ 所管理的檔案不同。</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="sdc.config.differing.files_2">
+        <trans-unit id="sdc.config.differing.files_2" xml:space="preserve">
           <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
           <target>系統上有 {1} 個檔案中的 {0} 個檔案與 @@PRODUCT_NAME@@ 所管理的檔案不同。</target>
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <group>
+      <trans-unit id="sdc.config.time.message" xml:space="preserve">
+          <source>{0} by {1}</source>
+          <target>由 {1} 而來的 {0}</target>
         <context-group name="sdc_actions_time_messages">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <trans-unit id="sdc.config.time.message">
-          <source>{0} by {1}</source>
-          <target>由 {1} 而來的 {0}</target>
         </trans-unit>
-        <trans-unit id="sdc.config.time.message_url">
+        <trans-unit id="sdc.config.time.message_url" xml:space="preserve">
           <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
           <target>由 &lt;a href="{1}"&gt;{2}&lt;/a&gt; 而來的 {0}</target>
+        <context-group name="sdc_actions_time_messages">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <group>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url" xml:space="preserve">
+          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url">
-          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0">
+        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>No files, directories or symlinks.</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1">
+        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1" xml:space="preserve">
           <source>{3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2">
+        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2" xml:space="preserve">
           <source>{3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0">
+        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0" xml:space="preserve">
           <source>{2} directory</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1">
+        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1" xml:space="preserve">
           <source>{2} directory and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2">
+        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2" xml:space="preserve">
           <source>{2} directory and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0">
+        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0" xml:space="preserve">
           <source>{2} directories</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1">
+        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1" xml:space="preserve">
           <source>{2} directories and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2">
+        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2" xml:space="preserve">
           <source>{2} directories and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0">
+        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{1} file</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1">
+        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1" xml:space="preserve">
           <source>{1} file and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2">
+        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2" xml:space="preserve">
           <source>{1} file and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0">
+        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0" xml:space="preserve">
           <source>{1} file and {2} directory</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1">
+        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1" xml:space="preserve">
           <source>{1} file, {2} directory and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2">
+        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2" xml:space="preserve">
           <source>{1} file, {2} directory and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0">
+        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0" xml:space="preserve">
           <source>{1} file and {2} directories</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1">
+        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1" xml:space="preserve">
           <source>{1} file, {2} directories and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2">
+        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{1} file, {2} directories and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0">
+        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{1} files</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1">
+        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{1} files and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2">
+        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{1} files and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0">
+        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directory</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1">
+        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2">
+        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0">
+        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directories</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1">
+        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlink</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2">
+        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2">
+        <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2">
+        <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0">
+        <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0">
+        <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} file</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0">
+        <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} files</source>
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <group>
+      <trans-unit id="config.channels_0" xml:space="preserve">
+          <source>No configuration channels</source>
+          <target>無配置頻道</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
-        <trans-unit id="config.channels_0">
-          <source>No configuration channels</source>
-          <target>無配置頻道</target>
         </trans-unit>
-        <trans-unit id="config.channels_1">
+        <trans-unit id="config.channels_1" xml:space="preserve">
           <source>1 configuration channel</source>
           <target>1 個配置頻道</target>
+        <context-group name="config_channel_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="config.channels_2">
+        <trans-unit id="config.channels_2" xml:space="preserve">
           <source>{0} configuration channels</source>
           <target>{0} 個配置頻道</target>
+        <context-group name="config_channel_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="channel.unavailable" xml:space="preserve">
         <source>(no access to parent channel)</source>
         <context-group name="ctx">
@@ -8348,20 +8592,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target>系統已經擁有 {0} 這項權利了。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>當您增加了虛擬化權利至您的系統的同時，我們也實施了一些額外的步驟來確保您的系統能夠更有效地管理虛擬客座。欲取得更多資訊請參閱 &lt;a href="{0}"&gt;這裡&lt;/a&gt;。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>當您增加了虛擬化權利至您系統的同時，我們也實施了一些額外的步驟，以確保您的系統能夠更有效地管理虛擬客座。</target>
       </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
         <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
@@ -9996,12 +10226,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
+        <target>當您增加了虛擬化權利至您的系統的同時，我們也實施了一些額外的步驟來確保您的系統能夠更有效地管理虛擬客座。欲取得更多資訊請參閱 &lt;a href="{0}"&gt;這裡&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
+        <target>當您增加了虛擬化權利至您系統的同時，我們也實施了一些額外的步驟，以確保您的系統能夠更有效地管理虛擬客座。</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
@@ -10373,6 +10605,92 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Some of the specified servers cannot be found</source>
       <target state="new" />
   </trans-unit>
-    </body>
+    <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
+        <source>Redfish</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+        <source>Execute actions on ssh minions</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
+        <source>Execute action chains on minions</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
+        <source>The following module streams will be enabled: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_created" xml:space="preserve">
+        <source>Project {0} created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
+        <source>Project {0} deleted successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
+        <source>Project already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.label_required" xml:space="preserve">
+        <source>Label is required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
+        <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
+        <source>Label must not exceed 24 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.name_required" xml:space="preserve">
+        <source>Name is required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
+        <source>Name already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
+        <source>Label must not exceed 16 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      <target state="needs-adaptation" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
+        <source>Filter name already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
+        <source>Filter {0} created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
+        <source>Filter {0} updated successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+        <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

@@ -6,7 +6,7 @@
 <html:html>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-                     helpUrl="/docs/reference/admin/general.html">
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/general.html">
             <bean:message key="general.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="general.jsp.summary"/></p>
@@ -88,16 +88,6 @@
                             <html:text property="mount_point" size="32"
                                        styleClass="form-control"
                                        styleId="mount_point" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="web|ssl_available">
-                            <bean:message key="general.jsp.defaultTo_ssl"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                <html:checkbox property="web|ssl_available" styleId="ssl_available" />
-                            </div>
                         </div>
                     </div>
                     <div class="form-group hidden">

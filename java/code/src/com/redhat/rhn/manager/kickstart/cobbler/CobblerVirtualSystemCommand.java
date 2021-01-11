@@ -100,18 +100,21 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
         log.debug("processNetworkInterfaces called.");
 
         KickstartGuestAction action = (KickstartGuestAction) getScheduledAction();
-        KickstartGuestActionDetails details = action
-                .getKickstartGuestActionDetails();
-        String newMac = details.getMacAddress();
-        if (newMac == null || newMac.equals("")) {
-            newMac = (String) invokeXMLRPC("get_random_mac",
-                    Collections.EMPTY_LIST);
+        // When creation VMs using Salt we don't care about the interfaces
+        if (action != null) {
+            KickstartGuestActionDetails details = action
+                    .getKickstartGuestActionDetails();
+            String newMac = details.getMacAddress();
+            if (newMac == null || newMac.equals("")) {
+                newMac = (String) invokeXMLRPC("get_random_mac",
+                        Collections.EMPTY_LIST);
+            }
+            Network net = new Network(getCobblerConnection(), "eth0");
+            net.setMacAddress(newMac);
+            List<Network> nics = new LinkedList<Network>();
+            nics.add(net);
+            rec.setNetworkInterfaces(nics);
         }
-        Network net = new Network(getCobblerConnection(), "eth0");
-        net.setMacAddress(newMac);
-        List<Network> nics = new LinkedList<Network>();
-        nics.add(net);
-        rec.setNetworkInterfaces(nics);
     }
 
 
@@ -168,11 +171,14 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
         }
         if (error == null) {
             KickstartGuestAction action = (KickstartGuestAction) getScheduledAction();
-            KickstartGuestActionDetails details = action.getKickstartGuestActionDetails();
-            setupVirtAttributes(details.getMemMb().intValue(),
-                    details.getDiskGb().intValue(),
-                    details.getVcpus().intValue(),
-                    details.getDiskPath());
+            // When creating a VM on a Salt minion we don't handle the virt attributes
+            if (action != null) {
+                KickstartGuestActionDetails details = action.getKickstartGuestActionDetails();
+                setupVirtAttributes(details.getMemMb().intValue(),
+                        details.getDiskGb().intValue(),
+                        details.getVcpus().intValue(),
+                        details.getDiskPath());
+            }
         }
         return error;
     }

@@ -1,5 +1,20 @@
 - Fix spacecmd with no parameters produces traceback
   on SLE 11 SP4 (bsc#1176823)
+- Fixed "non-advanced" package search when using multiple package names (bsc#1180584)
+- Added '-r REVISION' option to the 'configchannel_updateinitsls' command (bsc#1179566)
+- Fix: internal: workaround for future tee of logs translation
+
+-------------------------------------------------------------------
+Thu Dec 03 13:41:55 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Update translations
+
+-------------------------------------------------------------------
+Wed Nov 25 12:13:23 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Fix: make spacecmd build on Debian
 - Python3 fixes for errata in spacecmd (bsc#1169664)
 - Added support for i18n of user-facing strings
 - Python3 fix for sorted usage (bsc#1167907)

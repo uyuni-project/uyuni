@@ -1,6 +1,8 @@
 # Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_salt_ssh
+@scope_onboarding
 Feature: Install a package on the SSH minion via Salt through the UI
 
 @ssh_minion
@@ -25,3 +27,9 @@ Feature: Install a package on the SSH minion via Salt through the UI
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "hoag-dummy-1.1-1.1" should be installed on "ssh_minion"
 
+@ssh_minion
+  Scenario: Cleanup: remove the package from the SSH minion
+   When I remove package "hoag-dummy-1.1-1.1" from this "ssh_minion"
+   And "hoag-dummy-1.1-1.1" should not be installed on "ssh_minion"
+   And I refresh packages list via spacecmd on "ssh_minion"
+   And I wait until refresh package list on "ssh_minion" is finished

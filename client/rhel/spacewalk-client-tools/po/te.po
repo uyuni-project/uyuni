@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Telugu (http://www.transifex.com/projects/p/spacewalk/"
@@ -987,8 +987,8 @@ msgid "Cannot contact selected server"
 msgstr "ఎంపికచేసిన సేవికను సంప్రదించలేదు"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "'%s.' యందలి శాటిలైట్ లేదా ప్రోక్సిని సంప్రదించలేదు"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1204,10 +1204,10 @@ msgstr ""
 "మీ సొంతంగా %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "ఈ దోషం సంభవించకూడదు. మీరు ఈ ప్రక్రమ అభివృద్ధిలో మాకు సహకరించ దలచుకోపోతే, దయచేసి ఒక బగ్ ని "
@@ -2402,15 +2402,16 @@ msgstr "RHN నమోదీకరణ"
 
 #: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr "సాఫ్టువేర్ నవీకరణల కొరకు Spacewalk/Satellite/Red Hat Network నుండి నమోదుకండి"
 
 #: ../rhn_register.desktop.in.h:3
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
 #, fuzzy
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "Spacewalk/Satellite/Red Hat Network కు నమోదుకండి."
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "Spacewalk/Satellite/Red Hat Network కు నమోదుకండి."
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."

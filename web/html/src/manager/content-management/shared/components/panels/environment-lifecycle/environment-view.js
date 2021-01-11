@@ -1,5 +1,5 @@
 //@flow
-import React from 'react';
+import * as React from 'react';
 import _isEmpty from "lodash/isEmpty"
 
 import type {ProjectEnvironmentType} from '../../../type/project.type.js';
@@ -35,6 +35,10 @@ const environmentStatusEnum: EnvironmentStatusEnumType = new Proxy({
 const EnvironmentView = React.memo((props: Props) => {
   return (
     <React.Fragment>
+      <dl className="row">
+        <dt className="col-xs-3">{t('Label')}:</dt>
+        <dd className="col-xs-9">{props.environment.label}</dd>
+      </dl>
       <dl className="row">
         <dt className="col-xs-3">{t('Description')}:</dt>
         <dd className="col-xs-9">{props.environment.description}</dd>

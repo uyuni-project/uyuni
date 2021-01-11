@@ -1,19 +1,19 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("components/messages").Messages;
-const Network = require("utils/network");
-const {SubmitButton, Button} = require("components/buttons");
-const { Form } = require('components/input/Form');
-const { Check } = require('components/input/Check');
-const { Password } = require('components/input/Password');
-const { Select } = require('components/input/Select');
-const { Text } = require('components/input/Text');
-const Utils = require("utils/functions").Utils;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Messages } from 'components/messages';
+import Network from 'utils/network';
+import { SubmitButton, Button } from 'components/buttons';
+import { Form } from 'components/input/Form';
+import { Check } from 'components/input/Check';
+import { Password } from 'components/input/Password';
+import { Select } from 'components/input/Select';
+import { Text } from 'components/input/Text';
+import { Utils } from 'utils/functions';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 /* global storeId */
 
@@ -181,13 +181,15 @@ class CreateImageStore extends React.Component {
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
-          <Select labelClass="col-md-3" divClass="col-md-6" label={t("Store Type")} name="storeType" required disabled={this.isEdit()}>
-            {
-              this.state.storeTypes.map(k =>
-                <option key={k} value={k}>{ typeMap[k] }</option>
-              )
-            }
-          </Select>
+          <Select
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            label={t("Store Type")}
+            name="storeType"
+            required
+            disabled={this.isEdit()}
+            options={this.state.storeTypes.map(k => ({value: k, label: typeMap[k]}))}
+          />
           <Text name="label" label={t("Label")} required validators={this.isLabelUnique} invalidHint={t("Label is required and must be unique.")} labelClass="col-md-3" divClass="col-md-6"/>
           <Text name="uri" label={t("Store URI")} required hint={<span>The URI to the store's API endpoint (without scheme - use 'registry.suse.com' instead of 'https://registry.suse.com')</span>} labelClass="col-md-3" divClass="col-md-6"/>
           { this.renderTypeInputs(this.state.model.storeType) }

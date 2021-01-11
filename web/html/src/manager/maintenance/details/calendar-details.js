@@ -1,7 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-import React, {useState} from "react";
+import * as React from 'react';
+import {useState} from "react";
 import {BootstrapPanel} from "components/panels/BootstrapPanel";
 import {Table} from "components/table/Table";
 import {Column} from "components/table/Column";

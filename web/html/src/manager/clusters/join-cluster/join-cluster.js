@@ -1,6 +1,7 @@
 // @flow
-import {hot} from 'react-hot-loader';
-import React, {useState} from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {useState} from 'react';
 import {TopPanel} from "components/panels/TopPanel";
 import withPageWrapper from 'components/general/with-page-wrapper';
 import useClustersApi, {withErrorMessages} from '../shared/api/use-clusters-api';
@@ -36,7 +37,7 @@ const JoinCluster = (props: Props) => {
 
     return (<TopPanel title={t('Join ') + props.cluster.name}
                 icon="spacewalk-icon-clusters"
-                helpUrl="/docs/reference/clusters/clusters-menu.html">
+                helpUrl="reference/clusters/clusters-menu.html">
                 <div className="alert alert-info">{t('NOTE: before joining a new node, make sure that the node has:')}
                 <ul>
                     <li>{t('Container as a Service Platform (CaaSP) channels assigned - or any children channels of CaaSP channels')}</li>
@@ -95,4 +96,4 @@ const JoinCluster = (props: Props) => {
             </TopPanel>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(JoinCluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(JoinCluster)));

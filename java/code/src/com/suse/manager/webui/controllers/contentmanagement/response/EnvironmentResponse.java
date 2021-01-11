@@ -28,6 +28,7 @@ public class EnvironmentResponse {
     private Long version;
     private String status;
     private Date builtTime;
+    private boolean hasProfiles;
 
     public void setStatus(String statusIn) {
         this.status = statusIn;
@@ -55,5 +56,9 @@ public class EnvironmentResponse {
 
     public void setBuiltTime(Date builtTimeIn) {
         this.builtTime = builtTimeIn;
+    }
+
+    public void setHasProfiles(boolean hasProfilesIn) {
+        this.hasProfiles = hasProfilesIn;
     }
 }

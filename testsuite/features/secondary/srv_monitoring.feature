@@ -1,6 +1,7 @@
 # Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_monitoring
 Feature: Enable and disable monitoring of the server
 
   # This assumes that monitoring is enabled via sumaform

@@ -8,7 +8,7 @@
 <h2><bean:message key="erratalist.jsp.cloneerrata" /></h2>
 
 <div class="page-summary">
-    <p><bean:message key="cloneconfirm.jsp.pagesummary" arg0="/rhn/errata/manage/UnpublishedErrata.do" /></p>
+    <p><bean:message key="cloneconfirm.jsp.pagesummary" /></p>
 </div>
 
 <form method="post" name="rhn_list" action="/rhn/errata/manage/CloneConfirmSubmit.do">

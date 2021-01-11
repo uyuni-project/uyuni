@@ -14,22 +14,6 @@
  */
 package com.redhat.rhn.manager.rhnpackage;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -40,7 +24,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.CompressionUtil;
-import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.DistChannelMap;
@@ -59,8 +42,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageComparison;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageFileDto;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -71,6 +54,22 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * PackageManager
@@ -418,18 +417,9 @@ public class PackageManager extends BaseManager {
      * @return Returns the list of packages available for this particular errata.
      */
     public static DataResult packagesAvailableToErrata(Errata errata) {
-        Org org = errata.getOrg();
-
-        // Get the correct query depending on whether or not this errata is published.
-        String mode = "packages_available_to_tmp_errata";
-        if (errata.isPublished()) {
-            mode = "packages_available_to_errata";
-        }
-
-        // Setup the params and execute the query
-        SelectMode m = ModeFactory.getMode("Package_queries", mode);
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata");
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", org.getId());
+        params.put("org_id", errata.getOrg().getId());
         params.put("eid", errata.getId());
 
         return makeDataResult(params, params, null, m);
@@ -447,14 +437,7 @@ public class PackageManager extends BaseManager {
     public static DataResult packagesAvailableToErrataInChannel(Errata errata,
                                                                 Long cid,
                                                                 User user) {
-        //Set the mode depending on if the errata is published
-        String mode = "packages_available_to_tmp_errata_in_channel";
-        if (errata.isPublished()) {
-            mode = "packages_available_to_errata_in_channel";
-        }
-
-        //Setup params and execute query
-        SelectMode m = ModeFactory.getMode("Package_queries", mode);
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata_in_channel");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("target_eid", errata.getId());
         params.put("source_cid", cid);
@@ -544,18 +527,8 @@ public class PackageManager extends BaseManager {
      * @param pc The page control for the logged in user
      * @return The packages associated with this errata
      */
-    public static DataResult packagesInErrata(Errata errata,
-                                              PageControl pc) {
-        //Get the correct query depending on whether or not this
-        //errata is published
-        String mode = "packages_in_tmp_errata";
-        if (errata.isPublished()) {
-            mode = "packages_in_errata";
-        }
-
-        SelectMode m = ModeFactory.getMode("Package_queries", mode);
-
-        //setup the params and execute the query
+    public static DataResult packagesInErrata(Errata errata, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_errata");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("eid", errata.getId());
         params.put("org_id", errata.getOrg().getId());
@@ -758,40 +731,6 @@ public class PackageManager extends BaseManager {
         }
     }
 
-
-    /**
-     * Compares an evr to another evr.
-     * @param epoch1 Epoch 1
-     * @param version1 Version 1
-     * @param release1 Release 1
-     * @param epoch2 Epoch 2
-     * @param version2 Version 2
-     * @param release2 Release 2
-     * @return {@literal Returns 1 if EVR1 > EVR2, -1 if EVR1 < EVR2,
-     *  and 0 if EVR1 == EVR2.}
-     */
-    public static int verCmp(String epoch1, String version1, String release1,
-                             String epoch2, String version2, String release2) {
-
-        // Compare the Epochs
-        int c = compareEpochs(epoch1, epoch2);
-        if (c != 0) {
-            return c;
-        }
-
-        // Compare the Versions
-        RpmVersionComparator cmp = new RpmVersionComparator();
-        c = cmp.compare(StringUtils.defaultString(version1),
-                        StringUtils.defaultString(version2));
-        if (c != 0) {
-            return c;
-        }
-
-        // Compare the Releases
-        return cmp.compare(StringUtils.defaultString(release1),
-                           StringUtils.defaultString(release2));
-    }
-
     /**
      * Deletes a package from the system
      * @param user calling user
@@ -867,43 +806,6 @@ public class PackageManager extends BaseManager {
                     "cleanup_package_" + CLEANUP_QUERIES[x]);
             writeMode.executeUpdate(params);
         }
-    }
-
-    /**
-     * Helper method to compare two epoch strings according to the algorithm contained
-     * in: modules/rhn/RHN/DB/Package.pm --> sub vercmp
-     * @param epoch1 Epoch 1
-     * @param epoch2 Epoch 2
-     * @return Returns 1 if epoch1 > epoch2, -1 if epoch1 < epoch2,
-     * and 0 if epoch1 == epoch2
-     */
-    private static int compareEpochs(String epoch1, String epoch2) {
-        //Trim the epoch strings to null
-        epoch1 = StringUtils.trimToNull(epoch1);
-        epoch2 = StringUtils.trimToNull(epoch2);
-
-        //Check the epochs
-        Integer e1 = null;
-        Integer e2 = null;
-        if (epoch1 != null && StringUtils.isNumeric(epoch1)) {
-            e1 = Integer.valueOf(epoch1);
-        }
-        if (epoch2 != null && StringUtils.isNumeric(epoch2)) {
-            e2 = Integer.valueOf(epoch2);
-        }
-        //handle null cases
-        if (e1 != null && e2 == null) {
-            return 1;
-        }
-        if (e1 == null && e2 != null) {
-            return -1;
-        }
-        if (e1 == null && e2 == null) {
-            return 0;
-        }
-
-        // If we made it here, it is safe to do an Integer comparison between the two
-        return e1.compareTo(e2);
     }
 
     private static void schedulePackageFileForDeletion(String fileName) {

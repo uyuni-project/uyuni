@@ -1,3 +1,16 @@
+- Added salt-secrets-config to the default service list.
+- Updated salt certificate script to use variable certificate path and alternative certificate manager.
+- Updated source URL in spec file.
+- Added RHEL Apache permissions.
+
+-------------------------------------------------------------------
+Wed Nov 25 12:18:40 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- use the license macro to mark the LICENSE in the package so that
+  when installing without docs, it does install the LICENSE file
+- prevent javax.net.ssl.SSLHandshakeException after upgrading from
+  SUSE Manager 3.2 (bsc#1177435)
 - show info message when applying schema upgrade
 
 -------------------------------------------------------------------

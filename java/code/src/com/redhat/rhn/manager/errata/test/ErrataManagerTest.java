@@ -32,15 +32,10 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Keyword;
-import com.redhat.rhn.domain.errata.impl.PublishedBug;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
-import com.redhat.rhn.domain.errata.impl.PublishedKeyword;
-import com.redhat.rhn.domain.errata.impl.UnpublishedBug;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -50,7 +45,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.session.WebSession;
@@ -71,6 +65,7 @@ import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import org.apache.commons.lang3.time.StopWatch;
 import org.hibernate.criterion.Restrictions;
 import org.jmock.Expectations;
@@ -104,23 +99,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    public static Bug createNewPublishedBug(Long id, String summary) {
-        return ErrataManager.createNewPublishedBug(id, summary,
-                "https://bugzilla.redhat.com/show_bug.cgi?id=" + id);
-    }
-
-    public static Bug createNewUnpublishedBug(Long id, String summary) {
-        return ErrataManager.createNewUnpublishedBug(id, summary,
-                "https://bugzilla.redhat.com/show_bug.cgi?id=" + id);
-    }
-
-    public void testPublish() throws Exception {
-        User user = UserTestUtils.findNewUser();
-        Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
-        assertFalse(e.isPublished()); //should be unpublished
-      //publish errata and store back into self
-        e = ErrataManager.publish(e, new HashSet(), user);
-        assertTrue(e.isPublished());  //should be published
+    public static Bug createTestBug(Long id, String summary) {
+        return ErrataFactory.createBug(id, summary, "https://bugzilla.redhat.com/show_bug.cgi?id=" + id);
     }
 
     public void testStore() throws Exception {
@@ -129,21 +109,18 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         e.setAdvisoryName(TestUtils.randomString());
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
 
         Errata e2 = ErrataManager.lookupErrata(e.getId(), user);
         assertEquals(e.getAdvisoryName(), e2.getAdvisoryName());
     }
 
     public void testCreate() {
-        Errata e = ErrataManager.createNewErrata();
-        assertTrue(e instanceof UnpublishedErrata);
+        Errata e = new Errata();
+        assertTrue(e instanceof Errata);
 
-        Bug b = createNewUnpublishedBug(87L, "test bug");
-        assertTrue(b instanceof UnpublishedBug);
-
-        Bug b2 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
-        assertTrue(b2 instanceof PublishedBug);
+        Bug b = ErrataManagerTest.createTestBug(42L, "test bug");
+        assertTrue(b instanceof Bug);
     }
 
     public void testSearchByPackagesIds() throws Exception {
@@ -164,10 +141,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        Bug b1 = ErrataManagerTest.createNewPublishedBug(42L, "test bug");
-        assertTrue(b1 instanceof PublishedBug);
-        Errata e = ErrataManager.createNewErrata();
-        assertTrue(e instanceof UnpublishedErrata);
+        Bug b1 = ErrataManagerTest.createTestBug(42L, "test bug");
+        assertTrue(b1 instanceof Bug);
+        Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
         e.setAdvisoryRel(1L);
@@ -178,10 +154,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setIssueDate(new Date());
         e.setUpdateDate(e.getIssueDate());
         e.addPackage(p);
-        Errata publishedErrata = ErrataManager.publish(e);
-        assertTrue(publishedErrata instanceof PublishedErrata);
+        ErrataFactory.save(e);
 
-        channel.ifPresent(c -> publishedErrata.addChannel(c));
+        channel.ifPresent(c -> e.addChannel(c));
 
         WebSession session = WebSessionFactory.createSession();
         WebSessionFactory.save(session);
@@ -193,7 +168,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> params = new HashMap<String, Object>();
         //"sessionid, obj_id, obj_type"
         params.put("sessionid", session.getId());
-        params.put("obj_id", publishedErrata.getId());
+        params.put("obj_id", e.getId());
         params.put("obj_type", "errata");
         mode.executeUpdate(params);
 
@@ -205,7 +180,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, eos.size());
         ErrataOverview eo = eos.get(0);
         assertNotNull(eo);
-        assertEquals(publishedErrata.getAdvisory(), eo.getAdvisory());
+        assertEquals(e.getAdvisory(), eo.getAdvisory());
     }
 
     public void testSearch() throws Exception {
@@ -215,8 +190,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Package p = PackageTest.createTestPackage(user.getOrg());
-        Errata e = ErrataManager.createNewErrata();
-        assertTrue(e instanceof UnpublishedErrata);
+        Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
         e.setAdvisoryRel(1L);
@@ -227,14 +201,15 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setIssueDate(new Date());
         e.setUpdateDate(e.getIssueDate());
         e.addPackage(p);
+        ErrataFactory.save(e);
 
         Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
         List<Errata> errataList = new ArrayList<Errata>();
         errataList.add(e);
-        List<Errata> publishedList = ErrataFactory.publishToChannel(errataList,
+        List<Errata> publishedList = ErrataFactory.addToChannel(errataList,
                 baseChannel, user, false);
         Errata publish = publishedList.get(0);
-        assertTrue(publish instanceof PublishedErrata);
+        assertTrue(publish instanceof Errata);
 
         List eids = new ArrayList();
         eids.add(publish.getId());
@@ -267,26 +242,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(errata.size() >= 1);
     }
 
-    public void testUnpublishedErrata() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        DataResult errata = ErrataManager.unpublishedOwnedErrata(user);
-        assertNotNull(errata);
-        assertTrue(errata.size() <= 20);
-    }
-
-    public void testUnpublishedInSet() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        PageControl pc = new PageControl();
-        pc.setStart(1);
-        pc.setPageSize(20);
-        DataResult errata = ErrataManager.unpublishedInSet(user, pc, "errata_to_delete");
-        assertNotNull(errata);
-        assertTrue(errata.isEmpty());
-        assertFalse(errata.size() > 0);
-    }
-
     public void testLookupErrata() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -303,7 +258,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
          * an NPE.
          */
         errata.setOrg(null);
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         try {
             check = ErrataManager.lookupErrata(errata.getId(), user);
@@ -314,7 +269,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
         Org org2 = OrgFactory.lookupById(UserTestUtils.createOrg("testOrg2"));
         errata.setOrg(org2);
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         try {
             check = ErrataManager.lookupErrata(errata.getId(), user);
@@ -423,12 +378,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     public void testCloneChannelErrata() throws Exception {
         Channel original = ChannelFactoryTest.createTestChannel(user);
-        final Errata errata1 =
-                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        final Errata errata2 =
-                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        final Errata errata3 =
-                ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        final Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        final Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        final Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         original.addErrata(errata1);
         original.addErrata(errata2);
@@ -755,7 +707,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     private static boolean doesUpdateStack(Errata e) {
         return e.getKeywords().stream()
-            .anyMatch(k -> ((PublishedKeyword) k).getKeyword().equals("restart_suggested"));
+            .anyMatch(k -> ((Keyword) k).getKeyword().equals("restart_suggested"));
     }
 
     /**
@@ -1593,7 +1545,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(ErrataManager.updateStackUpdateNeeded(user, server));
 
         Set<Keyword> kw = new HashSet<Keyword>();
-        Keyword k = new PublishedKeyword();
+        Keyword k = new Keyword();
         k.setKeyword("restart_suggested");
         k.setErrata(errata3);
         kw.add(k);
@@ -1618,8 +1570,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel src = ChannelFactoryTest.createTestChannel(user);
         Channel tgt = ChannelFactoryTest.createTestChannel(user);
 
-        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
-        ErrataFactory.publishToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
 
         ErrataManager.truncateErrata(src.getErratas(), tgt, user);
 
@@ -1644,8 +1596,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel src = ChannelFactoryTest.createTestChannel(user);
         Channel tgt = ChannelFactoryTest.createTestChannel(user);
 
-        ErrataFactory.publishToChannel(Arrays.asList(errata1), src, user, false);
-        ErrataFactory.publishToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1), src, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
 
         ErrataManager.truncateErrata(src.getErratas(), tgt, user);
 
@@ -1670,7 +1622,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel chan = ChannelFactoryTest.createTestChannel(user);
         Package olderPack = copyPackage(errataPackage, user, chan, "0.9.9");
 
-        ErrataFactory.publishToChannel(Arrays.asList(errata), chan, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata), chan, user, false);
 
         ErrataManager.truncateErrata(Collections.emptySet(), chan, user);
 
@@ -1685,7 +1637,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(
                 packageEvr.getEpoch(),
                 version,
-                packageEvr.getRelease()
+                packageEvr.getRelease(),
+                fromPkg.getPackageType()
         ));
         olderPkg.setPackageName(fromPkg.getPackageName());
         return olderPkg;

@@ -2031,7 +2031,7 @@ class RepoSync(object):
                   join rhnpackageevr pe on pe.id = spf.evr_id
                   join rhnpackagearch pa on pa.id = spf.package_arch_id
                  where spf.name = :name
-                   and spf.evr_id = LOOKUP_EVR(:epoch, :version, :release)
+                   and spf.evr_id = LOOKUP_EVR(:epoch, :version, :release, 'rpm')
                    and spf.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
                    and spf.vendor = :vendor
                    and spf.summary = :summary
@@ -2050,7 +2050,7 @@ class RepoSync(object):
                 h = rhnSQL.prepare("""
                     insert into suseProductFile
                         (id, name, evr_id, package_arch_id, vendor, summary, description)
-                    VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release),
+                    VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release, 'rpm'),
                             LOOKUP_PACKAGE_ARCH(:arch), :vendor, :summary, :description)
                 """)
                 h.execute(id=row['id'], **product)
@@ -2098,6 +2098,7 @@ class RepoSync(object):
         kwcache = {}
         susedata = repo.get_susedata()
         for package in susedata:
+            # susedata exists only for package type == rpm
             query = rhnSQL.prepare("""
                 SELECT p.id
                   FROM rhnPackage p
@@ -2105,7 +2106,7 @@ class RepoSync(object):
                   JOIN rhnChecksumView c ON p.checksum_id = c.id
                   JOIN rhnChannelPackage cp ON p.id = cp.package_id
                  WHERE pn.name = :name
-                   AND p.evr_id = LOOKUP_EVR(:epoch, :version, :release)
+                   AND p.evr_id = LOOKUP_EVR(:epoch, :version, :release, 'rpm')
                    AND p.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
                    AND cp.channel_id = :channel_id
                    AND c.checksum = :pkgid
@@ -2466,13 +2467,6 @@ class RepoSync(object):
         h = rhnSQL.prepare("""
             DELETE FROM rhnErrataFile
              WHERE errata_id = :errata_id
-        """)
-        h.execute(errata_id=errata_id)
-
-        # delete erratatmp
-        h = rhnSQL.prepare("""
-            DELETE FROM rhnErrataTmp
-             WHERE id = :errata_id
         """)
         h.execute(errata_id=errata_id)
 

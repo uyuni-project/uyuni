@@ -18,8 +18,8 @@ import static com.redhat.rhn.frontend.struts.RequestContext.ERRATA_ID;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
@@ -117,8 +117,8 @@ public class ChannelSetupAction extends RhnListAction {
             request.setAttribute("returnvisit", "true");
             //init the set
             set = RhnSetDecl.CHANNELS_FOR_ERRATA.create(user);
-            //If e is published, it must already have channels and needs it's set init
-            if (e != null && (e.isPublished())) {
+            // If e has already been saved, it must already have channels and needs it's set init
+            if (e != null) {
                 //get the channels for this errata
                 Set<Channel> channelsInErrata = e.getChannels();
                 Iterator<Channel> channelItr = channelsInErrata.iterator();

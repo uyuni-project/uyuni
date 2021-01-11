@@ -65,6 +65,7 @@
             <form-property name="no_scrub" type="java.lang.String"
                             initial="desiredpassword, desiredpasswordConfirm"/>
             <form-property name="preferredLocale" type="java.lang.String" />
+            <form-property name="preferredDocsLocale" type="java.lang.String" />
             <form-property name="timezone" type="java.lang.Integer"/>
             <form-property name="readonly" type="java.lang.Boolean"/>
         </form-bean>
@@ -124,7 +125,9 @@
             <form-property name="mail" type="java.lang.Boolean"/>
             <form-property name="pagesize" type="java.lang.Integer"/>
             <form-property name="preferredLocale" type="java.lang.String" />
+            <form-property name="preferredDocsLocale" type="java.lang.String" />
             <form-property name="timezone" type="java.lang.Integer"/>
+            <form-property name="theme" type="java.lang.String" />
             <form-property name="possiblePanes"
                            type="org.apache.struts.util.LabelValueBean[]"/>
             <form-property name="selectedPanes" type="java.lang.String[]"/>
@@ -364,7 +367,6 @@
             <form-property name="server|satellite|http_proxy_password"  type="java.lang.String"/>
             <form-property name="server|satellite|http_proxy_password_confirm"  type="java.lang.String"/>
             <form-property name="mount_point"  type="java.lang.String"/>
-            <form-property name="web|ssl_available"  type="java.lang.Boolean"/>
             <form-property name="disconnected"  type="java.lang.Boolean"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
             <form-property name="no_scrub" type="java.lang.String"
@@ -1079,6 +1081,7 @@
       <form-property name="addonProducts" type="java.lang.Long[]" />
       <form-property name="baseChannel" type="java.lang.Long" />
       <form-property name="childChannels" type="java.lang.Long[]" />
+      <form-property name="allowVendorChange" type="java.lang.Boolean" />
       <form-property name="submitted" type="java.lang.Boolean" />
       <!-- Date picker fields -->
       <form-property name="schedule_type" type="java.lang.String" />
@@ -2094,24 +2097,10 @@
      </action>
 
      <!-- Beginning of errata management -->
-
-    <action path="/errata/manage/UnpublishedErrata"
-        scope="request"
-        input="/WEB-INF/pages/errata/unpublished.jsp"
-        type="com.redhat.rhn.frontend.action.errata.UnpublishedErrataAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(channel_admin)"/>
-        <forward name="default"
-               path="/WEB-INF/pages/errata/unpublished.jsp" />
-       <forward name="continue"
-                path="/errata/manage/UnpublishedDeleteConfirm.do" redirect="true"/>
-    </action>
-
-    <action path="/errata/manage/PublishedErrata"
+    <action path="/errata/manage/Errata"
         scope="request"
         input="/WEB-INF/pages/errata/published.jsp"
-        type="com.redhat.rhn.frontend.action.errata.PublishedErrataAction"
+        type="com.redhat.rhn.frontend.action.errata.ErrataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <set-property property="acls" value="user_role(channel_admin)"/>
@@ -2158,18 +2147,8 @@
          <forward name="failure"
                   path="/errata/manage/CloneConfirm.do"/>
          <forward name="success"
-                  path="/errata/manage/PublishedErrata.do" redirect="true"/>
+                  path="/errata/manage/Errata.do" redirect="true"/>
      </action>
-
-    <action path="/errata/manage/UnpublishedDeleteConfirm"
-        scope="request"
-        input="/WEB-INF/pages/admin/errata/unpublisheddeleteconfirm.jsp"
-        type="com.redhat.rhn.frontend.action.errata.UnpublishedDeleteConfirmSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
-        <forward name="default"
-               path="/WEB-INF/pages/admin/errata/unpublisheddeleteconfirm.jsp" />
-    </action>
 
     <action path="/errata/manage/PublishedDeleteConfirm"
         scope="request"
@@ -2181,17 +2160,6 @@
                path="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp" />
     </action>
 
-     <action path="/errata/manage/UnpublishedDeleteConfirmSubmit"
-         scope="request"
-         input="/WEB-INF/pages/admin/errata/unpublisheddeleteconfirm.jsp"
-         type="com.redhat.rhn.frontend.action.errata.UnpublishedDeleteConfirmAction"
-         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
-         <forward name="default"
-                  path="/errata/AllErrata.do" redirect="true"/>
-     </action>
-
      <action path="/errata/manage/PublishedDeleteConfirmSubmit"
          scope="request"
          input="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp"
@@ -2200,7 +2168,7 @@
          <set-property property="postRequired" value="true" />
          <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
-                  path="/errata/manage/PublishedErrata.do" redirect="true"/>
+                  path="/errata/manage/Errata.do" redirect="true"/>
      </action>
 
      <action path="/errata/manage/Delete"
@@ -2214,7 +2182,7 @@
          <forward name="default"
                   path="/WEB-INF/pages/errata/delete.jsp" />
          <forward name="deleted"
-                  path="/errata/manage/PublishedErrata.do" redirect="true" />
+                  path="/errata/manage/Errata.do" redirect="true" />
      </action>
 
      <action path="/errata/manage/Create"
@@ -2251,8 +2219,6 @@
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="acls" value="user_role(channel_admin); errata_editable()"/>
          <set-property property="postRequiredIfSubmitted" value="true" />
-         <forward name="published"
-             path="/errata/manage/SelectChannels.do" redirect="true"/>
          <forward name="notified"
              path="/errata/manage/Notify.do" redirect="true"/>
          <forward name="default"
@@ -2335,7 +2301,7 @@
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
          <set-property property="acls" value="user_role(channel_admin)"/>
-         <forward name="default" path="/errata/manage/PublishedErrata.do" redirect="true"/>
+         <forward name="default" path="/errata/manage/Errata.do" redirect="true"/>
      </action>
 
      <action path="/errata/manage/Channels"
@@ -7355,16 +7321,15 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
       <set-property property="postRequiredIfSubmitted" value="true" />
       <forward name="default" path="/WEB-INF/pages/channel/manage/confirmerrata.jsp" />
-      <forward name="clone" path="/channels/manage/errata/PublishErrata.do" redirect="true"/>
+      <forward name="clone" path="/channels/manage/errata/AddErrataToChannel.do" redirect="true"/>
       </action>
 
-     <action path="/channels/manage/errata/PublishErrata"
+     <action path="/channels/manage/errata/AddErrataToChannel"
         scope="request"
-        type="com.redhat.rhn.frontend.action.channel.manage.PublishErrataAction"
+        type="com.redhat.rhn.frontend.action.channel.manage.AddErrataToChannelAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
        <forward name="default" path="/channels/manage/errata/ListRemove.do" redirect="true"/>
       </action>
-
 
       <action path="/channels/manage/errata/SyncErrata"
         scope="request"

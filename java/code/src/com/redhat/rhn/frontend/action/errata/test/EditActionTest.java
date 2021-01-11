@@ -60,13 +60,11 @@ public class EditActionTest extends RhnBaseTestCase {
 
         RequestContext requestContext = new RequestContext(request);
 
-        //Create a new unpublished errata
+        //Create a new errata
         User user = requestContext.getCurrentUser();
-        Errata errata = ErrataFactoryTest
-                .createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //Create another for checking adv name uniqueness constraint
-        Errata errata2 = ErrataFactoryTest
-                .createTestPublishedErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         request.setupAddParameter("eid", errata.getId().toString());
         request.setupAddParameter("eid", errata.getId().toString());
@@ -167,9 +165,5 @@ public class EditActionTest extends RhnBaseTestCase {
         assertEquals(form.get("advisoryName"), errata.getAdvisoryName());
         //check select list to make sure correct one is selected
         assertEquals(form.get("advisoryType"), errata.getAdvisoryType());
-
-        //We created a published errata above
-        assertEquals(request.getAttribute("isPublished"), "true");
     }
-
 }

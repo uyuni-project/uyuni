@@ -4,6 +4,7 @@ DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
     sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
     opensuse|opensuse-leap)   JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
+    centos|rhel)              JVM='java-11-openjdk.x86_64';; 
     *)                        echo 'Unknown distribution!'
                               exit 1;;
 esac
@@ -181,7 +182,19 @@ cleanup_hostname() {
 }
 
 setup_db_postgres() {
+    DATADIR="/var/lib/pgsql/data" 
     systemctl --quiet enable postgresql 2>&1
+    if [[ "echo $(source /etc/os-release && echo ${ID_LIKE})" != *"suse"* ]]; then
+        # Create the PostgreSQL data folder, should it not exist.
+        if [ ! -f $DATADIR/PG_VERSION ]; then
+            rm -Rf ${DATADIR}
+            echo "Initializing PostgreSQL $VERSION at location ${DATADIR}"
+            runuser -l postgres -c "/usr/bin/initdb --auth=ident $DATADIR" &> initlog || {
+                echo "Initialisation failed. See $PWD/initlog ."
+                exit 1
+            }
+        fi
+    fi
     systemctl start postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing
@@ -651,12 +664,12 @@ do_migration() {
         mv /root/.ssh.new /root/.ssh
     fi
 
-    sed -i -e "s/^web\.ssl_available.*$/web.ssl_available = 1/" /etc/rhn/rhn.conf
-
     mv /etc/rhn/rhn.conf /etc/rhn/rhn.conf.setup
     cp /etc/rhn/rhn.conf-$FROMVERSION /etc/rhn/rhn.conf
     chmod 640 /etc/rhn/rhn.conf
-    chown root:www /etc/rhn/rhn.conf
+    # Detect the Apache group name (SUSE/RHEL differences)
+    APACHE_GROUP=`cut -d: -f3 < <((getent group www);(getent group apache))`
+    chown root:${APACHE_GROUP} /etc/rhn/rhn.conf
 }
 
 do_setup() {

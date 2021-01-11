@@ -60,8 +60,6 @@ def getServer(options, handler):
     """ get an rpclib.Server object. NOTE: proxy is an HTTP proxy """
 
     serverUrl = 'https://' + options.server + handler
-    if options.no_ssl:
-        serverUrl = 'http://' + options.server + handler
 
     s = None
     if options.http_proxy:
@@ -72,7 +70,7 @@ def getServer(options, handler):
     else:
         s = rpclib.Server(serverUrl)
 
-    if not options.no_ssl and options.ca_cert:
+    if options.ca_cert:
         s.add_trusted_cert(options.ca_cert)
 
     return s
@@ -406,8 +404,6 @@ def processCommandline(cfg):
                help="alternative HTTP proxy password, default is %s" % repr(httpProxyPassword)),
         Option('--ca-cert',         action='store',     default=ca_cert,
                help="alternative SSL certificate to use, default is %s" % repr(ca_cert)),
-        Option('--no-ssl',          action='store_true',
-               help='turn off SSL (not advisable), default is on.'),
         Option('--version',         action='store',     default=defaultVersion,
                help='which X.Y version of the SUSE Manager Proxy are you upgrading to?' +
                ' Default is your current proxy version (' + defaultVersion + ')'),
@@ -427,11 +423,6 @@ def processCommandline(cfg):
         if options.server.find('http') != 0:
             options.server = 'https://' + options.server
         options.server = urlparse.urlparse(options.server)[1]
-
-    if options.no_ssl:
-        if not options.quiet:
-            sys.stderr.write('warning: user disabled SSL\n')
-        options.ca_cert = ''
 
     if not options.http_proxy:
         options.http_proxy_username, options.http_proxy_password = '', ''
@@ -493,10 +484,6 @@ def main():
         listAvailableProxyChannels(options, cfg)
         sys.exit(0)
 
-    noSslString = 'false'
-    if options.no_ssl:
-        noSslString = 'true'
-
     if not options.non_interactive:
         print ("\n"
                "--server (RHN parent):  %s\n"
@@ -504,11 +491,10 @@ def main():
                "--http-proxy-username:  %s\n"
                "--http-proxy-password:  %s\n"
                "--ca-cert:              %s\n"
-               "--no-ssl:               %s\n"
                "--version:              %s\n"
                % (options.server, options.http_proxy,
                   options.http_proxy_username, options.http_proxy_password,
-                  options.ca_cert, noSslString, options.version))
+                  options.ca_cert, options.version))
         if not yn("Are you sure about these options? y/n: "):
             return 0
 

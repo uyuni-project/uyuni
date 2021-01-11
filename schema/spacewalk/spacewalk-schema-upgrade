@@ -52,6 +52,10 @@ $pg_version = run_query("show server_version;");
 open(my $fh, '<:encoding(UTF-8)', "/etc/os-release") or die "Could not open file '/etc/os-release' $!";
 while (my $row = <$fh>) {
     chomp $row;
+    # Skip empty rows.
+    if ($row eq "") {
+        next;
+    }
     my ($k,$v) = split(/=/, $row, 2);
     if ($k eq "VERSION_ID") {
         if ($v =~ /(\d+\.\d+)/) {
@@ -305,7 +309,7 @@ $in .= <<EOF;
 insert into rhnVersionInfo
        ( label, name_id, evr_id, created, modified )
        values ('schema', lookup_package_name('$my_schema_name'),
-               lookup_evr(null, '$my_schema_version' , '$my_schema_release' ),
+               lookup_evr(null, '$my_schema_version' , '$my_schema_release', 'rpm' ),
                current_timestamp, current_timestamp );
 commit;
 EOF

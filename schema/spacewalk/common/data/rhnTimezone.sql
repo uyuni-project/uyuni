@@ -305,4 +305,22 @@ values
   (sequence_nextval('rhn_timezone_id_seq'),
    'Australia/Adelaide', 'Australia Central (Adelaide)');
 
+insert into rhnTimezone
+  (id, olson_name, display_name)
+values
+  (sequence_nextval('rhn_timezone_id_seq'),
+   'Asia/Jerusalem', 'Israel');
+
+insert into rhnTimezone
+  (id, olson_name, display_name)
+values
+  (sequence_nextval('rhn_timezone_id_seq'),
+   'Asia/Singapore', 'Singapore');
+
+insert into rhnTimezone
+  (id, olson_name, display_name)
+values
+  (sequence_nextval('rhn_timezone_id_seq'),
+   'Asia/Kuala_Lumpur', 'Malaysia');
+
 commit;

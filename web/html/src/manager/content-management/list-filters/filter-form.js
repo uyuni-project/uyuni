@@ -1,5 +1,6 @@
 //@flow
-import React, {useEffect} from 'react';
+import * as React from 'react';
+import {useEffect} from 'react';
 import {Text} from "components/input/Text";
 import {DateTime} from "components/input/DateTime";
 import {Radio} from "components/input/Radio";
@@ -7,10 +8,9 @@ import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
 import AppStreamsForm from "./appstreams/appstreams";
 import type {FilterFormType} from "../shared/type/filter.type";
-import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/filters.enum";
 import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
 import useUserLocalization from "core/user-localization/use-user-localization";
-import Functions from "utils/functions";
+import {Utils} from "utils/functions";
 import produce from "immer";
 
 type Props = {
@@ -38,7 +38,7 @@ const FilterForm = (props: Props) => {
             draft[clmFilterOptions.ADVISORY_TYPE.key] = "Security Advisory";
           }
           if(clmFilterOptions.ISSUE_DATE.key === props.filter.type) {
-            draft[clmFilterOptions.ISSUE_DATE.key] = Functions.Utils.dateWithTimezone(localTime);
+            draft[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(localTime);
           }
         })
       )
@@ -82,19 +82,10 @@ const FilterForm = (props: Props) => {
           divClass="col-md-6"
           required
           disabled={props.editing}
-        >
-          <option disabled selected value=""> -- select a filter type -- </option>
-          {
-            getClmFiltersOptions().map((filter: ClmFilterOptionType) =>
-              <option
-                key={filter.key}
-                value={filter.key}
-              >
-                {`${filter.entityType.text} (${filter.text})`}
-              </option>
-            )
-          }
-        </Select>
+          options={getClmFiltersOptions()}
+          getOptionValue={filter => filter.key}
+          formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
+        />
 
         {
           selectedFilterMatchers &&
@@ -105,19 +96,10 @@ const FilterForm = (props: Props) => {
             divClass="col-md-6"
             required
             disabled={props.editing}
-          >
-            <option disabled selected value=""> -- select a matcher -- </option>
-            {
-              selectedFilterMatchers.map((matcher: FilterMatcherType) =>
-                <option
-                  key={matcher.key}
-                  value={matcher.key}
-                >
-                  {matcher.text}
-                </option>
-              )
-            }
-          </Select>
+            options={selectedFilterMatchers}
+            getOptionValue={matcher => matcher.key}
+            getOptionLabel={matcher => matcher.text}
+          />
         }
 
         {

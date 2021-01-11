@@ -132,7 +132,7 @@ on this system."),
      does not already exists on the server
      """),
     55: _("""
-     The --force rhnpush option is disabled on this server.
+     The --force mgrpush option is disabled on this server.
      Please contact your SUSE Manager administrator for more help.
      """),
 

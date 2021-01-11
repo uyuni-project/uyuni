@@ -22,6 +22,9 @@ require 'pp'
 # SimpleCov.start
 
 server = ENV['SERVER']
+$debug_mode = true if ENV['DEBUG']
+$long_tests_enabled = true if ENV['LONG_TESTS']
+puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -30,12 +33,11 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
 DEFAULT_TIMEOUT = 250
 
-# QAM test-suite will provide a json including all client repositories with format :
-# {"client_type" : { "salt" : "salt_repo" , "traditional" : "traditional_repo" }}
-mu_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'mu_repositories.json'
-if File.exist?(mu_repos_path)
-  mu_repos_file = File.read(mu_repos_path)
-  $mu_repositories = JSON.parse(mu_repos_file)
+# QAM test suite will provide a json file including all client repositories
+custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+if File.exist?(custom_repos_path)
+  custom_repos_file = File.read(custom_repos_path)
+  $custom_repositories = JSON.parse(custom_repos_file)
   Capybara.default_max_wait_time = 30
   DEFAULT_TIMEOUT = 1800
   $qam_test = true
@@ -51,15 +53,29 @@ MultiTest.disable_autorun
 
 # register chromedriver headless mode
 Capybara.register_driver(:headless_chrome) do |app|
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
+  client.read_timeout = 180
+  # Chrome driver options
+  chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
+  chrome_options << 'headless' unless $debug_mode
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless no-sandbox disable-dev-shm-usage disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048] },
+    chromeOptions: {
+      args: chrome_options,
+      w3c: false,
+      prefs: {
+        'download.default_directory': '/tmp/downloads'
+      }
+    },
+    unexpectedAlertBehaviour: 'accept',
     unhandledPromptBehavior: 'accept'
   )
 
   Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,
-    desired_capabilities: capabilities
+    desired_capabilities: capabilities,
+    http_client: client
   )
 end
 
@@ -190,6 +206,14 @@ Before('@ubuntu1804_ssh_minion') do
   skip_this_scenario unless $ubuntu1804_ssh_minion
 end
 
+Before('@ubuntu2004_minion') do
+  skip_this_scenario unless $ubuntu2004_minion
+end
+
+Before('@ubuntu2004_ssh_minion') do
+  skip_this_scenario unless $ubuntu2004_ssh_minion
+end
+
 Before('@sle11sp4_ssh_minion') do
   skip_this_scenario unless $sle11sp4_ssh_minion
 end
@@ -288,6 +312,11 @@ end
 # do test only if the registry with authentication is available
 Before('@auth_registry') do
   skip_this_scenario unless $auth_registry
+end
+
+# do test only if we want to run long tests
+Before('@long_test') do
+  skip_this_scenario unless $long_tests_enabled
 end
 
 # have more infos about the errors

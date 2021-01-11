@@ -47,7 +47,7 @@ open(FILE, "< /etc/apache2/server-tuning.conf") and do
         next if($line =~ /^\s*#/);
         $section = 0 if ($line =~ /IfModule worker/);
         $section = 1 if ($section == 0 && /\/IfModule/);
-        $apachemax = int($1) if($section && $line =~ /MaxClients\s+(\d+)/);
+        $apachemax = int($1) if($section && $line =~ /MaxRequestWorkers\s+(\d+)/);
     }
     close FILE;
 };

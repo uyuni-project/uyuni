@@ -1,6 +1,7 @@
 # Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT License.
 
+@scope_configuration_channels
 Feature: Deleting channels with children or clones is not allowed
   Using the tool spacewalk-remove-channel, we cannot delete a channel if it has a child
   or a clone created from it

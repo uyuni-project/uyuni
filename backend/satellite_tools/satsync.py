@@ -466,7 +466,6 @@ class Syncer:
         self.mountpoint = OPTIONS.mount_point
         self.listChannelsYN = listChannelsYN
         self.forceAllErrata = forceAllErrata
-        self.sslYN = not OPTIONS.no_ssl
         self._systemidPath = OPTIONS.systemid or _DEFAULT_SYSTEMID_PATH
         self._batch_size = OPTIONS.batch_size
         self.master_label = OPTIONS.master
@@ -524,7 +523,7 @@ class Syncer:
         # Sync across the wire:
         else:
             self.xmlDataServer = xmlWireSource.MetadataWireSource(self.systemid,
-                                                                  self.sslYN, self.xml_dump_version)
+                                                                  True, self.xml_dump_version)
             if CFG.ISS_PARENT:
                 sync_parent = CFG.ISS_PARENT
                 self.systemid = 'N/A'   # systemid is not used in ISS auth process
@@ -553,7 +552,7 @@ class Syncer:
                     usix.raise_with_tb(RhnSyncException(_('ERROR: this server must be registered with SUSE Manager.')),
                                        sys.exc_info()[2])
             # authorization check of the satellite
-            auth = xmlWireSource.AuthWireSource(self.systemid, self.sslYN,
+            auth = xmlWireSource.AuthWireSource(self.systemid, True,
                                                 self.xml_dump_version)
             auth.checkAuth()
 
@@ -640,7 +639,7 @@ class Syncer:
     def _process_comps(self, backend, label, timestamp):
         comps_path = 'rhn/comps/%s/comps-%s.xml' % (label, timestamp)
         self._write_repomd(comps_path, self.xmlDataServer.getComps, \
-            xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN, self.xml_dump_version).getCompsFileStream, \
+            xmlWireSource.RPCGetWireSource(self.systemid, True, self.xml_dump_version).getCompsFileStream, \
             label, timestamp)
         data = {label: None}
         backend.lookupChannels(data)
@@ -651,7 +650,7 @@ class Syncer:
     def _process_modules(self, backend, label, timestamp):
         modules_path = 'rhn/modules/%s/modules-%s.yaml' % (label, timestamp)
         self._write_repomd(modules_path, self.xmlDataServer.getModules, \
-            xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN, self.xml_dump_version).getModulesFilesStram, \
+            xmlWireSource.RPCGetWireSource(self.systemid, True, self.xml_dump_version).getModulesFilesStram, \
             label, timestamp)
         data = {label: None}
         backend.lookupChannels(data)
@@ -684,7 +683,7 @@ class Syncer:
 
         # print out the relevant channel tree
         # 3/6/06 wregglej 183213 Don't print out the end-of-service message if
-        # satellite-sync is running with the --mount-point (-m) option. If it
+        # mgr-inter-sync is running with the --mount-point (-m) option. If it
         # did, it would incorrectly list channels as end-of-service if they had been
         # synced already but aren't in the channel dump.
         self._printChannelTree(doEOSYN=doEOSYN)
@@ -920,16 +919,32 @@ class Syncer:
                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
           from rhnPackage p, rhnChecksumView c
          where p.name_id = lookup_package_name(:name)
-           and p.evr_id = lookup_evr(:epoch, :version, :release)
+           and p.evr_id = lookup_evr(:epoch, :version, :release, :package_type)
            and p.package_arch_id = lookup_package_arch(:arch)
            and (p.org_id = :org_id or
                (p.org_id is null and :org_id is null))
            and p.checksum_id = c.id
     """
 
+    _query_channel_package_type = """
+        select at.label from rhnArchType at
+          join rhnchannelarch ca on at.id = ca.arch_type_id
+          join rhnchannel c on ca.id = c.channel_arch_id
+         where c.label = :channel_label
+    """
+
+    def _get_package_type_for_channel(self, channel_label):
+        h = rhnSQL.prepare(self._query_channel_package_type)
+        h.execute(channel_label=channel_label)
+        row = h.fetchone_dict()
+        if row:
+            return row['label']
+        return None
+
     def _diff_packages_process(self, chunk, channel_label):
         package_collection = sync_handlers.ShortPackageCollection()
 
+        package_type = self._get_package_type_for_channel(channel_label)
         h = rhnSQL.prepare(self._query_compare_packages)
         for pid in chunk:
             package = package_collection.get_package(pid)
@@ -940,6 +955,7 @@ class Syncer:
                 package['org_id'] = OPTIONS.orgid or DEFAULT_ORG
             nevra = get_nevra_dict(package)
             nevra['org_id'] = package['org_id']
+            nevra['package_type'] = package_type
 
             h.execute(**nevra)
             row = None
@@ -1380,7 +1396,7 @@ class Syncer:
         if CFG.ISS_PARENT:
             return self.xmlDataServer.getKickstartFile(kstree_label, relative_path)
         else:
-            srv = xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN,
+            srv = xmlWireSource.RPCGetWireSource(self.systemid, True,
                                                  self.xml_dump_version)
             return srv.getKickstartFileStream(channel, kstree_label, relative_path)
 
@@ -1884,7 +1900,7 @@ class Syncer:
         # pylint: disable=W0631
         return "%*.*f %s" % (int_len, fract_len, fuzzy, unit)
 
-    def _get_package_stream(self, channel, package_id, nvrea, sources):
+    def _get_package_stream(self, channel, package_id, nvrea, sources, checksum):
         """ returns (filepath, stream), so in the case of a "wire source",
             the return value is, of course, (None, stream)
         """
@@ -1904,11 +1920,11 @@ class Syncer:
 
         # Wire stream
         if CFG.ISS_PARENT:
-            stream = self.xmlDataServer.getRpm(nvrea, channel)
+            stream = self.xmlDataServer.getRpm(nvrea, channel, checksum)
         else:
-            rpmServer = xmlWireSource.RPCGetWireSource(self.systemid, self.sslYN,
+            rpmServer = xmlWireSource.RPCGetWireSource(self.systemid, True,
                                                        self.xml_dump_version)
-            stream = rpmServer.getPackageStream(channel, nvrea)
+            stream = rpmServer.getPackageStream(channel, nvrea, checksum)
 
         return (None, stream)
 
@@ -2006,7 +2022,7 @@ class ThreadDownload(threading.Thread):
                 self.lock.acquire()
                 try:
                     rpmFile, stream = self.syncer._get_package_stream(self.channel,
-                                                                      package_id, nvrea, self.sources)
+                                                                      package_id, nvrea, self.sources, checksum)
                 except:
                     self.lock.release()
                     raise
@@ -2200,14 +2216,14 @@ def processCommandline():
     optionsTable = [
         Option('--batch-size',          action='store',
                help=_('DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).'
-                      + '"man satellite-sync" for more information.') % SequenceServer.NEVER_MORE_THAN),
+                      + '"man mgr-inter-sync" for more information.') % SequenceServer.NEVER_MORE_THAN),
         Option('--ca-cert',             action='store',
                help=_('alternative SSL CA Cert (fullpath to cert file)')),
         Option('-c', '--channel',             action='append',
                help=_('process data for this channel only')),
         Option('--consider-full',       action='store_true',
                help=_('disk dump will be considered to be a full export; '
-                      'see "man satellite-sync" for more information.')),
+                      'see "man mgr-inter-sync" for more information.')),
         Option('--include-custom-channels',       action='store_true',
                help=_('existing custom channels will also be synced (unless -c is used)')),
         Option('--debug-level',         action='store',
@@ -2242,8 +2258,6 @@ def processCommandline():
                help=_('do not process full package metadata')),
         Option('--no-rpms',             action='store_true',
                help=_('do not download, or process any RPMs')),
-        Option('--no-ssl',              action='store_true',
-               help=_('turn off SSL (not recommended)')),
         Option('--orgid',               action='store',
                help=_('org to which the sync imports data. defaults to the admin account')),
         Option('-p', '--print-configuration', action='store_true',
@@ -2251,7 +2265,7 @@ def processCommandline():
         Option('-s', '--server',        action='store',
                help=_('alternative server with which to connect (hostname)')),
         Option('--step',                action='store',
-               help=_('synchronize to this step (man satellite-sync for more info)')),
+               help=_('synchronize to this step (man mgr-inter-sync for more info)')),
         Option('--sync-to-temp',        action='store_true',
                help=_('write complete data to tempfile before streaming to remainder of app')),
         Option('--systemid',            action='store',
@@ -2417,8 +2431,7 @@ def processCommandline():
                     #"no_source_packages" : 'no-source-packages',
                     "no_errata": 'no-errata',
                     "no_kickstarts": 'no-kickstarts',
-                    "force_all_errata": 'force-all-errata',
-                    'no_ssl': 'no-ssl'}
+                    "force_all_errata": 'force-all-errata'}
 
     for oa in otherActions:
         if getattr(OPTIONS, oa):

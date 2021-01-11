@@ -15,13 +15,13 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif
 
 Name:           susemanager-sls
-Version:        4.2.1
+Version:        4.2.3
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        GPL-2.0-only
@@ -33,7 +33,8 @@ Requires:       susemanager-build-keys-web >= 12.0.1
 BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
 BuildRequires:  python3-salt
-Requires:       python3-PyYAML >= 5.1
+# Different package names for SUSE and RHEL:
+Requires:       (python3-PyYAML >= 5.1 or python3-pyyaml >= 5.1)
 %else
 BuildRequires:  python-pytest
 BuildRequires:  python-mock
@@ -88,7 +89,6 @@ cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 
 # Manually install Python part to already prepared structure
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
-cp src/beacons/virtpoller.py %{buildroot}/usr/share/susemanager/salt/_beacons
 cp src/grains/cpuinfo.py %{buildroot}/usr/share/susemanager/salt/_grains/
 cp src/grains/public_cloud.py %{buildroot}/usr/share/susemanager/salt/_grains/
 cp src/modules/sumautil.py %{buildroot}/usr/share/susemanager/salt/_modules
@@ -113,9 +113,10 @@ cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/
 
 %check
 cd test
-py.test test_pillar_suma_minion.py
+# Run py.test-3 for rhel
+py.test%{?rhel:-3} test_pillar_suma_minion.py
 cd ../src/tests
-py.test
+py.test%{?rhel:-3}
 
 # Check that SLS files don't contain any call to "module.run" which has
 # been replaced by "mgrcompat.module_run" calls.

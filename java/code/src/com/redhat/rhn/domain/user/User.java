@@ -506,6 +506,18 @@ public interface User {
     void setPreferredLocale(String locale);
 
     /**
+     * Returns the user's preferred documentation locale
+     * @return String docsLocale
+     */
+    String getPreferredDocsLocale();
+
+    /**
+     * Sets the user's preferred documentation locale
+     * @param docsLocale documentation locale
+     */
+    void setPreferredDocsLocale(String docsLocale);
+
+    /**
      * Sets the value of emailNotify to new value
      * @param emailNotifyIn New value for emailNotify
      */
@@ -602,4 +614,14 @@ public interface User {
      * @param taskoNotifyIn tasko_notify to set
      */
     void setTaskoNotify(boolean taskoNotifyIn);
+
+    /**
+     * @return style web theme value
+     */
+    String getWebTheme();
+
+    /**
+     * @param webThemeIn style web theme to set
+     */
+    void setWebTheme(String webThemeIn);
 }

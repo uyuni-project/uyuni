@@ -33,6 +33,10 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private List<DiskData> disks;
     private List<InterfaceData> interfaces;
     private String graphicsType;
+    @SerializedName("cobbler_profile")
+    private String cobblerId;
+    @SerializedName("kernel_options")
+    private String kernelOptions;
 
     /**
      * @return the domain type (kvm, qemu, linux, xen...)
@@ -158,6 +162,34 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
      */
     public void setGraphicsType(String graphicsTypeIn) {
         this.graphicsType = graphicsTypeIn;
+    }
+
+    /**
+     * @return The ID of the cobbler profile to use to create the VM
+     */
+    public String getCobblerId() {
+        return cobblerId;
+    }
+
+    /**
+     * @param cobblerIdIn the ID of the cobbler profile to use to create the VM
+     */
+    public void setCobblerId(String cobblerIdIn) {
+        cobblerId = cobblerIdIn;
+    }
+
+    /**
+     * @return the kernel options to use with cobbler profile
+     */
+    public String getKernelOptions() {
+        return kernelOptions;
+    }
+
+    /**
+     * @param kernelOptionsIn the kernel options to use with cobbler profile
+     */
+    public void setKernelOptions(String kernelOptionsIn) {
+        kernelOptions = kernelOptionsIn;
     }
 
     /**

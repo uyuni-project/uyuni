@@ -20,17 +20,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
-"PO-Revision-Date: 2018-03-16 11:01+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Italian (http://www.transifex.com/projects/p/spacewalk/"
-"language/it/)\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
+"PO-Revision-Date: 2020-12-26 18:27+0000\n"
+"Last-Translator: Paolo Za <zapaolo@email.it>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -479,7 +479,7 @@ msgstr "Versione sistema operativo:"
 
 #: ../src/up2date_client/rhnreg_constants.py:100
 msgid " Minor Release: "
-msgstr " Versione minore:"
+msgstr " Versione minore: "
 
 #: ../src/up2date_client/rhnreg_constants.py:101
 msgid "Limited Updates Only"
@@ -1044,8 +1044,8 @@ msgid "Cannot contact selected server"
 msgstr "Impossibile contattare il server selezionato"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "Impossibile raggiungere Satellite o Proxy su '%s.'"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1282,10 +1282,10 @@ msgstr ""
 "configurazione. Verificate che siete in possesso di %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Questo errore non doveva verificarsi. Se desiderate aiutarci a migliorare "
@@ -1326,7 +1326,7 @@ msgstr "Posizione di Red Hat Network:"
 
 #: ../src/up2date_client/tui.py:140
 msgid "System ID:"
-msgstr "ID del sistema: "
+msgstr "ID del sistema:"
 
 #: ../src/up2date_client/tui.py:541
 msgid "The server indicated an error:\n"
@@ -1343,11 +1343,11 @@ msgstr "Nome del profilo:"
 
 #: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
 msgid "Version: "
-msgstr "Versione:"
+msgstr "Versione: "
 
 #: ../src/up2date_client/tui.py:763
 msgid "CPU model: "
-msgstr "Modello CPU:"
+msgstr "Modello CPU: "
 
 #: ../src/up2date_client/tui.py:769
 msgid "Hostname: "
@@ -1460,7 +1460,7 @@ msgstr "Errore di analisi del file oemInfo nel campo:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:229
 msgid "Network error: "
-msgstr "Errore di rete:"
+msgstr "Errore di rete: "
 
 #: ../src/up2date_client/up2dateErrors.py:297
 #, fuzzy
@@ -1928,7 +1928,7 @@ msgstr "Perchè registrarsi?"
 
 #: ../data/rh_register.glade.h:37
 msgid "Why Should I Register?"
-msgstr "Perchè registrarsi"
+msgstr "Perché registrarsi?"
 
 #: ../data/rh_register.glade.h:38
 msgid ""
@@ -2404,11 +2404,11 @@ msgstr ""
 "Il sistema è ora pronto a ricevere gli aggiornamenti software che lo "
 "manterranno sicuro e supportato.\n"
 "\n"
-"Quando gli aggiornamenti software sono disponibili sarà possibile "
-"visualizzare una icona del pacchetto all'interno dell'area di notifica del "
-"desktop (generalmente nell'angolo alto sulla destra.) Selezionando la "
-"suddetta icona, quando disponibile, l'utente potrà applicare qualsiasi "
-"aggiornamento disponibile."
+"Quando nell'area delle notifiche del desktop (di solito nell'angolo in alto "
+"a destra, cerchiato sotto) apparirà un'icona a forma di pacchetto saranno "
+"disponibili degli aggiornamenti software. Facendo clic su questa icona, se "
+"esistente, si verrà guidati nell'applicazione di tutti gli aggiornamenti che "
+"sono disponibili:"
 
 #: ../data/rh_register.glade.h:141
 msgid "Aplet screenshot"
@@ -2536,17 +2536,18 @@ msgstr "Registrazione RHN"
 
 #: ../rhn_register.desktop.in.h:2
 #, fuzzy
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "Registrazione per aggiornamenti software da Spacewalk/Satellite/Red Hat "
 "Network"
 
 #: ../rhn_register.desktop.in.h:3
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
 #, fuzzy
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "Registrazione a Spacewalk/Satellite/Red Hat Network."
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "Registrazione a Spacewalk/Satellite/Red Hat Network."
 
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."

@@ -37,6 +37,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -87,28 +88,28 @@ def do_user_create(self, args):
             if password1 == password2:
                 options.password = password1
             elif password1 == '':
-                logging.warning(_('Password must be at least 5 characters'))
+                logging.warning(_N('Password must be at least 5 characters'))
             else:
-                logging.warning(_("Passwords don't match"))
+                logging.warning(_N("Passwords don't match"))
     else:
         if not options.username:
-            logging.error(_('A username is required'))
+            logging.error(_N('A username is required'))
             return 1
 
         if not options.first_name:
-            logging.error(_('A first name is required'))
+            logging.error(_N('A first name is required'))
             return 1
 
         if not options.last_name:
-            logging.error(_('A last name is required'))
+            logging.error(_N('A last name is required'))
             return 1
 
         if not options.email:
-            logging.error(_('An email address is required'))
+            logging.error(_N('An email address is required'))
             return 1
 
         if not options.password and not options.pam:
-            logging.error(_('A password is required'))
+            logging.error(_N('A password is required'))
             return 1
 
         if options.pam:
@@ -116,7 +117,7 @@ def do_user_create(self, args):
             # API requires a non-None password even though it's not used
             # when PAM is enabled
             if options.password:
-                logging.warning(_("Note: password was ignored due to PAM mode"))
+                logging.warning(_N("Note: password was ignored due to PAM mode"))
             options.password = ""
         else:
             options.pam = 0
@@ -249,7 +250,7 @@ def do_user_listavailableroles(self, args, doreturn=False):
         if roles:
             print('\n'.join(sorted(roles)))
         else:
-            logging.error(_("No roles has been found"))
+            logging.error(_N("No roles has been found"))
 
 ####################
 
@@ -357,8 +358,8 @@ def do_user_details(self, args):
                 self.client.user.listDefaultSystemGroups(self.session,
                                                          user)
         except xmlrpclib.Fault as exc:
-            logging.warning(_('%s is not a valid user') % user)
-            logging.debug(_("Error '{}' while getting data about user '{}': {}").format(
+            logging.warning(_N('%s is not a valid user') % user)
+            logging.debug("Error '{}' while getting data about user '{}': {}".format(
                 exc.faultCode, user, exc.faultString))
             continue
 

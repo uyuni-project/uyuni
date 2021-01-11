@@ -173,11 +173,7 @@ visite:
 Gracias por utilizar @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -222,8 +218,11 @@ Resumen:
 {7}
 ------------------------------------------------------------------------------
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -243,8 +242,11 @@ estas erratas no aplican a uno de los sistemas listados entonces es posible que
 el perfil del paquete para ese servidor esté desactualizado. En ese caso debe ejecutar
 'up2date -p' (RHEL 4 y anteriores) o 'rhn-profile-sync' (RHEL 5 y posteriores) como usuario root en el sistema en cuestión para actualizar el perfil de su software.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -253,8 +255,11 @@ which you have explicitly enabled Patch Alerts are shown).
 Hay 1 sistema afectado registrado en la 'Sinopsis' (solo aparecen los sistemas para
 los que ha habilitado explícitamente las alertas de erratas).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -268,8 +273,11 @@ which you have explicitly enabled Patch Alerts are shown).
 Hay {0} sistemas afectados registrados en la 'Sinopsis' (solo aparecen los sistemas para
 los que ha habilitado explícitamente las alertas de erratas).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -304,8 +312,11 @@ Puede abordar los problemas que señalamos de dos maneras:
 
      - ejecute el agente de actualización en cada servidor afectado.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -343,8 +354,10 @@ haga clic en la pestaña de "Detalles".
 {1}
 {2}
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">

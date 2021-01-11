@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import produce from "immer";
 
 import type {ProjectPropertiesType} from '../../../type/project.type.js';

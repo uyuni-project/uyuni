@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerArch;
@@ -46,6 +47,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * ImageInfo
@@ -375,6 +377,11 @@ public class ImageInfo extends BaseDomainHelper {
      */
     public void setExternalImage(boolean externalImageIn) {
         this.externalImage = externalImageIn;
+    }
+
+    @Transient
+    public PackageType getPackageType() {
+        return getImageArch().getArchType().getPackageType();
     }
 
     /**

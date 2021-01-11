@@ -109,7 +109,7 @@ public class ServerTestUtils {
         InstalledPackage testInstPack = new InstalledPackage();
         String epoch = null;
         PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version,
-                release);
+                release, addTo.getPackageType());
         testInstPack.setEvr(evr);
 
         PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(

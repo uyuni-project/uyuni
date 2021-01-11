@@ -392,19 +392,13 @@ problems, isn't running, or the token is somehow corrupt.
     @staticmethod
     def __getXmlrpcServer():
         """ get an xmlrpc server object
-
-            WARNING: if CFG.USE_SSL is off, we are sending info
-                     in the clear.
         """
         log_debug(3)
 
         # build the URL
         url = CFG.RHN_PARENT or ''
         url = parseUrl(url)[1].split(':')[0]
-        if CFG.USE_SSL:
-            url = 'https://' + url + '/XMLRPC'
-        else:
-            url = 'http://' + url + '/XMLRPC'
+        url = 'https://' + url + '/XMLRPC'
         log_debug(3, 'server url: %s' % url)
 
         if CFG.HTTP_PROXY:
@@ -414,7 +408,7 @@ problems, isn't running, or the token is somehow corrupt.
                                       password=CFG.HTTP_PROXY_PASSWORD)
         else:
             serverObj = rpclib.Server(url)
-        if CFG.USE_SSL and CFG.CA_CHAIN:
+        if CFG.CA_CHAIN:
             if not os.access(CFG.CA_CHAIN, os.R_OK):
                 log_error('ERROR: missing or cannot access (for ca_chain): %s' % CFG.CA_CHAIN)
                 raise rhnFault(1000,

@@ -1,6 +1,7 @@
 // @flow
 
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 import {Select} from 'components/input/Select';
 import {showErrorToastr} from 'components/toastr/toastr';
 import useLifecycleActionsApi from '../../shared/api/use-lifecycle-actions-api';
@@ -34,10 +35,10 @@ export default function SelectInput(props: SelectInputProps) {
         labelClass="col-md-3"
         divClass="col-md-6"
         onChange={onChannelChange}
-      >
-        <option disabled value="">{t("Select a channel to browse available modules")}</option>
-        {props.channels.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-      </Select>
+        options={props.channels}
+        getOptionValue={c => c.id}
+        getOptionLabel={c => c.name}
+      />
       { isShowInputs &&
           <ModuleSelector modules={modules} isLoading={isLoading}/>
       }

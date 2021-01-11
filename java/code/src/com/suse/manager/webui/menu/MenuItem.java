@@ -244,6 +244,19 @@ public class MenuItem {
     }
 
     /**
+     * Set the docs url
+     *
+     * @param docsUrlIn the url
+     * @param docsLocale the documentation locale
+     *
+     * @return this MenuItem
+     */
+    public MenuItem withDocsUrl(String docsUrlIn, String docsLocale) {
+        String docsUrl = "/docs/" + docsLocale + "/" + docsUrlIn;
+        return withPrimaryUrl(docsUrl);
+    }
+
+    /**
      * Set an alternative url
      *
      * @param urlIn the url

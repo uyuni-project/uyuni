@@ -1,3 +1,22 @@
+- Use Java module com.sun.bind only for SUSE systems.
+- Added RHEL Apache gid handling.
+- Drop the ssl_available option (SSL is always present)
+- Added dynamic path for trust store and doc root.
+- Updated SPEC for RHEL and Fedora.
+
+-------------------------------------------------------------------
+Thu Dec 03 13:51:33 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Fixed cobbler version detection.
+- Generalised cobblerd service detection.
+
+-------------------------------------------------------------------
+Wed Nov 25 12:24:50 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- add sock_pool_size setting by default for better performance
+
 -------------------------------------------------------------------
 Fri Sep 18 12:34:52 CEST 2020 - jgonzalez@suse.com
 

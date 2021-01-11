@@ -17,51 +17,96 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.Serializable;
 
 /**
  * Bug
- * @version $Rev$
  */
-public interface Bug  {
+public class Bug extends BaseDomainHelper implements Serializable {
+
+    private Long id;
+    private String summary;
+    private Errata errata;
+    private String url;
 
     /**
      * @return Returns the id.
      */
-    Long getId();
+    public Long getId() {
+        return id;
+    }
 
     /**
      * @param i The id to set.
      */
-    void setId(Long i);
+    public void setId(Long i) {
+        this.id = i;
+    }
 
     /**
      * @return Returns the summary.
      */
-    String getSummary();
+    public String getSummary() {
+        return summary;
+    }
 
     /**
      * @param s The summary to set.
      */
-    void setSummary(String s);
+    public void setSummary(String s) {
+        this.summary = s;
+    }
 
     /**
-     * @return Returns the url
+     * @return Returns the url.
      */
-    String getUrl();
+    public String getUrl() {
+        return url;
+    }
 
     /**
-    * @param url The url to set.
-    */
-    void setUrl(String url);
-
-    /**
-     * @return Returns the errata.
+     * @param urlIn The url to set.
      */
-    Errata getErrata();
+    public void setUrl(String urlIn) {
+        this.url = urlIn;
+    }
 
     /**
-     * @param errataIn the errata to set.
+     * {@inheritDoc}
      */
-    void setErrata(Errata errataIn);
+    public Errata getErrata() {
+        return errata;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setErrata(Errata errataIn) {
+        this.errata = errataIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(final Object other) {
+        if (!(other instanceof Bug)) {
+            return false;
+        }
+        Bug castOther = (Bug) other;
+        return new EqualsBuilder().append(id, castOther.id)
+                                  .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode() {
+        return new HashCodeBuilder().append(id)
+                                    .toHashCode();
+    }
 }

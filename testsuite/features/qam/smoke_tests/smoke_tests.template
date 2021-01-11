@@ -19,7 +19,7 @@ Feature: Smoke tests for <client>
     Given I am on the Systems overview page of this "<client>"
     Then I can see all system information for "<client>"
 
-  @skip_for_ubuntu
+@skip_for_ubuntu
   Scenario: Install a patch on the <client>
     Given I am on the Systems overview page of this "<client>"
     And I follow "Software" in the content area
@@ -53,7 +53,7 @@ Feature: Smoke tests for <client>
     When I force picking pending events on "<client>" if necessary
     Then I wait until event "Package Removal scheduled by admin" is completed
 
-  @skip_for_traditional
+@skip_for_traditional
   Scenario: Run a remote command on <client> minion
     Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Salt > Remote Commands"

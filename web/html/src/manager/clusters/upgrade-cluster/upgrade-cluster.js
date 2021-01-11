@@ -1,12 +1,14 @@
 // @flow
-import { hot } from 'react-hot-loader';
-import React, { useState } from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import { useState } from 'react';
 import { TopPanel } from "components/panels/TopPanel";
 import { HashRouter, Route, Switch } from 'components/utils/HashRouter';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import useClustersApi, { withErrorMessages } from '../shared/api/use-clusters-api';
 import ScheduleClusterAction from '../shared/ui/schedule-cluster-action';
 import FormulaConfig from '../shared/ui/formula-config';
+import UpgradeClusterPlan from './upgrade-cluster-plan';
 
 import type { FormulaValuesType } from '../shared/api/use-clusters-api';
 import type { ClusterType } from '../shared/api/use-clusters-api';
@@ -14,6 +16,7 @@ import type { ClusterType } from '../shared/api/use-clusters-api';
 type Props = {
     cluster: ClusterType,
     flashMessage: string,
+    showUpgradePlan: boolean
 };
 
 const UpgradeCluster = (props: Props) => {
@@ -30,9 +33,16 @@ const UpgradeCluster = (props: Props) => {
 
     return (<TopPanel title={t('Upgrade ') + props.cluster.name}
         icon="spacewalk-icon-clusters"
-        helpUrl="/docs/reference/clusters/clusters-menu.html">
-        <HashRouter initialPath="upgrade-config">
+        helpUrl="reference/clusters/clusters-menu.html">
+        <HashRouter initialPath={props.showUpgradePlan ? "upgrade-plan" : "upgrade-config"}>
             <Switch>
+                <Route path="upgrade-plan">
+                    {({ goTo, back }) =>
+                        <UpgradeClusterPlan
+                            cluster={props.cluster}
+                            onNext={(formulaValues) => { goTo("upgrade-config"); }}
+                        />}
+                </Route>            
                 <Route path="upgrade-config">
                     {({ goTo, back }) =>
                         <FormulaConfig title={t("Configuration override")}
@@ -40,6 +50,7 @@ const UpgradeCluster = (props: Props) => {
                             formula="upgrade_cluster"
                             context={{ "cluster": props.cluster.id }}
                             provider={props.cluster.provider.label}
+                            onPrev={props.showUpgradePlan ? back: null}
                             onNext={(formulaValues) => { setUpgradeConfig(formulaValues); goTo("schedule"); }}
                         />}
                 </Route>
@@ -67,4 +78,4 @@ const UpgradeCluster = (props: Props) => {
     </TopPanel>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(UpgradeCluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(UpgradeCluster)));

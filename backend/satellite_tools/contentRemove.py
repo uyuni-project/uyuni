@@ -509,7 +509,6 @@ def _delete_rpm_group(packageIds):
     references = [
         'rhnChannelPackage',
         'rhnErrataPackage',
-        'rhnErrataPackageTMP',
         'rhnPackageChangelogRec',
         'rhnPackageConflicts',
         'rhnPackageFile',

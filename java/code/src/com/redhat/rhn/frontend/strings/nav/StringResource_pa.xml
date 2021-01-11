@@ -498,80 +498,110 @@
         </context-group>
         <target>ਹੋਰ ਫਾਇਲਾਂ</target>
       </trans-unit>
-      <group>
+      <trans-unit id="nav.system.audit.list_scans" xml:space="preserve">
+          <source>List Scans</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        <trans-unit id="nav.system.audit.list_scans">
-          <source>List Scans</source>
         </trans-unit>
-        <trans-unit id="nav.system.audit.schedule">
+        <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
           <source>Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
+        </context-group>
         </trans-unit>
-      </group>
       <!-- SDC Config file navigation-->
-      <group>
+      <trans-unit id="nav.sdc.config.overview" xml:space="preserve">
+          <source>Overview</source>
+          <target>ਜਾਣ-ਪਛਾਣ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <trans-unit id="nav.sdc.config.overview">
-          <source>Overview</source>
-          <target>ਜਾਣ-ਪਛਾਣ</target>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.view_modify_files">
+        <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
           <source>View/Modify Files</source>
           <target>ਫਾਇਲਾਂ ਵੇਖਾਓ/ਸੋਧੋ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.view_files">
+        <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
           <source>View Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.compare_files">
+        <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
           <source>Compare Files</source>
           <target>ਫਾਇਲਾਂ ਦੀ ਤੁਲਨਾ ਕਰੋ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.manage_channels">
+        <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
           <source>Manage Configuration Channels</source>
           <target>ਸੰਰਚਨਾ ਚੈਨਲਾਂ ਦਾ ਪਰਬੰਧਨ ਕਰੋ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.list_unsubscribe_channels">
+        <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
           <source>List/Unsubscribe from Channels</source>
           <target>ਚੈਨਲਾਂ ਤੋਂ ਵੇਖਾਓ/ਹਟਾਓ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.subscribe_channels">
+        <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
           <source>Subscribe to Channels</source>
           <target>ਚੈਨਲ ਤੇ ਮੈਂਬਰ ਬਣੋ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.rank_channels">
+        <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
           <source>View/Modify Rankings</source>
           <target>ਦਰਜਾ ਵੇਖੋ/ਸੋਧੋ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.centrally_managed_files">
+        <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
           <source>Centrally-Managed Files</source>
           <target>ਕੇਂਦਰੀ-ਪਰਬੰਧਿਤ ਫਾਇਲਾਂ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.locally_managed_files">
+        <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
           <source>Locally-Managed Files</source>
           <target>ਲੋਕਲ-ਪਰਬੰਧਨ ਕੀਤੀਆਂ ਫਾਇਲਾਂ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="nav.sdc.config.sandbox_managed_files">
+        <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
           <source>Local Sandbox</source>
           <target>ਲੋਕਲ ਸੈਂਡ-ਬਕਸਾ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
         </trans-unit>
-      </group>
       <!-- END config file nav -->
-      <group>
+      <trans-unit id="system.detail.nav.list" xml:space="preserve">
+          <source>List</source>
+          <target>ਸੂਚੀ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
-        <trans-unit id="system.detail.nav.list">
-          <source>List</source>
-          <target>ਸੂਚੀ</target>
         </trans-unit>
-        <trans-unit id="system.detail.nav.remove">
+        <trans-unit id="system.detail.nav.remove" xml:space="preserve">
           <source>List / Remove</source>
           <target>ਵੇਖਾਓ / ਹਟਾਓ</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Details Navigation Menu</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="Add" xml:space="preserve">
         <source>Add</source>
         <context-group name="ctx">
@@ -1120,50 +1150,47 @@
         <target>ਮੈਂਬਰੀਆਂ</target>
       </trans-unit>
       <!-- SSM NAV -->
-      <group>
-        <trans-unit id="Child Channels">
+      <trans-unit id="Child Channels" xml:space="preserve">
           <source>Child Channels</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
           <target>ਅਧੀਨ ਚੈਨਲ</target>
         </trans-unit>
-        <trans-unit id="Chat">
+        <trans-unit id="Chat" xml:space="preserve">
           <source>Chat</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
         </trans-unit>
-        <trans-unit id="Base Channels">
+        <trans-unit id="Base Channels" xml:space="preserve">
           <source>Base Channels</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
           <target>ਅਧਾਰ ਚੈਨਲ</target>
         </trans-unit>
-      </group>
       <!-- Activation Keys nav -->
-      <group>
-        <trans-unit id="activation-keys.nav.activated_systems">
+      <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
           <source>Activated Systems</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
           <target>ਸਰਗਰਮ ਕੀਤੇ ਸਿਸਟਮ</target>
         </trans-unit>
-      </group>
       <!-- Main nav -->
-      <group>
+      <trans-unit id="manage" xml:space="preserve">
+          <source>Manage</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
-        <trans-unit id="manage">
-          <source>Manage</source>
         </trans-unit>
-        <trans-unit id="clear">
+        <trans-unit id="clear" xml:space="preserve">
           <source>Clear</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Title bar</context>
+        </context-group>
         </trans-unit>
-      </group>
       <trans-unit id="Deployment" xml:space="preserve">
         <source>Deployment</source>
       </trans-unit>

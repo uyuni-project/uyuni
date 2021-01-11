@@ -25,7 +25,7 @@ function fail() {
 function run_sed() {
     find "$RESOURCES_BASE" -name '*.xml' -print0 \
     | xargs -0 --no-run-if-empty -n 1 \
-        sed -i '/^[[:space:]]*<trans-unit id="'"$1"'">$/,/^[[:space:]]*<\/trans-unit>$/{'"$2"'}'
+        sed -i '/^[[:space:]]*<trans-unit id="'"$1"'".*>$/,/^[[:space:]]*<\/trans-unit>$/{'"$2"'}'
 }
 
 function run_del() {

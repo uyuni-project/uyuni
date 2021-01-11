@@ -64,9 +64,6 @@ web.session_swap_secret_4 = b940aba9a00de60b854ef783cdf0f414
 
 server.secret_key = aff06099cb8a547aabb148d487d51a99631a4c8023781ff14a783d45c8cd16c4
 
-# SSL available
-web.ssl_available = 1
-
 # The number of days to wait to hear from a system before warning that it
 # is not checking it.
 web.system_checkin_threshold = 1

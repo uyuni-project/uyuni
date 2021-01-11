@@ -1,3 +1,6 @@
+- fix option parsing in configure-tftpsync (bsc#1180017)
+- Added RHEL8 compatibility.
+
 -------------------------------------------------------------------
 Fri Sep 18 11:53:21 CEST 2020 - jgonzalez@suse.com
 

@@ -30,6 +30,8 @@ import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
+import com.suse.manager.reactor.messaging.ImageSyncedEventMessage;
+import com.suse.manager.reactor.messaging.ImageSyncedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessage;
@@ -42,12 +44,6 @@ import com.suse.manager.reactor.messaging.LibvirtEnginePoolRefreshMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
-import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -56,19 +52,23 @@ import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
-import com.suse.manager.webui.utils.salt.MinionStartEvent;
+import com.suse.manager.webui.utils.salt.custom.ImageSyncedEvent;
+import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.utils.salt.custom.SystemIdGenerateEvent;
-import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BatchStartedEvent;
 import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.event.MinionStartEvent;
 
 import org.apache.log4j.Logger;
 
@@ -133,8 +133,6 @@ public class SaltReactor {
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
                 RunnableEventMessage.class);
-        MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
-                VirtpollerBeaconEventMessage.class);
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(systemQuery),
                 SystemIdGenerateEventMessage.class);
         MessageQueue.registerAction(new ImageDeployedEventMessageAction(systemQuery),
@@ -149,6 +147,8 @@ public class SaltReactor {
                 LibvirtEngineNetworkLifecycleMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
+        MessageQueue.registerAction(new ImageSyncedEventMessageAction(),
+                ImageSyncedEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -192,10 +192,11 @@ public class SaltReactor {
                BatchStartedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               ImageSyncedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                BeaconEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        )))))));
+        ))))))));
     }
 
     /**
@@ -229,6 +230,16 @@ public class SaltReactor {
      */
     private Stream<EventMessage> eventToMessages(ImageDeployedEvent imageDeployedEvent) {
         return of(new ImageDeployedEventMessage(imageDeployedEvent));
+    }
+
+    /**
+     * Trigger ImageSynced events.
+     *
+     * @param imageSyncedEvent image deployed event
+     * @return event handler runnable
+     */
+    private Stream<EventMessage> eventToMessages(ImageSyncedEvent imageSyncedEvent) {
+        return of(new ImageSyncedEventMessage(imageSyncedEvent));
     }
 
     /**
@@ -306,12 +317,6 @@ public class SaltReactor {
                         });
                     })
             );
-        }
-        if (beaconEvent.getBeacon().equals("virtpoller")) {
-            return of(new VirtpollerBeaconEventMessage(
-                beaconEvent.getMinionId(),
-                beaconEvent.getData(VirtpollerData.class)
-            ));
         }
         return empty();
     }

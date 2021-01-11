@@ -31,6 +31,7 @@ class ErrataImport(GenericPackageImport):
         self.cve = {}
         self.queue_timeout = queue_timeout
         self.file_types = {}
+        self.package_type = None
 
     def preprocess(self):
         # Processes the package batch to a form more suitable for database
@@ -109,6 +110,7 @@ class ErrataImport(GenericPackageImport):
                 self.channels[channel_name] = None
 
     def fix(self):
+        self.backend.lookupPackageArches(self.package_arches)
         self.backend.lookupChannels(self.channels)
         self.backend.lookupErrataFileTypes(self.file_types)
         for erratum in self.batch:
@@ -117,13 +119,16 @@ class ErrataImport(GenericPackageImport):
                 if eft not in self.file_types:
                     raise Exception("Unknown file type %s" % eft)
                 ef['type'] = self.file_types[eft]
+        for label, aid in self.package_arches.items():
+            self.package_type = self.backend.lookupPackageArchType(aid)
+            if self.package_type:
+                break
 
         self._fixCVE()
 
         self.backend.lookupPackageNames(self.names)
-        self.backend.lookupEVRs(self.evrs)
+        self.backend.lookupEVRs(self.evrs, self.package_type)
         self.backend.lookupChecksums(self.checksums)
-        self.backend.lookupPackageArches(self.package_arches)
 
         for erratum in self.batch:
             if erratum.ignored:

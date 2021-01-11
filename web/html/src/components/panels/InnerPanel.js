@@ -1,7 +1,8 @@
 // @flow
 
-const React = require('react');
-const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
+import * as React from 'react';
+
+import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
 
 type Props = {
   title: string,
@@ -41,6 +42,6 @@ function InnerPanel(props: Props) {
   );
 }
 
-module.exports = {
+export {
   InnerPanel,
 };

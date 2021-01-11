@@ -1,4 +1,7 @@
 from salt.exceptions import SaltInvocationError
+import logging
+
+log = logging.getLogger(__name__)
 
 try:
     from kubernetes import client, config # pylint: disable=import-self
@@ -44,13 +47,16 @@ def get_all_containers(kubeconfig=None, context=None):
     pods = api.list_pod_for_all_namespaces(watch=False)
     output = dict(containers=[])
     for pod in pods.items:
-        for container in pod.status.container_statuses:
-            res_cont = dict()
-            res_cont['container_id'] = container.container_id
-            res_cont['image'] = container.image
-            res_cont['image_id'] = container.image_id
-            res_cont['pod_name'] = pod.metadata.name
-            res_cont['pod_namespace'] = pod.metadata.namespace
-            output['containers'].append(res_cont)
+        if pod.status.container_statuses is not None:
+            for container in pod.status.container_statuses:
+                res_cont = dict()
+                res_cont['container_id'] = container.container_id
+                res_cont['image'] = container.image
+                res_cont['image_id'] = container.image_id
+                res_cont['pod_name'] = pod.metadata.name
+                res_cont['pod_namespace'] = pod.metadata.namespace
+                output['containers'].append(res_cont)
+        else:
+            log.error("Failed to parse pod container statuses")
 
     return output

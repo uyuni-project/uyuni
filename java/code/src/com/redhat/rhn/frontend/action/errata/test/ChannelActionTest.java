@@ -67,7 +67,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         User usr = requestContext.getCurrentUser();
 
         //create the errata
-        Errata errata = ErrataFactoryTest.createTestPublishedErrata(usr.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(usr.getOrg().getId());
 
         //We can't publish without selecting channels. Make sure we get an error.
         request.setupAddParameter("eid", errata.getId().toString());
@@ -113,8 +113,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
 
         //create the errata
-        Errata errata = ErrataFactoryTest.
-                                   createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //get the id for errata and flush so things get stored to the db
         Long id = errata.getId();
         flushAndEvict(errata);
@@ -173,8 +172,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         ah.setupProcessPagination();
 
         User user = ah.getUser();
-        Errata errata = ErrataFactoryTest.
-                                createTestPublishedErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
 
         for (int i = 0; i < 4; i++) {

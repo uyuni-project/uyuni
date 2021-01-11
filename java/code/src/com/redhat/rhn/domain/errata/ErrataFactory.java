@@ -17,8 +17,6 @@
  */
 package com.redhat.rhn.domain.errata;
 
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
-
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -29,19 +27,10 @@ import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumFactory;
-import com.redhat.rhn.domain.errata.impl.PublishedBug;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
-import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
-import com.redhat.rhn.domain.errata.impl.UnpublishedBug;
-import com.redhat.rhn.domain.errata.impl.UnpublishedClonedErrata;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.ErrataPackageFile;
 import com.redhat.rhn.frontend.dto.OwnedErrata;
@@ -76,7 +65,6 @@ import java.util.StringTokenizer;
  * ErrataFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.errata.Errata objects from the
  * database.
- * @version $Rev$
  */
 public class ErrataFactory extends HibernateFactory {
 
@@ -139,7 +127,7 @@ public class ErrataFactory extends HibernateFactory {
             eid = null;
         }
         if (eid != null) {
-            Errata errata = ErrataFactory.lookupPublishedErrataById(eid);
+            Errata errata = ErrataFactory.lookupErrataById(eid);
             if (errata != null) {
                 retval.add(errata);
             }
@@ -198,86 +186,37 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * publish takes an unpublished errata and copies its contents into a Published Errata
-     * object (and then returns this object). This method also handles removing the old
-     * Unpublished Errata object and child elements from the db.
-     * @param unpublished The Errata to publish
-     * @return Returns a published errata.
-     */
-    public static Errata publish(Errata unpublished) {
-        //Make sure the errata we're publishing is unpublished
-        if (unpublished.isPublished()) {
-            return unpublished; //there is nothing we can do here
-        }
-        //Create a published errata using unpublished
-
-        Errata published;
-
-        if (unpublished.isCloned()) {
-            published = new PublishedClonedErrata();
-            ((PublishedClonedErrata)published).setOriginal(
-                    ((UnpublishedClonedErrata)unpublished).getOriginal());
-        }
-        else {
-            published = ErrataFactory.createPublishedErrata();
-        }
-
-        copyDetails(published, unpublished, false);
-
-        //Save the published Errata
-        save(published);
-
-        //Remove the unpublished Errata from db
-        try {
-            Session session = HibernateFactory.getSession();
-            session.delete(unpublished);
-        }
-        catch (HibernateException e) {
-            throw new HibernateRuntimeException(
-                    "Errors occurred while publishing errata", e);
-        }
-
-        //return the published errata
-        return published;
-    }
-
-    /**
-     * Takes a published or unpublished errata and publishes to a channel, creating
-     *      all of the correct ErrataFile* entries.  This method does push packages to
-     *      the appropriate channel. (Appropriate as defined as the channel previously
-     *      having a package with the same name).
-     * @param errataList list of errata to publish
-     * @param chan channel to publish it into.
-     * @param user the user doing the pushing
+     * Takes an errata and adds it to a channel, creating all of the correct ErrataFile* entries.
+     * This method does push packages to the appropriate channel. (Appropriate as defined as the
+     * channel previously having a package with the same name).
+     * @param errataList list of errata to add
+     * @param chan channel to add them to
+     * @param user the user adding errata to channel
      * @param inheritPackages include only original channel packages
-     * @return the published errata
+     * @return the added errata
      */
-    public static List<Errata> publishToChannel(List<Errata> errataList, Channel chan,
-            User user, boolean inheritPackages) {
-        return publishToChannel(errataList, chan, user, inheritPackages, true);
+    public static List<Errata> addToChannel(List<Errata> errataList, Channel chan,
+                                            User user, boolean inheritPackages) {
+        return addToChannel(errataList, chan, user, inheritPackages, true);
     }
 
     /**
-     * Takes a published or unpublished errata and publishes to a channel, creating
-     *      all of the correct ErrataFile* entries.  This method does push packages to
-     *      the appropriate channel. (Appropriate as defined as the channel previously
-     *      having a package with the same name).
-     * @param errataList list of errata to publish
-     * @param chan channel to publish it into.
+     * Takes an errata and adds it to a channel, creating all of the correct ErrataFile* entries.
+     * entries. This method does push packages to the appropriate channel.
+     * (Appropriate as defined as the channel previously having a package with the same name).
+     * @param errataList list of errata to add
+     * @param chan channel to add them to
      * @param user the user doing the pushing
      * @param inheritPackages include only original channel packages
      * @param performPostActions true (default) if you want to refresh newest package
      * cache and schedule repomd regeneration. False only if you're going to do those
      * things yourself.
-     * @return the published errata
+     * @return the added errata
      */
-    public static List<Errata> publishToChannel(List<Errata> errataList, Channel chan,
-            User user, boolean inheritPackages, boolean performPostActions) {
+    public static List<Errata> addToChannel(List<Errata> errataList, Channel chan,
+                                            User user, boolean inheritPackages, boolean performPostActions) {
         List<com.redhat.rhn.domain.errata.Errata> toReturn = new ArrayList<Errata>();
         for (Errata errata : errataList) {
-            if (!errata.isPublished()) {
-                errata = publish(errata);
-            }
             errata.addChannel(chan);
             ErrataManager.replaceChannelNotifications(errata.getId(), chan.getId(), new Date());
 
@@ -310,48 +249,38 @@ public class ErrataFactory extends HibernateFactory {
                 packagesToPush.add(pack);
             }
 
-            Errata e = publishErrataPackagesToChannel(errata, chan, user, packagesToPush);
+            Errata e = addErrataPackagesToChannel(errata, chan, user, packagesToPush);
             toReturn.add(e);
         }
         if (performPostActions) {
-            postPublishActions(chan, user);
+            ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
         }
         return toReturn;
     }
 
     /**
-     * Publish an errata to a channel but only push a small set of packages
+     * Add an errata to a channel but only push a small set of packages
      * along with it
      *
-     * @param errata   errata to publish
-     * @param chan channel to publish it into.
-     * @param user the user doing the pushing
-     * @param packages the packages to push
-     * @return the published errata
+     * @param errata errata to add
+     * @param chan channel to add it to
+     * @param user the user doing the adding
+     * @param packages the packages to add
+     * @return the added errata
      */
-    public static Errata publishToChannel(Errata errata, Channel chan, User user,
-            Set<Package> packages) {
-        if (!errata.isPublished()) {
-            errata = publish(errata);
-        }
+    public static Errata addToChannel(Errata errata, Channel chan, User user,
+                                      Set<Package> packages) {
         errata.addChannel(chan);
-        errata = publishErrataPackagesToChannel(errata, chan, user, packages);
-        postPublishActions(chan, user);
+        errata = addErrataPackagesToChannel(errata, chan, user, packages);
+        ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
         return errata;
     }
-
-
-    private static void postPublishActions(Channel chan, User user) {
-        ChannelManager.refreshWithNewestPackages(chan,
-            "java::publishErrataPackagesToChannel");
-    }
-
 
     /**
      * Private helper method that pushes errata packages to a channel
      */
-    private static Errata publishErrataPackagesToChannel(Errata errata,
-            Channel chan, User user, Set<Package> packages) {
+    private static Errata addErrataPackagesToChannel(Errata errata,
+                                                     Channel chan, User user, Set<Package> packages) {
         // Much quicker to push all packages at once
         List<Long> pids = new ArrayList<Long>();
         for (Package pack : packages) {
@@ -365,11 +294,11 @@ public class ErrataFactory extends HibernateFactory {
                     " has NULL path, please run spacewalk-data-fsck");
             }
 
-            Optional<ErrataFile> publishedFileOpt =
+            Optional<ErrataFile> fileOpt =
                     ErrataFactory.lookupErrataFile(errata.getId(), pack.getPath());
 
-            singleton.saveObject(Opt.fold(publishedFileOpt, () -> createPublishedErrataFile(pack, errata, chan),
-                    ef -> publishErrataFile(ef, pack, chan)));
+            singleton.saveObject(Opt.fold(fileOpt, () -> createErrataFile(pack, errata, chan),
+                    ef -> addErrataFile(ef, pack, chan)));
 
         }
         ChannelFactory.save(chan);
@@ -382,227 +311,80 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Private helper method that publish an ErrataFile to a channel.
+     * Private helper method that adds an ErrataFile to a channel.
      *
-     * @param publishedFile ErrataFile to publish
-     * @param pack the Package to push
-     * @param chan Channel to publish it into.
-     * @return the published errata
+     * @param file ErrataFile to add
+     * @param pack the Package to add
+     * @param chan Channel to add it to
+     * @return the added errata file
      */
-    private static ErrataFile publishErrataFile(ErrataFile publishedFile, Package pack, Channel chan) {
-        if (!publishedFile.hasPackage(pack)) {
-            publishedFile.addPackage(pack);
+    private static ErrataFile addErrataFile(ErrataFile file, Package pack, Channel chan) {
+        if (!file.hasPackage(pack)) {
+            file.addPackage(pack);
         }
-        ((PublishedErrataFile) publishedFile).addChannel(chan);
-        return publishedFile;
-    }
-
-    /**
-     * Private helper method that creates an ErrataFile and publish it to a channel
-     *
-     * @param pack the Package to push
-     * @param errata the Errata to publish
-     * @param chan Channel to publish it into.
-     * @return the published errata
-     */
-    private static ErrataFile createPublishedErrataFile(Package pack, Errata errata, Channel chan) {
-        ErrataFile publishedFile = ErrataFactory.createPublishedErrataFile(
-                ErrataFactory.lookupErrataFileType("RPM"), pack.getChecksum().getChecksum(), pack.getPath());
-        publishedFile.addPackage(pack);
-        publishedFile.setErrata(errata);
-        publishedFile.setModified(new Date());
-        ((PublishedErrataFile) publishedFile).addChannel(chan);
-        return publishedFile;
-    }
-
-    /**
-     * @param org Org performing the cloning
-     * @param e Errata to be cloned
-     * @return clone of e
-     */
-    public static Errata createClone(Org org, Errata e) {
-
-        UnpublishedClonedErrata clone = new UnpublishedClonedErrata();
-
-        copyDetails(clone, e, true);
-
-        PublishErrataHelper.setUniqueAdvisoryCloneName(e, clone);
-        clone.setOriginal(e);
-        clone.setOrg(org);
-
-        save(clone);
-        return clone;
-    }
-
-    /**
-     * Helper method to copy the details for.
-     * @param copy The object to copy into.
-     * @param original The object to copy from.
-     * @param clone  set to true if this is a cloned errata, and thus
-     *      things like org or advisory name shouldn't be set
-     */
-    private static void copyDetails(Errata copy, Errata original, boolean clone) {
-
-        //Set the easy things first ;)
-
-        if (!clone) {
-            copy.setAdvisory(original.getAdvisory());
-            copy.setAdvisoryName(original.getAdvisoryName());
-            copy.setOrg(original.getOrg());
-        }
-
-        copy.setAdvisoryType(original.getAdvisoryType());
-        copy.setProduct(original.getProduct());
-        copy.setErrataFrom(original.getErrataFrom());
-        copy.setDescription(original.getDescription());
-        copy.setSynopsis(original.getSynopsis());
-        copy.setTopic(original.getTopic());
-        copy.setSolution(original.getSolution());
-        copy.setIssueDate(original.getIssueDate());
-        copy.setUpdateDate(original.getUpdateDate());
-        copy.setNotes(original.getNotes());
-        copy.setRefersTo(original.getRefersTo());
-        copy.setAdvisoryRel(original.getAdvisoryRel());
-        copy.setLocallyModified(original.getLocallyModified());
-        copy.setLastModified(original.getLastModified());
-        copy.setSeverity(original.getSeverity());
-
-
-        /*
-         * Copy the packages
-         * packages aren't published or unpublished exactly... that is determined
-         * by the status of the errata...
-         */
-        copy.setPackages(new HashSet(original.getPackages()));
-
-        /*
-         * Copy the keywords
-         * if we use the string version of addKeyword, we don't have to worry about
-         * whether or not the keyword is published.
-         */
-        Iterator keysItr = IteratorUtils.getIterator(original.getKeywords());
-        while (keysItr.hasNext()) {
-            Keyword k = (Keyword) keysItr.next();
-            copy.addKeyword(k.getKeyword());
-        }
-
-
-        /*
-         * Copy the bugs. If copy is published, then the bugs should be published as well.
-         * If not, then we want unpublished bugs.
-         */
-        Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
-        while (bugsItr.hasNext()) {
-            Bug bugIn = (Bug) bugsItr.next();
-            Bug cloneB;
-            if (copy.isPublished()) { //we want published bugs
-                cloneB = ErrataManager.createNewPublishedBug(bugIn.getId(),
-                        bugIn.getSummary(),
-                        bugIn.getUrl());
-            }
-            else { //we want unpublished bugs
-                cloneB = ErrataManager.createNewUnpublishedBug(bugIn.getId(),
-                        bugIn.getSummary(),
-                        bugIn.getUrl());
-            }
-            copy.addBug(cloneB);
-        }
-    }
-
-    /**
-     * Create a new PublishedErrata from scratch
-     * @return the PublishedErrata created
-     */
-    public static Errata createPublishedErrata() {
-        return new PublishedErrata();
-    }
-
-    /**
-     * Create a new UnpublishedErrata
-     * @return the UnpublishedErrata created
-     */
-    public static Errata createUnpublishedErrata() {
-        return new UnpublishedErrata();
-    }
-
-    /**
-     * Creates a new Unpublished Bug object with the given id and summary.
-     * @param id The id for the new bug
-     * @param summary The summary for the new bug
-     * @param url The bug URL
-     * @return The new unpublished bug.
-     */
-    public static Bug createUnpublishedBug(Long id, String summary, String url) {
-        Bug bug = new UnpublishedBug();
-        bug.setId(id);
-        bug.setSummary(summary);
-        bug.setUrl(url);
-        return bug;
-    }
-
-    /**
-     * Creates a new Published Bug object with the given id and summary.
-     * @param id The id for the new bug
-     * @param summary The summary for the new bug
-     * @param url The bug URL
-     * @return The new published bug.
-     */
-    public static Bug createPublishedBug(Long id, String summary, String url) {
-        Bug bug = new PublishedBug();
-        bug.setId(id);
-        bug.setSummary(summary);
-        bug.setUrl(url);
-        return bug;
-    }
-
-
-
-    /**
-     * Creates a new Unpublished Errata file with given ErrataFileType, checksum, and name
-     * @param ft ErrataFileType for the new ErrataFile
-     * @param cs MD5 Checksum for the new Errata File
-     * @param name name for the file
-     * @param packages Packages associated with this errata file.
-     * @return new Unpublished Errata File
-     */
-    public static ErrataFile createUnpublishedErrataFile(ErrataFileType ft,
-            String cs,
-            String name,
-            Set packages) {
-        ErrataFile file = new UnpublishedErrataFile();
-        file.setFileType(ft);
-        file.setChecksum(ChecksumFactory.safeCreate(cs, "md5"));
-        file.setFileName(name);
-        file.setPackages(packages);
+        file.addChannel(chan);
         return file;
     }
 
     /**
-     * Creates a new Published Errata file with given ErrataFileType, checksum, and name
-     * @param ft ErrataFileType for the new ErrataFile
-     * @param cs MD5 Checksum for the new Errata File
-     * @param name name for the file
-     * @return new Published Errata File
+     * Private helper method that creates an ErrataFile and adds it to a channel
+     *
+     * @param pack the Package to add
+     * @param errata the Errata to add
+     * @param chan Channel to add the package to
+     * @return the added errata file
      */
-    public static ErrataFile createPublishedErrataFile(ErrataFileType ft,
-            String cs,
-            String name) {
-        return createPublishedErrataFile(ft, cs, name, new HashSet());
+    private static ErrataFile createErrataFile(Package pack, Errata errata, Channel chan) {
+        var file = ErrataFactory.createErrataFile(
+                ErrataFactory.lookupErrataFileType("RPM"), pack.getChecksum().getChecksum(), pack.getPath());
+        file.addPackage(pack);
+        file.setErrata(errata);
+        file.setModified(new Date());
+        file.addChannel(chan);
+        return file;
     }
 
     /**
-     * Creates a new Published Errata file with given ErrataFileType, checksum, and name
+     * Creates a new Bug object with the given details.
+     * @param id The id for the new bug
+     * @param summary The summary for the new bug
+     * @param url The bug URL
+     * @return The new bug.
+     */
+    public static Bug createBug(Long id, String summary, String url) {
+        Bug bug = new Bug();
+        bug.setId(id);
+        bug.setSummary(summary);
+        bug.setUrl(url);
+        return bug;
+    }
+
+    /**
+     * Creates a new Errata file with given ErrataFileType, checksum, and name
+     * @param ft ErrataFileType for the new ErrataFile
+     * @param cs MD5 Checksum for the new Errata File
+     * @param name name for the file
+     * @return new Errata File
+     */
+    public static ErrataFile createErrataFile(ErrataFileType ft,
+                                              String cs,
+                                              String name) {
+        return createErrataFile(ft, cs, name, new HashSet());
+    }
+
+    /**
+     * Creates a new Errata file with given ErrataFileType, checksum, and name
      * @param ft ErrataFileType for the new ErrataFile
      * @param cs MD5 Checksum for the new Errata File
      * @param name name for the file
      * @param packages Packages associated with this errata file.
-     * @return new Published Errata File
+     * @return new Errata File
      */
-    public static ErrataFile createPublishedErrataFile(ErrataFileType ft,
-            String cs,
-            String name,
-            Set packages) {
-        ErrataFile file = new PublishedErrataFile();
+    public static ErrataFile createErrataFile(ErrataFileType ft,
+                                              String cs,
+                                              String name,
+                                              Set packages) {
+        ErrataFile file = new ErrataFile();
         file.setFileType(ft);
         file.setChecksum(ChecksumFactory.safeCreate(cs, "md5"));
         file.setFileName(name);
@@ -641,17 +423,10 @@ public class ErrataFactory extends HibernateFactory {
         List retval = null;
         try {
             session = HibernateFactory.getSession();
-            Query q = session.getNamedQuery("PublishedErrataFile.listByErrataAndFileType");
+            Query q = session.getNamedQuery("ErrataFile.listByErrataAndFileType");
             q.setLong("errata_id", errataId.longValue());
             q.setString("file_type", fileType.toUpperCase());
             retval =  q.list();
-
-            if (retval == null) {
-                q = session.getNamedQuery("UnpublishedErrataFile.listByErrataAndFileType");
-                q.setLong("errata_id", errataId.longValue());
-                q.setString("file_type", fileType.toUpperCase());
-                retval =  q.list();
-            }
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException(e.getMessage(), e);
@@ -668,15 +443,8 @@ public class ErrataFactory extends HibernateFactory {
      * @return the Errata found
      */
     public static Errata lookupById(Long id) {
-        //Look for published Errata first
         Session session = HibernateFactory.getSession();
-        Errata errata = session.get(PublishedErrata.class, id);
-
-        //If we nothing was found, look for it in the Unpublished Errata table...
-        if (errata == null) {
-            errata = session.get(UnpublishedErrata.class, id);
-        }
-        return errata;
+        return session.get(Errata.class, id);
     }
 
     /**
@@ -689,7 +457,7 @@ public class ErrataFactory extends HibernateFactory {
         List retval = null;
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("PublishedErrata.findByAdvisoryType")
+            retval = session.getNamedQuery("Errata.findByAdvisoryType")
                     .setString("type", advisoryType)
                     //Retrieve from cache if there
                     .setCacheable(true).list();
@@ -703,16 +471,16 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Finds published errata by id
+     * Finds errata by id
      * @param id errata id
      * @return Errata if found, otherwise null
      */
-    public static Errata lookupPublishedErrataById(Long id) {
+    public static Errata lookupErrataById(Long id) {
         Session session = null;
         Errata retval = null;
         try {
             session = HibernateFactory.getSession();
-            retval = (Errata) session.getNamedQuery("PublishedErrata.findById")
+            retval = (Errata) session.getNamedQuery("Errata.findById")
                     .setLong("id", id.longValue()).uniqueResult();
         }
         catch (HibernateException he) {
@@ -730,21 +498,11 @@ public class ErrataFactory extends HibernateFactory {
      * @return Returns the errata corresponding to the passed in advisory name.
      */
     public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
-        //look for a published errata first
         Session session = HibernateFactory.getSession();
-        List<Errata> retval = session.getNamedQuery("PublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg")
+        return session.getNamedQuery("Errata.findVendorAnUserErrataByAdvisoryNameAndOrg")
                 .setParameter("advisory", advisory)
                 .setParameter("org", org)
                 .getResultList();
-
-        //if nothing was found, check the unpublished errata table
-        if (retval.isEmpty()) {
-            retval = session.getNamedQuery("UnpublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg")
-                    .setParameter("advisory", advisory)
-                    .setParameter("org", org)
-                    .getResultList();
-        }
-        return retval;
     }
 
     /**
@@ -755,7 +513,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Errata lookupByAdvisoryAndOrg(String advisory, Org org) {
         return (Errata) HibernateFactory.getSession()
-                .getNamedQuery("PublishedErrata.findByAdvisoryNameAndOrg")
+                .getNamedQuery("Errata.findByAdvisoryNameAndOrg")
                 .setParameter("advisory", advisory)
                 .setParameter("org", org)
                 .uniqueResult();
@@ -772,7 +530,7 @@ public class ErrataFactory extends HibernateFactory {
         List<Errata> retval = null;
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("PublishedErrata.findByAdvisory")
+            retval = session.getNamedQuery("Errata.findByAdvisory")
                     .setParameter("advisory", advisoryId)
                     .setParameter("org", org)
                     .getResultList();
@@ -800,7 +558,7 @@ public class ErrataFactory extends HibernateFactory {
         for (Iterator iter = result.iterator(); iter.hasNext();) {
             Map row = (Map) iter.next();
             Long rawId = (Long) row.get("id");
-            retval.add(session.load(PublishedErrata.class, rawId));
+            retval.add(session.load(Errata.class, rawId));
         }
         return retval;
     }
@@ -817,15 +575,7 @@ public class ErrataFactory extends HibernateFactory {
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.
-                    getNamedQuery("UnpublishedClonedErrata.findByOriginal")
-                    .setParameter("original", original)
-                    .setParameter("org", org).list();
-
-            if (isEmpty(retval)) {
-                retval = lookupPublishedByOriginal(org, original);
-            }
-
+            retval = lookupErrataByOriginal(org, original);
         }
         catch (HibernateException e) {
             throw new
@@ -840,13 +590,13 @@ public class ErrataFactory extends HibernateFactory {
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
-    public static List lookupPublishedByOriginal(Org org, Errata original) {
+    public static List lookupErrataByOriginal(Org org, Errata original) {
         Session session = null;
         List retval = null;
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("PublishedClonedErrata.findByOriginal")
+            retval = session.getNamedQuery("ClonedErrata.findByOriginal")
                     .setParameter("original", original)
                     .setParameter("org", org).list();
         }
@@ -864,14 +614,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listSamePublishedInChannels(Org org, Channel channelFrom,
-            Channel channelTo) {
+    public static List listErrataInBothChannels(Org org, Channel channelFrom,
+                                                Channel channelTo) {
         Session session = null;
         List retval = null;
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("PublishedErrata.findSameInChannels")
+            retval = session.getNamedQuery("Errata.findErrataInBothChannels")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo).list();
         }
@@ -890,14 +640,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listPublishedBrothersInChannels(Org org, Channel channelFrom,
-            Channel channelTo) {
+    public static List listSiblingsInChannels(Org org, Channel channelFrom,
+                                              Channel channelTo) {
         Session session = null;
         List retval = null;
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("PublishedClonedErrata.findBrothersInChannel")
+            retval = session.getNamedQuery("ClonedErrata.findSiblingsInChannel")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo).list();
         }
@@ -915,14 +665,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    public static List listPublishedClonesInChannels(Org org, Channel channelFrom,
-            Channel channelTo) {
+    public static List listClonesInChannels(Org org, Channel channelFrom,
+                                            Channel channelTo) {
         Session session = null;
         List retval = null;
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.getNamedQuery("PublishedErrata.findClonesInChannel")
+            retval = session.getNamedQuery("Errata.findClonesInChannel")
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo)
                     .list();
@@ -974,9 +724,9 @@ public class ErrataFactory extends HibernateFactory {
      * @param channel the channel you want to get the errata for
      * @return A list of Errata objects
      */
-    public static List<PublishedErrata> listByChannel(Org org, Channel channel) {
+    public static List<Errata> listByChannel(Org org, Channel channel) {
         return HibernateFactory.getSession().
-                getNamedQuery("PublishedErrata.listByChannel")
+                getNamedQuery("Errata.listByChannel")
                 .setParameter("org", org)
                 .setParameter("channel", channel)
                 .list();
@@ -992,7 +742,7 @@ public class ErrataFactory extends HibernateFactory {
     public static List lookupByChannelSorted(Org org, Channel channel) {
 
         return HibernateFactory.getSession().
-                getNamedQuery("PublishedErrata.lookupSortedByChannel")
+                getNamedQuery("Errata.lookupSortedByChannel")
                 .setParameter("org", org)
                 .setParameter("channel", channel)
                 .list();
@@ -1012,7 +762,7 @@ public class ErrataFactory extends HibernateFactory {
             String startDate, String endDate) {
 
         return HibernateFactory.getSession().
-                getNamedQuery("PublishedErrata.lookupByChannelBetweenDates")
+                getNamedQuery("Errata.lookupByChannelBetweenDates")
                 .setParameter("org", org)
                 .setParameter("channel", channel)
                 .setParameter("start_date", startDate)
@@ -1032,7 +782,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("PublishedErrataFile.lookupByErrataAndPackage")
+        return session.getNamedQuery("ErrataFile.lookupByErrataAndPackage")
                 .setParameter("errata_id", errataId)
                 .setParameter("filename", filename).uniqueResultOptional();
     }
@@ -1048,7 +798,7 @@ public class ErrataFactory extends HibernateFactory {
         params.put("eids", eids);
         params.put("org_id", org.getId());
         List results = singleton.listObjectsByNamedQuery(
-                "PublishedErrata.searchById", params);
+                "Errata.searchById", params);
         List<ErrataOverview> errata = new ArrayList<ErrataOverview>();
         for (Object result : results) {
             Object[] values = (Object[]) result;
@@ -1084,9 +834,9 @@ public class ErrataFactory extends HibernateFactory {
             log.debug("pids = " + pids);
         }
         List results = singleton.listObjectsByNamedQuery(
-                "PublishedErrata.searchByPackageIds", params);
+                "Errata.searchByPackageIds", params);
         if (log.isDebugEnabled()) {
-            log.debug("Query 'PublishedErrata.searchByPackageIds' returned " +
+            log.debug("Query 'Errata.searchByPackageIds' returned " +
                     results.size() + " entries");
         }
         List<ErrataOverview> errata = new ArrayList<ErrataOverview>();
@@ -1140,9 +890,9 @@ public class ErrataFactory extends HibernateFactory {
             log.debug("pids = " + pids);
         }
         List results = singleton.listObjectsByNamedQuery(
-                "PublishedErrata.searchByPackageIdsWithOrg", params);
+                "Errata.searchByPackageIdsWithOrg", params);
         if (log.isDebugEnabled()) {
-            log.debug("Query 'PublishedErrata.searchByPackageIdsWithOrg' returned " +
+            log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned " +
                     results.size() + " entries");
         }
         List<ErrataOverview> errata = new ArrayList<ErrataOverview>();
@@ -1185,8 +935,43 @@ public class ErrataFactory extends HibernateFactory {
      * Sync all the errata details from one errata to another
      * @param cloned the cloned errata that needs syncing
      */
-    public static void syncErrataDetails(PublishedClonedErrata cloned) {
-        copyDetails(cloned, cloned.getOriginal(), true);
+    public static void syncErrataDetails(ClonedErrata cloned) {
+        Errata original = cloned.getOriginal();
+
+        //Set the easy things first ;)
+        cloned.setAdvisoryType(original.getAdvisoryType());
+        cloned.setProduct(original.getProduct());
+        cloned.setErrataFrom(original.getErrataFrom());
+        cloned.setDescription(original.getDescription());
+        cloned.setSynopsis(original.getSynopsis());
+        cloned.setTopic(original.getTopic());
+        cloned.setSolution(original.getSolution());
+        cloned.setIssueDate(original.getIssueDate());
+        cloned.setUpdateDate(original.getUpdateDate());
+        cloned.setNotes(original.getNotes());
+        cloned.setRefersTo(original.getRefersTo());
+        cloned.setAdvisoryRel(original.getAdvisoryRel());
+        cloned.setLocallyModified(original.getLocallyModified());
+        cloned.setLastModified(original.getLastModified());
+        cloned.setSeverity(original.getSeverity());
+
+        // Copy the packages
+        cloned.setPackages(new HashSet(original.getPackages()));
+
+        // Copy the keywords
+        Iterator keysItr = IteratorUtils.getIterator(original.getKeywords());
+        while (keysItr.hasNext()) {
+            Keyword k = (Keyword) keysItr.next();
+            cloned.addKeyword(k.getKeyword());
+        }
+
+        // Copy the bugs
+        Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
+        while (bugsItr.hasNext()) {
+            Bug bugIn = (Bug) bugsItr.next();
+            Bug cloneB = createBug(bugIn.getId(), bugIn.getSummary(), bugIn.getUrl());
+            cloned.addBug(cloneB);
+        }
     }
 
     /**
@@ -1196,22 +981,10 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        List<Errata> foundErrata = listPublishedErrata(ids, orgId);
-
-        return foundErrata;
-    }
-
-    /**
-     * List published errata objects by ID and org
-     * @param eids list of ids
-     * @param orgId the organization id
-     * @return List of Errata Objects
-     */
-    private static List<Errata> listPublishedErrata(Collection<Long> eids, Long orgId) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orgId", orgId);
-        return singleton.listObjectsByNamedQuery("PublishedErrata.listAvailableToOrgByIds",
-                params, eids, "eids");
+        return (List<Errata>) singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds",
+                params, ids, "eids");
     }
 
     /**
@@ -1231,22 +1004,22 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * List all owned, published, unmodified, cloned errata in an org. Useful when cloning
+     * List all owned, unmodified, cloned errata in an org. Useful when cloning
      * channels.
      * @param orgId Org id to look for
      * @return List of OwnedErrata
      */
-    public static DataResult<OwnedErrata> listPublishedOwnedUnmodifiedClonedErrata(
+    public static DataResult<OwnedErrata> listOwnedUnmodifiedClonedErrata(
             Long orgId) {
         SelectMode mode = ModeFactory.getMode("Errata_queries",
-                "published_owned_unmodified_cloned_errata");
+                "owned_unmodified_cloned_errata");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", orgId);
         return mode.execute(params);
     }
 
     /**
-     * Get all advisory strings (published or unpublished) that end in the given string.
+     * Get all advisory strings that end in the given string.
      * Useful when cloning errata.
      * @param ending String ending of the advisory
      * @return Set of existing advisories
@@ -1264,7 +1037,7 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Get all advisory names (published or unpublished) that end in the given string.
+     * Get all advisory names that end in the given string.
      * Useful when cloning errata.
      * @param ending String ending of the advisory
      * @return Set of existing advisory names
@@ -1319,7 +1092,7 @@ public class ErrataFactory extends HibernateFactory {
     /**
      * Clone an erratum in the db. Will fill contents of rhnErrata, rhnErrataCloned,
      * rhnErrataBugList, rhnErrataPackage, rhnErrataKeyword, and rhnErrataCVE. Basically
-     * do everything that PublishErrataHelper.cloneErrataFast does, but much, much faster.
+     * do everything that ErrataHelper.cloneErrataFast does, but much, much faster.
      * @param originalEid erratum id to clone from
      * @param advisory unique advisory
      * @param advisoryName unique name

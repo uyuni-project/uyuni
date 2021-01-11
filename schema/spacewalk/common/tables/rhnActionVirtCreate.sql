@@ -30,7 +30,10 @@ CREATE TABLE rhnActionVirtCreate
     arch                 VARCHAR(20),
     graphics_type        VARCHAR(20),
     remove_disks         CHAR(1),
-    remove_interfaces    CHAR(1)
+    remove_interfaces    CHAR(1),
+    cobbler_system       VARCHAR(256),
+    kickstart_host       VARCHAR(256),
+    kernel_options       VARCHAR(256)
 )
 
 ;

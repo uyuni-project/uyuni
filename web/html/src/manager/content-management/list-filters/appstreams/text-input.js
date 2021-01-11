@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import {Text} from 'components/input/Text';
 
 export default function TextInput() {

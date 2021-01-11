@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.image;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
@@ -217,7 +217,7 @@ public class ImageInfoHandler extends BaseHandler {
         }
 
         List<Long> eids = opt.get().getPatches().stream()
-                .map(PublishedErrata::getId)
+                .map(Errata::getId)
                 .collect(Collectors.toList());
         return ErrataFactory.search(eids, loggedInUser.getOrg());
     }

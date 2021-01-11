@@ -257,6 +257,30 @@ class TestSCPackage:
         assert mprint.called
         assert_expect(mprint.call_args_list, 'emacs-melpa\nemacs-nox\nemacs-x11')
 
+    def test_package_search_multiple_packages(self, shell):
+        """
+        Test do_package_search with multiple arguments of standard fields
+        """
+        shell.help_package_search = MagicMock()
+        shell.get_package_names = MagicMock(return_value=[
+            "emacs-x11", "emacs-melpa", "emacs-nox", "vim", "pico", "gedit", "sed"
+        ])
+        shell.client.packages.search.advanced = MagicMock()
+
+        logger = MagicMock()
+        mprint = MagicMock()
+
+        with patch("spacecmd.package.print", mprint) as prn, \
+                patch("spacecmd.package.logging", logger) as lgr:
+            out = spacecmd.package.do_package_search(shell, "emacs-melpa emacs-x11", doreturn=False)
+
+        assert not shell.help_package_search.called
+        assert not logger.debug.called
+        assert not shell.client.packages.search.advanced.called
+        assert out is None
+        assert mprint.called
+        assert_expect(mprint.call_args_list, 'emacs-melpa\nemacs-x11')
+
     def test_package_search_advanced(self, shell):
         """
         Test do_package_search with arguments of advanced fields.

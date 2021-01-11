@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.events.test;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.Channel;
@@ -34,8 +36,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
 
 /**
  * Tests {@link CloneErrataAction}.
@@ -63,7 +63,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
         // setup a channel with an errata
         Channel original = ChannelFactoryTest.createTestChannel(admin);
         final Errata errata =
-                ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
+                ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         original.addErrata(errata);
 
         // clone it

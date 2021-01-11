@@ -70,6 +70,8 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.test.CPUTest;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -116,8 +118,9 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -145,6 +148,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -293,6 +297,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).deleteKey(minionId);
+            allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         SystemManager.deleteServer(user, minion.getId());
 
@@ -314,6 +320,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).deleteKey(minionId);
+            allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         SystemManager.deleteServer(user, minion.getId());
 
@@ -854,7 +862,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // Will be used for both errata types. Represents an upgraded version of a package
         // that comes with the errata.
         PackageEvr upgradedPackageEvr =
-            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2");
+            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
         upgradedPackageEvr =
             TestUtils.saveAndReload(upgradedPackageEvr);
 
@@ -1645,5 +1653,138 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 .filter(s -> s.getGroupID().equals(group.getId())).findFirst().get();
         assertEquals(systemGroupIDInfo.getGroupID(), group.getId());
         assertEquals(systemGroupIDInfo.getGroupName(), group.getName());
+    }
+
+    /**
+     * Test that installedPackages method of {@link SystemManager} returns both packages known and unknown
+     * to Uyuni. For the known packages it includes the package id.
+     *
+     * This tests 2 cases:
+     * - reporting architecture by its label
+     * - reporting architecture by its name
+     *
+     * @throws Exception
+     */
+    public void testInstalledPackages() throws Exception {
+        doTestInstalledPackages(true);
+        doTestInstalledPackages(false);
+    }
+
+    private void doTestInstalledPackages(boolean archAsLabel) throws Exception {
+        Server server = ServerTestUtils.createTestSystem(user);
+
+        // installed on server and known to Uyuni
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+        InstalledPackage knownPackage = new InstalledPackage();
+        knownPackage.setArch(pack.getPackageArch());
+        knownPackage.setName(pack.getPackageName());
+        knownPackage.setEvr(pack.getPackageEvr());
+        knownPackage.setServer(server);
+        server.getPackages().add(knownPackage);
+
+        // installed on server but unknown to Uyuni (no package id)
+        InstalledPackage unknownPackage = new InstalledPackage();
+        unknownPackage.setArch(PackageFactory.lookupPackageArchByLabel("ia32e")); // for this one, name differs from label
+        unknownPackage.setName(PackageFactory.lookupOrCreatePackageByName("testpak-123"));
+        unknownPackage.setEvr(PackageEvrFactoryTest.createTestPackageEvr());
+        unknownPackage.setServer(server);
+        server.getPackages().add(unknownPackage);
+
+        DataResult<Map<String, Object>> packages = SystemManager.installedPackages(server.getId(), archAsLabel);
+
+        Map<String, Object> known = packages.stream()
+                .filter(p -> p.get("name").equals(knownPackage.getName().getName())).findFirst().orElseThrow();
+        Map<String, Object> unknown = packages.stream()
+                .filter(p -> p.get("name").equals(unknownPackage.getName().getName())).findFirst().orElseThrow();
+
+        assertEquals(knownPackage.getName().getName(), known.get("name"));
+        assertEquals(knownPackage.getEvr().getEpoch(), known.get("epoch"));
+        assertEquals(knownPackage.getEvr().getVersion(), known.get("version"));
+        assertEquals(knownPackage.getEvr().getRelease(), known.get("release"));
+        assertEquals(archAsLabel ? knownPackage.getArch().getLabel() : knownPackage.getArch().getName(), known.get("arch"));
+
+        assertEquals(unknownPackage.getName().getName(), unknown.get("name"));
+        assertEquals(unknownPackage.getEvr().getEpoch(), unknown.get("epoch"));
+        assertEquals(unknownPackage.getEvr().getVersion(), unknown.get("version"));
+        assertEquals(unknownPackage.getEvr().getRelease(), unknown.get("release"));
+        assertEquals(archAsLabel ? unknownPackage.getArch().getLabel() : unknownPackage.getArch().getName(), unknown.get("arch"));
+    }
+
+    public void testListDupesByIp() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "eth0", "172.17.0.2", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "eth0", "172.17.0.2", "11:22:33:44:55:78");
+
+        Set<Long> dupeSysIds = listDupesByIpAddress("172.17.0.2");
+        assertEquals(Set.of(server1.getId(), server2.getId()), dupeSysIds);
+    }
+
+    public void testListNoDupesByIp() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "eth0", "10.1.1.1", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "eth0", "10.1.1.99", "11:22:33:44:55:78");
+
+        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    public void testListDupesByIpOtherIface() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "eth0", "10.1.1.1", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "eth1", "10.1.1.1", "11:22:33:44:55:78");
+
+        Set<Long> dupeSysIds = listDupesByIpAddress("10.1.1.1");
+        assertEquals(Set.of(server1.getId(), server2.getId()), dupeSysIds);
+    }
+
+    public void testListNoDupesForDocker() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "docker0", "172.17.0.2", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "docker0", "172.17.0.2", "11:22:33:44:55:78");
+
+        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    public void testListNoDupesForVirbr() throws Exception {
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
+
+        createIfaceForServer(server1, "virbr0", "192.168.178.1", "11:22:33:44:55:77");
+        createIfaceForServer(server2, "virbr0", "192.168.178.1", "11:22:33:44:55:78");
+
+        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+    }
+
+    private static void createIfaceForServer(Server server, String ifaceName, String ip4address, String hwAddr) {
+        NetworkInterface iface = new NetworkInterface();
+        iface.setHwaddr(hwAddr);
+        iface.setName(ifaceName);
+        server.addNetworkInterface(iface);
+        ServerFactory.saveNetworkInterface(iface);
+        ServerFactory.getSession().flush();
+        ServerFactory.getSession().refresh(iface);
+
+        ServerNetAddress4 ipv4 = new ServerNetAddress4();
+        ipv4.setInterfaceId(iface.getInterfaceId());
+        ipv4.setAddress(ip4address);
+        ServerNetworkFactory.saveServerNetAddress4(ipv4);
+    }
+
+    private Set<Long> listDupesByIpAddress(String byIpAdress) {
+        return SystemManager.listDuplicatesByIP(user, 24).stream()
+                .filter(grp -> grp.getKey().equals(byIpAdress))
+                .findFirst()
+                .get()
+                .getSystems()
+                .stream()
+                .map(dto -> dto.getId())
+                .collect(Collectors.toSet());
     }
 }

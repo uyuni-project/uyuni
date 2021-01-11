@@ -1,5 +1,6 @@
 // @flow
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 import type {Node} from 'react';
 import { CustomDiv } from 'components/custom-objects';
 

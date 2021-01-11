@@ -1,6 +1,7 @@
 // @flow
 
-import React, {useState, useEffect, useContext} from "react";
+import * as React from 'react';
+import {useState, useEffect, useContext} from "react";
 
 import {AsyncButton} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
@@ -14,7 +15,7 @@ import CancelActionsDialog from "../shared/cancel-actions-dialog";
 import type {Node} from 'react';
 import type {MessageType} from "components/messages";
 
-const Network = require("utils/network");
+import Network from 'utils/network';
 
 type ScheduleType = {
   id: number,
@@ -132,11 +133,11 @@ export function SchedulePicker(props: {schedules: ScheduleType[]}) {
         divClass="col-md-6"
         required
         defaultValue=""
-      >
-        <option key="-1" value="" disabled>Select a schedule</option>
-        <option key="0" value="0">None - clear schedule</option>
-        {props.schedules.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-      </Select>
+        options={
+          [{value: "0", label: t('None - clear schedule')}].concat(
+              props.schedules.map(s => ({value: s.id, label: s.name})))
+        }
+      />
       { context.model.scheduleId !== "0" &&
         <Check
           name="cancelActions"

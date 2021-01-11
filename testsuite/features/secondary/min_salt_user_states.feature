@@ -1,6 +1,7 @@
 # Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_salt
 Feature: Coexistence with user-defined states
 
   Scenario: Create a user-defined state

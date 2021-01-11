@@ -1,3 +1,31 @@
+- Prevent tracebacks on missing mail configuration (bsc#1179990)
+- Fix pycurl.error handling in suseLib.py (bsc#1179990)
+- harden extratag key import by execute_values to ignore conflicts
+- internal code cleanup (dropping unused table rhnErrataTmp)
+- Fix Debian package version comparison
+- Removal of python-gzipstream since it's no longer used
+- Use sanitized repo label to build reposync repo cache path (bsc#1179410)
+- SPEC file update: Source0 URL, Python3 build requirements.
+- Added logging for dpkg repository detection
+- Added RHEL8 build.
+
+-------------------------------------------------------------------
+Thu Dec 03 13:42:23 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.4-1
+- add the VirtualPC as virtualization type (bsc#1178990)
+- Quote the proxy settings to be used by Zypper (bsc#1179087)
+- Do not raise TypeError when processing SUSE products (bsc#1178704)
+
+-------------------------------------------------------------------
+Wed Nov 25 12:19:21 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Fix spacewalk-repo-sync to successfully manage and sync ULN repositories
+- fix errors in spacewalk-debug and align postgresql queries to new DB version
+- ISS: Differentiate packages with same nevra but different checksum in the same channel (bsc#1178195)
+- add 'allow_vendor_change' option to rhn clients for dist upgrades
+- Re-enables possibility to use local repos with repo-sync (bsc#1175607)
 - prevent IntegrityError during mgr-inter-sync execution (bsc#1177235)
 
 -------------------------------------------------------------------

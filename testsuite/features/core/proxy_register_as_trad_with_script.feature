@@ -6,6 +6,7 @@
 #
 # Alternative: Bootstrap the proxy as a traditional client from script
 
+@scope_proxy
 Feature: Setup SUSE Manager proxy
   In order to use a proxy with the SUSE manager server
   As the system administrator
@@ -34,7 +35,7 @@ Feature: Setup SUSE Manager proxy
     Then I should see a "Proxy" link in the content area
 
 @proxy
-  Scenario: Install expect package on proxy for bootstrapping client via script via script
+  Scenario: Install expect package on proxy for bootstrapping client via script
     When I enable repositories before installing branch server
     And I install package "expect" on this "proxy"
     And I disable repositories after installing branch server

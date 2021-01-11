@@ -4,340 +4,375 @@
     <body>
       <trans-unit id="0" xml:space="preserve">
         <source>0</source>
-        <target />
+        <target>0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1" xml:space="preserve">
         <source>1</source>
-        <target />
+        <target>1</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.0.0" xml:space="preserve">
         <source>2.0.0</source>
-        <target />
+        <target>2.0.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.0.1" xml:space="preserve">
         <source>2.0.1</source>
-        <target />
+        <target>2.0.1</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2" xml:space="preserve">
         <source>2</source>
-        <target />
+        <target>2</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.4.0" xml:space="preserve">
         <source>2.4.0</source>
-        <target />
+        <target>2.4.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.5.0" xml:space="preserve">
         <source>2.5.0</source>
-        <target />
+        <target>2.5.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.6.0" xml:space="preserve">
         <source>2.6.0</source>
-        <target />
+        <target>2.6.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.7.0" xml:space="preserve">
         <source>2.7.0</source>
-        <target />
+        <target>2.7.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.8.0" xml:space="preserve">
         <source>2.8.0</source>
-        <target />
+        <target>2.8.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.9.0" xml:space="preserve">
         <source>2.9.0</source>
-        <target />
+        <target>2.9.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.0.0" xml:space="preserve">
         <source>3.0.0</source>
-        <target />
+        <target>3.0.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.1.0" xml:space="preserve">
         <source>3.1.0</source>
-        <target />
+        <target>3.1.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.1.5" xml:space="preserve">
         <source>3.1.5</source>
-        <target />
+        <target>3.1.5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.2.0" xml:space="preserve">
         <source>3.2.0</source>
-        <target />
+        <target>3.2.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.3.0" xml:space="preserve">
         <source>3.3.0</source>
-        <target />
+        <target>3.3.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3" xml:space="preserve">
         <source>3</source>
-        <target />
+        <target>3</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.4.0" xml:space="preserve">
         <source>3.4.0</source>
-        <target />
+        <target>3.4.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.5.0" xml:space="preserve">
         <source>3.5.0</source>
-        <target />
+        <target>3.5.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.6.0" xml:space="preserve">
         <source>3.6.0</source>
-        <target />
+        <target>3.6.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.6.5" xml:space="preserve">
         <source>3.6.5</source>
-        <target />
+        <target>3.6.5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.7.0" xml:space="preserve">
         <source>3.7.0</source>
-        <target />
+        <target>3.7.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4" xml:space="preserve">
         <source>4</source>
-        <target />
+        <target>4</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4.0.0" xml:space="preserve">
         <source>4.0.0</source>
-        <target />
+        <target>4.0.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5" xml:space="preserve">
         <source>5</source>
-        <target />
+        <target>5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6" xml:space="preserve">
         <source>6</source>
-        <target />
+        <target>6</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7" xml:space="preserve">
         <source>7</source>
-        <target />
+        <target>7</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8" xml:space="preserve">
         <source>8</source>
-        <target />
+        <target>8</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9" xml:space="preserve">
         <source>9</source>
-        <target />
+        <target>9</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <group>
+      <trans-unit id="yes" xml:space="preserve">
+          <source>Yes</source>
+        <target>Ano</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        <trans-unit id="yes">
-          <source>Yes</source>
-        <target /></trans-unit>
-        <trans-unit id="no">
+      </trans-unit>
+      <trans-unit id="no" xml:space="preserve">
           <source>No</source>
-        <target /></trans-unit>
-        <trans-unit id="Enabled">
+        <target>Ne</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Enabled" xml:space="preserve">
           <source>Enabled</source>
-        <target /></trans-unit>
-        <trans-unit id="Disabled">
+        <target>Zapnuto</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Disabled" xml:space="preserve">
           <source>Disabled</source>
-        <target /></trans-unit>
-        <trans-unit id="Tip">
+        <target>Vypnuto</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Tip" xml:space="preserve">
           <source>Tip</source>
-        <target /></trans-unit>
-        <trans-unit id="Note">
+        <target>Tip</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Note" xml:space="preserve">
           <source>Note</source>
-        <target /></trans-unit>
-        <trans-unit id="Warning">
+        <target>Poznámka</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Warning" xml:space="preserve">
           <source>Warning</source>
-        <target /></trans-unit>
-        <trans-unit id="Custom">
+        <target>Varování</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Custom" xml:space="preserve">
           <source>Custom</source>
-        <target /></trans-unit>
-        <trans-unit id="Examples">
+        <target state="translated">Zákaznictvo</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Examples" xml:space="preserve">
           <source>Examples</source>
-        <target /></trans-unit>
-        <trans-unit id="none specified">
+        <target>Příklady</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="none specified" xml:space="preserve">
           <source>none specified</source>
-        <target /></trans-unit>
-      </group>
+        <target>neurčeno</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">General Stuff</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="About Spacewalk" xml:space="preserve">
         <source>About</source>
-        <target />
+        <target>O</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Account" xml:space="preserve">
         <source>Account</source>
-        <target />
+        <target>Účet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Account Deactivation" xml:space="preserve">
         <source>Account Deactivation</source>
-        <target />
+        <target>Deaktivace účtu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Activation Keys" xml:space="preserve">
         <source>Activation Keys</source>
-        <target />
+        <target>Aktivační klíče</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Addresses" xml:space="preserve">
         <source>Addresses</source>
-        <target />
+        <target>Adresy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type B" xml:space="preserve">
         <source>Billing Address</source>
-        <target />
+        <target>Fakturační adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type M" xml:space="preserve">
         <source>Mailing Address</source>
-        <target />
+        <target>Poštovní adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type S" xml:space="preserve">
         <source>Shipping Address</source>
-        <target />
+        <target>Doručovací adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address not filled in" xml:space="preserve">
         <source>Address not filled in</source>
-        <target />
+        <target>Adresa nevyplněna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Fill in this address" xml:space="preserve">
         <source>Fill in this address</source>
-        <target />
+        <target>Vyplňte tuto adresu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Advanced Search" xml:space="preserve">
         <source>Advanced Search</source>
-        <target />
+        <target>Pokročilé vyhledávání</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Affected Systems" xml:space="preserve">
         <source>Affected Systems</source>
-        <target />
+        <target>Ovlivněné systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="All" xml:space="preserve">
         <source>All</source>
-        <target />
+        <target>Všechno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="url" xml:space="preserve">
         <source>url</source>
-        <target />
+        <target>url</target>
       </trans-unit>
       <trans-unit id="alphabet" xml:space="preserve">
         <source>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</source>
-        <target />
+        <target>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</target>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
@@ -347,224 +382,224 @@
       </trans-unit>
       <trans-unit id="API" xml:space="preserve">
         <source>API</source>
-        <target />
+        <target>API</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FAQs" xml:space="preserve">
         <source>FAQs</source>
-        <target />
+        <target>FAQ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Sample Scripts" xml:space="preserve">
         <source>Sample Scripts</source>
-        <target />
+        <target>Ukázkové skripty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Archived Actions" xml:space="preserve">
         <source>Archived Actions</source>
-        <target />
+        <target>Archivované akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Action Chains" xml:space="preserve">
         <source>Action Chains</source>
-        <target />
+        <target state="translated">Akční řetězce (řetězce akcí)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cant have spaces" xml:space="preserve">
         <source>do spaces work?</source>
-        <target />
+        <target>fungují mezery?</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Test message - ignore</context>
         </context-group>
       </trans-unit>
       <trans-unit id="list delimiter" xml:space="preserve">
         <source>, </source>
-        <target />
+        <target>, </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Anywhere a list of words is delimited</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Change Email" xml:space="preserve">
         <source>Change Email</source>
-        <target />
+        <target>Změnit e-mail</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.create" xml:space="preserve">
         <source>Create Software Channel</source>
-        <target />
+        <target>Vytvořit softwarový kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Audit" xml:space="preserve">
         <source>Audit</source>
-        <target />
+        <target>Audit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
-        <target />
+        <target>OpenSCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="All Scans" xml:space="preserve">
         <source>All Scans</source>
-        <target />
+        <target>Všechny skeny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="XCCDF Diff" xml:space="preserve">
         <source>XCCDF Diff</source>
-        <target />
+        <target>XCCDF Diff</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="audit.nav.logreview" xml:space="preserve">
         <source>Log Review</source>
-        <target />
+        <target>Kontrola deníku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel Management" xml:space="preserve">
         <source>Channel Management</source>
-        <target />
+        <target>Správa kanálu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel Permissions" xml:space="preserve">
         <source>Channel Permissions</source>
-        <target />
+        <target>Oprávnění kanálu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channels" xml:space="preserve">
         <source>Channels</source>
-        <target />
+        <target>Kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel List" xml:space="preserve">
         <source>Channel List</source>
-        <target />
+        <target>Seznam kanálů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Client Configuration" xml:space="preserve">
         <source>Client Configuration</source>
-        <target />
+        <target>Konfigurace klienta</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="User Guide" xml:space="preserve">
         <source>User Guide</source>
-        <target />
+        <target state="translated">Uživatelská příručka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Getting Started Guide" xml:space="preserve">
         <source>Getting Started Guide</source>
-        <target />
+        <target>Průvodce Začínáme</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Clone Errata" xml:space="preserve">
         <source>Clone Patches</source>
-        <target />
+        <target state="translated">Klonovat opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Completed Actions" xml:space="preserve">
         <source>Completed Actions</source>
-        <target />
+        <target>Dokončené akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Config Channels" xml:space="preserve">
         <source>Config Channels</source>
-        <target />
+        <target state="translated">Konfigurovat kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Create Account" xml:space="preserve">
         <source>Create Account</source>
-        <target />
+        <target>Vytvořit účet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Custom System Info" xml:space="preserve">
         <source>Custom System Info</source>
-        <target />
+        <target state="translated">Vlastní informace o systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="date" xml:space="preserve">
         <source>Date</source>
-        <target />
+        <target>Datum</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Emails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Details" xml:space="preserve">
         <source>Details</source>
-        <target />
+        <target>Podrobnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Guests" xml:space="preserve">
         <source>Guests</source>
-        <target />
+        <target>Hosté</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Storage" xml:space="preserve">
         <source>Storage</source>
-        <target />
+        <target>Paměť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Networks" xml:space="preserve">
         <source>Networks</source>
-        <target />
+        <target>Sítě</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="digits" xml:space="preserve">
         <source>0 1 2 3 4 5 6 7 8 9</source>
-        <target />
+        <target>0 1 2 3 4 5 6 7 8 9</target>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
@@ -573,154 +608,154 @@
       </trans-unit>
       <trans-unit id="Distributions" xml:space="preserve">
         <source>Distributions</source>
-        <target />
+        <target>Distribuce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Edit this address" xml:space="preserve">
         <source>Edit this address</source>
-        <target />
+        <target>Upravit tuto adresu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Errata" xml:space="preserve">
         <source>Patches</source>
-        <target />
+        <target state="translated">Záplaty (opravy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="exception" xml:space="preserve">
         <source>Exception</source>
-        <target />
+        <target>Výjimka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Failed Actions" xml:space="preserve">
         <source>Failed Actions</source>
-        <target />
+        <target>Neúspěšné akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="FAQ" xml:space="preserve">
         <source>FAQ</source>
-        <target />
+        <target>FAQ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fax" xml:space="preserve">
         <source>Fax</source>
-        <target />
+        <target>Fax</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="File Preservation" xml:space="preserve">
         <source>File Preservation</source>
-        <target />
+        <target>Uchování souborů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Go" xml:space="preserve">
         <source>Go</source>
-        <target />
+        <target state="translated">Jít</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Used in filters as the "do it" button</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GPG and SSL Keys" xml:space="preserve">
         <source>GPG and SSL Keys</source>
-        <target />
+        <target>Klíče GPG a SSL</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Help" xml:space="preserve">
         <source>Help</source>
-        <target />
+        <target state="translated">Pomoc (nápověda)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Documentation_version" xml:space="preserve">
         <source>Documentation {0}</source>
-        <target />
+        <target>Dokumentace {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Inactive" xml:space="preserve">
         <source>Inactive</source>
-        <target />
+        <target>Neaktivní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Active" xml:space="preserve">
         <source>Active</source>
-        <target />
+        <target>Aktivní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="IP Ranges" xml:space="preserve">
         <source>IP Ranges</source>
-        <target />
+        <target>Rozsahy IP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart" xml:space="preserve">
         <source>Autoinstallation</source>
-        <target />
+        <target>Autoinstalace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management" xml:space="preserve">
         <source>Power Management</source>
-        <target />
+        <target>Řízení spotřeby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Lookup Login/Password" xml:space="preserve">
         <source>Lookup Login/Password</source>
-        <target />
+        <target state="translated">Vyhledávací jméno/heslo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Errata" xml:space="preserve">
         <source>Manage Patches</source>
-        <target />
+        <target state="translated">Spravujte opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Management" xml:space="preserve">
         <source>Management</source>
-        <target />
+        <target state="translated">Řízení (správa)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage" xml:space="preserve">
         <source>Manage</source>
-        <target />
+        <target state="translated">Spravovat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Repositories" xml:space="preserve">
         <source>Manage Repositories</source>
-        <target />
+        <target>Spravovat úložiště</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1126,13 +1161,6 @@
       </trans-unit>
       <trans-unit id="Unix Release Notes" xml:space="preserve">
         <source>Unix Release Notes</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Unpublished" xml:space="preserve">
-        <source>Unpublished</source>
         <target />
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -1788,17 +1816,20 @@
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
-      <group>
+      <trans-unit id="first" xml:space="preserve">
+          <source>First Scan Id</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
-        <trans-unit id="first">
-          <source>First Scan Id</source>
-        <target /></trans-unit>
-        <trans-unit id="second">
+      </trans-unit>
+      <trans-unit id="second" xml:space="preserve">
           <source>Second Scan Id</source>
-        <target /></trans-unit>
-      </group>
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="message.perms_updated" xml:space="preserve">
         <source>Permissions Updated</source>
         <target />
@@ -2837,8 +2868,7 @@ and try again.
         <source>Create Patch</source>
         <target />
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
-          <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
+          <context context-type="sourcefile">/rhn/errata/Errata</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.group" xml:space="preserve">
@@ -4084,20 +4114,20 @@ user before attempting to deactivate their account.</source>
           <context context-type="paramnotes">System group DumpPile created.</context>
         </context-group>
       </trans-unit>
-      <group>
+      <trans-unit id="daterangepicker.error.invalid" xml:space="preserve">
+          <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
-        <note>Error messages for the date range picker, used on monitoring pages for things
-                        like the start and expiration date for notification filters.
-                </note>
-        <trans-unit id="daterangepicker.error.invalid">
-          <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-        <target /></trans-unit>
-        <trans-unit id="daterangepicker.error.start.before.end">
+      </trans-unit>
+      <trans-unit id="daterangepicker.error.start.before.end" xml:space="preserve">
           <source>The start date "{0}" must be before the end date "{1}"</source>
-        <target /></trans-unit>
-      </group>
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="monitoring.services.restarted" xml:space="preserve">
         <source>Configuration updated, Monitoring services restarted.</source>
         <target />
@@ -6698,53 +6728,104 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <!-- Activation Keys -->
-      <group>
+      <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve">
+          <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        <trans-unit id="activation-key.java.invalid_chars">
-          <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-        <target /></trans-unit>
-        <trans-unit id="activation-key.java.exists">
+      </trans-unit>
+      <trans-unit id="activation-key.java.exists" xml:space="preserve">
           <source>An activation key with label '{0}' is already taken. Please choose a different label.</source>
-        <target /></trans-unit>
-        <trans-unit id="activation-key.java.created">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.java.created" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
-        <target /></trans-unit>
-        <trans-unit id="activation-key.java.deleted">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.java.deleted" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target /></trans-unit>
-        <trans-unit id="activation-key.java.cloned">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.java.cloned" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
-        <target /></trans-unit>
-        <trans-unit id="activation-key.java.modified">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.java.modified" xml:space="preserve">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
-        <target /></trans-unit>
-        <trans-unit id="activation-key.java.org_prefixed">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
           <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target /></trans-unit>
-        <trans-unit id="activation-key.java.allowed-values">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.java.allowed-values" xml:space="preserve">
           <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
-        <target /></trans-unit>
-        <trans-unit id="system.sdc.missing.config_deploy1">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
-        <target /></trans-unit>
-        <trans-unit id="system.sdc.missing.config_deploy2">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-        <target /></trans-unit>
-        <trans-unit id="system.sdc.addtossm">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.sdc.addtossm" xml:space="preserve">
           <source>System added to the System Set Manager.</source>
-        <target /></trans-unit>
-        <trans-unit id="system.sdc.removefromssm">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.sdc.removefromssm" xml:space="preserve">
           <source>System removed from the System Set Manager.</source>
-        <target /></trans-unit>
-        <trans-unit id="usageLimit">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="usageLimit" xml:space="preserve">
           <source>Usage Limit</source>
-        <target /></trans-unit>
-        <trans-unit id="key">
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="key" xml:space="preserve">
           <source>Key</source>
-        <target /></trans-unit>
-      </group>
+        <target />
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="file_size.b" xml:space="preserve">
         <source>{0} B</source>
         <target />
@@ -7263,247 +7344,510 @@ Follow this url to see the full list of inactive systems:
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
       </trans-unit>
-      <group>
+      <trans-unit id="sdc.config.deploy.noaction" xml:space="preserve">
+          <source>No deploy action completed.</source>
+        <target />
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <trans-unit id="sdc.config.deploy.noaction">
-          <source>No deploy action completed.</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.deploy.failure">
+      </trans-unit>
+      <trans-unit id="sdc.config.deploy.failure" xml:space="preserve">
           <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.deploy.success">
+        <target />
+        <context-group name="sdc_action_deploy_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.deploy.success" xml:space="preserve">
           <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-      </group>
-      <group>
+        <target />
+        <context-group name="sdc_action_deploy_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.noaction" xml:space="preserve">
+          <source>No system comparisons completed.</source>
+        <target />
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <trans-unit id="sdc.config.diff.noaction">
-          <source>No system comparisons completed.</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0">
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1" xml:space="preserve">
           <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2" xml:space="preserve">
           <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0" xml:space="preserve">
           <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1" xml:space="preserve">
           <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2" xml:space="preserve">
           <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0" xml:space="preserve">
           <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1" xml:space="preserve">
           <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2" xml:space="preserve">
           <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.differing.files_0">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.differing.files_0" xml:space="preserve">
           <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.differing.files_1">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
           <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.differing.files_2">
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.differing.files_2" xml:space="preserve">
           <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target /></trans-unit>
-      </group>
-      <group>
+        <target />
+        <context-group name="sdc_action_diff_counts">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.config.time.message" xml:space="preserve">
+          <source>{0} by {1}</source>
+        <target />
         <context-group name="sdc_actions_time_messages">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <trans-unit id="sdc.config.time.message">
-          <source>{0} by {1}</source>
-        <target /></trans-unit>
-        <trans-unit id="sdc.config.time.message_url">
+      </trans-unit>
+      <trans-unit id="sdc.config.time.message_url" xml:space="preserve">
           <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-        <target /></trans-unit>
-      </group>
-      <group>
+        <target />
+        <context-group name="sdc_actions_time_messages">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url" xml:space="preserve">
+          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
+        <target />
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url">
-          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0">
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>No files, directories or symlinks.</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1" xml:space="preserve">
           <source>{3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2" xml:space="preserve">
           <source>{3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0" xml:space="preserve">
           <source>{2} directory</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1" xml:space="preserve">
           <source>{2} directory and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2" xml:space="preserve">
           <source>{2} directory and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0" xml:space="preserve">
           <source>{2} directories</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1" xml:space="preserve">
           <source>{2} directories and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2" xml:space="preserve">
           <source>{2} directories and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{1} file</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1" xml:space="preserve">
           <source>{1} file and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2" xml:space="preserve">
           <source>{1} file and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0" xml:space="preserve">
           <source>{1} file and {2} directory</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1" xml:space="preserve">
           <source>{1} file, {2} directory and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2" xml:space="preserve">
           <source>{1} file, {2} directory and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0" xml:space="preserve">
           <source>{1} file and {2} directories</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1" xml:space="preserve">
           <source>{1} file, {2} directories and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{1} file, {2} directories and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{1} files</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1" xml:space="preserve">
           <source>{1} files and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2" xml:space="preserve">
           <source>{1} files and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directory</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directory and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0" xml:space="preserve">
           <source>{1} files and {2} directories</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlink</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{1} files, {2} directories and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2" xml:space="preserve">
           <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} file</source>
-        <target /></trans-unit>
-        <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0">
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0" xml:space="preserve">
           <source>{0} state and {1} files</source>
-        <target /></trans-unit>
-      </group>
-      <group>
+        <target />
+        <context-group name="config_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.channels_0" xml:space="preserve">
+          <source>No configuration channels</source>
+        <target />
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
-        <trans-unit id="config.channels_0">
-          <source>No configuration channels</source>
-        <target /></trans-unit>
-        <trans-unit id="config.channels_1">
+      </trans-unit>
+      <trans-unit id="config.channels_1" xml:space="preserve">
           <source>1 configuration channel</source>
-        <target /></trans-unit>
-        <trans-unit id="config.channels_2">
+        <target />
+        <context-group name="config_channel_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config.channels_2" xml:space="preserve">
           <source>{0} configuration channels</source>
-        <target /></trans-unit>
-      </group>
+        <target />
+        <context-group name="config_channel_counts">
+          <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channel.unavailable" xml:space="preserve">
         <source>(no access to parent channel)</source>
         <target />
@@ -8397,20 +8741,6 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
         <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
@@ -10516,6 +10846,92 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Some of the specified servers cannot be found</source>
         <target />
       </trans-unit>
-    </body>
+      <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
+        <source>Redfish</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
+        </context-group>
+        <target state="new" />
+      </trans-unit>
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+        <source>Execute actions on ssh minions</source>
+        <target state="new" />
+      </trans-unit>
+      <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
+        <source>Execute action chains on minions</source>
+        <target state="new" />
+      </trans-unit>
+    <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
+        <source>The following module streams will be enabled: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_created" xml:space="preserve">
+        <source>Project {0} created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
+        <source>Project {0} deleted successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
+        <source>Project already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.label_required" xml:space="preserve">
+        <source>Label is required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
+        <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
+        <source>Label must not exceed 24 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.name_required" xml:space="preserve">
+        <source>Name is required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
+        <source>Name already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
+        <source>Label must not exceed 16 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      <target state="needs-adaptation" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
+        <source>Filter name already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
+        <source>Filter {0} created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
+        <source>Filter {0} updated successfully</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
+        <source>Name must not exceed 128 characters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+        <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

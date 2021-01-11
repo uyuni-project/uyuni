@@ -58,6 +58,11 @@ public class TestSystemQuery implements SystemQuery {
     }
 
     @Override
+    public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<MgrUtilRunner.ExecResult> collectKiwiImage(
             MinionServer minion, String filepath, String imageStore) {
         throw new UnsupportedOperationException();

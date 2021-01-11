@@ -34,4 +34,4 @@ if [ -f "$FILE_NAME" ]; then
 fi
 
 mv "$FILE_NAME.tmp" $FILE_NAME
-rm $STRUTS_TEMP $SPARK_TEMP
+rm $STRUTS_TEMP $SPARK_TEMP "$FILE_NAME.bk"

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.software;
 
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
+import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -32,7 +35,7 @@ import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.org.Org;
@@ -107,9 +110,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
-import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
-
 /**
  * ChannelSoftwareHandler
  * @version $Rev$
@@ -147,7 +147,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         return taskomaticApi;
     }
     /**
-     * If you have satellite-synced a new channel then Red Hat Errata
+     * If you have synced a new channel then patches
      * will have been updated with the packages that are in the newly synced
      * channel. A cloned erratum will not have been automatically updated
      * however. If you cloned a channel that includes those cloned errata and
@@ -158,8 +158,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel Label of cloned channel to check
      * @return List of errata that are missing packages
      *
-     * @xmlrpc.doc If you have satellite-synced a new channel then Red Hat
-     * Errata will have been updated with the packages that are in the newly
+     * @xmlrpc.doc If you have synced a new channel then patches
+     * will have been updated with the packages that are in the newly
      * synced channel. A cloned erratum will not have been automatically updated
      * however. If you cloned a channel that includes those cloned errata and
      * should include the new packages, they will not be included when they
@@ -180,7 +180,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * If you have satellite-synced a new channel then Red Hat Errata
+     * If you have synced a new channel then patches
      * will have been updated with the packages that are in the newly synced
      * channel. A cloned erratum will not have been automatically updated
      * however. If you cloned a channel that includes those cloned errata and
@@ -193,8 +193,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @return Returns 1 if successfull, FaultException otherwise
      * @throws NoSuchChannelException thrown if no channel is found.
      *
-     * @xmlrpc.doc If you have satellite-synced a new channel then Red Hat
-     * Errata will have been updated with the packages that are in the newly
+     * @xmlrpc.doc If you have synced a new channel then patches
+     * will have been updated with the packages that are in the newly
      * synced channel. A cloned erratum will not have been automatically updated
      * however. If you cloned a channel that includes those cloned errata and
      * should include the new packages, they will not be included when they
@@ -231,12 +231,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         for (Long eid : eids) {
             Errata e = ErrataManager.lookupErrata(eid, loggedInUser);
-            if (e.isPublished() && e.isCloned()) {
-                ErrataFactory.syncErrataDetails((PublishedClonedErrata) e);
+            if (e.isCloned()) {
+                ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
-                log.fatal("Tried to sync errata with id " + eid +
-                        " But it was not published or was not cloned");
+                log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
             }
         }
         return 1;
@@ -2387,17 +2386,16 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Regenerate the errata cache for all the systems subscribed to the satellite
+     * Regenerate the errata cache for all systems subscribed.
      * @param loggedInUser The current user
      * @return int - 1 on success!
      *
      * @xmlrpc.doc Completely clear and regenerate the needed Errata and Package
-     *      cache for all systems subscribed.  You must be a Satellite Admin to
+     *      cache for all systems subscribed. You must be a #product() Admin to
      *      perform this action. This will schedule an asynchronous action to
      *      actually do the processing.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype  #return_int_success()
-     *
      */
     public int regenerateNeededCache(User loggedInUser) {
         if (loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {

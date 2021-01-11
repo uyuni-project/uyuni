@@ -6,7 +6,6 @@ import {AsyncButton, LinkButton, Button} from 'components/buttons';
 import {SystemLink, SystemGroupLink} from 'components/links';
 import {Table} from 'components/table/Table';
 import {Column} from 'components/table/Column';
-import Functions from 'utils/functions';
 import {SearchField} from 'components/table/SearchField';
 import {Panel} from 'components/panels/Panel';
 import {PanelRow} from 'components/panels/PanelRow';
@@ -300,7 +299,7 @@ const ClusterOverview = (props: Props) => {
             <Column
                 columnKey="hostname"
                 width="15%"
-                comparator={Functions.Utils.sortByText}
+                comparator={Utils.sortByText}
                 header={t('Node Hostname')}
                 cell={(row : ClusterNodeType) => row.hostname }
             />

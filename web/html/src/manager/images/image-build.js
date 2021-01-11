@@ -1,21 +1,21 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
-const Network = require("utils/network");
-const {SubmitButton, LinkButton} = require("components/buttons");
-const Functions = require("utils/functions");
-const { Form } = require('components/input/Form');
-const { FormGroup } = require('components/input/FormGroup');
-const { Select } = require('components/input/Select');
-const { Text } = require('components/input/Text');
-const {ActionLink, ActionChainLink} = require("components/links");
-const {ActionSchedule} = require("components/action-schedule");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import Network from 'utils/network';
+import { SubmitButton, LinkButton } from 'components/buttons';
+import { Utils } from 'utils/functions';
+import { Form } from 'components/input/Form';
+import { FormGroup } from 'components/input/FormGroup';
+import { Select } from 'components/input/Select';
+import { Text } from 'components/input/Text';
+import { ActionLink, ActionChainLink } from 'components/links';
+import { ActionSchedule } from 'components/action-schedule';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 /* global profileId, hostId, version, localTime, timezone, actionChains */
 const typeMap = {
@@ -36,7 +36,7 @@ class BuildImage extends React.Component {
     this.state = {
       model: {
         version: version || "",
-        earliest: Functions.Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(localTime)
       },
       profile: {},
       profiles: [],
@@ -251,7 +251,7 @@ class BuildImage extends React.Component {
 
   render() {
     return (
-      <TopPanel title={t("Build Image")} icon="fa spacewalk-icon-manage-configuration-files" helpUrl="/docs/reference/images/images-build.html">
+      <TopPanel title={t("Build Image")} icon="fa spacewalk-icon-manage-configuration-files" helpUrl="reference/images/images-build.html">
         <Messages items={this.state.messages}/>
         <Form model={this.state.model} className="image-build-form"
           onChange={this.onFormChange} onSubmit={this.onBuild}
@@ -259,27 +259,19 @@ class BuildImage extends React.Component {
 
           <Select name="profileId" required label={t("Image Profile")}
             onChange={this.handleProfileChange} labelClass="col-md-3"
-            divClass="col-md-9" invalidHint={<span>Image Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}>
-            <option key="0" disabled="disabled" value="">Select an image profile</option>
-            {
-              this.state.profiles.map(k =>
-                <option key={k.profileId} value={k.profileId}>{ k.label }</option>
-              )
-            }
-          </Select>
+            divClass="col-md-9" invalidHint={<span>Image Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}
+            options={this.state.profiles}
+            getOptionValue={option => option.profileId}
+          />
 
           { this.state.profile.imageType === "dockerfile" &&
             <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
           }
 
-          <Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9">
-            <option key="0" disabled="disabled" value="">Select a build host</option>
-            {
-              this.state.hosts.map(h =>
-                <option key={h.id} value={h.id}>{ h.name }</option>
-              )
-            }
-          </Select>
+          <Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9"
+            getOptionLabel={option => option.name} getOptionValue={option => option.id}
+            options={this.state.hosts}
+          />
 
           <ActionSchedule timezone={timezone} localTime={localTime}
              earliest={this.state.model.earliest}

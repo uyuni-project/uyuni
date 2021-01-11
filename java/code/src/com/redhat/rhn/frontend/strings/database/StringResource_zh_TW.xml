@@ -54,36 +54,59 @@
         <target>監控</target>
       </trans-unit>
       <!--  Human Readable version of the entitlement labels -->
-      <group>
+      <trans-unit id="bootstrap_entitled" xml:space="preserve">
+          <source>Bootstrap</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <trans-unit id="bootstrap_entitled">
-          <source>Bootstrap</source>
         </trans-unit>
-        <trans-unit id="enterprise_entitled">
+        <trans-unit id="enterprise_entitled" xml:space="preserve">
           <source>Management</source>
           <target>管理</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
+          <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="unentitled">
+        <trans-unit id="unentitled" xml:space="preserve">
           <source>&lt;em&gt;(none)&lt;/em&gt;</source>
           <target>&lt;em&gt;(無)&lt;/em&gt;</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
+          <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="base">
+        <trans-unit id="base" xml:space="preserve">
           <source>Base</source>
           <target>基礎</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
+          <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="add-on">
+        <trans-unit id="add-on" xml:space="preserve">
           <source>Add-On</source>
           <target>附加</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
+          <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="virtualization_host">
+        <trans-unit id="virtualization_host" xml:space="preserve">
           <source>Virtualization Host</source>
           <target>虛擬化</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
+          <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
         </trans-unit>
-      </group>
       <!-- TimeZones -->
       <trans-unit id="Australia/Brisbane" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Standard)</source>
@@ -267,10 +290,11 @@
         <target>(GMT+0930) 澳大利亞 (中部/達爾文)</target>
       </trans-unit>
       <trans-unit id="Australia/Adelaide" xml:space="preserve">
-        <source>Australia Adelaide</source>
+        <source>(GMT+0930) Australia Adelaide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="Asia/Jakarta" xml:space="preserve">
         <source>(GMT+0700) Thailand</source>
@@ -2815,470 +2839,786 @@
         </context-group>
         <target>WARNING</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
-        </context-group>
-        <note>Probe command requirements:
-          rhn_command_requirements.name -&gt; rhn_command_requirements.description</note>
-        <trans-unit id="npunix">
+      <trans-unit id="npunix" xml:space="preserve">
           <source>RHNMD must be running on the monitored host to perform this check.</source>
           <target>要進行這項檢查，受監控的主機必須執行 RHNMD。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="oracle">
+        <trans-unit id="oracle" xml:space="preserve">
           <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
           <target>Oracle 的檢查需要執行 $ORACLE_HOME/rdbms/admin/catalog.sq，以設定資料庫與公開關係。除此之外，在所有 Oracle 中，在這項檢查中配置的 Oracle 使用者至少必須擁有【CONNECT】與【SELECT_CATALOG_ROLE】權利。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="snmp">
+        <trans-unit id="snmp" xml:space="preserve">
           <source>SNMP must be running on the monitored host to perform this check.</source>
           <target>要進行這項檢查，受監控的主機必須執行 SNMP。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="bea61_snmp">
+        <trans-unit id="bea61_snmp" xml:space="preserve">
           <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
           <target>若給予了網域管理伺服器的 IP 位址，這項檢查便可用來配置 BEA 管理伺服器。網域管理伺服器上也必須啟動 SNMP；您可以透過 Weblogic 主控台來進行此動作。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="npunix_oracle">
+        <trans-unit id="npunix_oracle" xml:space="preserve">
           <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
           <target>要進行檢查，受監控的系統上必須執行 RHNMD。Oracle 的檢查需要執行 $ORACLE_HOME/rdbms/admin/catalog.sq，以設定資料庫與公開關係。除此之外，在所有 Oracle 中，在此檢查中的 Oracle 至少必須擁有 CONNECT 與 SELECT_CATALOG_ROLE 的權利。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="apache1_3">
+        <trans-unit id="apache1_3" xml:space="preserve">
           <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
           <target>本網站伺服器上的 http.conf 檔案之 ExtendedStatus 選項必須設定為 On，本檢查才得以運作正常。</target>
-        </trans-unit>
-      </group>
-      <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
-        <note>Command group names:
-      rhn_command_groups.description -&gt; rhn_command_groups.description</note>
-        <trans-unit id="All">
+        </trans-unit>
+      <trans-unit id="All" xml:space="preserve">
           <source>All</source>
           <target>所有的系統</target>
-        </trans-unit>
-        <trans-unit id="Apache">
-          <source>Apache</source>
-          <target>Apache</target>
-        </trans-unit>
-        <trans-unit id="BEA Weblogic">
-          <source>BEA Weblogic</source>
-          <target>BEA Weblogic</target>
-        </trans-unit>
-        <trans-unit id="General">
-          <source>General</source>
-          <target>一般的</target>
-        </trans-unit>
-        <trans-unit id="Linux">
-          <source>Linux</source>
-          <target>Linux</target>
-        </trans-unit>
-        <trans-unit id="Log Agent">
-          <source>Log Agent</source>
-          <target>日誌代理程式</target>
-        </trans-unit>
-        <trans-unit id="MySQL">
-          <source>MySQL</source>
-          <target>MySQL</target>
-        </trans-unit>
-        <trans-unit id="Network Services">
-          <source>Network Services</source>
-          <target>網路服務</target>
-        </trans-unit>
-        <trans-unit id="Oracle">
-          <source>Oracle</source>
-          <target>Oracle</target>
-        </trans-unit>
-        <trans-unit id="Spacewalk">
-          <source>@@PRODUCT_NAME@@</source>
-          <target>@@PRODUCT_NAME@@</target>
-        </trans-unit>
-        <trans-unit id="Satellite">
-          <source>@@PRODUCT_NAME@@</source>
-          <target>@@PRODUCT_NAME@@</target>
-        </trans-unit>
-      </group>
-      <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
-        <note>Command names:
-      rhn_command.description -&gt; rhn_command.description</note>
-        <trans-unit id="Active Sessions">
+        </trans-unit>
+        <trans-unit id="Apache" xml:space="preserve">
+          <source>Apache</source>
+          <target>Apache</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="BEA Weblogic" xml:space="preserve">
+          <source>BEA Weblogic</source>
+          <target>BEA Weblogic</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="General" xml:space="preserve">
+          <source>General</source>
+          <target>一般的</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="Linux" xml:space="preserve">
+          <source>Linux</source>
+          <target>Linux</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="Log Agent" xml:space="preserve">
+          <source>Log Agent</source>
+          <target>日誌代理程式</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="MySQL" xml:space="preserve">
+          <source>MySQL</source>
+          <target>MySQL</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="Network Services" xml:space="preserve">
+          <source>Network Services</source>
+          <target>網路服務</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="Oracle" xml:space="preserve">
+          <source>Oracle</source>
+          <target>Oracle</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="Spacewalk" xml:space="preserve">
+          <source>@@PRODUCT_NAME@@</source>
+          <target>@@PRODUCT_NAME@@</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="Satellite" xml:space="preserve">
+          <source>@@PRODUCT_NAME@@</source>
+          <target>@@PRODUCT_NAME@@</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
+        </trans-unit>
+      <trans-unit id="Active Sessions" xml:space="preserve">
           <source>Active Sessions</source>
           <target>啟動中的 session</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Availability">
+        <trans-unit id="Availability" xml:space="preserve">
           <source>Availability</source>
           <target>可用性</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Blocking Sessions">
+        <trans-unit id="Blocking Sessions" xml:space="preserve">
           <source>Blocking Sessions</source>
           <target>阻絕 session</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Buffer Cache">
+        <trans-unit id="Buffer Cache" xml:space="preserve">
           <source>Buffer Cache</source>
           <target>緩衝區快取</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="CPU Usage">
+        <trans-unit id="CPU Usage" xml:space="preserve">
           <source>CPU Usage</source>
           <target>CPU 使用量</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Check Nothing">
+        <trans-unit id="Check Nothing" xml:space="preserve">
           <source>Check Nothing</source>
           <target>什麼都不檢查</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Client Connectivity">
+        <trans-unit id="Client Connectivity" xml:space="preserve">
           <source>Client Connectivity</source>
           <target>用戶連線性</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="DNS Lookup">
+        <trans-unit id="DNS Lookup" xml:space="preserve">
           <source>DNS Lookup</source>
           <target>DNS 查詢</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Data Dictionary Cache">
+        <trans-unit id="Data Dictionary Cache" xml:space="preserve">
           <source>Data Dictionary Cache</source>
           <target>資料典命中率</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Database Accessibility">
+        <trans-unit id="Database Accessibility" xml:space="preserve">
           <source>Database Accessibility</source>
           <target>資料庫可用性</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Disk I/O Throughput">
+        <trans-unit id="Disk I/O Throughput" xml:space="preserve">
           <source>Disk I/O Throughput</source>
           <target>磁碟 I/O 吞吐量</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Disk Sort Ratio">
+        <trans-unit id="Disk Sort Ratio" xml:space="preserve">
           <source>Disk Sort Ratio</source>
           <target>磁碟排序率</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Disk Space">
+        <trans-unit id="Disk Space" xml:space="preserve">
           <source>Disk Space</source>
           <target>磁碟空間</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Disk Usage">
+        <trans-unit id="Disk Usage" xml:space="preserve">
           <source>Disk Usage</source>
           <target>磁碟使用量</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Execute Queue">
+        <trans-unit id="Execute Queue" xml:space="preserve">
           <source>Execute Queue</source>
           <target>執行佇列</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Execution Time">
+        <trans-unit id="Execution Time" xml:space="preserve">
           <source>Execution Time</source>
           <target>執行時間</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="FTP">
+        <trans-unit id="FTP" xml:space="preserve">
           <source>FTP</source>
           <target>FTP</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Heap Free">
+        <trans-unit id="Heap Free" xml:space="preserve">
           <source>Heap Free</source>
           <target>可用堆積</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Host Availability">
+        <trans-unit id="Host Availability" xml:space="preserve">
           <source>Host Availability</source>
           <target>主機可用性</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="ICMP Blocked">
+        <trans-unit id="ICMP Blocked" xml:space="preserve">
           <source>ICMP Blocked</source>
           <target>阻絕的 ICMP</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="IMAP Mail">
+        <trans-unit id="IMAP Mail" xml:space="preserve">
           <source>IMAP Mail</source>
           <target>IMAP 郵件</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Idle Sessions">
+        <trans-unit id="Idle Sessions" xml:space="preserve">
           <source>Idle Sessions</source>
           <target>閒置 session</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Index Extents">
+        <trans-unit id="Index Extents" xml:space="preserve">
           <source>Index Extents</source>
           <target>索引區塊</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Inodes">
+        <trans-unit id="Inodes" xml:space="preserve">
           <source>Inodes</source>
           <target>Inodes</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Interface Traffic">
+        <trans-unit id="Interface Traffic" xml:space="preserve">
           <source>Interface Traffic</source>
           <target>界面交通</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="JDBC Connection Pool">
+        <trans-unit id="JDBC Connection Pool" xml:space="preserve">
           <source>JDBC Connection Pool</source>
           <target>JDBC 連線佇列</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Latency">
+        <trans-unit id="Latency" xml:space="preserve">
           <source>Latency</source>
           <target>延遲率</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Library Cache">
+        <trans-unit id="Library Cache" xml:space="preserve">
           <source>Library Cache</source>
           <target>函式庫快取</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Load">
+        <trans-unit id="Load" xml:space="preserve">
           <source>Load</source>
           <target>負載</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Locks">
+        <trans-unit id="Locks" xml:space="preserve">
           <source>Locks</source>
           <target>鎖定</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Log Pattern Match">
+        <trans-unit id="Log Pattern Match" xml:space="preserve">
           <source>Log Pattern Match</source>
           <target>日誌模式吻合</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Log Size Growth">
+        <trans-unit id="Log Size Growth" xml:space="preserve">
           <source>Log Size Growth</source>
           <target>日誌大小增加</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="LongLegs">
+        <trans-unit id="LongLegs" xml:space="preserve">
           <source>LongLegs</source>
           <target>LongLegs</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Mail Transfer (SMTP)">
+        <trans-unit id="Mail Transfer (SMTP)" xml:space="preserve">
           <source>Mail Transfer (SMTP)</source>
           <target>郵件傳輸（SMTP）</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Memory Usage">
+        <trans-unit id="Memory Usage" xml:space="preserve">
           <source>Memory Usage</source>
           <target>記憶體用量</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Open Tables">
+        <trans-unit id="Open Tables" xml:space="preserve">
           <source>Open Tables</source>
           <target>開啟表格</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Opened Tables">
+        <trans-unit id="Opened Tables" xml:space="preserve">
           <source>Opened Tables</source>
           <target>已開啟表格</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="POP Mail">
+        <trans-unit id="POP Mail" xml:space="preserve">
           <source>POP Mail</source>
           <target>POP 郵件</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Ping">
+        <trans-unit id="Ping" xml:space="preserve">
           <source>Ping</source>
           <target>Ping</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Probe Count">
+        <trans-unit id="Probe Count" xml:space="preserve">
           <source>Probe Count</source>
           <target>偵測數</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Process Count Total">
+        <trans-unit id="Process Count Total" xml:space="preserve">
           <source>Process Count Total</source>
           <target>程序總數</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Process Counts">
+        <trans-unit id="Process Counts" xml:space="preserve">
           <source>Process Counts</source>
           <target>程序數</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Process Counts by State">
+        <trans-unit id="Process Counts by State" xml:space="preserve">
           <source>Process Counts by State</source>
           <target>依狀態分類的程序數量</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Process Health">
+        <trans-unit id="Process Health" xml:space="preserve">
           <source>Process Health</source>
           <target>程序狀況</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Process Running">
+        <trans-unit id="Process Running" xml:space="preserve">
           <source>Process Running</source>
           <target>執行中的程序</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Processes">
+        <trans-unit id="Processes" xml:space="preserve">
           <source>Processes</source>
           <target>程序</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Query Rate">
+        <trans-unit id="Query Rate" xml:space="preserve">
           <source>Query Rate</source>
           <target>查詢率</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="RPC Service">
+        <trans-unit id="RPC Service" xml:space="preserve">
           <source>RPC Service</source>
           <target>RPC 服務</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Redo Log">
+        <trans-unit id="Redo Log" xml:space="preserve">
           <source>Redo Log</source>
           <target>重做紀錄</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Remote Ping">
+        <trans-unit id="Remote Ping" xml:space="preserve">
           <source>Remote Ping</source>
           <target>遠端 Ping</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Remote Program">
+        <trans-unit id="Remote Program" xml:space="preserve">
           <source>Remote Program</source>
           <target>遠端程式</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Remote Program with Data">
+        <trans-unit id="Remote Program with Data" xml:space="preserve">
           <source>Remote Program with Data</source>
           <target>含資料的遠端程式</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Requests">
+        <trans-unit id="Requests" xml:space="preserve">
           <source>Requests</source>
           <target>需求</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="SNMP Check">
+        <trans-unit id="SNMP Check" xml:space="preserve">
           <source>SNMP Check</source>
           <target>SNMP 檢查</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="SSH">
+        <trans-unit id="SSH" xml:space="preserve">
           <source>SSH</source>
           <target>SSH</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Secure Web server (HTTPS)">
+        <trans-unit id="Secure Web server (HTTPS)" xml:space="preserve">
           <source>Secure Web server (HTTPS)</source>
           <target>安全性網站伺服器（HTTPS）</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Server State">
+        <trans-unit id="Server State" xml:space="preserve">
           <source>Server State</source>
           <target>伺服器狀態</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Servlet">
+        <trans-unit id="Servlet" xml:space="preserve">
           <source>Servlet</source>
           <target>Servlet</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Swap">
+        <trans-unit id="Swap" xml:space="preserve">
           <source>Swap</source>
           <target>Swap</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Swap Usage">
+        <trans-unit id="Swap Usage" xml:space="preserve">
           <source>Swap Usage</source>
           <target>置換空間的用量</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="TCP Check">
+        <trans-unit id="TCP Check" xml:space="preserve">
           <source>TCP Check</source>
           <target>TCP 檢查</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="TCP Connections by State">
+        <trans-unit id="TCP Connections by State" xml:space="preserve">
           <source>TCP Connections by State</source>
           <target>依狀態分類的 TCP 連線</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="TNS Ping">
+        <trans-unit id="TNS Ping" xml:space="preserve">
           <source>TNS Ping</source>
           <target>TNS Ping</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Table Extents">
+        <trans-unit id="Table Extents" xml:space="preserve">
           <source>Table Extents</source>
           <target>表格區塊</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Tablespace Usage">
+        <trans-unit id="Tablespace Usage" xml:space="preserve">
           <source>Tablespace Usage</source>
           <target>表空間使用量</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Threads Running">
+        <trans-unit id="Threads Running" xml:space="preserve">
           <source>Threads Running</source>
           <target>執行中的執行續</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="UDP Check">
+        <trans-unit id="UDP Check" xml:space="preserve">
           <source>UDP Check</source>
           <target>UDP 檢查</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Uptime">
+        <trans-unit id="Uptime" xml:space="preserve">
           <source>Uptime</source>
           <target>開機迄今時間</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Uptime (SNMP)">
+        <trans-unit id="Uptime (SNMP)" xml:space="preserve">
           <source>Uptime (SNMP)</source>
           <target>開機迄今時間（SNMP）</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Users">
+        <trans-unit id="Users" xml:space="preserve">
           <source>Users</source>
           <target>使用者</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Virtual Memory">
+        <trans-unit id="Virtual Memory" xml:space="preserve">
           <source>Virtual Memory</source>
           <target>虛擬記憶體</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Web server (HTTP)">
+        <trans-unit id="Web server (HTTP)" xml:space="preserve">
           <source>Web server (HTTP)</source>
           <target>網站伺服器（HTTP）</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <!-- Kickstart Install Types -->
-        <trans-unit id="Red Hat Enterprise Linux 4">
+        <trans-unit id="Red Hat Enterprise Linux 4" xml:space="preserve">
           <source>Red Hat Enterprise Linux 4</source>
           <target>Red Hat Enterprise Linux 4</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Red Hat Enterprise Linux 3">
+        <trans-unit id="Red Hat Enterprise Linux 3" xml:space="preserve">
           <source>Red Hat Enterprise Linux 3</source>
           <target>Red Hat Enterprise Linux 3</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="Red Hat Enterprise Linux 2.1">
+        <trans-unit id="Red Hat Enterprise Linux 2.1" xml:space="preserve">
           <source>Red Hat Enterprise Linux 2.1</source>
           <target>Red Hat Enterprise Linux 2.1</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <group>
+      <trans-unit id="kickstart.state.created" xml:space="preserve">
+          <source>Autoinstallation session created but has not yet been used.</source>
+          <target>Kickstart 已經建立，但尚未使用過。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <trans-unit id="kickstart.state.created">
-          <source>Autoinstallation session created but has not yet been used.</source>
-          <target>Kickstart 已經建立，但尚未使用過。</target>
         </trans-unit>
-        <trans-unit id="kickstart.state.deployed">
+        <trans-unit id="kickstart.state.deployed" xml:space="preserve">
           <source>Files required for autoinstallation action have been installed.</source>
           <target>Kickstart 動作所需的檔案已經安裝。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.injected">
+        <trans-unit id="kickstart.state.injected" xml:space="preserve">
           <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
           <target>已經修改系統設定，下次開機時會開始 kickstart。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.restarted">
+        <trans-unit id="kickstart.state.restarted" xml:space="preserve">
           <source>The system has been restarted in order to begin the autoinstallation process.</source>
           <target>系統已經重新啟動，以進行 kickstart 程序。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.configuration_accessed">
+        <trans-unit id="kickstart.state.configuration_accessed" xml:space="preserve">
           <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
           <target>系統已經從 @@PRODUCT_NAME@@ 下載 kickstart 設定檔。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.started">
+        <trans-unit id="kickstart.state.started" xml:space="preserve">
           <source>The initial files required for autoinstallation have been downloaded.</source>
           <target>已經下載安裝程序（Anaconda）所需的起始檔案。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.in_progress">
+        <trans-unit id="kickstart.state.in_progress" xml:space="preserve">
           <source>The system is downloading the RPMs required to install.</source>
           <target>系統正在下載要安裝的 RPM 套件。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.registered">
+        <trans-unit id="kickstart.state.registered" xml:space="preserve">
           <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
           <target>在 kickstart 之後，系統已經成功地向 @@PRODUCT_NAME@@ 註冊。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.package_synch">
+        <trans-unit id="kickstart.state.package_synch" xml:space="preserve">
           <source>Package synchronization in progress.</source>
           <target>正在同步套件檔。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.package_synch_scheduled">
+        <trans-unit id="kickstart.state.package_synch_scheduled" xml:space="preserve">
           <source>Package synchronization scheduled.</source>
           <target>已排程套件同步。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.configuration_deploy">
+        <trans-unit id="kickstart.state.configuration_deploy" xml:space="preserve">
           <source>Configuration files are being deployed.</source>
           <target>設定檔已經成功地被建置。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.complete">
+        <trans-unit id="kickstart.state.complete" xml:space="preserve">
           <source>Autoinstallation complete.</source>
           <target>Kickstart 完成。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.state.failed">
+        <trans-unit id="kickstart.state.failed" xml:space="preserve">
           <source>Autoinstallation failed.</source>
           <target>Kickstart 失敗。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <group>
+      <trans-unit id="error.unsupported_db_min" xml:space="preserve">
+          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
-        <trans-unit id="error.unsupported_db_min">
-          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
         </trans-unit>
-        <trans-unit id="error.unsupported_db_max">
+        <trans-unit id="error.unsupported_db_max" xml:space="preserve">
           <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/Login.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="error.unsupported_db_migrate">
+        <trans-unit id="error.unsupported_db_migrate" xml:space="preserve">
           <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/Login.do</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="error.unfinished_schema_upgrade">
+        <trans-unit id="error.unfinished_schema_upgrade" xml:space="preserve">
           <source>Database schema upgrade in progress!</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/Login.do</context>
+        </context-group>
         </trans-unit>
-      </group>
-    </body>
+      <trans-unit id="Asia/Jerusalem" xml:space="preserve">
+        <source>(GMT+0200) Israel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Asia/Singapore" xml:space="preserve">
+        <source>(GMT+0800) Singapore</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
+        <source>(GMT+0800) Malaysia</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

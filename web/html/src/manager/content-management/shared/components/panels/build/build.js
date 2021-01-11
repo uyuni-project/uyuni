@@ -1,6 +1,7 @@
 //@flow
 
-import React, {useEffect, useState} from 'react';
+import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {Button} from "../../../../../../components/buttons";
 import {closeDialog, Dialog} from "../../../../../../components/dialog/Dialog";
 import {ModalButton} from "../../../../../../components/dialog/ModalButton";

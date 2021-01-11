@@ -23,7 +23,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.org.OrgFactory;
 
 import com.suse.manager.utils.MailHelper;
@@ -41,10 +40,7 @@ import java.util.Map;
 
 /**
  * This is a port of the ErrataEngine taskomatic task
- *
- * @version $Rev.$
  */
-
 public class ErrataMailer extends RhnJavaJob {
 
     /**
@@ -119,7 +115,7 @@ public class ErrataMailer extends RhnJavaJob {
     }
 
     private void sendEmails(Long errataId, Long orgId, Long channelId) {
-        Errata errata = (Errata) HibernateFactory.getSession().load(PublishedErrata.class,
+        Errata errata = (Errata) HibernateFactory.getSession().load(Errata.class,
                 errataId);
         List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
@@ -191,16 +187,7 @@ public class ErrataMailer extends RhnJavaJob {
         StringBuilder body = new StringBuilder();
 
         //Build the hostname with protocol. Used to create urls for the email.
-        String host;
-        //The protocol from configuration.
-        if (ConfigDefaults.get().isSSLAvailable()) {
-            host = "https://";
-        }
-        else {
-            host = "http://";
-        }
-        //Add the hostname
-        host = host + ConfigDefaults.get().getHostname();
+        String host = "https://" + ConfigDefaults.get().getHostname();
 
         //Build the email body
         body.append(getEmailBodySummary(errata, host));

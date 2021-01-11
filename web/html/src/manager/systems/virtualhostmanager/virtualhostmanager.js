@@ -1,17 +1,17 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Network = require("utils/network");
-const { TopPanel } = require('components/panels/TopPanel');
-const {DropdownButton} = require("components/buttons");
-const {Messages} = require("components/messages");
-const {VirtualHostManagerList} = require("./virtualhostmanager-list");
-const {VirtualHostManagerDetails} = require("./virtualhostmanager-details");
-const {VirtualHostManagerEdit} = require("./virtualhostmanager-edit");
-const MessagesUtils = require("components/messages").Utils;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import Network from 'utils/network';
+import { TopPanel } from 'components/panels/TopPanel';
+import { DropdownButton } from 'components/buttons';
+import { Messages } from 'components/messages';
+import { VirtualHostManagerList } from './virtualhostmanager-list';
+import { VirtualHostManagerDetails } from './virtualhostmanager-details';
+import { VirtualHostManagerEdit } from './virtualhostmanager-edit';
+import { Utils as MessagesUtils } from 'components/messages';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
@@ -174,7 +174,7 @@ class VirtualHostManager extends React.Component {
                 title={this.getPanelTitle()}
                 icon="spacewalk-icon-virtual-host-manager"
                 button={panelButtons}
-                helpUrl="/docs/reference/systems/virtual-host-managers.html"
+                helpUrl="reference/systems/virtual-host-managers.html"
             >
                 { this.state.messages ?
                      <Messages items={this.state.messages}/> :

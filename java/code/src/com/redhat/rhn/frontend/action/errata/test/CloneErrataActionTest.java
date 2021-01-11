@@ -61,7 +61,7 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
         Channel original = ChannelFactoryTest.createTestChannel(user);
 
         for (int j = 0; j < 5; ++j) {
-            Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+            Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
             original.addErrata(e);
             errataToClone.addElement(e.getId());
         }

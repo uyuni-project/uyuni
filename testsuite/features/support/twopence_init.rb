@@ -25,12 +25,13 @@ def twopence_init(target)
 end
 
 # Define common twopence objects
+$localhost = twopence_init("ssh:#{ENV['HOSTNAME']}") unless $debug_mode
 $proxy = twopence_init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = twopence_init("ssh:#{ENV['SERVER']}")
 $kvm_server = twopence_init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
 $xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
-nodes = [$server, $proxy, $kvm_server, $xen_server]
+$nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
 if $qam_test
   # Define twopence objects for QAM environment
@@ -52,25 +53,31 @@ if $qam_test
   $ceos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $ceos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $ceos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
+  $ceos8_minion = twopence_init("ssh:#{ENV['CENTOS8_MINION']}") if ENV['CENTOS8_MINION']
+  $ceos8_ssh_minion = twopence_init("ssh:#{ENV['CENTOS8_SSHMINION']}") if ENV['CENTOS8_SSHMINION']
   $ubuntu1604_minion = twopence_init("ssh:#{ENV['UBUNTU1604_MINION']}") if ENV['UBUNTU1604_MINION']
   $ubuntu1604_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
+  $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
+  $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
   # As we share core features for QAM and QA environments, we share also those vm twopence objects
   $minion = $sle12sp4_minion
   $ssh_minion = $sle12sp4_ssh_minion
   $client = $sle12sp4_client
   $ceos_minion = $ceos6_ssh_minion
   $ubuntu_minion = $ubuntu1804_minion
-  nodes += [$sle11sp4_minion, $sle11sp4_ssh_minion, $sle11sp4_client,
-            $sle12sp4_minion, $sle12sp4_ssh_minion, $sle12sp4_client,
-            $sle15_minion, $sle15_ssh_minion, $sle15_client,
-            $sle15sp1_minion, $sle15sp1_ssh_minion, $sle15sp1_client,
-            $ceos6_minion, $ceos6_ssh_minion, $ceos6_client,
-            $ceos7_minion, $ceos7_ssh_minion, $ceos7_client,
-            $ubuntu1604_ssh_minion, $ubuntu1604_minion,
-            $ubuntu1804_ssh_minion, $ubuntu1804_minion,
-            $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
+  $nodes += [$sle11sp4_minion, $sle11sp4_ssh_minion, $sle11sp4_client,
+             $sle12sp4_minion, $sle12sp4_ssh_minion, $sle12sp4_client,
+             $sle15_minion, $sle15_ssh_minion, $sle15_client,
+             $sle15sp1_minion, $sle15sp1_ssh_minion, $sle15sp1_client,
+             $ceos6_minion, $ceos6_ssh_minion, $ceos6_client,
+             $ceos7_minion, $ceos7_ssh_minion, $ceos7_client,
+             $ceos8_minion, $ceos8_ssh_minion,
+             $ubuntu1604_ssh_minion, $ubuntu1604_minion,
+             $ubuntu1804_ssh_minion, $ubuntu1804_minion,
+             $ubuntu2004_ssh_minion, $ubuntu2004_minion,
+             $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 else
   # Define twopence objects for QA environment
   $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
@@ -79,19 +86,19 @@ else
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
   $ceos_minion = twopence_init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
   $ubuntu_minion = twopence_init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
-  nodes += [$client, $minion, $build_host, $ceos_minion, $ubuntu_minion, $ssh_minion]
+  $nodes += [$client, $minion, $build_host, $ceos_minion, $ubuntu_minion, $ssh_minion]
 end
 
 # Lavanda library module extension
 # Look at support/lavanda.rb for more details
-nodes.each do |node|
+$nodes.each do |node|
   next if node.nil?
 
   node.extend(LavandaBasic)
 end
 
 # Initialize hostname
-nodes.each do |node|
+$nodes.each do |node|
   next if node.nil?
 
   hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
@@ -108,7 +115,7 @@ nodes.each do |node|
 end
 
 # Initialize IP address or domain name
-nodes.each do |node|
+$nodes.each do |node|
   next if node.nil?
 
   node.init_ip(node.full_hostname)
@@ -126,6 +133,9 @@ end
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 def get_system_name(host)
+  # If the system is not known, just return the parameter
+  system_name = host
+
   if host == 'pxeboot_minion'
     # The PXE boot minion is not directly accessible on the network,
     # therefore it is not represented by a twopence node
@@ -135,8 +145,12 @@ def get_system_name(host)
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
   else
-    node = get_target(host)
-    system_name = node.full_hostname
+    begin
+      node = get_target(host)
+      system_name = node.full_hostname
+    rescue RuntimeError => e
+      puts e.message
+    end
   end
   system_name
 end
@@ -195,7 +209,8 @@ if ENV['SCC_CREDENTIALS']
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
 end
-$node_by_host = { 'server'                => $server,
+$node_by_host = { 'localhost'             => $localhost,
+                  'server'                => $server,
                   'proxy'                 => $proxy,
                   'ceos_minion'           => $ceos_minion,
                   'ceos_ssh_minion'       => $ceos_minion,
@@ -204,8 +219,10 @@ $node_by_host = { 'server'                => $server,
                   'ubuntu_ssh_minion'     => $ubuntu_minion,
                   'ssh_minion'            => $ssh_minion,
                   'sle_minion'            => $minion,
+                  'sle_ssh_tunnel_minion' => $minion,
                   'build_host'            => $build_host,
                   'sle_client'            => $client,
+                  'sle_ssh_tunnel_client' => $client,
                   'kvm_server'            => $kvm_server,
                   'xen_server'            => $xen_server,
                   'sle_migrated_minion'   => $client,
@@ -215,10 +232,14 @@ $node_by_host = { 'server'                => $server,
                   'ceos7_minion'          => $ceos7_minion,
                   'ceos7_ssh_minion'      => $ceos7_ssh_minion,
                   'ceos7_client'          => $ceos7_client,
+                  'ceos8_minion'          => $ceos8_minion,
+                  'ceos8_ssh_minion'      => $ceos8_ssh_minion,
                   'ubuntu1604_minion'     => $ubuntu1604_minion,
                   'ubuntu1604_ssh_minion' => $ubuntu1604_ssh_minion,
                   'ubuntu1804_minion'     => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion' => $ubuntu1804_ssh_minion,
+                  'ubuntu2004_minion'     => $ubuntu2004_minion,
+                  'ubuntu2004_ssh_minion' => $ubuntu2004_ssh_minion,
                   'sle11sp4_ssh_minion'   => $sle11sp4_ssh_minion,
                   'sle11sp4_minion'       => $sle11sp4_minion,
                   'sle11sp4_client'       => $sle11sp4_client,

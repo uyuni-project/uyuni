@@ -44,6 +44,8 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -82,7 +84,7 @@ def do_kickstart_list(self, args, doreturn=False):
         if kickstarts:
             print(os.linesep.join(kickstarts))
         else:
-            logging.error(_("No kickstart profiles available"))
+            logging.error(_N("No kickstart profiles available"))
 
 ####################
 
@@ -139,23 +141,23 @@ def do_kickstart_create(self, args):
             if password1 == password2:
                 options.root_password = password1
             elif password1 == '':
-                logging.warning(_('Password must be at least 5 characters'))
+                logging.warning(_N('Password must be at least 5 characters'))
             else:
-                logging.warning(_("Passwords don't match"))
+                logging.warning(_N("Passwords don't match"))
     else:
         if not options.name:
-            logging.error(_('The Kickstart name is required'))
+            logging.error(_N('The Kickstart name is required'))
             return 1
 
         if not options.distribution:
-            logging.error(_('The distribution is required'))
+            logging.error(_N('The distribution is required'))
             return 1
 
         if not options.virt_type:
             options.virt_type = 'none'
 
         if not options.root_password:
-            logging.error(_('A root password is required'))
+            logging.error(_N('A root password is required'))
             return 1
 
     # leave this blank to use the default server
@@ -200,13 +202,13 @@ def do_kickstart_delete(self, args):
     logging.debug("Got labels to delete of %s" % labels)
 
     if not labels:
-        logging.error(_("No valid kickstart labels passed as arguments!"))
+        logging.error(_N("No valid kickstart labels passed as arguments!"))
         self.help_kickstart_delete()
         return 1
 
     mismatched = sorted(set(args).difference(set(all_labels)))
     if mismatched:
-        logging.error(_("The following kickstart labels are invalid:"),
+        logging.error(_N("The following kickstart labels are invalid:"),
                       ", ".join(mismatched))
         return 1
     else:
@@ -267,15 +269,15 @@ def kickstart_import_file(self, raw, args):
             options.distribution = prompt_user('Select:')
     else:
         if not options.name:
-            logging.error(_('The Kickstart name is required'))
+            logging.error(_N('The Kickstart name is required'))
             return
 
         if not options.distribution:
-            logging.error(_('The distribution is required'))
+            logging.error(_N('The distribution is required'))
             return
 
         if not options.file:
-            logging.error(_('A filename is required'))
+            logging.error(_N('A filename is required'))
             return
 
         if not options.virt_type:
@@ -350,7 +352,7 @@ def do_kickstart_details(self, args):
             break
 
     if not kickstart:
-        logging.warning(_('Invalid Kickstart profile'))
+        logging.warning(_N('Invalid Kickstart profile'))
         return
 
     act_keys = \
@@ -527,7 +529,7 @@ def kickstart_getcontents(self, profile):
             response = urlopen(url)
             kickstart = response.read()
         except HTTPError:
-            logging.error(_('Could not retrieve the Kickstart file'))
+            logging.error(_N('Could not retrieve the Kickstart file'))
 
     return kickstart
 
@@ -629,7 +631,7 @@ def do_kickstart_listcryptokeys(self, args, doreturn=False):
         if keys:
             print('\n'.join(keys))
         else:
-            logging.error(_("No crypto keys has been found"))
+            logging.error(_N("No crypto keys has been found"))
 
 ####################
 
@@ -1345,7 +1347,7 @@ def do_kickstart_addoption(self, args):
                                                          profile,
                                                          advanced)
     else:
-        logging.warning(_('%s needs to be set as a custom option') % key)
+        logging.warning(_N('%s needs to be set as a custom option') % key)
 
     return 0
 
@@ -1887,7 +1889,7 @@ def do_kickstart_listscripts(self, args):
     profile = args[0]
     scripts = self.client.kickstart.profile.listScripts(self.session, profile)
     if not scripts:
-        logging.error(_("No scripts has been found for profile '%s'"), profile)
+        logging.error(_N("No scripts has been found for profile '%s'"), profile)
     else:
         add_separator = False
         for script in scripts:
@@ -1977,15 +1979,15 @@ def do_kickstart_addscript(self, args):
             options.execution_time = 'post'
     else:
         if not options.profile:
-            logging.error(_('The Kickstart name is required'))
+            logging.error(_N('The Kickstart name is required'))
             return 1
 
         if not options.file:
-            logging.error(_('A filename is required'))
+            logging.error(_N('A filename is required'))
             return 1
 
         if not options.execution_time:
-            logging.error(_('The execution time is required'))
+            logging.error(_N('The execution time is required'))
             return 1
 
         if not options.chroot:
@@ -2055,7 +2057,7 @@ def do_kickstart_removescript(self, args):
         try:
             script_id = int(args[1])
         except ValueError:
-            logging.error(_('Invalid script ID'))
+            logging.error(_N('Invalid script ID'))
 
     # print(the scripts for the user to review)
     self.do_kickstart_listscripts(profile)
@@ -2068,7 +2070,7 @@ def do_kickstart_removescript(self, args):
             try:
                 script_id = int(userinput)
             except ValueError:
-                logging.error(_('Invalid script ID'))
+                logging.error(_N('Invalid script ID'))
 
     if not self.user_confirm(_('Remove this script [y/N]:')):
         return 1
@@ -2105,7 +2107,7 @@ def do_kickstart_clone(self, args):
 
     if is_interactive(options):
         if not profiles:
-            logging.error(_("No kickstart profiles available"))
+            logging.error(_N("No kickstart profiles available"))
             return 1
 
         print('')
@@ -2119,16 +2121,16 @@ def do_kickstart_clone(self, args):
     else:
 
         if not options.name:
-            logging.error(_('The Kickstart name is required'))
+            logging.error(_N('The Kickstart name is required'))
             return 1
 
         if not options.clonename:
-            logging.error(_('The Kickstart clone name is required'))
+            logging.error(_N('The Kickstart clone name is required'))
             return 1
 
     args.append(options.name)
     if not filter_results(profiles, args):
-        logging.error(_("Kickstart profile you've entered was not found"))
+        logging.error(_N("Kickstart profile you've entered was not found"))
         return 1
 
     self.client.kickstart.cloneProfile(self.session,
@@ -2268,7 +2270,7 @@ def do_kickstart_export(self, args):
     if not args:
         if not filename:
             filename = "ks_all.json"
-        logging.info(_("Exporting ALL kickstart profiles to %s") % filename)
+        logging.info(_N("Exporting ALL kickstart profiles to %s") % filename)
         profiles = self.do_kickstart_list('', True)
     else:
         # allow globbing of kickstart kickstart names
@@ -2276,7 +2278,7 @@ def do_kickstart_export(self, args):
         logging.debug("kickstart_export called with args %s, profiles=%s" %
                       (args, profiles))
         if not profiles:
-            logging.error(_("Error, no valid kickstart profile passed, " +
+            logging.error(_N("Error, no valid kickstart profile passed, " +
                           "check name is  correct with spacecmd kickstart_list"))
             return 1
         if not filename:
@@ -2296,7 +2298,7 @@ def do_kickstart_export(self, args):
     # Dump as a list of dict
     ksdetails_list = []
     for p in profiles:
-        logging.info(_("Exporting ks %s to %s") % (p, filename))
+        logging.info(_N("Exporting ks %s to %s") % (p, filename))
         ksdetails_list.append(self.export_kickstart_getdetails(p, kickstarts))
 
     logging.debug("About to dump %d ks profiles to %s" %
@@ -2307,7 +2309,7 @@ def do_kickstart_export(self, args):
                                  _("confirm overwrite file? (y/n)")):
             return 1
     if json_dump_to_file(ksdetails_list, filename) != True:
-        logging.error(_("Error saving exported kickstart profiles to file") %
+        logging.error(_N("Error saving exported kickstart profiles to file") %
                       filename)
         return 1
 
@@ -2327,7 +2329,7 @@ def do_kickstart_importjson(self, args):
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
-        logging.error(_("Error, no filename passed"))
+        logging.error(_N("Error, no filename passed"))
         self.help_kickstart_import()
         return 1
 
@@ -2335,11 +2337,11 @@ def do_kickstart_importjson(self, args):
         logging.debug("Passed filename do_kickstart_import %s" % filename)
         ksdetails_list = json_read_from_file(filename)
         if not ksdetails_list:
-            logging.error(_("Error, could not read json data from %s") % filename)
+            logging.error(_N("Error, could not read json data from %s") % filename)
             return 1
         for ksdetails in ksdetails_list:
             if self.import_kickstart_fromdetails(ksdetails) != True:
-                logging.error(_("Error importing kickstart %s") %
+                logging.error(_N("Error importing kickstart %s") %
                               ksdetails['name'])
 
     return 0
@@ -2352,11 +2354,11 @@ def import_kickstart_fromdetails(self, ksdetails):
     # First we check that an existing kickstart with the same name does not exist
     existing_profiles = self.do_kickstart_list('', True)
     if ksdetails['name'] in existing_profiles:
-        logging.error(_("ERROR : kickstart profile %s already exists! Skipping!")
+        logging.error(_N("ERROR : kickstart profile %s already exists! Skipping!")
                       % ksdetails['name'])
         return False
     # create the ks, we need to drop the org prefix from the ks name
-    logging.info(_("Found ks %s") % ksdetails['name'])
+    logging.info(_N("Found ks %s") % ksdetails['name'])
 
     # Create the kickstart
     # for adding new profiles, we require a root password.
@@ -2412,7 +2414,7 @@ def import_kickstart_fromdetails(self, ksdetails):
         if ret:
             logging.debug("Added %s script to profile" % script['script_type'])
         else:
-            logging.error(_("Error adding %s script") % script['script_type'])
+            logging.error(_N("Error adding %s script") % script['script_type'])
     # Specify ip ranges
     for iprange in ksdetails['ip_ranges']:
         if self.client.kickstart.profile.addIpRange(self.session,
@@ -2420,7 +2422,7 @@ def import_kickstart_fromdetails(self, ksdetails):
             logging.debug("added ip range %s-%s" %
                           iprange['min'], iprange['max'])
         else:
-            logging.warning(_("failed to add ip range %s-%s, continuing") %
+            logging.warning(_N("failed to add ip range %s-%s, continuing") %
                             iprange['min'], iprange['max'])
             continue
     # File preservations, only if the list exists
@@ -2434,9 +2436,9 @@ def import_kickstart_fromdetails(self, ksdetails):
                         self.session, ksdetails['label'], [fp]):
                     logging.debug("added file preservation '%s'" % fp)
                 else:
-                    logging.warning(_("failed to add file preservation %s, skipping") % fp)
+                    logging.warning(_N("failed to add file preservation %s, skipping") % fp)
             else:
-                logging.warning(_("file preservation list %s doesn't exist, skipping") % fp)
+                logging.warning(_N("file preservation list %s doesn't exist, skipping") % fp)
 
     # Now add activationkeys, only if they exist
     existing_act_keys = [k['key'] for k in
@@ -2447,7 +2449,7 @@ def import_kickstart_fromdetails(self, ksdetails):
             self.client.kickstart.profile.keys.addActivationKey(self.session,
                                                                 ksdetails['label'], akey)
         else:
-            logging.warning(_("Actvationkey %s does not exist on the ") % akey +
+            logging.warning(_N("Actvationkey %s does not exist on the ") % akey +
                             ("satellite, skipping"))
 
     # The GPG/SSL keys, only if they exist
@@ -2458,8 +2460,7 @@ def import_kickstart_fromdetails(self, ksdetails):
             self.client.kickstart.profile.system.addKeys(self.session,
                                                          ksdetails['label'], [key])
         else:
-            logging.warning(_("GPG/SSL key %s does not exist on the ") % key +
-                            _("satellite, skipping"))
+            logging.warning(_N("GPG/SSL key %s does not exist on the Spacewalk server, skipping") % key)
 
     # The pre/post logging settings
     self.client.kickstart.profile.setLogging(self.session, ksdetails['label'],
@@ -2468,20 +2469,20 @@ def import_kickstart_fromdetails(self, ksdetails):
     # There are some frustrating ommisions from the API which means we can't
     # export/import some settings, so we post a warning that some manual
     # fixup may be required
-    logging.warning(_("Due to API ommissions, there are some settings which" +
+    logging.warning(_N("Due to API ommissions, there are some settings which" +
                     " cannot be imported, please check and fixup manually if necessary"))
-    logging.warning(_(" * Details->Preserve ks.cfg"))
-    logging.warning(_(" * Details->Comment"))
+    logging.warning(_N(" * Details->Preserve ks.cfg"))
+    logging.warning(_N(" * Details->Comment"))
     # Org default gets exported but no way to set it, so we can just show this
     # warning if they are trying to import an org_default profile
     if ksdetails['org_default']:
-        logging.warning(_(" * Details->Organization Default Profile"))
+        logging.warning(_N(" * Details->Organization Default Profile"))
     # No way to set the kernel options
-    logging.warning(_(" * Details->Kernel Options"))
+    logging.warning(_N(" * Details->Kernel Options"))
     # We can export Post kernel options (sort of, see above)
     # if they exist on import, flag a warning
     if 'post_kopts' in ksdetails:
-        logging.warning(_(" * Details->Post Kernel Options : %s") %
+        logging.warning(_N(" * Details->Post Kernel Options : %s") %
                         ksdetails['post_kopts'])
     return True
 
@@ -2497,10 +2498,10 @@ def is_kickstart(self, name):
 
 def check_kickstart(self, name):
     if not name:
-        logging.error(_("no kickstart label given"))
+        logging.error(_N("no kickstart label given"))
         return False
     if not self.is_kickstart(name):
-        logging.error(_("invalid kickstart label ") + name)
+        logging.error(_N("invalid kickstart label ") + name)
         return False
     return True
 
@@ -2594,13 +2595,13 @@ def do_kickstart_getupdatetype(self, args):
     logging.debug("Got labels to list the update type %s" % labels)
 
     if not labels:
-        logging.error(_("No valid kickstart labels passed as arguments!"))
+        logging.error(_N("No valid kickstart labels passed as arguments!"))
         self.help_kickstart_getupdatetype()
         return 1
 
     for label in labels:
         if not label in all_labels:
-            logging.error(_("kickstart label %s doesn't exist!") % label)
+            logging.error(_N("kickstart label %s doesn't exist!") % label)
             continue
 
         updatetype = self.client.kickstart.profile.getUpdateType(self.session, label)
@@ -2650,13 +2651,13 @@ def do_kickstart_setupdatetype(self, args):
     logging.debug("Got labels to set the update type %s" % labels)
 
     if not labels:
-        logging.error(_("No valid kickstart labels passed as arguments!"))
+        logging.error(_N("No valid kickstart labels passed as arguments!"))
         self.help_kickstart_setupdatetype()
         return 1
 
     for label in labels:
         if not label in all_labels:
-            logging.error(_("kickstart label %s doesn't exist!") % label)
+            logging.error(_N("kickstart label %s doesn't exist!") % label)
             continue
 
         self.client.kickstart.profile.setUpdateType(self.session, label, options.update_type)
@@ -2692,13 +2693,13 @@ def do_kickstart_getsoftwaredetails(self, args):
     logging.debug("Got labels to set the update type %s" % labels)
 
     if not labels:
-        logging.error(_("No valid kickstart labels passed as arguments!"))
+        logging.error(_N("No valid kickstart labels passed as arguments!"))
         self.help_kickstart_getsoftwaredetails()
         return 1
 
     for label in labels:
         if not label in all_labels:
-            logging.error(_("kickstart label %s doesn't exist!") % label)
+            logging.error(_N("kickstart label %s doesn't exist!") % label)
             continue
 
         software_details = self.client.kickstart.profile.software.getSoftwareDetails(self.session, label)

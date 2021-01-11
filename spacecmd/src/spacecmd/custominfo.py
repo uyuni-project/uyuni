@@ -27,6 +27,7 @@
 # pylint: disable=W0613
 
 import gettext
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -93,7 +94,7 @@ def do_custominfo_deletekey(self, args):
                   (args, keys))
 
     if not keys:
-        logging.error("No keys matched argument %s" % args)
+        logging.error(_N("No keys matched argument %s") % args)
         return 1
 
     # Print the keys prior to the confirmation
@@ -152,7 +153,7 @@ def do_custominfo_details(self, args):
         ", ".join(args), ", ".join(keys)))
 
     if not keys:
-        logging.error(_("No keys matched argument '{}'.").format(", ".join(args)))
+        logging.error(_N("No keys matched argument '{}'.").format(", ".join(args)))
         return 1
 
     add_separator = False

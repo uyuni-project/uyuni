@@ -25,13 +25,12 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Keyword;
-import com.redhat.rhn.domain.errata.impl.PublishedBug;
-import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -93,11 +92,11 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertNotNull(cloned);
         assertEquals(1, cloned.length);
 
-        PublishedClonedErrata publishClonedErrata = (PublishedClonedErrata) cloned[0];
-        assertEquals(publishClonedErrata.getAdvisoryName(),
+        ClonedErrata clonedErrata = (ClonedErrata) cloned[0];
+        assertEquals(clonedErrata.getAdvisoryName(),
                 "CL-" + errata.getAdvisoryName());
-        assertEquals(publishClonedErrata.getPackages().size(), errata.getPackages().size());
-        assertTrue(publishClonedErrata.getPackages().stream()
+        assertEquals(clonedErrata.getPackages().size(), errata.getPackages().size());
+        assertTrue(clonedErrata.getPackages().stream()
                 .allMatch(p -> errata.getPackages().stream()
                         .anyMatch(ep -> ep.getPath().equals(p.getPath()))));
 
@@ -125,11 +124,11 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertNotNull(clonedForEmptyErrata);
         assertEquals(1, clonedForEmptyErrata.length);
 
-        PublishedClonedErrata publishClonedEmptyErrata = (PublishedClonedErrata) clonedForEmptyErrata[0];
-        assertEquals(publishClonedEmptyErrata.getAdvisoryName(),
+        ClonedErrata clonedEmptyErrata = (ClonedErrata) clonedForEmptyErrata[0];
+        assertEquals(clonedEmptyErrata.getAdvisoryName(),
                 "CL-" + emptyErrata.getAdvisoryName());
-        assertEquals(publishClonedEmptyErrata.getPackages().size(), emptyErrata.getPackages().size());
-        assertTrue(publishClonedEmptyErrata.getPackages().isEmpty());
+        assertEquals(clonedEmptyErrata.getPackages().size(), emptyErrata.getPackages().size());
+        assertTrue(clonedEmptyErrata.getPackages().isEmpty());
     }
 
     public void testGetDetails() throws Exception {
@@ -327,13 +326,13 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         //unique errata, for user's org
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        Bug bug1 = new PublishedBug();
+        Bug bug1 = new Bug();
         bug1.setId(1001L);
         bug1.setSummary("This is a test summary for bug1");
 
         userErrata.addBug(bug1);
 
-        ErrataManager.storeErrata(userErrata);
+        ErrataFactory.save(userErrata);
 
         Errata userErrataCheck = ErrataManager.lookupErrata(userErrata.getId(), user);
         assertTrue(userErrataCheck.getAdvisory().equals(userErrata.getAdvisory()));
@@ -353,13 +352,13 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         //two erratas, for user's and vendor's org, with the same advisoryName
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null, Optional.of(userErrata.getAdvisory()));
 
-        Bug bug2 = new PublishedBug();
+        Bug bug2 = new Bug();
         bug2.setId(1002L);
         bug2.setSummary("This is a test summary for bug2");
 
         vendorErrata.addBug(bug2);
 
-        ErrataManager.storeErrata(vendorErrata);
+        ErrataFactory.save(vendorErrata);
 
         Errata vendorErrataCheck = ErrataManager.lookupByAdvisoryAndOrg(vendorErrata.getAdvisory(), null);
         assertTrue(vendorErrataCheck.getAdvisory().equals(vendorErrata.getAdvisory()));
@@ -387,7 +386,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         userErrata.addKeyword("user_foo");
         userErrata.addKeyword("user_bar");
 
-        ErrataManager.storeErrata(userErrata);
+        ErrataFactory.save(userErrata);
 
         Errata userErrataCheck = ErrataManager.lookupErrata(userErrata.getId(), user);
         assertTrue(userErrataCheck.getAdvisory().equals(userErrata.getAdvisory()));
@@ -404,7 +403,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         vendorErrata.addKeyword("vendor_foo");
         vendorErrata.addKeyword("vendor_bar");
 
-        ErrataManager.storeErrata(vendorErrata);
+        ErrataFactory.save(vendorErrata);
 
         Errata vendorErrataCheck = ErrataManager.lookupByAdvisoryAndOrg(vendorErrata.getAdvisory(), null);
         assertTrue(vendorErrataCheck.getAdvisory().equals(vendorErrata.getAdvisory()));
@@ -429,7 +428,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         //unique errata for user's org. No channels
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        ErrataManager.storeErrata(userErrata);
+        ErrataFactory.save(userErrata);
 
         Errata userErrataCheck = ErrataManager.lookupErrata(userErrata.getId(), user);
         assertTrue(userErrataCheck.getAdvisory().equals(userErrata.getAdvisory()));
@@ -446,7 +445,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Channel channel1 = ChannelFactoryTest.createTestChannel(admin);
         userErrata.addChannel(channel1);
 
-        ErrataManager.storeErrata(userErrata);
+        ErrataFactory.save(userErrata);
 
         DataResult applicableChannelsForUserErrata = ErrataManager.applicableChannels(Arrays.asList(userErrata.getId()),
                             user.getOrg().getId(), null, Map.class);
@@ -464,7 +463,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Channel channel2 = ChannelFactoryTest.createTestChannel(admin);
         vendorErrata.addChannel(channel2);
 
-        ErrataManager.storeErrata(vendorErrata);
+        ErrataFactory.save(vendorErrata);
 
         Errata vendorErrataCheck = ErrataManager.lookupByAdvisoryAndOrg(vendorErrata.getAdvisory(), null);
         assertTrue(vendorErrataCheck.getAdvisory().equals(vendorErrata.getAdvisory()));
@@ -491,7 +490,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Cve userCommonNameCve = createTestCve("userErrataCveName");
         userErrata.setCves(Stream.of(userCommonNameCve).collect(Collectors.toSet()));
 
-        ErrataManager.storeErrata(userErrata);
+        ErrataFactory.save(userErrata);
 
         Errata userErrataCheck = ErrataManager.lookupErrata(userErrata.getId(), user);
         assertTrue(userErrataCheck.getAdvisory().equals(userErrata.getAdvisory()));
@@ -513,7 +512,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Cve vendorCommonNameCve = createTestCve("vendorErrataCveName");
         vendorErrata.setCves(Stream.of(vendorCommonNameCve).collect(Collectors.toSet()));
 
-        ErrataManager.storeErrata(vendorErrata);
+        ErrataFactory.save(vendorErrata);
 
         Errata vendorErrataCheck = ErrataManager.lookupByAdvisoryAndOrg(vendorErrata.getAdvisory(), null);
         assertTrue(vendorErrataCheck.getAdvisory().equals(vendorErrata.getAdvisory()));
@@ -539,7 +538,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testPackages() throws Exception {
         //unique errata for user's org
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        ErrataManager.storeErrata(userErrata);
+        ErrataFactory.save(userErrata);
 
         Errata userErrataCheck = ErrataManager.lookupErrata(userErrata.getId(), user);
         assertTrue(userErrataCheck.getAdvisory().equals(userErrata.getAdvisory()));
@@ -562,7 +561,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         //two errata for user's and vendor's org, with the same advisoryName
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null, Optional.of(userErrata.getAdvisory()));
-        ErrataManager.storeErrata(vendorErrata);
+        ErrataFactory.save(vendorErrata);
 
         Errata vendorErrataCheck = ErrataManager.lookupByAdvisoryAndOrg(vendorErrata.getAdvisory(), null);
         assertTrue(vendorErrataCheck.getAdvisory().equals(vendorErrata.getAdvisory()));
@@ -590,7 +589,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testAddPackages() throws Exception {
         // setup
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         int initialNumPkgs = handler.listPackages(admin, errata.getAdvisory()).size();
 
@@ -629,7 +628,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());
         errata.addPackage(pkg1);
         errata.addPackage(pkg2);
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         int initialNumPkgs = handler.listPackages(admin, errata.getAdvisory()).size();
 
@@ -673,7 +672,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package chanPack = PackageTest.createTestPackage(admin.getOrg());
         //we have to set the 2nd package to a different EVR to not violate a
         //      unique constraint
-        PackageEvr evr =  PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983");
+        PackageEvr evr =  PackageEvrFactory.lookupOrCreatePackageEvr("45", "99", "983",
+                chanPack.getPackageType());
         chanPack.setPackageName(errataPack.getPackageName());
         chanPack.setPackageEvr(evr);
 
@@ -683,7 +683,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         if (vendor) {
             orgId = null;
         }
-        Errata toClone = ErrataFactoryTest.createTestPublishedErrata(orgId);
+        Errata toClone = ErrataFactoryTest.createTestErrata(orgId);
         toClone.addPackage(errataPack);
 
         ArrayList errata = new ArrayList();
@@ -743,19 +743,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertTrue(check.getAdvisory().equals(errata.getAdvisory()));
         assertTrue(check.getId().equals(errata.getId()));
 
-        // delete a published erratum
+        // delete an errata
         int result = handler.delete(admin, errata.getAdvisory());
-        assertEquals(1, result);
-        errata = TestUtils.reload(errata);
-        assertNull(errata);
-
-        errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
-        check = ErrataManager.lookupErrata(errata.getId(), user);
-        assertTrue(check.getAdvisory().equals(errata.getAdvisory()));
-        assertTrue(check.getId().equals(errata.getId()));
-
-        // delete an unpublished erratum
-        result = handler.delete(admin, errata.getAdvisory());
         assertEquals(1, result);
         errata = TestUtils.reload(errata);
         assertNull(errata);
@@ -857,16 +846,14 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      * vendor errata --> orgId == null
      **/
     public void testPublishCustomErrata() throws Exception {
-        // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
         ArrayList channels = new ArrayList();
         channels.add(channel.getLabel());
-        Errata published = handler.publish(admin, unpublished.getAdvisoryName(), channels);
+        Errata published = handler.publish(admin, e.getAdvisoryName(), channels);
 
-        assertTrue(published.isPublished());
-        assertEquals(unpublished.getAdvisory(), published.getAdvisory());
+        assertEquals(e.getAdvisory(), published.getAdvisory());
     }
 
     /**
@@ -875,17 +862,15 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      * vendor errata --> orgId == null
      **/
     public void testPublishVendorErrata() throws Exception {
-        // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
-        unpublished.setOrg(null); // let the errata be a vendor one
+        Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+        e.setOrg(null); // let the errata be a vendor one
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
         ArrayList channels = new ArrayList();
         channels.add(channel.getLabel());
-        Errata published = handler.publish(admin, unpublished.getAdvisoryName(), channels);
+        Errata published = handler.publish(admin, e.getAdvisoryName(), channels);
 
-        assertTrue(published.isPublished());
-        assertEquals(unpublished.getAdvisory(), published.getAdvisory());
+        assertEquals(e.getAdvisory(), published.getAdvisory());
     }
 
     public void testListByDate() throws Exception {
@@ -897,10 +882,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
        assertTrue(earlyDate.before(laterDate));
 
-       Errata earlyErrata = ErrataFactoryTest.createTestPublishedErrata(
-               admin.getOrg().getId());
-       Errata laterErrata = ErrataFactoryTest.createTestPublishedErrata(
-               admin.getOrg().getId());
+       Errata earlyErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
+       Errata laterErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
 
        Channel testChannel  = ChannelFactoryTest.createTestChannel(admin);
 

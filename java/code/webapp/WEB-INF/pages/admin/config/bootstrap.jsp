@@ -6,7 +6,7 @@
 <html:html>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
-                     helpUrl="/docs/reference/admin/bootstrap-script.html">
+                     helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/admin/bootstrap-script.html">
             <bean:message key="bootstrap.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="bootstrap.jsp.summary"/></p>
@@ -43,16 +43,6 @@
                         <div class="col-lg-6">
                             <div class="checkbox">
                                 <html:checkbox property="salt" styleId="salt" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="ssl">
-                            <bean:message key="bootstrap.jsp.ssl"/>
-                        </label>
-                        <div class="col-lg-6">
-                            <div class="checkbox">
-                                    <html:checkbox property="ssl" styleId="ssl" />
                             </div>
                         </div>
                     </div>

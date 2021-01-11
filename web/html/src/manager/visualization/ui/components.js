@@ -277,11 +277,11 @@ function svgTextStyle(container) {
     .attr('in', 'SourceGraphic');
 }
 
-module.exports = {
-  addFilter: addFilter,
-  addCheckinTimePartitioningSelect: addCheckinTimePartitioningSelect,
-  addCheckbox: addCheckbox,
-  addGroupSelector: addGroupSelector,
-  addButton: addButton,
-  svgTextStyle: svgTextStyle
-}
+export {
+  addFilter,
+  addCheckinTimePartitioningSelect,
+  addCheckbox,
+  addGroupSelector,
+  addButton,
+  svgTextStyle,
+};

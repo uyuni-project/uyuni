@@ -62,14 +62,6 @@ public class PackagePushSetupAction extends RhnListAction {
         Long eid = rctx.getRequiredParam("eid");
         Errata e = ErrataManager.lookupErrata(eid, user);
 
-        /* If the errata is unpublished, we
-         * don't need to do a package push
-         */
-        if (!e.isPublished()) {
-            request.setAttribute("eid", eid);
-            return mapping.findForward("finished");
-        }
-
         clampListBounds(pc, request, user);
 
         RhnSet targetChannels = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);

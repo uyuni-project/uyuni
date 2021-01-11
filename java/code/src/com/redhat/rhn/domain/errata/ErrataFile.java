@@ -14,124 +14,220 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * ErrataFile
- *
- * @version $Rev: $
  */
-public interface ErrataFile {
+public class ErrataFile extends BaseDomainHelper {
+    protected Long id;
+
+    protected ErrataFileType fileType;
+
+    protected Checksum checksum;
+
+    protected String fileName;
+
+    protected Errata owningErrata;
+
+    protected Date created;
+
+    protected Date modified;
+
+    protected Set channels;
+
+    protected Set packages;
+
+    /**
+     * @return Returns the channels.
+     */
+    public Set getChannels() {
+        return channels;
+    }
+
+    /**
+     * @param channelsIn The channels to set.
+     */
+    public void setChannels(Set channelsIn) {
+        this.channels = channelsIn;
+    }
+
+    /**
+     * Add a Channel to this ErrataFile
+     * @param c to add
+     */
+    public void addChannel(Channel c) {
+        if (this.getChannels() == null) {
+            this.channels = new HashSet();
+        }
+        this.channels.add(c);
+    }
 
     /**
      * Id
      * @param idIn id
      */
-    void setId(Long idIn);
+    public void setId(Long idIn) {
+        id = idIn;
+    }
 
     /**
      * Id
      * @return id
      */
-    Long getId();
+    public Long getId() {
+        return id;
+    }
 
     /**
      * File type
      * @param ft file type
      */
-    void setFileType(ErrataFileType ft);
+    public void setFileType(ErrataFileType ft) {
+        fileType = ft;
+    }
+
 
     /**
      * File type
      * @return file type
      */
-    ErrataFileType getFileType();
+    public ErrataFileType getFileType() {
+        return fileType;
+    }
 
     /**
      * MD5 checksum
      * @param cs checksums
      */
-    void setChecksum(Checksum cs);
+    public void setChecksum(Checksum cs) {
+        checksum = cs;
+    }
 
     /**
      * MD5 checksum
      * @return checksum
      */
-    Checksum getChecksum();
+    public Checksum getChecksum() {
+        return checksum;
+    }
 
     /**
      * File name
      * @param name file name
      */
-    void setFileName(String name);
+    public void setFileName(String name) {
+        fileName = name;
+    }
 
     /**
      * File name
      * @return file name
      */
-    String getFileName();
+    public String getFileName() {
+        return fileName;
+    }
 
     /**
      * Owning errata
      * @param errata owning errata
      */
-    void setErrata(Errata errata);
+    public void setErrata(Errata errata) {
+        owningErrata = errata;
+    }
 
     /**
      * Owning errata
      * @return owning errata
      */
-    Errata getErrata();
+    public Errata getErrata() {
+        return owningErrata;
+    }
 
     /**
      * Created
      * @param createdIn created
      */
-    void setCreated(Date createdIn);
+    public void setCreated(Date createdIn) {
+        created = createdIn;
+    }
 
     /**
      * Created
      * @return created
      */
-    Date getCreated();
+    public Date getCreated() {
+        return created;
+    }
 
     /**
      * Modified
      * @param mod modified
      */
-    void setModified(Date mod);
+    public void setModified(Date mod) {
+        modified = mod;
+    }
 
     /**
      * Modified
      * @return modified
      */
-    Date getModified();
+    public Date getModified() {
+        return modified;
+    }
+
+    /**
+     * @return Returns the owningErrata.
+     */
+    public Errata getOwningErrata() {
+        return owningErrata;
+    }
+
+    /**
+     * @param owningErrataIn The owningErrata to set.
+     */
+    public void setOwningErrata(Errata owningErrataIn) {
+        this.owningErrata = owningErrataIn;
+    }
 
     /**
      * @return Returns the packages for this errata file.
      */
-    Set<Package> getPackages();
+    public Set getPackages() {
+        return packages;
+    }
 
     /**
      * @param packagesIn The packages to set.
      */
-    void setPackages(Set packagesIn);
-
+    public void setPackages(Set packagesIn) {
+        this.packages = packagesIn;
+    }
 
     /**
      * Add a Package to the ErrataFile
      * @param p package to add
      */
-    void addPackage(Package p);
+    public void addPackage(Package p) {
+        if (this.packages == null) {
+            this.packages = new HashSet();
+        }
+        this.packages.add(p);
+    }
 
     /**
      * Returns whether this errata file has the given Package.
      * @param pkg the package
      * @return Returns true if this errata file has the given Package. Otherwise return false.
      */
-    boolean hasPackage(Package pkg);
+    public boolean hasPackage(Package pkg) {
+        return this.packages.contains(pkg);
+    }
 }

@@ -163,11 +163,12 @@ public class CreateUserAction extends RhnAction {
 
         user.setTimeZone(UserManager.getTimeZone(((Integer) form.get("timezone"))
             .intValue()));
+
         String preferredLocale = form.getString("preferredLocale");
-        if (preferredLocale != null && preferredLocale.equals("default")) {
-            preferredLocale = null;
-        }
-        user.setPreferredLocale(preferredLocale);
+        String preferredDocsLocale = form.getString("preferredDocsLocale");
+        user.setPreferredLocale("default".equals(preferredLocale)  ? null : preferredLocale);
+        user.setPreferredDocsLocale("default".equals(preferredDocsLocale)  ? null : preferredDocsLocale);
+
         user.setReadOnly(form.get("readonly") != null);
         UserManager.storeUser(user);
 

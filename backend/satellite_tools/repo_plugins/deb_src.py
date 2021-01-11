@@ -264,7 +264,14 @@ class ContentSource:
         self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         self.authtoken = None
 
-        self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
+        # Replace non-valid characters from reponame (only alphanumeric chars allowed)
+        self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
+        self.channel_label = channel_label
+
+        # SUSE vendor repositories belongs to org = NULL
+        # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
+        self.repo = DebRepo(url, root,
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
                             self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
         self.repo.verify()
@@ -389,7 +396,7 @@ class ContentSource:
 
     def clear_cache(self, directory=None):
         if directory is None:
-            directory = os.path.join(CACHE_DIR, self.org, self.name)
+            directory = self.repo.basecachedir
         # remove content in directory
         for item in os.listdir(directory):
             path = os.path.join(directory, item)

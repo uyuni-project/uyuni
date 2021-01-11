@@ -1,3 +1,12 @@
+- Section in Debian packages in now treated as optional (bsc#1179555)
+
+-------------------------------------------------------------------
+Wed Nov 25 12:37:09 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Cleaning up unused Python 2 build leftovers.
+- Disabled debug package build.
+
 -------------------------------------------------------------------
 Fri Sep 18 12:32:52 CEST 2020 - jgonzalez@suse.com
 

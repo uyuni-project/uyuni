@@ -60,8 +60,7 @@ sequences = {
     'suseEula': 'suse_eula_id_seq',
     'suseProducts': 'suse_products_id_seq',
     'suseSCCRepository': 'suse_sccrepository_id_seq',
-    'suseProductSCCRepository': 'suse_prdrepo_id_seq',
-    'rhnPackageExtraTagKey': 'rhn_package_extra_tags_keys_id_seq'
+    'suseProductSCCRepository': 'suse_prdrepo_id_seq'
 }
 
 
@@ -299,40 +298,41 @@ class Backend:
         h.executemany(id=toinsert[0], name=toinsert[1])
 
     def processExtraTags(self, extraTags):
-        query_lookup = """
-            SELECT id
-              FROM rhnPackageExtraTagKey
-             WHERE name = :name
-        """
-        h_lookup = self.dbmodule.prepare(query_lookup)
-        toinsert = [[], []]
-
-        for name in list(extraTags.keys()):
-            val = {}
-            _buildExternalValue(val, { 'name'     : name},
-                                self.tables['rhnPackageExtraTagKey'])
-            h_lookup.execute(name=name)
-            row = h_lookup.fetchone_dict()
-            if row:
-                extraTags[name] = row['id']
-                continue
-
-            # Generate an id
-            id = self.sequences['rhnPackageExtraTagKey'].next()
-            extraTags[name] = id
-
-            toinsert[0].append(id)
-            toinsert[1].append(val['name'])
-
-        if not toinsert[0]:
-            # Nothing to do
+        if not extraTags:
             return
-
-        query_insert = """
+        sql = """
+            WITH wanted (ordering, name) AS (
+              VALUES %s
+            ),
+            missing AS (
+              SELECT nextval('rhn_package_extra_tags_keys_id_seq') AS id, wanted.*
+                FROM wanted
+                    LEFT JOIN rhnPackageExtraTagKey ON rhnPackageExtraTagKey.name = wanted.name
+               WHERE rhnPackageExtraTagKey.id IS NULL
+            )
             INSERT INTO rhnPackageExtraTagKey (id, name)
-            VALUES (:id, :name)"""
-        h_insert = self.dbmodule.prepare(query_insert)
-        h_insert.executemany(id=toinsert[0], name=toinsert[1])
+                SELECT id, name from missing
+                ORDER BY ordering
+                ON CONFLICT DO NOTHING
+        """
+        values = [(i, key) for i, key in enumerate(sorted(extraTags.keys()))]
+        if not values:
+            return
+        h = self.dbmodule.prepare(sql)
+        r = h.execute_values(sql, values, fetch=False)
+
+        sql = """
+            WITH wanted (ordering, name) AS (
+              VALUES %s
+            )
+            SELECT rhnPackageExtraTagKey.name, rhnPackageExtraTagKey.id
+              FROM wanted
+              JOIN rhnPackageExtraTagKey ON rhnPackageExtraTagKey.name = wanted.name
+        """
+        h = self.dbmodule.prepare(sql)
+        tags = h.execute_values(sql, values)
+        for tag in tags:
+            extraTags[tag[0]] = tag[1]
 
     def lookupErrataFileTypes(self, hash):
         hash.clear()
@@ -407,6 +407,18 @@ class Backend:
 
         # Finally, update the hash
         arch_types_hash.update(results)
+
+    def lookupPackageArchType(self, pkg_arch_id):
+        h = self.dbmodule.prepare("""
+                select at.label
+                  from rhnPackageArch pa
+                  join rhnArchType at on pa.arch_type_id = at.id
+                 where pa.id = :pkg_arch_id""")
+        h.execute(pkg_arch_id=pkg_arch_id)
+        row = h.fetchone_dict()
+        if row:
+            return row['label']
+        return None
 
     def _lookupOrg(self):
         # Returns the org id
@@ -666,8 +678,8 @@ class Backend:
 
         return row['id']
 
-    def lookupEVRs(self, evrHash):
-        sql = "select LOOKUP_EVR(:epoch, :version, :release) id from dual"
+    def lookupEVRs(self, evrHash, ptype):
+        sql = "select LOOKUP_EVR(:epoch, :version, :release, :ptype) id from dual"
         h = self.dbmodule.prepare(sql)
         for evr in sorted(evrHash.keys(), key=lambda k: (str(k[0] or 0), k[1], k[2])):
             epoch, version, release = evr
@@ -675,7 +687,7 @@ class Backend:
                 epoch = None
             else:
                 epoch = str(epoch)
-            h.execute(epoch=epoch, version=version, release=release)
+            h.execute(epoch=epoch, version=version, release=release, ptype=ptype)
             row = h.fetchone_dict()
             if row:
                 evrHash[evr] = row['id']

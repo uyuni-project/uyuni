@@ -352,8 +352,11 @@ RES7 = [
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
-    "python2-hwdata",
-    "dmidecode",
+    "python2-hwdata"
+]
+
+RES7_X86 = [
+    "dmidecode"
 ]
 
 RES8 = [
@@ -373,13 +376,16 @@ RES8 = [
     "python3-requests",
     "openpgm",
     "zeromq",
-    "dmidecode",
     "python3-urllib3",
     "python3-idna",
     "python3-chardet",
     "python3-pysocks",
     "python3-pytz",
     "python3-setuptools"
+]
+
+RES8_X86 = [
+    "dmidecode"
 ]
 
 PKGLIST15_SALT = [
@@ -618,68 +624,38 @@ PKGLISTDEBIAN9 = [
 ]
 
 PKGLISTDEBIAN10 = [
-    "salt-common",
-    "salt-minion",
     "dctrl-tools",
     "debconf-utils",
-    "libassuan0",
-    "gpgconf",
-    "libksba8",
-    "libnpth0",
-    "dirmngr",
-    "gnupg-l10n",
-    "gnupg-utils",
-    "gpg",
-    "pinentry-curses",
-    "gpg-agent",
-    "gpg-wks-client",
-    "gpg-wks-server",
-    "gpgsm",
-    "gnupg",
-    "javascript-common",
-    "libjs-jquery",
-    "libjs-underscore",
-    "libjs-sphinxdoc",
+    "distro-info-data",
+    "iso-codes",
     "libnorm1",
     "libpgm-5.2-0",
     "libsodium23",
     "libyaml-0-2",
     "libzmq5",
-    "libevent-core-2.1-6",
-    "libevent-pthreads-2.1-6",
-    "libopts25",
-    "sntp",
-    "ntp",
-    "python",
-    "python-apt",
-    "python-asn1crypto",
-    "python-backports-abc",
-    "python-certifi",
-    "python-cffi-backend",
-    "python-pkg-resources",
-    "python-chardet",
-    "python-concurrent.futures",
-    "python-six",
-    "python-dateutil",
-    "python-tz",
-    "python-croniter",
-    "python-crypto",
-    "python-enum34",
-    "python-ipaddress",
-    "python-cryptography",
-    "python-idna",
-    "python-markupsafe",
-    "python-jinja2",
-    "python-msgpack",
-    "python-openssl",
-    "python-psutil",
-    "python-urllib3",
-    "python-requests",
-    "python-singledispatch",
-    "python-systemd",
-    "python-tornado",
-    "python-yaml",
-    "python-zmq"
+    "lsb-release",
+    "python-apt-common",
+    "python3-apt",
+    "python3-certifi",
+    "python3-pkg-resources",
+    "python3-chardet",
+    "python3-six",
+    "python3-dateutil",
+    "python3-tz",
+    "python3-croniter",
+    "python3-crypto",
+    "python3-idna",
+    "python3-markupsafe",
+    "python3-jinja2",
+    "python3-msgpack",
+    "python3-psutil",
+    "python3-urllib3",
+    "python3-requests",
+    "python3-systemd",
+    "python3-yaml",
+    "python3-zmq",
+    "salt-common",
+    "salt-minion"
 ]
 
 PKGLISTASTRALINUXOREL = [
@@ -914,7 +890,7 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
     },
     'RES7-x86_64' : {
-        'PDID' : [1251], 'BETAPDID' : [2065], 'PKGLIST' : RES7,
+        'PDID' : [1251], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
     },
     'SLE-12-SP2-aarch64' : {
@@ -1142,11 +1118,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
     },
     'centos-7-x86_64' : {
-        'PDID' : [-12, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7,
+        'PDID' : [-12, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
     },
     'centos-8-x86_64' : {
-        'PDID' : [-13, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8,
+        'PDID' : [-13, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
     },
     'centos-6-x86_64-uyuni' : {
@@ -1154,11 +1130,19 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
     },
     'centos-7-x86_64-uyuni' : {
-        'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7,
+        'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7 + RES7_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+    },
+    'centos-7-ppc64le-uyuni' : {
+        'BASECHANNEL' : 'centos7-ppc64le', 'PKGLIST' : RES7,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
     },
     'centos-8-x86_64-uyuni' : {
-        'BASECHANNEL' : 'centos8-x86_64', 'PKGLIST' : RES8,
+        'BASECHANNEL' : 'centos8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+    },
+    'centos-8-ppc64le-uyuni' : {
+        'BASECHANNEL' : 'centos8-ppc64le', 'PKGLIST' : RES8,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
     },
     'oracle-6-x86_64' : {
@@ -1166,11 +1150,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/6/bootstrap/'
     },
     'oracle-7-x86_64' : {
-        'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7,
+        'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
     },
     'oracle-8-x86_64' : {
-        'PDID' : [-17, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8,
+        'PDID' : [-17, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
     },
     'oracle-6-x86_64-uyuni' : {
@@ -1178,11 +1162,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/6/bootstrap/'
     },
     'oracle-7-x86_64-uyuni' : {
-        'BASECHANNEL' : 'oraclelinux7-x86_64', 'PKGLIST' : RES7,
+        'BASECHANNEL' : 'oraclelinux7-x86_64', 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
     },
     'oracle-8-x86_64-uyuni' : {
-        'BASECHANNEL' : 'oraclelinux8-x86_64', 'PKGLIST' : RES8,
+        'BASECHANNEL' : 'oraclelinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
     },
     'RHEL6-x86_64' : {
@@ -1194,15 +1178,15 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
     },
     'RHEL7-x86_64' : {
-        'PDID' : [-7, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7,
+        'PDID' : [-7, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
     },
     'SLE-ES8-x86_64' : {
-        'PDID' : [-8, 1921, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8,
+        'PDID' : [-8, 1921, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/res/8/bootstrap/'
     },
     'RHEL8-x86_64' : {
-        'PDID' : [-8, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8,
+        'PDID' : [-8, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/res/8/bootstrap/'
     },
     'ubuntu-16.04-amd64' : {
@@ -1236,12 +1220,12 @@ DATA = {
         'TYPE' : 'deb'
     },
     'debian9-amd64' : {
-        'BASECHANNEL' : 'debian-9-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN9,
+        'PDID' : [-19, 2208], 'BETAPDID' : [2209], 'PKGLIST' : PKGLISTDEBIAN9,
         'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian10-amd64' : {
-        'BASECHANNEL' : 'debian-10-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN10,
+        'PDID' : [-20, 2210], 'BETAPDID' : [2211], 'PKGLIST' : PKGLISTDEBIAN10,
         'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
         'TYPE' : 'deb'
     },

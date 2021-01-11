@@ -38,11 +38,11 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltTop;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
-import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.Match;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.AuthMethod;
@@ -139,10 +139,10 @@ public class SaltSSHService {
             "services.salt-minion",
             "services.docker");
     private final String SALT_USER = "admin";
-    private final String SALT_PASSWORD = "";
-    private final AuthModule AUTH_MODULE = AuthModule.AUTO;
+    private final String SALT_PASSWORD = com.redhat.rhn.common.conf.Config.get().getString("server.secret_key");;
+    private final AuthModule AUTH_MODULE = AuthModule.FILE;
 
-    private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.AUTO));
+    private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.FILE));
 
     // Shared salt client instance
     private final SaltClient saltClient;

@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@scope_monitoring
 Feature: Monitor SUMA environment with Prometheus on a normal minion
   In order to monitore SUSE Manager server
   As an authorized user

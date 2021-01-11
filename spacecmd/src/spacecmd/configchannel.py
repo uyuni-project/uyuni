@@ -38,6 +38,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -76,7 +77,7 @@ def complete_configchannel_listsystems(self, text, line, beg, end):
 
 def do_configchannel_listsystems(self, args):
     if not self.check_api_version('10.11'):
-        logging.warning(_("This version of the API doesn't support this method"))
+        logging.warning(_N("This version of the API doesn't support this method"))
         return 1
 
     arg_parser = get_argument_parser()
@@ -213,13 +214,13 @@ def do_configchannel_filedetails(self, args):
         try:
             revision = int(args[2])
         except (ValueError, IndexError):
-            logging.error(_("Invalid revision: %s"), args[2])
+            logging.error(_N("Invalid revision: %s"), args[2])
             return 1
 
     # the server return a null exception if an invalid file is passed
     valid_files = self.do_configchannel_listfiles(channel, True)
     if filename not in valid_files:
-        logging.warning(_('%s is not in this configuration channel') % filename)
+        logging.warning(_N('%s is not in this configuration channel') % filename)
         return 1
 
     if revision:
@@ -310,7 +311,7 @@ def do_configchannel_backup(self, args):
         if not os.path.isdir(outputpath_base):
             os.makedirs(outputpath_base)
     except OSError as exc:
-        logging.error(_('Could not create output directory: %s'), str(exc))
+        logging.error(_N('Could not create output directory: %s'), str(exc))
         return 1
 
     # the server return a null exception if an invalid file is passed
@@ -323,7 +324,7 @@ def do_configchannel_backup(self, args):
     try:
         fh = open(fh_path, 'w')
     except IOError as exc:
-        logging.error(_('Could not create "%s" file: %s'), fh_path, str(exc))
+        logging.error(_N('Could not create "%s" file: %s'), fh_path, str(exc))
         return 1
 
     for details in results:
@@ -445,11 +446,11 @@ def do_configchannel_create(self, args):
         if options.description == '':
             options.description = options.name
         if options.type not in ('normal', 'state'):
-            logging.error(_('Only [normal/state] values are acceptable for type'))
+            logging.error(_N('Only [normal/state] values are acceptable for type'))
             return 1
     else:
         if not options.name:
-            logging.error(_('A name is required'))
+            logging.error(_N('A name is required'))
             return 1
         if not options.label:
             options.label = options.name
@@ -458,7 +459,7 @@ def do_configchannel_create(self, args):
         if not options.type:
             options.type = 'normal'
         if options.type not in ('normal', 'state'):
-            logging.error(_('Only [normal/state] values are acceptable for --type parameter'))
+            logging.error(_N('Only [normal/state] values are acceptable for --type parameter'))
             return 1
 
     self.client.configchannel.create(self.session,
@@ -495,7 +496,7 @@ def do_configchannel_delete(self, args):
     logging.debug("configchannel_delete called with args %s, channels=%s" % (args, channels))
 
     if not channels:
-        logging.error(_("No channels matched argument(s): %s") % ", ".join(args))
+        logging.error(_N("No channels matched argument(s): %s") % ", ".join(args))
         return 1
 
     # Print the channels prior to the confirmation
@@ -590,7 +591,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                 try:
                     options.revision = int(revision_input)
                 except ValueError:
-                    logging.warning(_('The revision must be an integer'))
+                    logging.warning(_N('The revision must be an integer'))
 
             if not options.directory:
                 if self.user_confirm(_('Read an existing file [y/N]:'),
@@ -613,7 +614,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                     (contents, _ignore) = editor(template=template, delete=True)
     else:
         if not options.path:
-            logging.error(_('The path is required'))
+            logging.error(_N('The path is required'))
             return
 
         if not options.symlink and not options.directory:
@@ -627,11 +628,11 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                 elif options.binary:
                     logging.debug("Binary selected")
             else:
-                logging.error(_('You must provide the file contents'))
+                logging.error(_N('You must provide the file contents'))
                 return
 
         if options.symlink and not options.target_path:
-            logging.error(_('You must provide the target path for a symlink'))
+            logging.error(_N('You must provide the target path for a symlink'))
             return
 
     # selinux_ctx can't be None
@@ -775,12 +776,12 @@ def do_configchannel_addfile(self, args, update_path=''):
                     break
                 else:
                     print('')
-                    logging.warning(_('%s is not a valid channel') %
+                    logging.warning(_N('%s is not a valid channel') %
                                     options.channel)
                     print('')
                     failures += 1
             if failures > 0:
-                logging.error(_("Unable to obtain a valid channel. Aborting."))
+                logging.error(_N("Unable to obtain a valid channel. Aborting."))
                 return 1
 
         if update_path:
@@ -802,12 +803,12 @@ def do_configchannel_addfile(self, args, update_path=''):
     file_info = self.configfile_getinfo(args, options, file_info, interactive)
 
     if not options.channel:
-        logging.error(_("No config channel specified!"))
+        logging.error(_N("No config channel specified!"))
         self.help_configchannel_addfile()
         return 1
 
     if not file_info:
-        logging.error(_("Error obtaining file info"))
+        logging.error(_N("Error obtaining file info"))
         self.help_configchannel_addfile()
         return 1
 
@@ -847,6 +848,7 @@ def help_configchannel_updateinitsls(self):
 
 options:
   -c CHANNEL
+  -r REVISION
   -f local path to file contents
   -y automatically proceed with file contents
 '''))
@@ -855,6 +857,7 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-c', '--channel')
     arg_parser.add_argument('-f', '--file')
+    arg_parser.add_argument('-r', '--revision')
     arg_parser.add_argument('-y', '--yes', action='store_true')
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -879,7 +882,7 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
                     break
                 else:
                     print('')
-                    logging.warning('%s is not a valid channel' %
+                    logging.warning(_N('%s is not a valid channel') %
                                     options.channel)
                     print('')
         # check if this file already exists
@@ -889,7 +892,7 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
                                                          options.channel,
                                                          [path])
         except xmlrpclib.Fault:
-            logging.error(_("No existing file information found for %s") %
+            logging.error(_N("No existing file information found for %s") %
                           options.path)
             return 1
         contents = file_info[0].get('contents')
@@ -906,11 +909,18 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
                 template = ''
             (contents, _ignore) = editor(template=template, delete=True)
 
+        revision_input = prompt_user(_('Revision [next]:'))
+        if revision_input:
+            try:
+                options.revision = int(revision_input)
+            except ValueError:
+                logging.warning(_('The revision must be an integer'))
+
     else:
         if options.file:
             contents = read_file(options.file)
         else:
-            logging.error(_('You must provide the file contents'))
+            logging.error(_N('You must provide the file contents'))
             return 1
 
     contents = base64.b64encode(contents.encode('utf8')).decode()
@@ -918,17 +928,21 @@ def do_configchannel_updateinitsls(self, args, update_path=''):
     file_info = {'contents': ''.join(contents),
                  'contents_enc64': True
                 }
+    if options.revision:
+        file_info['revision'] = options.revision
 
 
     if not options.channel:
-        logging.error(_("No config channel specified!"))
+        logging.error(_N("No config channel specified!"))
         self.help_configchannel_updateinitsls()
         return 1
 
     if not file_info:
-        logging.error(_("Error obtaining file info"))
+        logging.error(_N("Error obtaining file info"))
         self.help_configchannel_updateinitsls()
         return 1
+    if 'revision' in file_info:
+        print(_('revision:                 %s') % file_info['revision'])
     print(_('contents_enc64:           %s') % file_info['contents_enc64'])
     print(_('Contents'))
     print('--------')
@@ -1034,7 +1048,7 @@ def do_configchannel_verifyfile(self, args):
     system_ids = list(filter(None, (self.get_system_id(s) for s in systems)))
 
     if not system_ids:
-        logging.error(_('No valid system selected'))
+        logging.error(_N('No valid system selected'))
         return 1
     action_id = \
         self.client.configchannel.scheduleFileComparisons(self.session,
@@ -1042,7 +1056,7 @@ def do_configchannel_verifyfile(self, args):
                                                           path,
                                                           system_ids)
 
-    logging.info(_('Action ID: %i') % action_id)
+    logging.info(_N('Action ID: %i') % action_id)
 
     return 0
 
@@ -1067,7 +1081,7 @@ def complete_configchannel_export(self, text, line, beg, end):
 
 def export_configchannel_getdetails(self, channel):
     # Get the cc details
-    logging.info(_("Getting config channel details for %s") % channel)
+    logging.info(_N("Getting config channel details for %s") % channel)
     details = self.client.configchannel.getDetails(self.session, channel)
     files = self.client.configchannel.listFiles(self.session, channel)
     details['files'] = []
@@ -1087,7 +1101,7 @@ def export_configchannel_getdetails(self, channel):
             if pinfo:
                 fileinfo.append(pinfo[0])
         except xmlrpclib.Fault:
-            logging.error(_("Failed to get details for file %s from %s")
+            logging.error(_N("Failed to get details for file %s from %s")
                           % (p, channel))
     # Now we strip the datetime fields from the Info structs, as they
     # are not JSON serializable with the default encoder, and we don't
@@ -1133,11 +1147,11 @@ def export_configchannel_getdetails(self, channel):
             if not 'contents' in f:
                 if f['type'] != 'directory':
                     if not self.check_api_version('11.1'):
-                        logging.warning(_("File %s could not be exported ") % f['path'] +
-                                        _("with this API version(needs base64 encoding)"))
+                        logging.warning(_N("File %s could not be exported ") % f['path'] +
+                                        _N("with this API version(needs base64 encoding)"))
                     else:
-                        logging.info(_("File %s could not be exported as") % f['path'] +
-                                     _(" text...getting base64 encoded version"))
+                        logging.info(_N("File %s could not be exported as") % f['path'] +
+                                     _N(" text...getting base64 encoded version"))
                         b64f = self.client.configchannel.getEncodedFileRevision(
                             self.session, channel, f['path'], f['revision'])
                         f['contents'] = b64f['contents']
@@ -1160,7 +1174,7 @@ def do_configchannel_export(self, args):
 
     filename = ""
     if options.file is not None:
-        logging.debug(_("Passed filename '%s' to do_configchannel_export command."), options.file)
+        logging.debug("Passed filename '%s' to do_configchannel_export command.", options.file)
         filename = options.file
 
     # Get the list of ccs to export and sort out the filename if required
@@ -1168,14 +1182,14 @@ def do_configchannel_export(self, args):
     if not args:
         if not filename:
             filename = "cc_all.json"
-        logging.info(_("Exporting ALL config channels to %s"), filename)
+        logging.info(_N("Exporting ALL config channels to %s"), filename)
         ccs = self.do_configchannel_list('', True)
     else:
         # allow globbing of configchannel names
         ccs = filter_results(self.do_configchannel_list('', True), args)
         logging.debug("configchannel_export called with args %s, ccs=%s", args, ccs)
         if not ccs:
-            logging.error(_("Error, no valid config channel passed, "
+            logging.error(_N("Error, no valid config channel passed, "
                           "check name is  correct with spacecmd configchannel_list"))
             return 1
         if not filename:
@@ -1190,7 +1204,7 @@ def do_configchannel_export(self, args):
     # Dump as a list of dict
     ccdetails_list = []
     for c in ccs:
-        logging.info(_("Exporting cc %s to %s"), c, filename)
+        logging.info(_N("Exporting cc %s to %s"), c, filename)
         ccdetails_list.append(self.export_configchannel_getdetails(c))
 
     logging.debug("About to dump %d ccs to %s", len(ccdetails_list), filename)
@@ -1200,7 +1214,7 @@ def do_configchannel_export(self, args):
         if not self.options.yes and not self.user_confirm(_("File '{}' exists, confirm overwrite file? (y/n)").format(filename)):
             return 1
     if not json_dump_to_file(ccdetails_list, filename):
-        logging.error(_("Error saving exported config channels to file: %s"), filename)
+        logging.error(_N("Error saving exported config channels to file: %s"), filename)
         return 1
 
     return 0
@@ -1219,7 +1233,7 @@ def do_configchannel_import(self, args):
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
-        logging.error(_("Error, no filename passed"))
+        logging.error(_N("Error, no filename passed"))
         self.help_configchannel_import()
         return 1
 
@@ -1227,11 +1241,11 @@ def do_configchannel_import(self, args):
         logging.debug("Passed filename do_configchannel_import %s", filename)
         ccdetails_list = json_read_from_file(filename)
         if not ccdetails_list:
-            logging.error(_("Error, could not read json data from %s"), filename)
+            logging.error(_N("Error, could not read json data from %s"), filename)
             return 1
         for ccdetails in ccdetails_list:
             if not self.import_configchannel_fromdetails(ccdetails):
-                logging.error(_("Error importing configchannel %s"), ccdetails['name'])
+                logging.error(_N("Error importing configchannel %s"), ccdetails['name'])
 
     return 0
 
@@ -1243,12 +1257,12 @@ def import_configchannel_fromdetails(self, ccdetails):
     # First we check that an existing channel with the same name does not exist
     existing_ccs = self.do_configchannel_list('', True)
     if ccdetails['name'] in existing_ccs:
-        logging.warning(_("Config channel %s already exists! Skipping!") %
+        logging.warning(_N("Config channel %s already exists! Skipping!") %
                         ccdetails['name'])
         return False
     else:
         # create the cc, we need to drop the org prefix from the cc name
-        logging.info(_("Importing config channel  %s") % ccdetails['name'])
+        logging.info(_N("Importing config channel  %s") % ccdetails['name'])
 
         channeltype = 'normal'
         if 'configChannelType' in ccdetails:
@@ -1263,7 +1277,7 @@ def import_configchannel_fromdetails(self, ccdetails):
         for filedetails in ccdetails['files']:
             path = filedetails['path']
             del filedetails['path']
-            logging.info("Found %s %s for cc %s" %
+            logging.info(_N("Found %s %s for cc %s") %
                          (filedetails['type'], path, ccdetails['name']))
             ret = None
             if filedetails['type'] == 'symlink':
@@ -1293,7 +1307,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                         logging.error(
                             _("Failed trying to import file %s (empty content)")
                             % path)
-                        logging.error(_("Older APIs can't export encoded files"))
+                        logging.error(_N("Older APIs can't export encoded files"))
                         continue
 
                     if not filedetails['contents_enc64']:
@@ -1316,7 +1330,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                 logging.debug("Added file %s to %s" %
                               (ret['path'], ccdetails['name']))
             else:
-                logging.error(_("Error adding file %s to %s") %
+                logging.error(_N("Error adding file %s to %s") %
                               (filedetails['path'], ccdetails['label']))
                 continue
 
@@ -1356,7 +1370,7 @@ def do_configchannel_clone(self, args):
 
     if is_interactive(options):
         if not allccs:
-            logging.error(_("No config channels found"))
+            logging.error(_N("No config channels found"))
             return 1
         print('')
         print(_('Config Channels'))
@@ -1373,13 +1387,13 @@ def do_configchannel_clone(self, args):
         options.clonelabel = prompt_user(_('Clone label:'), noblank=True)
     else:
         if not options.clonelabel and not options.regex:
-            logging.error(_("Error - must specify either -c or -x options!"))
+            logging.error(_N("Error - must specify either -c or -x options!"))
             self.help_configchannel_clone()
         else:
             logging.debug("%s : %s", options.clonelabel, options.regex)
 
     if not args:
-        logging.error(_("Error no channel label passed!"))
+        logging.error(_N("Error no channel label passed!"))
         self.help_configchannel_clone()
         return 1
     logging.debug("Got args=%s %d", args, len(args))
@@ -1388,7 +1402,7 @@ def do_configchannel_clone(self, args):
     logging.debug("Filtered ccs %s", ccs)
 
     if not ccs:
-        logging.error(_("No suitable channels to clone has been found."))
+        logging.error(_N("No suitable channels to clone has been found."))
 
     for cc in ccs:
         logging.debug("Cloning %s" % cc)
@@ -1425,7 +1439,7 @@ def do_configchannel_clone(self, args):
 
         # Finally : import the cc from the modified ccdetails
         if not self.import_configchannel_fromdetails(ccdetails):
-            logging.error(_("Failed to clone %s to %s"), cc, ccdetails['label'])
+            logging.error(_N("Failed to clone %s to %s"), cc, ccdetails['label'])
 
     return 0
 
@@ -1441,10 +1455,10 @@ def is_configchannel(self, name):
 
 def check_configchannel(self, name):
     if not name:
-        logging.error(_("no configchannel given"))
+        logging.error(_N("no configchannel given"))
         return False
     if not self.is_configchannel(name):
-        logging.error(_("invalid configchannel label ") + name)
+        logging.error(_N("invalid configchannel label ") + name)
         return False
     return True
 
@@ -1562,7 +1576,7 @@ def do_configchannel_sync(self, args, doreturn=False):
     if not self.check_configchannel(target_channel):
         return 1
 
-    logging.info(_("syncing files from configchannel ") + source_channel + " to " + target_channel)
+    logging.info(_N("syncing files from configchannel ") + source_channel + " to " + target_channel)
 
     source_files = set(self.do_configchannel_listfiles(source_channel, doreturn=True))
     target_files = set(self.do_configchannel_listfiles(target_channel, doreturn=True))
@@ -1593,7 +1607,7 @@ def do_configchannel_sync(self, args, doreturn=False):
         print(_("files only in the target channel will be deleted"))
 
     if not (both or source_only or target_only):
-        logging.info(_("nothing to do"))
+        logging.info(_N("nothing to do"))
         return 1
 
     if not self.options.yes:
@@ -1649,7 +1663,7 @@ def do_configchannel_sync(self, args, doreturn=False):
                                                             target_data)
 
         else:
-            logging.warning(_("unknown file type ") + source_data.type)
+            logging.warning(_N("unknown file type ") + source_data.type)
 
     # removing all files from target channel that did not exist on source channel
     if target_only:

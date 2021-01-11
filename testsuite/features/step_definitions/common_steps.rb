@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -40,11 +40,9 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   kernel_version, _code = node.run('uname -r')
   puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
-  os_pretty_raw, _code = node.run('grep "PRETTY" /etc/os-release')
-  os_pretty = os_pretty_raw.strip.split('=')[1].delete '"'
+  os_version, os_family = get_os_version(node)
   # skip this test for centos and ubuntu systems
-  puts 'i should see os version: ' + os_pretty if os_pretty.include? 'SUSE Linux'
-  step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
+  step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
 
 Then(/^I should see the terminals imported from the configuration file$/) do
@@ -205,8 +203,8 @@ end
 Given(/^I am on the Systems page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
-    When I follow the left menu "Systems > Overview"
-    When I wait until I see "System Overview" text
+    And I follow the left menu "Systems > Overview"
+    And I wait until I see "System Overview" text
   )
 end
 
@@ -254,13 +252,13 @@ end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @client_api.call('auth.login', 'admin', 'admin')
   # -------------------------------
   # cleanup kickstart profiles and distros
   distro_name = 'fedora_kickstart_distro'
-  @cli.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
-  @cli.call('auth.logout', @sid)
+  @client_api.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
+  @client_api.call('auth.logout', @sid)
   # -------------------------------
   # remove not from suma managed profile
   $server.run('cobbler profile remove --name "testprofile"')
@@ -456,10 +454,16 @@ When(/^I enter the "(.*)" package in the css "(.*)"$/) do |client, css|
   find(css).set(PACKAGE_BY_CLIENT[client])
 end
 
-When(/^I select "([^\"]*)" as a product$/) do |product|
+When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
+end
+
+When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
+  if $product == product_version
+    step %(I #{select} "#{product}" as a product)
+  end
 end
 
 When(/^I wait until the tree item "([^"]+)" has no sub-list$/) do |item|
@@ -507,17 +511,18 @@ end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
-  product_identifier = find(:xpath, xpath)['data-identifier']
-  raise "#{product_identifier} is not checked" unless has_checked_field?('checkbox-for-' + product_identifier)
+  within(:xpath, xpath) do
+    raise "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, "./div/input[@type='checkbox']").checked?
+  end
 end
 
 And(/^I wait until I see "(.*?)" product has been added$/) do |product|
   repeat_until_timeout(message: "Couldn't find the installed product #{product} in the list") do
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
     begin
-      product_wrapper = find(:xpath, xpath)
-      unless product_wrapper[:class].nil?
-        break if product_wrapper[:class].include?('product-installed')
+      product_class = find(:xpath, xpath)[:class]
+      unless product_class.nil?
+        break if product_class.include?('product-installed')
       end
     rescue Capybara::ElementNotFound => e
       puts e
@@ -530,20 +535,20 @@ When(/^I click the Add Product button$/) do
   raise "xpath: button#addProducts not found" unless find('button#addProducts').click
 end
 
-Then(/^the SLE12 products should be added$/) do
+Then(/^the SLE12 SP5 product should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLES12-SP5-Pool for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-pool-x86_64]'
   if $product != 'Uyuni'
-    raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP2 SUSE Linux Enterprise Server 12 SP2 x86_64 [sle-manager-tools12-pool-x86_64-sp2]'
+    raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
   end
-  raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
-Then(/^the SLE15 products should be added$/) do
+Then(/^the SLE15 SP2 product should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-Pool for x86_64 SUSE Linux Enterprise Server 15 x86_64 [sle-product-sles15-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-Updates for x86_64 Basesystem Module 15 x86_64 [sle-module-basesystem15-updates-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-Pool for x86_64 Server Applications Module 15 x86_64 [sle-module-server-applications15-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-SP2-Pool for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle-product-sles15-sp2-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-SP2-Updates for x86_64 Basesystem Module 15 SP2 x86_64 [sle-module-basesystem15-sp2-updates-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-SP2-Pool for x86_64 Server Applications Module 15 SP2 x86_64 [sle-module-server-applications15-sp2-pool-x86_64]'
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
@@ -655,11 +660,13 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  node = get_target(host)
+  gpg_keys = get_gpg_keys(node, target)
   cmd = "mgr-bootstrap #{client} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
-  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=RHN-ORG-TRUSTED-SSL-CERT' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
   output, = target.run(cmd)
   unless output.include? key
@@ -704,7 +711,7 @@ end
 # Enable tools repositories (both stable and development)
 When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
@@ -714,6 +721,32 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
     end
   end
+end
+
+When(/^I disable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  elsif os_family =~ /^centos/
+    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
+    end
+  end
+end
+
+When(/^I enable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^#\\s*deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^#\\s*deb /deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
+end
+
+When(/^I disable universe repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("sed -i '/^deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^deb /# deb /' /etc/apt/sources.list")
+  node.run("apt-get update")
 end
 
 When(/^I enable repositories before installing Docker$/) do
@@ -824,9 +857,10 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
     node.run('yum install wget', true, 600, 'root')
   end
   command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  puts node.run(command1, true, 500, 'root')
+  # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
+  puts node.run(command1, true, 500, 'root').to_s.gsub(/(\\x\h+){1,}/, '?')
   command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
-  puts node.run(command2, true, 500, 'root')
+  puts node.run(command2, true, 500, 'root').to_s.gsub(/(\\x\h+){1,}/, '?')
 end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
@@ -838,14 +872,10 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   if get_client_type(host) == 'traditional'
     get_target(host).run('rhn_check -vvv')
   else
-    # Ubuntu minion clients need more time to finish all onboarding events
-    node = get_target(host)
-    _os_version, os_family = get_os_version(node)
-    onboarding_timeout = os_family.include?('ubuntu') ? DEFAULT_TIMEOUT * 2 : DEFAULT_TIMEOUT
     steps %(
-      And I wait at most #{onboarding_timeout} seconds until event "Hardware List Refresh" is completed
-      And I wait at most #{onboarding_timeout} seconds until event "Apply states" is completed
-      And I wait at most #{onboarding_timeout} seconds until event "Package List Refresh" is completed
+      And I wait at most 500 seconds until event "Hardware List Refresh" is completed
+      And I wait at most 500 seconds until event "Apply states" is completed
+      And I wait at most 500 seconds until event "Package List Refresh" is completed
     )
   end
 end
@@ -867,21 +897,9 @@ Then(/^I should see "([^"]*)" as link$/) do |host|
 end
 
 Then(/^I should see a text describing the OS release$/) do
-  os_version, os_family = get_os_version($client)
+  _os_version, os_family = get_os_version($client)
   release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
   step %(I should see a "OS: #{release}" text)
-end
-
-Then(/^config-actions are enabled$/) do
-  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
-    raise 'config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client'
-  end
-end
-
-Then(/^remote-commands are enabled$/) do
-  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
-    raise 'remote commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist'
-  end
 end
 
 When(/^I remember when I scheduled an action$/) do
@@ -1143,48 +1161,61 @@ Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warni
   find(:xpath, item_xpath)
 end
 
-When(/^I create the MU repository for (salt|traditional) "([^"]*)" if necessary$/) do |client_type, client|
-  client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  url = $mu_repositories[client][client_type].strip
-  repo_name = url.delete_prefix "http://download.suse.de/ibs/SUSE:/Maintenance:/"
-  if repository_exist? repo_name
-    puts "The MU repository #{repo_name} was already created, we will reuse it."
-  else
-    steps %(
-      When I follow "Create Repository"
-      And I enter "#{repo_name}" as "label"
-      And I enter "#{url}" as "url"
-      And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
-      And I click on "Create Repository"
-      Then I should see a "Repository created successfully" text
-      And I should see "metadataSigned" as checked
-    )
+When(/^I create the MU repositories for "([^"]*)"$/) do |client|
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
+  repo_list.each do |_repo_name, repo_url|
+    unique_repo_name = generate_repository_name(repo_url)
+    if repository_exist? unique_repo_name
+      puts "The MU repository #{unique_repo_name} was already created, we will reuse it."
+    else
+      steps %(
+        When I follow the left menu "Software > Manage > Repositories"
+        And I follow "Create Repository"
+        And I enter "#{unique_repo_name}" as "label"
+        And I enter "#{repo_url.strip}" as "url"
+        And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
+        And I click on "Create Repository"
+        Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
+        And I should see "metadataSigned" as checked
+      )
+    end
   end
 end
 
-When(/^I select the MU repository name for (salt|traditional) "([^"]*)" from the list$/) do |client_type, client|
-  client.sub! 'ssh_minion', 'minion' # Both minion and ssh_minion uses the same repositories
-  url = $mu_repositories[client][client_type].strip
-  repo_name = url.delete_prefix "http://download.suse.de/ibs/SUSE:/Maintenance:/"
-  step %(I check "#{repo_name}" in the list)
+When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
+  repo_list = $custom_repositories[client]
+  next if repo_list.nil?
+
+  repo_list.each do |_repo_name, repo_url|
+    unique_repo_name = generate_repository_name(repo_url)
+    step %(I check "#{unique_repo_name}" in the list)
+  end
 end
 
 # content lifecycle steps
 When(/^I click the environment build button$/) do
-  raise "Click on environment build failed" unless find(:xpath, '//*[@id="cm-build-modal-save-button"]').click
+  raise 'Click on environment build failed' unless find_button('cm-build-modal-save-button', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from Development to QA$/) do
-  raise "Click on promote from Development failed" unless find(:xpath, '//*[@id="dev_name-promote-modal-link"]').click
+  raise 'Click on promote from Development failed' unless find_button('dev_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from QA to Production$/) do
-  raise "Click on promote from QA failed" unless find(:xpath, '//*[@id="qa_name-promote-modal-link"]').click
+  raise 'Click on promote from QA failed' unless find_button('qa_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
     raise "Text \"#{text}\" not found" unless has_content?(text)
+  end
+end
+
+When(/^I wait at most (\d+) seconds until I see "([^"]*)" text in the environment "([^"]*)"$/) do |seconds, text, env|
+  within(:xpath, "//h3[text()='#{env}']/../..") do
+    step %(I wait at most #{seconds} seconds until I see "#{text}" text)
   end
 end
 

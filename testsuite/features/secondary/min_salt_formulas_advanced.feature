@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_formulas
 Feature: Use advanced features of Salt formulas
   In order to use forms to apply changes to minions
   As an authorized user
@@ -78,8 +79,7 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "text2" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "text3" on "sle_minion"
      And the pillar data for "testing:str_opt" should be "text4" on "sle_minion"
@@ -99,8 +99,7 @@ Feature: Use advanced features of Salt formulas
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "" on "sle_minion"
+     And the pillar data for "testing:str" should be "" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -136,8 +135,7 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw1" as "testing#pw"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -155,8 +153,7 @@ Feature: Use advanced features of Salt formulas
      And I follow first "Testform" in the content area
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -185,8 +182,7 @@ Feature: Use advanced features of Salt formulas
      And I enter "min_pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "min_text1" on "sle_minion"
+     And the pillar data for "testing:str" should be "min_text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "min_text2" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "min_text3" on "sle_minion"
      And the pillar data for "testing:str_opt" should be "min_text4" on "sle_minion"
@@ -206,8 +202,7 @@ Feature: Use advanced features of Salt formulas
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     When I refresh the pillar data
-     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
+     And the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"

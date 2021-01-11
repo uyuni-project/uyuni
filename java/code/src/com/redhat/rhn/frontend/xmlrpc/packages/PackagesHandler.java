@@ -92,7 +92,7 @@ public class PackagesHandler extends BaseHandler {
      *       #prop("string", "build_date")
      *       #prop("string", "last_modified_date")
      *       #prop("string", "size")
-     *       #prop_desc("string", "path", "The path on the Satellite's file system that
+     *       #prop_desc("string", "path", "The path on the #product() server's file system that
      *              the package resides.")
      *       #prop("string", "payload_size")
      *    #struct_end()
@@ -342,7 +342,7 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException something bad happens
      * @return 1 on success.
      *
-     * @xmlrpc.doc Remove a package from the satellite.
+     * @xmlrpc.doc Remove a package from #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype #return_int_success()

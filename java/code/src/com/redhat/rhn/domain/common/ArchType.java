@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -69,6 +70,25 @@ public class ArchType extends BaseDomainHelper {
     public void setName(String n) {
         this.name = n;
     }
+
+
+    /**
+     * @return returns the package type based on this architecture.
+     */
+    public PackageType getPackageType() {
+        String archType = getLabel();
+
+        if (archType.equals("deb")) {
+            return PackageType.DEB;
+        }
+        else if (archType.equals("rpm")) {
+            return PackageType.RPM;
+        }
+        else {
+            throw new RuntimeException("unsupported package type " + archType);
+        }
+    }
+
 
     /** {@inheritDoc} */
     public boolean equals(Object o) {

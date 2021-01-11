@@ -50,8 +50,8 @@ artifacts:
     package: jakarta-commons-discovery
     repository: Leap
   - artifact: commons-el
-    package: jakarta-commons-el
-    repository: Uyuni_Other
+    package: apache-commons-el
+    repository: Leap
   - artifact: commons-fileupload
     package: jakarta-commons-fileupload
     repository: Leap
@@ -60,7 +60,8 @@ artifacts:
     repository: Leap
   - artifact: commons-jexl
     package: apache-commons-jexl
-    repository: Uyuni_Other
+    jar: commons-jexl\.jar
+    repository: Leap
   - artifact: commons-lang3
     package: apache-commons-lang3
     repository: Leap
@@ -257,7 +258,7 @@ artifacts:
     package: apache-commons-lang
     repository: Leap
   - artifact: velocity
-    repository: Uyuni_Other
+    repository: Leap
 
   - artifact: jasper
     package: tomcat-lib

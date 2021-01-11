@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 16:18+0200\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
 "PO-Revision-Date: 2018-03-16 12:46+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/spacewalk/"
@@ -1060,8 +1060,8 @@ msgid "Cannot contact selected server"
 msgstr "Не вдалося встановити зв’язок з вибраним сервером"
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
+#, fuzzy, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
 msgstr "Не вдається зв'язатися з Satellite чи Proxy на '%s.'"
 
 #: ../src/up2date_client/rhnregGui.py:328
@@ -1284,10 +1284,10 @@ msgstr ""
 "власником %s."
 
 #: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
 "parts of '%s' would be very helpful. Thanks!"
 msgstr ""
 "Непередбачена помилка. Якщо ви хочете допомогти вдосконалити цю програму, "
@@ -2523,16 +2523,18 @@ msgid "RHN Registration"
 msgstr "Реєстрація у RHN"
 
 #: ../rhn_register.desktop.in.h:2
-msgid ""
-"Register for software updates from Spacewalk/Red Hat Satellite/Red Hat "
-"Network Classic"
+#, fuzzy
+msgid "Register for software updates from Spacewalk/Uyuni/SUSE Manager"
 msgstr ""
 "Зареєструйтеся для оновлення програмного забезпечення зі Spacewalk/red Hat "
 "Satellite/Red Hat Network Classic"
 
 #: ../rhn_register.desktop.in.h:3
-msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
-msgstr "Реєстрація у Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+msgid "Register to Spacewalk/Uyuni/SUSE Manager"
+msgstr ""
+
+#~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
+#~ msgstr "Реєстрація у Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 
 #~ msgid "Enter your Red Hat Satellite URL."
 #~ msgstr "Вкажіть вашу адресу у Red Hat Satellite."

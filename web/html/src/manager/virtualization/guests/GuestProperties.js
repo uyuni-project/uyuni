@@ -27,6 +27,7 @@ type Props = {
   localTime: string,
   timezone: string,
   actionChains: Array<ActionChain>,
+  cobblerProfiles: {string: string},
 };
 
 /**
@@ -57,6 +58,7 @@ export function GuestProperties(props: Props) : React.Node {
   const osTypesLabels = {
     hvm: 'Fully Virtualized',
     xen: 'Para Virtualized',
+    xenpvh: 'PVH',
   };
 
   return (
@@ -113,6 +115,18 @@ export function GuestProperties(props: Props) : React.Node {
                                     const arch = initialModel.arch || props.host.cpu.arch;
                                     const caps = domainsCaps.find(cap => cap.arch === arch && cap.domain === vmType);
 
+                                    const onChangeProfile = (name, value) => {
+                                      if (value) {
+                                        // remove the image template of the first disk
+                                        // set default disk image size to 20G if no image is set
+                                        const size = model['disk0_source_size'];
+                                        changeModel(Object.assign(model,
+                                          { disk0_source_template: undefined },
+                                          !size ? { disk0_source_size: 20 }: {},
+                                        ));
+                                      }
+                                    };
+
                                     return [
                                       <Panel key="general" title={t('General')} headingLevel="h2">
                                         { initialModel.name === undefined
@@ -136,11 +150,8 @@ export function GuestProperties(props: Props) : React.Node {
                                             name="vmType"
                                             required
                                             defaultValue={vmTypes.includes('kvm') ? 'kvm' : vmTypes[0]}
-                                          >
-                                            {
-                                              vmTypes.map(k => <option key={k} value={k}>{k}</option>)
-                                            }
-                                          </Select>)
+                                            options={vmTypes}
+                                          />)
                                         }
                                         { initialModel.osType === undefined
                                           && (
@@ -151,11 +162,8 @@ export function GuestProperties(props: Props) : React.Node {
                                             name="osType"
                                             required
                                             defaultValue={osTypes[0]}
-                                          >
-                                            {
-                                              osTypes.map(k => <option key={k} value={k}>{osTypesLabels[k]}</option>)
-                                            }
-                                          </Select>)
+                                            options={osTypes.map(item => ({value: item, label: osTypesLabels[item]}))}
+                                          />)
                                         }
                                         <Text
                                           name="memory"
@@ -184,13 +192,39 @@ export function GuestProperties(props: Props) : React.Node {
                                             name="arch"
                                             required
                                             defaultValue={props.host.cpu.arch}
-                                          >
-                                            {
-                                              domainsCaps.map(cap => cap.arch)
+                                            options={
+                                              domainsCaps
+                                                .map(cap => cap.arch)
                                                 .filter((item, index, array) => array.indexOf(item) === index)
-                                                .map(k => <option key={k} value={k}>{k}</option>)
                                             }
-                                          </Select>)
+                                          />)
+                                        }
+                                        { initialModel.vmType === undefined && props.cobblerProfiles !== {}
+                                          && (
+                                            <>
+                                              <Select
+                                                labelClass="col-md-3"
+                                                divClass="col-md-6"
+                                                label={t('Auto-installation Profile')}
+                                                name="cobbler_profile"
+                                                defaultValue=""
+                                                onChange={onChangeProfile}
+                                                isClearable
+                                                options={
+                                                  Object.keys(props.cobblerProfiles)
+                                                    .sort((k1, k2) => props.cobblerProfiles[k1].localeCompare(props.cobblerProfiles[k2]))
+                                                    .map(k => ({value: k, label: props.cobblerProfiles[k]}))
+                                                }
+                                              />
+                                              <Text
+                                                name="kernel_options"
+                                                label={t('Kernel options')}
+                                                labelClass="col-md-3"
+                                                divClass="col-md-6"
+                                                disabled={!model["cobbler_profile"]}
+                                              />
+                                            </>
+                                          )
                                         }
                                       </Panel>,
                                       <GuestDisksPanel
@@ -206,18 +240,14 @@ export function GuestProperties(props: Props) : React.Node {
                                           divClass="col-md-6"
                                           label={t('Type')}
                                           name="graphicsType"
-                                        >
-                                          {
-                                            [{ key: 'vnc', display: 'VNC' }, { key: 'spice', display: 'Spice' }]
+                                          isClearable
+                                          options={
+                                            [{ value: 'vnc', label: 'VNC', osTypes: ['hvm', 'xen', 'xenpvh'] },
+                                             { value: 'spice', label: 'Spice', osTypes: ['hvm'] }]
                                               .filter(entry => caps !== undefined
-                                                && caps.devices.graphics.type.includes(entry.key))
-                                              .map(entry => (
-                                                <option key={entry.key} value={entry.key}>
-                                                  {entry.display}
-                                                </option>))
+                                                && caps.devices.graphics.type.includes(entry.value) && entry.osTypes.includes(model.osType))
                                           }
-                                          <option key="" value="">{t('None')}</option>
-                                        </Select>
+                                        />
                                       </Panel>,
                                     ];
                                   }
@@ -240,3 +270,6 @@ export function GuestProperties(props: Props) : React.Node {
     </VirtualizationListRefreshApi>
   );
 }
+GuestProperties.defaultProps = {
+  cobblerProfiles: {},
+};

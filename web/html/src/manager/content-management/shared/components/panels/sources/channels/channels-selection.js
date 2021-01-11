@@ -1,5 +1,7 @@
 // @flow
-import React, {useEffect} from 'react';
+import * as React from 'react';
+import Select from 'react-select';
+import {useEffect} from 'react';
 import {Loading} from "components/utils/Loading";
 import type {ChannelsTreeType} from "core/channels/api/use-channels-tree-api";
 import useChannelsTreeApi from "core/channels/api/use-channels-tree-api";
@@ -78,19 +80,21 @@ const ChannelsSelection = (props: PropsType) => {
           {t('New Base Channel')}
         </label>
         <div className='col-lg-8'>
-          <select
+          <Select
             name='selectedBaseChannel'
-            className='form-control'
-            value={state.selectedBaseChannelId}
-            onChange={event => dispatchChannelsSelection({
-              type: "lead_channel",
-              newBaseId: parseInt(event.target.value, 10)
-            })}>
-            <option disabled selected value> -- select a base channel -- </option>
-            {
-              orderedBaseChannels.map(b => <option key={b.id} value={b.id}>{b.name}</option>)
-            }
-          </select>
+            value={orderedBaseChannels.find(item => item.id === state.selectedBaseChannelId)}
+            onChange={value => {
+                if (value instanceof "object" && !(value instanceof Array)) {
+                  dispatchChannelsSelection({
+                  type: "lead_channel",
+                  newBaseId: parseInt(value.id, 10)
+                })
+              }
+            }}
+            options={orderedBaseChannels}
+            getOptionLabel={option => option.name}
+            getOptionValue={option => option.id}
+          />
           <span className='help-block'>
             {t("Choose the channel to be elected as the new base channel")}
           </span>

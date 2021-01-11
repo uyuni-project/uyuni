@@ -145,6 +145,8 @@ public class ClustersController {
                 withClusterAdmin(this::joinNode));
         post("/manager/api/cluster/:id/remove-node",
                 withClusterAdmin(this::removeNode));
+        get("/manager/api/cluster/:id/upgrade-plan",
+                withUser(this::upgradeClusterPlan));
         post("/manager/api/cluster/:id/upgrade",
                 withClusterAdmin(this::upgradeCluster));
         get("/manager/api/cluster/:id",
@@ -162,6 +164,23 @@ public class ClustersController {
         post("/manager/api/cluster/new/add",
                 withClusterAdmin(this::addCluster));
 
+    }
+
+    private Object upgradeClusterPlan(Request request, Response response, User user) {
+        Cluster cluster = getCluster(request, user);
+        try {
+            Optional<String> plan = clusterManager.getUpgradePlan(cluster);
+            if (plan.isEmpty()) {
+                return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                        ResultJson.error("Error getting cluster upgrade plan. Check server logs."));
+            }
+            return json(response, ResultJson.success(plan.orElse("")));
+        }
+        catch (RuntimeException e) {
+            LOG.error("Error getting cluster upgrade plan", e);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("Error getting cluster upgrade plan. Check server logs."));
+        }
     }
 
     private Object getClusterProps(Request request, Response response, User user) {
@@ -291,6 +310,7 @@ public class ClustersController {
         data.put("flashMessage", FlashScopeHelper.flash(request));
         data.put("contentCluster", GSON.toJson(
                 toClusterResponse(cluster, getClusterProvider(cluster.getProvider()))));
+        data.put("showUpgradePlan", clusterManager.isShowUpgradePlan(cluster.getProvider()));
         MinionController.addActionChains(user, data);
         return new ModelAndView(data, "controllers/clusters/templates/upgrade.jade");
     }

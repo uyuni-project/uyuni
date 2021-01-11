@@ -1,12 +1,19 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: openSCAP audit of traditional client
+@scope_traditional_client
+@scope_openscap
+Feature: OpenSCAP audit of traditional client
   In order to audit a traditional client
   As an authorized user
-  I want to run an openSCAP scan on it
+  I want to run an OpenSCAP scan on it
 
-  Scenario: Schedule an audit job using the SUSE profile
+  Scenario: Install the OpenSCAP packages on the traditional client
+    When I enable repository "os_pool_repo os_update_repo" on this "sle_client"
+    And I enable SUSE Manager tools repositories on "sle_client"
+    And I install OpenSCAP dependencies on "sle_client"
+
+  Scenario: Schedule an OpenSCAP audit job on the traditional client using SUSE profile
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
@@ -23,8 +30,9 @@ Feature: openSCAP audit of traditional client
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Default" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text or "notapplicable" text
-    And I should see a "rule-" link
+    When I enter "pass" as the filtered XCCDF result type
+    And I click on the filter button
+    Then I should see a "rule-pwd-warnage" link
 
   Scenario: Cleanup: remove audit scans retention period from traditional client
     Given I am on the Organizations page
@@ -34,19 +42,24 @@ Feature: openSCAP audit of traditional client
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-  Scenario: Delete audit results from traditional client
+  Scenario: Cleanup: delete audit results from traditional client
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"
     And I click on "Remove Selected Scans"
     And I click on "Confirm"
-    Then I should see a "deleted. 0 SCAP Scan(s) retained" text
+    Then I should see a " SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
-  Scenario: Restore audit scans retention period on traditional client
+  Scenario: Cleanup: restore audit scans retention period on traditional client
     Given I am on the Organizations page
     When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
     And I enter "90" as "scap_retention_period"
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
+
+  Scenario: Cleanup: remove the OpenSCAP packages from the traditional client
+    When I remove OpenSCAP dependencies from "sle_client"
+    And I disable SUSE Manager tools repositories on "sle_client"
+    And I disable repository "os_pool_repo os_update_repo" on this "sle_client"
