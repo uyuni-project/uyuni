@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 SUSE LLC
+# Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -57,18 +57,21 @@ Feature: Content lifecycle
     Then I should see a "No environments created" text
     When I follow "Add Environment"
     And I enter "dev_name" as "name"
+    And I enter "dev_label" as "label"
     And I enter "dev_desc" as "description"
     And I click on "Save"
     Then I wait until I see "dev_name" text
     And I should see a "dev_desc" text
     When I follow "Add Environment"
     And I enter "prod_name" as "name"
+    And I enter "prod_label" as "label"
     And I enter "prod_desc" as "description"
     And I click on "Save"
     Then I wait until I see "prod_name" text
     And I should see a "prod_desc" text
     When I follow "Add Environment"
     And I enter "qa_name" as "name"
+    And I enter "qa_label" as "label"
     And I enter "qa_desc" as "description"
     And I select "prod_name" from "predecessorLabel"
     And I click on "Save"
