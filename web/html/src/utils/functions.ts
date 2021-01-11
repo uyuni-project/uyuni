@@ -6,15 +6,15 @@ export type Cancelable = {
 };
 
 function cancelable(promise: Promise<any>, onCancel: (arg0: Error | void) => void): Cancelable {
-    var rejectFn;
-    var isCanceled = false;
+    let rejectFn: (reason: any) => void;
+    let isCancelled = false;
 
     const cancelPromise = new Promise((resolve, reject) => {
         rejectFn = reject;
     });
 
     const race = Promise.race([promise, cancelPromise]).catch(error => {
-        if (isCanceled) {
+        if (isCancelled) {
             onCancel(error);
         }
         throw error;
@@ -23,7 +23,7 @@ function cancelable(promise: Promise<any>, onCancel: (arg0: Error | void) => voi
     return {
         promise: race,
         cancel: (reason: any) => {
-            isCanceled = true;
+            isCancelled = true;
             rejectFn(reason);
         },
     };

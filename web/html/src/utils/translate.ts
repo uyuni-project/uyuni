@@ -17,7 +17,10 @@ function getTranslationData() {
  * Get the translation data. If the file is not found e.g. because the language is not (yet) supported
  * return an empty string and use the default translation en_US
  */
-function getPoAsJson(locale) {
+function getPoAsJson(locale?: string) {
+    if (!locale) {
+        return "";
+    }
     try {
         return require(`../../../po/${locale}.po`);
     } catch (_) {
@@ -30,7 +33,7 @@ function getPoAsJson(locale) {
  * with placeholder replacement like Java's MessageFormat class.
  * Accepts any number of arguments after key.
  */
-function translate(key) {
+function translate(key: string) {
     var result = key;
 
     window.translationData && (result = window.translationData.gettext(result));

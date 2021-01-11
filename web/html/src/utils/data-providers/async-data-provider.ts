@@ -1,7 +1,7 @@
 import PagedDataEndpoint from "./paged-data-endpoint";
 import PageControl from "./page-control";
 
-import {PagedData} from ".";
+import {PagedData} from "./index";
 
 export default class AsyncDataProvider {
     endpoint: PagedDataEndpoint;
