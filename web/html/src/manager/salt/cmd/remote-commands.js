@@ -1,12 +1,12 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {Button} = require("components/buttons");
-const { TopPanel } = require('components/panels/TopPanel')
-const Network = require("utils/network");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { Button } from 'components/buttons';
+import { TopPanel } from 'components/panels/TopPanel';
+import Network from 'utils/network';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 function object2map(obj) {
   return Object.keys(obj).reduce((acc, id) => {

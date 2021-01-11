@@ -450,6 +450,7 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
         insert into rhnPackagekey
             (id, key_id, key_type_id) values
             (sequence_nextval('rhn_pkey_id_seq'), :key_id, :key_type_id)
+            on conflict do nothing
     """)
 
     lookup_keyid_sql = rhnSQL.prepare("""

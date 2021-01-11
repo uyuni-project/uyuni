@@ -1,7 +1,7 @@
 // @flow
 
 import {debounce} from 'lodash';
-import {get} from 'utils/network';
+import Network from 'utils/network';
 import PageControl from './page-control';
 
 import type {Cancelable} from "utils/functions";
@@ -49,7 +49,7 @@ export default class PagedDataEndpoint {
     if (this.curReq) {
       this.curReq.cancel("The request is cancelled due to subsequent calls");
     }
-    this.curReq = get(this.uri.toString());
+    this.curReq = Network.get(this.uri.toString());
     const promise = this.curReq.promise;
     promise.finally(() => this.curReq = null);
     callback(promise);

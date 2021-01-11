@@ -1,10 +1,11 @@
 // @flow
-import { hot } from 'react-hot-loader';
-import React, {useEffect} from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {useEffect} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {HelpLink} from 'components/utils/HelpLink';
 import {Button, AsyncButton} from 'components/buttons';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import {Messages, Utils as MessagesUtils} from 'components/messages';
 import {Utils} from 'utils/functions';
 import {IconTag as Icon} from 'components/icontag';
@@ -109,7 +110,7 @@ const HelpPanel = (props) => {
         {t("The server uses ")}<a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">{t("Prometheus")}</a>{t(" exporters to expose metrics about your environment.")}
       </p>
       <p>
-        {t("Refer to the ")}<a href={"/docs/" + window.docsLocale + "/suse-manager/administration/monitoring.html"} target="_blank">{t("documentation")}</a>{t(" to learn how to to consume these metrics.")}
+        {t("Refer to the ")}<a href={"/docs/" + window.docsLocale + "/suse-manager/administration/monitoring.html"} target="_blank" rel="noopener noreferrer">{t("documentation")}</a>{t(" to learn how to to consume these metrics.")}
       </p>
   </div>);
 }
@@ -273,4 +274,4 @@ const MonitoringAdmin = (props) => {
     </div>);
 }
 
-export default hot(module)(withPageWrapper(MonitoringAdmin));
+export default hot(withPageWrapper(MonitoringAdmin));

@@ -1,17 +1,17 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Messages = require("components/messages").Messages;
-const Network = require("utils/network");
-const { InnerPanel } = require('components/panels/InnerPanel');
-const {RecurringStatesDetails} = require("./recurring-states-details");
-const {RecurringStatesList} = require("./recurring-states-list");
-const {RecurringStatesEdit} =  require("./recurring-states-edit");
-const MessagesUtils = require("components/messages").Utils;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
-const Utils = require("utils/functions").Utils;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { Messages } from 'components/messages';
+import Network from 'utils/network';
+import { InnerPanel } from 'components/panels/InnerPanel';
+import { RecurringStatesDetails } from './recurring-states-details';
+import { RecurringStatesList } from './recurring-states-list';
+import { RecurringStatesEdit } from './recurring-states-edit';
+import { Utils as MessagesUtils } from 'components/messages';
+import SpaRenderer from 'core/spa/spa-renderer';
+import { Utils } from 'utils/functions';
 
 const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;

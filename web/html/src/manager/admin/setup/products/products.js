@@ -3,28 +3,27 @@
 
 import {searchCriteriaInExtension} from "./products.utils";
 
-const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
-const React = require('react');
-const ReactDOM = require('react-dom');
-const Network = require('utils/network');
-const Messages = require('components/messages').Messages;
-const MessagesUtils = require("components/messages").Utils;
-const {CustomDataHandler} = require('components/table/CustomDataHandler');
-const {SearchField} = require('components/table/SearchField');
-const {Highlight} = require('components/table/Highlight');
-const Functions = require('utils/functions');
-const Utils = Functions.Utils;
-const {ModalButton} = require("components/dialog/ModalButton");
-const {ModalLink} = require("components/dialog/ModalLink");
-const {Button, AsyncButton} = require('components/buttons');
-const SCCDialog = require('./products-scc-dialog').SCCDialog;
-const PopUp = require("components/popup").PopUp;
-const ProgressBar = require("components/progressbar").ProgressBar;
-const CustomDiv = require("components/custom-objects").CustomDiv;
-const {Toggler} = require("components/toggler");
-const {HelpLink} = require('components/utils/HelpLink');
-const ChannelLink = require('components/links').ChannelLink;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import Network from 'utils/network';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { CustomDataHandler } from 'components/table/CustomDataHandler';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import { Utils } from 'utils/functions';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { ModalLink } from 'components/dialog/ModalLink';
+import { Button, AsyncButton } from 'components/buttons';
+import { SCCDialog } from './products-scc-dialog';
+import { PopUp } from 'components/popup';
+import { ProgressBar } from 'components/progressbar';
+import { CustomDiv } from 'components/custom-objects';
+import { Toggler } from 'components/toggler';
+import { HelpLink } from 'components/utils/HelpLink';
+import { ChannelLink } from 'components/links';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 const _DATA_ROOT_ID = 'baseProducts';
 

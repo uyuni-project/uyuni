@@ -37,7 +37,7 @@
             <div class="alert alert-warning">
               <ul>
               <html:messages id="message">
-                <li><c:out value="${message}"/></li>
+                <li><c:out escapeXml="false" value="${message}"/></li>
               </html:messages>
               </ul>
             </div>

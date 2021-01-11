@@ -1,3 +1,5 @@
+- Fix incorrect password autocompletions (bsc#1148357)
+- Improves misleading UI message displayed on systems with modules activated (bsc#1179525)
 - fix reboot action race condition (bsc#1177031)
 - Fix availability check for debian repositories (bsc#1180127)
 - Added 'contents' argument to the 'configchannel.create' XMLRPC API method (bsc#1179566)

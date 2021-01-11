@@ -1,10 +1,10 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Network = require("utils/network");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import Network from 'utils/network';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 class Notifications extends React.Component {
   state = {

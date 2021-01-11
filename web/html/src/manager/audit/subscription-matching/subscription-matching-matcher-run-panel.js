@@ -1,8 +1,8 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const Network = require("utils/network");
+import * as React from 'react';
+import Network from 'utils/network';
 
 class MatcherRunPanel extends React.Component {
   state = {
@@ -110,6 +110,6 @@ class MatcherScheduleButton extends React.Component {
   }
 }
 
-module.exports = {
-  MatcherRunPanel: MatcherRunPanel,
-}
+export {
+  MatcherRunPanel,
+};

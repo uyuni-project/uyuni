@@ -1,6 +1,7 @@
 // @flow
-import {hot} from 'react-hot-loader';
-import React, {useState}  from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {useState}  from 'react';
 import {TopPanel} from "components/panels/TopPanel";
 import {HashRouter, Route, Switch} from 'components/utils/HashRouter';
 import withPageWrapper from 'components/general/with-page-wrapper';
@@ -89,4 +90,4 @@ const RemoveNode = (props: Props) => {
             </TopPanel>);                
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(RemoveNode)));
+export default hot(withPageWrapper<Props>(withErrorMessages(RemoveNode)));

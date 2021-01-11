@@ -1,10 +1,11 @@
 // @flow
 
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 import {showErrorToastr} from 'components/toastr/toastr';
 import TextInput from './text-input';
 import SelectInput from './select-input';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 
 export default function AppStreams() {
   const [channels, setChannels] = useState([]);

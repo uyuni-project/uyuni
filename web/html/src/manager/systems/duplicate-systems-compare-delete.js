@@ -1,12 +1,11 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-
-const {Utils} = require("../../utils/functions");
-const {DeleteSystem} = require("./delete-system");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { Utils } from '../../utils/functions';
+import { DeleteSystem } from './delete-system';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 function postForm(serverId) {
   const form = jQuery("table[class='list compare-list']").closest("form");

@@ -56,6 +56,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -1042,6 +1043,13 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
+        PackageEvr inputEvr = new PackageEvr(
+                epoch == null ? "0" : epoch,
+                version == null ? "" : version,
+                release == null ? "" : release,
+                server.getPackageType()
+        );
+
         List toCheck = packagesToCheck(server, name);
 
         List returnList = new ArrayList();
@@ -1057,9 +1065,14 @@ public class SystemHandler extends BaseHandler {
             String pkgRelease = (String) pkg.get("release");
             String pkgEpoch   = (String) pkg.get("epoch");
 
-            int c = PackageManager.verCmp(pkgEpoch, pkgVersion, pkgRelease,
-                    epoch, version, release);
-            if (0 > c) {
+            PackageEvr pkgEvr = new PackageEvr(
+                    pkgEpoch == null ? "0" : pkgEpoch,
+                    pkgVersion == null ? "" : pkgVersion,
+                    pkgRelease == null ? "" : pkgRelease,
+                    server.getPackageType()
+            );
+
+            if (0 > pkgEvr.compareTo(inputEvr)) {
                 returnList.add(fillOutPackage(pkgName, pkgVersion, pkgRelease, pkgEpoch));
             }
         }
@@ -1105,6 +1118,14 @@ public class SystemHandler extends BaseHandler {
                     throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
+
+        PackageEvr inputEvr = new PackageEvr(
+                epoch == null ? "0" : epoch,
+                version == null ? "" : version,
+                release == null ? "" : release,
+                server.getPackageType()
+        );
+
         List toCheck = packagesToCheck(server, name);
         List returnList = new ArrayList();
         /*
@@ -1118,9 +1139,14 @@ public class SystemHandler extends BaseHandler {
             String pkgRelease = (String) pkg.get("release");
             String pkgEpoch   = (String) pkg.get("epoch");
 
-            int c = PackageManager.verCmp(pkgEpoch, pkgVersion, pkgRelease,
-                    epoch, version, release);
-            if (0 < c) {
+            PackageEvr pkgEvr = new PackageEvr(
+                    pkgEpoch == null ? "0" : pkgEpoch,
+                    pkgVersion == null ? "" : pkgVersion,
+                    pkgRelease == null ? "" : pkgRelease,
+                    server.getPackageType()
+            );
+
+            if (0 < pkgEvr.compareTo(inputEvr)) {
                 returnList.add(fillOutPackage(pkgName, pkgVersion, pkgRelease, pkgEpoch));
             }
         }

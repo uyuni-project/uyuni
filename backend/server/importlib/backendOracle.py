@@ -632,14 +632,6 @@ class OracleBackend(Backend):
             pk          = ['package_id', 'eula_id'],
             attribute   = 'eulas',
         ),
-        Table('rhnPackageExtraTagKey',
-              fields={
-                  'id'      : DBint(),
-                  'name'    : DBstring(256),
-              },
-              pk=['id'],
-              attribute='extra_tags',
-              ),
         Table('rhnPackageExtraTag',
             fields={
               'package_id'  : DBint(),

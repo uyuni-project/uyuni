@@ -1,14 +1,14 @@
 /* eslint-disable */
 
-import React from "react";
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
 import {Table} from "components/table/Table";
 import {Column} from "components/table/Column";
 import {SearchField} from "components/table/SearchField";
 import { TopPanel } from "components/panels/TopPanel";
 import { Messages } from "components/messages";
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import withPageWrapper from "../../../components/general/with-page-wrapper";
-import {hot} from 'react-hot-loader';
 
 class FormulaCatalog extends React.Component {
     constructor(props) {
@@ -86,4 +86,4 @@ class FormulaCatalog extends React.Component {
     }
 }
 
-export default hot(module)(withPageWrapper(FormulaCatalog));
+export default hot(withPageWrapper(FormulaCatalog));

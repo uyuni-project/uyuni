@@ -26,6 +26,6 @@ function filters(initFilters) {
   return my;
 }
 
-module.exports = {
-    filters: filters
-}
+export {
+    filters,
+};

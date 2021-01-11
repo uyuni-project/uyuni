@@ -1,14 +1,15 @@
 // @flow
-import React, {useEffect} from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {useEffect} from 'react';
 import {TopPanel} from 'components/panels/TopPanel';
 import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';
 import {Table} from 'components/table/Table';
-import Functions from 'utils/functions';
+import {Utils} from 'utils/functions';
 import {LinkButton} from 'components/buttons';
 import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import {hot} from 'react-hot-loader';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import _truncate from "lodash/truncate";
@@ -84,7 +85,7 @@ const ListProjects = (props: Props) => {
         >
           <Column
             columnKey="name"
-            comparator={Functions.Utils.sortByText}
+            comparator={Utils.sortByText}
             header={t('Name')}
             cell={row =>
               <a
@@ -96,7 +97,7 @@ const ListProjects = (props: Props) => {
           />
           <Column
             columnKey="description"
-            comparator={Functions.Utils.sortByText}
+            comparator={Utils.sortByText}
             header={t('Description')}
             cell={row => _truncate(row.description,{length: 120})}
           />
@@ -123,4 +124,4 @@ const ListProjects = (props: Props) => {
     );
 }
 
-export default hot(module)(withPageWrapper<Props>(ListProjects));
+export default hot(withPageWrapper<Props>(ListProjects));

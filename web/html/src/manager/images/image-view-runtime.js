@@ -1,8 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
+import * as React from 'react';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 
 class ImageViewRuntime extends React.Component {
   constructor(props) {
@@ -105,6 +105,6 @@ class ClusterInfo extends React.Component {
   }
 }
 
-module.exports = {
-  ImageViewRuntime: ImageViewRuntime
-}
+export {
+  ImageViewRuntime,
+};

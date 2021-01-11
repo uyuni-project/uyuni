@@ -1,17 +1,18 @@
 /* eslint-disable */
 'use strict';
 
-import React, {useState, useEffect} from "react";
+import * as React from 'react';
+import {useState, useEffect} from "react";
 import {Messages} from "components/messages";
 
 import {MaintenanceWindowsDetails} from "./details/maintenance-windows-details";
 import {MaintenanceWindowsList} from "./list/maintenance-windows-list";
 import {MaintenanceWindowsEdit} from "./edit/maintenance-windows-edit";
 
-const MessagesUtils = require("components/messages").Utils;
-const SpaRenderer = require("core/spa/spa-renderer").default;
-const Network = require("utils/network");
-const MaintenanceWindowsApi = require("./api/maintenance-windows-api");
+import { Utils as MessagesUtils } from 'components/messages';
+import SpaRenderer from 'core/spa/spa-renderer';
+import Network from 'utils/network';
+import MaintenanceWindowsApi from './api/maintenance-windows-api';
 
 const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
