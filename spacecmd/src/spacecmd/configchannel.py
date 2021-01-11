@@ -1287,7 +1287,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                     self.session, ccdetails['label'], path, filedetails)
             elif filedetails['type'] == 'sls':
                 # Filter out everything except the file contents:
-                init_sls_details = {k:v for (k,v) in filedetails.items() if k in ['contents', 'contents_enc64']}
+                init_sls_details = dict(filter(lambda e: e[0] in ['contents', 'contents_enc64'], filedetails.items()))
                 ret = self.client.configchannel.updateInitSls(
                     self.session, ccdetails['label'], init_sls_details)
             else:

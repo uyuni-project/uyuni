@@ -24,3 +24,6 @@ suseMdKeyword
 ;
 
 CREATE SEQUENCE suse_mdkeyword_id_seq;
+
+CREATE UNIQUE INDEX susemdkeyword_label_uq
+ON suseMdKeyword (label);

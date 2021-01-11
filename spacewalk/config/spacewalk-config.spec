@@ -24,11 +24,7 @@
 %else
 %define apacheconfdir %{_sysconfdir}/httpd
 %define apachepkg httpd
-%if 0%{?rhel}
-%define apache_group root
-%else
 %define apache_group apache
-%endif
 %endif
 
 Name:           spacewalk-config
@@ -38,7 +34,7 @@ Group:          Applications/System
 Version:        4.2.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       perl(Satcon)

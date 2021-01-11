@@ -34,3 +34,5 @@ suseProductChannel
 
 CREATE SEQUENCE suse_product_channel_id_seq;
 
+CREATE UNIQUE INDEX suseproductchannel_product_id_channel_id_uq
+ON suseProductChannel (product_id, channel_id);
