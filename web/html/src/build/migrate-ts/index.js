@@ -102,10 +102,11 @@ const args = require("./args");
     console.log("migrate untyped use state");
     await execAndLog(`sed -i'${tempExtension}' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
 
+    // TODO: Review this with https://github.com/typescript-cheatsheets/react
     // React.ReactNode -> JSX.Element
-    console.log("migrate React.ReactNode to JSX.Element");
-    await execAndLog(`sed -i'${tempExtension}' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
-    await execAndLog(`sed -i'${tempExtension}' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
+    // console.log("migrate React.ReactNode to JSX.Element");
+    // await execAndLog(`sed -i'${tempExtension}' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
+    // await execAndLog(`sed -i'${tempExtension}' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
 
     // Array<Object> -> Array<any>
     console.log("migrate object array to any array");
