@@ -3,3 +3,5 @@ vendors/**/*
 build/**/*
 build.js
 flow-typed/**/*
+global.d.ts
+imports.d.ts

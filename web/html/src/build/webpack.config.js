@@ -78,7 +78,7 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(ts|js)x?$/,
           exclude: /node_modules/,
           use: {
             loader: "babel-loader"
@@ -112,7 +112,8 @@ module.exports = (env, argv) => {
       ]
     },
     resolve: {
-      alias: webpackAlias
+      alias: webpackAlias,
+      extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
     },
     plugins: pluginsInUse,
     devServer: {

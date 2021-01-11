@@ -6,7 +6,9 @@ module.exports = {
   ],
 
   plugins: [
-    "flowtype-errors", "react-hooks"
+    "flowtype-errors",
+    "react-hooks",
+    "@typescript-eslint"
   ],
 
   env: {
