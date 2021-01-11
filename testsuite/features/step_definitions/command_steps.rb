@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2020 SUSE LLC.
+# Copyright (c) 2014-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -684,14 +684,6 @@ When(/^I wait for the OpenSCAP audit to finish$/) do
   ensure
     @client_api.call('auth.logout', @sid)
   end
-end
-
-And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, host|
-  system_name = get_system_name(host)
-  cmd = "spacecmd -u admin -p admin system_listevents #{system_name} | head -n5"
-  $server.run("spacecmd -u admin -p admin clear_caches")
-  out, _code = $server.run(cmd)
-  raise "#{out} should contain #{status}" unless out.include? status
 end
 
 When(/^I register this client for SSH push via tunnel$/) do
