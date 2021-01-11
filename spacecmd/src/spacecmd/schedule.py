@@ -256,58 +256,44 @@ def do_schedule_details(self, args):
         logging.warning('%s is not a valid ID' % str(action_id))
         return 1
 
-    completed = self.client.schedule.listCompletedSystems(self.session,
-                                                          action_id)
-
+    completed = self.client.schedule.listCompletedSystems(self.session, action_id)
     failed = self.client.schedule.listFailedSystems(self.session, action_id)
+    pending = self.client.schedule.listInProgressSystems(self.session, action_id)
+    action = dict(map(lambda e: [e.get("id"), e], self.client.schedule.listAllActions(self.session))).get(action_id)
 
-    pending = self.client.schedule.listInProgressSystems(self.session,
-                                                         action_id)
-
-    # put all the system arrays together for the summary
-    all_systems = []
-    all_systems.extend(completed)
-    all_systems.extend(failed)
-    all_systems.extend(pending)
-
-    # schedule.getAction() API call would make this easier
-    all_actions = self.client.schedule.listAllActions(self.session)
-    action = None
-    for a in all_actions:
-        if a.get('id') == action_id:
-            action = a
-            del all_actions
-            break
-
-    print('ID:        %i' % action.get('id'))
-    print('Action:    %s' % action.get('name'))
-    print('User:      %s' % action.get('scheduler'))
-    print('Date:      %s' % action.get('earliest'))
-    print('')
-    print('Completed: %s' % str(len(completed)).rjust(3))
-    print('Failed:    %s' % str(len(failed)).rjust(3))
-    print('Pending:   %s' % str(len(pending)).rjust(3))
-
-    if completed:
+    if action is not None:
+        print('ID:        %i' % action.get('id'))
+        print('Action:    %s' % action.get('name'))
+        print('User:      %s' % action.get('scheduler'))
+        print('Date:      %s' % action.get('earliest'))
         print('')
-        print('Completed Systems')
-        print('-----------------')
-        for s in completed:
-            print(s.get('server_name'))
+        print('Completed: %s' % str(len(completed)).rjust(3))
+        print('Failed:    %s' % str(len(failed)).rjust(3))
+        print('Pending:   %s' % str(len(pending)).rjust(3))
 
-    if failed:
-        print('')
-        print('Failed Systems')
-        print('--------------')
-        for s in failed:
-            print(s.get('server_name'))
+        if completed:
+            print('')
+            print('Completed Systems')
+            print('-----------------')
+            for s in completed:
+                print(s.get('server_name'))
 
-    if pending:
-        print('')
-        print('Pending Systems')
-        print('---------------')
-        for s in pending:
-            print(s.get('server_name'))
+        if failed:
+            print('')
+            print('Failed Systems')
+            print('--------------')
+            for s in failed:
+                print(s.get('server_name'))
+
+        if pending:
+            print('')
+            print('Pending Systems')
+            print('---------------')
+            for s in pending:
+                print(s.get('server_name'))
+    else:
+        logging.error('No action found with the ID "%s"' % action_id)
+        return 1
 
     return 0
 
