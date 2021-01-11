@@ -91,6 +91,7 @@ import java.util.stream.Collectors;
 public class ErrataHandler extends BaseHandler {
 
     private static final List<String> RO_METHODS = Arrays.asList("applicableToChannels");
+    private static final List<String> VALID_ADVISORY_STATUS = Arrays.asList("final", "testing", "retracted");
     private static Logger log = Logger.getLogger(ErrataHandler.class);
 
     /**
@@ -299,6 +300,8 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "advisory_type", "Type of advisory (one of the
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
+     *          #prop_desc("string", "advisory_status", "Status of advisory (one of the
+     *                  following: 'final', 'testing' or 'retracted'")
      *          #prop("string", "product")
      *          #prop("dateTime.iso8601", "issue_date")
      *          #prop("dateTime.iso8601", "update_date")
@@ -340,6 +343,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");
         validKeys.add("advisory_type");
+        validKeys.add("advisory_status");
         validKeys.add("product");
         validKeys.add("issue_date");
         validKeys.add("update_date");
@@ -430,6 +434,13 @@ public class ErrataHandler extends BaseHandler {
                 throw new InvalidParameterException("Invalid advisory type");
             }
             errata.setAdvisoryType((String)details.get("advisory_type"));
+        }
+        if (details.containsKey("advisory_status")) {
+            String status = (String)details.get("advisory_status");
+            if (!VALID_ADVISORY_STATUS.contains(status)) {
+                throw new InvalidParameterException("Invalid advisory status");
+            }
+            errata.setAdvisoryStatus(status);
         }
         if (details.containsKey("product")) {
             if (StringUtils.isBlank((String)details.get("product"))) {
@@ -1106,6 +1117,8 @@ public class ErrataHandler extends BaseHandler {
      *  String "advisory_type" the type of advisory for the errata (Must be one of the
      *          following: "Security Advisory", "Product Enhancement Advisory", or
      *          "Bug Fix Advisory"
+     *  String "advirory_status" the status of advisory for the errata
+     *         (Must be one of the following: "final", "testing", "retracted")
      *  String "product" the product the errata affects
      *  String "errataFrom" the author of the errata
      *  String "topic" the topic of the errata
@@ -1132,6 +1145,8 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "advisory_type", "Type of advisory (one of the
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
+     *          #prop_desc("string", "advisory_status", "Status of advisory (one of the
+     *                  following: 'final', 'testing', or 'retracted'")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
@@ -1171,6 +1186,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");
         validKeys.add("advisory_type");
+        validKeys.add("advisory_status");
         validKeys.add("product");
         validKeys.add("errataFrom");
         validKeys.add("topic");
@@ -1202,6 +1218,7 @@ public class ErrataHandler extends BaseHandler {
             throw new InvalidAdvisoryReleaseException(advisoryRelease.longValue());
         }
         String advisoryType = (String) getRequiredAttribute(errataInfo, "advisory_type");
+        String advisoryStatus = (String) getRequiredAttribute(errataInfo, "advisory_status");
         String product = (String) getRequiredAttribute(errataInfo, "product");
         String errataFrom = (String) errataInfo.get("errataFrom");
         String topic = (String) getRequiredAttribute(errataInfo, "topic");
@@ -1233,6 +1250,12 @@ public class ErrataHandler extends BaseHandler {
         }
         else {
             throw new InvalidAdvisoryTypeException(advisoryType);
+        }
+        if (VALID_ADVISORY_STATUS.contains(advisoryStatus)) {
+            newErrata.setAdvisoryStatus(advisoryStatus);
+        }
+        else {
+            throw new InvalidAdvisoryTypeException(advisoryStatus);
         }
 
         newErrata.setProduct(product);

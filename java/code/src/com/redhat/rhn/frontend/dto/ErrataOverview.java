@@ -31,6 +31,7 @@ public class ErrataOverview extends BaseDto {
     private String advisory;
     private String advisoryName;
     private String advisoryType;
+    private String advisoryStatus;
     private String advisorySynopsis;
     private String errataFrom;
     private String description;
@@ -285,6 +286,18 @@ public class ErrataOverview extends BaseDto {
      */
     public void setAdvisoryType(String advisoryTypeIn) {
         advisoryType = advisoryTypeIn;
+    }
+    /**
+     * @return Returns the advisoryStatus.
+     */
+    public String getAdvisoryStatus() {
+        return advisoryStatus;
+    }
+    /**
+     * @param advisoryStatusIn The advisoryStatus to set.
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn) {
+        advisoryStatus = advisoryStatusIn;
     }
     /**
      * @return Returns the affectedSystemCount.
