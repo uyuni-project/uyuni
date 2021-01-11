@@ -1456,6 +1456,7 @@ class _ErratumDumper(BaseRowDumper):
             ('rhn-erratum-advisory-name', 'advisory_name', 100),
             ('rhn-erratum-advisory-rel', 'advisory_rel', 32),
             ('rhn-erratum-advisory-type', 'advisory_type', 32),
+            ('rhn-erratum-advisory-status', 'advisory_status', 32),
             ('rhn-erratum-product', 'product', 64),
             ('rhn-erratum-description', 'description', 4000),
             ('rhn-erratum-synopsis', 'synopsis', 4000),

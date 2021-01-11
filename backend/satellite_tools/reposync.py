@@ -870,8 +870,9 @@ class RepoSync(object):
         else:
             updated_date = self._to_db_date(notice['issued'])
         if (existing_errata and
+            existing_errata['advisory_status'] == notice['status'] and
             not self.errata_needs_update(existing_errata, notice['version'], updated_date)):
-            return None
+               return None
 
         log(0, "Add Patch %s" % patch_name)
         e = importLib.Erratum()
@@ -879,6 +880,7 @@ class RepoSync(object):
         e['advisory'] = e['advisory_name'] = patch_name
         e['advisory_rel']  = notice['version']
         e['advisory_type'] = errata_typemap.get(notice['type'], 'Product Enhancement Advisory')
+        e['advisory_status'] = notice['status']
         e['product']       = notice['release'] or 'Unknown'
         e['description']   = notice['description'] or 'not set'
         e['synopsis']      = notice['title'] or notice['update_id']
@@ -1510,7 +1512,7 @@ class RepoSync(object):
         """
         h = rhnSQL.prepare("""
             select e.id, e.advisory,
-                   e.advisory_name, e.advisory_rel,
+                   e.advisory_name, e.advisory_rel, e.advisory_status,
                    TO_CHAR(e.update_date, 'YYYY-MM-DD HH24:MI:SS') as update_date
               from rhnerrata e
              where e.advisory = :name
@@ -1817,6 +1819,7 @@ class RepoSync(object):
             e['advisory_rel'] = version
             e['advisory_type'] = errata_typemap.get(category,
                                              'Product Enhancement Advisory')
+            e['advisory_status'] = 'final'
 
             existing_errata = self.get_errata(e['advisory'])
 
