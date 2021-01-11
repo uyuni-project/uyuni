@@ -1,3 +1,4 @@
+- Mark required inputs in the 'Environment Lifecycle' form
 - Replace Select component implementation to use react-select
 - Fix Package States page display error (bsc#1180580)
 - Fixed variable installation location.
