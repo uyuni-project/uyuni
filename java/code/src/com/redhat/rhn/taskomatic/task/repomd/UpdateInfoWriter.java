@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2010--2021 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -11,9 +12,6 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
- */
-/*
- * Copyright (c) 2010 SUSE LLC
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
@@ -35,9 +33,6 @@ import java.util.List;
 
 /**
  * UpdateInfo.xml writer class
- *
- * @version $Rev $
- *
  */
 public class UpdateInfoWriter extends RepomdWriter {
 
@@ -115,7 +110,7 @@ public class UpdateInfoWriter extends RepomdWriter {
             throws SAXException {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("from", erratum.getErrataFrom());
-        attr.addAttribute("status", "final");
+        attr.addAttribute("status", erratum.getAdvisoryStatus());
         attr.addAttribute("type", mapAdvisoryType(erratum.getAdvisoryType()));
         attr.addAttribute("version", Long.toString(erratum.getAdvisoryRel()));
         handler.startElement("update", attr);
