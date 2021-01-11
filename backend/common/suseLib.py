@@ -203,22 +203,22 @@ def send(url, sendData=None):
         try:
             curl.perform()
         except pycurl.error as e:
-            if e[0] == 56:  # Proxy requires authentication
-                log_debug(2, e[1])
+            if e.args[0] == 56:  # Proxy requires authentication
+                log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
                                             "but reading credentials from "
                                             "%s failed." % YAST_PROXY)
                 curl.setopt(pycurl.PROXYUSERPWD,
                             "%s:%s" % (proxy_user, proxy_pass))
-            elif e[0] == 60:
+            elif e.args[0] == 60:
                 log_error("Peer certificate could not be authenticated "
                           "with known CA certificates.")
                 raise TransferException("Peer certificate could not be "
                                         "authenticated with known CA "
                                         "certificates.")
             else:
-                log_error(e[1])
+                log_error(e.args[1])
                 raise
 
         status = curl.getinfo(pycurl.HTTP_CODE)
@@ -275,8 +275,8 @@ def accessible(url):
         try:
             curl.perform()
         except pycurl.error as e:
-            if e[0] == 56:  # Proxy requires authentication
-                log_debug(2, e[1])
+            if e.args[0] == 56:  # Proxy requires authentication
+                log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
                                             "but reading credentials from "
