@@ -10,7 +10,7 @@ export type ServerMessageType = {
 
 export type MessageType = {
     severity: Severity;
-    text: string | React.ReactNode | Array<React.ReactNode | string>; // TODO only for compatibility, deprecate it
+    text: React.ReactNode;
 };
 
 type Props = {
@@ -56,23 +56,23 @@ const _classNames = {
 };
 
 export class Messages extends React.Component<Props> {
-    static info(text: string | React.ReactNode): MessageType {
+    static info(text: React.ReactNode): MessageType {
         return Messages.message("info", text);
     }
 
-    static success(text: string | React.ReactNode): MessageType {
+    static success(text: React.ReactNode): MessageType {
         return Messages.message("success", text);
     }
 
-    static error(text: string | React.ReactNode): MessageType {
+    static error(text: React.ReactNode): MessageType {
         return Messages.message("error", text);
     }
 
-    static warning(text: string | React.ReactNode): MessageType {
+    static warning(text: React.ReactNode): MessageType {
         return Messages.message("warning", text);
     }
 
-    static message(severityIn: Severity, textIn: string | React.ReactNode): MessageType {
+    static message(severityIn: Severity, textIn: React.ReactNode): MessageType {
         return {severity: severityIn, text: textIn};
     }
 
@@ -92,7 +92,7 @@ export class Messages extends React.Component<Props> {
 export const fromServerMessage = (
     message: ServerMessageType,
     messageMap?: {
-        [key: string]: string | ((arg0: any) => string | React.ReactNode);
+        [key: string]: string | ((arg0: any) => React.ReactNode);
     }
 ): MessageType | null | undefined => {
     let messageText: React.ReactNode = message.text;
@@ -135,16 +135,16 @@ function msg(severityIn: Severity, ...textIn: Array<React.ReactNode>) {
  * of the `Messages` component.
  */
 export const Utils = {
-    info: function(textIn: string | React.ReactNode | Array<string | React.ReactNode>): Array<MessageType> {
+    info: function(textIn: React.ReactNode): Array<MessageType> {
         return msg("info", textIn);
     },
-    success: function(textIn: string | React.ReactNode | Array<string | React.ReactNode>): Array<MessageType> {
+    success: function(textIn: React.ReactNode): Array<MessageType> {
         return msg("success", textIn);
     },
-    warning: function(textIn: string | React.ReactNode | Array<string | React.ReactNode>): Array<MessageType> {
+    warning: function(textIn: React.ReactNode): Array<MessageType> {
         return msg("warning", textIn);
     },
-    error: function(textIn: string | React.ReactNode | Array<string | React.ReactNode>): Array<MessageType> {
+    error: function(textIn: React.ReactNode): Array<MessageType> {
         return msg("error", textIn);
     },
 };
