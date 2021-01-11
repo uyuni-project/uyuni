@@ -1,3 +1,5 @@
+- Default to preferred items per page in content lifecycle lists (bsc#1180558)
+- Fix sorting in content lifecycle projects and cluster tables (bsc#1180558)
 - Mark required inputs in the 'Environment Lifecycle' form
 - Replace Select component implementation to use react-select
 - Fix Package States page display error (bsc#1180580)

@@ -1,3 +1,4 @@
+- Default to preferred items per page in content lifecycle lists (bsc#1180558)
 - Removed Java module com.sun.bind if it is not available; Load jaxb bundles if available.
 - internal code cleanup (dropping unused table rhnErrataTmp)
 - Drop the ssl_available option (SSL is always present)
