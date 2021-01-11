@@ -28,7 +28,8 @@
 %global tftp_group root
 %global salt_user root
 %global salt_group root
-%global wwwdocroot %{_var}/www/html
+%global wwwroot %{_var}/www
+%global wwwdocroot %{wwwroot}/html
 %endif
 
 %if 0%{?suse_version}
@@ -37,7 +38,8 @@
 %global tftp_group tftp
 %global salt_user salt
 %global salt_group salt
-%global wwwdocroot /srv/www/htdocs
+%global wwwroot /srv/www
+%global wwwdocroot %{wwwroot}/htdocs
 %endif
 
 %global debug_package %{nil}
@@ -176,7 +178,7 @@ install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/lo
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
 make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
-install -d -m 755 %{buildroot}/srv/www/os-images/
+install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
 
 # empty repo for rhel base channels
 mkdir -p %{buildroot}%{wwwdocroot}/pub/repositories/
@@ -304,7 +306,7 @@ fi
 %else
 %{_datadir}/applications/YaST2/com.suse.yast2.SUSEManager.desktop
 %endif
-%attr(775,%{salt_user},susemanager) %dir /srv/www/os-images/
+%attr(775,%{salt_user},susemanager) %dir %{wwwroot}/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
 %else

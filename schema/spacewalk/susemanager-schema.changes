@@ -1,5 +1,6 @@
 - Changed to versioned Python3 to SPEC file.
 - Python3 port for blend tool
+- add missing unique index on suse tables
 - internal code cleanup (dropping unused table rhnErrataTmp)
 - Fix Debian package version comparison
 - Move dist upgrade SQL file to the correct directory so it gets picked up in schema upgrades (bsc#1179759)

@@ -3564,8 +3564,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>次のパッケージはこのシステムにインストールされており、そのチャンネルのいずれにも存在しません。</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
-        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
-        <target>このシステムがサブスクライブしているチャンネルの中に、モジュールが含まれているものがあります。このシステムでモジュールを有効化している場合は、パッケージ操作の際に @@PRODUCT_NAME@@ を使用するのはおやめください。その代わり、 dnf を利用してクライアントからパッケージ操作を行なってください。</target>
+        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
+        <target state="needs-adaptation">このシステムがサブスクライブしているチャンネルの中に、モジュールが含まれているものがあります。このシステムでモジュールを有効化している場合は、パッケージ操作の際に @@PRODUCT_NAME@@ を使用するのはおやめください。その代わり、 dnf を利用してクライアントからパッケージ操作を行なってください。</target>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -3741,7 +3741,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target>パッチはありません</target>
+        <target state="needs-adaptation">パッチはありません</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory" xml:space="preserve">
         <source>Advisory</source>
@@ -4952,12 +4952,12 @@ organization. You may grant or remove the organization administrator role in the
         <target>パッチ管理</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Published Patches</source>
-        <target>発行されたパッチはありません</target>
+        <source>No Patches</source>
+        <target state="needs-adaptation">発行されたパッチはありません</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
-        <source>Published Patches</source>
-        <target>発行済みパッチ</target>
+        <source>Patches</source>
+        <target state="needs-adaptation">発行済みパッチ</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
@@ -18487,8 +18487,8 @@ You can, however, download this file.
 _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           </context>
         </context-group>
-        <target state="needs-adaptation">
-&lt;a href="{0}"&gt;{1} のダウンロード&lt;/a&gt; (リビジョン {2}, {3})
+        <target state="translated">
+&lt;a href="{0}" data-senna-off="true"&gt;{1} のダウンロード&lt;/a&gt; (リビジョン {2}, {3})
 </target>
       </trans-unit>
       <!-- header.jspf -->

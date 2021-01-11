@@ -1,5 +1,5 @@
 // @flow
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {useState} from 'react';
 import {TopPanel} from "components/panels/TopPanel";
@@ -96,4 +96,4 @@ const JoinCluster = (props: Props) => {
             </TopPanel>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(JoinCluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(JoinCluster)));

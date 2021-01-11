@@ -59,11 +59,12 @@ export function GuestDiskFields(props: Props) : React.Node {
         disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`)}
         defaultValue="disk"
         onChange={onDiskDeviceChange}
-      >
-        <option key="disk" value="disk">{t('Disk')}</option>
-        <option key="cdrom" value="cdrom">{t('CDROM')}</option>
-        <option key="floppy" value="floppy">{t('Floppy')}</option>
-      </Select>
+        options={[
+          {value: 'disk', label: t('Disk')},
+          {value: 'cdrom', label: t('CDROM')},
+          {value: 'floppy', label: t('Floppy')},
+        ]}
+      />
       { sourceType === "file" && <GuestDiskFileFields {...props}/> }
       { sourceType === "volume" && <GuestDiskVolumeFields {...props}/> }
       {
@@ -80,9 +81,8 @@ export function GuestDiskFields(props: Props) : React.Node {
         divClass="col-md-6"
         disabled={!props.onlyHandledDisks}
         defaultValue={defaultBus}
-      >
-        { busTypes.map(bus => <option key={bus} name={bus}>{bus}</option>) }
-      </Select>
+        options={busTypes}
+      />
     </>
   );
 }

@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {Select} from "../../../../../../components/input/Select";
+import {Select} from "components/input/Select";
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 
@@ -30,9 +30,9 @@ const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
           name="sourceType"
           label={t("Type")}
           labelClass="col-md-3"
-          divClass="col-md-8">
-          <option key="0" value="software">{t("Channel")}</option>
-        </Select>
+          divClass="col-md-8"
+          options={[{value: "software", label: t("Channel")}]}
+        />
       </div>
       <ChannelsSelection
         isSourcesApiLoading={isLoading}

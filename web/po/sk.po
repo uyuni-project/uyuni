@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-16 10:31+0100\n"
-"PO-Revision-Date: 2020-10-02 21:48+0000\n"
+"POT-Creation-Date: 2021-01-07 10:11+0100\n"
+"PO-Revision-Date: 2021-01-06 15:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -21,17 +21,19 @@ msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "zostávajúce"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
+"Prehliadač Internet Explorer nie je podporovaný. Skúste použiť Firefox, "
+"Chrome, alebo Edge"
 
 #: ../html/src/components/action-schedule.js:53
 msgid "new action chain"
-msgstr ""
+msgstr "nový akčný reťazec"
 
 #: ../html/src/components/action-schedule.js:196
 msgid ""
@@ -39,38 +41,41 @@ msgid ""
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
 msgstr ""
+"Pre vybrané systémy existuje viacero plánov údržby. Ak chcete plánovať podľa "
+"dátumu alebo okna údržby, uistite sa, že systémy v sade používajú najviac 1 "
+"plán údržby."
 
 #: ../html/src/components/action-schedule.js:203
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "Žiadne nadchádzajúce okná údržby"
 
 #: ../html/src/components/action-schedule.js:248
 msgid "Earliest:"
-msgstr ""
+msgstr "Najskôr:"
 
 #: ../html/src/components/action-schedule.js:248
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "Okno údržby:"
 
 #: ../html/src/components/action-schedule.js:273
 msgid "Add to:"
-msgstr ""
+msgstr "Pridať k:"
 
 #: ../html/src/components/action-schedule.js:289
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "Načítava sa plánovač..."
 
 #: ../html/src/components/config-channels.js:22
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "Kanál konfigurácie stavu"
 
 #: ../html/src/components/config-channels.js:25
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Normálny konfiguračný kanál"
 
 #: ../html/src/components/config-channels.js:50
 msgid "Configuration Channel: {0}"
-msgstr ""
+msgstr "Konfiguračný kanál: {0}"
 
 #: ../html/src/components/config-channels.js:54
 #: ../html/src/manager/images/image-profiles.js:160
@@ -85,32 +90,34 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:176
 msgid "Edit"
-msgstr ""
+msgstr "Upraviť"
 
 #: ../html/src/components/config-channels.js:55
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "Upraviť konfiguračný kanál"
 
 #: ../html/src/components/config-channels.js:107
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "Existujú neuložené zmeny. Chcete pokračovať?"
 
 #: ../html/src/components/config-channels.js:145
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "Priradenia stavov boli uložené."
 
 #: ../html/src/components/config-channels.js:154
 msgid "An error occurred on save."
-msgstr ""
+msgstr "Pri ukladaní sa vyskytla chyba."
 
 #: ../html/src/components/config-channels.js:277
-#: ../html/src/manager/minion/packages/package-states.js:273
+#: ../html/src/manager/minion/packages/package-states.js:271
 msgid "No current changes."
-msgstr ""
+msgstr "Žiadne aktuálne zmeny."
 
 #: ../html/src/components/config-channels.js:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
+"Neboli priradené žiadne stavy. Na nájdenie a priradenie stavov použite "
+"vyhľadávanie."
 
 #: ../html/src/components/config-channels.js:337
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:51
@@ -127,44 +134,44 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
 msgid "Back"
-msgstr ""
+msgstr "Späť"
 
 #: ../html/src/components/config-channels.js:338
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:167
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:18
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:587
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
-msgstr ""
+msgstr "Potvrdiť"
 
 #: ../html/src/components/config-channels.js:345
 #: ../html/src/manager/maintenance/details/schedule-details.js:181
 #: ../html/src/manager/maintenance/details/schedule-details.js:188
 msgid "Save Changes"
-msgstr ""
+msgstr "Uložiť zmeny"
 
 #: ../html/src/components/config-channels.js:351
 msgid "Apply"
-msgstr ""
+msgstr "Použiť"
 
 #: ../html/src/components/config-channels.js:356
 msgid "Reorder"
-msgstr ""
+msgstr "Preusporiadať"
 
 #: ../html/src/components/config-channels.js:368
 #: ../html/src/components/config-channels.js:372
 msgid "Changes"
-msgstr ""
+msgstr "Zmeny"
 
 #: ../html/src/components/config-channels.js:370
 msgid "1 Change"
-msgstr ""
+msgstr "1 zmena"
 
 #: ../html/src/components/config-channels.js:379
 #: ../html/src/components/config-channels.js:408
-#: ../html/src/manager/minion/packages/package-states.js:242
+#: ../html/src/manager/minion/packages/package-states.js:240
 msgid "Search"
-msgstr ""
+msgstr "Hľadať"
 
 #: ../html/src/components/config-channels.js:385
 #: ../html/src/manager/admin/config/monitoring-admin.js:44
@@ -176,52 +183,52 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
-msgstr ""
+msgstr "Systém"
 
 #: ../html/src/components/config-channels.js:395
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Konfiguračné kanály"
 
 #: ../html/src/components/config-channels.js:405
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "Hľadať v konfiguračných kanáloch"
 
 #: ../html/src/components/config-channels.js:419
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr ""
+msgstr "Upravte poradie konfiguračných kanálov ich pretiahnutím."
 
 #: ../html/src/components/config-channels.js:420
 msgid "There are no states assigned."
-msgstr ""
+msgstr "Nie sú priradené žiadne stavy."
 
 #: ../html/src/components/config-channels.js:427
 msgid "Channel Name"
-msgstr ""
+msgstr "Názov kanála"
 
 #: ../html/src/components/config-channels.js:428
 msgid "Channel Label"
-msgstr ""
+msgstr "Označenie kanála"
 
 #: ../html/src/components/config-channels.js:429
 msgid "Assign"
-msgstr ""
+msgstr "Priradiť"
 
 #: ../html/src/components/config-channels.js:451
 #: ../html/src/components/table/TableDataHandler.js:289
 msgid "There are no entries to show."
-msgstr ""
+msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
 #: ../html/src/components/dialog/ActionConfirm.js:71
 msgid "Are you sure you want to {0} {1} "
-msgstr ""
+msgstr "Naozaj chcete {0} {1} "
 
 #: ../html/src/components/dialog/ActionConfirm.js:81
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
-msgstr ""
+msgstr "Naozaj chcete {0} vybrané položky {1}? ({2} položiek {1} vybraných)"
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
-#: ../html/src/components/panels/CreatorPanel.js:106
+#: ../html/src/components/panels/CreatorPanel.js:107
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:166
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:131
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
@@ -236,13 +243,13 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušiť"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
-#: ../html/src/components/panels/CreatorPanel.js:92
+#: ../html/src/components/panels/CreatorPanel.js:93
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:110
+#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
-#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.js:106
 #: ../html/src/manager/images/image-profiles.js:166
 #: ../html/src/manager/images/image-stores.js:109
@@ -266,51 +273,57 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
-msgstr ""
+msgstr "Vymazať"
 
 #: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
-msgstr ""
+msgstr "Vymazať projekt"
 
 #: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
-msgstr ""
+msgstr "Naozaj chcete vymazať projekt "
 
 #: ../html/src/components/FormulaForm.js:17
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
+msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
 #: ../html/src/components/FormulaForm.js:79
 msgid ""
 "Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
 "on each system!"
 msgstr ""
+"Bolo zistené viacnásobné skupinové vzorce. V každom systéme je možné použiť "
+"iba jeden vzorec pre \"{0}\"!"
 
 #: ../html/src/components/FormulaForm.js:107
 #: ../html/src/manager/clusters/cluster/cluster-config.js:50
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:61
 msgid "Please input required fields: {0}"
-msgstr ""
+msgstr "Prosím, zadajte požadované polia: {0}"
 
 #: ../html/src/components/FormulaForm.js:110
 #: ../html/src/manager/clusters/cluster/cluster-config.js:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:64
 msgid "Invalid format of fields: {0}"
-msgstr ""
+msgstr "Neplatný formát polí: {0}"
 
 #: ../html/src/components/FormulaForm.js:157
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
+"Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
+"a konfiguráciu softvéru."
 
 #: ../html/src/components/formulas/EditGroup.js:266
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
+"Toto pole sa používa ako 'kľúčový' identifikátor vo výsledných pilierových "
+"údajoch."
 
 #: ../html/src/components/formula-selection.js:128
 msgid " No group"
-msgstr ""
+msgstr " Žiadna skupina"
 
 #: ../html/src/components/formula-selection.js:228
 msgid ""
@@ -318,33 +331,36 @@ msgid ""
 "then be configured on group and system level. This allows you to "
 "automatically install and configure software."
 msgstr ""
+"Na tejto stránke môžete vybrať vzorce Salt  pre túto skupinu/systém, ktoré "
+"je potom možné nakonfigurovať na úrovni skupiny a systému. To vám umožňuje "
+"automaticky inštalovať a konfigurovať softvér."
 
 #: ../html/src/components/formula-selection.js:234
-#: ../html/src/components/panels/CreatorPanel.js:117
+#: ../html/src/components/panels/CreatorPanel.js:118
 #: ../html/src/manager/clusters/cluster/cluster-config.js:81
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:174
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:144
 #: ../html/src/manager/minion/packages/package-states.js:199
 msgid "Save"
-msgstr ""
+msgstr "Uložiť"
 
 #: ../html/src/components/formula-selection.js:242
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
 msgid "Formulas"
-msgstr ""
+msgstr "Vzorce"
 
 #: ../html/src/components/formulas/PasswordInput.js:52
 msgid "Generate new password"
-msgstr ""
+msgstr "Vygenerovať nové heslo"
 
 #: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
-msgstr ""
+msgstr "Zobraziť/skryť heslo"
 
 #: ../html/src/components/formulas/SectionToggle.js:15
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "Prepnúť viditeľnosť sekcie"
 
 #: ../html/src/components/input/Check.stories.js:31
 #: ../html/src/components/input/DateTime.stories.js:35
@@ -358,65 +374,65 @@ msgstr ""
 #: ../html/src/components/input/Select.stories.js:38
 #: ../html/src/components/input/Text.stories.js:36
 msgid "Submit"
-msgstr ""
+msgstr "Podať"
 
 #: ../html/src/components/input/Combo.stories.js:31
 msgid "Flavor"
-msgstr ""
+msgstr "Druh"
 
 #: ../html/src/components/input/Combo.stories.js:33
 msgid "Start typing..."
-msgstr ""
+msgstr "Začať písať..."
 
 #: ../html/src/components/input/Combo.stories.js:34
 msgid "No flavors"
-msgstr ""
+msgstr "Žiadne druhy"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
-msgstr ""
+msgstr "Čas"
 
 #: ../html/src/components/input/FormMultiInput.js:122
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:59
 msgid "Add"
-msgstr ""
+msgstr "Pridať"
 
 #: ../html/src/components/input/FormMultiInput.js:134
 #: ../html/src/manager/clusters/remove-node/remove-node.js:82
 msgid "Remove"
-msgstr ""
+msgstr "Odstrániť"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 msgid "Users"
-msgstr ""
+msgstr "Používatelia"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
 #: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
-msgstr ""
+msgstr "Krstné meno"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
 #: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/Text.stories.js:28
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "Minimálne 2 znaky"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
-msgstr ""
+msgstr "Priezvisko"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
-msgstr ""
+msgstr "Heslo"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
-msgstr ""
+msgstr "Minimálne 4 znaky"
 
 #: ../html/src/components/input/Radio.stories.js:26
 #: ../html/src/components/input/Radio.stories.js:55
@@ -424,32 +440,32 @@ msgstr ""
 #: ../html/src/components/input/Radio.stories.js:116
 #: ../html/src/components/input/Select.stories.js:26
 msgid "Level"
-msgstr ""
+msgstr "Úroveň"
 
 #: ../html/src/components/input/Radio.stories.js:31
 #: ../html/src/components/input/Radio.stories.js:61
 #: ../html/src/components/input/Radio.stories.js:91
 #: ../html/src/components/input/Radio.stories.js:122
 msgid "Beginner"
-msgstr ""
+msgstr "Začiatočník"
 
 #: ../html/src/components/input/Radio.stories.js:32
 #: ../html/src/components/input/Radio.stories.js:62
 #: ../html/src/components/input/Radio.stories.js:92
 #: ../html/src/components/input/Radio.stories.js:123
 msgid "Normal"
-msgstr ""
+msgstr "Normálny"
 
 #: ../html/src/components/input/Radio.stories.js:33
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
-msgstr ""
+msgstr "Expert"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
-msgstr ""
+msgstr "Prvá"
 
 #: ../html/src/components/pagination.js:16
 #: ../html/src/manager/admin/setup/products/products.js:357
@@ -459,186 +475,194 @@ msgstr ""
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:44
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:969
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:492
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
-msgstr ""
+msgstr "Nasledujúca"
 
 #: ../html/src/components/pagination.js:54
 msgid "Page"
-msgstr ""
+msgstr "Stránka"
 
 #: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:362
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:766
 msgid "of"
-msgstr ""
+msgstr "z"
 
 #: ../html/src/components/pagination.js:72
 msgid "Page {0} of {1}"
-msgstr ""
+msgstr "Stránka {0} z {1}"
 
 #: ../html/src/components/picker/recurring-event-picker.js:303
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:85
 #: ../html/src/manager/maintenance/list/schedule-list.js:37
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
-msgstr ""
+msgstr "Názov plánu"
 
 #: ../html/src/components/picker/recurring-event-picker.js:307
 msgid "Select a Schedule"
-msgstr ""
+msgstr "Vybrať plán"
 
 #: ../html/src/components/picker/recurring-event-picker.js:314
 msgid "Hourly:"
-msgstr ""
+msgstr "Každú hodinu:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:320
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "Akcia sa vykoná každú hodinu v stanovenú minútu"
 
 #: ../html/src/components/picker/recurring-event-picker.js:326
 msgid "Daily:"
-msgstr ""
+msgstr "Denne:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:335
 msgid "Weekly:"
-msgstr ""
+msgstr "Týždenne:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:351
 msgid "Monthly:"
-msgstr ""
+msgstr "Mesačne:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:364
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr ""
+"Dni sú obmedzené na 28, aby bol k dispozícii opakujúci sa plán pre všetky "
+"mesiace"
 
 #: ../html/src/components/picker/recurring-event-picker.js:370
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "Vlastný formát Quartz:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:373
 msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
+msgstr "napr. \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:222
 msgid "Security Advisory"
-msgstr ""
+msgstr "Bezpečnostné upozornenie"
 
 #: ../html/src/components/systems.js:58
 msgid "System Locked"
-msgstr ""
+msgstr "Systém uzamknutý"
 
 #: ../html/src/components/table/SearchPanel.js:39
 msgid "Items {0} - {1} of {2}"
-msgstr ""
+msgstr "Položky {0} - {1} z {2}"
 
 #: ../html/src/components/table/SearchPanel.js:42
 msgid "({0} selected)"
-msgstr ""
+msgstr "(Vybrané {0})"
 
 #: ../html/src/components/table/SearchPanel.js:43
 #: ../html/src/manager/admin/setup/products/products.js:287
 msgid "Clear"
-msgstr ""
+msgstr "Vyčistiť"
 
 #: ../html/src/components/table/SearchPanel.js:48
 msgid "Select All"
-msgstr ""
+msgstr "Vybrať všetko"
 
 #: ../html/src/components/table/TableDataHandler.js:290
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:547
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:271
 #: ../html/src/manager/virtualization/pools/pool-properties.js:615
 msgid "Loading..."
-msgstr ""
+msgstr "Načítava sa..."
 
 #: ../html/src/components/table/TableDataHandler.js:318
 msgid "items per page"
-msgstr ""
+msgstr "položiek na stránku"
 
 #: ../html/src/components/tree/tree.js:117
 msgid "Invalid data"
-msgstr ""
+msgstr "Neplatné dáta"
 
 #: ../html/src/components/tree/tree.js:125
 msgid "No data"
-msgstr ""
+msgstr "Žiadne dáta"
 
 #: ../html/src/components/utils/HelpLink.js:20
 msgid "Help"
-msgstr ""
+msgstr "Pomocník"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:10
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
 msgid "Base channel not found or not authorized."
-msgstr ""
+msgstr "Základný kanál sa nenašiel alebo nemá oprávnenie."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:11
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
 msgid "Child channel not found or not authorized."
-msgstr ""
+msgstr "Kanál potomka sa nenašiel alebo nemá oprávnenie."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.js:12
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:30
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
 msgid "Invalid channel id"
-msgstr ""
+msgstr "Neplatné id kanála"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 msgid "Required channels"
-msgstr ""
+msgstr "Požadované kanály"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "none"
-msgstr ""
+msgstr "žiaden"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
 msgid "Require this channel"
-msgstr ""
+msgstr "Vyžadovať tento kanál"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:18
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr ""
+msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "An internal error has occured. See the server logs for details."
-msgstr ""
+msgstr "Nastala interná chyba. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:22
 msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
+"Povolenie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:23
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
 msgstr ""
+"Nepodarilo sa povoliť všetky monitorovacie služby. Niektoré služby sú stále "
+"zakázané. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:24
 msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
+"Zakázanie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:25
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
 msgstr ""
+"Nepodarilo sa zakázať všetky monitorovacie služby. Niektoré služby sú stále "
+"povolené. Podrobnosti nájdete v záznamoch servera."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:26
 msgid "Monitoring enabled successfully."
-msgstr ""
+msgstr "Monitorovanie bolo úspešne povolené."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:27
 msgid "Monitoring disabled successfully."
-msgstr ""
+msgstr "Monitorovanie bolo úspešne zakázané."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:28
 msgid ""
@@ -646,6 +670,9 @@ msgid ""
 "Click the Enable button to enable the JMX configuration or click Disable to "
 "stop the Prometheus exporter."
 msgstr ""
+"Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. "
+"Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo kliknutím na "
+"Zakázať sa zastaví exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:30
 msgid ""
@@ -653,6 +680,9 @@ msgid ""
 "Click the Disable button to disable the JMX configuration or click Enable to "
 "start the Prometheus exporter."
 msgstr ""
+"Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je "
+"povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo "
+"kliknutím na Povoliť sa spustí exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:32
 msgid ""
@@ -660,6 +690,9 @@ msgid ""
 "disabled. Click the Enable button to enable the JMX configuration of click "
 "Disable to stop the Prometheus exporter."
 msgstr ""
+"Exportér Taskomatic Prometheus je pripravený, ale konfigurácia JMX je "
+"zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo "
+"kliknutím na Zakázať sa zastaví exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:34
 msgid ""
@@ -667,159 +700,167 @@ msgid ""
 "enabled. Click the Disable button to disable the JMX configuration of click "
 "Enable to start the Prometheus exporter."
 msgstr ""
+"Exportér Taskomatic Prometheus nie je pripravený, ale konfigurácia JMX je "
+"povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo "
+"kliknutím na Povoliť sa spustí exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "Monitoring status hasn't changed."
-msgstr ""
+msgstr "Stav monitorovania sa nezmenil."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:40
 msgid "An error occured. Monitoring status unknown. Refresh the page."
-msgstr ""
+msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:45
 msgid "Tomcat (Java JMX)"
-msgstr ""
+msgstr "Tomcat (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:46
 msgid "Taskomatic (Java JMX)"
-msgstr ""
+msgstr "Taskomatic (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:47
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "Databáza PostgreSQL"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:48
 msgid "Server self monitoring"
-msgstr ""
+msgstr "Vlastné monitorovanie servera"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:57
 #: ../html/src/manager/admin/config/monitoring-admin.js:59
 msgid "Enabled"
-msgstr ""
+msgstr "Povolené"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:65
 #: ../html/src/manager/admin/config/monitoring-admin.js:67
 msgid "Disabled"
-msgstr ""
+msgstr "Zakázané"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "The server uses "
-msgstr ""
+msgstr "Server používa "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "Prometheus"
-msgstr ""
+msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "Refer to the "
-msgstr ""
+msgstr "Pozrite si "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "documentation"
-msgstr ""
+msgstr "dokumentácia"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:171
 #: ../html/src/manager/admin/config/monitoring-admin.js:180
 #: ../html/src/manager/admin/config/monitoring-admin.js:189
 #: ../html/src/manager/admin/config/monitoring-admin.js:202
 msgid "Enable"
-msgstr ""
+msgstr "Povoliť"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:173
 #: ../html/src/manager/admin/config/monitoring-admin.js:182
 #: ../html/src/manager/admin/config/monitoring-admin.js:191
 #: ../html/src/manager/admin/config/monitoring-admin.js:207
 msgid "Disable"
-msgstr ""
+msgstr "Zakázať"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:219
 msgid "SUSE Manager Configuration - Monitoring"
-msgstr ""
+msgstr "Konfigurácia SUSE Manager - Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:225
 msgid "Setup your SUSE Manager server monitoring."
-msgstr ""
+msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:230
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:234
 msgid "General"
-msgstr ""
+msgstr "Všeobecné"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Bootstrap Script"
-msgstr ""
+msgstr "Skript Bootstrap"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
 msgid "Organizations"
-msgstr ""
+msgstr "Organizácie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:233
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
-msgstr ""
+msgstr "Reštart"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:235
 msgid "Bare-metal systems"
-msgstr ""
+msgstr "Systémy Bare-metal"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:236
 #: ../html/src/manager/admin/config/monitoring-admin.js:241
 #: ../html/src/manager/admin/config/monitoring-admin.js:253
 msgid "Monitoring"
-msgstr ""
+msgstr "Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:264
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
 msgstr ""
+" Tomcat a Taskomatic sú potrebné na to, aby sa prejavili konfiguračné zmeny."
 
 #: ../html/src/manager/admin/setup/products/products.js:114
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
+"Nie je k dispozícii predplatné servera SUSE Manager. Produkty vyžadujúce "
+"kanál nástrojov klienta sa nebudú zobrazovať."
 
 #: ../html/src/manager/admin/setup/products/products.js:156
 msgid "The product catalog refresh is running..."
-msgstr ""
+msgstr "Obnovovanie katalógu produktov prebieha..."
 
 #: ../html/src/manager/admin/setup/products/products.js:226
 msgid "Setup Wizard"
-msgstr ""
+msgstr "Sprievodca nastavením"
 
 #: ../html/src/manager/admin/setup/products/products.js:244
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr ""
+"Obnovovanie produktových údajov momentálne beží na pozadí. Skúste znova "
+"neskôr, prosím."
 
 #: ../html/src/manager/admin/setup/products/products.js:251
 msgid "The product catalog is still refreshing, please wait."
-msgstr ""
+msgstr "Katalóg produktov sa stále obnovuje, čakajte, prosím."
 
 #: ../html/src/manager/admin/setup/products/products.js:253
 msgid "Select some product first."
-msgstr ""
+msgstr "Najskôr vyberte nejaký produkt."
 
 #: ../html/src/manager/admin/setup/products/products.js:262
 #: ../html/src/manager/admin/setup/products/products.js:269
 msgid "Add products"
-msgstr ""
+msgstr "Pridať produkty"
 
 #: ../html/src/manager/admin/setup/products/products.js:286
 msgid "Clear products selection"
-msgstr ""
+msgstr "Vymazať výber produktov"
 
 #: ../html/src/manager/admin/setup/products/products.js:326
 msgid "Why aren't all products displayed in the list?"
-msgstr ""
+msgstr "Prečo nie sú v zozname zobrazené všetky produkty?"
 
 #: ../html/src/manager/admin/setup/products/products.js:327
 msgid ""
@@ -844,7 +885,7 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.js:351
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:580
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
 msgstr ""
 
@@ -904,7 +945,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.js:135
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:473
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
 msgstr ""
 
@@ -912,13 +953,13 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.js:166
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:515
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.js:824
 msgid "SCC product catalog refresh in progress"
-msgstr ""
+msgstr "Prebieha obnovovanie katalógu výrobkov SCC"
 
 #: ../html/src/manager/admin/setup/products/products.js:828
 msgid "Scheduling channels product resync"
@@ -966,7 +1007,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
 msgid "Refresh the product catalog from SUSE Customer Center"
-msgstr ""
+msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:213
@@ -1103,6 +1144,8 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
+"Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
+"aktuálne údaje."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
@@ -1476,7 +1519,7 @@ msgstr ""
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:75
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
 msgid "Label:"
-msgstr ""
+msgstr "Označenie:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:82
 msgid "Description:"
@@ -1498,16 +1541,16 @@ msgstr ""
 #: ../html/src/manager/images/image-build.js:178
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:338
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "scheduled"
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.js:25
 #: ../html/src/manager/images/image-build.js:175
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:943
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:335
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
-msgstr ""
+msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:26
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:22
@@ -1592,7 +1635,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:256
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
 msgid "Label"
-msgstr ""
+msgstr "Označenie"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:260
 msgid "Cluster provider"
@@ -1637,6 +1680,8 @@ msgid ""
 "Container as a Service Platform (CaaSP) channels assigned - or any children "
 "channels of CaaSP channels"
 msgstr ""
+"Priradené kanály Container as a Service Platform (CaaSP) - alebo akékoľvek "
+"kanály potomkov z kanálov CaaSP"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:44
 msgid ""
@@ -1838,7 +1883,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-form.js:178
 #: ../html/src/manager/content-management/list-filters/filter-form.js:274
 #: ../html/src/manager/images/image-view-packages.js:42
-#: ../html/src/manager/minion/packages/package-states.js:337
+#: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr ""
 
@@ -1864,20 +1909,20 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:209
 msgid "Advisory name"
-msgstr ""
+msgstr "Názov upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:223
 msgid "Bug Fix Advisory"
-msgstr ""
+msgstr "Upozornenie na opravu chyby"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:224
 msgid "Product Enhancement Advisory"
-msgstr ""
+msgstr "Upozornenie na vylepšenia produktu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:226
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
-msgstr ""
+msgstr "Typ upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:235
 msgid "Issued"
@@ -1899,7 +1944,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:264
 msgid "Advisory Keywords"
-msgstr ""
+msgstr "Kľúčové slová upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:294
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
@@ -1936,23 +1981,23 @@ msgid "Content Lifecycle Projects"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:106
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:40
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:55
+#: ../html/src/manager/content-management/project/project.js:54
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:90
+#: ../html/src/manager/content-management/project/project.js:89
 msgid "Content Lifecycle Project - {0}"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:104
 msgid "Delete Project"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:106
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Are you sure you want to delete project"
 msgstr ""
 
@@ -2059,7 +2104,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:102
 msgid "Advisory Name"
-msgstr ""
+msgstr "Názov upozornenia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:120
 msgid "Keyword"
@@ -2079,7 +2124,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:169
 msgid "enable module"
-msgstr ""
+msgstr "povoliť modul"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
 msgid "Build ({0})"
@@ -2119,27 +2164,27 @@ msgstr ""
 msgid "Insert before"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:41
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:43
 msgid "Add Environment"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:52
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:54
 msgid "Environment created successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:68
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:70
 msgid "Creating the environment..."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:85
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:87
 msgid "No environments created"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:103
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:105
 msgid "Environment updated successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:117
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:120
 msgid "Environment {0} deleted successfully"
 msgstr ""
 
@@ -2292,9 +2337,9 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:105
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:526
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
-msgstr ""
+msgstr "Kanály potomkov"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:119
 msgid "Clear Search"
@@ -2302,7 +2347,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
 msgid "no child channels"
-msgstr ""
+msgstr "žiadne kanály potomkov"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
 msgid "This channel is recommended"
@@ -2348,14 +2393,14 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
 msgid "Formula saved. Apply the "
-msgstr ""
+msgstr "Vzorec bol uložený. Použiť "
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
 msgid "Highstate"
-msgstr ""
+msgstr "Highstate"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:18
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
@@ -2370,6 +2415,8 @@ msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
 msgstr ""
+"Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
+"použiť "
 
 #: ../html/src/manager/images/image-build.js:27
 msgid "An unknown error has occurred."
@@ -2493,7 +2540,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profile-edit.js:344
 msgid "Remove entry"
-msgstr ""
+msgstr "Odstrániť záznam"
 
 #: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Custom Info Values"
@@ -2528,6 +2575,8 @@ msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
 msgstr ""
+"Označenie je povinné a musí to byť jedinečný reťazec, ktorý nesmie obsahovať "
+"žiadne dvojbodky (:)."
 
 #: ../html/src/manager/images/image-profiles.js:21
 msgid "Dockerfile"
@@ -2605,7 +2654,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.js:191
 msgid "Label is required and must be unique."
-msgstr ""
+msgstr "Označenie je povinné a musí byť jedinečné."
 
 #: ../html/src/manager/images/image-store-edit.js:192
 msgid "Store URI"
@@ -2904,7 +2953,7 @@ msgid "Reinspect Image"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-packages.js:54
-#: ../html/src/manager/minion/packages/package-states.js:313
+#: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
 msgstr ""
 
@@ -2930,15 +2979,15 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
-msgstr ""
+msgstr "Bezpečnostné upozornenie"
 
 #: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "Upozornenie na opravu chyby"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "Upozornenie na vylepšenia produktu"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
@@ -2950,7 +2999,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
-msgstr ""
+msgstr "Upozornenie"
 
 #: ../html/src/manager/images/image-view-patches.js:92
 msgid "Updated"
@@ -3032,7 +3081,7 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
-msgstr ""
+msgstr "Naozaj chcete zmazať vybranú položku?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:38
 #: ../html/src/manager/maintenance/details/schedule-details.js:52
@@ -3104,7 +3153,7 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:118
 msgid "Upcoming Maintenance Windows"
-msgstr ""
+msgstr "Nadchádzajúce okná údržby"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:124
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
@@ -3247,6 +3296,8 @@ msgid ""
 "Any pending maintenance-only actions for these systems will be cancelled "
 "unless they are inside the new maintenance windows."
 msgstr ""
+"Všetky čakajúce akcie iba na údržbu týchto systémov budú zrušené, pokiaľ "
+"nebudú vo vnútri nových okien údržby."
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
 msgid "Are you sure you want to proceed?"
@@ -3295,37 +3346,37 @@ msgstr ""
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurácia"
 
-#: ../html/src/manager/minion/packages/package-states.js:274
+#: ../html/src/manager/minion/packages/package-states.js:272
 msgid "No package states."
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:293
+#: ../html/src/manager/minion/packages/package-states.js:291
 msgid "Latest"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:294
+#: ../html/src/manager/minion/packages/package-states.js:292
 msgid "Any"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:301
+#: ../html/src/manager/minion/packages/package-states.js:299
 msgid "Undo"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:312
+#: ../html/src/manager/minion/packages/package-states.js:310
 msgid "Unmanaged"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:314
+#: ../html/src/manager/minion/packages/package-states.js:312
 msgid "Removed"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:330
+#: ../html/src/manager/minion/packages/package-states.js:328
 msgid "Package States"
 msgstr ""
 
-#: ../html/src/manager/minion/packages/package-states.js:338
+#: ../html/src/manager/minion/packages/package-states.js:336
 #: ../html/src/manager/salt/keys/key-management.js:171
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
@@ -3355,7 +3406,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
-msgstr ""
+msgstr "Vytvorenie repozitára Bootstrap zlyhalo"
 
 #: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
@@ -3467,6 +3518,8 @@ msgid ""
 "Session expired, please reload the page to receive notifications in real-"
 "time."
 msgstr ""
+"Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste dostávali "
+"upozornenia v reálnom čase."
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
@@ -3575,18 +3628,20 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
 msgstr ""
+"Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste spustili príkaz v "
+"systémoch."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
-msgstr ""
+msgstr "Katalóg vzorcov"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
 msgid "Filter by formula name"
-msgstr ""
+msgstr "Filtrovať podľa názvu vzorca"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
-msgstr ""
+msgstr "Vzorec"
 
 #: ../html/src/manager/salt/keys/key-management.js:33
 msgid "Accept"
@@ -3640,7 +3695,7 @@ msgstr ""
 
 #: ../html/src/manager/state/display-highstate.js:30
 msgid "Highstate for {0}"
-msgstr ""
+msgstr "Highstate pre {0}"
 
 #: ../html/src/manager/state/display-highstate.js:125
 msgid "There are no applicable systems."
@@ -3652,7 +3707,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "Applying the highstate has been "
-msgstr ""
+msgstr "Použitie highstate bolo "
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "scheduled."
@@ -3660,7 +3715,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.js:95
 msgid "Apply Highstate"
-msgstr ""
+msgstr "Použiť Highstate"
 
 #: ../html/src/manager/state/highstate.js:107
 msgid "Create Recurring"
@@ -3709,7 +3764,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.js:126
 msgid "Quartz format string"
-msgstr ""
+msgstr "Reťazec formátu Quartz"
 
 #: ../html/src/manager/state/recurring-states-details.js:174
 #: ../html/src/manager/state/recurring-states-list.js:136
@@ -3754,10 +3809,10 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
 msgid "Child Channels:"
-msgstr ""
+msgstr "Kanály potomkov:"
 
 #: ../html/src/manager/systems/activation-key/child-channels.js:140
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:478
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
 msgid "mandatory"
 msgstr ""
 
@@ -3789,11 +3844,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
-msgstr ""
+msgstr "napr. ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:216
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:275
@@ -3826,7 +3881,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
 msgid "e.g., host.domain.com"
-msgstr ""
+msgstr "napr. host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:248
 msgid "Port range: 1 - 65535"
@@ -3859,9 +3914,9 @@ msgid "Confirm Deletion"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:31
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
 msgid "Error scheduling job in Taskomatic. Please check the logs."
-msgstr ""
+msgstr "Chyba pri plánovaní úlohy v Taskomatic. Prosím, skontrolujte záznamy."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
 msgid "Could not determine system default channel."
@@ -3898,7 +3953,7 @@ msgid "System Default Base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:144
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:503
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
 msgstr ""
 
@@ -3930,12 +3985,12 @@ msgid "Desired base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:196
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:410
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
 msgid "SUSE Channels"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:202
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:431
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
 msgstr ""
 
@@ -4024,37 +4079,37 @@ msgstr ""
 msgid "Channel changes scheduled."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:219
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:398
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
 msgid "(none, disable service)"
-msgstr ""
+msgstr "(žiadne, zakázať službu)"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
 msgid "Changing the channels has been "
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:507
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:530
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
 
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:610
 msgid "No child channels available."
-msgstr ""
+msgstr "Nie sú k dispozícii žiadne kanály potomkov."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:572
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
 msgid "Confirm Software Channel Change"
 msgstr ""
 
@@ -4576,7 +4631,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:574
 msgid "SELinux label"
-msgstr ""
+msgstr "Označenie SELinux"
 
 #: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
 msgid ""
@@ -4601,7 +4656,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
-msgstr ""
+msgstr "Pridať potomkov do SSM"
 
 #: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
@@ -4634,7 +4689,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "e.g., client.nue.sles"
-msgstr ""
+msgstr "napr. client.nue.sles"
 
 #. Base channel filter
 #: ../html/src/manager/visualization/hierarchy.js:121
@@ -4643,7 +4698,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
-msgstr ""
+msgstr "napr. SLE12"
 
 #. Installed products filter
 #: ../html/src/manager/visualization/hierarchy.js:127
@@ -4652,7 +4707,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
-msgstr ""
+msgstr "napr. SLES"
 
 #: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
@@ -4672,7 +4727,7 @@ msgstr ""
 
 #: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
-msgstr ""
+msgstr "Pridajte úroveň zoskupenia"
 
 #: ../html/src/manager/visualization/ui/components.js:187
 msgid "Select a system group"
@@ -4684,12 +4739,12 @@ msgstr ""
 
 #: ../html/src/utils/network.js:55
 msgid "Session expired, please reload the page."
-msgstr ""
+msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku."
 
 #: ../html/src/utils/network.js:59
 msgid "Resource not found."
-msgstr ""
+msgstr "Zdroj sa nenašiel."
 
 #: ../html/src/utils/network.js:63
 msgid "HTTP Error code "
-msgstr ""
+msgstr "Kód chyby HTTP "

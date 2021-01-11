@@ -3345,7 +3345,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
-        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, perform all package actions from the client using dnf.</source>
+        <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -3513,7 +3514,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       <!-- == ERRATA == -->
       <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Patches</source>
-        <target>কোনো ত্রুটি-বিচ্যুতির তথ্য উপস্থিত নেই</target>
+        <target state="needs-adaptation">কোনো ত্রুটি-বিচ্যুতির তথ্য উপস্থিত নেই</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
@@ -4696,12 +4697,12 @@ organization. You may grant or remove the organization administrator role in the
         <target>ত্রুটি-বিচ্যুতি পরিচালনা</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Published Patches</source>
-        <target>কোনো প্রকাশিত ত্রুটি-বিচ্যুতির তথ্য উপস্থিত নেই</target>
+        <source>No Patches</source>
+        <target state="needs-adaptation">কোনো প্রকাশিত ত্রুটি-বিচ্যুতির তথ্য উপস্থিত নেই</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
-        <source>Published Patches</source>
-        <target>প্রকাশিত ত্রুটি-বিচ্যুতির তথ্য</target>
+        <source>Patches</source>
+        <target state="needs-adaptation">প্রকাশিত ত্রুটি-বিচ্যুতির তথ্য</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>

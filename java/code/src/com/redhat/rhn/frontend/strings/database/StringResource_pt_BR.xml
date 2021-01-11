@@ -114,14 +114,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT+1100) Austrália (Leste Padrão) </target>
+        <target>(GMT+1100) Austrália (Leste Padrão)</target>
       </trans-unit>
       <trans-unit id="Australia/Sydney" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Daylight)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT+1100) Austrália (Leste Dia) </target>
+        <target>(GMT+1100) Austrália (Leste Dia)</target>
       </trans-unit>
       <trans-unit id="Asia/Tokyo" xml:space="preserve">
         <source>(GMT+0900) Japan</source>
@@ -212,7 +212,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT-0600) Canada (Regina)</target>
+        <target>(GMT-0600) Canadá (Regina)</target>
       </trans-unit>
       <trans-unit id="America/Denver" xml:space="preserve">
         <source>(GMT-0700) United States (Mountain)</source>
@@ -293,7 +293,7 @@
       </trans-unit>
       <trans-unit id="Australia/Adelaide" xml:space="preserve">
         <source>(GMT+0930) Australia Adelaide</source>
-        <target state="needs-adaptation">(GMT+0930) Austrália (Adelaide)</target>
+        <target state="translated">(GMT+0930) Austrália Adelaide</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -2700,7 +2700,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>Threads </target>
+        <target>Threads</target>
       </trans-unit>
       <trans-unit id="metrics.Threads running" xml:space="preserve">
         <source>Threads running</source>

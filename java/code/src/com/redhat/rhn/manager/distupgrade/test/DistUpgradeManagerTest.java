@@ -232,21 +232,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup migration target product + upgrade path
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
-        SUSEProductChannel pcbase = new SUSEProductChannel();
-        pcbase.setChannel(targetBaseChannel);
-        pcbase.setProduct(targetBaseProduct);
-        pcbase.setMandatory(true);
-        SUSEProductFactory.save(pcbase);
         sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetAddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
-        SUSEProductChannel pcaddon = new SUSEProductChannel();
-        pcaddon.setChannel(targetAddonChannel);
-        pcaddon.setProduct(targetAddonProduct);
-        pcaddon.setMandatory(true);
-        SUSEProductFactory.save(pcaddon);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
         SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
         SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
@@ -359,21 +349,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup migration target product + upgrade path
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
-        SUSEProductChannel pcbase = new SUSEProductChannel();
-        pcbase.setChannel(targetBaseChannel);
-        pcbase.setProduct(targetBaseProduct);
-        pcbase.setMandatory(true);
-        SUSEProductFactory.save(pcbase);
         sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetAddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
-        SUSEProductChannel pcaddon = new SUSEProductChannel();
-        pcaddon.setChannel(targetAddonChannel);
-        pcaddon.setProduct(targetAddonProduct);
-        pcaddon.setMandatory(true);
-        SUSEProductFactory.save(pcaddon);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
         SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
         SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
@@ -479,11 +459,6 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
         targetBaseChannel.setLabel("targetBaseChannel");
-        SUSEProductChannel pcbase = new SUSEProductChannel();
-        pcbase.setChannel(targetBaseChannel);
-        pcbase.setProduct(targetBaseProduct);
-        pcbase.setMandatory(true);
-        SUSEProductFactory.save(pcbase);
         sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         // Setup target addon product + upgrade path
@@ -783,23 +758,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct slesSP1BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel slesSP1BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(slesSP1BaseProduct, user);
 
-        SUSEProductChannel slesSP1Mirrored = new SUSEProductChannel();
-        slesSP1Mirrored.setChannel(slesSP1BaseChannel);
-        slesSP1Mirrored.setProduct(slesSP1BaseProduct);
-        slesSP1Mirrored.setMandatory(true);
-        SUSEProductFactory.save(slesSP1Mirrored);
-
         List<SUSEProduct> slesSP1Addons = new ArrayList<>();
         SUSEProduct ltssSP1AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel ltssSP1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP1AddonProduct, slesSP1BaseChannel, user);
         SUSEProductExtension e = new SUSEProductExtension(slesSP1BaseProduct, ltssSP1AddonProduct, slesSP1BaseProduct, false);
         TestUtils.saveAndReload(e);
-
-        SUSEProductChannel ltssSP1Mirrored = new SUSEProductChannel();
-        ltssSP1Mirrored.setChannel(ltssSP1ChildChannel);
-        ltssSP1Mirrored.setProduct(ltssSP1AddonProduct);
-        ltssSP1Mirrored.setMandatory(true);
-        SUSEProductFactory.save(ltssSP1Mirrored);
 
         slesSP1Addons.add(ltssSP1AddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(slesSP1BaseProduct, slesSP1Addons);
@@ -833,11 +796,6 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup migration target product + upgrade path
         SUSEProduct slesSP2BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel slesSP2BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(slesSP2BaseProduct, user);
-        SUSEProductChannel slesSP2Mirrored = new SUSEProductChannel();
-        slesSP2Mirrored.setChannel(slesSP2BaseChannel);
-        slesSP2Mirrored.setProduct(slesSP2BaseProduct);
-        slesSP2Mirrored.setMandatory(true);
-        SUSEProductFactory.save(slesSP2Mirrored);
         slesSP1BaseProduct.setUpgrades(Collections.singleton(slesSP2BaseProduct));
 
         SCCRepository slesSP2SCCRepository = SUSEProductTestUtils.createSCCRepository();
@@ -869,11 +827,6 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup target ltss addon product + upgrade path
         SUSEProduct ltssSP2AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel ltssSP2AddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP2AddonProduct, slesSP2BaseChannel, user);
-        SUSEProductChannel ltssSP2Mirrored = new SUSEProductChannel();
-        ltssSP2Mirrored.setChannel(ltssSP2AddonChannel);
-        ltssSP2Mirrored.setProduct(ltssSP2AddonProduct);
-        ltssSP2Mirrored.setMandatory(true);
-        SUSEProductFactory.save(ltssSP2Mirrored);
 
         ltssSP1AddonProduct.setUpgrades(Collections.singleton(ltssSP2AddonProduct));
         SUSEProductExtension e3 = new SUSEProductExtension(slesSP2BaseProduct, ltssSP2AddonProduct, slesSP2BaseProduct, false);

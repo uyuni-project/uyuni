@@ -1,4 +1,5 @@
 // @flow
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {useEffect, useState, useRef} from "react";
 import {useImmer} from 'use-immer';
@@ -7,7 +8,6 @@ import {InnerPanel} from 'components/panels/InnerPanel';
 import {TextField} from "components/fields";
 import {Messages} from "components/messages";
 import withPageWrapper from "components/general/with-page-wrapper";
-import {hot} from 'react-hot-loader';
 import {showErrorToastr} from "components/toastr/toastr";
 import usePackageStatesApi from "./use-package-states.api";
 import type {
@@ -198,10 +198,8 @@ const PackageStates = ({serverId}: PropsType) => {
   const buttons = [
     <AsyncButton id="save" action={save} text={t("Save")} disabled={!isApplyButtonDisabled}
                  key={"save"}/>,
-    <span {...(isApplyButtonDisabled) ? {title: t("Please save all your changes before applying!")} : {}}>
-      <AsyncButton id="apply" action={applyPackageState} text={t("Apply changes")}
-                   disabled={isApplyButtonDisabled} key={"apply"}
-      />
+    <span {...(isApplyButtonDisabled) ? {title: t("Please save all your changes before applying!")} : {}} key="apply">
+      <AsyncButton id="apply" action={applyPackageState} text={t("Apply changes")} disabled={isApplyButtonDisabled} />
     </span>
   ];
 
@@ -346,4 +344,4 @@ const PackageStates = ({serverId}: PropsType) => {
   );
 };
 
-export default hot(module)(withPageWrapper<PropsType>(PackageStates));
+export default hot(withPageWrapper<PropsType>(PackageStates));

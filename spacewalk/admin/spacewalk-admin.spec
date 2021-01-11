@@ -30,7 +30,7 @@ Name:           spacewalk-admin
 Url:            https://github.com/uyuni-project/uyuni
 Version:        4.2.2
 Release:        1%{?dist}
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       lsof
 Requires:       spacewalk-base

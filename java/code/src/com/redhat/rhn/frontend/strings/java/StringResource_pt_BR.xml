@@ -1975,8 +1975,8 @@
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target state="needs-adaptation">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
-          {3} exibido</target>
+        <target state="translated">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
+{3} exibido</target>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
         <source>({0} selected)</source>
@@ -10955,10 +10955,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Name must not exceed 128 characters</source>
         <target state="new" />
       </trans-unit>
-    <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new" />
+      </trans-unit>
+    </body>
   </file>
 </xliff>

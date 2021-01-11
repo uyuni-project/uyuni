@@ -1,3 +1,6 @@
+- Replace Select component implementation to use react-select
+- Fix Package States page display error (bsc#1180580)
+- Fixed variable installation location.
 - Drop the ssl_available option (SSL is always present)
 - Prevent deletion of CLM environments if they're used in an autoinstallation
   profile (bsc#1179552)

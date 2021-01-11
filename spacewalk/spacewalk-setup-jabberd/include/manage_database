@@ -3,7 +3,7 @@
 XSLPROC="xsltproc"
 SQLITE="sqlite3"
 STP_QUERY="/etc/jabberd/scripts/db-setup.sqlite"
-if [ -f "$STP_QUERY" ]; then
+if ! [ -f "$STP_QUERY" ]; then
     STP_QUERY="/usr/share/jabberd/db-setup.sqlite"
 fi
 

@@ -1,5 +1,5 @@
 // @flow
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {useEffect} from 'react';
 import {Panel} from 'components/panels/Panel';
@@ -274,4 +274,4 @@ const MonitoringAdmin = (props) => {
     </div>);
 }
 
-export default hot(module)(withPageWrapper(MonitoringAdmin));
+export default hot(withPageWrapper(MonitoringAdmin));

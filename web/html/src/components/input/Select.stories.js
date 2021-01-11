@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { Form } from './Form';
 import { Select } from './Select';
@@ -27,11 +28,8 @@ export const Example = () => (
       required
       labelClass="col-md-3"
       divClass="col-md-6"
-    >
-      <option key="beginner" value="beginner">Beginner</option>
-      <option key="normal" value="normal">Normal</option>
-      <option key="expert" value="expert">Expert</option>
-    </Select>
+      options={["beginner", "normal", "expert"]}
+    />
     <SubmitButton
       id="submit-btn"
       className="btn-success"
@@ -40,3 +38,57 @@ export const Example = () => (
   </Form>
 )
 
+
+export const AdvancedExample = () => {
+  const [model, setModel] = React.useState({});
+
+  const options = [
+    { value: 'chocolate', label: 'Chocolate', color: "#7B3F00" },
+    { value: 'strawberry', label: 'Strawberry', color: "#DF0000" },
+    { value: 'vanilla', label: 'Vanilla', color: "#F3E5AB" }
+  ];
+
+  return (
+    <div className="panel panel-default">
+      <div className="panel-body">
+        <Form
+          model={model}
+          onChange={setModel}
+          divClass="col-md-12"
+          formDirection="form-horizontal"
+        >
+          <Select
+            name="flavor"
+            label={t("Flavor")}
+            options={options}
+            placeholder={t("Start typing...")}
+            emptyText={t("No flavors")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            formatOptionLabel={(object, {context}) => {
+              if (context === "menu") {
+                return <div style={{color: object.color}}>{object.label}</div>;
+              } else {
+                const dotStyle = {
+                  backgroundColor: object.color,
+                  borderRadius: 10,
+                  display: 'block',
+                  marginRight: 8,
+                  height: 10,
+                  width: 10,
+                };
+                return (
+                  <div style={{alignItems: 'center', display: 'flex'}}>
+                    <div style={dotStyle}></div>
+                    <div>{object.label}</div>
+                  </div>
+                );
+              }
+            }}
+            required
+          />
+        </Form>
+      </div>
+    </div>
+  );
+}

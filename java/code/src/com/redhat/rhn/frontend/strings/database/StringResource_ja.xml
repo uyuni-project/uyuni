@@ -293,7 +293,7 @@
       </trans-unit>
       <trans-unit id="Australia/Adelaide" xml:space="preserve">
         <source>(GMT+0930) Australia Adelaide</source>
-        <target state="needs-adaptation">オーストラリア アデレード</target>
+        <target state="translated">(GMT+0930) オーストラリア アデレード</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>

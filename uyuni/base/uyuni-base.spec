@@ -28,13 +28,8 @@
 %define apache_group www
 %else
 %define www_path %{_var}
-%if 0%{?rhel}
-%define apache_user root
-%define apache_group root
-%else
 %define apache_user apache
 %define apache_group apache
-%endif
 %endif
 
 Name:           uyuni-base
@@ -57,6 +52,9 @@ Group:          System/Fhs
 %if 0%{?suse_version} >= 1500
 Requires(pre):  group(www)
 %endif
+%if 0%{?rhel} || 0%{?fedora}
+Requires(pre):  httpd
+%endif
 
 %description common
 Basic filesystem hierarchy for Uyuni server and proxy.
@@ -73,6 +71,9 @@ Requires(pre):  tomcat
 Requires(pre):  salt
 %if 0%{?suse_version} >= 1500
 Requires(pre):  user(wwwrun)
+%endif
+%if 0%{?rhel} || 0%{?fedora}
+Requires(pre):  httpd
 %endif
 
 %description server
