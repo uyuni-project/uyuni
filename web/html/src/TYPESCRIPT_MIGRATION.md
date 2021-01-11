@@ -44,7 +44,7 @@ To fix, either change the input or the expected input format.
 
 Usually it means the target expects a string, but you want to pass an element.  
 To fix, change the target's props to accept `React.ReactNode` which among other things is a superset of `string`.  
-In certain cases `JSX.Element` may be applicable as well.  
+In certain cases `JSX.Element` may be applicable as well, see [examples and discussions here](https://github.com/typescript-cheatsheets/react#useful-react-prop-type-examples).  
 
 ### `import type {Node} from 'react';`
 
