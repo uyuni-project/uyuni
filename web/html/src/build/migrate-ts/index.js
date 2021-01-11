@@ -91,37 +91,39 @@ const args = require("./args");
      * Most of these are semantic differences between Flow and TS, others are issues because TS is stricter with types than Flow is.
      */
 
+    const tempExtension = ".bak";
+
     // In Flow, the widest possible type is `Object`, in TS the equivalent type is `any`
     // const foo: Object -> const foo: any
     console.log("migrate object to any");
-    await execAndLog(`sed -i'' -e 's/: Object\\([^\\.]\\)/: any\\1/g' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/: Object\\([^\\.]\\)/: any\\1/g' ${tsInputs}`);
 
     // React.useState(undefined) -> React.useState<any>(undefined)
     console.log("migrate untyped use state");
-    await execAndLog(`sed -i'' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/React.useState(undefined)/React.useState<any>(undefined)/' ${tsInputs}`);
 
     // React.ReactNode -> JSX.Element
     console.log("migrate React.ReactNode to JSX.Element");
-    await execAndLog(`sed -i'' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
-    await execAndLog(`sed -i'' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/=> React.ReactNode/=> JSX.Element/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/: React.ReactNode {/: JSX.Element {/' ${tsInputs}`);
 
     // Array<Object> -> Array<any>
     console.log("migrate object array to any array");
-    await execAndLog(`sed -i'' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
 
     // In strict TS, an empty untyped object is of type `{}` and can't have keys added to it
     // let foo = {}; -> let foo: any = {};
     console.log("migrate untyped object initializations");
-    await execAndLog(`sed -i'' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`);
-    await execAndLog(`sed -i'' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
-    await execAndLog(`sed -i'' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/let \\([a-zA-Z0-9]*\\) = {\\s*};/let \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = {\\s*};/const \\1: any = {};/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = {\\s*};/var \\1: any = {};/' ${tsInputs}`);
 
     // In strict TS, an empty untyped array is of type `never[]` and you can't push to it without adding a type
     // let foo = []; -> let foo: any[] = [];
     console.log("migrate untyped array initializations");
-    await execAndLog(`sed -i'' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
-    await execAndLog(`sed -i'' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
-    await execAndLog(`sed -i'' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
 
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
@@ -135,6 +137,22 @@ const args = require("./args");
           `the following imported files have annotations but are not marked as typed:\n\t${paths.join("\n\t")}`
         );
         console.log(`to try and migrate them, run\n\tyarn migrate ${paths.join(" ")}`);
+      }
+    }
+
+    // Remove any temporary files
+    console.log("cleaning up");
+    for (const item of tsPaths) {
+      const tempPath = item + tempExtension;
+      try {
+        // This path might not exist at all
+        await fs.promises.access(tempPath);
+        await fs.promises.unlink(tempPath);
+        if (isVerbose) {
+          console.log(`deleted backup file ${tempPath}`);
+        }
+      } catch {
+        // Do nothing
       }
     }
 
