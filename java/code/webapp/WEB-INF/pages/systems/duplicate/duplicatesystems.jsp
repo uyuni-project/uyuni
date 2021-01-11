@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt"
- helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.dup">
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/systems-list.html">
   <bean:message key="duplicates.jsp.header"/>
 </rhn:toolbar>
 

@@ -112,6 +112,7 @@ class URL(object):
     def getURL(self, stripPw=False):
         """Return the full url as a string"""
         netloc = ""
+        path = self.path
         if self.username:
             netloc = self.username
         if self.password and not stripPw:
@@ -126,7 +127,13 @@ class URL(object):
         if self.port:
             netloc = '%s:%s' % (netloc, self.port)
 
-        return urlparse.urlunsplit((self.scheme, netloc, self.path,
+        # Default ULN channels URIs are like: uln:///ol7_x86_64_u8_base
+        # If not netloc, we fix the path to avoid getting url:/ol7_x86_64_u8_base
+        # as results from urlunsplit
+        if self.scheme == 'uln' and not netloc:
+            path = "//" + self.path
+
+        return urlparse.urlunsplit((self.scheme, netloc, path,
                                     self.query, self.fragment))
 
 
@@ -196,22 +203,22 @@ def send(url, sendData=None):
         try:
             curl.perform()
         except pycurl.error as e:
-            if e[0] == 56:  # Proxy requires authentication
-                log_debug(2, e[1])
+            if e.args[0] == 56:  # Proxy requires authentication
+                log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
                                             "but reading credentials from "
                                             "%s failed." % YAST_PROXY)
                 curl.setopt(pycurl.PROXYUSERPWD,
                             "%s:%s" % (proxy_user, proxy_pass))
-            elif e[0] == 60:
+            elif e.args[0] == 60:
                 log_error("Peer certificate could not be authenticated "
                           "with known CA certificates.")
                 raise TransferException("Peer certificate could not be "
                                         "authenticated with known CA "
                                         "certificates.")
             else:
-                log_error(e[1])
+                log_error(e.args[1])
                 raise
 
         status = curl.getinfo(pycurl.HTTP_CODE)
@@ -268,8 +275,8 @@ def accessible(url):
         try:
             curl.perform()
         except pycurl.error as e:
-            if e[0] == 56:  # Proxy requires authentication
-                log_debug(2, e[1])
+            if e.args[0] == 56:  # Proxy requires authentication
+                log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
                                             "but reading credentials from "
@@ -621,7 +628,7 @@ def _useProxyFor(url):
     u = urlparse.urlsplit(url)
     # pylint can't see inside the SplitResult class
     # pylint: disable=E1103
-    if u.scheme == 'file':
+    if u.scheme == 'file' or not u.hostname:
         return False
     hostname = u.hostname.lower()
     if hostname in ["localhost", "127.0.0.1", "::1"]:

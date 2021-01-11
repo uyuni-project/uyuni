@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-var React = require("react");
+import * as React from 'react';
 
 const PaginationBlock = (props) => {
   const currentPage = props.currentPage;
@@ -76,7 +76,7 @@ const PageSelector = (props) => {
 }
 
 
-module.exports = {
-    PaginationBlock : PaginationBlock,
-    ItemsPerPageSelector : ItemsPerPageSelector,
-}
+export {
+    PaginationBlock,
+    ItemsPerPageSelector,
+};

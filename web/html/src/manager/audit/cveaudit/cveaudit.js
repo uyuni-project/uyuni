@@ -1,19 +1,18 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {LinkButton,AsyncButton} = require("components/buttons");
-const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("utils/network");
-const Functions = require("utils/functions");
-const Utils = Functions.Utils;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const {Highlight} = require("components/table/Highlight");
-const Messages = require("components/messages").Messages;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { LinkButton, AsyncButton } from 'components/buttons';
+import { TopPanel } from 'components/panels/TopPanel';
+import Network from 'utils/network';
+import { Utils } from 'utils/functions';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import { Messages } from 'components/messages';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
 const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
@@ -162,7 +161,7 @@ class CVEAudit extends React.Component {
   render() {
     return (
       <span>
-        <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="/docs/reference/audit/audit-cve-audit.html">
+        <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="reference/audit/audit-cve-audit.html">
           <Messages items={this.state.messages.map(msg => {
               return {severity: "warning", text: msg};
           })}/>

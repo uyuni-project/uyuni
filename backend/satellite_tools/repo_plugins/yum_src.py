@@ -415,7 +415,7 @@ class ContentSource:
         self.http_headers = {}
 
         comp = CFG.getComponent()
-        # read the proxy configuration in /etc/rhn/rhn.conf
+        # read configuration from /etc/rhn/rhn.conf
         initCFG('server.satellite')
 
         # keep authtokens for mirroring
@@ -423,10 +423,59 @@ class ContentSource:
         if query:
             self.authtoken = query
 
+        # load proxy configuration based on the url
+        self._load_proxy_settings(self.url)
+
+        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
+        if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
+            http_headers_cfg = configparser.ConfigParser()
+            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
+            section_name = None
+
+            if http_headers_cfg.has_section(self.name):
+                section_name = self.name
+            elif http_headers_cfg.has_section(channel_label):
+                section_name = channel_label
+            elif http_headers_cfg.has_section('main'):
+                section_name = 'main'
+
+            if section_name:
+                for hdr in http_headers_cfg[section_name]:
+                    self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
+
+        # perform authentication if implemented
+        self._authenticate(url)
+
+        # Make sure baseurl ends with / and urljoin will work correctly
+        self.urls = [url]
+        if self.urls[0][-1] != '/':
+            self.urls[0] += '/'
+
+        # Replace non-valid characters from reponame (only alphanumeric chars allowed)
+        self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
+        self.channel_label = channel_label
+
+        # SUSE vendor repositories belongs to org = NULL
+        # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
+
+        self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
+        self.num_packages = 0
+        self.num_excluded = 0
+        self.gpgkey_autotrust = None
+        self.groupsfile = None
+        # set config component back to original
+        initCFG(comp)
+
+    def _load_proxy_settings(self, url):
+        # read the proxy configuration in /etc/rhn/rhn.conf
+        comp = CFG.getComponent()
+        initCFG('server.satellite')
+
         # Get the global HTTP Proxy settings from DB or per-repo
         # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
         if CFG.http_proxy:
-            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
+            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(url)
             self.proxy_hostname = self.proxy_url
         elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
             zypper_cfg = configparser.ConfigParser()
@@ -451,43 +500,6 @@ class ContentSource:
                 if zypper_cfg.has_option(section_name, 'proxy_password'):
                     self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
-        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
-        if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
-            http_headers_cfg = configparser.ConfigParser()
-            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
-            section_name = None
-
-            if http_headers_cfg.has_section(self.name):
-                section_name = self.name
-            elif http_headers_cfg.has_section(channel_label):
-                section_name = channel_label
-            elif http_headers_cfg.has_section('main'):
-                section_name = 'main'
-
-            if section_name:
-                for hdr in http_headers_cfg[section_name]:
-                    self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
-
-        self._authenticate(url)
-
-        # Make sure baseurl ends with / and urljoin will work correctly
-        self.urls = [url]
-        if self.urls[0][-1] != '/':
-            self.urls[0] += '/'
-
-        # Exclude non-valid characters from reponame
-        self.reponame = self.name
-        for chr in ["$", " ", ".", ";"]:
-            self.reponame = self.reponame.replace(chr, "_")
-        self.channel_label = channel_label
-        # SUSE vendor repositories belongs to org = NULL
-        root = os.path.join(CACHE_DIR, str(org or "NULL"), self.channel_label or self.reponame)
-
-        self.repo = ZypperRepo(root=root, url=self.url, org=self.org)
-        self.num_packages = 0
-        self.num_excluded = 0
-        self.gpgkey_autotrust = None
-        self.groupsfile = None
         # set config component back to original
         initCFG(comp)
 
@@ -568,7 +580,7 @@ class ContentSource:
         Setup repository and fetch metadata
         """
         self.zypposync = ZyppoSync(root=repo.root)
-        zypp_repo_url = self._prep_zypp_repo_url(self.url)
+        zypp_repo_url = self._prep_zypp_repo_url(self.url, uln_repo)
 
         mirrorlist = self._get_mirror_list(repo, self.url)
         if mirrorlist:
@@ -618,7 +630,7 @@ type=rpm-md
         rhnLog.log_clean(0, message)
         sys.stderr.write(str(message) + "\n")
 
-    def _prep_zypp_repo_url(self, url):
+    def _prep_zypp_repo_url(self, url, uln_repo):
         """
         Prepare the repository baseurl to use in the Zypper repo file.
         This will add the HTTP Proxy and Client certificate settings as part of
@@ -629,11 +641,11 @@ type=rpm-md
         ret_url = None
         query_params = {}
         if self.proxy_hostname:
-            query_params['proxy'] = self.proxy_hostname
+            query_params['proxy'] = quote(self.proxy_hostname)
         if self.proxy_user:
-            query_params['proxyuser'] = self.proxy_user
+            query_params['proxyuser'] = quote(self.proxy_user)
         if self.proxy_pass:
-            query_params['proxypass'] = self.proxy_pass
+            query_params['proxypass'] = quote(self.proxy_pass)
         if self.sslcacert:
             # Since Zypper only accepts CAPATH, we need to split the certificates bundle
             # and run "c_rehash" on our custom CAPATH
@@ -649,7 +661,7 @@ type=rpm-md
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
         new_query = unquote(urlencode(query_params, doseq=True))
-        if self.authtoken:
+        if self.authtoken or uln_repo:
             ret_url = "{0}&{1}".format(url, new_query)
         else:
             ret_url = "{0}?{1}".format(url, new_query) if new_query else url

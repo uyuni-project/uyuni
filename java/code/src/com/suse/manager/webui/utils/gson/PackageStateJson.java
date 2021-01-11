@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils.gson;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.VersionConstraints;
@@ -142,10 +143,10 @@ public class PackageStateJson {
 
     /**
      * Convert this object into a {@link PackageState} object to be persisted.
-     *
+     * @param type the package type (RPM or DEB)
      * @return this object as a PackageState
      */
-    public Optional<PackageState> convertToPackageState() {
+    public Optional<PackageState> convertToPackageState(PackageType type) {
         Optional<PackageStates> state = getPackageStateId().flatMap(PackageStates::byId);
 
         // Create the return object only if we have a valid state
@@ -164,8 +165,7 @@ public class PackageStateJson {
                     VersionConstraints vc = versionConstraint.get();
                     if (!Arrays.asList(VersionConstraints.LATEST, VersionConstraints.ANY)
                             .contains(vc)) {
-                        packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
-                                getEpoch(), getVersion(), getRelease()));
+                        packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release, type));
                     }
                     packageState.setVersionConstraint(vc);
                 }

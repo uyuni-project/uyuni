@@ -31,7 +31,7 @@
 %define rhnsd		 mgr-daemon
 #
 Name:           mgr-daemon
-Version:        4.1.2
+Version:        4.1.4
 Release:        1%{?dist}
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
@@ -258,14 +258,14 @@ fi
 %{insserv_cleanup}
 %endif
 %else
-if [ "$1" -ge "1" ]; then
-    %if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7
     %systemd_postun_with_restart rhnsd.timer
     %systemd_postun_with_restart spacewalk-update-status.service
-    %else
+%else
+if [ "$1" -ge "1" ]; then
     service rhnsd condrestart >/dev/null 2>&1 || :
-    %endif
 fi
+%endif
 %endif
 %endif
 

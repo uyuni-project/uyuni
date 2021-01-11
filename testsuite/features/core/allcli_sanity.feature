@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 SUSE LLC
+# Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -8,6 +8,26 @@ Feature: Sanity checks
   Scenario: The server is healthy
     Then "server" should have a FQDN
     And the clock from "server" should be exact
+    And service "apache2" is enabled on "server"
+    And service "apache2" is active on "server"
+    And service "cobblerd" is enabled on "server"
+    And service "cobblerd" is active on "server"
+    And service "jabberd" is enabled on "server"
+    And service "jabberd" is active on "server"
+    And service "osa-dispatcher" is enabled on "server"
+    And service "osa-dispatcher" is active on "server"
+    And service "rhn-search" is enabled on "server"
+    And service "rhn-search" is active on "server"
+    And service "salt-api" is enabled on "server"
+    And service "salt-api" is active on "server"
+    And service "salt-master" is enabled on "server"
+    And service "salt-master" is active on "server"
+    And service "taskomatic" is enabled on "server"
+    And service "taskomatic" is active on "server"
+    And socket "tftp" is enabled on "server"
+    And socket "tftp" is active on "server"
+    And service "tomcat" is enabled on "server"
+    And service "tomcat" is active on "server"
 
 @sle_client
   Scenario: The traditional client is healthy
@@ -66,8 +86,11 @@ Feature: Sanity checks
   Scenario: The external resources can be reached
     Then it should be possible to reach the test packages
     And it should be possible to reach the build sources
-    And it should be possible to reach the container profiles
-    And it should be possible to reach the test suite profiles
+    And it should be possible to reach the Docker profiles
+
+@server_http_proxy
+  Scenario: The HTTP proxy is working
+    Then it should be possible to use the HTTP proxy
 
 @auth_registry
   Scenario: The registry with authentication is healthy

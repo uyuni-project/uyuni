@@ -95,7 +95,7 @@ end
 
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
@@ -121,16 +121,16 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
-  refute_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  refute_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
-  assert_includes(@rpc.list_systems.map { |s| s['name'] }, system_name)
+  @system_api = XMLRPCSystemTest.new(ENV['SERVER'])
+  @system_api.login('admin', 'admin')
+  assert_includes(@system_api.list_systems.map { |s| s['name'] }, system_name)
 end
 
 Then(/^the PXE boot minion should have been reformatted$/) do
@@ -141,15 +141,15 @@ end
 
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
-  @rpc = XMLRPCUserTest.new(ENV['SERVER'])
-  @rpc.login('admin', 'admin')
+  @user_api = XMLRPCUserTest.new(ENV['SERVER'])
+  @user_api.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  @rpc.create_user(@username, 'linux')
+  @user_api.create_user(@username, 'linux')
   step %(I am authorized as "#{@username}" with password "linux")
 end
 
 Then(/^I can cleanup the no longer needed user$/) do
-  @rpc.delete_user(@username)
+  @user_api.delete_user(@username)
 end
 
 When(/^I click on preview$/) do
@@ -198,47 +198,6 @@ Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, h
   within("pre[id='#{system_name}-results']") do
     raise "Text '#{text}' not found in the results of #{system_name}" unless has_content?(text)
   end
-end
-
-Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
-  repeat_until_timeout(message: "'#{text}' still found") do
-    break unless has_content?(text)
-    find("button.spacewalk-button-filter").click
-    has_text?('is filtered', wait: 10)
-  end
-end
-
-Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
-  repeat_until_timeout(message: "'#{text}' was not found") do
-    break if has_content?(text)
-    find("button.spacewalk-button-filter").click
-    has_text?('is filtered', wait: 10)
-  end
-end
-
-When(/^I click on the filter button$/) do
-  find_and_wait_click("button.spacewalk-button-filter").click
-  has_text?('is filtered', wait: 10)
-end
-
-When(/^I click on the red confirmation button$/) do
-  find_and_wait_click("button.btn-danger").click
-end
-
-When(/^I click on the clear SSM button$/) do
-  find_and_wait_click("a#clear-ssm").click
-end
-
-When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  find("input[placeholder='Filter by Package Name: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
-  find("input[placeholder='Filter by Synopsis: ']").set(input)
-end
-
-When(/^I enter "([^"]*)" as the filtered product description$/) do |input|
-  find("input[name='product-description-filter']").set(input)
 end
 
 # Salt formulas
@@ -366,6 +325,10 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'last IPv4 address for DHCP'      => 'default_net#ipv4#dhcp_end',
                'first option'                    => 'bind#config#options#0#0',
                'first value'                     => 'bind#config#options#0#1',
+               'second option'                   => 'bind#config#options#1#0',
+               'second value'                    => 'bind#config#options#1#1',
+               'third option'                    => 'bind#config#options#2#0',
+               'third value'                     => 'bind#config#options#2#1',
                'first configured zone name'      => 'bind#configured_zones#0#$key',
                'first available zone name'       => 'bind#available_zones#0#$key',
                'first file name'                 => 'bind#available_zones#0#file',
@@ -715,15 +678,16 @@ When(/^I enter "([^"]*)" password$/) do |host|
   step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
 end
 
-And(/^I cleanup minion "([^"]*)"$/) do |minion|
-  node = get_target(minion)
-  if minion == 'sle_minion'
-    node.run('rcsalt-minion stop')
-    node.run('rm -Rf /var/cache/salt/minion')
-  elsif %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
-    node.run('systemctl stop salt-minion')
-    node.run('rm -Rf /var/cache/salt/minion')
+When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  if host.include? 'ceos'
+    node.run('yum -y remove salt salt-minion', false)
+  elsif host.include? 'ubuntu'
+    node.run('apt-get --assume-yes remove salt salt-minion', false)
+  else
+    node.run('zypper --non-interactive remove -y salt salt-minion', false)
   end
+  node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt', false)
 end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|

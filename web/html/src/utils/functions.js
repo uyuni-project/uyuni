@@ -200,26 +200,32 @@ function getProductName() : string {
     return window._IS_UYUNI ? "Uyuni" : "SUSE Manager"
 }
 
-module.exports = {
-    Utils: {
-        cancelable: cancelable,
-        sortById: sortById,
-        sortByText: sortByText,
-        dateWithTimezone: dateWithTimezone,
-        dateWithoutTimezone: dateWithoutTimezone,
-        sortByNumber: sortByNumber,
-        sortByDate: sortByDate,
-        urlBounce: urlBounce,
-        capitalize: capitalize,
-        generatePassword: generatePassword,
-        deepCopy: deepCopy,
-        getProductName: getProductName
-    },
-    Formats: {
-        LocalDateTime: LocalDateTime
-    },
-    Formulas: {
-        EditGroupSubtype: EditGroupSubtype,
-        getEditGroupSubtype: getEditGroupSubtype
-    }
-}
+const Utils = {
+    cancelable: cancelable,
+    sortById: sortById,
+    sortByText: sortByText,
+    dateWithTimezone: dateWithTimezone,
+    dateWithoutTimezone: dateWithoutTimezone,
+    sortByNumber: sortByNumber,
+    sortByDate: sortByDate,
+    urlBounce: urlBounce,
+    capitalize: capitalize,
+    generatePassword: generatePassword,
+    deepCopy: deepCopy,
+    getProductName: getProductName
+};
+
+const Formats = {
+    LocalDateTime: LocalDateTime
+};
+
+const Formulas = {
+    EditGroupSubtype: EditGroupSubtype,
+    getEditGroupSubtype: getEditGroupSubtype
+};
+
+export {
+    Utils,
+    Formats,
+    Formulas,
+};

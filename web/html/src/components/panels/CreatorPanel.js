@@ -1,5 +1,6 @@
 // @flow
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 import {Panel} from "./Panel";
 import {ModalLink} from "../dialog/ModalLink";
 import {closeDialog, Dialog} from "../dialog/Dialog";
@@ -18,6 +19,7 @@ type Props = {
   onCancel?: Function,
   onOpen?: Function,
   onDelete?: Function,
+  disableDelete?: boolean,
   disableOperations?: boolean,
   collapsible?: boolean,
   customIconClass?: string,
@@ -89,7 +91,7 @@ const CreatorPanel = (props: Props) => {
                           id={`${props.id}-modal-delete-button`}
                           className="btn-danger"
                           text={t('Delete')}
-                          disabled={props.disableOperations}
+                          disabled={props.disableDelete || props.disableOperations}
                           handler={() => props.onDelete && props.onDelete({
                             item,
                             closeDialog: () => closeDialog(modalNameId)

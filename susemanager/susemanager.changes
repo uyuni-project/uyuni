@@ -1,3 +1,17 @@
+- Use product IDs for Debian 9 and 10 SUSE Manager bootstrap repo data
+
+-------------------------------------------------------------------
+Mon Nov 23 15:22:38 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.22-1
+- Adapt Debian10 bootstrap repository definition for salt on Python 3
+- add --force to mgr-create-bootstrap-repo to enforce generation
+  even when some products are not synchronized
+
+-------------------------------------------------------------------
+Thu Oct 22 11:11:21 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.21-1
 - create bootstrap repo should not flush by default (bsc#1175843)
 - improve detection of base channels for products (bsc#1177478)
 - Add LTSS PIDs for SLE12SP1, SLE12SP2, SLE12SP3 and SLE12SP4 to

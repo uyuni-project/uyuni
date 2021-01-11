@@ -1,3 +1,74 @@
+- Fix incorrect password autocompletions (bsc#1148357)
+- Improves misleading UI message displayed on systems with modules activated (bsc#1179525)
+- fix reboot action race condition (bsc#1177031)
+- Fix availability check for debian repositories (bsc#1180127)
+- Added 'contents' argument to the 'configchannel.create' XMLRPC API method (bsc#1179566)
+- Ignore duplicate NEVRAs in package profile update (bsc#1176018)
+- Prevent deletion of CLM environments if they're used in an autoinstallation
+  profile (bsc#1179552)
+- Fix Debian package version comparison
+- Added 'revision' argument to the 'configchannel.updateInitSls' XMLRPC API method (bsc#1179566)
+- Fix configuration file download links to actually download files instead of redirecting to the home page (bsc#1179324)
+- register saltkey XMLRPC handler and fix behavior of delete salt key (bsc#1179872)
+- Add validation for custom repository labels
+- Add lang attribute to html tags
+- fix expanded support detection based on CentOS installations (bsc#1179589)
+- Generalize the reactivation key message (bsc#1178483)
+- add translation strings for newly added countries and timezones (jsc#PM-2081)
+- add the VirtualPC as virtualization type (bsc#1178990)
+- Fix the activation key handling from kickstart profile (bsc#1178647)
+
+-------------------------------------------------------------------
+Tue Nov 24 11:21:03 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.24-1
+- Update content sensitive help links
+
+-------------------------------------------------------------------
+Mon Nov 23 15:13:37 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.23-1
+- Update exception message in findSyncedMandatoryChannels
+- Report resolved module dependencies on CLM project details page
+- Allow creating custom ULN repositories with uln:// urls
+- Change message "Minion is down" to be more accurate
+- Localize documentation links
+- Temp: revert Sync state modules when starting action chain execution (bsc#1177336)
+- fix check for available products on ISS Slaves (bsc#1177184)
+- XMLRPC: Report architecture label in the list of installed packages (bsc#1176898)
+- get media.1/products for cloned channels (bsc#1178303)
+- calculate size to truncate a history message based on the htmlified version (bsc#1178503)
+- Make image pillar visible only in buildhost organization
+- Maintain list of synced images in pillar
+- Enable validation of Content Lifecycle Management entities in the XMLRPC API (bsc#1177706)
+- Fix the order of the arguments in the XMLRPC API doc for contentmanagement.buildProject (bsc#1177704)
+- Fix repo url of AppStream in generated RHEL/Centos 8 kickstart file (bsc#1175739)
+- log token verify errors and check for expired tokens
+- show only kernel options in advanced autoinstallation page when working with
+  a salt minion (bsc#1177767)
+- Show cluster upgrade plan in the upgrade UI
+- Take pool and volume from Salt virt.vm_info for files and blocks disks (bsc#1175987)
+- add new allowVendorChange flag for dist upgrades
+- Sync state modules when starting action chain execution (bsc#1177336)
+- enable redfish power management by default
+
+-------------------------------------------------------------------
+Mon Nov 02 17:22:38 CET 2020 - mc@suse.de
+
+- version 4.1.22-1
+- Use correct eauth module and credentials for Salt SSH calls (bsc#1178319)
+
+-------------------------------------------------------------------
+Thu Oct 22 10:47:09 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.21-1
+- Remove expiration date from ics files (bsc#1177892)
+- Execute Salt SSH actions in parallel (bsc#1173199)
+- Enable to switch to multiple webUI theme
+- Fix action chain resuming when patches updating salt-minion don't cause service to be
+  restarted (bsc#1144447)
+- renaming autoinstall distro didn't change the name of the Cobbler distro (bsc#1175876)
+- Fix the links for downloading the binaries in the package details UI (bsc#1176603)
 - allow nightly ISS sync to also cover custom channels
 - Fix: reinspecting a container image (bsc#1177092)
 - add power management xmlrpc api

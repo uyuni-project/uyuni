@@ -3,9 +3,9 @@
 #
 # 1) delete CentOS minion and register as Centos SSH minion
 # 2) run a remote command
-# 3) try an openscap scan
-# 4) delete CentOS SSH minion client and register as Centos minion
+# 3) delete CentOS SSH minion client and register as Centos minion
 
+@scope_res
 Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
 @centos_minion
@@ -97,7 +97,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Then "ceos_ssh_minion" should not be registered
 
 @centos_minion
-  Scenario: Cleanup: bootstrap a CentOS minion after normal minion tests
+  Scenario: Cleanup: bootstrap a CentOS minion after SSH minion tests
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text

@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
+import * as React from 'react';
 
 class TextField extends React.Component {
 
@@ -30,6 +30,6 @@ class TextField extends React.Component {
 
 }
 
-module.exports = {
-    TextField : TextField
-}
+export {
+    TextField,
+};

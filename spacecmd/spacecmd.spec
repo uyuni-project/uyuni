@@ -44,7 +44,7 @@
 %endif
 
 Name:           spacecmd
-Version:        4.1.7
+Version:        4.1.9
 Release:        1%{?dist}
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 %if %{_vendor} == "debbuild"
@@ -59,6 +59,11 @@ Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || %{_vendor} == "debbuild"
 BuildArch:      noarch
+%endif
+
+%if %{_vendor} == "debbuild"
+BuildRequires:  gettext
+BuildRequires:  intltool
 %endif
 
 %if 0%{?pylint_check}

@@ -23,7 +23,8 @@ Set up the following environment variables:
 * `UBUNTUMINION` the Ubuntu Salt minion
 
 Once you have the machines configured, you can run the testsuite.
-To run all standard tests, from the controller:
+
+- To run all standard tests, from the controller:
 
 ```console
 export SERVER="${PREFIX}suma3pg.tf.local"
@@ -34,4 +35,39 @@ export SSHMINION="${PREFIX}minssh-sles15.tf.local"
 export CENTOSMINION="${PREFIX}mincentos7.tf.local"
 export UBUNTUMINION="${PREFIX}min-ubuntu.tf.local"
 run-testsuite
+```
+
+- To run the tests from your local machine you must do some extra steps:
+```console
+zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.2/
+zypper install *twopence*
+```
+```console
+cd <your_repo>/testsuite
+bundle install
+```
+```console
+export SERVER="${PREFIX}srv.tf.local"
+export CLIENT="${PREFIX}cli-sles15.tf.local"
+export MINION="${PREFIX}min-sles15.tf.local"
+...
+```
+Before you are able to run your tests in local, you must assure that your SSH connection to any of the nodes can be done without adding user/pass.
+It is recommended to configure your `.ssh/config` to use a SSH private key.
+In case you deployed the environment with sumaform, just use the SSH key `.ssh/id_rsa` stored in the controller.
+Example:
+```console
+# cat .ssh/config
+Host *.tf.local
+    User root
+    IdentityFile ~/.ssh/id_rsa_test_env
+```
+```console
+rake -T # List all different possibilities i.e. rake cucumber:sanity_check
+```
+
+- To debug your tests, you might want to see the browser in your Desktop from where the Cucumber actions will happen.
+  To enable it:
+```console
+export DEBUG=1
 ```

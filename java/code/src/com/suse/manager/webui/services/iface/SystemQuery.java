@@ -353,6 +353,18 @@ public interface SystemQuery {
             Optional<ScheduleMetadata> metadataIn) throws SaltException;
 
     /**
+     * Synchronously executes a salt function on a single minion.
+     * If a SaltException is thrown, re-throw a RuntimeException.
+     *
+     * @param call salt function to call
+     * @param minionId minion id to target
+     * @param <R> result type of the salt function
+     * @return Optional holding the result of the function
+     * or empty if the minion did not respond.
+     */
+    <R> Optional<R> callSync(LocalCall<R> call, String minionId);
+
+    /**
      * Sync the channels of a list of minions
      * @param minionIds of the targets.
      * @throws SaltException if anything goes wrong.

@@ -1,3 +1,18 @@
+- add product definitions for Debain 9 AMD64 and Debian 10 AMD64
+
+-------------------------------------------------------------------
+Mon Dec 14 13:30:42 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
+- add SLE15 SP1 LTSS
+
+-------------------------------------------------------------------
+Mon Nov 23 15:32:53 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
+- add new channel families for CAASP on ARM64 and HPC15 SP2 LTSS
+- remove duplicate repo definition
+
 -------------------------------------------------------------------
 Thu Jul 23 13:44:18 CEST 2020 - jgonzalez@suse.com
 

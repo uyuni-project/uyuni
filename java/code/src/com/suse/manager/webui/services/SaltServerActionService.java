@@ -14,17 +14,10 @@
  */
 package com.suse.manager.webui.services;
 
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -107,8 +100,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -123,8 +116,8 @@ import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -136,12 +129,6 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -187,6 +174,17 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 /**
  * Takes {@link Action} objects to be executed via salt.
  */
@@ -225,6 +223,7 @@ public class SaltServerActionService {
     private FormulaManager formulaManager = FormulaManager.getInstance();
     private ClusterManager clusterManager = ClusterManager.instance();
     private boolean skipCommandScriptPerms;
+    private TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * @param systemQueryIn instance for getting information from a system.
@@ -479,8 +478,16 @@ public class SaltServerActionService {
         List<MinionServer> sshPushMinions = MinionServerFactory.findMinionsByServerIds(
                 sshMinionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
-        for (MinionServer sshMinion: sshPushMinions) {
-            executeSSHAction(actionIn, sshMinion);
+        if (!sshPushMinions.isEmpty()) {
+            for (MinionServer sshMinion : sshPushMinions) {
+                try {
+                    taskomaticApi.scheduleSSHActionExecution(actionIn, sshMinion);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Couldn't schedule SSH action id=" + actionIn.getId() +
+                            " minion=" + sshMinion.getMinionId(), e);
+                }
+            }
         }
     }
 
@@ -1497,6 +1504,7 @@ public class SaltServerActionService {
         Map<String, Object> distupgrade = new HashMap<>();
         susemanager.put("distupgrade", distupgrade);
         distupgrade.put("dryrun", action.getDetails().isDryRun());
+        distupgrade.put("allowVendorChange", action.getDetails().isAllowVendorChange());
         distupgrade.put("channels", subbed.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
@@ -2087,9 +2095,10 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = SaltService.INSTANCE
-                    .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
-                    .get().getMinions();
+            List<String> results = Opt.fold(
+                    systemQuery.callAsync(call, new MinionList(minionIds), Optional.of(metadata)),
+                    () -> new ArrayList<String>(),
+                    l -> l.getMinions());
 
             result = minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));
@@ -2306,4 +2315,11 @@ public class SaltServerActionService {
         this.skipCommandScriptPerms = skipCommandScriptPermsIn;
     }
 
+    /**
+     * Only needed for unit test.
+     * @param taskomaticApiIn to set
+     */
+    public void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        this.taskomaticApi = taskomaticApiIn;
+    }
 }

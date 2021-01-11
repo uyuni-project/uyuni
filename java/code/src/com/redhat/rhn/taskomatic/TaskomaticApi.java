@@ -29,12 +29,14 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import com.suse.manager.utils.MinionServerUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
@@ -104,6 +106,26 @@ public class TaskomaticApi {
             return false;
         }
     }
+
+    /**
+     * Schedule a single ssh minion action.
+     * @param actionIn the action
+     * @param sshMinion the Salt ssh minion
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSSHActionExecution(Action actionIn, MinionServer sshMinion)
+            throws TaskomaticApiException {
+        Map scheduleParams = new HashMap();
+        scheduleParams.put("action_id", Long.toString(actionIn.getId()));
+        scheduleParams.put("ssh_minion_id", sshMinion.getMinionId());
+        invoke("tasko.scheduleSingleSatBunchRun",
+                "ssh-minion-action-executor-bunch",
+                StringUtils.substring(
+                        "ssh-minion-action-executor-" + actionIn.getId() + "-" + sshMinion.getId(), 0, 50),
+                scheduleParams,
+                new Date());
+    }
+
 
     /**
      * Schedule a single reposync

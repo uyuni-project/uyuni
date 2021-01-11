@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {LinkButton} from "components/buttons";
 
 import styles from "./filters-project.css"

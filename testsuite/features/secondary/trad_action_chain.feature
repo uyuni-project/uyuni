@@ -2,6 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 @sle_client
+@scope_traditional_client
+@scope_action_chains
 Feature: Action chain on traditional clients
 
   Scenario: Pre-requisite: downgrade repositories to lower version on traditional client
@@ -220,9 +222,9 @@ Feature: Action chain on traditional clients
 
   Scenario: Run an action chain via XML-RPC on traditional client
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    And I want to operate on this "sle_client"
+    When I want to operate on this "sle_client"
     And I run "rhn-actions-control --enable-all" on "sle_client"
-    When I call XML-RPC createChain with chainLabel "multiple_scripts"
+    And I call XML-RPC createChain with chainLabel "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"

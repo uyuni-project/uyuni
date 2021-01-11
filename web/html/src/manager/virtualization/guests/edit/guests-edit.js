@@ -3,18 +3,18 @@
 
 import type { ActionChain } from 'components/action-schedule';
 
-const { hot } = require('react-hot-loader');
-const React = require('react');
-const _isEqual = require('lodash/isEqual');
-const { TopPanel } = require('components/panels/TopPanel');
-const { Loading } = require('components/utils/Loading');
-const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { GuestProperties } = require('../GuestProperties');
-const GuestNicsPanel = require('../properties/guest-nics-panel');
-const DiskUtils = require('../properties/disk-utils');
-const { SimpleActionApi } = require('../../SimpleActionApi');
-const { VirtualizationGuestDefinitionApi } = require('../virtualization-guest-definition-api');
-const Functions = require('utils/functions');
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import _isEqual from 'lodash/isEqual';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Loading } from 'components/utils/Loading';
+import { getOrderedItemsFromModel } from 'components/input/FormMultiInput';
+import { GuestProperties } from '../GuestProperties';
+import * as GuestNicsPanel from '../properties/guest-nics-panel';
+import * as DiskUtils from '../properties/disk-utils';
+import { SimpleActionApi } from '../../SimpleActionApi';
+import { VirtualizationGuestDefinitionApi } from '../virtualization-guest-definition-api';
+import { Formats } from 'utils/functions';
 
 type Props = {
   host: Object,
@@ -69,7 +69,7 @@ class GuestsEdit extends React.Component<Props> {
       },
       nicsParams,
       disksParams,
-      {earliest: Functions.Formats.LocalDateTime(model.earliest)}
+      {earliest: Formats.LocalDateTime(model.earliest)}
     );
   }
 
@@ -127,6 +127,8 @@ class GuestsEdit extends React.Component<Props> {
   }
 }
 
-module.exports = {
-  GuestsEdit: hot(module)(GuestsEdit),
+const HotGuestsEdit = hot(GuestsEdit);
+
+export {
+  HotGuestsEdit as GuestsEdit,
 };

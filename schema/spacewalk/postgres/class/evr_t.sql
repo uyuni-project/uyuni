@@ -7,27 +7,43 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 
 create type evr_t as (
         epoch           varchar(16),
         version         varchar(512),
-        release         varchar(512)
+        release         varchar(512),
+        type            varchar(10)
 );
 
-create or replace function evr_t(e varchar, v varchar, r varchar)
+create or replace function evr_t(e varchar, v varchar, r varchar, t varchar)
 returns evr_t as $$
-select row($1,$2,$3)::evr_t
+select row($1,$2,$3,$4)::evr_t
 $$ language sql;
 
 create or replace function evr_t_compare( a evr_t, b evr_t )
 returns int as $$
 begin
-  return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+  if a.type = b.type then
+      if a.type = 'rpm' then
+        return rpm.vercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+      elsif a.type = 'deb' then
+        return deb.debvercmp(a.epoch, a.version, a.release, b.epoch, b.version, b.release);
+      else
+        raise EXCEPTION 'unknown evr type (using rpm) -> %', a.type;
+      end if;
+  else
+     raise NOTICE 'comparing incompatible evr types. Using %', a.type;
+     if a.type = 'deb' then
+       return -1;
+     else
+       return 1;
+     end if;
+  end if;
 end;
 $$ language plpgsql immutable strict;
 
@@ -49,6 +65,13 @@ create or replace function evr_t_eq( a evr_t, b evr_t )
 returns boolean as $$
 begin
   return evr_t_compare( a, b ) = 0;
+end;
+$$ language plpgsql immutable strict;
+
+create or replace function evr_t_ne( a evr_t, b evr_t )
+returns boolean as $$
+begin
+  return evr_t_compare( a, b ) != 0;
 end;
 $$ language plpgsql immutable strict;
 
@@ -115,6 +138,17 @@ create operator > (
   restrict = scalargtsel,
   join = scalargtjoinsel
 );
+
+create operator <> (
+  leftarg = evr_t,
+  rightarg = evr_t,
+  procedure = evr_t_ne,
+  commutator = <>,
+  negator = =,
+  restrict = eqsel,
+  join = eqjoinsel
+);
+
 
 create operator class evr_t_ops
 default for type evr_t using btree as

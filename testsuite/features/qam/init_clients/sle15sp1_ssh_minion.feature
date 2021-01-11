@@ -4,6 +4,9 @@
 @sle15sp1_ssh_minion
 Feature: Bootstrap a SLES 15 SP1 Salt SSH Minion
 
+  Scenario: Clean up sumaform leftovers on a SLES 15 SP1 Salt SSH Minion
+    When I perform a full salt minion cleanup on "sle15sp1_ssh_minion"
+
   Scenario: Bootstrap a SLES 15 SP1 system managed via salt-ssh
     Given I am authorized
     And I go to the bootstrapping page
@@ -25,6 +28,9 @@ Feature: Bootstrap a SLES 15 SP1 Salt SSH Minion
     Given I am on the Systems overview page of this "sle15sp1_ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
 
+  Scenario: Import the GPG keys for SLES 15 SP1 Salt SSH Minion
+    When I import the GPG keys for "sle15sp1_ssh_minion"
+
 @proxy
   Scenario: Check connection from SLES 15 SP1 SSH minion to proxy
     Given I am on the Systems overview page of this "sle15sp1_ssh_minion"
@@ -38,15 +44,6 @@ Feature: Bootstrap a SLES 15 SP1 Salt SSH Minion
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle15sp1_ssh_minion" hostname
-
-  Scenario: Schedule errata refresh to reflect channel assignment on SLES 15 SP1 SSH minion
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Admin > Task Schedules"
-    And I follow "errata-cache-default"
-    And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Check events history for failures on SLES 15 SP1 SSH minion
     Given I am on the Systems overview page of this "sle15sp1_ssh_minion"

@@ -108,6 +108,7 @@ public class CobblerDistroHelper {
      public void updateDistroFromTree(Distro distro, KickstartableTree tree) {
         Map<String, String> ksmeta = createKsMetadataFromTree(tree);
 
+        distro.setName(CobblerCommand.makeCobblerName(tree));
         distro.setInitrd(tree.getInitrdPath());
         distro.setKernel(tree.getKernelPath());
         distro.setBreed(tree.getInstallType().getCobblerBreed());

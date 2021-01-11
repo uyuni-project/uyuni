@@ -22,6 +22,9 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 
+import com.suse.manager.webui.utils.UserPreferenceUtils;
+
+import javax.servlet.jsp.PageContext;
 
 /**
  * RhnTagFunctions - class to encapsulate the set of static methods that
@@ -194,5 +197,15 @@ public class RhnTagFunctions {
      */
     public static String escapeJS(String param) {
         return StringEscapeUtils.escapeEcmaScript(param);
+    }
+
+    /**
+     * Get the locale to use in the documentation
+     *
+     * @param pageContext the page context
+     * @return the locale to use
+     */
+    public static String getDocsLocale(PageContext pageContext) {
+        return UserPreferenceUtils.getDocsLocale(pageContext);
     }
 }

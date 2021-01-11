@@ -41,6 +41,7 @@ import re
 import shlex
 import sys
 from cmd import Cmd
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -117,11 +118,11 @@ class SpacewalkShell(Cmd):
                     atexit.register(readline.write_history_file,
                                     self.history_file)
                 except IOError:
-                    logging.error(_('Could not read history file'))
+                    logging.error(_N('Could not read history file'))
         # pylint: disable=W0702
         except Exception as exc:
             # pylint: disable=W0702
-            logging.error(_("Exception occurred: {}").format(exc))
+            logging.error(_N("Exception occurred: {}").format(exc))
             sys.exit(1)
 
     # handle shell exits and history substitution
@@ -185,7 +186,7 @@ class SpacewalkShell(Cmd):
             if line:
                 history_match = True
             else:
-                logging.warning(_('%s: event not found'), command)
+                logging.warning(_N('%s: event not found'), command)
                 return ''
 
         # attempt to find a numbered history item
@@ -224,7 +225,7 @@ class SpacewalkShell(Cmd):
             print(line)
             return line
         else:
-            logging.warning(_('%s: event not found'), command)
+            logging.warning(_N('%s: event not found'), command)
             return ''
 
     @staticmethod

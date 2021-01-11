@@ -1,7 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-import React, {useState} from "react";
+import * as React from 'react';
+import {useState} from "react";
 import {Button} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
 import {TopPanel} from "components/panels/TopPanel";

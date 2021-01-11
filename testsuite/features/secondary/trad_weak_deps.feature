@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_traditional_client
 Feature: Weak dependencies in the package page and in the metadata on the client
 
   Background:

@@ -34,6 +34,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -65,7 +66,7 @@ def do_package_details(self, args):
         packages.extend(self.do_package_search(' '.join(args), True))
 
     if not packages:
-        logging.warning(_('No packages found'))
+        logging.warning(_N('No packages found'))
         return 1
 
     add_separator = False
@@ -78,7 +79,7 @@ def do_package_details(self, args):
         package_ids = self.get_package_id(package)
 
         if not package_ids:
-            logging.warning(_('%s is not a valid package') % package)
+            logging.warning(_N('%s is not a valid package') % package)
             continue
 
         for package_id in package_ids:
@@ -175,7 +176,7 @@ def do_package_search(self, args, doreturn=False):
 
 
 def help_package_remove(self):
-    print(_('package_remove: Remove a package from Satellite'))
+    print(_('package_remove: Remove a package from Spacewalk'))
     print(_('usage: package_remove PACKAGE ...'))
 
 
@@ -212,7 +213,7 @@ def do_package_remove(self, args):
             try:
                 self.client.packages.removePackage(self.session, package_id)
             except xmlrpclib.Fault:
-                logging.error(_('Failed to remove package ID %i') % package_id)
+                logging.error(_N('Failed to remove package ID %i') % package_id)
 
     # regenerate the package cache after removing these packages
     self.generate_package_cache(True)
@@ -253,7 +254,7 @@ def do_package_removeorphans(self, args):
 
     if not packages:
         print(_("No orphaned packages has been found"))
-        logging.warning(_('No orphaned packages'))
+        logging.warning(_N('No orphaned packages'))
         return 1
 
     if not self.user_confirm(_('Remove these packages [y/N]:')):
@@ -268,7 +269,7 @@ def do_package_removeorphans(self, args):
         try:
             self.client.packages.removePackage(self.session, package.get('id'))
         except xmlrpclib.Fault:
-            logging.error(_('Failed to remove package ID %i') % package.get('id'))
+            logging.error(_N('Failed to remove package ID %i') % package.get('id'))
             return 1
 
     return 0
@@ -299,7 +300,7 @@ def do_package_listinstalledsystems(self, args):
         packages.extend(self.do_package_search(package, True))
 
     if not packages:
-        logging.warning(_('No packages found'))
+        logging.warning(_N('No packages found'))
         return 1
 
     add_separator = False
@@ -348,7 +349,7 @@ def do_package_listerrata(self, args):
         packages.extend(self.do_package_search(' '.join(args), True))
 
     if not packages:
-        logging.warning(_('No packages found'))
+        logging.warning(_N('No packages found'))
         return 1
 
     add_separator = False
@@ -392,7 +393,7 @@ def do_package_listdependencies(self, args):
         packages.extend(self.do_package_search(' '.join(args), True))
 
     if not packages:
-        logging.warning(_('No packages found'))
+        logging.warning(_N('No packages found'))
         return 1
 
     add_separator = False
@@ -403,7 +404,7 @@ def do_package_listdependencies(self, args):
         add_separator = False
         for package_id in self.get_package_id(package):
             if not package_id:
-                logging.warning(_('%s is not a valid package') % package)
+                logging.warning(_N('%s is not a valid package') % package)
                 continue
 
             package_id = int(package_id)

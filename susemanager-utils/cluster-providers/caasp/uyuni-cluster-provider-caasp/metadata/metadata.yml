@@ -70,3 +70,5 @@ ui:
       - has-disruptive-updates
       - kubelet-version
       - caasp-release-version
+  upgrade:
+    show_plan: true

@@ -9,17 +9,19 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-configuration"
- helpUrl="/docs/reference/configuration/files-locally-managed.html">
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/configuration/files-locally-managed.html">
   <bean:message key="localfilelist.jsp.toolbar"/>
 </rhn:toolbar>
 
 <form method="post" role="form" name="rhn_list" action="/rhn/configuration/file/LocalConfigFileList.do">
   <rhn:csrf />
   <rhn:submitted />
+
+  <div class="alert alert-info">
+    <bean:message key="localfilelist.jsp.summary"/>
+  </div>
+
   <div class="panel panel-default">
-    <div class="panel-heading">
-        <h4><bean:message key="localfilelist.jsp.summary"/></h4>
-    </div>
     <div class="panel-body">
       <rhn:list pageList="${requestScope.pageList}" noDataText="localfilelist.jsp.noFiles">
         <rhn:listdisplay filterBy="localfilelist.jsp.path">

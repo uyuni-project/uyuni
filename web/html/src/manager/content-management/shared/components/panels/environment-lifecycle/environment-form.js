@@ -1,5 +1,5 @@
 //@flow
-import React from 'react';
+import * as React from 'react';
 import {Text} from "components/input/Text";
 import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
@@ -26,6 +26,15 @@ const EnvironmentForm = (props: Props) =>
           name="name"
           // ref={nameInputRef}
           label={t("Name")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          disabled={props.editing}
+        />
+      </div>
+      <div className="row">
+        <Text
+          name="label"
+          label={t("Label")}
           labelClass="col-md-3"
           divClass="col-md-8"
           disabled={props.editing}

@@ -35,8 +35,8 @@ Possible values are currently:
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
 | SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` | ```"minion"``` |
+| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` or ```"sle_ssh_tunnel_client"``` | ```"client"``` |
+| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` or ```"sle_ssh_tunnel_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
 | CentOS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ```"ceos_ssh_minion"``` | ```"minion"``` |
@@ -205,12 +205,11 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on the System Manager System Overview page
 ```
 
-* Close current page
+* Test the last opened window
 
 ```cucumber
-  When I close the window
+  And I switch to last opened windo
 ```
-
 
 <a name="b3" />
 

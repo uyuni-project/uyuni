@@ -1,13 +1,14 @@
 // @flow
-import React, {useEffect, useState} from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {TopPanel} from 'components/panels/TopPanel';
 import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';
 import {Table} from 'components/table/Table';
-import Functions from 'utils/functions';
+import {Utils} from 'utils/functions';
 import {showSuccessToastr} from 'components/toastr/toastr';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import {hot} from 'react-hot-loader';
 import FilterEdit from "./filter-edit";
 import {mapResponseToFilterForm} from "./filter.utils";
 import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
@@ -34,7 +35,7 @@ const ListFilters = (props: Props) => {
   }, [])
 
   const searchData = (row, criteria) => {
-    const keysToSearch = ['name'];
+    const keysToSearch = ['filter_name'];
     if (criteria) {
       return keysToSearch.map(key => row[key]).join().toLowerCase().includes(criteria.toLowerCase());
     }
@@ -59,7 +60,7 @@ const ListFilters = (props: Props) => {
   );
 
   return (
-    <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons} helpUrl="/docs/reference/clm/clm-filters.html">
+    <TopPanel title={t('Content Lifecycle Filters')} icon="fa-filter" button={panelButtons} helpUrl="reference/clm/clm-filters.html">
       <Table
         data={displayedFilters}
         identifier={row => row.filter_name}
@@ -67,13 +68,13 @@ const ListFilters = (props: Props) => {
         searchField={(
           <SearchField
             filter={searchData}
-            placeholder={t('Filter by any value')}
+            placeholder={t('Filter by name')}
           />
         )}
       >
         <Column
           columnKey="filter_name"
-          comparator={Functions.Utils.sortByText}
+          comparator={Utils.sortByText}
           header={t('Name')}
           cell={row => row.filter_name}
         />
@@ -109,4 +110,4 @@ const ListFilters = (props: Props) => {
   );
 }
 
-export default hot(module)(withPageWrapper<Props>(ListFilters));
+export default hot(withPageWrapper<Props>(ListFilters));

@@ -43,6 +43,7 @@ try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
     import xmlrpclib
+from spacecmd.i18n import _N
 from spacecmd.utils import *
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -440,13 +441,13 @@ def do_softwarechannel_setdetails(self, args):
         new_details['gpg_key_fp'] = options.gpg_fingerprint
 
     if not new_details:
-        logging.error(_('At least one attribute to set must be given'))
+        logging.error(_N('At least one attribute to set must be given'))
         return 1
 
     # allow globbing of software channel names
     channels = filter_results(self.do_softwarechannel_list('', True), args)
     if len(channels) < 1:
-        logging.info(_('No channels matching that label'))
+        logging.info(_N('No channels matching that label'))
         return 1
 
     # channel names must be unique, so if we are asked to set it,
@@ -458,7 +459,7 @@ def do_softwarechannel_setdetails(self, args):
     # also fails on same label.
     if new_details.get('name'):
         if len(channels) > 1:
-            logging.error(_('Setting same name for more than ' + \
+            logging.error(_N('Setting same name for more than ' + \
                           'one channel will fail'))
             return 1
         logging.debug('checking other channels for name "%s"' %
@@ -466,7 +467,7 @@ def do_softwarechannel_setdetails(self, args):
         for c in self.list_base_channels() + self.list_child_channels():
             cd = self.client.channel.software.getDetails(self.session, c)
             if cd.get('name') == new_details.get('name'):
-                logging.error(_('Name "%s" already in use by channel %s') %
+                logging.error(_N('Name "%s" already in use by channel %s') %
                               (cd.get('name'), cd.get('label')))
                 return 1
 
@@ -509,7 +510,7 @@ def do_softwarechannel_setdetails(self, args):
             details = self.client.channel.software.getDetails(self.session,
                                                               channel)
         except xmlrpclib.Fault as e:
-            logging.error(_('Could not get details for %s') % channel)
+            logging.error(_N('Could not get details for %s') % channel)
             logging.error(e)
             return 1
         channel_id = details.get('id')
@@ -521,10 +522,10 @@ def do_softwarechannel_setdetails(self, args):
                                                     new_details)
             num_changed += 1
         except xmlrpclib.Fault as e:
-            logging.error(_('Error while setting details for %s') % channel)
+            logging.error(_N('Error while setting details for %s') % channel)
             logging.error(e)
             return 1
-    logging.info(_('Channels changed: %d') % num_changed)
+    logging.info(_N('Channels changed: %d') % num_changed)
 
     return 0
 
@@ -653,7 +654,7 @@ def do_softwarechannel_listerrata(self, args):
 
     for channel in sorted(channels):
         if len(channels) > 1:
-            print('Channel: %s' % channel)
+            print(_('Channel: %s') % channel)
             print('')
 
         if begin_date and end_date:
@@ -843,10 +844,10 @@ def do_softwarechannel_update(self, args):
         options.disable_gpg_check = prompt_user(_('Disable GPG Check [yes/no]? '))
 
     if not options.label:
-        logging.error(_('A channel label is required to identify the channel'))
+        logging.error(_N('A channel label is required to identify the channel'))
         return 1
     if options.disable_gpg_check and options.disable_gpg_check not in ('yes','no'):
-        logging.error(_('Only [yes/no] values are acceptable for --disable_gpg_check'))
+        logging.error(_N('Only [yes/no] values are acceptable for --disable_gpg_check'))
         return 1
     details = {}
     if not vendor_channel:
@@ -1020,11 +1021,11 @@ def set_default_data(options):
 
 def validate_required_data(options):
     if not options.name:
-        logging.error(_('A channel name is required'))
+        logging.error(_N('A channel name is required'))
         return False
 
     if not options.label:
-        logging.error(_('A channel label is required'))
+        logging.error(_N('A channel label is required'))
         return False
 
     return True
@@ -1037,11 +1038,11 @@ def softwarechannel_check_existing(self, name, label):
     for c in self.list_base_channels() + self.list_child_channels():
         cd = self.client.channel.software.getDetails(self.session, c)
         if cd['name'] == name:
-            logging.error(_("Name %s already in use by channel %s") %
+            logging.error(_N("Name %s already in use by channel %s") %
                           (name, cd['label']))
             return True
         if cd['label'] == label:
-            logging.error(_("Label %s already in use by channel %s") %
+            logging.error(_N("Label %s already in use by channel %s") %
                           (label, cd['label']))
             return True
     return False
@@ -1114,15 +1115,15 @@ def do_softwarechannel_clone(self, args):
                               ignore_yes=True)
     else:
         if not options.source_channel:
-            logging.error(_('A source channel is required'))
+            logging.error(_N('A source channel is required'))
             return 1
 
         if not options.name and not options.regex:
-            logging.error(_('A channel name is required'))
+            logging.error(_N('A channel name is required'))
             return 1
 
         if not options.label and not options.regex:
-            logging.error(_('A channel label is required'))
+            logging.error(_N('A channel label is required'))
             return 1
 
         if not options.original_state:
@@ -1135,7 +1136,7 @@ def do_softwarechannel_clone(self, args):
                 options.name = newvalues['name']
 
     if options.disable_gpg_check and options.disable_gpg_check not in ('yes', 'no'):
-        logging.error(_('Only [yes/no] values are acceptable for --disable-gpg-check'))
+        logging.error(_N('Only [yes/no] values are acceptable for --disable-gpg-check'))
         return 1
     if self.softwarechannel_check_existing(options.name, options.label):
         return 1
@@ -1202,23 +1203,23 @@ def do_softwarechannel_clonetree(self, args):
             self.user_confirm(_('Original State (No Errata) [y/N]:'), ignore_yes=True)
     else:
         if not options.source_channel:
-            logging.error(_('A source channel is required'))
+            logging.error(_N('A source channel is required'))
             return 1
 
         if not options.prefix and not options.regex:
-            logging.error(_('A prefix or regex is required'))
+            logging.error(_N('A prefix or regex is required'))
             return 1
 
         if not options.original_state:
             options.original_state = False
 
     if options.disable_gpg_check and options.disable_gpg_check not in ('yes', 'no'):
-        logging.error(_('Only [yes/no] values are acceptable for --disable-gpg-check'))
+        logging.error(_N('Only [yes/no] values are acceptable for --disable-gpg-check'))
         return 1
 
     channels = [options.source_channel]
     if not options.source_channel in self.list_base_channels():
-        logging.error(_("Channel does not exist or is not a base channel!"))
+        logging.error(_N("Channel does not exist or is not a base channel!"))
         self.help_softwarechannel_clonetree()
         return 1
     logging.debug("--child mode specified, finding children of %s\n" % options.source_channel)
@@ -1245,7 +1246,7 @@ def do_softwarechannel_clonetree(self, args):
             name = options.prefix + srcdetails['name']
         else:
             # Shouldn't ever get here due to earlier checks
-            logging.error(_("called without prefix or regex option!"))
+            logging.error(_N("called without prefix or regex option!"))
             return 1
 
         # Catch label or name which already exists
@@ -1297,7 +1298,7 @@ def clone_channel(self, channel, options, details) :
 
     for key in to_remove:
         del details[key]
-    logging.info("Cloning %s as %s" % (channel, details['label']))
+    logging.info(_N("Cloning %s as %s") % (channel, details['label']))
     self.client.channel.software.clone(self.session,
                                        channel,
                                        details,
@@ -1371,7 +1372,7 @@ def do_softwarechannel_addpackages(self, args):
     # Take the first argument as the channel and validate it
     channel = args.pop(0)
     if not channel in self.do_softwarechannel_list('', True):
-        logging.error(_("%s is not a valid channel") % channel)
+        logging.error(_N("%s is not a valid channel") % channel)
         self.help_softwarechannel_addpackages()
         return 1
 
@@ -1386,7 +1387,7 @@ def do_softwarechannel_addpackages(self, args):
         package_ids += self.get_package_id(package)
 
     if not package_ids:
-        logging.warning(_('No packages to add'))
+        logging.warning(_N('No packages to add'))
         return 1
 
     print(_('Packages'))
@@ -1485,7 +1486,7 @@ def do_softwarechannel_removeerrata(self, args):
                 package_ids.append(package.get('id'))
 
     if not errata_details:
-        logging.warning(_('No patches to remove'))
+        logging.warning(_N('No patches to remove'))
         return 1
 
     print_errata_list(errata_details)
@@ -1570,7 +1571,7 @@ def do_softwarechannel_removepackages(self, args):
         package_ids += self.get_package_id(package)
 
     if not package_ids:
-        logging.warning(_('No packages to remove'))
+        logging.warning(_N('No packages to remove'))
         return 1
 
     print(_('Packages'))
@@ -1622,12 +1623,12 @@ def do_softwarechannel_adderratabydate(self, args):
     end_date = args[3]
 
     if not re.match(r'\d{8}', begin_date):
-        logging.error(_('%s is an invalid date') % begin_date)
+        logging.error(_N('%s is an invalid date') % begin_date)
         self.help_softwarechannel_adderratabydate()
         return 1
 
     if not re.match(r'\d{8}', end_date):
-        logging.error(_('%s is an invalid date') % end_date)
+        logging.error(_N('%s is an invalid date') % end_date)
         self.help_softwarechannel_adderratabydate()
         return 1
 
@@ -1640,14 +1641,14 @@ def do_softwarechannel_adderratabydate(self, args):
                                                 parse_time_input(end_date))
 
     if not errata:
-        logging.warning(_('No patches found between the given dates'))
+        logging.warning(_N('No patches found between the given dates'))
         return 1
 
     if options.publish:
         # Just publish the errata one-by-one, rather than calling
         # do_softwarechannel_adderrata which clones the errata
         for e in errata:
-            logging.info(_("Publishing errata %s to %s") %
+            logging.info(_N("Publishing errata %s to %s") %
                          (e.get('advisory_name'), dest_channel))
             self.client.errata.publish(self.session, e.get('advisory_name'),
                                        [dest_channel])
@@ -1693,12 +1694,12 @@ def do_softwarechannel_listerratabydate(self, args):
     end_date = args[2]
 
     if not re.match(r'\d{8}', begin_date):
-        logging.error(_('%s is an invalid date') % begin_date)
+        logging.error(_N('%s is an invalid date') % begin_date)
         self.help_softwarechannel_listerratabydate()
         return 1
 
     if not re.match(r'\d{8}', end_date):
-        logging.error(_('%s is an invalid date') % end_date)
+        logging.error(_N('%s is an invalid date') % end_date)
         self.help_softwarechannel_listerratabydate()
         return 1
 
@@ -1711,7 +1712,7 @@ def do_softwarechannel_listerratabydate(self, args):
                                                 parse_time_input(end_date))
 
     if not errata:
-        logging.warning(_('No errata found between the given dates'))
+        logging.warning(_N('No errata found between the given dates'))
         return 1
 
     print_errata_list(errata)
@@ -1753,12 +1754,12 @@ def do_softwarechannel_adderrata(self, args):
     allchannels = self.do_softwarechannel_list('', True)
     source_channel = args[0]
     if not source_channel in allchannels:
-        logging.error(_("source channel %s does not exist!") % source_channel)
+        logging.error(_N("source channel %s does not exist!") % source_channel)
         self.help_softwarechannel_adderrata()
         return 1
     dest_channel = args[1]
     if not dest_channel in allchannels:
-        logging.error(_("dest channel %s does not exist!") % dest_channel)
+        logging.error(_N("dest channel %s does not exist!") % dest_channel)
         self.help_softwarechannel_adderrata()
         return 1
     errata_wanted = self.expand_errata(args[2:])
@@ -1811,7 +1812,7 @@ def do_softwarechannel_adderrata(self, args):
                     package_ids.append(package.get('id'))
 
     if not errata:
-        logging.warning(_('No patch to add'))
+        logging.warning(_N('No patch to add'))
         return 1
 
     # show the user which errata will be added
@@ -1844,8 +1845,8 @@ def do_softwarechannel_adderrata(self, args):
             self.client.errata.cloneAsOriginal(self.session, dest_channel,
                                                [erratum])
         else:
-            logging.warning(_("Using the old errata.clone function"))
-            logging.warning(_("If you have base channels for multiple OS" +
+            logging.warning(_N("Using the old errata.clone function"))
+            logging.warning(_N("If you have base channels for multiple OS" +
                             " versions, check no unexpected packages have been added"))
             self.client.errata.clone(self.session, dest_channel, [erratum])
 
@@ -1991,7 +1992,7 @@ def do_softwarechannel_getorgaccesstree(self, args):
         channels = filter_results(self.list_base_channels(), args)
 
     if not channels:
-        logging.error(_("Channel does not exist or is not a base channel!"))
+        logging.error(_N("Channel does not exist or is not a base channel!"))
         self.help_softwarechannel_getorgaccesstree()
         return 1
 
@@ -2031,7 +2032,7 @@ def do_softwarechannel_setorgaccesstree(self, args):
     channels = filter_results(self.list_base_channels(), args)
 
     if not channels:
-        logging.error(_("Channel does not exist or is not a base channel!"))
+        logging.error(_N("Channel does not exist or is not a base channel!"))
         self.help_softwarechannel_setorgaccesstree()
         return 1
 
@@ -2110,10 +2111,10 @@ def is_softwarechannel(self, name):
 
 def check_softwarechannel(self, name):
     if not name:
-        logging.error(_("no softwarechannel label given"))
+        logging.error(_N("no softwarechannel label given"))
         return False
     if not self.is_softwarechannel(name):
-        logging.error(_("invalid softwarechannel label ") + name)
+        logging.error(_N("invalid softwarechannel label ") + name)
         return False
     return True
 
@@ -2290,7 +2291,7 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
         return 1
 
     command = "syncing" if deleteFromTarget else "merging"
-    logging.info(_("%s packages from softwarechannel %s to %s"),
+    logging.info(_N("%s packages from softwarechannel %s to %s"),
                  command, source_channel, target_channel)
 
     # use API call instead of spacecmd function
@@ -2309,7 +2310,7 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
         try:
             source_ids.add(package['id'])
         except KeyError:
-            logging.error(_("failed to read key id"))
+            logging.error(_N("failed to read key id"))
             continue
 
     target_ids = set()
@@ -2317,7 +2318,7 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
         try:
             target_ids.add(package['id'])
         except KeyError:
-            logging.error(_("failed to read key id"))
+            logging.error(_N("failed to read key id"))
             continue
     if not options.quiet:
         print(_("packages common in both channels:"))
@@ -2325,7 +2326,7 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
             print(self.get_package_name(i))
         print('')
     else:
-        logging.info(_("Omitting common packages in both specified channels"))
+        logging.info(_N("Omitting common packages in both specified channels"))
 
     # check for packages only in the source channel
     source_only = source_ids.difference(target_ids)
@@ -2417,8 +2418,8 @@ def do_softwarechannel_errata_sync(self, args):
     if not self.check_softwarechannel(target_channel):
         return 1
 
-    logging.info(_("syncing errata from softwarechannel ") + source_channel +
-                 _(" to ") + target_channel)
+    logging.info(_N("syncing errata from softwarechannel ") + source_channel +
+                 _N(" to ") + target_channel)
 
     source_errata = self.client.channel.software.listErrata(
         self.session, source_channel)
@@ -2431,7 +2432,7 @@ def do_softwarechannel_errata_sync(self, args):
         try:
             source_ids.add(erratum.get('advisory_name'))
         except KeyError:
-            logging.error(_("failed to read key id"))
+            logging.error(_N("failed to read key id"))
             continue
 
     target_ids = set()
@@ -2439,7 +2440,7 @@ def do_softwarechannel_errata_sync(self, args):
         try:
             target_ids.add(erratum.get('advisory_name'))
         except KeyError:
-            logging.error(_("failed to read key id"))
+            logging.error(_N("failed to read key id"))
             continue
 
     print(_("errata common in both channels:"))
@@ -2549,8 +2550,8 @@ def do_softwarechannel_errata_merge(self, args):
     if not self.check_softwarechannel(source_channel) or not self.check_softwarechannel(target_channel):
         return 1
 
-    logging.info(_("merging errata from softwarechannel ") + source_channel +
-                 _(" to ") + target_channel)
+    logging.info(_N("merging errata from softwarechannel ") + source_channel +
+                 _N(" to ") + target_channel)
 
     source_errata = self.client.channel.software.listErrata(
         self.session, source_channel)
@@ -2571,7 +2572,7 @@ def do_softwarechannel_errata_merge(self, args):
         try:
             source_ids.add(erratum.get('advisory_name'))
         except KeyError:
-            logging.error(_("failed to read key id"))
+            logging.error(_N("failed to read key id"))
             continue
 
     target_ids = set()
@@ -2579,7 +2580,7 @@ def do_softwarechannel_errata_merge(self, args):
         try:
             target_ids.add(erratum.get('advisory_name'))
         except KeyError:
-            logging.error(_("failed to read key id"))
+            logging.error(_N("failed to read key id"))
             continue
 
     # check for errata only in the source channel
@@ -2703,10 +2704,10 @@ def do_softwarechannel_setsyncschedule(self, args):
 
 
 def help_softwarechannel_removesyncschedule(self):
-    print('softwarechannel_removesyncschedule: ')
-    print('Removes the repo sync schedule for a software channel')
+    print(_('softwarechannel_removesyncschedule: '))
+    print(_('Removes the repo sync schedule for a software channel'))
     print('')
-    print('usage: softwarechannel_removesyncschedule <CHANNEL>')
+    print(_('usage: softwarechannel_removesyncschedule <CHANNEL>'))
 
 
 def complete_softwarechannel_removesyncschedule(self, text, line, beg, end):
@@ -2919,7 +2920,7 @@ def do_softwarechannel_mirrorpackages(self, args):
                     package_file, channel)
                 return 1
             except IOError:
-                logging.error(_("Could not fetch package %s from channel %s") %
+                logging.error(_N("Could not fetch package %s from channel %s") %
                               (package_file, channel))
                 return 1
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RHN 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:44+0200\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
 "PO-Revision-Date: 2000-08-08 16:51-0400\n"
 "Last-Translator: Cristian Gafton <gafton@redhat.com>\n"
 "Language-Team: English <rhns-i18n@redhat.com>\n"
@@ -15,11 +15,48 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr ""
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr ""
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr ""
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr ""
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr ""
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -28,11 +65,12 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr ""
 
 #: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
+msgid "ISS is disabled on this server."
 msgstr ""
 
 #: ../server/handlers/sat/auth.py:50
@@ -52,7 +90,7 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
@@ -95,36 +133,13 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
-msgid "Red Hat Satellite Welcome Message"
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
 msgstr ""
-"Now for the first time ever, information, updates, and services\n"
-"that enhance the security and reliability of your Red Hat Linux\n"
-"systems are available to you in one place-- Red Hat Network.\n"
-"Check out these benefits:\n"
-"\n"
-"-- Red Hat Linux information, updates, and services specific to\n"
-"   your systems\n"
-"-- Fast access and proactive delivery of updates (security errata,\n"
-"   bug fixes, enhancements)\n"
-"-- The latest news from Red Hat when new products and services\n"
-"   are available\n"
-"\n"
-"Joining is easy-- just follow this three step process:\n"
-"\n"
-"Step 1: Review the Red Hat privacy policy\n"
-"Step 2: Register a user account with Red Hat.\n"
-"        a. This registration program can take care of that for you\n"
-"        b. You can also register an account by going to\n"
-"           https://rhn.redhat.com/newlogin.pxt\n"
-"Step 3: Register a system profile on Red Hat Network\n"
-"\n"
-"Click on the \"Next\" button to register now, or click \"Cancel\"\n"
-"to banish this program forever."
 
 #: ../server/handlers/xmlrpc/registration.py:1125
 #, fuzzy
-msgid "Red Hat Satellite Privacy Statement"
+msgid "Privacy Statement"
 msgstr ""
 " We think our customers understand better than anyone else how Red\n"
 " Hat can most effectively serve their needs.  Because of this, Red\n"
@@ -384,102 +399,6 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr ""
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr ""
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr ""
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr ""
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr ""
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr ""
-
 #: ../server/rhnChannel.py:1992
 #, python-format
 msgid ""
@@ -554,6 +473,15 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr ""
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, fuzzy, python-format
@@ -562,6 +490,55 @@ msgstr "Invalid system release version requested"
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
+msgstr ""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr ""
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr ""
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
 msgstr ""
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
@@ -1501,12 +1478,13 @@ msgid " - live synchronization"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:534
+#, python-brace-format
 msgid ""
 "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
 "supported.\n"
 "Please use the cdn-sync command instead unless you are attempting to sync "
-"from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
-"on disk via Channel Dump ISOs."
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -2021,7 +1999,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2375
 #, python-format
 msgid ""
-"ERROR: '%s' is not a valid step. See 'man satellite-sync' for more detail."
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2407
@@ -2167,3 +2145,245 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Red Hat Satellite Welcome Message"
+#~ msgstr ""
+#~ "Now for the first time ever, information, updates, and services\n"
+#~ "that enhance the security and reliability of your Red Hat Linux\n"
+#~ "systems are available to you in one place-- Red Hat Network.\n"
+#~ "Check out these benefits:\n"
+#~ "\n"
+#~ "-- Red Hat Linux information, updates, and services specific to\n"
+#~ "   your systems\n"
+#~ "-- Fast access and proactive delivery of updates (security errata,\n"
+#~ "   bug fixes, enhancements)\n"
+#~ "-- The latest news from Red Hat when new products and services\n"
+#~ "   are available\n"
+#~ "\n"
+#~ "Joining is easy-- just follow this three step process:\n"
+#~ "\n"
+#~ "Step 1: Review the Red Hat privacy policy\n"
+#~ "Step 2: Register a user account with Red Hat.\n"
+#~ "        a. This registration program can take care of that for you\n"
+#~ "        b. You can also register an account by going to\n"
+#~ "           https://rhn.redhat.com/newlogin.pxt\n"
+#~ "Step 3: Register a system profile on Red Hat Network\n"
+#~ "\n"
+#~ "Click on the \"Next\" button to register now, or click \"Cancel\"\n"
+#~ "to banish this program forever."
+
+#, fuzzy
+#~ msgid "Red Hat Satellite Privacy Statement"
+#~ msgstr ""
+#~ " We think our customers understand better than anyone else how Red\n"
+#~ " Hat can most effectively serve their needs.  Because of this, Red\n"
+#~ " Hat makes every effort to allow our customers to define the\n"
+#~ " relationship they will have with us.  We ask customers how they\n"
+#~ " would like Red Hat to communicate with them, if at all.  We disclose\n"
+#~ " how we will be using our customers' information through documents\n"
+#~ " like this one, or by answering individual questions customers may\n"
+#~ " ask.  Our policy is not to sell or provide to others our customers'\n"
+#~ " information without making it clear that we intend to do to in this\n"
+#~ " statement or at the time the information is collected.  Note that\n"
+#~ " when you purchase a product or service from us, we may need to\n"
+#~ " contact you to follow up on the product or service.  However, our\n"
+#~ " policy is not to contact you for anything unrelated to the product\n"
+#~ " or service unless you have \"opted in\" to such contact when you\n"
+#~ " signed up.  You should be aware that in certain circumstances, Red\n"
+#~ " Hat may be required to disclose information pursuant to applicable\n"
+#~ " law or government orders.\n"
+#~ " \n"
+#~ " Red Hat has self-certified as adhering to the European Union \"safe\n"
+#~ " harbor\" principles with the United States Department of Commerce,\n"
+#~ " and has chosen to cooperate with the European Union Data Protection\n"
+#~ " Authorities for unresolved privacy complaints.  If you have any\n"
+#~ " questions or complaints regarding the use of your personal\n"
+#~ " information, please contact feedback@redhat.com.\n"
+#~ " \n"
+#~ " Below you will find a detailed account of Red Hat's privacy\n"
+#~ " practices.  If you have any questions about any of these practices\n"
+#~ " or Red Hat's use of your personal information, please feel free to\n"
+#~ " contact us at feedback@redhat.com.\n"
+#~ " \n"
+#~ " \n"
+#~ " Information Collected Online\n"
+#~ " \n"
+#~ " Our website sometimes requires you to give us personal information\n"
+#~ " when you do things like purchase products in our Web store or\n"
+#~ " register your products with redhat.com.  Red Hat uses your personal\n"
+#~ " information only for marketing, customer service, delivery of\n"
+#~ " products, aftercare service and related activities thereof.  In\n"
+#~ " situations such as these, you will be given a choice as to whether\n"
+#~ " you would like Red Hat or our business partners to contact you in\n"
+#~ " the future.  This is an \"opt-in\" process.  If you opt-in, we rely on\n"
+#~ " your consent to send you information, special offers, and\n"
+#~ " promotional materials.  In many cases, you may choose whether you\n"
+#~ " would like to be contacted via mail, email, phone, or not at all.\n"
+#~ " We will only contact you via the methods you choose.  An exception\n"
+#~ " will be made in the rare case that we find a significant issue with\n"
+#~ " a product or service that requires your immediate attention.  For\n"
+#~ " your protection, we may contact you via phone or email as the\n"
+#~ " situation warrants.\n"
+#~ " \n"
+#~ " Also, our website sometimes requires you to give us personal\n"
+#~ " information in order to do things like access webcasts, download\n"
+#~ " whitepapers, or participate in online surveys.  In situations like\n"
+#~ " these, where you are accessing free products and services from Red\n"
+#~ " Hat and/or our business partners, we recognize your interest in the\n"
+#~ " product or service and consider that  to be \"opting in\" to allow Red\n"
+#~ " Hat and appropriate business partners to contact you with\n"
+#~ " information, special offers, or promotional materials in the future.\n"
+#~ " Red Hat may transfer your personal information to or share it with\n"
+#~ " the business partner only for future marketing, development of new\n"
+#~ " products, customer service, delivery of products, aftercare service\n"
+#~ " and related activities thereof.  If you do not wish to be contacted,\n"
+#~ " we ask that you refrain from accessing these free products and\n"
+#~ " services offered to you by Red Hat and our partners.\n"
+#~ " \n"
+#~ " Red Hat trains its employees on our privacy policy guidelines and\n"
+#~ " makes our privacy policy available to our business partners. Also\n"
+#~ " our website uses Secure Socket Layer (SSL) which encrypts your\n"
+#~ " personal information when you send your personal information on our\n"
+#~ " website. In addition, Red Hat and its business partners enter into\n"
+#~ " confidentiality agreements which requires care and precautions be\n"
+#~ " taken to prevent loss, misuse, or disclosure of your personal\n"
+#~ " information.\n"
+#~ " \n"
+#~ " Out of special concern for children's privacy, we do not accept\n"
+#~ " personal information from children who are under the age of 13.\n"
+#~ " \n"
+#~ " \n"
+#~ " Information Collected On Red Hat Network\n"
+#~ " \n"
+#~ " If you register your system on Red Hat Network, you will be asked to\n"
+#~ " provide a system profile when you register. The system profile\n"
+#~ " consists of:\n"
+#~ " \n"
+#~ " 1) An inventory of the .rpm files installed on the system. This\n"
+#~ " information helps determine what new software updates may be\n"
+#~ " valuable to you in keeping your system secure and available.\n"
+#~ " \n"
+#~ " 2) An inventory of your system hardware. This information is also\n"
+#~ " used by Red Hat to determine what software and support information\n"
+#~ " might be useful to you.\n"
+#~ " \n"
+#~ " You can determine the information in your System Profile prior to\n"
+#~ " registering it on Red Hat Network by typing the following at the\n"
+#~ " command prompt:\n"
+#~ " \n"
+#~ " $rhn_register\n"
+#~ " \n"
+#~ " This command will start the registration program, and all of the\n"
+#~ " information contained in the system profile is presented to you for\n"
+#~ " review prior to submission to Red Hat.\n"
+#~ " \n"
+#~ " Once you have registered a system profile, you can browse and edit\n"
+#~ " your profile information from your Red Hat Network page.\n"
+#~ " \n"
+#~ " When requested by you with a command from Red Hat Network, certain\n"
+#~ " application configuration information about a particular system may\n"
+#~ " be provided to Red Hat and displayed to you in a Web page to assist\n"
+#~ " you in configuring your system. At your request, Red Hat may store\n"
+#~ " this information for a time to assist you in system recovery should\n"
+#~ " you make a mistake in the application configuration. In each case\n"
+#~ " where configuration information is stored by Red Hat, it will be at\n"
+#~ " your request and only for a period of time sufficient to confirm\n"
+#~ " acceptance of new configuration settings.\n"
+#~ " \n"
+#~ " Other than the System Profile and application configuration you\n"
+#~ " request as part of an online service, Red Hat will never retrieve or\n"
+#~ " store personal file information from your system as part of any Red\n"
+#~ " Hat service.\n"
+#~ " \n"
+#~ " \n"
+#~ " Information Collected in Other Ways\n"
+#~ " \n"
+#~ " We collect information in other ways, such as running contests on\n"
+#~ " our site and at trade shows, in which we ask you for contact\n"
+#~ " information (like your email address), unique identifiers (like your\n"
+#~ " password), and demographic information (like your occupation).  We\n"
+#~ " may use data from these contests and trade shows to contact you or\n"
+#~ " to allow appropriate business partners to contact you.  If you do\n"
+#~ " not wish to be contacted, we ask that you refrain from participating\n"
+#~ " in these promotions.\n"
+#~ " \n"
+#~ " \n"
+#~ " Cookies and Other Browser Information\n"
+#~ " \n"
+#~ " Our site automatically captures IP addresses.  We use IP addresses\n"
+#~ " to help diagnose problems with our server, to administer our\n"
+#~ " website, and to help ensure the security of your interaction with\n"
+#~ " the website.  Your IP address is used to help identify you and your\n"
+#~ " shopping cart.\n"
+#~ " \n"
+#~ " As part of offering and providing customizable and personalized\n"
+#~ " services, Red Hat uses cookies to store and sometimes track\n"
+#~ " information about you.  A cookie is a small amount of data that is\n"
+#~ " sent to your browser from a Web server and stored on your computer's\n"
+#~ " hard drive.  All sections of redhat.com where you are prompted to\n"
+#~ " log in or that are customizable require your browser to accept\n"
+#~ " cookies.  If you would like to know more about precisely how we use\n"
+#~ " cookies, click here.\n"
+#~ " \n"
+#~ " \n"
+#~ " Third Party and Aggregated Data\n"
+#~ " \n"
+#~ " Under confidentiality agreements, Red Hat may match user information\n"
+#~ " with third-party data.  Also, Red Hat discloses aggregated user\n"
+#~ " statistics in order to describe our services to current and\n"
+#~ " prospective partners and other third parties.  Red Hat has\n"
+#~ " agreements with some third parties to perform certain dedicated\n"
+#~ " tasks such as product fulfillment, payroll, credit card processing,\n"
+#~ " e-mail housing, and marketing, training, and customer service.  In\n"
+#~ " these situations, we share your information with these third parties\n"
+#~ " for the sole purpose of allowing them to perform these tasks.  Your\n"
+#~ " information is not used by the third party in any other way.\n"
+#~ " \n"
+#~ " \n"
+#~ " About Links to Other Sites\n"
+#~ " \n"
+#~ " This site contains links to other sites.  Red Hat does not control\n"
+#~ " the information collection of sites that can be reached through\n"
+#~ " links from redhat.com.  If you have questions about the data\n"
+#~ " collection procedures of linked sites, please contact those\n"
+#~ " companies directly.\n"
+#~ " \n"
+#~ " \n"
+#~ " Public Forums Reminder\n"
+#~ " \n"
+#~ " This site often makes chat rooms, forums, message boards, and/or\n"
+#~ " news groups available to its users.  Please remember that any\n"
+#~ " information that is disclosed in these areas becomes public\n"
+#~ " information.  Exercise caution when deciding to disclose your\n"
+#~ " personal information.  Although we value individual ideas and\n"
+#~ " encourage free expression, Red Hat reserves the right to take\n"
+#~ " necessary action to preserve the forum's integrity, such as removing\n"
+#~ " any posting that is vulgar or inappropriate.\n"
+#~ " \n"
+#~ " \n"
+#~ " Questions and Answers\n"
+#~ " \n"
+#~ " How Can I Opt Out?\n"
+#~ " Red Hat gives you the ability to opt out of receiving communications\n"
+#~ " from Red Hat and/or its partners if you choose.  When you register\n"
+#~ " or order a product or service, simply choose \"I do not wish to be\n"
+#~ " contacted\" underneath the Contact Method section.  If you decide\n"
+#~ " that you would like to opt out of communications at a later date,\n"
+#~ " you may log in to your account\n"
+#~ " (http://www.redhat.com/apps/user/login.html) and modify the Contact\n"
+#~ " Method section.  You may also simply unsubscribe to a specific email\n"
+#~ " communication by following the unsubscribe directions at the bottom\n"
+#~ " of the email or by contacting feedback@redhat.com and requesting\n"
+#~ " that you be unsubscribe from that specific communication.\n"
+#~ " \n"
+#~ " How Can I Modify or Update My Information?\n"
+#~ " Red Hat gives you the ability to modify or update your information.\n"
+#~ " Please log in and modify your information\n"
+#~ " (http://www.redhat.com/apps/user/login.html) or, if necessary,\n"
+#~ " contact us at feedback@redhat.com and describe the changes you want\n"
+#~ " made to the information you have previously provided.\n"
+#~ " \n"
+#~ " Red Hat reserves the right to change this policy from time to time.\n"
+#~ " If we do make changes, the revised Privacy Statement will be posted\n"
+#~ " on this site."

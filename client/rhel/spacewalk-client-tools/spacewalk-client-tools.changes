@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Nov 23 15:12:54 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
+- Update translations
+
+-------------------------------------------------------------------
+Thu Oct 22 10:44:46 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.7-1
+- Remove RH references in Python/Ruby localization and use the product name instead
+
+-------------------------------------------------------------------
 Tue Sep 15 10:28:34 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.6-1

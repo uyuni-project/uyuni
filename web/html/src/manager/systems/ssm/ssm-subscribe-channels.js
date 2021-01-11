@@ -2,22 +2,22 @@
 // @flow
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {AsyncButton, Button} = require("components/buttons");
-const {ActionSchedule} = require("components/action-schedule");
-const Network = require("utils/network");
-const Functions = require("utils/functions");
-const {Messages} = require("components/messages");
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const MessagesUtils = require("components/messages").Utils;
-const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("components/links");
-const {PopUp} = require("components/popup");
-const {Toggler} = require("components/toggler");
-const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { AsyncButton, Button } from 'components/buttons';
+import { ActionSchedule } from 'components/action-schedule';
+import Network from 'utils/network';
+import { Utils, Formats } from 'utils/functions';
+import { Messages } from 'components/messages';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
+import { Utils as MessagesUtils } from 'components/messages';
+import { ChannelLink, ActionLink, ActionChainLink, SystemLink } from 'components/links';
+import { PopUp } from 'components/popup';
+import { Toggler } from 'components/toggler';
+import * as ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 import type JsonResult from "utils/network";
 import type {ActionChain} from "components/action-schedule";
@@ -78,7 +78,7 @@ class ServersListPopup extends React.Component<ServersListPopupProps> {
                     >
                     <Column
                       columnKey="name"
-                      comparator={Functions.Utils.sortByText}
+                      comparator={Utils.sortByText}
                       header={t("System")}
                       cell={ (srv: SsmServerDto) =>
                         <SystemLink id={srv.id} newWindow={true}>{srv.name}</SystemLink> }
@@ -161,14 +161,14 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
           >
           <Column
             columnKey="name"
-            comparator={Functions.Utils.sortByText}
+            comparator={Utils.sortByText}
             header={t("Current base Channel")}
             cell={ (channel: SsmAllowedBaseChannelsJson) =>
               <ChannelLink id={channel.base.id} newWindow={true}>{channel.base.name}</ChannelLink> }
           />
           <Column
             columnKey="systems"
-            comparator={Functions.Utils.sortByText}
+            comparator={Utils.sortByText}
             header={t("Systems")}
             cell={ (channel: SsmAllowedBaseChannelsJson) =>
               <a href="#" data-toggle="modal" data-target="#channelServersPopup"
@@ -514,7 +514,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
     this.state = {
       popupServersList: [],
       popupServersChannelName: "",
-      earliest: Functions.Utils.dateWithTimezone(localTime),
+      earliest: Utils.dateWithTimezone(localTime),
       actionChain: null
     }
   }
@@ -671,14 +671,14 @@ class ResultPage extends React.Component<ResultPageProps> {
         >
         <Column
           columnKey="server"
-          comparator={Functions.Utils.sortByText}
+          comparator={Utils.sortByText}
           header={t("System")}
           cell={ (dto: ScheduleChannelChangesResultDto) =>
             <SystemLink id={dto.server.id} newWindow={true}>{ dto.server.name }</SystemLink> }
         />
         <Column
           columnKey="status"
-          comparator={Functions.Utils.sortByText}
+          comparator={Utils.sortByText}
           header={t("Status")}
           cell={ (dto: ScheduleChannelChangesResultDto) => {
               const actionId = dto.actionId;
@@ -931,7 +931,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 
   onConfirm = () => {
     const req : SsmScheduleChannelChangesJson = {
-      earliest: Functions.Formats.LocalDateTime(this.state.earliest),
+      earliest: Formats.LocalDateTime(this.state.earliest),
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       changes: this.state.finalChanges
     };

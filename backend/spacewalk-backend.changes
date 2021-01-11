@@ -1,3 +1,33 @@
+- Prevent tracebacks on missing mail configuration (bsc#1179990)
+- Fix pycurl.error handling in suseLib.py (bsc#1179990)
+- drop Transfer-Encoding header from proxy respone to fix error response messages (bsc#1176906)
+- harden extratag key import by execute_values to ignore conflicts
+- Fix Debian package version comparison
+- Use sanitized repo label to build reposync repo cache path (bsc#1179410)
+- Quote the proxy settings to be used by Zypper (bsc#1179087)
+- add the VirtualPC as virtualization type (bsc#1178990)
+
+-------------------------------------------------------------------
+Mon Nov 23 17:50:59 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.18-1
+- Fix missing 'LiteServer.add_suse_products' method (bsc#1178704)
+
+-------------------------------------------------------------------
+Mon Nov 23 15:11:42 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
+- Do not raise TypeError when processing SUSE products (bsc#1178704)
+- Fix spacewalk-repo-sync to successfully manage and sync ULN repositories
+- fix errors in spacewalk-debug and align postgresql queries to new DB version
+- ISS: Differentiate packages with same nevra but different checksum in the same channel (bsc#1178195)
+- Re-enables possibility to use local repos with repo-sync (bsc#1175607)
+- add 'allow_vendor_change' option to rhn clients for dist upgrades
+
+-------------------------------------------------------------------
+Thu Oct 22 10:43:27 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.16-1
 - prevent IntegrityError during mgr-inter-sync execution (bsc#1177235)
 
 -------------------------------------------------------------------

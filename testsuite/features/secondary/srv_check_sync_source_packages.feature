@@ -4,6 +4,7 @@
 # requires core_srv_create_repository:
 #   I enable source package syncing
 
+@scope_configuration_channels
 Feature: Check if source packages were successfully synced
 
   Background:

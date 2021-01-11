@@ -1,6 +1,7 @@
 // @flow
 
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 import {Select} from 'components/input/Select';
 import {showErrorToastr} from 'components/toastr/toastr';
 import useLifecycleActionsApi from '../../shared/api/use-lifecycle-actions-api';

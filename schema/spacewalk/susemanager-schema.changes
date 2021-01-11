@@ -1,3 +1,34 @@
+- Changed to versioned Python3 to SPEC file.
+- Python3 port for blend tool
+- add missing unique index on suse tables
+- Fix Debian package version comparison
+- add new valid countries and timezones (jsc#PM-2081)
+- add the VirtualPC type in rhnVirtualInstanceType table(bsc#1178990)
+
+-------------------------------------------------------------------
+Thu Dec 10 16:37:59 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
+- Move dist upgrade SQL file to the correct directory so it gets picked up in schema upgrades (bsc#1179759)
+
+-------------------------------------------------------------------
+Mon Nov 23 17:52:59 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.16-1
+- Add 'preferred_docs_locale' to UserInfo table
+- add new column to rhnactiondup table for allowVendorChange flag
+
+-------------------------------------------------------------------
+Wed Oct 28 14:27:32 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
+- Add web_theme user preferences column (bsc#1178204)
+
+-------------------------------------------------------------------
+Thu Oct 22 11:13:51 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
+- Execute Salt SSH actions in parallel (bsc#1173199)
 - show info message when applying schema upgrade
 
 -------------------------------------------------------------------

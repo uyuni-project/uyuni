@@ -1,21 +1,21 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const { TopPanel } = require('components/panels/TopPanel');
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
-const Network = require("utils/network");
-const {SubmitButton, LinkButton} = require("components/buttons");
-const Functions = require("utils/functions");
-const { Form } = require('components/input/Form');
-const { FormGroup } = require('components/input/FormGroup');
-const { Select } = require('components/input/Select');
-const { Text } = require('components/input/Text');
-const {ActionLink, ActionChainLink} = require("components/links");
-const {ActionSchedule} = require("components/action-schedule");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import Network from 'utils/network';
+import { SubmitButton, LinkButton } from 'components/buttons';
+import { Utils } from 'utils/functions';
+import { Form } from 'components/input/Form';
+import { FormGroup } from 'components/input/FormGroup';
+import { Select } from 'components/input/Select';
+import { Text } from 'components/input/Text';
+import { ActionLink, ActionChainLink } from 'components/links';
+import { ActionSchedule } from 'components/action-schedule';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 /* global profileId, hostId, version, localTime, timezone, actionChains */
 const typeMap = {
@@ -36,7 +36,7 @@ class BuildImage extends React.Component {
     this.state = {
       model: {
         version: version || "",
-        earliest: Functions.Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(localTime)
       },
       profile: {},
       profiles: [],
@@ -251,7 +251,7 @@ class BuildImage extends React.Component {
 
   render() {
     return (
-      <TopPanel title={t("Build Image")} icon="fa spacewalk-icon-manage-configuration-files" helpUrl="/docs/reference/images/images-build.html">
+      <TopPanel title={t("Build Image")} icon="fa spacewalk-icon-manage-configuration-files" helpUrl="reference/images/images-build.html">
         <Messages items={this.state.messages}/>
         <Form model={this.state.model} className="image-build-form"
           onChange={this.onFormChange} onSubmit={this.onBuild}

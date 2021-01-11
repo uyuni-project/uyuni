@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_traditional_client
+@scope_configuration_channels
 Feature: Configuration management of traditional clients
 
   Scenario: Successfully create configuration channel

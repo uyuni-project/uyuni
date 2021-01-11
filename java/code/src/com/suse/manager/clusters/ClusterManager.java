@@ -45,6 +45,9 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.ClusterUpgradePlanSlsResult;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
@@ -69,6 +72,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -115,6 +119,23 @@ public class ClusterManager {
     }
 
     /**
+     *
+     * @param saltApiIn
+     * @param systemQueryIn
+     * @param serverGroupManagerIn
+     * @param formulaManagerIn
+     */
+    public ClusterManager(SaltApi saltApiIn,
+                          SystemQuery systemQueryIn,
+                          ServerGroupManager serverGroupManagerIn,
+                          FormulaManager formulaManagerIn) {
+        this.saltApi = saltApiIn;
+        this.systemQuery = systemQueryIn;
+        this.formulaManager = formulaManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
+    }
+
+    /**
      * Get all installed cluster providers
      * @return list of cluster providers
      */
@@ -158,12 +179,70 @@ public class ClusterManager {
         }
 
         ClusterProviderParameters cpp =
-                new ClusterProviderParameters(cluster.getProvider(), Optional.of(settingsFormulaData.get()));
+                new ClusterProviderParameters(cluster.getProvider(),
+                        Optional.of(settingsFormulaData.get()),
+                        Optional.empty());
         systemQuery.listClusterNodes(cluster.getManagementNode(), cpp).ifPresent(ret -> {
             ret.forEach((k, v) -> result.add(new ClusterNode(k, v)));
         });
         matchClusterNodes(result);
         return result;
+    }
+
+    /**
+     * Queries the management node to get the cluster upgrade plan (if any).
+     * @param cluster the cluster
+     * @return the upgrade plan as a string or empty if the plan is not available
+     */
+    public Optional<String> getUpgradePlan(Cluster cluster) {
+        Optional<Map<String, Object>> settingsFormulaData = formulaManager
+                .getClusterFormulaData(cluster, "settings");
+        if (settingsFormulaData.isEmpty()) {
+            throw new RuntimeException("No settings data found for cluster " + cluster.getLabel());
+        }
+
+        ClusterProviderParameters cpp =
+                new ClusterProviderParameters(cluster.getProvider(),
+                        Optional.of(settingsFormulaData.get()),
+                        Optional.empty());
+        cpp.setHooks(getStateHooks(cluster.getProvider()));
+        return callSaltUpgradePlan(cluster.getManagementNode(), cpp)
+                .map(ret -> {
+                    if (ret.containsKey("salterr")) {
+                        return Objects.toString(ret.get("salterr"));
+                    }
+                    else if (ret.containsKey("success") &&
+                                (ret.containsKey("stderr") || ret.containsKey("stdout"))) {
+                            if (Boolean.TRUE.equals(ret.get("success")))  {
+                                return Objects.toString(ret.get("stdout"));
+                            }
+                            else {
+                                return Objects.toString(ret.get("stderr"));
+                            }
+                    }
+                    else {
+                        return YamlHelper.INSTANCE.dump(ret);
+                    }
+                });
+    }
+
+    private Optional<Map<String, Object>> callSaltUpgradePlan(
+            MinionServer managementNode, ClusterProviderParameters clusterProviderParameters) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("cluster_type", clusterProviderParameters.getClusterProvider());
+        clusterProviderParameters.getClusterParams().ifPresent(cpp -> {
+            cpp.put("plan", true);
+            pillar.put("params", cpp);
+        });
+        clusterProviderParameters.getHooks().ifPresent(hooks -> {
+            pillar.put("state_hooks", hooks);
+        });
+        return systemQuery.callSync(State.apply(Arrays.asList("clusters.upgradecluster"), Optional.of(pillar),
+                Optional.of(true), Optional.empty(), ClusterUpgradePlanSlsResult.class),
+                managementNode.getMinionId())
+                .map(ret ->
+                        ret.getUpgradeResult().isResult() ? ret.getUpgradeResult().getChanges().getRet() :
+                                Collections.singletonMap("salterr", ret.getUpgradeResult().getComment()));
     }
 
     /**
@@ -473,7 +552,11 @@ public class ClusterManager {
                     )
                     .ifPresentOrElse(minions ->
                             ctx.put("nodes", minions),
-                            () -> LOG.error("Could not find minions ids: " + context.get("nodes")));
+                            () -> {
+                        if (context.get("nodes") != null) {
+                            LOG.error("Could not find minions ids: " + context.get("nodes"));
+                        }
+                    });
 
             Optional.ofNullable(context.get("cluster"))
                     .filter(Number.class::isInstance)
@@ -579,6 +662,16 @@ public class ClusterManager {
     public Optional<List<String>> getNodesListFields(String provider) {
         return FormulaFactory.getClusterProviderMetadata(provider, "ui:nodes_list:fields", List.class)
                 .map(l -> (List<String>)l);
+    }
+
+    /**
+     * Whether to show the upgrade plan or not.
+     * @param provider cluster provider label
+     * @return true if the upgrade plan must be shown, false otherwise
+     */
+    public boolean isShowUpgradePlan(String provider) {
+        return FormulaFactory.getClusterProviderMetadata(provider, "ui:upgrade:show_plan", Boolean.class)
+                .orElse(false);
     }
 
     /**

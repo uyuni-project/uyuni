@@ -288,7 +288,7 @@ class MetadataWireSource(BaseWireSource):
         return self._openSocketStream("dump.get_modules",
                                       (self.systemid, channel))
 
-    def getRpm(self, nvrea, channel):
+    def getRpm(self, nvrea, channel, checksum):
         release = nvrea[2]
         epoch = nvrea[3]
         if epoch:
@@ -297,7 +297,7 @@ class MetadataWireSource(BaseWireSource):
                                             nvrea[4])
         self._prepare()
         return self._openSocketStream("dump.get_rpm",
-                                      (self.systemid, package_name, channel))
+                                      (self.systemid, package_name, channel, checksum))
 
     def getKickstartFile(self, ks_label, relative_path):
         self._prepare()
@@ -488,14 +488,14 @@ class RPCGetWireSource(BaseWireSource):
                 return ret
         raise Exception("Failed after multiple attempts!")
 
-    def getPackageStream(self, channel, nvrea):
+    def getPackageStream(self, channel, nvrea, checksum):
         release = nvrea[2]
         epoch = nvrea[3]
         if epoch:
             release = "%s:%s" % (release, epoch)
         package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release,
                                             nvrea[4])
-        return self._rpc_call("getPackage", (channel, package_name))
+        return self._rpc_call("getPackage", (channel, package_name, checksum))
 
     def getKickstartFileStream(self, channel, ks_tree_label, relative_path):
         return self._rpc_call("getKickstartFile", (channel, ks_tree_label,

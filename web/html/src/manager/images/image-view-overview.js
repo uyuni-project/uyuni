@@ -1,17 +1,17 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const {LinkButton, Button} = require("components/buttons");
-const DateTime = require("components/datetime").DateTime;
-const {ModalButton} = require("components/dialog/ModalButton");
-const {ModalLink} = require("components/dialog/ModalLink");
-const {DeleteDialog} = require("components/dialog/DeleteDialog");
-const PopUp = require("components/popup").PopUp;
-const { Form } = require('components/input/Form');
-const { DateTime: InputDateTime } = require('components/input/DateTime');
-const Functions = require("utils/functions");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
+import * as React from 'react';
+import { LinkButton, Button } from 'components/buttons';
+import { DateTime } from 'components/datetime';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { ModalLink } from 'components/dialog/ModalLink';
+import { DeleteDialog } from 'components/dialog/DeleteDialog';
+import { PopUp } from 'components/popup';
+import { Form } from 'components/input/Form';
+import { DateTime as InputDateTime } from 'components/input/DateTime';
+import { Utils } from 'utils/functions';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 
 /* global isAdmin, localTime, timezone */
 
@@ -439,7 +439,7 @@ class BuildDialog extends React.Component {
     super(props);
     this.state = {
       model: {
-        earliest: Functions.Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(localTime)
       }
     };
   }
@@ -498,7 +498,7 @@ class InspectDialog extends React.Component {
     super(props);
     this.state = {
       model: {
-        earliest: Functions.Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(localTime)
       }
     };
   }
@@ -552,6 +552,6 @@ class InspectDialog extends React.Component {
   }
 }
 
-module.exports = {
-  ImageViewOverview: ImageViewOverview
-}
+export {
+  ImageViewOverview,
+};

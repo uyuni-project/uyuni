@@ -113,4 +113,7 @@ INSERT INTO rhnTaskoTask (id, name, class)
 INSERT INTO rhnTaskoTask (id, name, class)
    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'recurring-state-apply', 'com.redhat.rhn.taskomatic.task.RecurringStateApplyJob');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-minion-action-executor', 'com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor');
+
 commit;

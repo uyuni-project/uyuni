@@ -7,6 +7,9 @@
 @ceos7_minion
 Feature: Bootstrap a CentOS 7 Salt minion
 
+  Scenario: Clean up sumaform leftovers on a  CentOS 7 Salt minion
+    When I perform a full salt minion cleanup on "ceos7_minion"
+
   Scenario: Bootstrap a CentOS 7 Salt minion
     Given I am authorized
     When I go to the bootstrapping page
@@ -32,10 +35,6 @@ Feature: Bootstrap a CentOS 7 Salt minion
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos7_minion" hostname
-
-  Scenario: Prepare a CentOS 7 Salt minion
-    Given I am authorized
-    And I install all spacewalk client utils on "ceos7_minion"
 
   Scenario: Check events history for failures on CentOS 7 Salt minion
     Given I am on the Systems overview page of this "ceos7_minion"

@@ -828,4 +828,23 @@ public class Package extends BaseDomainHelper {
         return pkgFile;
     }
 
+
+    public PackageType getPackageType() {
+        return getPackageEvr().getPackageType();
+    }
+
+    /**
+     * @return whether the package is an .rpm package or not
+     */
+    public boolean isTypeRpm() {
+        return getPackageType() == PackageType.RPM;
+    }
+
+    /**
+     * @return whether the package is a .deb package or not
+     */
+    public boolean isTypeDeb() {
+        return getPackageType() == PackageType.DEB;
+    }
+
 }

@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-#  1) bootstrap a new Ubuntu minion via salt-ssh
+#  1) bootstrap a new Ubuntu minion
 #  2) subscribe it to a base channel for testing
 
 Feature: Bootstrap an Ubuntu minion and do some basic operations on it

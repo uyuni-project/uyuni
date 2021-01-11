@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import com.redhat.rhn.common.util.DebVersionComparator;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,15 +25,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * PackageEvr
  * @version $Rev$
  */
-public class PackageEvr implements Comparable {
+public class PackageEvr implements Comparable<PackageEvr> {
 
-    private static final RpmVersionComparator VERCMP = new RpmVersionComparator();
-    private static final Integer ZERO = 0;
+    private static final RpmVersionComparator RPMVERCMP = new RpmVersionComparator();
+    private static final DebVersionComparator DEBVERCMP = new DebVersionComparator();
 
     private Long id;
     private String epoch;
     private String version;
     private String release;
+    private String type;
 
     /**
      * Null constructor, needed for hibernate
@@ -42,6 +44,7 @@ public class PackageEvr implements Comparable {
         epoch = null;
         version = null;
         release = null;
+        type = null;
     }
 
     /**
@@ -51,12 +54,31 @@ public class PackageEvr implements Comparable {
      * @param epochIn epoch
      * @param versionIn version
      * @param releaseIn release
+     * @param typeIn type
      */
-    public PackageEvr(String epochIn, String versionIn, String releaseIn) {
+    public PackageEvr(String epochIn, String versionIn, String releaseIn, String typeIn) {
         id = null;
         epoch = epochIn;
         version = versionIn;
         release = releaseIn;
+        type = typeIn;
+    }
+
+    /**
+     * Complete constructor. Use PackageEvrFactory to create PackageEvrs if you
+     * want to persist them to the Database. ONLY USE for non-persisting evr
+     * objects.
+     * @param epochIn epoch
+     * @param versionIn version
+     * @param releaseIn release
+     * @param typeIn type
+     */
+    public PackageEvr(String epochIn, String versionIn, String releaseIn, PackageType typeIn) {
+        id = null;
+        epoch = epochIn;
+        version = versionIn;
+        release = releaseIn;
+        type = typeIn.getDbString();
     }
 
     /**
@@ -65,7 +87,7 @@ public class PackageEvr implements Comparable {
      * @param other the evr object to copy from
      */
     public PackageEvr(PackageEvr other) {
-        this(other.getEpoch(), other.getVersion(), other.getRelease());
+        this(other.getEpoch(), other.getVersion(), other.getRelease(), other.getType());
     }
 
     /**
@@ -101,6 +123,20 @@ public class PackageEvr implements Comparable {
      */
     public String getRelease() {
         return release;
+    }
+
+    /**
+     * @return package type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param t package type
+     */
+    public void setType(String t) {
+        this.type = t;
     }
 
     /**
@@ -148,18 +184,13 @@ public class PackageEvr implements Comparable {
                 this.getVersion()).append(this.getRelease()).toHashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(Object o) {
+    private int rpmCompareTo(PackageEvr other) {
         // This method mirrors the perl function RHN::Manifest::vercmp
         // There is another perl function, RHN::DB::Package::vercmp which
         // does almost the same, but has a subtle difference when it comes
         // to null epochs (the RHN::DB::Package version does not treat null
         // epochs the same as epoch == 0, but sorts them as Integer.MIN_VALUE)
-        PackageEvr other = (PackageEvr) o;
-        int result = epochAsInteger().compareTo(other.epochAsInteger());
+        int result = Integer.compare(epochAsInteger(), other.epochAsInteger());
         if (result != 0) {
             return result;
         }
@@ -167,21 +198,62 @@ public class PackageEvr implements Comparable {
             throw new IllegalStateException(
                     "To compare PackageEvr, both must have non-null versions");
         }
-        result = VERCMP.compare(getVersion(), other.getVersion());
+        result = RPMVERCMP.compare(getVersion(), other.getVersion());
         if (result != 0) {
             return result;
         }
         // The perl code doesn't check for null releases, so we won't either
         // In the long run, a check might be in order, though
-        return VERCMP.compare(getRelease(), other.getRelease());
+        return RPMVERCMP.compare(getRelease(), other.getRelease());
     }
 
-    private Integer epochAsInteger() {
-        Integer result = ZERO;
-        if (getEpoch() != null) {
-            result = Integer.valueOf(getEpoch());
+    private int debCompareTo(PackageEvr other) {
+        int result = Integer.compare(epochAsInteger(), other.epochAsInteger());
+        if (result != 0) {
+            return result;
         }
-        return result;
+        if (getVersion() == null || other.getVersion() == null) {
+            throw new IllegalStateException(
+                    "To compare PackageEvr, both must have non-null versions");
+        }
+        result = DEBVERCMP.compare(getVersion(), other.getVersion());
+        if (result != 0) {
+            return result;
+        }
+        // The perl code doesn't check for null releases, so we won't either
+        // In the long run, a check might be in order, though
+        return DEBVERCMP.compare(getRelease(), other.getRelease());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(PackageEvr other) {
+        if (this.getPackageType() == other.getPackageType()) {
+            if (this.getPackageType() == PackageType.DEB) {
+                return debCompareTo(other);
+            }
+            else if (this.getPackageType() == PackageType.RPM) {
+                return rpmCompareTo(other);
+            }
+            else {
+                throw new RuntimeException("unhandled package type " + this.getPackageType());
+            }
+        }
+        else {
+            throw new RuntimeException("can not compare incompatible packageevr of type " + this.getPackageType() +
+                    " with type " + other.getPackageType());
+        }
+    }
+
+    private int epochAsInteger() {
+        if (getEpoch() == null) {
+            return 0;
+        }
+        else {
+            return Integer.parseInt(getEpoch());
+        }
     }
 
     /**
@@ -221,4 +293,100 @@ public class PackageEvr implements Comparable {
 
         return builder.toString();
     }
+
+    /**
+     * Parses a Debian package version string to create a {@link PackageEvr} object.
+     *
+     * Debian package versioning policy format: [epoch:]upstream_version[-debian_revision]
+     * Additional ':' and '-' characters are allowed in 'upstream_version'
+     * https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
+     *
+     * @param version the package version string
+     * @return the package EVR
+     */
+    public static PackageEvr parseDebian(String version) {
+
+        // repo-sync replaces empty releases with 'X'. We copy the same behavior.
+        String release = "X";
+        String epoch = null;
+
+        int epochIndex = version.indexOf(':');
+        if (epochIndex > 0) {
+            // Strip away optional 'epoch'
+            epoch = version.substring(0, epochIndex);
+            version = version.substring(epochIndex + 1);
+        }
+
+        int releaseIndex = version.lastIndexOf('-');
+        if (releaseIndex > 0) {
+            // Strip away optional 'release'
+            release = version.substring(releaseIndex + 1);
+            version = version.substring(0, releaseIndex);
+        }
+
+        return new PackageEvr(epoch, version, release, "deb");
+    }
+
+    /**
+     * Parses a RPM package version string to create a {@link PackageEvr} object.
+     *
+     * RPM package version policy format: [epoch:]version[-release]
+     *
+     * @param version the package version string
+     * @return the package EVR
+     */
+    public static PackageEvr parseRpm(String version) {
+        String release = "";
+        String epoch = null;
+
+        int epochIndex = version.indexOf(':');
+        if (epochIndex > 0) {
+            // Strip away optional 'epoch'
+            epoch = version.substring(0, epochIndex);
+            version = version.substring(epochIndex + 1);
+        }
+
+        int releaseIndex = version.lastIndexOf('-');
+        if (releaseIndex > 0) {
+            // Strip away optional 'release'
+            release = version.substring(releaseIndex + 1);
+            version = version.substring(0, releaseIndex);
+        }
+
+        return new PackageEvr(epoch, version, release, "rpm");
+    }
+
+    /**
+     * @return package type
+     */
+    public PackageType getPackageType() {
+        if (type.equals(PackageType.DEB.getDbString())) {
+            return PackageType.DEB;
+        }
+        else if (type.equals(PackageType.RPM.getDbString())) {
+            return PackageType.RPM;
+        }
+        else {
+            throw new RuntimeException("unsupported evr type: " + type);
+        }
+    }
+
+    /**
+     * Detect package type and call the correct parser for the version string.
+     *
+     * @param version the version string
+     * @param type package type
+     * @return parsed PackageEvr object
+     */
+    public static PackageEvr parsePackageEvr(PackageType type, String version) {
+        switch (type) {
+            case RPM:
+                return parseRpm(version);
+            case DEB:
+                return parseDebian(version);
+            default:
+                throw new RuntimeException("unreachable");
+        }
+    }
+
 }

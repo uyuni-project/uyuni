@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-import React from "react";
+import * as React from 'react';
 
 export const CustomDiv = (props) => {
   const width = props.width + props.um;

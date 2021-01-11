@@ -1,6 +1,15 @@
+---
+name: Documentation Update Required
+about: Use this issue template for documentation issues.
+title:
+labels: docs-squad
+assignees:
+
+---
+
 ## Documentation Update Required
 
-Short description of the documentation updated required.
+Short description of the documentation update required.
 
 Remember that the documentation repository is at https://github.com/uyuni-project/uyuni-docs
 

@@ -4,6 +4,7 @@
 # Since an advanced setup is needed for doing SP migration we test
 # only the alert warning message here for now.
 
+@scope_traditional_client
 Feature: Service pack migration
 
   Scenario: Check the warning message on tab "Software" => "SP Migration"

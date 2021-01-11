@@ -138,10 +138,10 @@ public class SaltSSHService {
             "services.salt-minion",
             "services.docker");
     private final String SALT_USER = "admin";
-    private final String SALT_PASSWORD = "";
-    private final AuthModule AUTH_MODULE = AuthModule.AUTO;
+    private final String SALT_PASSWORD = com.redhat.rhn.common.conf.Config.get().getString("server.secret_key");;
+    private final AuthModule AUTH_MODULE = AuthModule.FILE;
 
-    private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.AUTO));
+    private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.FILE));
 
     // Shared salt client instance
     private final SaltClient saltClient;

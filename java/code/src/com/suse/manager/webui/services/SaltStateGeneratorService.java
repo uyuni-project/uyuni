@@ -80,9 +80,10 @@ public enum SaltStateGeneratorService {
      * @param bundle the OS image bundle resulting image from an inspection
      * @param bootImage the OS image boot image resulting image from an inspection
      * @param urlBase the OS Image store URL
+     * @param org the OS Image organization
      */
     public void generateOSImagePillar(OSImageInspectSlsResult.Image image, OSImageInspectSlsResult.Bundle bundle,
-                                      OSImageInspectSlsResult.BootImage bootImage, String urlBase) {
+                                      OSImageInspectSlsResult.BootImage bootImage, String urlBase, Org org) {
         try {
             SaltPillar pillar = new SaltPillar();
             String name = image.getName();
@@ -103,9 +104,16 @@ public enum SaltStateGeneratorService {
                 }
             }
 
-            Path filePath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                    "org" + org.getId().toString()
+            );
+            Path filePath = dirPath.resolve(
                     getImagePillarFileName(bundle)
             );
+
+            if (!dirPath.toFile().exists()) {
+                dirPath.toFile().mkdirs();
+            }
 
             SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
@@ -189,6 +197,67 @@ public enum SaltStateGeneratorService {
         return PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + bundle.getBasename() + "-" +
                 bundle.getId().replace('.', '-') + "." + PILLAR_IMAGE_DATA_FILE_EXT;
     }
+
+    /**
+     * Generate OS Image specific pillar for Branch group, containing synced flag
+     * @param branch the ServerGroup for which the pillar is created
+     * @param name the OS image name
+     * @param version the OS image version
+     */
+    public void createImageSyncedPillar(ServerGroup branch, String name, String version) {
+
+        try {
+            SaltPillar pillar = new SaltPillar();
+            Map<String, Object> imagePillarDetails = Collections.singletonMap("synced", true);
+            Map<String, Object> imagePillarBase = Collections.singletonMap(version, imagePillarDetails);
+            Map<String, Object> imagePillar = Collections.singletonMap(name, imagePillarBase);
+
+            pillar.add("images", imagePillar);
+
+            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                    "group" + branch.getId().toString()
+            );
+
+            Path filePath = dirPath.resolve(
+                    name.replace('.', '-') + "-" + version + "." + PILLAR_IMAGE_DATA_FILE_EXT
+            );
+
+            if (!dirPath.toFile().exists()) {
+                dirPath.toFile().mkdirs();
+            }
+
+            SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
+            saltStateGenerator.generate(pillar);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Remove OS Image specific pillar for Branch group
+     * @param branch the ServerGroup
+     * @param name the OS image name
+     * @param version the OS image version
+     */
+    public void removeImageSyncedPillar(ServerGroup branch, String name, String version) {
+        try {
+            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                    "group" + branch.getId().toString()
+            );
+
+            Path filePath = dirPath.resolve(
+                    name.replace('.', '-') + "-" + version + "." + PILLAR_IMAGE_DATA_FILE_EXT
+            );
+
+            Files.deleteIfExists(filePath);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
 
     /**
      * Remove the config channel assignments for minion server.

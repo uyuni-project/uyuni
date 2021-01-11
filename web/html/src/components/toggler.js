@@ -1,6 +1,7 @@
-const PropTypes = require('prop-types');
+import PropTypes from 'prop-types';
+
 /* eslint-disable */
-const React = require('react');
+import * as React from 'react';
 
 /** @module toggler */
 
@@ -41,6 +42,6 @@ Toggler.propTypes = {
   className: PropTypes.string
 };
 
-module.exports = {
-  Toggler: Toggler
-}
+export {
+  Toggler,
+};

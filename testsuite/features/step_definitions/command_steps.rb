@@ -34,6 +34,12 @@ Then(/^it should be possible to reach the test packages$/) do
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
+Then(/^it should be possible to use the HTTP proxy$/) do
+  url = 'https://www.suse.com'
+  proxy = "suma2:P4$$wordWith%and&@#{$server_http_proxy}"
+  $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
@@ -44,18 +50,11 @@ Then(/^it should be possible to reach the build sources$/) do
   end
 end
 
-Then(/^it should be possible to reach the container profiles$/) do
-  if $product == 'Uyuni'
-    # TODO: move that resource to next location ("test suite profiles")
-    STDERR.puts 'Sanity check not implemented, move resource to external network first'
-  else
-    url = 'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
-    $server.run("curl --insecure --location #{url} --output /dev/null")
-  end
-end
-
-Then(/^it should be possible to reach the test suite profiles$/) do
-  url = 'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
+Then(/^it should be possible to reach the Docker profiles$/) do
+  git_profiles = ENV['GITPROFILES']
+  url = git_profiles.sub(/github\.com/, "raw.githubusercontent.com")
+                    .sub(/\.git#:/, "/master/")
+                    .sub(/$/, "/Docker/Dockerfile")
   $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
@@ -216,6 +215,11 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
+# This function kills all spacewalk-repo-sync processes, excepted the ones in a whitelist.
+# It waits for all the reposyncs in the whitelist to complete, and kills all others.
+#
+# This function is written as a state machine. It bails out if no process is seen during
+# 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
@@ -318,16 +322,12 @@ When(/^I execute spacewalk-debug on the server$/) do
   raise "Download debug file failed" unless code.zero?
 end
 
-Then(/^I get logfiles from "([^"]*)"$/) do |target|
-  node = get_target(target)
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/
-    node.run('zypper mr --enable os_pool_repo os_update_repo && zypper --non-interactive install tar')
+When(/^I extract the log files from all our active nodes$/) do
+  $nodes.each do |node|
+    next if node.nil?
+
+    extract_logs_from_node(node)
   end
-  node.run("journalctl > /var/log/messages && (tar cfvJP /tmp/#{target}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]])")
-  `mkdir logs` unless Dir.exist?('logs')
-  code = file_extract(node, "/tmp/#{target}-logs.tar.xz", "logs/#{target}-logs.tar.xz")
-  raise "Download log archive failed" unless code.zero?
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
@@ -429,20 +429,51 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
 
+When(/^I import the GPG keys for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  gpg_keys = get_gpg_keys(node)
+  gpg_keys.each do |key|
+    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
+    node.run("cd /tmp/ && curl --output #{key} #{$server.ip}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
+  end
+end
+
 When(/^the server starts mocking an IPMI host$/) do
-  ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
+  ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
-    dest = "/etc/ipmi/" + file
+    dest = '/etc/ipmi/' + file
     return_code = file_inject($server, source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
-  $server.run("chmod +x /etc/ipmi/fake_ipmi_host.sh")
-  $server.run("ipmi_sim -n < /dev/null > /dev/null &")
+  $server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh')
+  $server.run('ipmi_sim -n < /dev/null > /dev/null &')
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  $server.run("kill $(pidof ipmi_sim)")
-  $server.run("kill $(pidof -x fake_ipmi_host.sh)")
+  $server.run('kill $(pidof ipmi_sim)')
+  $server.run('kill $(pidof -x fake_ipmi_host.sh)')
+end
+
+When(/^the server starts mocking a Redfish host$/) do
+  $server.run('mkdir -p /root/Redfish-Mockup-Server/')
+  ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
+    source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
+    dest = '/root/Redfish-Mockup-Server/' + file
+    return_code = file_inject($server, source, dest)
+    raise 'File injection failed' unless return_code.zero?
+  end
+  $server.run('curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
+  $server.run('unzip DSP2043_2019.1.zip')
+  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
+        "-H #{$server.full_hostname} -p 8443 " \
+        "-S -D /root/DSP2043_2019.1/public-catfish/ " \
+        "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
+        "< /dev/null > /dev/null 2>&1 &"
+  $server.run(cmd)
+end
+
+When(/^the server stops mocking a Redfish host$/) do
+  $server.run('pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py')
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -474,16 +505,18 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-Then(/^the cobbler report contains "([^"]*)" for system "([^"]*)"$/) do |arg1, system|
-  output = sshcmd("cobbler system report --name #{system}:1", ignore_err: true)[:stdout]
-  raise "Not found: #{output}" unless output.include?(arg1)
+Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
+  node = get_target(host)
+  output = sshcmd("cobbler system report --name #{node.full_hostname}:1", ignore_err: true)[:stdout]
+  raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  step %(the cobbler report contains "#{arg1}" for system "#{$client.full_hostname}")
+Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
+  output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
+  raise "Not found:\n#{output}" unless output.include?(text)
 end
 
-Then(/^I clean the search index on the server$/) do
+When(/^I clean the search index on the server$/) do
   output = sshcmd('/usr/sbin/rcrhn-search cleanindex', ignore_err: true)
   raise 'The output includes an error log' if output[:stdout].include?('ERROR')
 end
@@ -625,6 +658,10 @@ When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)
   @command_output = sshcmd("spacewalk-repo-sync -c #{arg1} -u #{arg2}")[:stdout]
 end
 
+When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
+  @command_output = sshcmd("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'")[:stdout]
+end
+
 When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=0')
 end
@@ -633,19 +670,19 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
 end
 
-When(/^I wait for the openSCAP audit to finish$/) do
+When(/^I wait for the OpenSCAP audit to finish$/) do
   host = $server.full_hostname
   @sle_id = retrieve_server_id($minion.full_hostname)
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @client_api = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @client_api.call('auth.login', 'admin', 'admin')
   begin
     repeat_until_timeout(message: "process did not complete") do
-      scans = @cli.call('system.scap.list_xccdf_scans', @sid, @sle_id)
+      scans = @client_api.call('system.scap.list_xccdf_scans', @sid, @sle_id)
       # in the openscap test, we schedule 2 scans
       break if scans.length > 1
     end
   ensure
-    @cli.call('auth.logout', @sid)
+    @client_api.call('auth.logout', @sid)
   end
 end
 
@@ -744,8 +781,31 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
 
-When(/^I install all spacewalk client utils on "([^"]*)"$/) do |host|
-  step %(I install packages "#{SPACEWALK_UTILS_RPMS}" on this "#{host}")
+When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
+  pkgs = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions'
+  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
+end
+
+When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
+  node = get_target(host)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    pkgs = 'openscap-utils openscap-content'
+  elsif os_family =~ /^centos/
+    pkgs = 'openscap-utils scap-security-guide'
+  elsif os_family =~ /^ubuntu/
+    pkgs = 'libopenscap8 ssg-debderived'
+  end
+  pkgs += ' spacewalk-oscap' if host.include? 'client'
+  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
+end
+
+# On CentOS 7, OpenSCAP files are for RedHat and need a small adaptation for CentOS
+When(/^I fix CentOS 7 OpenSCAP files on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  script = '/<\/rear-matter>/a  <platform idref="cpe:/o:centos:centos:7"/>'
+  file = "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml"
+  node.run("sed -i '#{script}' #{file}")
 end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -811,7 +871,9 @@ When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/
   node = get_target(host)
   os_version, _os_family = get_os_version(node)
   cmd = 'false'
-  if (os_version.include? '12') || (os_version.include? '15')
+  if (os_version.include? '15') && (host.include? 'proxy')
+    cmd = "mgr-create-bootstrap-repo -c SUMA-41-PROXY-#{arch}"
+  elsif (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
   elsif os_version.include? '11'
     sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
@@ -954,6 +1016,14 @@ When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]
   filepath = "/tmp/#{label}"
   $server.run("echo -e \"#{content}\" > #{filepath}", true, 600, 'root')
   command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f  #{filepath} -y"
+  $server.run(command)
+  file_delete($server, filepath)
+end
+
+When(/^I update init.sls from spacecmd with content "([^"]*)" for channel "([^"]*)" and revision "([^"]*)"$/) do |content, label, revision|
+  filepath = "/tmp/#{label}"
+  $server.run("echo -e \"#{content}\" > #{filepath}", true, 600, 'root')
+  command = "spacecmd -u admin -p admin -- configchannel_updateinitsls -c #{label} -f #{filepath} -r #{revision} -y"
   $server.run(command)
   file_delete($server, filepath)
 end
@@ -1144,7 +1214,8 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) di
     output, _code = node.run("virsh dumpxml #{vm}")
     tree = Nokogiri::XML(output)
     disks = tree.xpath("//disk").select do |x|
-      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) && (x.xpath('target/@bus')[0].to_s == bus)
+      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
+        (x.xpath('target/@bus')[0].to_s == bus.downcase)
     end
     break if !disks.empty?
     sleep 3
@@ -1341,5 +1412,17 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
-  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+end
+
+When(/^I set correct product for "(proxy|branch server)"$/) do |product|
+  if product.include? 'proxy'
+    prod = 'SUSE-Manager-Proxy'
+  elsif product.include? 'branch server'
+    prod = 'SUSE-Manager-Retail-Branch-Server'
+  else
+    raise 'Incorrect product used.'
+  end
+  out, = $proxy.run("zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
+  puts "Setting correct product: #{out}"
 end

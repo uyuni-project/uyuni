@@ -1,6 +1,6 @@
 // @flow
 import {useState} from 'react';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 
 import type {JsonResult} from "../../../utils/network";
 import type {MessageType} from 'components/messages';

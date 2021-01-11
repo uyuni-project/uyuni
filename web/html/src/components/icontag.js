@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
+import * as React from 'react';
 
 function IconTag(props) {
 
@@ -132,6 +132,6 @@ function IconTag(props) {
   return (<i className={icons[props.type] + " " + props.className} title={props.title}></i>);
 }
 
-module.exports = {
-    IconTag: IconTag
-}
+export {
+    IconTag,
+};

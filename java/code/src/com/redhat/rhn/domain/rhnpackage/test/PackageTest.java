@@ -25,22 +25,21 @@ import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
 import com.redhat.rhn.domain.rhnpackage.PackageGroup;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.domain.rpm.test.SourceRpmTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -49,6 +48,20 @@ import com.redhat.rhn.testing.UserTestUtils;
  * @version $Rev$
  */
 public class PackageTest extends BaseTestCaseWithUser {
+
+    public void testIsType() throws Exception {
+        Package pkgRpm = PackageTest.createTestPackage(user.getOrg(),
+                PackageFactory.lookupPackageArchByLabel("x86_64"));
+
+        Package pkgDeb = PackageTest.createTestPackage(user.getOrg(),
+                PackageFactory.lookupPackageArchByLabel("amd64-deb"));
+
+        assertTrue(pkgRpm.isTypeRpm());
+        assertFalse(pkgRpm.isTypeDeb());
+
+        assertFalse(pkgDeb.isTypeRpm());
+        assertTrue(pkgDeb.isTypeDeb());
+    }
 
     public void testPackage() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
@@ -84,6 +97,15 @@ public class PackageTest extends BaseTestCaseWithUser {
 
         pkg.setPath("////foo//b///foo/");
         assertEquals("foo", pkg.getFile());
+    }
+
+    public static Package createTestPackage(Org org, PackageArch arch) throws Exception {
+        Package p = new Package();
+        populateTestPackage(p, org, arch);
+
+        TestUtils.saveAndFlush(p);
+
+        return p;
     }
 
     public static Package createTestPackage(Org org) throws Exception {
@@ -136,12 +158,16 @@ public class PackageTest extends BaseTestCaseWithUser {
         return p;
     }
 
-    public static Package populateTestPackage(Package p, Org org) throws Exception {
+    public static Package populateTestPackage(Package p, Org org, PackageArch parch) throws Exception {
         PackageName pname = PackageNameTest.createTestPackageName();
-        PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr();
+        PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(parch.getArchType().getPackageType());
+        return populateTestPackage(p, org, pname, pevr, parch);
+    }
+
+    public static Package populateTestPackage(Package p, Org org) throws Exception {
         PackageArch parch =
             (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
-        return populateTestPackage(p, org, pname, pevr, parch);
+        return populateTestPackage(p, org, parch);
     }
 
 
@@ -229,7 +255,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         WriteMode cp =
             ModeFactory.
             getWriteMode("test_queries", "insert_into_rhnChannelPackage");
-        params = new HashMap();
+        params = new HashMap<String, Object>();
         params.put("channel_id", c.getId());
         params.put("packge_id", p.getId());
 
@@ -238,7 +264,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     public void testGetNevraWithEpoch() throws Exception {
         Package pkg = createTestPackage(user.getOrg());
-        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr("1", "2", "3");
+        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr("1", "2", "3", PackageType.RPM);
         pkg.setPackageEvr(evr);
 
         String expectedNevra = pkg.getPackageName().getName() + "-1:2-3." + pkg.getPackageArch().getLabel();
@@ -246,7 +272,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         // Following two methods must return the same result if an epoch exists
         assertEquals(pkg.getNameEvra(), pkg.getNevraWithEpoch());
 
-        evr = PackageEvrFactoryTest.createTestPackageEvr(null, "2", "3");
+        evr = PackageEvrFactoryTest.createTestPackageEvr(null, "2", "3", PackageType.RPM);
         pkg.setPackageEvr(evr);
 
         expectedNevra = pkg.getPackageName().getName() + "-0:2-3." + pkg.getPackageArch().getLabel();

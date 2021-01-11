@@ -31,6 +31,8 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -230,21 +232,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup migration target product + upgrade path
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
-        SUSEProductChannel pcbase = new SUSEProductChannel();
-        pcbase.setChannel(targetBaseChannel);
-        pcbase.setProduct(targetBaseProduct);
-        pcbase.setMandatory(true);
-        SUSEProductFactory.save(pcbase);
         sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetAddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
-        SUSEProductChannel pcaddon = new SUSEProductChannel();
-        pcaddon.setChannel(targetAddonChannel);
-        pcaddon.setProduct(targetAddonProduct);
-        pcaddon.setMandatory(true);
-        SUSEProductFactory.save(pcaddon);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
         SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
         SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
@@ -266,6 +258,121 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         SCCRepository addon = SUSEProductTestUtils.createSCCRepository();
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, addon);
+
+        SUSEProductSCCRepository spsca = new SUSEProductSCCRepository();
+        spsca.setProduct(targetAddonProduct);
+        spsca.setRootProduct(targetBaseProduct);
+        spsca.setRepository(addon);
+        spsca.setChannelLabel(targetAddonChannel.getLabel());
+        spsca.setParentChannelLabel(targetBaseChannel.getLabel());
+        spsca.setChannelName(targetBaseChannel.getLabel());
+        spsca.setMandatory(true);
+        spsca = TestUtils.saveAndReload(spsca);
+
+        // Verify that target products are returned correctly
+
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
+
+        assertNotNull(targetProductSets);
+        assertEquals(2, targetProductSets.size());
+
+        for (SUSEProductSet target : targetProductSets) {
+            if (target.getBaseProduct().getId() == sourceBaseProduct.getId()) {
+                List<SUSEProduct> addonProducts = target.getAddonProducts();
+                assertEquals(1, addonProducts.size());
+                assertEquals(targetAddonProduct, addonProducts.get(0));
+            }
+            else if (target.getBaseProduct().getId() == targetBaseProduct.getId()) {
+                List<SUSEProduct> addonProducts = target.getAddonProducts();
+                assertEquals(1, addonProducts.size());
+                assertEquals(targetAddonProduct, addonProducts.get(0));
+            }
+            else {
+                fail("unexpected product " + target.getBaseProduct());
+            }
+        }
+    }
+
+    /**
+     * Test getTargetProductSets(): target products are actually found (base + addon).
+     * @throws Exception if anything goes wrong
+     */
+    public void testGetTargetProductSetsOnISSSlave() throws Exception {
+        // setup a Slave by defining its master
+        IssMaster master = new IssMaster();
+        master.setLabel("dummy-master");
+        master.makeDefaultMaster();
+        IssFactory.save(master);
+
+        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel sourceBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceBaseProduct, user);
+
+        List<SUSEProduct> sourceAddons = new ArrayList<>();
+        SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sourceAddonProduct, sourceBaseChannel, user);
+        SUSEProductExtension e = new SUSEProductExtension(sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
+        TestUtils.saveAndReload(e);
+
+        sourceAddons.add(sourceAddonProduct);
+        SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProduct, sourceAddons);
+
+        SCCRepository sbase = SUSEProductTestUtils.createSCCRepository();
+
+        SUSEProductSCCRepository sspsc = new SUSEProductSCCRepository();
+        sspsc.setProduct(sourceBaseProduct);
+        sspsc.setRootProduct(sourceBaseProduct);
+        sspsc.setRepository(sbase);
+        sspsc.setChannelLabel(sourceBaseChannel.getLabel());
+        sspsc.setParentChannelLabel(sourceBaseChannel.getLabel());
+        sspsc.setChannelName(sourceBaseChannel.getLabel());
+        sspsc.setMandatory(true);
+        sspsc = TestUtils.saveAndReload(sspsc);
+
+        SCCRepository saddon = SUSEProductTestUtils.createSCCRepository();
+
+        SUSEProductSCCRepository sspsca = new SUSEProductSCCRepository();
+        sspsca.setProduct(sourceAddonProduct);
+        sspsca.setRootProduct(sourceBaseProduct);
+        sspsca.setRepository(saddon);
+        sspsca.setChannelLabel(sourceChildChannel.getLabel());
+        sspsca.setParentChannelLabel(sourceBaseChannel.getLabel());
+        sspsca.setChannelName(sourceBaseChannel.getLabel());
+        sspsca.setMandatory(true);
+        sspsca = TestUtils.saveAndReload(sspsca);
+
+        // Setup migration target product + upgrade path
+        SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
+        sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
+
+        // Setup target addon product + upgrade path
+        SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel targetAddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
+        sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
+        SUSEProductExtension e2 = new SUSEProductExtension(sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
+        TestUtils.saveAndReload(e2);
+        TestUtils.saveAndReload(e3);
+
+        SCCRepository base = SUSEProductTestUtils.createSCCRepository();
+
+        SUSEProductSCCRepository spsc = new SUSEProductSCCRepository();
+        spsc.setProduct(targetBaseProduct);
+        spsc.setRootProduct(targetBaseProduct);
+        spsc.setRepository(base);
+        spsc.setChannelLabel(targetBaseChannel.getLabel());
+        spsc.setParentChannelLabel(targetBaseChannel.getLabel());
+        spsc.setChannelName(targetBaseChannel.getLabel());
+        spsc.setMandatory(true);
+        spsc = TestUtils.saveAndReload(spsc);
+
+        SCCRepository addon = SUSEProductTestUtils.createSCCRepository();
 
         SUSEProductSCCRepository spsca = new SUSEProductSCCRepository();
         spsca.setProduct(targetAddonProduct);
@@ -352,11 +459,6 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
         targetBaseChannel.setLabel("targetBaseChannel");
-        SUSEProductChannel pcbase = new SUSEProductChannel();
-        pcbase.setChannel(targetBaseChannel);
-        pcbase.setProduct(targetBaseProduct);
-        pcbase.setMandatory(true);
-        SUSEProductFactory.save(pcbase);
         sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         // Setup target addon product + upgrade path
@@ -606,7 +708,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
         Long actionID = DistUpgradeManager.scheduleDistUpgrade(
-                user, server, targetSet, channelIDs, true, scheduleDate);
+                user, server, targetSet, channelIDs, true, false, scheduleDate);
 
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
@@ -617,6 +719,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(server, serverActions.iterator().next().getServer());
         DistUpgradeActionDetails details = action.getDetails();
         assertTrue(details.isDryRun());
+        assertFalse(details.isAllowVendorChange());
 
         // Check product upgrade
         Set<SUSEProductUpgrade> upgrades = details.getProductUpgrades();
@@ -655,23 +758,11 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct slesSP1BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel slesSP1BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(slesSP1BaseProduct, user);
 
-        SUSEProductChannel slesSP1Mirrored = new SUSEProductChannel();
-        slesSP1Mirrored.setChannel(slesSP1BaseChannel);
-        slesSP1Mirrored.setProduct(slesSP1BaseProduct);
-        slesSP1Mirrored.setMandatory(true);
-        SUSEProductFactory.save(slesSP1Mirrored);
-
         List<SUSEProduct> slesSP1Addons = new ArrayList<>();
         SUSEProduct ltssSP1AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel ltssSP1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP1AddonProduct, slesSP1BaseChannel, user);
         SUSEProductExtension e = new SUSEProductExtension(slesSP1BaseProduct, ltssSP1AddonProduct, slesSP1BaseProduct, false);
         TestUtils.saveAndReload(e);
-
-        SUSEProductChannel ltssSP1Mirrored = new SUSEProductChannel();
-        ltssSP1Mirrored.setChannel(ltssSP1ChildChannel);
-        ltssSP1Mirrored.setProduct(ltssSP1AddonProduct);
-        ltssSP1Mirrored.setMandatory(true);
-        SUSEProductFactory.save(ltssSP1Mirrored);
 
         slesSP1Addons.add(ltssSP1AddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(slesSP1BaseProduct, slesSP1Addons);
@@ -705,11 +796,6 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup migration target product + upgrade path
         SUSEProduct slesSP2BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel slesSP2BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(slesSP2BaseProduct, user);
-        SUSEProductChannel slesSP2Mirrored = new SUSEProductChannel();
-        slesSP2Mirrored.setChannel(slesSP2BaseChannel);
-        slesSP2Mirrored.setProduct(slesSP2BaseProduct);
-        slesSP2Mirrored.setMandatory(true);
-        SUSEProductFactory.save(slesSP2Mirrored);
         slesSP1BaseProduct.setUpgrades(Collections.singleton(slesSP2BaseProduct));
 
         SCCRepository slesSP2SCCRepository = SUSEProductTestUtils.createSCCRepository();
@@ -741,11 +827,6 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup target ltss addon product + upgrade path
         SUSEProduct ltssSP2AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         Channel ltssSP2AddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP2AddonProduct, slesSP2BaseChannel, user);
-        SUSEProductChannel ltssSP2Mirrored = new SUSEProductChannel();
-        ltssSP2Mirrored.setChannel(ltssSP2AddonChannel);
-        ltssSP2Mirrored.setProduct(ltssSP2AddonProduct);
-        ltssSP2Mirrored.setMandatory(true);
-        SUSEProductFactory.save(ltssSP2Mirrored);
 
         ltssSP1AddonProduct.setUpgrades(Collections.singleton(ltssSP2AddonProduct));
         SUSEProductExtension e3 = new SUSEProductExtension(slesSP2BaseProduct, ltssSP2AddonProduct, slesSP2BaseProduct, false);

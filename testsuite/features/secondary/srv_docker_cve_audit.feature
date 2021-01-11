@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_cve_audit
 Feature: CVE audit for content management
   I want to see images that need to be patched or not
 

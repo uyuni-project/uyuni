@@ -1,7 +1,7 @@
 // @flow
 
 import {useState} from 'react';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 
 type Props = {
   resource: string,
@@ -34,7 +34,7 @@ const getApiUrl = (resource, nestedResource, id) => {
   }
 }
 
-const getErrorMessage = ({messages = [], errors}) => messages.filter(Boolean).concat(Object.values(errors)).join("</br>");
+const getErrorMessage = ({messages = [], errors}) => messages.filter(Boolean);
 
 
 const useLifecycleActionsApi = (props:Props): returnUseProjectActionsApi => {

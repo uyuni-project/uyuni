@@ -143,7 +143,7 @@ public class KickstartHandler extends BaseHandler {
      * @param profileLabel Label for the new kickstart profile.
      * @param virtualizationType Virtualization type, or none.
      * @param kickstartableTreeLabel Label of a kickstartable tree.
-     * @param kickstartHost Kickstart hostname (of a satellite or proxy) used to
+     * @param kickstartHost Kickstart hostname (of a server or proxy) used to
      * construct the default download URL for the new kickstart profile. Using
      * this option signifies that this default URL will be used instead of any
      * url/nfs/cdrom/harddrive commands in the kickstart file itself.
@@ -159,7 +159,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
      * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
-     * (of a satellite or proxy) used to construct the default download URL for
+     * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile. Using this option signifies that this default
      * URL will be used instead of any url/nfs/cdrom/harddrive commands in the
      * kickstart file itself.")
@@ -184,7 +184,7 @@ public class KickstartHandler extends BaseHandler {
      * @param profileLabel Label for the new kickstart profile.
      * @param virtualizationType Virtualization type, or none.
      * @param kickstartableTreeLabel Label of a kickstartable tree.
-     * @param kickstartHost Kickstart hostname (of a satellite or proxy) used to
+     * @param kickstartHost Kickstart hostname (of a server or proxy) used to
      * construct the default download URL for the new kickstart profile. Using
      * this option signifies that this default URL will be used instead of any
      * url/nfs/cdrom/harddrive commands in the kickstart file itself.
@@ -202,7 +202,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
      * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
-     * (of a satellite or proxy) used to construct the default download URL for
+     * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile. Using this option signifies that this default
      * URL will be used instead of any url/nfs/cdrom/harddrive commands in the
      * kickstart file itself.")
@@ -251,7 +251,7 @@ public class KickstartHandler extends BaseHandler {
      * @param profileLabel Label for the new kickstart profile.
      * @param virtualizationType Virtualization type, or none.
      * @param kickstartableTreeLabel Label of a kickstartable tree.
-     * @param kickstartHost Kickstart hostname (of a satellite or proxy) used to
+     * @param kickstartHost Kickstart hostname (of a server or proxy) used to
      * construct the default download URL for the new kickstart profile.
      * @param rootPassword Root password.
      * @param updateType Set the automatic ks tree update strategy
@@ -267,7 +267,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
      * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
-     * (of a satellite or proxy) used to construct the default download URL for
+     * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile.")
      * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
      * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
@@ -314,7 +314,7 @@ public class KickstartHandler extends BaseHandler {
      * @param profileLabel Label for the new kickstart profile.
      * @param virtualizationType Virtualization type, or none.
      * @param kickstartableTreeLabel Label of a kickstartable tree.
-     * @param kickstartHost Kickstart hostname (of a satellite or proxy) used to
+     * @param kickstartHost Kickstart hostname (of a server or proxy) used to
      * construct the default download URL for the new kickstart profile.
      * @param rootPassword Root password.
      * @return 1 if successful, exception otherwise.
@@ -328,7 +328,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
      * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
-     * (of a satellite or proxy) used to construct the default download URL for
+     * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile.")
      * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
      * @xmlrpc.returntype #return_int_success()
@@ -585,7 +585,7 @@ public class KickstartHandler extends BaseHandler {
      * @param newLabel to assign to profile
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Rename a Kickstart Profile in Satellite
+     * @xmlrpc.doc Rename a kickstart profile in #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "originalLabel" "Label for the
      * kickstart profile you want to rename")
@@ -656,7 +656,7 @@ public class KickstartHandler extends BaseHandler {
      * @param kickstartFileContents Contents of a kickstart file.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a raw kickstart file into satellite.
+     * @xmlrpc.doc Import a raw kickstart file into #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
@@ -690,7 +690,7 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a raw kickstart file into satellite.
+     * @xmlrpc.doc Import a raw kickstart file into #product().
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")

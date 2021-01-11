@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 23 15:17:48 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
+- remove checks for obsolete packages
+- gather new configfiles
+- add more important informations
+
+-------------------------------------------------------------------
 Mon Feb 17 12:55:12 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.3-1

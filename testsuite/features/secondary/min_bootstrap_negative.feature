@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@scope_onboarding
 Feature: Negative tests for bootstrapping normal minions
   In order to register only valid minions
   As an authorized user
@@ -26,7 +27,6 @@ Feature: Negative tests for bootstrapping normal minions
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I cleanup minion "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap a SLES minion with wrong hostname

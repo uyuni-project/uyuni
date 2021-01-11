@@ -37,8 +37,8 @@ After:
 Fixes #
 
 Relevant branches (GitHub automatic links expected below):
- - Manager-3.2
  - Manager-4.0
+ - Manager-4.1
  - Uyuni
 
 - [ ] **DONE**

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="pt_BR">
+<?xml version='1.0' encoding='UTF-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="pt_BR">
     <body>
       <!-- New Account Email -->
-      <trans-unit id="email.newaccount.subject">
+      <trans-unit id="email.newaccount.subject" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -15,7 +15,7 @@
         </context-group>
         <target>Sua Conta @@PRODUCT_NAME@@ está pronta</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body">
+      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -32,6 +32,7 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
+        <target state="needs-adaptation">Olá, um login do @@PRODUCT_NAME@@ foi criado para você por {0} {1}. Seu login no @@PRODUCT_NAME@@, em combinação com uma assinatura ativa @@VENDOR_NAME@@, fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {2} Senha: {3} e-mail: {4} {5} Importante: Altere sua senha ao fazer login. Obrigado por usar @@PRODUCT_NAME@@. {6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -46,7 +47,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body">
+      <trans-unit id="email.newaccount.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -63,6 +64,7 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target state="needs-adaptation">Olá, Um login @@PRODUCT_NAME@@ foi criado para você. Seu login no @@PRODUCT_NAME@@, em combinação com uma assinatura ativa @@VENDOR_NAME@@, fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {0} Senha: {1} e-mail: {2} {3} Importante: Altere sua senha ao fazer login. Obrigado por usar @@PRODUCT_NAME@@. {4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -77,7 +79,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.pam.body">
+      <trans-unit id="email.newaccount.pam.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
@@ -104,7 +106,7 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target>Olá,
+        <target state="needs-adaptation">Olá,
 
 Um login da Red Hat foi criado para você por {0} {1}.  Seu
 login da Red Hat, combinado com uma subscrição ativa da Red Hat,
@@ -119,7 +121,7 @@ Obrigado por usar o @@PRODUCT_NAME@@.
 {6}</target>
       </trans-unit>
       <!-- New User Email -->
-      <trans-unit id="email.newuser.subject">
+      <trans-unit id="email.newuser.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -133,7 +135,7 @@ Obrigado por usar o @@PRODUCT_NAME@@.
         </context-group>
         <target>@@PRODUCT_NAME@@ Usuário Criado: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
-      <trans-unit id="email.newuser.body">
+      <trans-unit id="email.newuser.body" xml:space="preserve">
         <source>Hello,
 
 A new user has been added to your account.
@@ -159,7 +161,7 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>Olá,
+        <target state="needs-adaptation">Olá,
 
 Um novo usuário foi adicionado à sua conta.
 
@@ -173,11 +175,7 @@ visite:
 Obrigado por usar o @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
-        </context-group>
-        <trans-unit id="email.errata.notification.body.summary">
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -193,8 +191,7 @@ Summary:
 {4} {5} {6}
 {7}
 ------------------------------------------------------------------------------
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -206,7 +203,7 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 @@PRODUCT_NAME@@ determina que a informação seguinte aplica-se a
 um ou mais sistemas em que você registrou:
 
@@ -222,8 +219,11 @@ Sumário:
 {7}
 ------------------------------------------------------------------------------
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader">
+        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -233,8 +233,7 @@ this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
-    </source>
-          <target>
+    </source> <target state="needs-adaptation">
 ---------------------
 Lista de Sistemas Afetados
 ---------------------
@@ -243,33 +242,40 @@ estes erros não aplicam-se ao sistema listado, é provável que o perfil do pac
 para este servidor esteja desatualizado. Neste caso, você deverá rodar
 'up2date -p' (RHEL 4 e versões inferiores) ou 'rhn-profile-sync' (RHEL 5 e versões acima) como raiz no sistema em questão para atualização do perfil de seu software.
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem">
+        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source>
-          <target>
+    </source> <target state="needs-adaptation">
 Existe apenas 1 sistema afetado e registrado na 'Visão Geral' (apenas
 sistemas pelos quais você ativou claramente os Alertas de Erro são apresentados).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems">
+        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 Existe apenas {0} sistemas afetados e registrados na 'Visão Geral' (apenas sistemas
 pelos quais você ativou claramente os Alertas de Erros são apresentados).
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected">
+        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -283,14 +289,13 @@ You may address the issues outlined in this advisory in two ways:
            {1}
 
      - run the Update Agent on each affected server.
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 Nome do Perfil de Arquitetura da Liberação
 ---------- ---------- ---------------------------------------------
 {0}
@@ -304,8 +309,11 @@ Você poderá endereçar os problemas descritos neste manual em duas maneiras:
 
      - rode um Agente Atualizador para cada servidor afetado.
     </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences">
+        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -320,32 +328,33 @@ click the "Details" tab.
 
 {1}
 {2}
-    </source>
-          <context-group name="ctx">
+    </source> <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target>
+          <target state="needs-adaptation">
 Modificação das Preferências de Notificação
 ---------------------------------
 Para ativar/desativar globalmente suas preferências de Alerta de Erros, por favor realize o login no @@PRODUCT_NAME@@
-e navegue do tab &quot;Visão Geral&quot; / &quot;Sua Conta&quot; para &quot;Preferências&quot;.
+e navegue do tab "Visão Geral" / "Sua Conta" para "Preferências".
 
         URL: {0}
 
 Além disso, você pode ativar/desativar a notificação baseando-se no sistema pela seleção de
-um sistema individual a partir da &quot;Lista de Sistemas&quot;. Clique no tab &quot;Detalhes&quot;
+um sistema individual a partir da "Lista de Sistemas". Clique no tab "Detalhes"
 da visualização individual do sistema.
 
 {1}
 {2}
 </target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
+        </context-group>
         </trans-unit>
-      </group>
-      <trans-unit id="dailysummary.email.subject">
+      <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
@@ -357,7 +366,7 @@ da visualização individual do sistema.
         </context-group>
         <target>Relatório @@PRODUCT_NAME@@ de Status Diário para {0}</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body">
+      <trans-unit id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
@@ -390,7 +399,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>Este é o Relatório de Status do @@PRODUCT_NAME@@ para sua conta {0}, conforme o {1}.
+        <target state="needs-adaptation">Este é o Relatório de Status do @@PRODUCT_NAME@@ para sua conta {0}, conforme o {1}.
 
 Este e-mail será enviado nas seguintes condições:
 
@@ -412,7 +421,7 @@ Obrigado por usar o @@PRODUCT_NAME@@.
 {6}
 </target>
       </trans-unit>
-      <trans-unit id="email.forgotten.password">
+      <trans-unit id="email.forgotten.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -429,6 +438,7 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target state="needs-adaptation">[ Este é um email automático enviado para {0} a seu pedido. ] Foi solicitada uma redefinição da senha @@PRODUCT_NAME@@ para o login {2}. Para continuar o processo de redefinição, prossiga para: {1} Se você não deseja redefinir sua senha, pode ignorar este e-mail. Se você tiver mais dificuldades com o processo de redefinição, entre em contato com o administrador do @@PRODUCT_NAME@@ para obter mais assistência. Obrigado por usar o @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -438,7 +448,7 @@ Thank you for using @@PRODUCT_NAME@@.
             </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.logins">
+      <trans-unit id="email.forgotten.logins" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -465,7 +475,7 @@ Thank you for using @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target>
+        <target state="needs-adaptation">
 [ Este é um email automatizado enviado para {0} por sua requisição. ]
 
 Você requisitou uma lista de todos os logins de @@PRODUCT_NAME@@ associados
@@ -485,7 +495,7 @@ Caso não tenha requisitado este email, por favor ignore esta mensagem.
 Obrigado por usar  @@PRODUCT_NAME@@.
    </target>
       </trans-unit>
-      <trans-unit id="email.reset.password">
+      <trans-unit id="email.reset.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0}. ]
 
@@ -497,6 +507,7 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target state="needs-adaptation">[Este é um email automático enviado para {0}. ] A senha @@PRODUCT_NAME@@ para login {1} foi redefinida em resposta a uma solicitação de redefinição feita em {2}. Se você não iniciou essa redefinição de senha, entre em contato IMEDIATAMENTE com o administrador @@PRODUCT_NAME@@ em {2} Para obter mais assistência. Obrigado por usar o @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">

@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
 Feature: Main landing page options and preferences
 
   Scenario: Access the Login page
@@ -18,7 +19,7 @@ Feature: Main landing page options and preferences
     Given I am not authorized
     When I go to the home page
     And I follow "Copyright Notice"
-    Then I should see a "Copyright (c) 2011 - 2019 SUSE LLC." text
+    Then I should see a "Copyright (c) 2011 - 2021 SUSE LLC." text
 
 @susemanager
   Scenario: Access the EULA

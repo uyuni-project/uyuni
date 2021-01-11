@@ -1,6 +1,8 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_visualization
+@scope_salt
 Feature: Create organizations, users, groups, and activation keys using Salt states
 
   Scenario: Apply configuration salt state to server

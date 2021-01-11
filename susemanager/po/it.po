@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-21 13:15+0200\n"
+"POT-Creation-Date: 2020-10-16 13:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -69,8 +69,8 @@ msgstr ""
 #: ../yast/susemanager_cert.rb:132
 msgid ""
 "<p>Here, enter data needed for the creation of an SSL certificate. The "
-"certificate is used for a number of purposes like connections to a proxy, "
-"HTTPS protocol in browsers, and more.</p>"
+"certificate is used for a number of purposes like connections to a SUSE "
+"Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
 
 #: ../yast/susemanager_cert.rb:137
@@ -138,7 +138,7 @@ msgid "&IP Address of the #{@product_name} Server"
 msgstr ""
 
 #: ../yast/susemanager_manager.rb:94
-msgid "#{@product_name} &Administrator E-mail Address"
+msgid "#{@product_name} &Administrator e-mail address"
 msgstr ""
 
 #: ../yast/susemanager_manager.rb:101
@@ -147,12 +147,12 @@ msgstr ""
 
 #: ../yast/susemanager_manager.rb:112
 msgid ""
-"<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications "
+"<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
 msgstr ""
 
 #: ../yast/susemanager_manager.rb:152
-msgid "The Administrator E-mail Address is not valid."
+msgid "The Administrator e-mail address is not valid."
 msgstr ""
 
 #: ../yast/susemanager_migration.rb:73
@@ -244,35 +244,35 @@ msgid ""
 msgstr ""
 
 #: ../yast/susemanager_reqs.rb:158
-msgid "hostname command failed"
+msgid "Hostname command failed"
 msgstr ""
 
 #: ../yast/susemanager_reqs.rb:160
 msgid ""
-"the execution of 'hostname -f' failed. The product will not install "
+"The execution of 'hostname -f' failed. The product will not install "
 "correctly."
 msgstr ""
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
-msgid "illegal FQHN"
+msgid "Illegal FQHN"
 msgstr ""
 
 #: ../yast/susemanager_reqs.rb:180
 msgid ""
-"the FQHN must contain at least 2 dots. The product will not function "
+"The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
 msgstr ""
 
 #: ../yast/susemanager_reqs.rb:200
 msgid ""
-"the FQHN must not contain the '_' (undersorce) character. The product will "
+"The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
 msgstr ""
 
 #: ../yast/susemanager_reqs.rb:240
 msgid ""
-"the output of 'hostname -f' does not match the real hostname. The product "
+"The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
 msgstr ""
 

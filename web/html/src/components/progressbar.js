@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
+import * as React from 'react';
 
 const ProgressBar = (props) => {
   const wrapperWidth = props.width ? { width: props.width } : { width : '100%' };
@@ -15,6 +15,6 @@ const ProgressBar = (props) => {
   )
 }
 
-module.exports = {
-    ProgressBar: ProgressBar
-}
+export {
+    ProgressBar,
+};

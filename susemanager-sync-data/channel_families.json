@@ -24,6 +24,10 @@
     "name" : "SUSE Linux Enterprise Server for SAP Power"
   },
   {
+    "label" : "CAASP_ARM64",
+    "name" : "SUSE Container as a Service Platform ARM64"
+  },
+  {
     "label" : "CAASP_X86",
     "name" : "SUSE Container as a Service Platform x86_64"
   },
@@ -42,6 +46,22 @@
   {
     "label" : "HPC15-LTSS-X86",
     "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 x86_64"
+  },
+  {
+    "label" : "HPC15-SP1-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP1 ARM64"
+  },
+  {
+    "label" : "HPC15-SP1-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP1 x86_64"
+  },
+  {
+    "label" : "HPC15-SP2-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP2 ARM64"
+  },
+  {
+    "label" : "HPC15-SP2-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP2 x86_64"
   },
   {
     "label" : "HPE-HELION-OPENSTACK-X86",
@@ -234,6 +254,22 @@
   {
     "label" : "SLES15-LTSS-ARM64",
     "name" : "SUSE Linux Enterprise Server LTSS 15 ARM64"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 ARM64"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 PPC"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 Z-Series"
   },
   {
     "label" : "SLESMT",

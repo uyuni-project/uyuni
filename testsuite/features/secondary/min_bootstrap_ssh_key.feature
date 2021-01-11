@@ -1,6 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI using SSH key
 
   Scenario: Delete SLES minion system profile before bootstrap with SSH key test
@@ -9,7 +10,6 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I cleanup minion "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Prepare the minion for SSH key authentication

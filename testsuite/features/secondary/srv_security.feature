@@ -1,6 +1,7 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_tomcat
 Feature: Basic web security measures and recommendations
   In order to be secure
   As an authorized user

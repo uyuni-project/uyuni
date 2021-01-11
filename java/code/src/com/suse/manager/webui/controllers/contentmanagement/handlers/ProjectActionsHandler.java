@@ -24,7 +24,8 @@ import com.google.gson.JsonParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import spark.Request;
 import spark.Spark;
@@ -56,11 +57,11 @@ public class ProjectActionsHandler {
      * @param projectBuild the project label request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectBuildRequest(ProjectBuildRequest projectBuild) {
-        HashMap<String, String> requestErrors = new HashMap<>();
+    public static List<String> validateProjectBuildRequest(ProjectBuildRequest projectBuild) {
+        List<String> requestErrors = new ArrayList<>();
 
         if (StringUtils.isEmpty(projectBuild.getProjectLabel())) {
-            requestErrors.put("projectLabel", "Project label is required");
+            requestErrors.add("Project label is required");
         }
 
         return requestErrors;
@@ -85,11 +86,11 @@ public class ProjectActionsHandler {
      * @param projectBuild the project label request bean
      * @return validation errors
      */
-    public static HashMap<String, String> validateProjectPromoteRequest(ProjectPromoteRequest projectBuild) {
-        HashMap<String, String> requestErrors = new HashMap<>();
+    public static List<String> validateProjectPromoteRequest(ProjectPromoteRequest projectBuild) {
+        List<String> requestErrors = new ArrayList<>();
 
         if (StringUtils.isEmpty(projectBuild.getProjectLabel())) {
-            requestErrors.put("projectLabel", "Project label is required");
+            requestErrors.add("Project label is required");
         }
 
         return requestErrors;

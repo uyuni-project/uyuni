@@ -560,6 +560,16 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
+    public void setPreferredDocsLocale(String docsLocale) {
+        this.userInfo.setPreferredDocsLocale(docsLocale);
+    }
+
+    /** {@inheritDoc} */
+    public String getPreferredDocsLocale() {
+        return this.userInfo.getPreferredDocsLocale();
+    }
+
+    /** {@inheritDoc} */
     public void setCsvSeparator(char csvSeparator) {
         this.userInfo.setCsvSeparator(csvSeparator);
     }
@@ -1324,5 +1334,14 @@ public class UserImpl extends BaseDomainHelper implements User {
         this.userInfo.settaskoNotify(taskoNotifyIn);
     }
 
+    /** {@inheritDoc} */
+    public String getWebTheme() {
+        return this.userInfo.getWebTheme();
+    }
+
+    /** {@inheritDoc} */
+    public void  setWebTheme(String webThemeIn) {
+        this.userInfo.setWebTheme(webThemeIn);
+    }
 }
 

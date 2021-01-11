@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -412,15 +413,22 @@ public class SystemManager extends BaseManager {
     /**
      * Gets the installed packages on a system
      * @param sid The system in question
-     * @param expanded If true, also adds EVR, Arch and package name to the result.
      * @return Returns a list of packages for a system
      */
-    public static DataResult<Map<String, Object>> installedPackages(Long sid,
-            boolean expanded) {
-        String suffix = expanded ? "_expanded" : "";
-        SelectMode m = ModeFactory.getMode("System_queries",
-                                           "system_installed_packages" + suffix,
-                                           Map.class);
+    public static DataResult<Map<String, Object>> installedPackages(Long sid) {
+        return installedPackages(sid, false);
+    }
+
+    /**
+     * Gets the installed packages on a system
+     * @param sid The system in question
+     * @param archAsLabel set to true to return architecture as label, otherwise architecture name is used
+     * @return Returns a list of packages for a system
+     */
+    public static DataResult<Map<String, Object>> installedPackages(Long sid, boolean archAsLabel) {
+        String suffix = archAsLabel ? "_arch_as_label" : "";
+        String query = "system_installed_packages" + suffix;
+        SelectMode m = ModeFactory.getMode("System_queries", query, Map.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
         DataResult<Map<String, Object>> pkgs = m.execute(params);
@@ -2108,7 +2116,8 @@ public class SystemManager extends BaseManager {
 
         ProxyInfo info = new ProxyInfo();
         info.setServer(server);
-        info.setVersion(null, version, "1");
+        info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(
+                null, version, "1", server.getPackageType()));
         server.setProxyInfo(info);
         if (Config.get().getBoolean(ConfigDefaults.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
             Channel proxyChannel = ChannelManager.getProxyChannelByVersion(

@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 
 /**
  * SatelliteServer
@@ -105,14 +104,6 @@ public class SatelliteServer extends Server {
      */
     public void setVersion(PackageEvr theVersion) {
         version = theVersion;
-    }
-
-    /**
-     * Sets the satellite version.
-     * @param v Version
-     */
-    public void setVersion(String v) {
-        setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, v, "1"));
     }
 
     /**

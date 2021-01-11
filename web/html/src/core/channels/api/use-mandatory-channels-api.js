@@ -1,7 +1,7 @@
 // @flow
 import {useState} from 'react';
 import type {JsonResult} from 'utils/network';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import type {ChannelType} from "core/channels/type/channels.type";
 import type {ChannelsDependencies} from "core/channels/utils/channels-dependencies.utils";
 import {processChannelDependencies, dependenciesTooltip as dependenciesTooltipInternal} from "core/channels/utils/channels-dependencies.utils";
@@ -55,12 +55,10 @@ const useMandatoryChannelsApi = () : UseMandatoryChannelsApiReturnType => {
           setMandatoryChannelsRaw(allTheNewMandatoryChannelsData);
           setRequiredChannels(dependencies.requiredChannels);
           setRequiredByChannels(dependencies.requiredByChannels);
-          setIsDependencyDataLoaded(true);
-        })
-        .catch((jqXHR: Object, arg: string = '') => {
+        }).catch((jqXHR: Object, arg: string = '') => {
           const msg = Network.responseErrorMessage(jqXHR, (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
           setMessages(messages.concat(msg))
-        });
+        }).finally(() => setIsDependencyDataLoaded(true));
     } else {
       setIsDependencyDataLoaded(true);
     }

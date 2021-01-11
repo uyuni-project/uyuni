@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_virtualization
 Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
@@ -80,8 +81,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the VNC graphical console for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm"
+    And I switch to last opened window
     Then I wait until I see the VNC graphical console
-    And I close the window
 
 @virthost_kvm
   Scenario: Suspend a KVM virtual machine
@@ -129,7 +130,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have spice graphics device
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "kvm_server" should have a NIC with 02:34:56:78:9a:bc MAC address
-    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" scsi disk
+    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" SCSI disk from pool "tmp"
 
 @virthost_kvm
   Scenario: Add a network interface to a KVM virtual machine
@@ -221,8 +222,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the Spice graphical console for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm2"
+    And I switch to last opened window
     Then I wait until I see the spice graphical console
-    And I close the window
 
 @virthost_kvm
   Scenario: Show the virtual storage pools and volumes for KVM

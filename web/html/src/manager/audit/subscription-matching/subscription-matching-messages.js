@@ -1,14 +1,13 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const {Highlight} = require("components/table/Highlight");
-const CsvLink = require("./subscription-matching-util").CsvLink;
-const Functions = require("utils/functions");
-const Utils = Functions.Utils;
+import * as React from 'react';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Highlight } from 'components/table/Highlight';
+import { CsvLink } from './subscription-matching-util';
+import { Utils } from 'utils/functions';
 
 class Messages extends React.Component {
   buildRows = (rawMessages, systems, subscriptions) => {
@@ -103,6 +102,6 @@ class Messages extends React.Component {
   }
 }
 
-module.exports = {
-  Messages: Messages,
-}
+export {
+  Messages,
+};

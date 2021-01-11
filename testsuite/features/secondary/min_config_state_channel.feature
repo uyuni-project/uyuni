@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2019 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@scope_configuration_channels
 Feature: Configuration state channels
   In order to configure systems through Salt
   I want to be able to use the state channels
@@ -9,12 +10,12 @@ Feature: Configuration state channels
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
-    Then I should see a "New Config Channel" text
+    Then I should see a "New Config State Channel" text
     When I enter "My State Channel" as "cofName"
     And I enter "statechannel" as "cofLabel"
     And I enter "This is a state channel" as "cofDescription"
     And I enter "touch /root/foobar:\n  cmd.run:\n    - creates: /root/foobar" in the editor
-    And I click on "Create Config Channel"
+    And I click on "Create Config State Channel"
     Then I should see a "State Channel" text
     And I should see a "Channel Properties" text
     And I should see a "Channel Information" text

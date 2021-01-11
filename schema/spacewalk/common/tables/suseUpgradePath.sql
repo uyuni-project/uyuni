@@ -32,3 +32,5 @@ CREATE INDEX suseupgpath_fromid_idx
 ON suseUpgradePath (from_pdid)
 ;
 
+CREATE UNIQUE INDEX suseupgradepath_from_pdid_to_pdid_uq
+ON suseUpgradePath (from_pdid, to_pdid);

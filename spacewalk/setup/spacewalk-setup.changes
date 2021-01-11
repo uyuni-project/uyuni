@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 23 15:15:08 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.7-1
+- add sock_pool_size setting by default for better performance
+
+-------------------------------------------------------------------
 Wed Sep 09 12:18:16 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.6-1

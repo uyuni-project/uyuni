@@ -3,8 +3,8 @@
 import SpaRenderer from "../../../core/spa/spa-renderer";
 import escapeHtml from 'html-react-parser';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
+import * as React from 'react';
+import ReactDOM from 'react-dom';
 
 const Link = (props) =>
   <a href={props.url} className={props.cssClass  + " js-spa"} target={props.target} title={props.title}>
@@ -218,7 +218,7 @@ class Breadcrumb extends React.Component {
     return (
       <div>
         {product_name_link}
-        <span>></span>
+        <span>&gt;</span>
         {
           breadcrumbArray.map((a, i) => {
             return (

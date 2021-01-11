@@ -1,6 +1,8 @@
 # Copyright (c) 2017-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@scope_salt_ssh
+@scope_onboarding
 Feature: Register a salt-ssh system via XML-RPC
 
 @ssh_minion
@@ -10,7 +12,6 @@ Feature: Register a salt-ssh system via XML-RPC
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    And I cleanup minion "ssh_minion"
     Then "ssh_minion" should not be registered
 
 @ssh_minion

@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Nov 23 15:09:32 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
+- fix removal of mgr-deamon with selinux enabled (bsc#1177928)
+
+-------------------------------------------------------------------
+Thu Oct 22 10:39:07 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
+- Update translation strings
+
+-------------------------------------------------------------------
 Tue Sep 15 10:27:21 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.2-1

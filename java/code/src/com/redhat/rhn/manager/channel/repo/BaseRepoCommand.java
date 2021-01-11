@@ -31,9 +31,11 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlInputException;
 
 import java.net.URL;
+import java.net.URI;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 
 /**
@@ -41,6 +43,10 @@ import java.util.Set;
  * @version $Rev: 119601 $
  */
 public abstract class BaseRepoCommand {
+
+    public static final String REPOSITORY_LABEL_REGEX =
+        "^[a-zA-Z\\d][\\w\\d\\s\\-\\.\\'\\(\\)\\/\\_]*$";
+
 
     protected ContentSource repo;
 
@@ -215,13 +221,32 @@ public abstract class BaseRepoCommand {
             if (ChannelFactory.lookupContentSourceByOrgAndLabel(org, label) != null) {
                 throw new InvalidRepoLabelException(label);
             }
+            if (!Pattern.compile(REPOSITORY_LABEL_REGEX).matcher(this.label).find()) {
+                throw new InvalidRepoLabelException(label,
+                    InvalidRepoLabelException.Reason.REGEX_FAILS,
+                    "edit.channel.repo.invalidrepolabel", "");
+            }
             repo.setLabel(this.label);
         }
 
         if (this.url != null && this.type != null) {
-            final URL u;
             try {
-                u = new URL(this.url);
+                final URL u;
+                if (this.type.equals("uln")) {
+                    // URL for ULN repositories, i.a. uln:///uln_channel_label, are not
+                    // passing Java URL validation due unknown protocol. We fake the
+                    // protocol to "file" and run the validation for the rest of the URL.
+                    final URI uri = new URI(this.url);
+                    if (uri.getScheme().equals("uln")) {
+                       u = new URI("file", uri.getSchemeSpecificPart(), uri.getFragment()).toURL();
+                    }
+                    else {
+                        throw new InvalidRepoUrlInputException(url);
+                    }
+                }
+                else {
+                    u = new URL(this.url);
+                }
             }
             catch (Exception e) {
                 throw new InvalidRepoUrlInputException(url);

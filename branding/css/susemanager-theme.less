@@ -1,6 +1,6 @@
 /* Main HTML5 tags defined for the theme */
 body {
-  background: @white;
+  background: @body-background;
   width: auto;
   -webkit-font-smoothing: antialiased;
   font-family: @lato;
@@ -35,10 +35,10 @@ header {
   padding: 12px 10px;
   background: @header;
   a {
-    color: @susemanager-text-header;
+    color: @header-text;
   }
   a:hover {
-    color: @susemanager-text-header;
+    color: @header-text;
   }
   img {
     float: left;
@@ -402,7 +402,7 @@ header, nav.navbar-pf {
     }
     input {
       background-color: @aside;
-      border-color: @eos-gray-light-2;
+      border-color: @aside-menu-search-border;
       border-style: solid;
       border-radius: 0;
       border-width: 0 0 1px 0;
@@ -462,7 +462,7 @@ header, nav.navbar-pf {
       // nodeLink and leafLink
       div.nodeLink,
       div.leafLink {
-        color: @susemanager-text-menu;
+        color: @aside-menu-text;
         border-left: 5px solid transparent;
         a {
           display: block;
@@ -491,7 +491,7 @@ header, nav.navbar-pf {
           display: inline-block;
         }
         > a:hover {
-          color: @susemanager-text-menu;
+          color: @aside-menu-text;
         }
       }
     }

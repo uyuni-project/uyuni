@@ -41,19 +41,73 @@ public class UserPreferenceUtils {
      * @return the users locale
      */
     public static String getCurrentLocale(PageContext pageContext) {
-        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        User user = new RequestContext(request).getCurrentUser();
-
-        Map<String, Object> aclContext = new HashMap<>();
-        aclContext.put("user", user);
-        Acl acl = AclFactory.getInstance().getAcl(Access.class.getName());
-
-        if (acl.evalAcl(aclContext, "user_authenticated()")) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
             String locale = user.getPreferredLocale();
             if (locale != null) {
                 return locale;
             }
         }
         return ConfigDefaults.get().getDefaultLocale();
+    }
+
+    /**
+     * Get the users current webUI style theme. If no user is available return the config default
+     *
+     * @param pageContext the current PageContext
+     * @return the users webUI style theme
+     */
+    public static  String getCurrentWebTheme(PageContext pageContext) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
+            String webTheme = user.getWebTheme();
+            if (ConfigDefaults.get().getWebThemesList().contains(webTheme) && webTheme != null) {
+                return webTheme;
+            }
+        }
+        return ConfigDefaults.get().getDefaultWebTheme();
+    }
+
+    /**
+     * Extract the current logged-in user
+     *
+     * @param pageContext the blob where the user is in
+     * @return the current User
+     */
+    public static User getAuthenticatedUser(PageContext pageContext) {
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        return new RequestContext(request).getCurrentUser();
+    }
+
+    /**
+     * Get the users configured documentation locale. If no user is available return the config default
+     *
+     * @param pageContext the current PageContext
+     * @return the users documentation locale
+     */
+    public static String getDocsLocale(PageContext pageContext) {
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        User user = new RequestContext(request).getCurrentUser();
+
+        if (isUserAuthenticated(user)) {
+            String locale = user.getPreferredDocsLocale();
+            if (locale != null) {
+                return locale;
+            }
+        }
+        return ConfigDefaults.get().getDefaultDocsLocale();
+    }
+
+    /**
+     * Check if the current User is an authenticated one
+     *
+     * @param user the current User to evaluate
+     * @return true if the User is an authenticated one, false otherwise
+     */
+    public static boolean isUserAuthenticated(User user) {
+        Map<String, Object> aclContext = new HashMap<>();
+        aclContext.put("user", user);
+        Acl acl = AclFactory.getInstance().getAcl(Access.class.getName());
+        return acl.evalAcl(aclContext, "user_authenticated()");
     }
 }

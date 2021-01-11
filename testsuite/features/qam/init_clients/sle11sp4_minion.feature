@@ -4,6 +4,9 @@
 @sle11sp4_minion
 Feature: Bootstrap a SLES 11 SP4 Salt minion
 
+  Scenario: Clean up sumaform leftovers on a SLES 11 SP4 Salt minion
+    When I perform a full salt minion cleanup on "sle11sp4_minion"
+
   Scenario: Create the bootstrap repository for a Salt client
     Given I am authorized
     And I create the "x86_64" bootstrap repository for "sle11sp4_minion" on the server
@@ -41,13 +44,6 @@ Feature: Bootstrap a SLES 11 SP4 Salt minion
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle11sp4_minion" hostname
-
-  # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
-  Scenario: Check the new channel for SLES 11 SP4 minion is working
-    When I refresh the metadata for "sle11sp4_minion"
-
-  Scenario: Detect latest Salt changes on the SLES 11 SP4 minion
-    When I query latest Salt changes on "sle11sp4_minion"
 
   Scenario: Check spacecmd system ID of bootstrapped minion
     Given I am on the Systems overview page of this "sle11sp4_minion"

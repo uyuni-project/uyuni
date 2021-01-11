@@ -298,6 +298,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * minion which already has installed packages using the new return format which
      * includes all package versions installed on the minion.
      *
+     * Special case: Some packages are reported multiple times with the same NEVRA in the array output.
+     * The test runs against this case with the 'aaa_base' package in the test input (bsc#1176018).
+     *
      * @throws Exception in case of an error
      */
     public void testPackagesProfileUpdateAllVersions() throws Exception {
@@ -320,6 +323,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals("13.2+git20140911.61c1681", pkg.getEvr().getVersion());
                 assertEquals("12.1", pkg.getEvr().getRelease());
                 assertEquals("x86_64", pkg.getArch().getName());
+                assertEquals(1459866434000L, pkg.getInstallTime().toInstant().toEpochMilli());
             }
             else if (pkg.getName().getName().equals("bash")) {
                 if (pkg.getArch().getName().equals("x86_64")) {
@@ -1678,7 +1682,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         doTestKiwiImageInspect(server, "my-kiwi-image", profile, (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
-            File generatedPillar = new File("/srv/susemanager/pillar_data/images/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
+            File generatedPillar = new File("/srv/susemanager/pillar_data/images/org" + user.getOrg().getId() + "/image-POS_Image_JeOS6.x86_64-6.0.0-build24.sls");
 
             assertTrue(generatedPillar.exists());
             Map<String, Object> map;

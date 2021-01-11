@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
+import * as React from 'react';
 
 const ToolTip = (props) =>
   <span title={props.title}>
@@ -64,10 +64,10 @@ const WarningIcon = (props) =>
   </i>
 ;
 
-module.exports = {
-  ToolTip: ToolTip,
-  CsvLink: CsvLink,
-  SystemLabel: SystemLabel,
-  humanReadablePolicy: humanReadablePolicy,
-  WarningIcon: WarningIcon,
-}
+export {
+  ToolTip,
+  CsvLink,
+  SystemLabel,
+  humanReadablePolicy,
+  WarningIcon,
+};

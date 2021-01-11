@@ -59,7 +59,7 @@
       </c:if>
     </span>
     <span>
-      <a href="/rhn/configuration/file/DownloadDiff.do?cfid=${file.id}&amp;crid=${revision.id}&amp;ocrid=${orevision.id}">
+      <a data-senna-off="true" href="/rhn/configuration/file/DownloadDiff.do?cfid=${file.id}&amp;crid=${revision.id}&amp;ocrid=${orevision.id}">
         <rhn:icon type="item-download" title="diff.jsp.downloadAlt" />
         <bean:message key="diff.jsp.download" />
       </a>

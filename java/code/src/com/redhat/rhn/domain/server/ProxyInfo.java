@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -58,18 +57,6 @@ public class ProxyInfo {
     public void setVersion(PackageEvr aVersion) {
         version = aVersion;
     }
-
-    /**
-     * Sets the satellite version in epoch, version, release format.
-     * @param e Epoch can be null.
-     * @param v Version
-     * @param r Release
-     */
-    public void setVersion(String e, String v, String r) {
-        setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(e, v, r));
-    }
-
-
 
     /**
      * @return the server

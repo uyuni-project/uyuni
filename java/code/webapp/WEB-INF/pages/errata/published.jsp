@@ -9,7 +9,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
- helpUrl="/docs/reference/patches/manage-patches-published.html"
+ helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/patches/manage-patches.html"
  creationUrl="/rhn/errata/manage/Create.do"
  creationType="erratum">
   <bean:message key="erratalist.jsp.erratamgmt"/>

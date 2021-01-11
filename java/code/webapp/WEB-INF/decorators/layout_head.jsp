@@ -27,7 +27,6 @@
 
     <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
 
-
 <!-- import default fonts/icons styles -->
     <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css?cb=${cb_version}" />
     <!-- import custom fonts/icons styles -->
@@ -39,33 +38,24 @@
     <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
-    <!-- import spacewalk styles -->
-    <c:choose>
-        <c:when test='${ConfigDefaults.get().isUyuni()}'>
-            <rhn:require acl="is(development_environment)">
-                <link rel="stylesheet/less" type="text/css" href="/css/uyuni.less" />
-                <script>less = { env: 'development for Uyuni' };</script>
-                <script src="/javascript/less.js"></script>
-            </rhn:require>
-            <rhn:require acl="not is(development_environment)">
-                <link rel="stylesheet" href="/css/uyuni.css?cb=${cb_version}" />
-            </rhn:require>
-        </c:when>
-        <c:otherwise>
-            <rhn:require acl="is(development_environment)">
-                <link rel="stylesheet/less" type="text/css" href="/css/susemanager.less" />
-                <script>less = { env: 'development for SUSE Manager' };</script>
-                <script src="/javascript/less.js"></script>
-            </rhn:require>
-            <rhn:require acl="not is(development_environment)">
-                <link rel="stylesheet" href="/css/susemanager.css?cb=${cb_version}" />
-            </rhn:require>
-        </c:otherwise>
-    </c:choose>
+    <c:set var="webTheme" value="${UserPreferenceUtils.getCurrentWebTheme(pageContext)}"/>
+    <!-- import styles -->
+    <rhn:require acl="is(development_environment)">
+        <link rel="stylesheet/less" type="text/css" href="/css/${webTheme}.less" />
+        <script>less = { env: 'development environment' };</script>
+        <script src="/javascript/less.js"></script>
+    </rhn:require>
+    <rhn:require acl="not is(development_environment)">
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" />
+    </rhn:require>
 
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${UserPreferenceUtils.getCurrentLocale(pageContext)}"/>
     <script>window.preferredLocale='${currentLocale}'</script>
+
+    <!-- expose user preferred documentation language to the application -->
+    <c:set var="docsLocale" value="${UserPreferenceUtils.getDocsLocale(pageContext)}"/>
+    <script>window.docsLocale='${docsLocale}'</script>
 
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>

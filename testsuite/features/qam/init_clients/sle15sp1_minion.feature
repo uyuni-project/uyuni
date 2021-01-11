@@ -2,7 +2,10 @@
 # Licensed under the terms of the MIT license.
 
 @sle15sp1_minion
-Feature: Be able to bootstrap a SLES 15 SP1 Salt minion via the GUI
+Feature: Be able to bootstrap a SLES 15 SP1 Salt minion
+
+  Scenario: Clean up sumaform leftovers on a SLES 15 SP1 Salt minion
+    When I perform a full salt minion cleanup on "sle15sp1_minion"
 
   Scenario: Create the bootstrap repository for a Salt client
     Given I am authorized
@@ -41,17 +44,6 @@ Feature: Be able to bootstrap a SLES 15 SP1 Salt minion via the GUI
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle15sp1_minion" hostname
-
-  # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
-  Scenario: Check the new channel for SLES 15 SP1 minion is working
-    When I refresh the metadata for "sle15sp1_minion"
-
-  Scenario: Detect latest Salt changes on the SLES 15 SP1 minion
-    When I query latest Salt changes on "sle15sp1_minion"
-
-  Scenario: Check spacecmd system ID of bootstrapped SLES 15 SP1 minion
-    Given I am on the Systems overview page of this "sle15sp1_minion"
-    Then I run spacecmd listevents for "sle15sp1_minion"
 
   Scenario: Check events history for failures on SLES 15 SP1 minion
     Given I am on the Systems overview page of this "sle15sp1_minion"

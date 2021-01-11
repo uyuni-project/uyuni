@@ -1,7 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-import React, {useState, useEffect, forwardRef, useImperativeHandle} from "react";
+import * as React from 'react';
+import {useState, useEffect, forwardRef, useImperativeHandle} from "react";
 import {Check} from "components/input/Check";
 import {Form} from "components/input/Form";
 import {Text} from "components/input/Text";
@@ -9,7 +10,7 @@ import {Button} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
 import {DangerDialog} from "components/dialog/DangerDialog";
 
-const MessagesUtils = require("components/messages").Utils;
+import { Utils as MessagesUtils } from 'components/messages';
 
 type CalendarEditProps = {
     messages: MessagesUtils,
