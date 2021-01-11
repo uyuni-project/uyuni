@@ -272,7 +272,7 @@ def do_schedule_details(self, args):
     completed = self.client.schedule.listCompletedSystems(self.session, action_id)
     failed = self.client.schedule.listFailedSystems(self.session, action_id)
     pending = self.client.schedule.listInProgressSystems(self.session, action_id)
-    action = {acn.get("id"): acn for acn in self.client.schedule.listAllActions(self.session)}.get(action_id)
+    action = dict(map(lambda e: [e.get("id"), e], self.client.schedule.listAllActions(self.session))).get(action_id)
 
     if action is not None:
         print(_('ID:        %i') % action.get('id'))
