@@ -35,7 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
-BuildRequires:  python
+BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
 Requires:       %{sbinpath}/restorecon
 
