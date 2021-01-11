@@ -22,6 +22,9 @@ declare global {
         appInstance?: any;
       };
     };
+
+    // Table data handler
+    userPrefPageSize?: number;
   }
 
   // WIP test env setup, see ./utils/test-utils
