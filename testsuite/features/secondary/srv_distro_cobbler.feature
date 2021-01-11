@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @scope_cobbler
@@ -21,7 +21,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "testprofile" text
     And I should see a "testdistro" text
 
-  Scenario: Create SUSE Distibution with installer updates
+  Scenario: Create SUSE distribution with installer updates
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-FAKE" as "label"
