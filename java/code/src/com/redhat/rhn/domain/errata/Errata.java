@@ -41,11 +41,12 @@ public class Errata extends BaseDomainHelper implements Selectable {
     private static Logger log = Logger.getLogger(Errata.class);
     protected Set<Package> packages;
 
-    private Set<Channel> channels = new HashSet();
+    private Set<Channel> channels = new HashSet<>();
     private Set<Cve> cves = new HashSet<Cve>();
     private Long id;
     private String advisory;
     private String advisoryType;
+    private String advisoryStatus;
     private String product;
     private String description;
     private String synopsis;
@@ -89,7 +90,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     public void addChannel(Channel channelIn) {
         log.debug("addChannel called: " + channelIn.getLabel());
         if (this.channels == null) {
-            this.channels = new HashSet();
+            this.channels = new HashSet<>();
         }
         channels.add(channelIn);
     }
@@ -162,6 +163,22 @@ public class Errata extends BaseDomainHelper implements Selectable {
      */
     public void setAdvisoryType(String advisoryTypeIn) {
         this.advisoryType = advisoryTypeIn;
+    }
+
+    /**
+     * Getter for advisoryStatus
+     * @return String to get
+     */
+    public String getAdvisoryStatus() {
+        return this.advisoryStatus;
+    }
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn) {
+        this.advisoryStatus = advisoryStatusIn;
     }
 
     /**

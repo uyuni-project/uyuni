@@ -14,6 +14,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="advisory" column="advisory" type="string" length="32" />
         <property name="advisoryType" column="advisory_type" type="string"
             length="32" />
+        <property name="advisoryStatus" column="advisory_status" type="string"
+            length="32" />
         <property name="product" column="product" type="string" length="64" />
         <property name="description" column="description" type="string"
             length="4000" />
@@ -177,6 +179,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <sql-query name="Errata.searchById">
         <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName,
                     e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
+                    e.advisory_status as advisoryStatus,
                     e.update_date as updateDate, e.issue_date as issueDate,
                     case when rb.keyword is not null then 1 else 0 end as reboot_suggested,
                     case when rs.keyword is not null then 1 else 0 end as restart_suggested,
@@ -195,6 +198,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="advisory" type="string" />
         <return-scalar column="advisoryName" type="string" />
         <return-scalar column="advisoryType" type="string" />
+        <return-scalar column="advisoryStatus" type="string" />
         <return-scalar column="advisorySynopsis" type="string" />
         <return-scalar column="updateDate" type="timestamp" />
         <return-scalar column="issueDate" type="timestamp" />
@@ -204,7 +208,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </sql-query>
 
     <sql-query name="Errata.searchByPackageIds">
-        <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName, e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
+        <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName,
+                        e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
+                        e.advisory_status as advisoryStatus,
                         e.update_date as updateDate, e.issue_date as issueDate, pn.name,
                         case when rb.keyword is not null then 1 else 0 end as reboot_suggested,
                         case when rs.keyword is not null then 1 else 0 end as restart_suggested
@@ -223,6 +229,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="advisory" type="string" />
         <return-scalar column="advisoryName" type="string" />
         <return-scalar column="advisoryType" type="string" />
+        <return-scalar column="advisoryStatus" type="string" />
         <return-scalar column="advisorySynopsis" type="string" />
         <return-scalar column="updateDate" type="timestamp" />
         <return-scalar column="issueDate" type="timestamp" />
@@ -232,7 +239,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </sql-query>
 
     <sql-query name="Errata.searchByPackageIdsWithOrg">
-        <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName, e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
+        <![CDATA[select distinct e.id, e.advisory, e.advisory_name as advisoryName,
+                        e.advisory_type as advisoryType, e.synopsis as advisorySynopsis,
+                        e.advisory_status as advisoryStatus,
                         e.update_date as updateDate, e.issue_date as issueDate, pn.name,
                         case when rb.keyword is not null then 1 else 0 end as reboot_suggested,
                         case when rs.keyword is not null then 1 else 0 end as restart_suggested
@@ -256,6 +265,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="advisory" type="string" />
         <return-scalar column="advisoryName" type="string" />
         <return-scalar column="advisoryType" type="string" />
+        <return-scalar column="advisoryStatus" type="string" />
         <return-scalar column="advisorySynopsis" type="string" />
         <return-scalar column="updateDate" type="timestamp" />
         <return-scalar column="issueDate" type="timestamp" />
