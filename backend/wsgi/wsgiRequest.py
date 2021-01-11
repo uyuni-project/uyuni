@@ -86,6 +86,10 @@ class WsgiRequest:
         if not self.headers_out.has_key('Content-Type'):
             self.headers_out['Content-Type'] = 'text/xml'
 
+        # leave transfer encoding settings to wsgi as at least 'chunked'
+        # create problems
+        self.headers_out.remove_key('Transfer-Encoding')
+
         self.start_response(self.status, list(self.headers_out.items()))
         return
 
@@ -168,6 +172,9 @@ class WsgiMPtable:
 
     def keys(self):
         return list(self.dict.keys())
+
+    def remove_key(self, key):
+        self.dict.pop(key, None)
 
     def __str__(self):
         return str(self.items())
