@@ -1,5 +1,5 @@
 // @flow
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { useState } from 'react';
 import { TopPanel } from "components/panels/TopPanel";
@@ -78,4 +78,4 @@ const UpgradeCluster = (props: Props) => {
     </TopPanel>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(UpgradeCluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(UpgradeCluster)));

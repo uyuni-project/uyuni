@@ -1210,12 +1210,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         up2dateversion = up2dateversion == null ? "0" : up2dateversion;
         up2daterelease = up2daterelease == null ? "0" : up2daterelease;
 
-        int comp = PackageManager.verCmp(up2dateepoch,
-                up2dateversion,
-                up2daterelease,
-                "0",
-                UP2DATE_VERSION,
-                "0");
+        PackageEvr v1 = new PackageEvr(up2dateepoch, up2dateversion, up2daterelease, hostServer.getPackageType());
+        PackageEvr v2 = new PackageEvr("0", UP2DATE_VERSION, "0", hostServer.getPackageType());
+        int comp = v1.compareTo(v2);
+
         log.debug("    Got back comp from verCmp: " + comp);
         if (comp < 0) {
             Long packageId = PackageManager.

@@ -1,3 +1,6 @@
+- Added Apache as prerequisite for RHEL and Fedora (due to required users).
+- Removed RHEL specific folder rights from SPEC file.
+
 -------------------------------------------------------------------
 Thu Dec 03 13:59:47 CET 2020 - jgonzalez@suse.com
 

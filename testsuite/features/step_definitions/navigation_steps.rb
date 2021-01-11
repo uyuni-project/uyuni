@@ -147,14 +147,13 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  select(arg1, from: arg2, exact: false)
-end
-
-# Select an item from a react Combobox
-When(/^I select "([^"]*)" from the Combobox "([^"]*)"$/) do |arg1, arg2|
   xpath = "//div[@id='#{arg2}']"
-  find(:xpath, xpath).click
-  find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
+  if has_xpath?(xpath)
+    find(:xpath, xpath).click
+    find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
+  else
+    select(arg1, from: arg2, exact: false)
+  end
 end
 
 When(/^I select the maximum amount of items per page$/) do
@@ -883,7 +882,13 @@ end
 # Test if an option is selected
 #
 Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
-  raise "#{arg1} is not selected as #{arg2}" unless has_select?(arg2, selected: arg1)
+  xpath = "//div[@id='#{arg2}']"
+  if has_xpath?(xpath)
+    xpath = "//div[@id='#{arg2}']/div/div/div[normalize-space(text())='#{arg1}']"
+    raise "#{arg1} is not selected as #{arg2}" unless has_xpath?(xpath)
+  else
+    raise "#{arg1} is not selected as #{arg2}" unless has_select?(arg2, selected: arg1)
+  end
 end
 
 #
@@ -891,7 +896,15 @@ end
 #
 When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |arg1, arg2|
   repeat_until_timeout(message: "#{arg1} has not been listed in #{arg2}") do
-    break if has_select?(arg2, with_options: [arg1])
+    xpath = "//div[@id='#{arg2}']"
+    if has_xpath?(xpath)
+      find(:xpath, xpath).click
+      has_option = has_xpath?("#{xpath}/div/div/div[normalize-space(text())='#{arg1}']")
+      find(:xpath, xpath).click
+      break if has_option
+    elsif has_select?(arg2, with_options: [arg1])
+      break
+    end
   end
 end
 

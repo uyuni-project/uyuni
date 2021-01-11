@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import {useContext} from 'react';
-import Combo from 'components/input/Combo';
+import {Select} from 'components/input/Select';
 import {FormContext} from 'components/input/Form';
 
 type ModuleSelectorProps = {
@@ -26,7 +26,7 @@ export default function ModuleSelector(props: ModuleSelectorProps) {
 
   return (
     <>
-      <Combo
+      <Select
         name="moduleName"
         label={t("Module")}
         isLoading={props.isLoading}
@@ -38,7 +38,7 @@ export default function ModuleSelector(props: ModuleSelectorProps) {
         onChange={(name, module) => {formContext.model['moduleStream'] = getDefaultStream(module)}}
         required
       />
-      <Combo
+      <Select
         name="moduleStream"
         label={t("Stream")}
         options={getStreamOptions(formContext)}

@@ -162,32 +162,30 @@ export function PoolProperties(props: Props) {
                 name={`source_devices${index}_path`}
                 label={t(FieldsData.getValue(model.type, 'source_devices.label', 'Path'))}
                 required
-                labelClass={has_separator ? "col-md-5" : "col-md-3"}
-                divClass={has_separator ? "col-md-7" : "col-md-6"}
+                labelClass={has_separator ? "col-md-6" : "col-md-3"}
+                divClass={has_separator ? "col-md-6" : "col-md-6"}
               />
             );
 
             // TODO Add link to doc for the part separator
             const separator_field = has_separator && (
-              <div className={in_list ? "col-md-2" : "col-md-3"}>
+              <div className={"col-md-4"}>
                 <Select
                   name={`source_devices${index}_separator`}
                   label={t('Partition separator')}
-                  labelClass={in_list ? "col-md-8" : "col-md-5"}
-                  divClass={in_list ? "col-md-4" : "col-md-3"}
+                  labelClass={"col-md-4"}
+                  divClass={"col-md-5"}
                   defaultValue=''
-                >
-                  <option key='' value=''></option>
-                  <option key='yes' value='yes'>{t('Yes')}</option>
-                  <option key='no' value='no'>{t('No')}</option>
-                </Select>
+                  options={[{value: 'yes', label: t('Yes')}, {value: 'no', label: t('No')}]}
+                  isClearable
+                />
               </div>
             );
 
             if (has_separator) {
               return (
                 <>
-                  <div className={"col-md-7"}>
+                  <div className={"col-md-6"}>
                     {path_field}
                   </div>
                   { separator_field }
@@ -254,11 +252,8 @@ export function PoolProperties(props: Props) {
                   hint={t(FieldsData.getValue(model.type, 'description', ''))}
                   defaultValue={pool_types[0]}
                   onChange={onPoolTypeChanged}
-                >
-                  {
-                    pool_types.map(k => <option key={k} value={k}>{k}</option>)
-                  }
-                </Select>
+                  options={pool_types}
+                />
                 <Check
                   name="autostart"
                   label={t('Start during virtual host boot')}
@@ -366,12 +361,8 @@ export function PoolProperties(props: Props) {
                       divClass="col-md-6"
                       defaultValue={default_adapter_type}
                       onChange={() => model.source_adapter_selection = undefined}
-                    >
-                    {
-                      Object.keys(FieldsData.getValue(model.type, 'source_adapter', {}))
-                        .map(type => <option key={type} value={type}>{type}</option>)
-                    }
-                    </Select>
+                      options={Object.keys(FieldsData.getValue(model.type, 'source_adapter', {}))}
+                    />
                     <Select
                       name="source_adapter_selection"
                       label={t(FieldsData.getValue(model.type,
@@ -379,14 +370,8 @@ export function PoolProperties(props: Props) {
                       labelClass="col-md-3"
                       divClass="col-md-6"
                       defaultValue={default_adapter_selection}
-                    >
-                      {
-                        Object.keys(adapter_selections)
-                          .map(item =>
-                            <option key={item} value={item}>{t(adapter_selections[item])}</option>
-                          )
-                      }
-                    </Select>
+                      options={Object.keys(adapter_selections).map(k => ({value: k, label: adapter_selections[k]}))}
+                    />
                     { /* required one of name || parent_address && parent_address_uid */ }
                     { adapter_fields.includes('name') &&
                       <Text
@@ -504,11 +489,8 @@ export function PoolProperties(props: Props) {
                     labelClass="col-md-3"
                     divClass="col-md-6"
                     defaultValue={source_format_default}
-                  >
-                    {
-                      source_format_types.map(k => <option key={k} value={k}>{k}</option>)
-                    }
-                  </Select>
+                    options={source_format_types}
+                  />
                 }
                 { FieldsData.getValue(model.type, 'has_auth', false) &&
                   <>

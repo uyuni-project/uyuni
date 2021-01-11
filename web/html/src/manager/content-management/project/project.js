@@ -1,5 +1,5 @@
 // @flow
-
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {TopPanel} from "../../../components/panels/TopPanel";
@@ -15,7 +15,6 @@ import {ModalButton} from "components/dialog/ModalButton";
 import withPageWrapper from 'components/general/with-page-wrapper';
 
 import type {ProjectType} from '../shared/type/project.type';
-import {hot} from 'react-hot-loader';
 import _last from "lodash/last";
 import _groupBy from "lodash/groupBy";
 import useRoles from "core/auth/use-roles";
@@ -173,4 +172,4 @@ const Project = (props: Props) => {
   );
 };
 
-export default hot(module)(withPageWrapper<Props>(Project));
+export default hot(withPageWrapper<Props>(Project));

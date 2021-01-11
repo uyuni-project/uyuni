@@ -2,6 +2,7 @@
 // @flow
 'use strict';
 
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { AsyncButton, Button } from 'components/buttons';
 import { ActionSchedule } from 'components/action-schedule';
@@ -13,8 +14,6 @@ import { Toggler } from 'components/toggler';
 import { BootstrapPanel } from 'components/panels/BootstrapPanel';
 import { ChannelAnchorLink, ActionLink, ActionChainLink } from 'components/links';
 import * as ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
-
-import { hot } from 'react-hot-loader';
 
 import type {JsonResult} from "utils/network";
 import type {ActionChain} from "components/action-schedule";
@@ -625,7 +624,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
 }
 
-const HotSubscribeChannels = hot(module)(SystemChannels);
+const HotSubscribeChannels = hot(SystemChannels);
 
 export {
   HotSubscribeChannels as SubscribeChannels,

@@ -3,7 +3,7 @@
 
 import type { ActionChain } from 'components/action-schedule';
 
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import _isEqual from 'lodash/isEqual';
 import { TopPanel } from 'components/panels/TopPanel';
@@ -127,7 +127,7 @@ class GuestsEdit extends React.Component<Props> {
   }
 }
 
-const HotGuestsEdit = hot(module)(GuestsEdit);
+const HotGuestsEdit = hot(GuestsEdit);
 
 export {
   HotGuestsEdit as GuestsEdit,

@@ -361,7 +361,7 @@
       </trans-unit>
       <trans-unit id="All" xml:space="preserve">
         <source>All</source>
-        <target />
+        <target>Všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -10928,10 +10928,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Name must not exceed 128 characters</source>
         <target state="new" />
       </trans-unit>
-    <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new" />
+      </trans-unit>
+    </body>
   </file>
 </xliff>

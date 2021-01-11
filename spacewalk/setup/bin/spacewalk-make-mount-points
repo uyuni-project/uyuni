@@ -13,8 +13,9 @@ use Spacewalk::Setup ();
 my %dirs;
 @dirs{@ARGV} = ();
 
-my $apache_uid = getpwnam('wwwrun');
-if (not defined $apache_uid) {
+# Add both potential Apache group IDs (SUSE/RHEL)
+my $apache_uid = (getpwnam('wwwrun') // "") . (getpwnam('apache') // "");
+if ($apache_uid eq "" ) {
         die "Failed to retrieve uid of user apache, the user does not seem to exist.\n";
 }
 my $seen_nfs = 0;

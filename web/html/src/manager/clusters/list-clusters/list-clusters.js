@@ -1,5 +1,5 @@
 // @flow
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import {useEffect} from 'react';
 import withPageWrapper from 'components/general/with-page-wrapper';
@@ -111,4 +111,4 @@ const ListClusters = (props) => {
 
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(ListClusters)));
+export default hot(withPageWrapper<Props>(withErrorMessages(ListClusters)));

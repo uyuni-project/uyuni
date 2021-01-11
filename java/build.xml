@@ -13,11 +13,8 @@
   <condition property="product.name.short" value="susemanager" else="uyuni">
     <equals arg1="${product.name}" arg2="'SUSE Manager'"/>
   </condition>
-  <available file="${java.lib.dir}/tomcat6" type="dir" property="tomcat" value="tomcat6" />
-  <available file="${java.lib.dir}/tomcat" type="dir" property="tomcat" value="tomcat" />
-  <available file="/usr/share/java/tomcat/tomcat-servlet-3.1-api.jar" type="file" property="tomcat" value="tomcat8" />
   <available file="/usr/share/java/tomcat/tomcat-servlet-4.0-api.jar" type="file" property="tomcat" value="tomcat9" />
-  <property name="tomcat" value="tomcat5" />
+  <property name="tomcat" value="tomcat" />
   <echo message="Importing buildconf/build-props-${product.name.short}.xml" />
   <import file="buildconf/build-props-${product.name.short}.xml" />
   <echo message="Importing buildconf/build-props-${tomcat}.xml" />
@@ -581,31 +578,12 @@
     </java>
   </target>
 
-  <target name="install-tomcat5">
-       <property name="webapp-dir" value="/var/lib/tomcat5/webapps/" />
-       <antcall target="install" />
-  </target>
-
-  <target name="install-tomcat6">
-       <property name="webapp-dir" value="/var/lib/tomcat6/webapps/" />
-       <echo message="${prefix}" />
-       <echo message="${webapp-dir}" />
-       <antcall target="install" />
-  </target>
-
   <target name="install-tomcat">
        <property name="webapp-dir" value="/var/lib/tomcat/webapps/" />
     <!--
      - initializing prefix otherwise webapp is not copied to tomcat directory
      -->
        <property name="prefix" value="" />
-       <echo message="${prefix}" />
-       <echo message="${webapp-dir}" />
-       <antcall target="install" />
-  </target>
-
-  <target name="install-tomcat8-suse">
-       <property name="webapp-dir" value="/srv/tomcat/webapps/" />
        <echo message="${prefix}" />
        <echo message="${webapp-dir}" />
        <antcall target="install" />

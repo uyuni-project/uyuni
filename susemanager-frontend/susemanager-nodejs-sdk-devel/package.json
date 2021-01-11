@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "@hot-loader/react-dom": "^17.0.1",
     "@novnc/novnc": "^1.0.0",
     "@spice-project/spice-html5": "^0.2.1",
     "gettext-parser": "^4.0.4",
@@ -59,7 +60,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-hot-loader": "^4.12.9",
+    "react-hot-loader": "^4.13.0",
     "react-select": "^3.0.8",
     "react-toastify": "^6.0.5",
     "senna": "^2.7.8",

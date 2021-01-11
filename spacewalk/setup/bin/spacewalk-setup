@@ -144,7 +144,8 @@ mkdir_mount_points($config_opts->{'mount_point'},
         $config_opts->{'mount_point'} . '/systems',
         $config_opts->{'kickstart_mount_point'});
 chmod 0775, $config_opts->{'mount_point'} . '/systems';
-my $www_gid = getgrnam "www";
+# Check for both potential Apache groups (SUSE/RHEL)
+my $www_gid = (getgrnam("www") // "") . (getgrnam("apache") // "");
 chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
 
 setup_sudoers();
