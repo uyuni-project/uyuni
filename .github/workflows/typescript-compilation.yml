@@ -11,7 +11,7 @@ on:
       - 'web/html/src/**'
 
 jobs:
-  javascript_unit_tests:
+  typescript_compilation:
     runs-on: ubuntu-latest
 
     strategy:
@@ -40,5 +40,5 @@ jobs:
     - name: Install dependencies
       run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
 
-    - name: Run tests
+    - name: Compile Typescript
       run: yarn --cwd web/html/src tsc
