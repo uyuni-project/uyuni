@@ -67,8 +67,8 @@ function errorMessageByStatus(status: number): Array<string> {
     }
 }
 
-type MapFuncType = (arg0: string, arg1: string) => string | null | undefined;
-type jqXHR = {status: number; statusText: string; responseText: string; responseJSON: any};
+export type MapFuncType = (arg0: string, arg1: string) => string | null | undefined;
+export type jqXHR = {status: number; statusText: string; responseText: string; responseJSON: any};
 
 function responseErrorMessage(
     jqXHR: Error | jqXHR,

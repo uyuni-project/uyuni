@@ -13,7 +13,7 @@ export default class PageControl {
         page: number,
         pageSize: number,
         query: string | null | undefined,
-        sortColumn: string | null | undefined,
+        sortColumn?: string | null | undefined,
         sortDirection: number = 1
     ) {
         this.page = page;
