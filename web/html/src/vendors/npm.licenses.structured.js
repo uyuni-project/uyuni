@@ -21,7 +21,7 @@ const npmDependencies = [
   { name: "@novnc/novnc", license: "MPL-2.0",  version: "1.1.0" }, 
   { name: "@spice-project/spice-html5", license: "LGPL-3.0-or-later",  version: "0.2.1" }, 
   { name: "classnames", license: "MIT",  version: "2.2.6" }, 
-  { name: "core-js", license: "MIT",  version: "2.6.11" }, 
+  { name: "core-js", license: "MIT",  version: "3.8.1" }, 
   { name: "css-loader", license: "MIT",  version: "2.1.1" }, 
   { name: "dom-helpers", license: "MIT",  version: "5.1.4" }, 
   { name: "html-dom-parser", license: "MIT",  version: "0.2.3" }, 
