@@ -228,6 +228,7 @@ class OracleBackend(Backend):
                   'id': DBint(),
                   'advisory': DBstring(100),
                   'advisory_type': DBstring(32),
+                  'advisory_status': DBstring(32),
                   'advisory_name': DBstring(100),
                   'advisory_rel': DBint(),
                   'product': DBstring(64),
