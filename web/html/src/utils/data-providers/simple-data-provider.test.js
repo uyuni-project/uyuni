@@ -1,6 +1,6 @@
 import SimpleDataProvider from './simple-data-provider';
 import PageControl from './page-control';
-import {Utils} from 'utils/functions.js';
+import {Utils} from 'utils/functions';
 
 const TEST_DATA = [
   {first: 1, second: "angel"},
