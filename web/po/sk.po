@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-07 10:11+0100\n"
-"PO-Revision-Date: 2021-01-10 20:38+0000\n"
+"PO-Revision-Date: 2021-01-11 20:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1040,7 +1040,7 @@ msgstr "Dokončené"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
 msgid "Operation not successful: Empty reply from the server"
-msgstr ""
+msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
 #: ../html/src/manager/images/image-view.js:600
@@ -1050,19 +1050,19 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
-msgstr ""
+msgstr "Podrobnosti"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:86
 msgid " running"
-msgstr ""
+msgstr " bežiace"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:87
 msgid " finished"
-msgstr ""
+msgstr " dokončené"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:88
 msgid " failed"
-msgstr ""
+msgstr " neúspešné"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:89
 msgid " interrupted"
@@ -1093,6 +1093,8 @@ msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
 msgstr ""
+"Server je spustený alebo dokončil vykonávanie nasledujúcich úloh počas "
+"posledných 5 minút."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:129
 msgid "Data is refreshed every "
@@ -1147,7 +1149,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:192
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "Momentálne na serveri nie sú spustené žiadne úlohy."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:210
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
@@ -1848,7 +1850,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:72
 msgid "Filter Details"
-msgstr ""
+msgstr "Podrobnosti filtra"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:73
 msgid "Create a new filter"
@@ -2442,6 +2444,8 @@ msgid ""
 "There was an error while scheduling a task. Please make sure that the task "
 "scheduler is running."
 msgstr ""
+"Pri plánovaní úlohy sa vyskytla chyba. Prosím, preverte, či je spustený "
+"plánovač úloh."
 
 #: ../html/src/manager/images/image-build.js:177
 msgid "Building the image has been "
@@ -3122,7 +3126,7 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:72
 msgid "Calendar Details"
-msgstr ""
+msgstr "Podrobnosti kalendára"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:48
 #: ../html/src/manager/maintenance/list/schedule-list.js:86
@@ -3159,7 +3163,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.js:106
 #: ../html/src/manager/state/recurring-states-details.js:92
 msgid "Schedule Details"
-msgstr ""
+msgstr "Podrobnosti plánu"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:118
 msgid "Upcoming Maintenance Windows"
@@ -3440,7 +3444,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:272
 msgid "show details"
-msgstr ""
+msgstr "zobraziť podrobnosti"
 
 #: ../html/src/manager/notifications/notification-messages.js:318
 msgid "Retry onboarding"
@@ -3795,7 +3799,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states.js:140
 msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
+msgstr "Chyba pri vymazávaní akcie. Skontrolujte, či je spustený Taskomatic"
 
 #: ../html/src/manager/state/recurring-states-list.js:58
 msgid "Recurring States"
@@ -3984,6 +3988,8 @@ msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
 msgstr ""
+"Táto operácia môže mať dramatický vplyv na balíky a opravy dostupné pre "
+"systémy a mala by sa použiť obozretne."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:165
 msgid "Current base Channel"
