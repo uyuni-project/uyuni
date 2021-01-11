@@ -20,8 +20,7 @@ function getTranslationData() {
 function getPoAsJson(locale) {
     try {
         return require(`../../../po/${locale}.po`);
-    }
-    catch (_) {
+    } catch (_) {
         return "";
     }
 }
@@ -32,19 +31,16 @@ function getPoAsJson(locale) {
  * Accepts any number of arguments after key.
  */
 function translate(key) {
-
     var result = key;
 
     window.translationData && (result = window.translationData.gettext(result));
 
     // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
     for (var i = 1; i < arguments.length; i++) {
-        result = result.replace(new RegExp('\\{' + (i - 1) + '}', 'g'), arguments[i]);
+        result = result.replace(new RegExp("\\{" + (i - 1) + "}", "g"), arguments[i]);
     }
 
     return result;
 }
 
-export {
-    getTranslationData,
-}
+export {getTranslationData};
