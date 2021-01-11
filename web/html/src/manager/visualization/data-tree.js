@@ -1,11 +1,11 @@
 /* eslint-disable */
 'use strict';
 
-const HierarchyView = require('./ui/hierarchy-view.js');
-const Filters = require('./data-processing/filters.js');
-const Partitioning = require('./data-processing/partitioning.js');
-const Preprocessing = require('./data-processing/preprocessing.js');
-const Utils = require('./utils.js');
+import * as HierarchyView from './ui/hierarchy-view.js';
+import * as Filters from './data-processing/filters.js';
+import * as Partitioning from './data-processing/partitioning.js';
+import * as Preprocessing from './data-processing/preprocessing.js';
+import * as Utils from './utils.js';
 
 // Render hierarchy view - take data, transform with preprocessor, filters and
 // partitioning, render it in the container.
@@ -349,6 +349,6 @@ function strengthByType(node) {
   return force;
 }
 
-module.exports = {
-    dataTree: dataTree
-}
+export {
+    dataTree,
+};

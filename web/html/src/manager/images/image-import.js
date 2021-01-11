@@ -2,18 +2,18 @@
 // @flow
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const { TopPanel } = require('components/panels/TopPanel');
-const { Text } = require('components/input/Text');
-const { Select } = require('components/input/Select');
-const { Form } = require('components/input/Form');
-const {SubmitButton, Button} = require("components/buttons");
-const Network = require("utils/network");
-const {Messages} = require("components/messages");
-const MessagesUtils = require("components/messages").Utils;
-const {Utils} = require("utils/functions");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import { Text } from 'components/input/Text';
+import { Select } from 'components/input/Select';
+import { Form } from 'components/input/Form';
+import { SubmitButton, Button } from 'components/buttons';
+import Network from 'utils/network';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { Utils } from 'utils/functions';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 const msgMap = {
   "not_found":

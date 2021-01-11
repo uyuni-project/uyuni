@@ -2,18 +2,18 @@
 // @flow
 'use strict';
 
-const React = require("react");
-
-const {AsyncButton, Button} = require("components/buttons");
-const {ActionSchedule} = require("components/action-schedule");
-const Network = require("utils/network");
-const Functions = require("utils/functions");
-const Messages = require("components/messages").Messages;
-const MessagesUtils = require("components/messages").Utils;
-const {Toggler} = require("components/toggler");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("components/links");
-const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import { AsyncButton, Button } from 'components/buttons';
+import { ActionSchedule } from 'components/action-schedule';
+import Network from 'utils/network';
+import { Utils, Formats } from 'utils/functions';
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { Toggler } from 'components/toggler';
+import { BootstrapPanel } from 'components/panels/BootstrapPanel';
+import { ChannelAnchorLink, ActionLink, ActionChainLink } from 'components/links';
+import * as ChannelUtils from 'core/channels/utils/channels-dependencies.utils';
 
 import type {JsonResult} from "utils/network";
 import type {ActionChain} from "components/action-schedule";
@@ -69,7 +69,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     super(props);
     this.state = {
       messages: [],
-      earliest: Functions.Utils.dateWithTimezone(localTime),
+      earliest: Utils.dateWithTimezone(localTime),
       originalBase: null,
       selectedBase: null,
       selectedChildrenIds: new Map(),
@@ -325,7 +325,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       JSON.stringify({
           base: this.state.selectedBase,
           children: selectedChildrenList,
-          earliest: Functions.Formats.LocalDateTime(this.state.earliest),
+          earliest: Formats.LocalDateTime(this.state.earliest),
           actionChain: this.state.actionChain ? this.state.actionChain.text : null
       }), "application/json")
         .promise.then(data => {
@@ -624,8 +624,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
 }
 
-const { hot } = require('react-hot-loader');
+const HotSubscribeChannels = hot(SystemChannels);
 
-module.exports = {
-  SubscribeChannels: hot(module)(SystemChannels)
-}
+export {
+  HotSubscribeChannels as SubscribeChannels,
+};

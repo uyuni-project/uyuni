@@ -1,15 +1,15 @@
 /* eslint-disable */
 'use strict';
 
-const SpaRenderer  = require("core/spa/spa-renderer").default;
-const Network = require('../../utils/network');
-const React = require('react');
-const ReactDOM = require('react-dom');
-const { TopPanel } = require('components/panels/TopPanel');
-const DataTree = require('./data-tree.js');
-const Preprocessing = require('./data-processing/preprocessing.js');
-const UI = require('./ui/components.js');
-const Utils = require('./utils.js');
+import SpaRenderer from 'core/spa/spa-renderer';
+import Network from '../../utils/network';
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import * as DataTree from './data-tree.js';
+import * as Preprocessing from './data-processing/preprocessing.js';
+import * as UI from './ui/components.js';
+import * as Utils from './utils.js';
 
 function displayHierarchy(data) {
   // disable the #spacewalk-content observer:

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const Network = require("utils/network");
+import Network from 'utils/network';
 
 /* Returns a list of maintenance schedules or calendars.
  * type == "schedule" for schedules
@@ -32,9 +32,8 @@ function details(id, type) {
     )
 }
 
-export {
+export default {
     list,
     calendarNames,
     details
 }
-

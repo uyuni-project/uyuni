@@ -326,64 +326,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertNotNull(dr);
     }
 
-    public void testVerCmp() {
-
-        //epoch
-        int result = testEpoch("1", "2");
-        assertEquals(-1, result);
-
-        result = testEpoch("2", "1");
-        assertEquals(1, result);
-
-        result = testEpoch(null, "1");
-        assertEquals(-1, result);
-
-        result = testEpoch("2", null);
-        assertEquals(1, result);
-
-        //version
-        result = testVersion("1", "2");
-        assertEquals(-1, result);
-
-        result = testVersion("2", "1");
-        assertEquals(1, result);
-
-        result = testVersion(null, "1");
-        assertEquals(-1, result);
-
-        result = testVersion("1", null);
-        assertEquals(1, result);
-
-        //release
-        result = testRelease("1", "2");
-        assertEquals(-1, result);
-
-        result = testRelease("2", "1");
-        assertEquals(1, result);
-
-        result = testRelease(null, "1");
-        assertEquals(-1, result);
-
-        result = testRelease("1", null);
-        assertEquals(1, result);
-
-        //make sure we test alpha-numerics through rpmVersionComparator
-        result = testRelease("1.2b", "1.2c");
-        assertEquals(-1, result);
-
-        result = testRelease("1.2b3a", "1.2b2");
-        assertEquals(1, result);
-
-        //test all nulls
-        result = testEpoch(null, null);
-        assertEquals(0, result);
-
-        //test equals
-        result = PackageManager.verCmp("4", "2.1", "b3",
-                                       "4", "2.1", "b3");
-        assertEquals(0, result);
-    }
-
     /**
      * Add the up2date package to a system and a channel.  Version
      * should be specified such as "2.9.0"
@@ -426,18 +368,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
 
         return p;
-    }
-
-    private int testEpoch(String e1, String e2) {
-        return PackageManager.verCmp(e1, null, null, e2, null, null);
-    }
-
-    private int testVersion(String v1, String v2) {
-        return PackageManager.verCmp("1", v1, null, "1", v2, null);
-    }
-
-    private int testRelease(String r1, String r2) {
-        return PackageManager.verCmp("1", "2", r1, "1", "2", r2);
     }
 
     /**

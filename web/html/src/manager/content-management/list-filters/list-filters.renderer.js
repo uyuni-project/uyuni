@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import ListFilters from './list-filters';
 import "./list-filters.css";
 import {RolesProvider} from "core/auth/roles-context";

@@ -1,6 +1,7 @@
 // @flow
 
-import React, {useState, useEffect, useContext} from "react";
+import * as React from 'react';
+import {useState, useEffect, useContext} from "react";
 
 import {AsyncButton} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
@@ -14,7 +15,7 @@ import CancelActionsDialog from "../shared/cancel-actions-dialog";
 import type {Node} from 'react';
 import type {MessageType} from "components/messages";
 
-const Network = require("utils/network");
+import Network from 'utils/network';
 
 type ScheduleType = {
   id: number,

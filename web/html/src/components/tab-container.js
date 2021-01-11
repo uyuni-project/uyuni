@@ -1,8 +1,8 @@
 /* eslint-disable */
 "use strict";
 
-const PropTypes = require('prop-types');
-const React = require("react");
+import PropTypes from 'prop-types';
+import * as React from 'react';
 
 class TabContainer extends React.Component {
   static propTypes = {
@@ -64,7 +64,7 @@ const TabLabel = (props) =>
   </li>
 ;
 
-module.exports = {
-    TabContainer : TabContainer,
-    TabLabel: TabLabel
-}
+export {
+    TabContainer,
+    TabLabel,
+};

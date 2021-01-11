@@ -1,11 +1,12 @@
 // @flow
-import React, {useState} from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {useState} from 'react';
 import {TopPanel} from "components/panels/TopPanel";
 import TopPanelButtons from "./top-panel-buttons";
 import PropertiesCreate from "../shared/components/panels/properties/properties-create";
 import {showErrorToastr} from "components/toastr/toastr";
 import withPageWrapper from 'components/general/with-page-wrapper';
-import {hot} from 'react-hot-loader';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
@@ -56,4 +57,4 @@ const CreateProject = () => {
   )
 }
 
-export default hot(module)(withPageWrapper<{}>(CreateProject));
+export default hot(withPageWrapper<{}>(CreateProject));

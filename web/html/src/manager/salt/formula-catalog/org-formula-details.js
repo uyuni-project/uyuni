@@ -1,12 +1,11 @@
 /* eslint-disable */
 'use strict';
 
-var React = require("react");
-const ReactDOM = require("react-dom");
-
-const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("utils/network");
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { TopPanel } from 'components/panels/TopPanel';
+import Network from 'utils/network';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 class FormulaDetail extends React.Component {
     constructor(props, context) {

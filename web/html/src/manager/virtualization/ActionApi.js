@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import * as Network from 'utils/network';
+import Network from 'utils/network';
 import { Utils as MessagesUtils } from 'components/messages';
 
 import type {MessageType} from 'components/messages';

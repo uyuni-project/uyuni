@@ -1,20 +1,19 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const {AsyncButton, LinkButton} = require("components/buttons");
-const { TopPanel } = require('components/panels/TopPanel');
-const Network = require("utils/network");
-const Functions = require("utils/functions");
-const Utils = Functions.Utils;
-const {Table} = require("components/table/Table");
-const {Column} = require("components/table/Column");
-const {SearchField} = require("components/table/SearchField");
-const Messages = require("components/messages").Messages;
-const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
-const ModalButton = require("components/dialog/ModalButton").ModalButton;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { AsyncButton, LinkButton } from 'components/buttons';
+import { TopPanel } from 'components/panels/TopPanel';
+import Network from 'utils/network';
+import { Utils } from 'utils/functions';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Messages } from 'components/messages';
+import { DeleteDialog } from 'components/dialog/DeleteDialog';
+import { ModalButton } from 'components/dialog/ModalButton';
+import SpaRenderer from 'core/spa/spa-renderer';
 
 /* global isAdmin */
 

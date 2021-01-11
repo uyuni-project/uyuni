@@ -1,8 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-const UI = require('./ui/components.js');
-const Utils = require('./utils.js');
+import * as UI from './ui/components.js';
 
 function computeSvgDimensions() {
   const width = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
@@ -53,10 +52,10 @@ function isCompliantToSSM(d) {
   return isSystemType(d) && ['enterprise_entitled', 'salt_entitled', 'bootstrap_entitled'].includes(d.data.base_entitlement);
 }
 
-module.exports = {
-    computeSvgDimensions: computeSvgDimensions,
-    adjustSvgDimensions: adjustSvgDimensions,
-    prepareDom: prepareDom,
-    isSystemType: isSystemType,
-    isCompliantToSSM: isCompliantToSSM
-}
+export {
+    computeSvgDimensions,
+    adjustSvgDimensions,
+    prepareDom,
+    isSystemType,
+    isCompliantToSSM,
+};

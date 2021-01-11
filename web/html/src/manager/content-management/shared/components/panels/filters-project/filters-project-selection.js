@@ -1,6 +1,7 @@
 // @flow
 import type {Node} from 'react';
-import React, {useEffect, useState} from 'react';
+import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {LinkButton} from "components/buttons";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import type {ProjectFilterServerType} from "../../../type/project.type";

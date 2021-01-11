@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <label for="modal-password" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.password" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" autocomplete="off" id="edit-password" required>
+                                    <input type="password" class="form-control" autocomplete="new-password" id="edit-password" required>
                                 </div>
                             </div>
                         </form>

@@ -1,9 +1,9 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Network = require("utils/network");
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import Network from 'utils/network';
 
 
 function requestHighstate(id) {
@@ -136,6 +136,6 @@ class DisplayHighstate extends React.Component {
     }
 }
 
-module.exports = {
-    DisplayHighstate: DisplayHighstate
+export {
+    DisplayHighstate,
 };

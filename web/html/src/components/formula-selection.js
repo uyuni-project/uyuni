@@ -1,16 +1,14 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
+import * as React from 'react';
+import { Messages } from '../components/messages';
+import Network from '../utils/network';
+import { Button, AsyncButton } from '../components/buttons';
+import {Utils} from 'utils/functions';
+import { SectionToolbar } from 'components/section-toolbar/section-toolbar';
 
-const Messages = require("../components/messages").Messages;
-const Network = require("../utils/network");
-const Buttons = require("../components/buttons");
-
-const Button = Buttons.Button;
-const AsyncButton = Buttons.AsyncButton;
-const capitalize = require("../utils/functions").Utils.capitalize;
-const {SectionToolbar} = require("components/section-toolbar/section-toolbar");
+const capitalize = Utils.capitalize;
 
 class FormulaSelection extends React.Component {
     constructor(props) {
@@ -269,6 +267,6 @@ function get(value, def) {
     return value;
 }
 
-module.exports = {
-    FormulaSelection: FormulaSelection
-}
+export {
+    FormulaSelection,
+};

@@ -3,13 +3,13 @@
 import type { ActionChain } from 'components/action-schedule';
 import type { MessageType } from 'components/messages';
 
-const React = require('react');
-const { Panel } = require('components/panels/Panel');
-const { Form } = require('components/input/Form');
-const { SubmitButton, Button } = require('components/buttons');
-const { Messages } = require('components/messages');
-const { ActionSchedule } = require('components/action-schedule');
-const Functions = require('utils/functions');
+import * as React from 'react';
+import { Panel } from 'components/panels/Panel';
+import { Form } from 'components/input/Form';
+import { SubmitButton, Button } from 'components/buttons';
+import { Messages } from 'components/messages';
+import { ActionSchedule } from 'components/action-schedule';
+import { Utils } from 'utils/functions';
 
 type Props = {
   submitText: string,
@@ -37,7 +37,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      model: Object.assign({}, props.initialModel, { earliest: Functions.Utils.dateWithTimezone(props.localTime) }),
+      model: Object.assign({}, props.initialModel, { earliest: Utils.dateWithTimezone(props.localTime) }),
       isInvalid: false,
       actionChain: null,
     };
@@ -136,6 +136,6 @@ class GuestPropertiesForm extends React.Component<Props, State> {
   }
 }
 
-module.exports = {
+export {
   GuestPropertiesForm,
 };

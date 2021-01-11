@@ -1,6 +1,7 @@
 // @flow
-import { hot } from 'react-hot-loader';
-import React, {useEffect} from 'react';
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {useEffect} from 'react';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import {TopPanel} from 'components/panels/TopPanel';
 import {LinkButton} from 'components/buttons';
@@ -9,7 +10,7 @@ import {isClusterAdmin} from "core/auth/auth.utils";
 import {Table} from 'components/table/Table';
 import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';
-import Functions from 'utils/functions';
+import { Utils } from 'utils/functions';
 import {SystemLink} from 'components/links';
 import {fromServerMessage} from 'components/messages';
 import {withErrorMessages} from '../shared/api/use-clusters-api';
@@ -82,7 +83,7 @@ const ListClusters = (props) => {
                     >
                     <Column
                         columnKey="name"
-                        comparator={Functions.Utils.sortByText}
+                        comparator={Utils.sortByText}
                         header={t('Name')}
                         cell={(row: ClusterType) =>
                         <a
@@ -94,13 +95,13 @@ const ListClusters = (props) => {
                     />
                     <Column
                         columnKey="type"
-                        comparator={Functions.Utils.sortByText}
+                        comparator={Utils.sortByText}
                         header={t('Type')}
                         cell={(row: ClusterType) => row.provider.name}
                     />
                     <Column
                         columnKey="type"
-                        comparator={Functions.Utils.sortByText}
+                        comparator={Utils.sortByText}
                         header={t('Management node')}
                         cell={(row: ClusterType) => <SystemLink id={row.managementNode.id}>{row.managementNode.name}</SystemLink> }
                     />                
@@ -110,4 +111,4 @@ const ListClusters = (props) => {
 
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(ListClusters)));
+export default hot(withPageWrapper<Props>(withErrorMessages(ListClusters)));

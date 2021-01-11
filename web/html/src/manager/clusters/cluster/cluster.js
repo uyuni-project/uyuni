@@ -1,7 +1,7 @@
 // @flow
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import React from 'react';
+import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {TopPanel} from 'components/panels/TopPanel';
 import {HashRouter, Route, Switch} from 'components/utils/HashRouter';
@@ -121,4 +121,4 @@ const Cluster = (props: Props) => {
       </React.Fragment>);
 }
 
-export default hot(module)(withPageWrapper<Props>(withErrorMessages(Cluster)));
+export default hot(withPageWrapper<Props>(withErrorMessages(Cluster)));

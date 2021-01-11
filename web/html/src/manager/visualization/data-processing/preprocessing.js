@@ -190,7 +190,7 @@ function groupingPreprocessor(data, groupingConfiguration) {
   return instance;
 }
 
-module.exports = {
-    grouping: groupingPreprocessor,
-    stratify: stratifyPreprocessor
-}
+export {
+    groupingPreprocessor as grouping,
+    stratifyPreprocessor as stratify,
+};

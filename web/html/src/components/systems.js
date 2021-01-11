@@ -1,8 +1,8 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const IconTag = require("./icontag").IconTag;
+import * as React from 'react';
+import { IconTag } from './icontag';
 
 function statusDisplay(system, isAdmin) {
   const sid = system['systemId'];
@@ -65,6 +65,6 @@ function statusDisplay(system, isAdmin) {
   );
 }
 
-module.exports = {
-    statusDisplay: statusDisplay
-}
+export {
+    statusDisplay,
+};
