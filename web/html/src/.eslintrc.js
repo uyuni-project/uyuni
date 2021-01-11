@@ -1,14 +1,14 @@
 module.exports = {
-  parser: "babel-eslint",
+  parser: "@typescript-eslint/parser",
   root: true,
   extends: [
     "react-app",
   ],
 
   plugins: [
+    "@typescript-eslint",
     "flowtype-errors",
     "react-hooks",
-    "@typescript-eslint"
   ],
 
   env: {
