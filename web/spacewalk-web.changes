@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 12 13:17:24 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.22-1
 - Fix Package States page display error (bsc#1180580)
 - Fix incorrect password autocompletions (bsc#1148357)
 - Migrate CommonJS based React components to ES6
