@@ -121,6 +121,8 @@ SELECT
        join rhnPackageEVR pevr on pkg.evr_id = pevr.id
        join rhnChannelPackage CP on CP.package_id = pkg.id
        join rhnServerChannel SC on SC.channel_id = CP.channel_id
+       JOIN rhnErrataPackage ep ON pkg.id = ep.package_id
+       JOIN rhnErrata e ON e.id = ep.errata_id
  WHERE full_list.name_id = pkg.name_id
    AND full_list.evr = pevr.evr
    AND full_list.arch_id = pkg.package_arch_id
@@ -130,6 +132,7 @@ SELECT
                     WHERE SP.server_id = :sid
                       AND SP.name_id = full_list.name_id
                       AND (SP.package_arch_id = full_list.arch_id or SP.package_arch_id is null))
+   AND e.advisory_status != 'retracted'
 order by upper(pn.name)
   </query>
 </mode>
