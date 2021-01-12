@@ -1,5 +1,4 @@
 // @flow
-/* global module */
 
 import type { ActionChain } from 'components/action-schedule';
 
