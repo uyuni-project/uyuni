@@ -217,6 +217,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "last_modified_date", "last time the erratum was modified.")
      *          #prop("string", "synopsis")
      *          #prop("int", "release")
+     *          #prop("string", "advisory_status")
      *          #prop("string", "type")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
@@ -252,6 +253,9 @@ public class ErrataHandler extends BaseHandler {
         }
         if (errata.getAdvisoryRel() != null) {
             errataMap.put("release", errata.getAdvisoryRel());
+        }
+        if (errata.getAdvisoryStatus() != null) {
+            errataMap.put("advisory_status", errata.getAdvisoryStatus());
         }
         errataMap.put("product",
                 StringUtils.defaultString(errata.getProduct()));
