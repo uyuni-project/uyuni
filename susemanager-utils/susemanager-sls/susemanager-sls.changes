@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 12 13:57:25 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.19-1
 - Change behavior of mgrcompat wrapper after deprecation changes on Salt 3002
 - Make autoinstallation provisoning compatible with GRUB and ELILO
   in addition to GRUB2 only (bsc#1164227)
