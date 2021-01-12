@@ -1,3 +1,4 @@
+- Upgrade react-hot-loader to 4.13.0
 - Add Typescript development dependencies
 - Update linting dependencies
 - Upgrade core-js to 3.8.1
