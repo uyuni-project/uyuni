@@ -1072,9 +1072,14 @@ SELECT  n.id AS id,
   join rhnPackageUpgradeArchCompat puac
     on puac.package_arch_id = sp.package_arch_id
    and puac.package_upgrade_arch_id = latest.package_arch_id
+  JOIN rhnErrataPackage ep
+  ON latest_p.id = ep.package_id
+  JOIN rhnErrata e
+  ON e.id = ep.errata_id
  where (spe.evr).type = (latest.evr).type
    and spe.evr &lt; latest.evr
    and sp.server_id = :sid
+   AND advisory_status != 'retracted';
   </query>
 </mode>
 
