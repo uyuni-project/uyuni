@@ -1,3 +1,4 @@
+- Replace custom version comparison method with the standard one which also takes debian packages into account
 - Fix incorrect password autocompletions (bsc#1148357)
 - Improves misleading UI message displayed on systems with modules activated (bsc#1179525)
 - fix reboot action race condition (bsc#1177031)
