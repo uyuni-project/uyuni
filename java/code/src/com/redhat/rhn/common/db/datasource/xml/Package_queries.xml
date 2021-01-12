@@ -121,6 +121,8 @@ SELECT
           AND rp.evr_id =  lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release, (full_list.evr).type)
           AND rp.package_arch_id = full_list.arch_id
         JOIN rhnChannelPackage rcp ON rcp.package_id = rp.id
+        JOIN rhnErrataPackage ep ON pkg.id = ep.package_id
+        JOIN rhnErrata e ON e.id = ep.errata_id
         JOIN rhnServerChannel rsc ON rsc.channel_id = rcp.channel_id
  WHERE rsc.server_id = :sid
    AND NOT EXISTS (SELECT 1
@@ -128,6 +130,7 @@ SELECT
                     WHERE SP.server_id = :sid
                       AND SP.name_id = full_list.name_id
                       AND (SP.package_arch_id = full_list.arch_id or SP.package_arch_id is null))
+   AND e.advisory_status != 'retracted'
 order by upper(pn.name)
   </query>
 </mode>
