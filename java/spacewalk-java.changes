@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 12 12:56:59 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.25-1
 - Replace custom version comparison method with the standard one which also takes debian packages into account
 - Fix incorrect password autocompletions (bsc#1148357)
 - Improves misleading UI message displayed on systems with modules activated (bsc#1179525)
