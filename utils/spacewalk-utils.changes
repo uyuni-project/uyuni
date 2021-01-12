@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 12 13:15:58 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.13-1
 - Remove Debian 9 and 10 channels for SUSE Manager, now provided by SCC data
 
 -------------------------------------------------------------------
