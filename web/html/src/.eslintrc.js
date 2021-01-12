@@ -1,12 +1,11 @@
 module.exports = {
-  parser: "babel-eslint",
+  parser: "@typescript-eslint/parser",
   root: true,
   extends: [
     "react-app",
   ],
 
   plugins: [
-    "flowtype-errors",
     "react-hooks",
     "@typescript-eslint"
   ],
@@ -22,9 +21,9 @@ module.exports = {
   },
 
   rules: {
-    "flowtype-errors/show-errors": "error",
-    "flowtype-errors/show-warnings": "warn",
     "react-hooks/rules-of-hooks": "error",
+    // TODO: This needs to be reworked with Typescript support in mind
+    "no-use-before-define": "off"
   },
 
   settings: {
