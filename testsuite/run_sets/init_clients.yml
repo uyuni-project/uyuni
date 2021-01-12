@@ -7,8 +7,10 @@
 ## Core - Initialize clients BEGIN ##
 
 - features/init_clients/sle_client.feature
-- features/init_clients/sle_minion.feature
-- features/init_clients/sle_ssh_minion.feature
+# - features/init_clients/sle_minion.feature
+- features/init_clients/min_sp_migration.feature
+# - features/init_clients/sle_ssh_minion.feature
+- features/init_clients/minssh_sp_migration.feature
 - features/init_clients/min_centos_salt.feature
 - features/init_clients/min_ubuntu_salt.feature
 - features/init_clients/buildhost_bootstrap.feature

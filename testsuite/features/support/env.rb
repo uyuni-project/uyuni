@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2020 SUSE LLC
+# Copyright (c) 2010-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -25,6 +25,11 @@ server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
 $long_tests_enabled = true if ENV['LONG_TESTS']
 puts "Executing long running tests" if $long_tests_enabled
+$service_pack_migration_enabled = true if ENV['SERVICE_PACK_MIGRATION']
+# To disable SP migration, comment the previous line, uncoment the next one
+# and adjust testsuite/run_sets/init_clients.yml
+# $service_pack_migration_enabled = false
+puts "Executing service pack migrations" if $service_pack_migration_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -317,6 +322,11 @@ end
 # do test only if we want to run long tests
 Before('@long_test') do
   skip_this_scenario unless $long_tests_enabled
+end
+
+# do test only if we want to run service pack migration
+Before('@service_pack_migration') do
+  skip_this_scenario unless $service_pack_migration_enabled
 end
 
 # have more infos about the errors
