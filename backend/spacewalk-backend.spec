@@ -234,7 +234,7 @@ BuildRequires:	systemd-rpm-macros
 Requires:       (python3-dateutil or python3-python-dateutil)
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
-Requires:       python3-urlgrabber
+Requires:       python3-urlgrabber < 4
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
