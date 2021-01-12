@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-12 18:39+0100\n"
-"PO-Revision-Date: 2020-12-09 00:26+0000\n"
+"PO-Revision-Date: 2021-01-13 00:38+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -3378,9 +3378,8 @@ msgid "fa-edit"
 msgstr "fa-edit"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
-#, fuzzy
 msgid "None - clear schedule"
-msgstr "スケジュールの選択:"
+msgstr "なし - スケジュールの消去"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:18
 msgid "Maintenance Schedules"
