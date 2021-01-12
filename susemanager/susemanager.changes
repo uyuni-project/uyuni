@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 12 13:18:20 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.23-1
 - Use product IDs for Debian 9 and 10 SUSE Manager bootstrap repo data
 
 -------------------------------------------------------------------
