@@ -40,6 +40,9 @@ declare global {
   var Loggerhead: any;
   // TODO: This should be obsolete after https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
+
+  // Spacewalk section toolbar
+  var handleSst: Function;
 }
 
 export {};

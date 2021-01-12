@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {useEffect} from "react";
-//global handleSst
 
-declare var handleSst:function;
+type Props = {
+  children: React.ReactNode;
+}
 
-export const SectionToolbar =  ({children}) => {
+export const SectionToolbar =  ({children}: Props) => {
   useEffect(() => {
     handleSst();
   }, [])
