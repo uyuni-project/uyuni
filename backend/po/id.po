@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-07 10:11+0100\n"
+"POT-Creation-Date: 2021-01-12 18:39+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -426,16 +426,6 @@ msgstr ""
 "di:\n"
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
-
-#: ../common/rhnTB.py:205
-#, fuzzy, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "GALAT: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, fuzzy, python-format
-msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1188,26 +1178,213 @@ msgstr "Galat Info Kelas: %s"
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
 
+#: ../common/rhnTB.py:205
+#, fuzzy, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "GALAT: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, fuzzy, python-format
+msgid "TRACEBACK: %s"
+msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, fuzzy, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "format dari %s harus setidaknya YYYYMMDD."
 
-#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
-#, fuzzy
-msgid "+++ sending log as an email +++"
-msgstr "+++ mengirim log sebagai email +++"
-
-#: ../satellite_tools/reposync.py:114
+#: ../satellite_tools/messages.py:26
 #, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"GALAT: menjalankan langkah %s. Galat adalah:\n"
+"%s"
 
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+#: ../satellite_tools/messages.py:31
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"ERROR: ada masalah saat mengakses data channel dari\n"
+"       Repositori. Apakah Anda memigrasikan semua data dari ISO saluran\n"
+"       melakukan direktori ini? Jika demikian, silakan periksa kembali "
+"saluran ISOs, pastikan\n"
+"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan "
+"mengisi kembali\n"
+"       repositori sementara (%s)."
+
+#: ../satellite_tools/messages.py:39
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"GALAT: ada masalah sinkronisasi informasi.\n"
+"       Pesan galat: %s"
+
+#: ../satellite_tools/messages.py:44
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
+"       Tergantung pada rincian kesalahan tertentu, silakan tinjau "
+"konfigurasi Anda,\n"
+"       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
+"       Pesan galat: %s"
+
+#: ../satellite_tools/messages.py:51
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan "
+"sebagai\n"
+"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) "
+"disinkronkan\n"
+"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang "
+"hilang untuk ini\n"
+"       Transaksi:\n"
+"       %s"
+
+#: ../satellite_tools/messages.py:59
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran "
+"ini.\n"
+"Silakan hubungi kontak SUSE Manager Anda\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, fuzzy, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
+
+#: ../satellite_tools/messages.py:66
+#, fuzzy, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
+
+#: ../satellite_tools/messages.py:67
+#, fuzzy, python-format
+msgid "    Extinct package:  %s"
+msgstr "Paket punah: %s"
+
+#: ../satellite_tools/messages.py:68
+#, fuzzy, python-format
+msgid "   Total size: %s"
+msgstr "Total ukuran: %s"
+
+#: ../satellite_tools/messages.py:69
+#, fuzzy, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
+
+#: ../satellite_tools/messages.py:70
+#, fuzzy, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "Fetch gagal: %s"
+
+#: ../satellite_tools/messages.py:71
+#, fuzzy, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "Ringkasan pengambilan RPM: %s"
+
+#: ../satellite_tools/messages.py:72
+#, fuzzy, python-format
+msgid "       success: %d"
+msgstr "sukses: %d"
+
+#: ../satellite_tools/messages.py:73
+#, fuzzy, python-format
+msgid "       failed:  %d"
+msgstr "Impor yang gagal (%d)"
+
+#: ../satellite_tools/messages.py:74
+#, fuzzy, python-format
+msgid "       extinct: %d"
+msgstr "punah: %d"
+
+#: ../satellite_tools/messages.py:76
+#, fuzzy, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
+
+#: ../satellite_tools/messages.py:77
+#, fuzzy, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "Mengambil / mengurai data errata: %s (%s)"
+
+#: ../satellite_tools/messages.py:78
+#, fuzzy, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "Mengambil / mengurai data kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:79
+#, fuzzy, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:80
+#, fuzzy, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
+
+#: ../satellite_tools/messages.py:81
 #, fuzzy
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
+msgid "   * WARNING: this may be a slow process."
+msgstr "* PERINGATAN: ini mungkin proses yang lambat."
+
+#: ../satellite_tools/messages.py:82
+#, fuzzy
+msgid "Linking packages to channels"
+msgstr "Menautkan paket ke saluran"
+
+#: ../satellite_tools/messages.py:83
+#, fuzzy, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "Mengimpor *relevan* errata: %s (%s)"
+
+#: ../satellite_tools/messages.py:84
+#, fuzzy
+msgid "   No new kickstartable tree to import"
+msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
+
+#: ../satellite_tools/messages.py:85
+#, fuzzy, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "Mengimpor pohon kickstartable (%d)"
+
+#: ../satellite_tools/messages.py:86
+#, fuzzy, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "Pohon kickstartable impor (%d)"
 
 #: ../satellite_tools/satsync.py:258
 #, fuzzy, python-format
@@ -1281,10 +1458,20 @@ msgstr "Master Manajer SUSE tidak mendukung sinkronisasi data organisasi."
 msgid "Skipping..."
 msgstr "Melewatkan: %s\n"
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:111
+#, fuzzy
+msgid "+++ sending log as an email +++"
+msgstr "+++ mengirim log sebagai email +++"
+
 #: ../satellite_tools/satsync.py:442
 #, fuzzy, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Sinkronisasi SUSE Manager Inter Server. laporan dari %s"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:124
+#, fuzzy
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
 
 #: ../satellite_tools/satsync.py:520
 #, fuzzy
@@ -2121,197 +2308,10 @@ msgstr ""
 "dan/atau tertulis kepada:\n"
 "%s"
 
-#: ../satellite_tools/messages.py:26
+#: ../satellite_tools/reposync.py:114
 #, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"GALAT: menjalankan langkah %s. Galat adalah:\n"
-"%s"
-
-#: ../satellite_tools/messages.py:31
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"ERROR: ada masalah saat mengakses data channel dari\n"
-"       Repositori. Apakah Anda memigrasikan semua data dari ISO saluran\n"
-"       melakukan direktori ini? Jika demikian, silakan periksa kembali "
-"saluran ISOs, pastikan\n"
-"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan "
-"mengisi kembali\n"
-"       repositori sementara (%s)."
-
-#: ../satellite_tools/messages.py:39
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"GALAT: ada masalah sinkronisasi informasi.\n"
-"       Pesan galat: %s"
-
-#: ../satellite_tools/messages.py:44
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
-"       Tergantung pada rincian kesalahan tertentu, silakan tinjau "
-"konfigurasi Anda,\n"
-"       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
-"       Pesan galat: %s"
-
-#: ../satellite_tools/messages.py:51
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan "
-"sebagai\n"
-"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) "
-"disinkronkan\n"
-"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang "
-"hilang untuk ini\n"
-"       Transaksi:\n"
-"       %s"
-
-#: ../satellite_tools/messages.py:59
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran "
-"ini.\n"
-"Silakan hubungi kontak SUSE Manager Anda\n"
-"%s"
-
-#: ../satellite_tools/messages.py:64
-#, fuzzy, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
-
-#: ../satellite_tools/messages.py:66
-#, fuzzy, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
-
-#: ../satellite_tools/messages.py:67
-#, fuzzy, python-format
-msgid "    Extinct package:  %s"
-msgstr "Paket punah: %s"
-
-#: ../satellite_tools/messages.py:68
-#, fuzzy, python-format
-msgid "   Total size: %s"
-msgstr "Total ukuran: %s"
-
-#: ../satellite_tools/messages.py:69
-#, fuzzy, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
-
-#: ../satellite_tools/messages.py:70
-#, fuzzy, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "Fetch gagal: %s"
-
-#: ../satellite_tools/messages.py:71
-#, fuzzy, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "Ringkasan pengambilan RPM: %s"
-
-#: ../satellite_tools/messages.py:72
-#, fuzzy, python-format
-msgid "       success: %d"
-msgstr "sukses: %d"
-
-#: ../satellite_tools/messages.py:73
-#, fuzzy, python-format
-msgid "       failed:  %d"
-msgstr "Impor yang gagal (%d)"
-
-#: ../satellite_tools/messages.py:74
-#, fuzzy, python-format
-msgid "       extinct: %d"
-msgstr "punah: %d"
-
-#: ../satellite_tools/messages.py:76
-#, fuzzy, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
-
-#: ../satellite_tools/messages.py:77
-#, fuzzy, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "Mengambil / mengurai data errata: %s (%s)"
-
-#: ../satellite_tools/messages.py:78
-#, fuzzy, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "Mengambil / mengurai data kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:79
-#, fuzzy, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:80
-#, fuzzy, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
-
-#: ../satellite_tools/messages.py:81
-#, fuzzy
-msgid "   * WARNING: this may be a slow process."
-msgstr "* PERINGATAN: ini mungkin proses yang lambat."
-
-#: ../satellite_tools/messages.py:82
-#, fuzzy
-msgid "Linking packages to channels"
-msgstr "Menautkan paket ke saluran"
-
-#: ../satellite_tools/messages.py:83
-#, fuzzy, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "Mengimpor *relevan* errata: %s (%s)"
-
-#: ../satellite_tools/messages.py:84
-#, fuzzy
-msgid "   No new kickstartable tree to import"
-msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
-
-#: ../satellite_tools/messages.py:85
-#, fuzzy, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "Mengimpor pohon kickstartable (%d)"
-
-#: ../satellite_tools/messages.py:86
-#, fuzzy, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "Pohon kickstartable impor (%d)"
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
 
 #, fuzzy
 #~ msgid "turn off SSL (not recommended)"
