@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-07 10:11+0100\n"
-"PO-Revision-Date: 2020-12-26 18:27+0000\n"
+"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"PO-Revision-Date: 2021-01-10 20:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -886,7 +886,7 @@ msgstr "Označenie:"
 #: ../src/spacecmd/group.py:184 ../src/spacecmd/softwarechannel.py:813
 #: ../src/spacecmd/system.py:3520
 msgid "Description:"
-msgstr ""
+msgstr "Popis:"
 
 #: ../src/spacecmd/configchannel.py:442
 msgid "Type [normal, state]:"
@@ -1769,7 +1769,7 @@ msgstr ""
 #: ../src/spacecmd/errata.py:406 ../src/spacecmd/package.py:108
 #: ../src/spacecmd/softwarechannel.py:592
 msgid "Description"
-msgstr ""
+msgstr "Popis"
 
 #: ../src/spacecmd/errata.py:412
 msgid "Notes"
@@ -4793,7 +4793,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:733
 msgid "Channels"
-msgstr ""
+msgstr "Kanály"
 
 #: ../src/spacecmd/softwarechannel.py:761
 msgid "softwarechannel_update: Update a software channel"
@@ -4930,7 +4930,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:937
 msgid "Architecture"
-msgstr ""
+msgstr "Architektúra"
 
 #: ../src/spacecmd/softwarechannel.py:944
 msgid "Checksum type"
@@ -5823,7 +5823,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:74 ../src/spacecmd/system.py:3772
 msgid "Package"
-msgstr ""
+msgstr "Balík"
 
 #: ../src/spacecmd/system.py:75
 msgid "This System"

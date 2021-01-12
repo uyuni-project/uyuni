@@ -13709,7 +13709,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
-        <target state="translated">始终在此基础频道中使用最新的树。"最新的" 状态由其上次修改的日期决定。</target>
+        <target state="translated">始终为此基础频道使用最新的树。"最新的" 状态根据上次修改日期确定。</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.create.wizard.kstree.always_new.label" xml:space="preserve">
         <source>Always newest tree</source>
