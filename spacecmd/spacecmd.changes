@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 12 12:55:26 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - Fix spacecmd with no parameters produces traceback
   on SLE 11 SP4 (bsc#1176823)
 - Added '-r REVISION' option to the 'configchannel_updateinitsls' command (bsc#1179566)
