@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 SUSE LLC
+# Copyright (c) 2016-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt
@@ -123,7 +123,9 @@ Feature: Salt package states
     And I run "pkill salt-minion" on "sle_minion"
     And I follow "Highstate" in the content area
     And I wait until I see "No reply from minion" text
-    And I run "rcsalt-minion restart" on "sle_minion"
+  
+  Scenario: Cleanup: restart the Salt service on SLES minion
+    When I run "rcsalt-minion restart" on "sle_minion"
 
   Scenario: Cleanup: remove old packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
