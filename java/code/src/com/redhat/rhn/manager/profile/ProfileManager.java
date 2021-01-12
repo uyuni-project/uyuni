@@ -20,13 +20,13 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.MissingPackagesException;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
@@ -450,7 +450,20 @@ public class ProfileManager extends BaseManager {
                 profpkgitem.getVersion());
 
         PackageMetadata retval = null;
-        int rc = vercmp(syspkgitem, profpkgitem);
+        PackageEvr evr1 = new PackageEvr(
+                syspkgitem.getEpoch() == null ? "0" : syspkgitem.getEpoch(),
+                syspkgitem.getVersion(),
+                syspkgitem.getRelease(),
+                syspkgitem.getPackageType()
+        );
+
+        PackageEvr evr2 = new PackageEvr(
+                profpkgitem.getEpoch() == null ? "0" : profpkgitem.getEpoch(),
+                profpkgitem.getVersion(),
+                profpkgitem.getRelease(),
+                syspkgitem.getPackageType()
+        );
+        int rc = evr1.compareTo(evr2);
         log.debug("    rc: " + rc);
 
         // do nothing if they are equal
@@ -1132,12 +1145,21 @@ public class ProfileManager extends BaseManager {
             // as the pkg to be synced
             boolean foundMatch = false;
             if (pkgsInChannel != null) {
+                PackageEvr evrPm = new PackageEvr(
+                        pm.getEpoch() == null ? "0" : pm.getEpoch(),
+                        pm.getVersion(),
+                        pm.getRelease(),
+                        pm.getPackageType()
+                );
                 for (int i = 0; i < pkgsInChannel.size(); i++) {
                     PackageListItem pkgInChannel = pkgsInChannel.get(i);
-                    if (pkgInChannel.getVersion().equals(pm.getVersion()) &&
-                            pkgInChannel.getRelease().equals(pm.getRelease()) &&
-                            (epochcmp(pkgInChannel.getEpoch(), pm.getEpoch()) == 0)) {
-
+                    PackageEvr evrInChannel = new PackageEvr(
+                            pkgInChannel.getEpoch() == null ? "0" : pkgInChannel.getEpoch(),
+                            pkgInChannel.getVersion(),
+                            pkgInChannel.getRelease(),
+                            pkgInChannel.getPackageType()
+                    );
+                    if (evrInChannel.compareTo(evrPm) == 0) {
                         foundMatch = true;
                         break;  //stop searching for match
                     }
@@ -1193,80 +1215,6 @@ public class ProfileManager extends BaseManager {
         pm.setComparison(comparison);
         pm.setCompareParam(param);
         return pm;
-    }
-
-    /**
-     * compares metadatas from 2 package list items
-     * @param p1 the first PackageListItem
-     * @param p2 the second PackageListItem
-     * @return 1, -1, or 0
-     */
-    private static int vercmp(PackageListItem p1, PackageListItem p2) {
-
-        int epochCmpValue = epochcmp(p1.getEpoch(), p2.getEpoch());
-        if (epochCmpValue != 0) {
-            // Epochs are different; therefore, no need to check version/release
-            return epochCmpValue;
-        }
-
-        log.debug("Epoch is the same.  Checking version: " + p1.getVersion() +
-                " vs: " + p2.getVersion());
-        RpmVersionComparator rpmvercmp = new RpmVersionComparator();
-        int c = rpmvercmp.compare(p1.getVersion(), p2.getVersion());
-        if (c != 0) {
-            return c;
-        }
-        log.debug("Version is the same.  Checking release: " + p1.getRelease() +
-                " vs: " + p2.getRelease());
-        return rpmvercmp.compare(p1.getRelease(), p2.getRelease());
-    }
-
-    /**
-     * compare 2 epoch values
-     * @param e1 the first epoch value
-     * @param e2 the second epoch value
-     * @return 1 indicating e1 > e2, -1 indicating e1 < e2, or 0 indicating e1 == e2
-     */
-    private static int epochcmp(String e1, String e2) {
-
-        int epoch1 = -1, epoch2 = -1;
-        if (e1 != null) {
-            epoch1 = Integer.parseInt(e1);
-        }
-        if (e2 != null) {
-            epoch2 = Integer.parseInt(e2);
-        }
-
-        // Epoch of 0 and null should be treated as if they are equal.
-        // This is necessary due to an issue that exists where packages in a channel
-        // have an epoch of null; however, when a client installs the same package
-        // (e.g. using yum install) the epoch for the package associated with the
-        // system is stored as 0.
-
-        boolean e1IsNull = false, e2IsNull = false;
-        if ((epoch1 == -1) || (epoch1 == 0)) {
-            e1IsNull = true;
-        }
-        if ((epoch2 == -1) || (epoch2 == 0)) {
-            e2IsNull = true;
-        }
-
-        if (e1IsNull && !e2IsNull) {
-            return -1;
-        }
-        else if (!e1IsNull && e2IsNull) {
-            return 1;
-        }
-
-        if (!e1IsNull && !e2IsNull) {
-            if (epoch1 < epoch2) {
-                return -1;
-            }
-            else if (epoch1 > epoch2) {
-                return 1;
-            }
-        }
-        return 0;
     }
 
     /**
