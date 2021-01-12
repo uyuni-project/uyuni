@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/manager/content-management/list-filters/list-filters.js:93
+#: ../html/src/manager/content-management/list-filters/list-filters.js:94
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-07 10:11+0100\n"
+"POT-Creation-Date: 2021-01-12 18:39+0100\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -360,22 +360,10 @@ msgstr "切换部分可见性"
 #: ../html/src/components/input/Radio.stories.js:69
 #: ../html/src/components/input/Radio.stories.js:99
 #: ../html/src/components/input/Radio.stories.js:130
-#: ../html/src/components/input/Select.stories.js:38
+#: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:36
 msgid "Submit"
 msgstr "提交"
-
-#: ../html/src/components/input/Combo.stories.js:31
-msgid "Flavor"
-msgstr "风格"
-
-#: ../html/src/components/input/Combo.stories.js:33
-msgid "Start typing..."
-msgstr "开始键入..."
-
-#: ../html/src/components/input/Combo.stories.js:34
-msgid "No flavors"
-msgstr "无风格"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
@@ -427,7 +415,7 @@ msgstr "最少 4 个字符"
 #: ../html/src/components/input/Radio.stories.js:55
 #: ../html/src/components/input/Radio.stories.js:86
 #: ../html/src/components/input/Radio.stories.js:116
-#: ../html/src/components/input/Select.stories.js:26
+#: ../html/src/components/input/Select.stories.js:27
 msgid "Level"
 msgstr "级别"
 
@@ -451,6 +439,18 @@ msgstr "普通"
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
 msgstr "专家"
+
+#: ../html/src/components/input/Select.stories.js:62
+msgid "Flavor"
+msgstr "风格"
+
+#: ../html/src/components/input/Select.stories.js:64
+msgid "Start typing..."
+msgstr "开始键入..."
+
+#: ../html/src/components/input/Select.stories.js:65
+msgid "No flavors"
+msgstr "无风格"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
@@ -528,7 +528,7 @@ msgid "e.g. \"0 15 2 ? * 7\""
 msgstr "例如 \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
-#: ../html/src/manager/content-management/list-filters/filter-form.js:222
+#: ../html/src/manager/content-management/list-filters/filter-form.js:203
 msgid "Security Advisory"
 msgstr "安全建议"
 
@@ -556,9 +556,9 @@ msgstr "全选"
 #: ../html/src/components/table/TableDataHandler.js:290
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:271
-#: ../html/src/manager/virtualization/pools/pool-properties.js:615
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
+#: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr "正在装载..."
 
@@ -756,7 +756,7 @@ msgstr "设置 SUSE Manager 服务器监视。"
 #: ../html/src/manager/admin/config/monitoring-admin.js:230
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
-#: ../html/src/manager/virtualization/pools/pool-properties.js:234
+#: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "常规"
 
@@ -882,9 +882,9 @@ msgstr "产品说明"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
-#: ../html/src/manager/content-management/list-filters/filter-form.js:166
+#: ../html/src/manager/content-management/list-filters/filter-form.js:147
 #: ../html/src/manager/images/image-view-packages.js:48
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:197
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "体系结构"
 
@@ -1075,7 +1075,7 @@ msgstr " 秒刷新"
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:135
-#: ../html/src/manager/content-management/list-filters/list-filters.js:71
+#: ../html/src/manager/content-management/list-filters/list-filters.js:72
 #: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
 msgstr "按名称过滤"
@@ -1155,10 +1155,10 @@ msgstr "审计映像"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:252
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:87
 #: ../html/src/manager/clusters/shared/ui/select-server.js:135
-#: ../html/src/manager/content-management/list-filters/list-filters.js:78
-#: ../html/src/manager/content-management/list-projects/list-projects.js:89
+#: ../html/src/manager/content-management/list-filters/list-filters.js:79
+#: ../html/src/manager/content-management/list-projects/list-projects.js:90
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:90
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:29
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:25
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.js:544
@@ -1166,7 +1166,7 @@ msgstr "审计映像"
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:50
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
-#: ../html/src/manager/virtualization/pools/pool-properties.js:239
+#: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
 msgstr "名称"
 
@@ -1399,8 +1399,8 @@ msgstr "部件号"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:70
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:153
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:256
-#: ../html/src/manager/content-management/list-projects/list-projects.js:101
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/list-projects/list-projects.js:102
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:48
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
@@ -1562,7 +1562,7 @@ msgid "Overview"
 msgstr "概览"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:32
-#: ../html/src/manager/virtualization/pools/pool-properties.js:181
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "Yes"
 msgstr "是"
 
@@ -1605,15 +1605,15 @@ msgid "Edit properties"
 msgstr "编辑属性"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:248
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:39
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
-#: ../html/src/manager/images/image-profile-edit.js:394
+#: ../html/src/manager/images/image-profile-edit.js:381
 #: ../html/src/manager/images/image-profiles.js:134
-#: ../html/src/manager/images/image-store-edit.js:191
+#: ../html/src/manager/images/image-store-edit.js:193
 #: ../html/src/manager/images/image-stores.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:199
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:256
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
 msgid "Label"
 msgstr "标签"
@@ -1623,7 +1623,7 @@ msgid "Cluster provider"
 msgstr "群集提供程序"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:264
-#: ../html/src/manager/clusters/list-clusters/list-clusters.js:105
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:108
 msgid "Management node"
 msgstr "管理节点"
 
@@ -1634,7 +1634,7 @@ msgstr "系统组"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:285
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:80
 #: ../html/src/manager/clusters/shared/ui/select-server.js:114
-#: ../html/src/manager/content-management/list-projects/list-projects.js:82
+#: ../html/src/manager/content-management/list-projects/list-projects.js:83
 msgid "Filter by any value"
 msgstr "按任意值过滤"
 
@@ -1708,7 +1708,7 @@ msgstr "群集"
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:88
 #: ../html/src/manager/notifications/notification-messages.js:410
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:249
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "类型"
 
@@ -1757,7 +1757,7 @@ msgid "Create project"
 msgstr "创建项目"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
-#: ../html/src/manager/images/image-profile-edit.js:380
+#: ../html/src/manager/images/image-profile-edit.js:367
 #: ../html/src/manager/images/image-profiles.js:111
 #: ../html/src/manager/images/image-store-edit.js:170
 #: ../html/src/manager/images/image-stores.js:114
@@ -1803,10 +1803,6 @@ msgstr "无可用流"
 msgid "Channel"
 msgstr "频道"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:39
-msgid "Select a channel to browse available modules"
-msgstr "选择一个频道以浏览可用模块"
-
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
 msgid "Module Name"
 msgstr "模块名称"
@@ -1839,40 +1835,40 @@ msgstr "已成功更新过滤器"
 msgid "Filter created successfully"
 msgstr "已成功创建过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:64
+#: ../html/src/manager/content-management/list-filters/filter-form.js:63
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:71
+#: ../html/src/manager/content-management/list-filters/filter-form.js:70
 msgid "Filter Name"
 msgstr "过滤器名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:81
+#: ../html/src/manager/content-management/list-filters/filter-form.js:80
 msgid "Filter Type"
 msgstr "过滤器类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:104
+#: ../html/src/manager/content-management/list-filters/filter-form.js:94
 msgid "Matcher"
 msgstr "匹配器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:128
-#: ../html/src/manager/content-management/list-filters/filter-form.js:140
-#: ../html/src/manager/content-management/list-filters/filter-form.js:178
-#: ../html/src/manager/content-management/list-filters/filter-form.js:274
+#: ../html/src/manager/content-management/list-filters/filter-form.js:109
+#: ../html/src/manager/content-management/list-filters/filter-form.js:121
+#: ../html/src/manager/content-management/list-filters/filter-form.js:159
+#: ../html/src/manager/content-management/list-filters/filter-form.js:255
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr "软件包名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:147
-#: ../html/src/manager/content-management/list-filters/filter-form.js:185
+#: ../html/src/manager/content-management/list-filters/filter-form.js:128
+#: ../html/src/manager/content-management/list-filters/filter-form.js:166
 msgid "Epoch"
 msgstr "纪元"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:152
-#: ../html/src/manager/content-management/list-filters/filter-form.js:190
+#: ../html/src/manager/content-management/list-filters/filter-form.js:133
+#: ../html/src/manager/content-management/list-filters/filter-form.js:171
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -1881,61 +1877,61 @@ msgstr "纪元"
 msgid "Version"
 msgstr "版本"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:159
-#: ../html/src/manager/content-management/list-filters/filter-form.js:197
+#: ../html/src/manager/content-management/list-filters/filter-form.js:140
+#: ../html/src/manager/content-management/list-filters/filter-form.js:178
 msgid "Release"
 msgstr "发行版"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:209
+#: ../html/src/manager/content-management/list-filters/filter-form.js:190
 msgid "Advisory name"
 msgstr "建议名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:223
+#: ../html/src/manager/content-management/list-filters/filter-form.js:204
 msgid "Bug Fix Advisory"
 msgstr "Bug 修复建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:224
+#: ../html/src/manager/content-management/list-filters/filter-form.js:205
 msgid "Product Enhancement Advisory"
 msgstr "产品增强建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:226
+#: ../html/src/manager/content-management/list-filters/filter-form.js:207
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
 msgstr "建议类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:235
+#: ../html/src/manager/content-management/list-filters/filter-form.js:216
 msgid "Issued"
 msgstr "颁发日期"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:247
+#: ../html/src/manager/content-management/list-filters/filter-form.js:228
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:260
+#: ../html/src/manager/content-management/list-filters/filter-form.js:241
 msgid "Reboot Required"
 msgstr "需要重引导"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:261
+#: ../html/src/manager/content-management/list-filters/filter-form.js:242
 msgid "Package Manager Restart Required"
 msgstr "需要重启动软件包管理器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:264
+#: ../html/src/manager/content-management/list-filters/filter-form.js:245
 msgid "Advisory Keywords"
 msgstr "建议关键字"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:294
+#: ../html/src/manager/content-management/list-filters/filter-form.js:275
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "拒绝"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:295
+#: ../html/src/manager/content-management/list-filters/filter-form.js:276
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "允许"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:297
+#: ../html/src/manager/content-management/list-filters/filter-form.js:278
 msgid "Rule"
 msgstr "规则"
 
@@ -1943,7 +1939,7 @@ msgstr "规则"
 msgid "Content Lifecycle Filters"
 msgstr "内容生命周期过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.js:83
+#: ../html/src/manager/content-management/list-filters/list-filters.js:84
 msgid "Projects in use"
 msgstr "使用中的项目"
 
@@ -1959,7 +1955,7 @@ msgstr "创建项目"
 msgid "Content Lifecycle Projects"
 msgstr "内容生命周期项目"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.js:106
+#: ../html/src/manager/content-management/list-projects/list-projects.js:107
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
 msgstr "环境生命周期"
@@ -2111,7 +2107,7 @@ msgstr "构建 ({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
-#: ../html/src/manager/images/image-build.js:295
+#: ../html/src/manager/images/image-build.js:287
 #: ../html/src/manager/images/image-profiles.js:154
 #: ../html/src/manager/images/image-view.js:581
 #: ../html/src/manager/images/image-view-overview.js:375
@@ -2139,7 +2135,7 @@ msgstr "版本 {0} 历史记录"
 msgid "Version {0} successfully built into {1}"
 msgstr "已成功在 {1} 中构建版本 {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:55
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:57
 msgid "Insert before"
 msgstr "在前面插入"
 
@@ -2306,21 +2302,21 @@ msgstr "显示更多"
 msgid "Versions history"
 msgstr "版本历史记录"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:79
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
 msgid "New Base Channel"
 msgstr "新建基础频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:96
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:99
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "选择要用作新基础频道的频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:105
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:108
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
 msgstr "子频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:119
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:122
 msgid "Clear Search"
 msgstr "清除搜索"
 
@@ -2423,17 +2419,17 @@ msgid "No profile selected"
 msgstr "未选择配置文件"
 
 #: ../html/src/manager/images/image-build.js:212
-#: ../html/src/manager/images/image-profile-edit.js:395
+#: ../html/src/manager/images/image-profile-edit.js:382
 msgid "Image Type"
 msgstr "映像类型"
 
 #: ../html/src/manager/images/image-build.js:214
-#: ../html/src/manager/virtualization/pools/pool-properties.js:540
+#: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr "路径"
 
-#: ../html/src/manager/images/image-build.js:275
-#: ../html/src/manager/images/image-import.js:276
+#: ../html/src/manager/images/image-build.js:271
+#: ../html/src/manager/images/image-import.js:266
 msgid "Build Host"
 msgstr "构建主机"
 
@@ -2446,112 +2442,95 @@ msgid "The image import has been scheduled."
 msgstr "已安排映像导入。"
 
 #: ../html/src/manager/images/image-import.js:231
-#: ../html/src/manager/images/image-profile-edit.js:305
+#: ../html/src/manager/images/image-profile-edit.js:301
 msgid "There are no channels assigned to this key."
 msgstr "未将任何频道指派到此密钥。"
 
 #: ../html/src/manager/images/image-import.js:235
-#: ../html/src/manager/images/image-profile-edit.js:309
+#: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation Key"
 msgstr "激活密钥"
 
-#: ../html/src/manager/images/image-import.js:237
-#: ../html/src/manager/images/image-profile-edit.js:312
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:262
-msgid "None"
-msgstr "无"
-
-#: ../html/src/manager/images/image-import.js:249
+#: ../html/src/manager/images/image-import.js:244
 msgid "Import Image"
 msgstr "导入映像"
 
-#: ../html/src/manager/images/image-import.js:254
+#: ../html/src/manager/images/image-import.js:249
 msgid "You can import Container images only using this feature."
 msgstr "使用此功能只能导入容器映像。"
 
-#: ../html/src/manager/images/image-import.js:259
+#: ../html/src/manager/images/image-import.js:254
 msgid "Image Store"
 msgstr "映像储存"
 
-#: ../html/src/manager/images/image-import.js:264
-#: ../html/src/manager/images/image-profile-edit.js:260
-msgid "Select an image store"
-msgstr "选择映像储存"
-
-#: ../html/src/manager/images/image-import.js:272
+#: ../html/src/manager/images/image-import.js:262
 msgid "Image name"
 msgstr "映像名称"
 
-#: ../html/src/manager/images/image-import.js:272
+#: ../html/src/manager/images/image-import.js:262
 msgid "Image name is required."
 msgstr "映像名称是必填的。"
 
-#: ../html/src/manager/images/image-import.js:274
+#: ../html/src/manager/images/image-import.js:264
 msgid "Image version"
 msgstr "映像版本"
 
-#: ../html/src/manager/images/image-import.js:274
+#: ../html/src/manager/images/image-import.js:264
 msgid "Image version is required."
 msgstr "映像版本是必填的。"
 
-#: ../html/src/manager/images/image-import.js:288
+#: ../html/src/manager/images/image-import.js:274
 #: ../html/src/manager/images/image-view.js:324
 msgid "Import"
 msgstr "导入"
 
-#: ../html/src/manager/images/image-import.js:289
-#: ../html/src/manager/images/image-profile-edit.js:375
+#: ../html/src/manager/images/image-import.js:275
+#: ../html/src/manager/images/image-profile-edit.js:362
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
 msgid "Clear fields"
 msgstr "清除字段"
 
-#: ../html/src/manager/images/image-profile-edit.js:255
+#: ../html/src/manager/images/image-profile-edit.js:256
 msgid "Target Image Store"
 msgstr "目标映像储存"
 
-#: ../html/src/manager/images/image-profile-edit.js:280
+#: ../html/src/manager/images/image-profile-edit.js:276
 msgid "Config URL"
 msgstr "配置 URL"
 
-#: ../html/src/manager/images/image-profile-edit.js:309
+#: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation key is required for kiwi images."
 msgstr "kiwi 映像需要激活密钥。"
 
-#: ../html/src/manager/images/image-profile-edit.js:344
+#: ../html/src/manager/images/image-profile-edit.js:334
 msgid "Remove entry"
 msgstr "去除项"
 
-#: ../html/src/manager/images/image-profile-edit.js:352
+#: ../html/src/manager/images/image-profile-edit.js:342
 msgid "Custom Info Values"
 msgstr "自定义信息值"
 
-#: ../html/src/manager/images/image-profile-edit.js:356
-msgid "Select a custom info key"
-msgstr "选择自定义信息键"
-
-#: ../html/src/manager/images/image-profile-edit.js:365
+#: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Create additional custom info keys"
 msgstr "创建更多自定义信息键"
 
-#: ../html/src/manager/images/image-profile-edit.js:378
+#: ../html/src/manager/images/image-profile-edit.js:365
 #: ../html/src/manager/images/image-store-edit.js:168
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:112
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-profile-edit.js:388
+#: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Edit Image Profile: '"
 msgstr "编辑映像配置文件：'"
 
-#: ../html/src/manager/images/image-profile-edit.js:388
+#: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Create Image Profile"
 msgstr "创建映像配置文件"
 
-#: ../html/src/manager/images/image-profile-edit.js:394
+#: ../html/src/manager/images/image-profile-edit.js:381
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
@@ -2615,7 +2594,7 @@ msgstr "您确定要删除选定的配置文件吗？（已选择 {0} 个配置�
 
 #: ../html/src/manager/images/image-store-edit.js:151
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
-#: ../html/src/manager/virtualization/pools/pool-properties.js:517
+#: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr "用户名"
 
@@ -2627,15 +2606,15 @@ msgstr "编辑映像储存：'"
 msgid "Create Image Store"
 msgstr "创建映像储存"
 
-#: ../html/src/manager/images/image-store-edit.js:184
+#: ../html/src/manager/images/image-store-edit.js:187
 msgid "Store Type"
 msgstr "储存类型"
 
-#: ../html/src/manager/images/image-store-edit.js:191
+#: ../html/src/manager/images/image-store-edit.js:193
 msgid "Label is required and must be unique."
 msgstr "标签是必填的，且必须唯一。"
 
-#: ../html/src/manager/images/image-store-edit.js:192
+#: ../html/src/manager/images/image-store-edit.js:194
 msgid "Store URI"
 msgstr "储存 URI"
 
@@ -3206,7 +3185,7 @@ msgstr "请确认是否继续。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
-#: ../html/src/manager/virtualization/pools/pool-properties.js:584
+#: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr "日程安排"
 
@@ -3302,6 +3281,11 @@ msgstr "全部指派"
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:109
 msgid "fa-edit"
 msgstr "fa-edit"
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
+#, fuzzy
+msgid "None - clear schedule"
+msgstr "选择日程安排"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:18
 msgid "Maintenance Schedules"
@@ -3863,6 +3847,11 @@ msgstr "例如 host.domain.com"
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
 
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
+msgid "None"
+msgstr "无"
+
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
 msgid "Proxy"
 msgstr "代理"
@@ -4152,11 +4141,11 @@ msgstr "组织"
 msgid "Gatherer module"
 msgstr "收集器模块"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:246
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:249
 msgid "Current Context"
 msgstr "当前上下文"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:258
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:264
 msgid "Kubeconfig file"
 msgstr "Kubeconfig 文件"
 
@@ -4221,7 +4210,7 @@ msgid "Create Virtual Machine"
 msgstr "创建虚拟机"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
-#: ../html/src/manager/virtualization/pools/pool-properties.js:241
+#: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
 msgstr "不能包含以下字符：/\\"
 
@@ -4229,36 +4218,36 @@ msgstr "不能包含以下字符：/\\"
 msgid "Hypervisor"
 msgstr "超级管理程序"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:164
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:161
 msgid "Virtual Machine Type"
 msgstr "虚拟机类型"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:176
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:170
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
 msgstr "最大内存 (MiB)"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:178
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:187
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:181
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
 msgstr "必须指定正整数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:185
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:179
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
 msgstr "虚拟 CPU 计数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:215
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
 msgid "Auto-installation Profile"
 msgstr "自动安装配置文件"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:229
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:221
 msgid "Kernel options"
 msgstr "内核选项"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:245
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
 msgstr "显卡"
 
@@ -4345,7 +4334,7 @@ msgstr "CDROM"
 msgid "Floppy"
 msgstr "软盘"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:78
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:79
 msgid "Bus"
 msgstr "总线"
 
@@ -4354,8 +4343,8 @@ msgid "File"
 msgstr "文件"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:120
-#: ../html/src/manager/virtualization/pools/pool-properties.js:503
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:114
+#: ../html/src/manager/virtualization/pools/pool-properties.js:488
 msgid "Format"
 msgstr "格式"
 
@@ -4363,19 +4352,19 @@ msgstr "格式"
 msgid "Disks"
 msgstr "磁盘"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:66
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr "源储存池"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:81
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:83
 msgid "Source Volume"
 msgstr "源卷"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:102
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:96
 msgid "Disk size (GiB)"
 msgstr "磁盘大小 (GiB)"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:110
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr "源模板映像 URL"
 
@@ -4383,20 +4372,20 @@ msgstr "源模板映像 URL"
 msgid "Network"
 msgstr "网络"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:54
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:51
 msgid "MAC address"
 msgstr "MAC 地址"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:55
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:52
 msgid "Leave blank to generate a MAC address"
 msgstr "保留空白会生成 MAC 地址"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:87
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
 msgstr "网络"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
-#: ../html/src/manager/virtualization/pools/pool-properties.js:608
+#: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "清除字段"
 
@@ -4482,137 +4471,137 @@ msgstr "按池或卷名称过滤"
 msgid "Partition separator"
 msgstr "分区分隔符"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:182
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "No"
 msgstr "否"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:207
+#: ../html/src/manager/virtualization/pools/pool-properties.js:205
 msgid "Host name"
 msgstr "主机名"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:216
+#: ../html/src/manager/virtualization/pools/pool-properties.js:214
 msgid "Port"
 msgstr "端口"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:250
+#: ../html/src/manager/virtualization/pools/pool-properties.js:248
 msgid "Pool Type"
 msgstr "池类型"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:264
+#: ../html/src/manager/virtualization/pools/pool-properties.js:259
 msgid "Start during virtual host boot"
 msgstr "在虚拟主机引导期间启动"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:272
+#: ../html/src/manager/virtualization/pools/pool-properties.js:267
 msgid "Source"
 msgstr "源"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:288
+#: ../html/src/manager/virtualization/pools/pool-properties.js:283
 msgid "Hosts"
 msgstr "主机"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:320
+#: ../html/src/manager/virtualization/pools/pool-properties.js:315
 msgid "Devices"
 msgstr "设备"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:353
+#: ../html/src/manager/virtualization/pools/pool-properties.js:348
 msgid "Initiator IQN"
 msgstr "发起端 IQN"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:364
+#: ../html/src/manager/virtualization/pools/pool-properties.js:359
 msgid "Adapter type"
 msgstr "适配器类型"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:394
+#: ../html/src/manager/virtualization/pools/pool-properties.js:379
 msgid "Adapter name"
 msgstr "适配器名称"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:403
+#: ../html/src/manager/virtualization/pools/pool-properties.js:388
 msgid "Adapter parent PCI address"
 msgstr "适配器父项 PCI 地址"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:407
-#: ../html/src/manager/virtualization/pools/pool-properties.js:418
+#: ../html/src/manager/virtualization/pools/pool-properties.js:392
+#: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "PCI address formatted like 0000:00:00.0"
 msgstr "类似于 0000:00:00.0 格式的 PCI 地址"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:414
+#: ../html/src/manager/virtualization/pools/pool-properties.js:399
 msgid "Adapter parent address unique ID"
 msgstr "适配器父项地址唯一 ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:425
+#: ../html/src/manager/virtualization/pools/pool-properties.js:410
 msgid "Adapter parent name"
 msgstr "适配器父项名称"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:433
+#: ../html/src/manager/virtualization/pools/pool-properties.js:418
 msgid "Adapter parent wwnn"
 msgstr "适配器父项 wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:436
-#: ../html/src/manager/virtualization/pools/pool-properties.js:446
-#: ../html/src/manager/virtualization/pools/pool-properties.js:456
-#: ../html/src/manager/virtualization/pools/pool-properties.js:467
-#: ../html/src/manager/virtualization/pools/pool-properties.js:478
+#: ../html/src/manager/virtualization/pools/pool-properties.js:421
+#: ../html/src/manager/virtualization/pools/pool-properties.js:431
+#: ../html/src/manager/virtualization/pools/pool-properties.js:441
+#: ../html/src/manager/virtualization/pools/pool-properties.js:452
+#: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
 msgstr "长度为 16 个字符的十六进制值。示例：500277a4100c4e21"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:443
+#: ../html/src/manager/virtualization/pools/pool-properties.js:428
 msgid "Adapter parent wwpn"
 msgstr "适配器父项 wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:453
+#: ../html/src/manager/virtualization/pools/pool-properties.js:438
 msgid "Adapter parent fabric wwn"
 msgstr "适配器父项结构 wwn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:463
+#: ../html/src/manager/virtualization/pools/pool-properties.js:448
 msgid "Adapter wwnn"
 msgstr "适配器 wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:474
+#: ../html/src/manager/virtualization/pools/pool-properties.js:459
 msgid "Adapter wwpn"
 msgstr "适配器 wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:485
+#: ../html/src/manager/virtualization/pools/pool-properties.js:470
 msgid "Manage vHBA deletion"
 msgstr "管理 vHBA 删除操作"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:494
+#: ../html/src/manager/virtualization/pools/pool-properties.js:479
 msgid "Source name"
 msgstr "源名称"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:523
+#: ../html/src/manager/virtualization/pools/pool-properties.js:505
 msgid "Passphrase"
 msgstr "通行口令"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:535
+#: ../html/src/manager/virtualization/pools/pool-properties.js:517
 msgid "Target"
 msgstr "目标"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:548
+#: ../html/src/manager/virtualization/pools/pool-properties.js:530
 msgid "Owner UID"
 msgstr "拥有者 UID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:552
+#: ../html/src/manager/virtualization/pools/pool-properties.js:534
 msgid "UID is a numeric value"
 msgstr "UID 是一个数字值"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:556
+#: ../html/src/manager/virtualization/pools/pool-properties.js:538
 msgid "Group ID"
 msgstr "组 ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:560
-#: ../html/src/manager/virtualization/pools/pool-properties.js:569
+#: ../html/src/manager/virtualization/pools/pool-properties.js:542
+#: ../html/src/manager/virtualization/pools/pool-properties.js:551
 msgid "GID is a numeric value"
 msgstr "GID 是一个数字值"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:564
+#: ../html/src/manager/virtualization/pools/pool-properties.js:546
 msgid "Permission mode"
 msgstr "权限模式"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:565
+#: ../html/src/manager/virtualization/pools/pool-properties.js:547
 msgid "target directory permissions in octal form, like 0775"
 msgstr "八进制格式（例如 0775）的目标目录权限"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:574
+#: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "SELinux label"
 msgstr "SELinux 标签"
 
@@ -4731,3 +4720,12 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.js:63
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "Select a channel to browse available modules"
+#~ msgstr "选择一个频道以浏览可用模块"
+
+#~ msgid "Select an image store"
+#~ msgstr "选择映像储存"
+
+#~ msgid "Select a custom info key"
+#~ msgstr "选择自定义信息键"

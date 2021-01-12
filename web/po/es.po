@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/manager/content-management/list-filters/list-filters.js:93
+#: ../html/src/manager/content-management/list-filters/list-filters.js:94
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-07 10:11+0100\n"
+"POT-Creation-Date: 2021-01-12 18:39+0100\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -361,22 +361,10 @@ msgstr "Conmutar visibilidad de sección"
 #: ../html/src/components/input/Radio.stories.js:69
 #: ../html/src/components/input/Radio.stories.js:99
 #: ../html/src/components/input/Radio.stories.js:130
-#: ../html/src/components/input/Select.stories.js:38
+#: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:36
 msgid "Submit"
 msgstr "Enviar"
-
-#: ../html/src/components/input/Combo.stories.js:31
-msgid "Flavor"
-msgstr ""
-
-#: ../html/src/components/input/Combo.stories.js:33
-msgid "Start typing..."
-msgstr ""
-
-#: ../html/src/components/input/Combo.stories.js:34
-msgid "No flavors"
-msgstr ""
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
@@ -428,7 +416,7 @@ msgstr "4 caracteres como mínimo"
 #: ../html/src/components/input/Radio.stories.js:55
 #: ../html/src/components/input/Radio.stories.js:86
 #: ../html/src/components/input/Radio.stories.js:116
-#: ../html/src/components/input/Select.stories.js:26
+#: ../html/src/components/input/Select.stories.js:27
 msgid "Level"
 msgstr "Nivel"
 
@@ -452,6 +440,18 @@ msgstr "Normal"
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
 msgstr "Experto"
+
+#: ../html/src/components/input/Select.stories.js:62
+msgid "Flavor"
+msgstr ""
+
+#: ../html/src/components/input/Select.stories.js:64
+msgid "Start typing..."
+msgstr ""
+
+#: ../html/src/components/input/Select.stories.js:65
+msgid "No flavors"
+msgstr ""
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
@@ -529,7 +529,7 @@ msgid "e.g. \"0 15 2 ? * 7\""
 msgstr ""
 
 #: ../html/src/components/systems.js:45
-#: ../html/src/manager/content-management/list-filters/filter-form.js:222
+#: ../html/src/manager/content-management/list-filters/filter-form.js:203
 msgid "Security Advisory"
 msgstr "Recomendación de seguridad"
 
@@ -557,9 +557,9 @@ msgstr "Seleccionar todo"
 #: ../html/src/components/table/TableDataHandler.js:290
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:99
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:271
-#: ../html/src/manager/virtualization/pools/pool-properties.js:615
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
+#: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr ""
 
@@ -760,7 +760,7 @@ msgstr "Configure la supervisión del servidor de SUSE Manager."
 #: ../html/src/manager/admin/config/monitoring-admin.js:230
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
-#: ../html/src/manager/virtualization/pools/pool-properties.js:234
+#: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "Generales"
 
@@ -881,9 +881,9 @@ msgstr "Descripción de producto"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
-#: ../html/src/manager/content-management/list-filters/filter-form.js:166
+#: ../html/src/manager/content-management/list-filters/filter-form.js:147
 #: ../html/src/manager/images/image-view-packages.js:48
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:197
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "Arquitectura"
 
@@ -1074,7 +1074,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:135
-#: ../html/src/manager/content-management/list-filters/list-filters.js:71
+#: ../html/src/manager/content-management/list-filters/list-filters.js:72
 #: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
 msgstr ""
@@ -1155,10 +1155,10 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:252
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:87
 #: ../html/src/manager/clusters/shared/ui/select-server.js:135
-#: ../html/src/manager/content-management/list-filters/list-filters.js:78
-#: ../html/src/manager/content-management/list-projects/list-projects.js:89
+#: ../html/src/manager/content-management/list-filters/list-filters.js:79
+#: ../html/src/manager/content-management/list-projects/list-projects.js:90
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:90
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:29
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:25
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.js:544
@@ -1166,7 +1166,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:50
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
-#: ../html/src/manager/virtualization/pools/pool-properties.js:239
+#: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
 msgstr "Nombre"
 
@@ -1397,8 +1397,8 @@ msgstr "Número de parte"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:70
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:153
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:256
-#: ../html/src/manager/content-management/list-projects/list-projects.js:101
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:46
+#: ../html/src/manager/content-management/list-projects/list-projects.js:102
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:48
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
@@ -1560,7 +1560,7 @@ msgid "Overview"
 msgstr "Visión de conjunto"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:32
-#: ../html/src/manager/virtualization/pools/pool-properties.js:181
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "Yes"
 msgstr "Sí"
 
@@ -1605,15 +1605,15 @@ msgid "Edit properties"
 msgstr "Editar propiedades"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:248
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:39
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
-#: ../html/src/manager/images/image-profile-edit.js:394
+#: ../html/src/manager/images/image-profile-edit.js:381
 #: ../html/src/manager/images/image-profiles.js:134
-#: ../html/src/manager/images/image-store-edit.js:191
+#: ../html/src/manager/images/image-store-edit.js:193
 #: ../html/src/manager/images/image-stores.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:199
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:256
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
 msgid "Label"
 msgstr "Etiqueta"
@@ -1623,7 +1623,7 @@ msgid "Cluster provider"
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:264
-#: ../html/src/manager/clusters/list-clusters/list-clusters.js:105
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:108
 msgid "Management node"
 msgstr "Nodo de gestión"
 
@@ -1634,7 +1634,7 @@ msgstr "Grupo de sistemas"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:285
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:80
 #: ../html/src/manager/clusters/shared/ui/select-server.js:114
-#: ../html/src/manager/content-management/list-projects/list-projects.js:82
+#: ../html/src/manager/content-management/list-projects/list-projects.js:83
 msgid "Filter by any value"
 msgstr "Filtrar por cualquier valor"
 
@@ -1710,7 +1710,7 @@ msgstr "Filtros"
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:88
 #: ../html/src/manager/notifications/notification-messages.js:410
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:249
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "Tipo"
 
@@ -1761,7 +1761,7 @@ msgid "Create project"
 msgstr ""
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
-#: ../html/src/manager/images/image-profile-edit.js:380
+#: ../html/src/manager/images/image-profile-edit.js:367
 #: ../html/src/manager/images/image-profiles.js:111
 #: ../html/src/manager/images/image-store-edit.js:170
 #: ../html/src/manager/images/image-stores.js:114
@@ -1807,10 +1807,6 @@ msgstr ""
 msgid "Channel"
 msgstr "Canal"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:39
-msgid "Select a channel to browse available modules"
-msgstr ""
-
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
 #, fuzzy
 msgid "Module Name"
@@ -1844,40 +1840,40 @@ msgstr "Se actualizó el filtro correctamente"
 msgid "Filter created successfully"
 msgstr "Se creó el filtro correctamente"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:64
+#: ../html/src/manager/content-management/list-filters/filter-form.js:63
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:71
+#: ../html/src/manager/content-management/list-filters/filter-form.js:70
 msgid "Filter Name"
 msgstr "Nombre del filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:81
+#: ../html/src/manager/content-management/list-filters/filter-form.js:80
 msgid "Filter Type"
 msgstr "Tipo de filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:104
+#: ../html/src/manager/content-management/list-filters/filter-form.js:94
 msgid "Matcher"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:128
-#: ../html/src/manager/content-management/list-filters/filter-form.js:140
-#: ../html/src/manager/content-management/list-filters/filter-form.js:178
-#: ../html/src/manager/content-management/list-filters/filter-form.js:274
+#: ../html/src/manager/content-management/list-filters/filter-form.js:109
+#: ../html/src/manager/content-management/list-filters/filter-form.js:121
+#: ../html/src/manager/content-management/list-filters/filter-form.js:159
+#: ../html/src/manager/content-management/list-filters/filter-form.js:255
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:147
-#: ../html/src/manager/content-management/list-filters/filter-form.js:185
+#: ../html/src/manager/content-management/list-filters/filter-form.js:128
+#: ../html/src/manager/content-management/list-filters/filter-form.js:166
 msgid "Epoch"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:152
-#: ../html/src/manager/content-management/list-filters/filter-form.js:190
+#: ../html/src/manager/content-management/list-filters/filter-form.js:133
+#: ../html/src/manager/content-management/list-filters/filter-form.js:171
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -1886,61 +1882,61 @@ msgstr ""
 msgid "Version"
 msgstr "Versión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:159
-#: ../html/src/manager/content-management/list-filters/filter-form.js:197
+#: ../html/src/manager/content-management/list-filters/filter-form.js:140
+#: ../html/src/manager/content-management/list-filters/filter-form.js:178
 msgid "Release"
 msgstr "Versión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:209
+#: ../html/src/manager/content-management/list-filters/filter-form.js:190
 msgid "Advisory name"
 msgstr "Nombre de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:223
+#: ../html/src/manager/content-management/list-filters/filter-form.js:204
 msgid "Bug Fix Advisory"
 msgstr "Recomendación de corrección de error"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:224
+#: ../html/src/manager/content-management/list-filters/filter-form.js:205
 msgid "Product Enhancement Advisory"
 msgstr "Recomendación de mejoras de productos"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:226
+#: ../html/src/manager/content-management/list-filters/filter-form.js:207
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
 msgstr "Tipo de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:235
+#: ../html/src/manager/content-management/list-filters/filter-form.js:216
 msgid "Issued"
 msgstr "Emisión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:247
+#: ../html/src/manager/content-management/list-filters/filter-form.js:228
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
 msgstr "Sinopsis"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:260
+#: ../html/src/manager/content-management/list-filters/filter-form.js:241
 msgid "Reboot Required"
 msgstr "Se necesita un reinicio"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:261
+#: ../html/src/manager/content-management/list-filters/filter-form.js:242
 msgid "Package Manager Restart Required"
 msgstr "Se necesita reiniciar el gestor de paquetes"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:264
+#: ../html/src/manager/content-management/list-filters/filter-form.js:245
 msgid "Advisory Keywords"
 msgstr "Palabras clave de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:294
+#: ../html/src/manager/content-management/list-filters/filter-form.js:275
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "Denegar"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:295
+#: ../html/src/manager/content-management/list-filters/filter-form.js:276
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "Permitir"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:297
+#: ../html/src/manager/content-management/list-filters/filter-form.js:278
 msgid "Rule"
 msgstr "Regla"
 
@@ -1948,7 +1944,7 @@ msgstr "Regla"
 msgid "Content Lifecycle Filters"
 msgstr "Filtros de ciclo de vida de contenido"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.js:83
+#: ../html/src/manager/content-management/list-filters/list-filters.js:84
 msgid "Projects in use"
 msgstr "Proyectos en uso"
 
@@ -1964,7 +1960,7 @@ msgstr "Crear proyecto"
 msgid "Content Lifecycle Projects"
 msgstr "Proyectos de ciclo de vida de contenido"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.js:106
+#: ../html/src/manager/content-management/list-projects/list-projects.js:107
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
 msgstr "Ciclo de vida de entorno"
@@ -2117,7 +2113,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
-#: ../html/src/manager/images/image-build.js:295
+#: ../html/src/manager/images/image-build.js:287
 #: ../html/src/manager/images/image-profiles.js:154
 #: ../html/src/manager/images/image-view.js:581
 #: ../html/src/manager/images/image-view-overview.js:375
@@ -2145,7 +2141,7 @@ msgstr ""
 msgid "Version {0} successfully built into {1}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:55
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:57
 msgid "Insert before"
 msgstr ""
 
@@ -2312,21 +2308,21 @@ msgstr "mostrar más"
 msgid "Versions history"
 msgstr "Histórico de versiones"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:79
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
 msgid "New Base Channel"
 msgstr "Canal de base nuevo"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:96
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:99
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "Elija el canal que se deberá utilizar como base"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:105
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:108
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:119
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:122
 msgid "Clear Search"
 msgstr ""
 
@@ -2429,17 +2425,17 @@ msgid "No profile selected"
 msgstr "No se seleccionó ningún perfil"
 
 #: ../html/src/manager/images/image-build.js:212
-#: ../html/src/manager/images/image-profile-edit.js:395
+#: ../html/src/manager/images/image-profile-edit.js:382
 msgid "Image Type"
 msgstr "Tipo de imagen"
 
 #: ../html/src/manager/images/image-build.js:214
-#: ../html/src/manager/virtualization/pools/pool-properties.js:540
+#: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr "Ruta"
 
-#: ../html/src/manager/images/image-build.js:275
-#: ../html/src/manager/images/image-import.js:276
+#: ../html/src/manager/images/image-build.js:271
+#: ../html/src/manager/images/image-import.js:266
 msgid "Build Host"
 msgstr "Anfitrión de compilación"
 
@@ -2452,112 +2448,95 @@ msgid "The image import has been scheduled."
 msgstr ""
 
 #: ../html/src/manager/images/image-import.js:231
-#: ../html/src/manager/images/image-profile-edit.js:305
+#: ../html/src/manager/images/image-profile-edit.js:301
 msgid "There are no channels assigned to this key."
 msgstr "No hay ningún canal asignado a esta clave."
 
 #: ../html/src/manager/images/image-import.js:235
-#: ../html/src/manager/images/image-profile-edit.js:309
+#: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation Key"
 msgstr "Clave de activación"
 
-#: ../html/src/manager/images/image-import.js:237
-#: ../html/src/manager/images/image-profile-edit.js:312
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:262
-msgid "None"
-msgstr "Ninguna"
-
-#: ../html/src/manager/images/image-import.js:249
+#: ../html/src/manager/images/image-import.js:244
 msgid "Import Image"
 msgstr "Importar imagen"
 
-#: ../html/src/manager/images/image-import.js:254
+#: ../html/src/manager/images/image-import.js:249
 msgid "You can import Container images only using this feature."
 msgstr ""
 
-#: ../html/src/manager/images/image-import.js:259
+#: ../html/src/manager/images/image-import.js:254
 msgid "Image Store"
 msgstr ""
 
-#: ../html/src/manager/images/image-import.js:264
-#: ../html/src/manager/images/image-profile-edit.js:260
-msgid "Select an image store"
-msgstr ""
-
-#: ../html/src/manager/images/image-import.js:272
+#: ../html/src/manager/images/image-import.js:262
 msgid "Image name"
 msgstr "Nombre de imagen"
 
-#: ../html/src/manager/images/image-import.js:272
+#: ../html/src/manager/images/image-import.js:262
 msgid "Image name is required."
 msgstr "Se requiere el nombre de la imagen."
 
-#: ../html/src/manager/images/image-import.js:274
+#: ../html/src/manager/images/image-import.js:264
 msgid "Image version"
 msgstr "Versión de imagen"
 
-#: ../html/src/manager/images/image-import.js:274
+#: ../html/src/manager/images/image-import.js:264
 msgid "Image version is required."
 msgstr "Se requiere la versión de la imagen."
 
-#: ../html/src/manager/images/image-import.js:288
+#: ../html/src/manager/images/image-import.js:274
 #: ../html/src/manager/images/image-view.js:324
 msgid "Import"
 msgstr "Importar"
 
-#: ../html/src/manager/images/image-import.js:289
-#: ../html/src/manager/images/image-profile-edit.js:375
+#: ../html/src/manager/images/image-import.js:275
+#: ../html/src/manager/images/image-profile-edit.js:362
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
 msgid "Clear fields"
 msgstr "Vaciar campos"
 
-#: ../html/src/manager/images/image-profile-edit.js:255
+#: ../html/src/manager/images/image-profile-edit.js:256
 msgid "Target Image Store"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:280
+#: ../html/src/manager/images/image-profile-edit.js:276
 msgid "Config URL"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:309
+#: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation key is required for kiwi images."
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:344
+#: ../html/src/manager/images/image-profile-edit.js:334
 msgid "Remove entry"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:352
+#: ../html/src/manager/images/image-profile-edit.js:342
 msgid "Custom Info Values"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:356
-msgid "Select a custom info key"
-msgstr ""
-
-#: ../html/src/manager/images/image-profile-edit.js:365
+#: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Create additional custom info keys"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:378
+#: ../html/src/manager/images/image-profile-edit.js:365
 #: ../html/src/manager/images/image-store-edit.js:168
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:112
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../html/src/manager/images/image-profile-edit.js:388
+#: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Edit Image Profile: '"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:388
+#: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Create Image Profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.js:394
+#: ../html/src/manager/images/image-profile-edit.js:381
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
@@ -2623,7 +2602,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.js:151
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
-#: ../html/src/manager/virtualization/pools/pool-properties.js:517
+#: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr "Nombre de usuario"
 
@@ -2635,15 +2614,15 @@ msgstr ""
 msgid "Create Image Store"
 msgstr ""
 
-#: ../html/src/manager/images/image-store-edit.js:184
+#: ../html/src/manager/images/image-store-edit.js:187
 msgid "Store Type"
 msgstr ""
 
-#: ../html/src/manager/images/image-store-edit.js:191
+#: ../html/src/manager/images/image-store-edit.js:193
 msgid "Label is required and must be unique."
 msgstr ""
 
-#: ../html/src/manager/images/image-store-edit.js:192
+#: ../html/src/manager/images/image-store-edit.js:194
 msgid "Store URI"
 msgstr ""
 
@@ -3227,7 +3206,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
-#: ../html/src/manager/virtualization/pools/pool-properties.js:584
+#: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr ""
 
@@ -3327,6 +3306,10 @@ msgstr "Asignar"
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:102
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:109
 msgid "fa-edit"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
+msgid "None - clear schedule"
 msgstr ""
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:18
@@ -3901,6 +3884,11 @@ msgstr ""
 msgid "Port range: 1 - 65535"
 msgstr ""
 
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
+msgid "None"
+msgstr "Ninguna"
+
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
 msgid "Proxy"
 msgstr ""
@@ -4183,11 +4171,11 @@ msgstr "Organización"
 msgid "Gatherer module"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:246
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:249
 msgid "Current Context"
 msgstr "Contexto actual"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:258
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:264
 msgid "Kubeconfig file"
 msgstr "Archivo Kubeconfig"
 
@@ -4252,7 +4240,7 @@ msgid "Create Virtual Machine"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
-#: ../html/src/manager/virtualization/pools/pool-properties.js:241
+#: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
 msgstr ""
 
@@ -4260,36 +4248,36 @@ msgstr ""
 msgid "Hypervisor"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:164
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:161
 msgid "Virtual Machine Type"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:176
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:170
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:178
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:187
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:181
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:185
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:179
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
 msgstr "Recuento de CPU virtuales"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:215
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
 msgid "Auto-installation Profile"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:229
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:221
 msgid "Kernel options"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:245
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
 msgstr "Gráficas"
 
@@ -4378,7 +4366,7 @@ msgstr "CD-ROM"
 msgid "Floppy"
 msgstr "Disquete"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:78
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:79
 msgid "Bus"
 msgstr "Bus"
 
@@ -4387,8 +4375,8 @@ msgid "File"
 msgstr "Archivo"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:120
-#: ../html/src/manager/virtualization/pools/pool-properties.js:503
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:114
+#: ../html/src/manager/virtualization/pools/pool-properties.js:488
 #, fuzzy
 msgid "Format"
 msgstr "Fórmulas"
@@ -4397,20 +4385,20 @@ msgstr "Fórmulas"
 msgid "Disks"
 msgstr "Discos"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:66
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:81
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:83
 #, fuzzy
 msgid "Source Volume"
 msgstr "Tipo de fuente"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:102
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:96
 msgid "Disk size (GiB)"
 msgstr "Tamaño de disco (GiB)"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:110
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr ""
 
@@ -4418,20 +4406,20 @@ msgstr ""
 msgid "Network"
 msgstr "Red"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:54
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:51
 msgid "MAC address"
 msgstr "Dirección MAC"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:55
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:52
 msgid "Leave blank to generate a MAC address"
 msgstr "Déjelo vacío para generar una dirección MAC"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:87
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
 msgstr "Redes"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
-#: ../html/src/manager/virtualization/pools/pool-properties.js:608
+#: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr ""
 
@@ -4522,144 +4510,144 @@ msgstr ""
 msgid "Partition separator"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:182
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
 #, fuzzy
 msgid "No"
 msgstr "Ninguna"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:207
+#: ../html/src/manager/virtualization/pools/pool-properties.js:205
 msgid "Host name"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:216
+#: ../html/src/manager/virtualization/pools/pool-properties.js:214
 msgid "Port"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:250
+#: ../html/src/manager/virtualization/pools/pool-properties.js:248
 #, fuzzy
 msgid "Pool Type"
 msgstr "Tipo"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:264
+#: ../html/src/manager/virtualization/pools/pool-properties.js:259
 msgid "Start during virtual host boot"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:272
+#: ../html/src/manager/virtualization/pools/pool-properties.js:267
 #, fuzzy
 msgid "Source"
 msgstr "Fuentes"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:288
+#: ../html/src/manager/virtualization/pools/pool-properties.js:283
 msgid "Hosts"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:320
+#: ../html/src/manager/virtualization/pools/pool-properties.js:315
 #, fuzzy
 msgid "Devices"
 msgstr "Tipo de dispositivo"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:353
+#: ../html/src/manager/virtualization/pools/pool-properties.js:348
 msgid "Initiator IQN"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:364
+#: ../html/src/manager/virtualization/pools/pool-properties.js:359
 #, fuzzy
 msgid "Adapter type"
 msgstr "Tipo de filtro"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:394
+#: ../html/src/manager/virtualization/pools/pool-properties.js:379
 #, fuzzy
 msgid "Adapter name"
 msgstr "Nombre de recomendación"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:403
+#: ../html/src/manager/virtualization/pools/pool-properties.js:388
 msgid "Adapter parent PCI address"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:407
-#: ../html/src/manager/virtualization/pools/pool-properties.js:418
+#: ../html/src/manager/virtualization/pools/pool-properties.js:392
+#: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "PCI address formatted like 0000:00:00.0"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:414
+#: ../html/src/manager/virtualization/pools/pool-properties.js:399
 msgid "Adapter parent address unique ID"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:425
+#: ../html/src/manager/virtualization/pools/pool-properties.js:410
 msgid "Adapter parent name"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:433
+#: ../html/src/manager/virtualization/pools/pool-properties.js:418
 msgid "Adapter parent wwnn"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:436
-#: ../html/src/manager/virtualization/pools/pool-properties.js:446
-#: ../html/src/manager/virtualization/pools/pool-properties.js:456
-#: ../html/src/manager/virtualization/pools/pool-properties.js:467
-#: ../html/src/manager/virtualization/pools/pool-properties.js:478
+#: ../html/src/manager/virtualization/pools/pool-properties.js:421
+#: ../html/src/manager/virtualization/pools/pool-properties.js:431
+#: ../html/src/manager/virtualization/pools/pool-properties.js:441
+#: ../html/src/manager/virtualization/pools/pool-properties.js:452
+#: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:443
+#: ../html/src/manager/virtualization/pools/pool-properties.js:428
 msgid "Adapter parent wwpn"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:453
+#: ../html/src/manager/virtualization/pools/pool-properties.js:438
 msgid "Adapter parent fabric wwn"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:463
+#: ../html/src/manager/virtualization/pools/pool-properties.js:448
 msgid "Adapter wwnn"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:474
+#: ../html/src/manager/virtualization/pools/pool-properties.js:459
 msgid "Adapter wwpn"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:485
+#: ../html/src/manager/virtualization/pools/pool-properties.js:470
 msgid "Manage vHBA deletion"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:494
+#: ../html/src/manager/virtualization/pools/pool-properties.js:479
 #, fuzzy
 msgid "Source name"
 msgstr "Tipo de fuente"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:523
+#: ../html/src/manager/virtualization/pools/pool-properties.js:505
 msgid "Passphrase"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:535
+#: ../html/src/manager/virtualization/pools/pool-properties.js:517
 msgid "Target"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:548
+#: ../html/src/manager/virtualization/pools/pool-properties.js:530
 msgid "Owner UID"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:552
+#: ../html/src/manager/virtualization/pools/pool-properties.js:534
 msgid "UID is a numeric value"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:556
+#: ../html/src/manager/virtualization/pools/pool-properties.js:538
 msgid "Group ID"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:560
-#: ../html/src/manager/virtualization/pools/pool-properties.js:569
+#: ../html/src/manager/virtualization/pools/pool-properties.js:542
+#: ../html/src/manager/virtualization/pools/pool-properties.js:551
 msgid "GID is a numeric value"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:564
+#: ../html/src/manager/virtualization/pools/pool-properties.js:546
 msgid "Permission mode"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:565
+#: ../html/src/manager/virtualization/pools/pool-properties.js:547
 msgid "target directory permissions in octal form, like 0775"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:574
+#: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "SELinux label"
 msgstr ""
 
