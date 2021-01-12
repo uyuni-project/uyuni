@@ -5,6 +5,7 @@ declare global {
     // Translation data
     translationData?: any;
     preferredLocale?: string;
+    docsLocale?: string;
 
     // SPA engine and renderer
     pageRenderers?: {
