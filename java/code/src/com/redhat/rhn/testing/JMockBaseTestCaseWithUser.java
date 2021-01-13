@@ -14,14 +14,11 @@
  */
 package com.redhat.rhn.testing;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
-import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
-import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.io.FileUtils;
 
@@ -38,10 +35,6 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     protected User user;
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
-    protected MinionPillarFileManager minionGroupMembershipPillarFileManager =
-            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
-    protected MinionPillarFileManager minionGeneralPillarFileManager =
-            new MinionPillarFileManager(new MinionGeneralPillarGenerator());
 
     /**
      * {@inheritDoc}
@@ -54,13 +47,10 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         KickstartDataTest.setupTestConfiguration(user);
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
-        minionGroupMembershipPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
-        minionGeneralPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
-        GlobalInstanceHolder.SERVER_GROUP_MANAGER
-                .setMinionGroupMembershipPillarFileManager(minionGroupMembershipPillarFileManager);
     }
 
     /**
