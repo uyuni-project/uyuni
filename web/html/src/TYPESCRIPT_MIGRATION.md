@@ -46,6 +46,20 @@ Usually it means the target expects a string, but you want to pass an element.
 To fix, change the target's props to accept `React.ReactNode` which among other things is a superset of `string`.  
 In certain cases `JSX.Element` may be applicable as well.  
 
+### Using `React.Children.toArray()` with `React.cloneElement()`  
+
+The following snippet will throw with `Type 'string' is not assignable to type ReactElement...`. The problem is that [`ReactChild` includes `string | number`](https://stackoverflow.com/a/42261933/1470607), which is not a valid clone target.
+
+```ts
+React.Children.toArray(props.children).map(child => React.cloneElement(child));
+```
+
+To solve the problem, add a type guard that checks whether the child is a valid element to clone:
+
+```ts
+React.Children.toArray(props.children).map(child => React.isValidElement(child) ? React.cloneElement(child) : child);
+```
+
 ### `import type {Node} from 'react';`
 
 TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `React.ReactNode`.

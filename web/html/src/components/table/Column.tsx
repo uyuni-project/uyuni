@@ -1,43 +1,52 @@
-// @flow
-import * as React from 'react';
+import * as React from "react";
 
-import type {Comparator} from 'utils/data-providers';
+import { Comparator } from "utils/data-providers";
 
 type ColumnProps = {
   /** key differenciating a column from its sibblings */
-  key?: string,
+  key?: string;
+
   /** Content of the cell or function to compute it from the row data */
-  cell: React.Node | (data: any, criteria?: string) => React.Node,
+  cell: React.ReactNode | ((data: any, criteria?: string) => React.ReactNode);
+
   /** Title of the row */
-  header?: React.Node,
+  header?: React.ReactNode;
+
   /** CSS value for the column width */
-  width?: string,
+  width?: string;
+
   /** key used to identify the column */
-  columnKey?: string,
+  columnKey?: string;
+
   /** Row comparison function. See sortBy functions in utils/functions.js */
-  comparator?: Comparator,
+  comparator?: Comparator;
+
   /**
    * If the column should be sortable
    * If a comparator is specified, this defaults to true.
    * If set to true without specifying a comparator, alphabetical comparison will be used
    * by default.
    * */
-  sortable?: boolean,
+  sortable?: boolean;
+
   /** class name to use for the header cell */
-  headerClass?: string,
+  headerClass?: string;
+
   /** class name to use for the cell */
-  columnClass?: string,
+  columnClass?: string;
+
   /** the data associated with the row */
-  data?: any,
+  data?: any;
+
   /** search criteria value */
-  criteria?: string,
+  criteria?: string;
 };
 
 /** Represents a column in the table.
  * This component is also used internally to reprent each cell
  */
 export function Column(props: ColumnProps) {
-  let content = null;
+  let content: React.ReactNode = null;
   if (typeof props.cell === "function") {
     content = props.cell(props.data, props.criteria);
   } else {
