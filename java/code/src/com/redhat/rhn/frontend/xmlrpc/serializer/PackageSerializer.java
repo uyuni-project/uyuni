@@ -14,17 +14,17 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
-
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageKey;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  *
@@ -72,6 +72,7 @@ public class PackageSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("arch_label", pack.getPackageArch().getLabel());
         helper.add("last_modified", pack.getLastModified());
         helper.add("path", pack.getPath());
+        helper.add("part_of_retracted_patch", pack.isPartOfRetractedPatch());
 
         String provider = LocalizationService.getInstance().getMessage(
                 "channel.jsp.gpgunknown");
