@@ -61,6 +61,13 @@ if $qam_test
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
   $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
+  $sle15sp2_buildhost = twopence_init("ssh:#{ENV['SLE15SP2_BUILDHOST']}") if ENV['SLE15SP2_BUILDHOST']
+  $sle15sp2_terminal = twopence_init("ssh:#{ENV['SLE15SP2_TERMINAL']}") if ENV['SLE15SP2_TERMINAL']
+  $sle12sp4_buildhost = twopence_init("ssh:#{ENV['SLE12SP4_BUILDHOST']}") if ENV['SLE12SP4_BUILDHOST']
+  $sle12sp4_terminal = twopence_init("ssh:#{ENV['SLE12SP4_TERMINAL']}") if ENV['SLE12SP4_TERMINAL']
+  $sle11sp4_buildhost = twopence_init("ssh:#{ENV['SLE11SP4_BUILDHOST']}") if ENV['SLE11SP4_BUILDHOST']
+  $sle11sp3_terminal = twopence_init("ssh:#{ENV['SLE11SP3_TERMINAL']}") if ENV['SLE11SP3_TERMINAL']
+
   # As we share core features for QAM and QA environments, we share also those vm twopence objects
   $minion = $sle12sp4_minion
   $ssh_minion = $sle12sp4_ssh_minion
@@ -246,4 +253,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15_client'              => $sle15_client,
                   'sle15sp1_ssh_minion'       => $sle15sp1_ssh_minion,
                   'sle15sp1_minion'           => $sle15sp1_minion,
-                  'sle15sp1_client'           => $sle15sp1_client }
+                  'sle15sp1_client'           => $sle15sp1_client,
+                  'sle15sp2_buildhost'        => $sle15sp2_buildhost,
+                  'sle15sp2_terminal'         => $sle15sp2_terminal,
+                  'sle12sp4_buildhost'        => $sle12sp4_buildhost,
+                  'sle12sp4_terminal'         => $sle12sp4_terminal,
+                  'sle11sp4_buildhost'        => $sle11sp4_buildhost,
+                  'sle11sp3_terminal'         => $sle11sp3_terminal }

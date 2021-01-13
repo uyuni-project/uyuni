@@ -887,7 +887,13 @@ When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/
   os_version, _os_family = get_os_version(node)
   cmd = 'false'
   if (os_version.include? '15') && (host.include? 'proxy')
-    cmd = "mgr-create-bootstrap-repo -c SUMA-41-PROXY-#{arch}"
+    proxy_version = '40'
+    if os_version.include? 'SP3'
+      proxy_version = '42'
+    elsif os_version.include? 'SP2'
+      proxy_version = '41'
+    end
+    cmd = "mgr-create-bootstrap-repo -c SUMA-#{proxy_version}-PROXY-#{arch}"
   elsif (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
   elsif os_version.include? '11'

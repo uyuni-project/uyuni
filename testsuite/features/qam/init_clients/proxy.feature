@@ -53,14 +53,6 @@ Feature: Setup SUSE Manager proxy
 
 @proxy
 @private_net
-  Scenario: Install or update branch network formulas on the server
-    When I manually install the "branch-network" formula on the server
-    And I manually install the "dhcpd" formula on the server
-    And I manually install the "bind" formula on the server
-    And I synchronize all Salt dynamic modules on "proxy"
-
-@proxy
-@private_net
   Scenario: Install the Retail pattern on the server
     When I install pattern "suma_retail" on this "server"
     And I wait for "patterns-suma_retail" to be installed on "server"
