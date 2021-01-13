@@ -114,7 +114,7 @@ public class PackageHelper {
         addEntry(pkgMap, "last_modified_date",
                       Translator.date2String(pkg.getLastModified()));
         addEntry(pkgMap, "part_of_retracted_patch",
-                    pkg.getErrata().stream().anyMatch(e -> "retracted".equals(e.getAdvisoryStatus())));
+                    pkg.isPartOfRetractedPatch());
         Long sz = pkg.getPackageSize();
         addEntry(pkgMap, "size", (sz == null) ? "" : String.valueOf(sz));
 

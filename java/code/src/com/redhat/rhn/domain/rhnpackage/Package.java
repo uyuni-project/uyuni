@@ -100,6 +100,14 @@ public class Package extends BaseDomainHelper {
         return lockPending;
     }
 
+    /** Check if the package is part of a retracted patch
+     *
+     * @return true if the package is part of a retracted patch
+     */
+    public Boolean isPartOfRetractedPatch() {
+        return errata.stream().anyMatch(e -> "retracted".equals(e.getAdvisoryStatus()));
+    }
+
     /**
      * @return Returns the provides.
      */
