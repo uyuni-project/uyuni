@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.struts.Selectable;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -46,7 +47,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     private Long id;
     private String advisory;
     private String advisoryType;
-    private String advisoryStatus;
+    private AdvisoryStatus advisoryStatus = AdvisoryStatus.FINAL;
     private String product;
     private String description;
     private String synopsis;
@@ -169,7 +170,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
      * Getter for advisoryStatus
      * @return String to get
      */
-    public String getAdvisoryStatus() {
+    public AdvisoryStatus getAdvisoryStatus() {
         return this.advisoryStatus;
     }
 
@@ -177,8 +178,17 @@ public class Errata extends BaseDomainHelper implements Selectable {
      * Setter for advisoryStatus
      * @param advisoryStatusIn to set
      */
-    public void setAdvisoryStatus(String advisoryStatusIn) {
+    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn) {
         this.advisoryStatus = advisoryStatusIn;
+    }
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn) {
+        this.advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusIn)
+                .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
     }
 
     /**

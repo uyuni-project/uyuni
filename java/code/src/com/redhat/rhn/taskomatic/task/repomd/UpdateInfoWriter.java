@@ -110,7 +110,7 @@ public class UpdateInfoWriter extends RepomdWriter {
             throws SAXException {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("from", erratum.getErrataFrom());
-        attr.addAttribute("status", erratum.getAdvisoryStatus());
+        attr.addAttribute("status", erratum.getAdvisoryStatus().getMetadataValue());
         attr.addAttribute("type", mapAdvisoryType(erratum.getAdvisoryType()));
         attr.addAttribute("version", Long.toString(erratum.getAdvisoryRel()));
         handler.startElement("update", attr);

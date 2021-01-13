@@ -14,8 +14,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="advisory" column="advisory" type="string" length="32" />
         <property name="advisoryType" column="advisory_type" type="string"
             length="32" />
-        <property name="advisoryStatus" column="advisory_status" type="string"
-            length="32" />
+
+        <property name="advisoryStatus" column="advisory_status">
+            <type name="com.redhat.rhn.domain.errata.AdvisoryStatusEnumType">
+            </type>
+        </property>
+
         <property name="product" column="product" type="string" length="64" />
         <property name="description" column="description" type="string"
             length="4000" />

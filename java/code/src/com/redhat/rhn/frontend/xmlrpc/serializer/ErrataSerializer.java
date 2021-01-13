@@ -66,7 +66,7 @@ public class ErrataSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("advisory_synopsis", errata.getSynopsis());
         helper.add("advisory_name", errata.getAdvisoryName());
         helper.add("advisory_type", errata.getAdvisoryType());
-        helper.add("advisory_status", errata.getAdvisoryStatus());
+        helper.add("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
         helper.writeTo(output);
     }
 }
