@@ -1,7 +1,7 @@
-// TODO: Would be nice to make this a generic where `defaultValue` is a partial or a subset of `target`
-export function objectDefaultValueHandler(defaultValue: any) {
+export function objectDefaultValueHandler<T extends Object>(defaultValue: Partial<T>) {
     return {
-        get: function(target: any, name: string) {
+        get: function(target: T, name: keyof T) {
+            // TODO: This looks bugged, see https://github.com/SUSE/spacewalk/issues/13648
             return target.hasOwnProperty(name) ? target[name] : defaultValue;
         },
     };
