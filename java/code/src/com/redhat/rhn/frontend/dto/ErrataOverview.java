@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +33,7 @@ public class ErrataOverview extends BaseDto {
     private String advisory;
     private String advisoryName;
     private String advisoryType;
-    private String advisoryStatus;
+    private AdvisoryStatus advisoryStatus;
     private String advisorySynopsis;
     private String errataFrom;
     private String description;
@@ -290,14 +292,21 @@ public class ErrataOverview extends BaseDto {
     /**
      * @return Returns the advisoryStatus.
      */
-    public String getAdvisoryStatus() {
+    public AdvisoryStatus getAdvisoryStatus() {
         return advisoryStatus;
     }
     /**
      * @param advisoryStatusIn The advisoryStatus to set.
      */
+    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn) {
+        this.advisoryStatus = advisoryStatusIn;
+    }
+    /**
+     * @param advisoryStatusIn The advisoryStatus to set.
+     */
     public void setAdvisoryStatus(String advisoryStatusIn) {
-        advisoryStatus = advisoryStatusIn;
+        this.advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusIn)
+                .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
     }
     /**
      * @return Returns the affectedSystemCount.

@@ -34,13 +34,14 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Severity;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Keyword;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -91,7 +92,6 @@ import java.util.stream.Collectors;
 public class ErrataHandler extends BaseHandler {
 
     private static final List<String> RO_METHODS = Arrays.asList("applicableToChannels");
-    private static final List<String> VALID_ADVISORY_STATUS = Arrays.asList("final", "testing", "retracted");
     private static Logger log = Logger.getLogger(ErrataHandler.class);
 
     /**
@@ -255,7 +255,7 @@ public class ErrataHandler extends BaseHandler {
             errataMap.put("release", errata.getAdvisoryRel());
         }
         if (errata.getAdvisoryStatus() != null) {
-            errataMap.put("advisory_status", errata.getAdvisoryStatus());
+            errataMap.put("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
         }
         errataMap.put("product",
                 StringUtils.defaultString(errata.getProduct()));
@@ -441,10 +441,9 @@ public class ErrataHandler extends BaseHandler {
         }
         if (details.containsKey("advisory_status")) {
             String status = (String)details.get("advisory_status");
-            if (!VALID_ADVISORY_STATUS.contains(status)) {
-                throw new InvalidParameterException("Invalid advisory status");
-            }
-            errata.setAdvisoryStatus(status);
+            AdvisoryStatus advisoryStatus = AdvisoryStatus.fromMetadata(status)
+                    .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
+            errata.setAdvisoryStatus(advisoryStatus);
         }
         if (details.containsKey("product")) {
             if (StringUtils.isBlank((String)details.get("product"))) {
@@ -1255,12 +1254,10 @@ public class ErrataHandler extends BaseHandler {
         else {
             throw new InvalidAdvisoryTypeException(advisoryType);
         }
-        if (VALID_ADVISORY_STATUS.contains(advisoryStatus)) {
-            newErrata.setAdvisoryStatus(advisoryStatus);
-        }
-        else {
-            throw new InvalidAdvisoryTypeException(advisoryStatus);
-        }
+
+        AdvisoryStatus errataStatus = AdvisoryStatus.fromMetadata(advisoryStatus)
+                .orElseThrow(() -> new InvalidAdvisoryTypeException(advisoryStatus));
+        newErrata.setAdvisoryStatus(errataStatus);
 
         newErrata.setProduct(product);
         newErrata.setTopic(topic);
