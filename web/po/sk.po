@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-12 18:39+0100\n"
-"PO-Revision-Date: 2021-01-11 20:38+0000\n"
+"PO-Revision-Date: 2021-01-13 20:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3319,9 +3319,8 @@ msgid "fa-edit"
 msgstr ""
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
-#, fuzzy
 msgid "None - clear schedule"
-msgstr "Vybrať plán"
+msgstr "Žiadne - čistý plán"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:18
 msgid "Maintenance Schedules"
