@@ -1,3 +1,5 @@
+- Fix CVE audit results for affected and patched entries (bsc#1180893)
+
 -------------------------------------------------------------------
 Tue Jan 12 12:56:59 CET 2021 - jgonzalez@suse.com
 
