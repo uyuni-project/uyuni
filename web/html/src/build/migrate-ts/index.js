@@ -141,6 +141,9 @@ const args = require("./args");
       }
     }
 
+    console.log("formatting outputs");
+    await execAndLog(`yarn prettier ${tsInputs}`);
+
     // Remove any temporary files
     console.log("cleaning up");
     for (const item of tsPaths) {
