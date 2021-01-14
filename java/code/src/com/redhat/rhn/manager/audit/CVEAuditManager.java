@@ -775,10 +775,12 @@ public class CVEAuditManager {
 
         return results.stream()
                 .map(row -> {
-                    // We check "package_version" to determine if we have an EVR
-                    // If the package is for an affected system, we should have at least the version and the release.
-                    // Otherwise, all values will be null (no EVR present)
-                    // (See: cve_audit_queries#list_systems_by_patch_status)
+                    /*
+                        We check "package_version" to determine if we have an EVR
+                        If the package is for an affected image, we should have at least the version and the release.
+                        Otherwise, all values will be null (no EVR present)
+                        (See: cve_audit_queries#list_images_by_patch_status)
+                    */
                     Optional<PackageEvr> packageEvr = Optional.ofNullable((String) row.get("package_version"))
                             .map(pv -> new PackageEvr((String) row.get("package_epoch"), pv,
                                     (String) row.get("package_release"), (String) row.get("package_type")));
@@ -814,10 +816,12 @@ public class CVEAuditManager {
 
         return StreamSupport.stream(results.spliterator(), false)
                 .map(row -> {
-                    // We check "package_version" to determine if we have an EVR
-                    // If the package is for an affected system, we should have at least the version and the release.
-                    // Otherwise, all values will be null (no EVR present)
-                    // (See: cve_audit_queries#list_systems_by_patch_status)
+                    /*
+                        We check "package_version" to determine if we have an EVR
+                        If the package is for an affected system, we should have at least the version and the release.
+                        Otherwise, all values will be null (no EVR present)
+                        (See: cve_audit_queries#list_systems_by_patch_status)
+                    */
                     Optional<PackageEvr> packageEvr = Optional.ofNullable((String) row.get("package_version"))
                             .map(pv -> new PackageEvr((String) row.get("package_epoch"), pv,
                                     (String) row.get("package_release"), (String) row.get("package_type")));
