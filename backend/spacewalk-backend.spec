@@ -703,7 +703,8 @@ fi
 %dir %{python3rhnroot}/satellite_tools/repo_plugins
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/reposync
 %{python3rhnroot}/satellite_tools/repo_plugins/__init__.py*
-%{python3rhnroot}/satellite_tools/repo_plugins/yum_src.py*
+%{python3rhnroot}/satellite_tools/repo_plugins/yum_zypper_src.py*
+%{python3rhnroot}/satellite_tools/repo_plugins/yum_src_common.py*
 %{python3rhnroot}/satellite_tools/repo_plugins/uln_src.py*
 %{python3rhnroot}/satellite_tools/repo_plugins/deb_src.py*
 %dir %{python3rhnroot}/satellite_tools/__pycache__/

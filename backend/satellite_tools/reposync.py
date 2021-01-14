@@ -55,7 +55,7 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.satellite_tools.download import ThreadedDownloader, ProgressBarLogger, TextLogger
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
-from spacewalk.satellite_tools.repo_plugins import yum_src
+from spacewalk.satellite_tools.repo_plugins import yum_src_common
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
@@ -88,6 +88,13 @@ YUM = "{http://linux.duke.edu/metadata/common}"
 RPM = "{http://linux.duke.edu/metadata/rpm}"
 SUSE = "{http://novell.com/package/metadata/suse/common}"
 PATCH = "{http://novell.com/package/metadata/suse/patch}"
+
+if isSUSE():
+    APACHE_GROUP = "www"
+    YUM_BACKEND = "zypper"
+else:
+    APACHE_GROUP = "apache"
+    YUM_BACKEND = "dnf"
 
 class ChannelException(Exception):
     """Channel Error"""
@@ -413,10 +420,7 @@ class RepoSync(object):
         CFG.set('DEBUG', log_level)
         rhnLog.initLOG(log_path, log_level)
         # os.fchown isn't in 2.4 :/
-        if isSUSE():
-            os.system("chgrp www " + log_path)
-        else:
-            os.system("chgrp apache " + log_path)
+        os.system("chgrp " + APACHE_GROUP + " " + log_path)
 
         log2disk(0, "Command: %s" % str(sys.argv))
         log2disk(0, "Sync of channel started.")
@@ -618,7 +622,7 @@ class RepoSync(object):
                     log(0, "ChannelException: %s" % e)
                     self.sendErrorMail("ChannelException: %s" % str(e))
                     sync_error = -1
-                except yum_src.RepoMDError as e:
+                except yum_src_common.RepoMDError as e:
                     if "primary not available" in str(e):
                         taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                             [self.channel_label], [], "server.app.yumreposync")
@@ -680,9 +684,9 @@ class RepoSync(object):
         fileutils.createPath(os.path.join(CFG.MOUNT_POINT, 'rhn'))  # if the directory exists update ownership only
         for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'rhn')):
             for d in dirs:
-                fileutils.setPermsPath(os.path.join(root, d), group='www')
+                fileutils.setPermsPath(os.path.join(root, d), group=APACHE_GROUP)
             for f in files:
-                fileutils.setPermsPath(os.path.join(root, f), group='www')
+                fileutils.setPermsPath(os.path.join(root, f), group=APACHE_GROUP)
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
@@ -712,6 +716,9 @@ class RepoSync(object):
         :repo_type: type of the repository; only 'yum' is currently supported
 
         """
+        if repo_type == "yum":
+            repo_type = repo_type + "_" + YUM_BACKEND
+
         name = repo_type + "_src"
         mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
         try:
