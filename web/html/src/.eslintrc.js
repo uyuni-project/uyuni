@@ -32,6 +32,7 @@ module.exports = {
         map: [
           ['components', './components'],
           ['core', './core'],
+          ['manager', './manager'],
           ['utils', './utils'],
         ]
       }
