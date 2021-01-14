@@ -368,15 +368,29 @@ public class ErrataTestUtils {
      * @throws Exception if anything goes wrong
      */
     public static Package createLaterTestPackage(User user, Errata errata, Channel channel,
-            Package previous) throws Exception {
+                                                 Package previous) throws Exception {
+        return createLaterTestPackage(user, errata, channel, previous, previous.getPackageEvr().getEpoch(),
+                previous.getPackageEvr().getVersion(),
+                (Integer.parseInt(previous.getPackageEvr().getRelease()) + 1) + "");
+    }
+
+    /**
+     * Create a {@link Package} which has a greater version number than another.
+     * @param user the package owner
+     * @param errata an errata that will contain the new package
+     * @param channel the channel in which the new package is to be published
+     * @param previous the previous channel
+     * @param epoch the package epoch
+     * @param version the package version
+     * @param release the package release
+     * @return the newly created patch
+     * @throws Exception if anything goes wrong
+     */
+    public static Package createLaterTestPackage(User user, Errata errata, Channel channel, Package previous,
+                                                 String epoch, String version, String release) throws Exception {
         Package result =
                 createTestPackage(user, errata, channel, previous.getPackageArch()
                         .getLabel());
-
-        PackageEvr previousEvr = previous.getPackageEvr();
-        String epoch = previousEvr.getEpoch();
-        String version = previousEvr.getVersion();
-        String release = (Integer.parseInt(previousEvr.getRelease()) + 1) + "";
         PackageEvr pevr =
                 PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release,
                         previous.getPackageEvr().getPackageType());
