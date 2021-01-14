@@ -6,6 +6,8 @@ import { FormContext } from './Form';
 type Props = {
   /** <input> type */
   type?: string,
+  /** Maximum number of characters of the input field */
+  maxLength?: number,
   /** Value placeholder to display when no value is entered */
   placeholder?: string,
   /** CSS class for the <input> element */
@@ -37,6 +39,7 @@ type Props = {
 export const Text = (props: Props) => {
   const {
     type,
+    maxLength,
     placeholder,
     inputClass,
     ...propsToPass
@@ -63,6 +66,7 @@ export const Text = (props: Props) => {
               disabled={props.disabled}
               onBlur={onBlur}
               placeholder={placeholder}
+              maxLength={maxLength}
             />
           );
         }
@@ -72,6 +76,7 @@ export const Text = (props: Props) => {
 
 Text.defaultProps = {
   type: 'text',
+  maxLength: undefined,
   placeholder: undefined,
   inputClass: undefined,
   defaultValue: undefined,
