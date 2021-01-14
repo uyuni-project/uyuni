@@ -141,6 +141,7 @@ const args = require("./args");
       }
     }
 
+    // Standardize the formatting between all outputs
     console.log("formatting outputs");
     await execAndLog(`yarn prettier ${tsInputs}`);
 
