@@ -1,3 +1,4 @@
+- change centos 6 URLs to vault.centos.org
 - add new channel families for CAASP on ARM64 and HPC15 SP2 LTSS
 - remove duplicate repo definition
 
