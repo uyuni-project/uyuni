@@ -1604,12 +1604,14 @@ public class ErrataManager extends BaseManager {
      * @param systemIds list of system IDs
      * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
+     * @param onlyRelevant If true not all erratas are applied to all systems.
+     *        Systems get only the erratas relevant for them.
      * @return list of action ids
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
-            List<Long> errataIds, Date earliestOccurrence)
+            List<Long> errataIds, Date earliestOccurrence, boolean onlyRelevant)
         throws TaskomaticApiException {
 
         if (systemIds.isEmpty()) {
@@ -1621,7 +1623,7 @@ public class ErrataManager extends BaseManager {
 
         // at this point all errata is applicable to all systems, so let's apply
         return applyErrata(loggedInUser, errataIds, earliestOccurrence,
-                null, systemIds, false);
+                null, systemIds, onlyRelevant);
     }
 
     /**
