@@ -3281,6 +3281,36 @@ public class SystemHandler extends BaseHandler {
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
                                           Date earliestOccurrence, Boolean allowModules) {
 
+        return scheduleApplyErrata(loggedInUser, serverIdsIn, errataIdsIn, earliestOccurrence, allowModules, false);
+    }
+
+    /**
+     * Schedules an action to apply errata updates to multiple systems at a specified time.
+     * @param loggedInUser The current user
+     * @param serverIdsIn List of server IDs to apply the errata to (as Integers)
+     * @param errataIdsIn List of errata IDs to apply (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * @param allowModules Allow this API call, despite modular content being present
+     * @param onlyRelevant If true not all erratas are applied to all systems.
+     *        Systems get only the erratas relevant for them.
+     * @return list of action ids, exception thrown otherwise
+     * @since 24
+     *
+     * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems at a
+     * given date/time.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param #array_single("int", "errataId")
+     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param_desc("boolean", "allowModules",
+     *          "Allow this API call, despite modular content being present")
+     * @xmlrpc.param #param_desc("boolean", "onlyRelevant",
+     *          "If true not all erratas are applied to all systems. Systems get only the erratas relevant for them.")
+     * @xmlrpc.returntype #array_single("int", "actionId")
+     */
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
+                                          Date earliestOccurrence, Boolean allowModules, Boolean onlyRelevant) {
+
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = serverIdsIn.stream()
             .map(Integer::longValue)
@@ -3302,7 +3332,7 @@ public class SystemHandler extends BaseHandler {
 
         try {
             return ErrataManager.applyErrataHelper(loggedInUser,
-                    serverIds, errataIds, earliestOccurrence);
+                    serverIds, errataIds, earliestOccurrence, onlyRelevant);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
