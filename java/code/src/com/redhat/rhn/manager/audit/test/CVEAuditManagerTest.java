@@ -1730,6 +1730,38 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertImageNotFound(image, results);
     }
 
+    public void testListImagesByPatchStatusEpochNullBsc1180893() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create a server with a channel, one errata and an upgradable package
+        // already installed
+        User user = createTestUser();
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = new HashSet<Channel>();
+        channels.add(channel);
+        Package unpatched = createTestPackage(user, channel, "noarch");
+        createLaterTestPackage(user, errata, channel, unpatched, null, unpatched.getPackageEvr().getVersion(),
+                unpatched.getPackageEvr().getRelease());
+
+        ImageInfo image = createImageInfo(channels, user);
+        createImagePackage(unpatched, image);
+
+        CVEAuditManager.populateCVEChannels();
+
+        // No filtering
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+
+        List<CVEAuditImage> results =
+                CVEAuditManager.listImagesByPatchStatus(user, cveName, filter);
+        // We are not going to check for PATCHED/UNPATCHED because of the null epoch
+        assertTrue(results.size() == 1);
+    }
+
     /**
      * Runs listSystemsByPatchStatus on a server with patch status
      * AFFECTED_PATCH_INAPPLICABLE and tests result filtering.
@@ -1829,6 +1861,44 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         assertEquals(true, checkSystemRecordIsUnique(server1, results));
         assertEquals(true, checkSystemRecordIsUnique(server2, results));
+    }
+
+    public void testListSystemsByPatchStatusContainsNullEpochPackagesBsc1180893() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create a channel with errata and packages
+        User user = createTestUser();
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Package unpatched = createTestPackage(user, channel, "noarch");
+        Package patched = createLaterTestPackage(user, errata, channel, unpatched, null,
+                unpatched.getPackageEvr().getVersion(), unpatched.getPackageEvr().getRelease());
+        List<Package> packages = new ArrayList<Package>();
+        packages.add(unpatched);
+        packages.add(patched);
+
+        // Create clones of channel and errata
+        Errata errataClone = createTestClonedErrata(user, errata, cves, patched);
+        Channel channelClone = createTestClonedChannel(user, errataClone, channel, packages);
+
+        // Subscribe two servers to channel and install unpatched package
+        Set<Channel> assignedChannels = new HashSet<Channel>();
+        assignedChannels.add(channelClone);
+        Server server1 = createTestServer(user, assignedChannels);
+        createTestInstalledPackage(unpatched, server1);
+        Server server2 = createTestServer(user, assignedChannels);
+        createTestInstalledPackage(unpatched, server2);
+
+        // Find the relevant channels and ask for the above CVE
+        CVEAuditManager.populateCVEChannels();
+            List<CVEAuditServer> results =
+                    CVEAuditManager.listSystemsByPatchStatus(user, cveName, EnumSet.allOf(PatchStatus.class));
+        // We are not going to check for PATCHED/UNPATCHED because of the null epoch
+        assertTrue(results.size() == 2);
     }
 
     /**

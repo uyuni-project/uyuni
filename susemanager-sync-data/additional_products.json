@@ -878,8 +878,8 @@
         ],
         "repositories" : [
             {
-                "id" : -123,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=os",
+                "id" : -230,
+                "url" : "https://vault.centos.org/centos/6/os/x86_64/",
                 "name" : "centos6",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 6",
@@ -888,8 +888,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -124,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=centosplus",
+                "id" : -231,
+                "url" : "https://vault.centos.org/centos/6/centosplus/x86_64/",
                 "name" : "centos6-centosplus",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 6 Plus",
@@ -898,8 +898,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -125,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=contrib",
+                "id" : -232,
+                "url" : "https://vault.centos.org/centos/6/contrib/x86_64/",
                 "name" : "centos6-contrib",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 6 Contrib",
@@ -908,8 +908,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -126,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=extras",
+                "id" : -233,
+                "url" : "https://vault.centos.org/centos/6/extras/x86_64/",
                 "name" : "centos6-extras",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 6 Extras",
@@ -918,8 +918,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -127,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=fasttrack",
+                "id" : -234,
+                "url" : "https://vault.centos.org/centos/6/fasttrack/x86_64/",
                 "name" : "centos6-fasttrack",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 6 FastTrack",
@@ -928,8 +928,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -128,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=updates",
+                "id" : -235,
+                "url" : "https://vault.centos.org/centos/6/updates/x86_64/",
                 "name" : "centos6-updates",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 6 Updates",
@@ -975,8 +975,8 @@
         ],
         "repositories" : [
             {
-                "id" : -114,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=os",
+                "id" : -220,
+                "url" : "https://vault.centos.org/centos/6/os/i386/",
                 "name" : "centos6",
                 "distro_target" : "i386",
                 "description" : "CentOS 6",
@@ -985,8 +985,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -115,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=centosplus",
+                "id" : -221,
+                "url" : "https://vault.centos.org/centos/6/centosplus/i386/",
                 "name" : "centos6-centosplus",
                 "distro_target" : "i386",
                 "description" : "CentOS 6 Plus",
@@ -995,8 +995,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -116,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=contrib",
+                "id" : -222,
+                "url" : "https://vault.centos.org/centos/6/contrib/i386/",
                 "name" : "centos6-contrib",
                 "distro_target" : "i386",
                 "description" : "CentOS 6 Contrib",
@@ -1005,8 +1005,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -118,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=extras",
+                "id" : -223,
+                "url" : "https://vault.centos.org/centos/6/extras/i386/",
                 "name" : "centos6-extras",
                 "distro_target" : "i386",
                 "description" : "CentOS 6 Extras",
@@ -1015,8 +1015,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -119,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=fasttrack",
+                "id" : -224,
+                "url" : "https://vault.centos.org/centos/6/fasttrack/i386/",
                 "name" : "centos6-fasttrack",
                 "distro_target" : "i386",
                 "description" : "CentOS 6 FastTrack",
@@ -1025,8 +1025,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -120,
-                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=updates",
+                "id" : -225,
+                "url" : "https://vault.centos.org/centos/6/updates/i386/",
                 "name" : "centos6-updates",
                 "distro_target" : "i386",
                 "description" : "CentOS 6 Updates",

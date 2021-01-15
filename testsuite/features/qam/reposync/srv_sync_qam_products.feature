@@ -114,8 +114,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "RHEL or SLES ES or CentOS 8 Base x86_64" as a product
     Then I should see the "RHEL or SLES ES or CentOS 8 Base x86_64" selected
     When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base x86_64"
-    And I select "SUSE Linux Enterprise Server with Expanded Support 8 x86_64"
-    Then I should see "SUSE Linux Enterprise Server with Expanded Support 8 x86_64" selected
+    And I select "SUSE Linux Enterprise Server with Expanded Support 8 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 8 x86_64" selected
     When I click the Add Product button
     And I wait until I see "RHEL or SLES ES or CentOS 8 Base x86_64" product has been added
 

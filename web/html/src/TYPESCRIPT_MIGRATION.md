@@ -40,15 +40,15 @@ Most commonly with `string` and `number`, but there are other similar instances 
 This means you're passing in an array of strings while the input is expected to be an array of numbers.  
 To fix, either change the input or the expected input format.  
 
-### `Type '(props: Props) => JSX.Element' is not assignable to type 'string'`  
+### `Type '(props: Props) => React.ReactNode' is not assignable to type 'string'`  
 
 Usually it means the target expects a string, but you want to pass an element.  
-To fix, change the target's props to accept `React.ReactNode` which among other things is a superset of `string`.
-Depending on the context, `JSX.Element` can be an alternative option in some cases though.  
+To fix, change the target's props to accept `React.ReactNode` which among other things is a superset of `string`.  
+In certain cases `JSX.Element` may be applicable as well, see [examples and discussions here](https://github.com/typescript-cheatsheets/react#useful-react-prop-type-examples).  
 
 ### `import type {Node} from 'react';`
 
-TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `JSX.Element` (or `React.ReactNode`) migration.
+TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `React.ReactNode`.
 
 ## Technical tidbits
 

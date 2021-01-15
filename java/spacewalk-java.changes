@@ -1,3 +1,5 @@
+- Add an API endpoint to allow/disallow scheduling irrelevant patches (bsc#1180757)
+- Fix CVE audit results for affected and patched entries (bsc#1180893)
 - Replace custom version comparison method with the standard one which also takes debian packages into account
 - Default to preferred items per page in content lifecycle lists (bsc#1180558)
 - Removed Java module com.sun.bind if it is not available; Load jaxb bundles if available.

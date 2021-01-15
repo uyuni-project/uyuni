@@ -1,4 +1,6 @@
 - Updated reposync plugin name.
+- spacewalk-common-channels: re-use repositories when different channels
+  use the same one
 
 -------------------------------------------------------------------
 Thu Dec 03 13:54:48 CET 2020 - jgonzalez@suse.com

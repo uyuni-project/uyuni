@@ -26,6 +26,7 @@
     "strict": true,
     // Should eventually be false
     "allowJs": true,
+    "checkJs": false,
     // Should eventually be true
     "noImplicitAny": false,
     // See https://mariusschulz.com/blog/downlevel-iteration-for-es3-es5-in-typescript

@@ -164,6 +164,16 @@ def channel_get_details(client, channel_label):
     except xmlrpclib.Fault as e:
         return None
 
+def get_existing_repos(client):
+    result = {}
+    try:
+        user_repos = client.channel.software.listUserRepos(key)
+        for repo in user_repos:
+            result[repo['sourceUrl']] = repo['label']
+    except xmlrpclib.Fault as e:
+        return None
+    return result
+
 
 if __name__ == "__main__":
     # options parsing
@@ -282,7 +292,12 @@ Create everything as well as unlimited activation key for every channel:
     if not matching_channels:
         sys.stderr.write("No channels matching your selection.\n")
         sys.exit(2)
-                    
+
+    existing_repo_urls = get_existing_repos(client)
+    if existing_repo_urls is None:
+        sys.stderr.write("Unable to get exsiting repositories from server.\n")
+        sys.exit(2)
+
     for (base_channel_label, create_channel) in sorted(base_channels.items()):
 
         if create_channel:
@@ -308,11 +323,17 @@ Create everything as well as unlimited activation key for every channel:
                                                    {'url': base_info['gpgkey_url'],
                                                     'id': base_info['gpgkey_id'],
                                                     'fingerprint': base_info['gpgkey_fingerprint']})
-                    client.channel.software.createRepo(key,
-                                                       base_info['yum_repo_label'], repo_type,
-                                                       base_info['repo_url'])
-                    client.channel.software.associateRepo(key,
-                                                          base_info['label'], base_info['yum_repo_label'])
+                    if base_info['repo_url'] in existing_repo_urls:
+                        # use existing repo
+                        client.channel.software.associateRepo(key,
+                                                              base_info['label'],
+                                                              existing_repo_urls[base_info['repo_url']])
+                    else:
+                        client.channel.software.createRepo(key,
+                                                           base_info['yum_repo_label'], repo_type,
+                                                           base_info['repo_url'])
+                        client.channel.software.associateRepo(key,
+                                                              base_info['label'], base_info['yum_repo_label'])
                 except xmlrpclib.Fault as e:
                     if e.faultCode == 1200:  # ignore if channel exists
                         sys.stdout.write("INFO: %s exists\n" % base_info['label'])
@@ -383,11 +404,17 @@ Create everything as well as unlimited activation key for every channel:
                                                    {'url': child_info['gpgkey_url'],
                                                        'id': child_info['gpgkey_id'],
                                                        'fingerprint': child_info['gpgkey_fingerprint']})
-                    client.channel.software.createRepo(key,
-                                                       child_info['yum_repo_label'], repo_type,
-                                                       child_info['repo_url'])
-                    client.channel.software.associateRepo(key,
-                                                          child_info['label'], child_info['yum_repo_label'])
+                    if child_info['repo_url'] in existing_repo_urls:
+                        # use existing repo
+                        client.channel.software.associateRepo(key,
+                                                              child_info['label'],
+                                                              existing_repo_urls[child_info['repo_url']])
+                    else:
+                        client.channel.software.createRepo(key,
+                                                           child_info['yum_repo_label'], repo_type,
+                                                           child_info['repo_url'])
+                        client.channel.software.associateRepo(key,
+                                                              child_info['label'], child_info['yum_repo_label'])
                 except xmlrpclib.Fault as e:
                     if e.faultCode == 1200:  # ignore if channel exists
                         sys.stderr.write("WARNING: %s: %s\n" % (
