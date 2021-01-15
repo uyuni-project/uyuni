@@ -44,6 +44,12 @@ type Props = {
    * If neither this nor the panelIcon parameter is defined, the row fields
    * will not be grouped into a panel. */
   panelTitle?: (idx: number) => string;
+
+  /** Content to display between the title and the first fields */
+  header?: React.ReactNode;
+
+  /** CSS class for the row containing the fields of one item */
+  rowClass?: string;
 };
 
 /**
@@ -132,6 +138,7 @@ export function FormMultiInput(props: Props) {
         />
       }
     >
+      { props.header }
       {items.map(index => {
         const removeButton = (
           <Button
@@ -154,7 +161,7 @@ export function FormMultiInput(props: Props) {
           );
         }
         return (
-          <PanelRow key={`${props.prefix}${index}-panelrow`} className="multi-field-panelrow">
+          <PanelRow key={`${props.prefix}${index}-panelrow`} className={`multi-field-panelrow ${props.rowClass}`}>
             {children}
             {removeButton}
           </PanelRow>
@@ -168,4 +175,6 @@ FormMultiInput.defaultProps = {
   disabled: false,
   panelIcon: undefined,
   panelTitle: undefined,
+  rowClass: undefined,
+  header: undefined,
 };
