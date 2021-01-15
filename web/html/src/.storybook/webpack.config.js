@@ -3,6 +3,7 @@ const path = require('path');
 
 module.exports = async ({ config, mode }) => {
   config.resolve.alias = {...config.resolve.alias, ...webpackAlias};
+  config.resolve.extensions = ['.ts', '.tsx', '.js', '.jsx', '.json'];
   config.module.rules.push(
     {
       test: /\.less$/,
@@ -22,6 +23,13 @@ module.exports = async ({ config, mode }) => {
           },
         },
       ],
+    },
+    {
+      test: /\.(ts|js)x?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: "babel-loader"
+      }
     },
   );
   return config;
