@@ -35,7 +35,7 @@ from spacewalk.satellite_tools import contentRemove
 from spacewalk.satellite_tools.download import ThreadedDownloader, ProgressBarLogger
 from spacewalk.satellite_tools.satCerts import get_certificate_info, verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import log, log2disk, log2, initEMAIL_LOG, log2email, log2background
-from spacewalk.satellite_tools.repo_plugins import yum_src
+from spacewalk.satellite_tools.repo_plugins import yum_zypper_src
 
 from .common import CustomChannelSyncError, CountingPackagesError, verify_mappings, human_readable_size
 from .repository import CdnRepositoryManager, CdnRepositoryNotFoundError
@@ -358,7 +358,7 @@ class CdnSync(object):
             (ca_cert_file, client_cert_file, client_key_file) = (None, None, None)
             log2(1, 1, "WARNING: No valid SSL certificates were found for repository '%s'."
                  % repo_source['relative_url'], stream=sys.stderr)
-        return yum_src.ContentSource(self.mount_point + str(repo_source['relative_url']),
+        return yum_zypper_src.ContentSource(self.mount_point + str(repo_source['relative_url']),
                                      str(repo_label), org=None, no_mirrors=True,
                                      ca_cert_file=ca_cert_file, client_cert_file=client_cert_file,
                                      client_key_file=client_key_file)

@@ -28,7 +28,7 @@ from mock import Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
-from spacewalk.satellite_tools.repo_plugins import yum_src
+from spacewalk.satellite_tools.repo_plugins import yum_zypper_src
 from spacewalk.server.importlib import importLib
 
 from uyuni.common import rhn_rpm
@@ -973,7 +973,7 @@ def test_channel_exceptions():
 
     for exc_class, exc_name in [
         (repoSync.ChannelException, "ChannelException"),
-        (yum_src.RepoMDError, "RepoMDError")]:
+        (yum_src_common.RepoMDError, "RepoMDError")]:
         yield check_channel_exceptions, rs, exc_class, exc_name
 
 def check_channel_exceptions(rs, exc_class, exc_name):

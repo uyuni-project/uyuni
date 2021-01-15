@@ -23,7 +23,7 @@ ULN plugin for spacewalk-repo-sync.
 import sys
 sys.path.append('/usr/share/rhn')
 
-from spacewalk.satellite_tools.repo_plugins.yum_src import ContentSource as yum_ContentSource
+from spacewalk.satellite_tools.repo_plugins.yum_zypper_src import ContentSource as yum_ContentSource
 from spacewalk.satellite_tools.syncLib import RhnSyncException
 from spacewalk.satellite_tools.ulnauth import ULNAuth
 

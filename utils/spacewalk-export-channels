@@ -230,7 +230,7 @@ def pkgs_available_in_repos(pkg, repo_packages):
 
 
 def list_repo_packages(label, source_url):
-    name = "yum_src"
+    name = "yum_zypper_src"
     mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
     submod = getattr(mod, name)
     plugin = getattr(submod, "ContentSource")

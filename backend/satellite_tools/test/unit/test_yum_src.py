@@ -27,29 +27,29 @@ from collections import namedtuple
 import mock
 from mock import Mock, MagicMock
 
-from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
+from spacewalk.satellite_tools.repo_plugins import yum_zypper_src, ContentPackage
 
 class YumSrcTest(unittest.TestCase):
 
     def _make_dummy_cs(self):
         """Create a dummy ContentSource object that only talks to a mocked yum"""
-        real_setup_repo = yum_src.ContentSource.setup_repo
-        yum_src.ContentSource.get_groups = Mock(return_value=None)
+        real_setup_repo = yum_zypper_src.ContentSource.setup_repo
+        yum_zypper_src.ContentSource.get_groups = Mock(return_value=None)
 
         # don't read configs
         mock.patch('spacewalk.common.suseLib.initCFG').start()
         mock.patch('spacewalk.common.suseLib.CFG').start()
-        yum_src.initCFG = Mock()
-        yum_src.CFG = Mock()
-        yum_src.CFG.MOUNT_POINT = ''
-        yum_src.CFG.PREPENDED_DIR = ''
-        yum_src.fileutils.makedirs = Mock()
-        yum_src.os.makedirs = Mock()
-        yum_src.os.path.isdir = Mock()
+        yum_zypper_src.initCFG = Mock()
+        yum_zypper_src.CFG = Mock()
+        yum_zypper_src.CFG.MOUNT_POINT = ''
+        yum_zypper_src.CFG.PREPENDED_DIR = ''
+        yum_zypper_src.fileutils.makedirs = Mock()
+        yum_zypper_src.os.makedirs = Mock()
+        yum_zypper_src.os.path.isdir = Mock()
 
-        yum_src.get_proxy = Mock(return_value=(None, None, None))
+        yum_zypper_src.get_proxy = Mock(return_value=(None, None, None))
 
-        cs = yum_src.ContentSource("http://example.com", "test_repo", org='')
+        cs = yum_zypper_src.ContentSource("http://example.com", "test_repo", org='')
         mockReturnPackages = MagicMock()
         mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
         mockReturnPackages.returnPackages.return_value = []
@@ -57,7 +57,7 @@ class YumSrcTest(unittest.TestCase):
         cs.repo.includepkgs = []
         cs.repo.exclude = []
 
-        yum_src.ContentSource.setup_repo = real_setup_repo
+        yum_zypper_src.ContentSource.setup_repo = real_setup_repo
 
         return cs
 
@@ -66,7 +66,7 @@ class YumSrcTest(unittest.TestCase):
 
         self.assertFalse(cs.insecure)
         self.assertTrue(cs.interactive)
-        assert isinstance(cs.repo, yum_src.ZypperRepo)
+        assert isinstance(cs.repo, yum_zypper_src.ZypperRepo)
 
     @unittest.skip
     def test_list_packages_empty(self):
