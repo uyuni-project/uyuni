@@ -1,4 +1,4 @@
-// TODO: Would be nice to make this a generic where `defaultValue` is a partial or a subset of `target`
+// TODO: This is obsolete, see https://github.com/SUSE/spacewalk/issues/13648
 export function objectDefaultValueHandler(defaultValue: any) {
   return {
     get: function(target: any, name: string) {
