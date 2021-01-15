@@ -84,7 +84,7 @@ const ChannelsSelection = (props: PropsType) => {
             name='selectedBaseChannel'
             value={orderedBaseChannels.find(item => item.id === state.selectedBaseChannelId)}
             onChange={value => {
-                if (value instanceof "object" && !(value instanceof Array)) {
+                if (typeof value === "object" && !(Array.isArray(value))) {
                   dispatchChannelsSelection({
                   type: "lead_channel",
                   newBaseId: parseInt(value.id, 10)
