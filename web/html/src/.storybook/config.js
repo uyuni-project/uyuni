@@ -1,5 +1,6 @@
 import { configure, addDecorator, addParameters } from '@storybook/react';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+import '../../../../branding/css/uyuni.less';
 
 
 addParameters({
