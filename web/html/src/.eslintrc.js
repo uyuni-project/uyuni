@@ -7,7 +7,7 @@ module.exports = {
 
   plugins: [
     "react-hooks",
-    "@typescript-eslint",
+    "@typescript-eslint"
   ],
 
   env: {
