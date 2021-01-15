@@ -57,6 +57,7 @@ Text.defaultProps = {
   hint: undefined,
   labelClass: undefined,
   divClass: undefined,
+  className: undefined,
   required: false,
   disabled: false,
   invalidHint: undefined,

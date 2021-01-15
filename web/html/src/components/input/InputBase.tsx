@@ -31,6 +31,9 @@ export type InputBaseProps<ValueType = string> = {
   /** CSS class to use for the <div> element wrapping the field input part */
   divClass?: string;
 
+  /** CSS class to use for the field group */
+  className?: string;
+
   /** Function rendering the children in the value <div>.
    * Takes two parameters:
    *
@@ -75,6 +78,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     hint: undefined,
     labelClass: undefined,
     divClass: undefined,
+    className: undefined,
     required: false,
     disabled: false,
     invalidHint: undefined,
@@ -245,7 +249,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     }
 
     return (
-      <FormGroup isError={isError} key={`${this.props.name}-group`}>
+      <FormGroup isError={isError} key={`${this.props.name}-group`} className={this.props.className}>
         {this.props.label && (
           <Label
             name={this.props.label}
