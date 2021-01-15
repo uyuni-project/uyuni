@@ -9,10 +9,8 @@ type Props = {
 
 function PanelRow(props: Props) {
   return (
-    <div className="row">
-      <span className={props.className}>
-        {props.children}
-      </span>
+    <div className={`row ${props.className != null ? props.className : ""}`}>
+      {props.children}
     </div>
   );
 }
