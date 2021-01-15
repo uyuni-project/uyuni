@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-12 18:39+0100\n"
-"PO-Revision-Date: 2021-01-07 08:42+0000\n"
+"PO-Revision-Date: 2021-01-15 09:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -4428,11 +4428,11 @@ msgstr "用法：schedule_cancel ID|* ..."
 
 #: ../src/spacecmd/schedule.py:158
 msgid "Cancel all pending actions [y/N]:"
-msgstr "取消所有等待中的操作 [y/N]："
+msgstr "取消所有待执行的操作 [y/N]："
 
 #: ../src/spacecmd/schedule.py:159
 msgid "All pending actions left untouched"
-msgstr "所有等待中操作保持不变"
+msgstr "所有待执行的操作保持不变"
 
 #: ../src/spacecmd/schedule.py:174 ../src/spacecmd/schedule.py:235
 #, python-format
@@ -4590,7 +4590,7 @@ msgstr "系统：%s"
 
 #: ../src/spacecmd/schedule.py:395
 msgid "schedule_listpending: List pending actions"
-msgstr "schedule_listpending：列出等待中的操作"
+msgstr "schedule_listpending：列出待执行的操作"
 
 #: ../src/spacecmd/schedule.py:396
 msgid "usage: schedule_listpending [BEGINDATE] [ENDDATE]"
