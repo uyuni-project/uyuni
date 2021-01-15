@@ -1,3 +1,4 @@
+- Add an API endpoint to allow/disallow scheduling irrelevant patches (bsc#1180757)
 - Open raw output in new tab for ScriptRunAction (bsc#1180547)
 - Default to preferred items per page in content lifecycle lists (bsc#1180558)
 - Fix modular data handling for cloned channels (bsc#1177508)
