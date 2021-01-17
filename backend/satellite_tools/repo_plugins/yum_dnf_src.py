@@ -651,4 +651,3 @@ class ContentSource(zypper_ContentSource):
                 self.dnfbase.repos[self.repoid].repoXML.repoData[elem.attrib.get("type")] = repoData
         repomd.close()
         return files.values()
-
