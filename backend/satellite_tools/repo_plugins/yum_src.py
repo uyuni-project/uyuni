@@ -72,6 +72,8 @@ REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.c
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
 
+APACHE_USER = 'wwwrun'
+APACHE_GROUP = 'www'
 
 class ZyppoSync:
     """
@@ -157,9 +159,9 @@ class ZypperRepo:
            self.urls[0] += '/'
        # Make sure root paths are created
        if not os.path.isdir(self.root):
-           fileutils.makedirs(self.root, user='wwwrun', group='www')
+           fileutils.makedirs(self.root, user=APACHE_USER, group=APACHE_GROUP)
        if not os.path.isdir(self.pkgdir):
-           fileutils.makedirs(self.pkgdir, user='wwwrun', group='www')
+           fileutils.makedirs(self.pkgdir, user=APACHE_USER, group=APACHE_GROUP)
        self.is_configured = False
        self.includepkgs = []
        self.exclude = []
@@ -1142,7 +1144,6 @@ type=rpm-md
         if not os.path.exists(target_dir):
             os.makedirs(target_dir, int('0755', 8))
 
-        params['authtoken'] = self.authtoken
         params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
         params['authtoken'] = self.authtoken
