@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2008--2020 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# Copyright (c) 2020 Stefan Bluhm, Germany.
+# Copyright (c) 2020--2021  Stefan Bluhm, Germany.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,117 +15,86 @@
 # in this software or its documentation.
 #
 
+import dnf
 import hashlib
 import logging
 import re
-import sys
 import os.path
+import xml.etree.ElementTree as etree
 from os import makedirs
 from shutil import rmtree
-from custom_update_md import UpdateMetadata
-from custom_update_md import UpdateNotice
-from custom_update_md import UpdateNoticeException
 from libdnf.conf import ConfigParser
-import dnf
-from dnf.exceptions import Error
-from dnf.exceptions import RepoError
-from spacewalk.common import fileutils #pylint: disable=ungrouped-imports
-from spacewalk.common import checksum #pylint: disable=ungrouped-imports
-from spacewalk.common.rhnConfig import CFG #pylint: disable=ungrouped-imports
-from spacewalk.common.rhnConfig import initCFG #pylint: disable=ungrouped-imports
-from spacewalk.satellite_tools.download import get_proxies #pylint: disable=ungrouped-imports
-from spacewalk.satellite_tools.repo_plugins import ContentPackage #pylint: disable=ungrouped-imports
-from spacewalk.satellite_tools.repo_plugins import CACHE_DIR #pylint: disable=ungrouped-imports
-from urlgrabber.grabber import URLGrabError
-
-
-try:
-    from xml.etree import cElementTree
-except ImportError:
-    # pylint: disable=F0401
-    import cElementTree
-iterparse = cElementTree.iterparse
-try:
-    #  python 2
-    import urlparse
-except ImportError:
-    #  python3
-    import urllib.parse as urlparse # pylint: disable=F0401,E0611
+from dnf.exceptions import Error, RepoError
+from uyuni.common import checksum, fileutils
+from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.satellite_tools.download import get_proxies
+from spacewalk.satellite_tools.repo_plugins import CACHE_DIR, ContentPackage
+from spacewalk.satellite_tools.repo_plugins.yum_src import ContentSource as zypper_ContentSource
+from spacewalk.satellite_tools.repo_plugins.yum_src import RepoMDError, UpdateNotice, UpdateNoticeException
+from urllib.parse import urlparse, urlsplit, urlunparse
 
 
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
+APACHE_USER = 'apache'
+APACHE_GROUP = 'apache'
+
 
 logging.basicConfig()
 log = logging.getLogger(__name__)
 
 
-class YumWarnings:
+class RawSolvablePackage:
+    """ Represents a hawkey package in RawSolvablePackage format required by reposync.. #:api """
 
-    def __init__(self):
-        self.saved_stdout = None
-        self.errors = None
+    def __init__(self, hawkey):
+        self.name = hawkey.name
+        self.epoch = hawkey.epoch
+        self.version = hawkey.version
+        self.release = hawkey.release
+        self.arch = hawkey.arch
+        # Unclear if checksum info is used and if it is the correct format. Probably no to both.
+        self.checksum_type, self.checksum = hawkey.chksum
+        self.packagesize = hawkey.downloadsize
+        self.relativepath = hawkey.location
+        # Unclear what the rawname really is.
+        self.raw_name = self.name + "-" + self.version + "-" + self.release + "." + self.arch
 
-    def write(self, s):
-        pass
+    def __repr__(self):
+        return "RawSolvablePackage({})".format(self.raw_name)
 
-    def disable(self):
-        self.saved_stdout = sys.stdout
-        sys.stdout = self
-
-    def restore(self):
-        sys.stdout = self.saved_stdout
-
-
-class YumUpdateMetadata(UpdateMetadata):
-
-    """The root update metadata object supports getting all updates"""
-
-# pylint: disable=W0221
-    def add(self, obj, mdtype='updateinfo', all_versions=False):
-        """ Parse a metadata from a given YumRepository, file, or filename. """
-        if not obj:
-            raise UpdateNoticeException
-        if isinstance(obj, (type(''), type(u''))):
-            infile = fileutils.decompress_open(obj)
-        elif isinstance(obj, dnf.repo.Repo):
-            if obj.id not in self._repos:
-                self._repos.append(obj.id)
-                md = obj.get_metadata_path(mdtype)
-                if not md:
-                    raise UpdateNoticeException()
-                infile = fileutils.decompress_open(md)
-        else:   # obj is a file object
-            infile = obj
-
-        for _event, elem in iterparse(infile):
-            if elem.tag == 'update':
-                un = UpdateNotice(elem)
-                key = un['update_id']
-                if all_versions:
-                    key = "%s-%s" % (un['update_id'], un['version'])
-                if key not in self._notices:
-                    self._notices[key] = un
-                    for pkg in un['pkglist']:
-                        for pkgfile in pkg['packages']:
-                            self._cache['%s-%s-%s' % (pkgfile['name'],
-                                                      pkgfile['version'],
-                                                      pkgfile['release'])] = un
-                            no = self._no_cache.setdefault(pkgfile['name'], set())
-                            no.add(un)
+    def __str__(self):
+        return f'RawSolvablePackage: name = {self.name}, raw_name = {self.raw_name}, epoch = {self.epoch}, version = {self.version}, release = {self.release}, arch = {self.arch}, checksum_type = {self.checksum_type}, checksum = {self.checksum}, packagesize = {self.packagesize}, relativepath = {self.relativepath}'
 
 
-class RepoMDNotFound(Exception):
-    pass
+class ContentSource(zypper_ContentSource):
 
-
-class ContentSource(object):
-
-    def __init__(self, url, name, yumsrc_conf=YUMSRC_CONF, org="1", channel_label="",
-                 no_mirrors=False, ca_cert_file=None, client_cert_file=None,
+    def __init__(self, url, name, insecure=False, interactive=False, yumsrc_conf=YUMSRC_CONF, org="1", channel_label="",
+                 no_mirrors=True, ca_cert_file=None, client_cert_file=None,
                  client_key_file=None):
+        # insecure and interactive are not implemented for this module.
+        """
+        Plugin constructor.
+        """
+
         name = re.sub('[^a-zA-Z0-9_.:-]+', '_', name)
-        self.url = url
+        if urlsplit(url).scheme:
+          self.url = url
+        else:
+          self.url = "file://%s" % url
         self.name = name
+        self.insecure = insecure
+        self.interactive = interactive
+        self.org = org if org else "NULL"
+        self.proxy_hostname = None
+        self.proxy_url = None
+        self.proxy_user = None
+        self.proxy_pass = None
+        self.authtoken = None
+        self.sslcacert = ca_cert_file
+        self.sslclientcert = client_cert_file
+        self.sslclientkey = client_key_file
+        self.http_headers = {}
+
         self.dnfbase = dnf.Base()
         self.dnfbase.conf.read(yumsrc_conf)
         if not os.path.exists(yumsrc_conf):
@@ -133,28 +102,22 @@ class ContentSource(object):
         self.configparser = ConfigParser()      # Reading config file directly as dnf only ready MAIN section.
         self.configparser.setSubstitutions( dnf.Base().conf.substitutions)
         self.configparser.read(yumsrc_conf)
-        if org:
-            self.org = org
-        else:
-            self.org = "NULL"
         self.dnfbase.conf.cachedir = os.path.join(CACHE_DIR, self.org)
 
-        self.proxy_addr = None
-        self.proxy_user = None
-        self.proxy_pass = None
-        self.authtoken = None
 
+        # store the configuration and restore it at the end.
+        comp = CFG.getComponent()
         # read the proxy configuration
         # /etc/rhn/rhn.conf has more priority than yum.conf
         initCFG('server.satellite')
 
         # keep authtokens for mirroring
-        (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
+        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
         if query:
             self.authtoken = query
 
         if CFG.http_proxy:
-            self.proxy_addr = CFG.http_proxy
+            self.proxy_url= CFG.http_proxy
             self.proxy_user = CFG.http_proxy_username
             self.proxy_pass = CFG.http_proxy_password
         else:
@@ -170,7 +133,7 @@ class ContentSource(object):
 
             if section_name:
                 if db_cfg.has_option(section_name, option='proxy'):
-                    self.proxy_addr = db_cfg.get(section_name, option='proxy')
+                    self.proxy_url = db_cfg.get(section_name, option='proxy')
 
                 if db_cfg.has_option(section_name, 'proxy_username'):
                     self.proxy_user = db_cfg.get(section_name, 'proxy_username')
@@ -208,6 +171,9 @@ class ContentSource(object):
         self.groupsfile = None
         self.repo = self.dnfbase.repos[self.repoid]
         self.get_metadata_paths()
+        # set config component back to original
+        initCFG(comp)
+
 
     def __del__(self):
         # close log files for yum plugin
@@ -215,17 +181,17 @@ class ContentSource(object):
             handler.close()
         self.dnfbase.close()
 
-    def _authenticate(self, url):
-        pass
 
     def setup_repo(self, repo, no_mirrors, ca_cert_file, client_cert_file, client_key_file):
-        """Fetch repository metadata"""
+        """
+        Setup repository and fetch metadata
+        """
         repo.metadata_expire=0
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
         pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
         if not os.path.isdir(pkgdir):
-            fileutils.makedirs(pkgdir, user='apache', group='apache')
+            fileutils.makedirs(pkgdir, user=APACHE_USER, group=APACHE_GROUP)
         repo.pkgdir = pkgdir
         repo.sslcacert = ca_cert_file
         repo.sslclientcert = client_cert_file
@@ -234,8 +200,8 @@ class ContentSource(object):
         repo.proxy_username = None
         repo.proxy_password = None
 
-        if self.proxy_addr:
-            repo.proxy = self.proxy_addr if '://' in self.proxy_addr else 'http://' + self.proxy_addr
+        if self.proxy_url:
+            repo.proxy = self.proxy_url if '://' in self.proxy_url else 'http://' + self.proxy_url
             repo.proxy_username = self.proxy_user
             repo.proxy_password = self.proxy_pass
 
@@ -355,7 +321,8 @@ class ContentSource(object):
             new_pack = ContentPackage()
             new_pack.setNVREA(pack.name, pack.version, pack.release,
                               pack.epoch, pack.arch)
-            new_pack.unique_id = pack
+            new_pack.unique_id = RawSolvablePackage(pack)
+#            new_pack.hawkey_id = pack
             new_pack.checksum_type = pack.returnIdSum()[0]
             if new_pack.checksum_type == 'sha':
                 new_pack.checksum_type = 'sha1'
@@ -446,6 +413,7 @@ class ContentSource(object):
         a = pkgSack.query().available() # Load all available packages from the repository
         result = a.filter(pkg=result).latest().run()
         return result
+
 
     def _filter_packages(self, packages, filters):
         """ implement include / exclude logic
@@ -539,7 +507,7 @@ class ContentSource(object):
 
     def get_package(self, package, metadata_only=False):
         """ get package """
-        pack = package.unique_id
+        pack = package.hawkey_id
         check = (self.verify_pkg, (pack, 1), {})
         if metadata_only:
             # Include also data before header section
@@ -552,6 +520,16 @@ class ContentSource(object):
     @staticmethod
     def verify_pkg(_fo, pkg, _fail):
         return pkg.verifyLocalPkg()
+
+    def get_md_checksum_type(self):
+        """
+        Return the checksum type of the primary.xml if exists, otherwise
+        default output is "sha1".
+        :returns: str
+        """
+        if self.dnfbase.repos[self.repoid].repoXML.repoData['primary'].checksum:
+            return self.dnfbase.repos[self.repoid].repoXML.repoData['primary'].checksum
+        return "sha1"
 
     def clear_cache(self, directory=None, keep_repomd=False):
         if directory is None:
@@ -571,12 +549,34 @@ class ContentSource(object):
         makedirs(directory + "/repodata", int('0755', 8))
         self.dnfbase.repos[self.repoid].load()
 
-    def get_updates(self):
-        if not self.dnfbase.repos[self.repoid].get_metadata_content("updateinfo"):
-            return []
-        um = YumUpdateMetadata()
-        um.add(self.dnfbase.repos[self.repoid], all_versions=True)
-        return um.notices
+
+    def _md_exists(self, tag):
+        """
+        Check if the requested metadata exists on the repository
+        :returns: bool
+        """
+        return bool(self.dnfbase.repos[self.repoid].get_metadata_content(tag))
+
+
+    def _retrieve_md_path(self, tag):
+        """
+        Return the path to the requested metadata if exists
+        :returns: str
+        """
+
+        if self.dnfbase.repos[self.repoid].get_metadata_path(tag):
+            return self.dnfbase.repos[self.repoid].get_metadata_path(tag)
+
+        return None
+
+
+    def _get_repodata_path(self):
+        """
+        Return the path to the repository repodata directory
+        :returns: str
+        """
+        return self.dnfbase.repos[self.repoid].pkgdir  # Not sure of the really desired path
+
 
     def get_groups(self):
         groups = self.repo.get_metadata_path("group_gz")
@@ -586,35 +586,6 @@ class ContentSource(object):
             groups = None
         return groups
 
-    def get_modules(self):
-        modules = self.repo.get_metadata_path('modules')
-        if modules == "":
-            modules = None
-        return modules
-
-    def get_file(self, path, local_base=None):
-        try:
-            try:
-                temp_file = ""
-                if local_base is not None:
-                    target_file = os.path.join(local_base, path)
-                    target_dir = os.path.dirname(target_file)
-                    if not os.path.exists(target_dir):
-                        os.makedirs(target_dir, int('0755', 8))
-                    temp_file = target_file + '..download'
-                    if os.path.exists(temp_file):
-                        os.unlink(temp_file)
-                    downloaded = self.repo.grab.urlgrab(path, temp_file)
-                    os.rename(downloaded, target_file)
-                    return target_file
-                else:
-                    return self.repo.grab.urlread(path)
-            except URLGrabError:
-                return None
-        finally:
-            if os.path.exists(temp_file):
-                os.unlink(temp_file)
-        return None
 
     def repomd_up_to_date(self):
         repomd_old_path = os.path.join(self.repo.basecachedir, self.name, "repomd.xml")
@@ -628,32 +599,6 @@ class ContentSource(object):
         return (checksum.getFileChecksum('sha256', filename=repomd_old_path) ==
                 checksum.getFileChecksum('sha256', filename=repomd_new_path))
 
-    # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None,
-                                bytes_range=None):
-        # Create directories if needed
-        target_dir = os.path.dirname(target_file)
-        if not os.path.exists(target_dir):
-            os.makedirs(target_dir, int('0755', 8))
-
-        params['urls'] = self.dnfbase.repos[self.repoid].urls
-        params['relative_path'] = relative_path
-        params['authtoken'] = self.authtoken
-        params['target_file'] = target_file
-        params['ssl_ca_cert'] = self.dnfbase.repos[self.repoid].sslcacert
-        params['ssl_client_cert'] = self.dnfbase.repos[self.repoid].sslclientcert
-        params['ssl_client_key'] = self.dnfbase.repos[self.repoid].sslclientkey
-        params['checksum_type'] = checksum_type
-        params['checksum'] = checksum_value
-        params['bytes_range'] = bytes_range
-        params['proxy'] = self.dnfbase.repos[self.repoid].proxy
-        params['proxy_username'] = self.dnfbase.repos[self.repoid].proxy_username
-        params['proxy_password'] = self.dnfbase.repos[self.repoid].proxy_password
-        params['http_headers'] = dict( self.dnfbase.repos[self.repoid].get_http_headers() )
-        # Older urlgrabber compatibility
-        params['proxies'] = get_proxies(self.dnfbase.repos[self.repoid].proxy,
-                                        self.dnfbase.repos[self.repoid].proxy_username,
-                                        self.dnfbase.repos[self.repoid].proxy_password )
 
     # Simply load primary and updateinfo path from repomd
     def get_metadata_paths(self):
@@ -681,7 +626,7 @@ class ContentSource(object):
             raise RepoMDNotFound(repomd_path)
         repomd = open(repomd_path, 'rb')
         files = {}
-        for _event, elem in iterparse(repomd):
+        for _event, elem in etree.iterparse(repomd):
             if elem.tag.endswith("data"):
                 repoData = type('', (), {})()
                 if elem.attrib.get("type") == "primary_db":
@@ -690,6 +635,7 @@ class ContentSource(object):
                 elif elem.attrib.get("type") == "primary" and 'primary' not in files:
                     files['primary'] = (get_location(elem), get_checksum(elem))
                     repoData.timestamp = get_timestamp(elem)
+                    repoData.checksum = get_checksum(elem)
                 elif elem.attrib.get("type") == "updateinfo":
                     files['updateinfo'] = (get_location(elem), get_checksum(elem))
                     repoData.timestamp = get_timestamp(elem)
@@ -705,3 +651,4 @@ class ContentSource(object):
                 self.dnfbase.repos[self.repoid].repoXML.repoData[elem.attrib.get("type")] = repoData
         repomd.close()
         return files.values()
+
