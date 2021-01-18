@@ -89,6 +89,11 @@ RPM = "{http://linux.duke.edu/metadata/rpm}"
 SUSE = "{http://novell.com/package/metadata/suse/common}"
 PATCH = "{http://novell.com/package/metadata/suse/patch}"
 
+if isSUSE():
+    APACHE_GROUP = "www"
+else:
+    APACHE_GROUP = "apache"
+
 class ChannelException(Exception):
     """Channel Error"""
     def __init__(self, value=None):
@@ -413,10 +418,7 @@ class RepoSync(object):
         CFG.set('DEBUG', log_level)
         rhnLog.initLOG(log_path, log_level)
         # os.fchown isn't in 2.4 :/
-        if isSUSE():
-            os.system("chgrp www " + log_path)
-        else:
-            os.system("chgrp apache " + log_path)
+        os.system("chgrp " + APACHE_GROUP + " " + log_path)
 
         log2disk(0, "Command: %s" % str(sys.argv))
         log2disk(0, "Sync of channel started.")
@@ -680,9 +682,9 @@ class RepoSync(object):
         fileutils.createPath(os.path.join(CFG.MOUNT_POINT, 'rhn'))  # if the directory exists update ownership only
         for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'rhn')):
             for d in dirs:
-                fileutils.setPermsPath(os.path.join(root, d), group='www')
+                fileutils.setPermsPath(os.path.join(root, d), group=APACHE_GROUP)
             for f in files:
-                fileutils.setPermsPath(os.path.join(root, f), group='www')
+                fileutils.setPermsPath(os.path.join(root, f), group=APACHE_GROUP)
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
@@ -712,6 +714,9 @@ class RepoSync(object):
         :repo_type: type of the repository; only 'yum' is currently supported
 
         """
+        if repo_type == "yum" and not isSUSE():
+            repo_type = repo_type + "_dnf"
+
         name = repo_type + "_src"
         mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
         try:

@@ -1,3 +1,4 @@
+- Added dnf plugin to reposync.
 - Drop Transfer-Encoding header from proxy respone to fix error response messages (bsc#1176906)
 - Prevent tracebacks on missing mail configuration (bsc#1179990)
 - Fix pycurl.error handling in suseLib.py (bsc#1179990)
