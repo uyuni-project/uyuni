@@ -216,6 +216,7 @@ public abstract class AbstractMinionBootstrapper {
                 .orElse(ConfigDefaults.get().getCobblerHost());
 
         pillarData.put("mgr_server", mgrServer);
+        pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);
         pillarData.put("mgr_sudo_user", SaltSSHService.getSSHUser());

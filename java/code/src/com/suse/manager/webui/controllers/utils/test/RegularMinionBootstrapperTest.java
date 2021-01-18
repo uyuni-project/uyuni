@@ -121,6 +121,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     protected Map<String, Object> createPillarData(Optional<ActivationKey> key) {
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("contact_method", key
                 .map(k -> k.getContactMethod().getLabel())
                 .orElse(getDefaultContactMethod()));

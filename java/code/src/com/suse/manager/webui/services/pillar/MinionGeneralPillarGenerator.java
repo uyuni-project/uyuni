@@ -63,6 +63,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
 
         pillar.add("contact_method", minion.getContactMethod().getLabel());
         pillar.add("mgr_server", minion.getChannelHost());
+        pillar.add("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();
