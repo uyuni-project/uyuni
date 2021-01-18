@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="row.description" xml:space="preserve">
           <source>Description</source>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
@@ -3618,7 +3618,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patchsets/InstallPatchSet</context>
         </context-group>
-        <target state="translated">描述：</target>
+        <target state="translated">说明：</target>
       </trans-unit>
       <!-- completedsystems.jsp -->
       <trans-unit id="completedsystems.jsp.completedsystems" xml:space="preserve">
@@ -4928,7 +4928,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">使用 "所有字段" 搜索摘要、描述、主题或解决方案。</target>
+        <target state="translated">使用 "所有字段" 搜索摘要、说明、主题或解决方案。</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.types_to_search" xml:space="preserve">
         <source>Types of Patches to Search:.</source>
@@ -4995,7 +4995,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="details.jsp.solution" xml:space="preserve">
         <source>Solution</source>
@@ -5178,7 +5178,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target state="translated">描述 &lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
+        <target state="translated">说明 &lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.solution" xml:space="preserve">
         <source>Solution&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
@@ -7427,7 +7427,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemgroup.details.description" xml:space="preserve">
           <source>Description:</source>
-        <target state="translated">描述：</target>
+        <target state="translated">说明：</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7518,7 +7518,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemgroup.create.requirements" xml:space="preserve">
           <source>Both name and description are required for System Groups.</source>
-        <target state="translated">系统组的名称和描述都是必填项。</target>
+        <target state="translated">系统组的名称和说明都是必填项。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
@@ -7539,7 +7539,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemgroup.create.description" xml:space="preserve">
           <source>Description</source>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
@@ -7894,7 +7894,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_lt_column" xml:space="preserve">
         <source>CPU Mhz</source>
@@ -8529,7 +8529,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">配置文件描述</target>
+        <target state="translated">配置文件说明</target>
       </trans-unit>
       <trans-unit id="create.jsp.profilename" xml:space="preserve">
         <source>Profile Name</source>
@@ -8992,7 +8992,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="filters.jsp.type" xml:space="preserve">
         <source>Type</source>
@@ -9041,7 +9041,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/FilterCreate.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="filter-form.jspf.scheduletype" xml:space="preserve">
         <source>Recurring</source>
@@ -9322,7 +9322,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
-        <target state="translated">描述：</target>
+        <target state="translated">说明：</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.erratamanagement" xml:space="preserve">
         <source>Patches Management</source>
@@ -10098,11 +10098,11 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="enable" xml:space="preserve">
           <source>Enable adding to this organization</source>
-        <target>启用添加到此组织</target>
+        <target>允许添加到此组织</target>
       </trans-unit>
       <trans-unit id="disable" xml:space="preserve">
           <source>Disable adding to this organization</source>
-        <target>禁用添加到此组织</target>
+        <target>禁止添加到此组织</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled" xml:space="preserve">
           <source>Automatic bare-metal system discovery has been successfully enabled</source>
@@ -11547,7 +11547,7 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/activationkeys/List.do</context>
           <context context-type="sourcefile">/rhn/activationkeys/Clone.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.key" xml:space="preserve">
         <source>Key</source>
@@ -11998,7 +11998,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="keys.jsp.default-ssl-key-copy" xml:space="preserve">
         <source>This key/cert will be copied over to newly created organizations.</source>
@@ -12075,7 +12075,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="keycreate.jsp.type" xml:space="preserve">
         <source>Type</source>
@@ -12419,7 +12419,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.nokeys" xml:space="preserve">
         <source>No keys defined.  Please go &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;here&lt;/a&gt; to create a new Key to use with this Profile.  Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
@@ -13868,7 +13868,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="activation-keys.jsp.description-tooltip" xml:space="preserve">
           <source>Click on the description above to view the details for this key.</source>
-        <target state="translated">单击上面的描述可查看此密钥的细节。</target>
+        <target state="translated">单击上面的说明可查看此密钥的细节。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -14060,7 +14060,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="activation-key.clone.jsp.summary" xml:space="preserve">
           <source>Please specify a new Description for the cloned Activation Key. All options and settings from the source ativation key will be copied to the cloned one without the Universal default option. In case no description is specified, the cloned activation key will be created with the same description as the source one preceded by "clone-".</source>
-        <target state="translated">为克隆的激活密钥指定新描述。会将源激活密钥的所有选项和设置都复制到克隆的激活密钥中，统一默认选项除外。如果未指定描述，则会使用与源激活密钥描述相同的内容创建克隆的激活密钥，并附带前缀 "clone-"。</target>
+        <target state="translated">为克隆的激活密钥指定新说明。会将源激活密钥的所有选项和设置都复制到克隆的激活密钥中，统一默认选项除外。如果未指定说明，则会使用与源激活密钥说明相同的内容创建克隆的激活密钥，并附带前缀 "clone-"。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -16833,7 +16833,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">描述 &lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
+        <target state="translated">说明 &lt;span class="required-form-field"&gt;*&lt;/span&gt;：</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.sls-edit" xml:space="preserve">
         <source>SLS Contents</source>
@@ -16847,7 +16847,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">描述：</target>
+        <target state="translated">说明：</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.numfiles-header" xml:space="preserve">
         <source>Number of Files:</source>
@@ -17560,7 +17560,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">当前版本</target>
       </trans-unit>
@@ -17568,7 +17568,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">上次修改时间</target>
       </trans-unit>
@@ -17597,7 +17597,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">此频道中没有可部署的订阅系统</target>
       </trans-unit>
@@ -17605,7 +17605,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">操作</target>
       </trans-unit>
@@ -17613,7 +17613,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17621,7 +17621,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所有文件</target>
       </trans-unit>
@@ -17629,7 +17629,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所选文件</target>
       </trans-unit>
@@ -17637,7 +17637,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件</target>
       </trans-unit>
@@ -17645,7 +17645,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">您可以从下面的列表中选择要部署的文件。之后系统会要求您选择要将它们部署到哪些系统。</target>
       </trans-unit>
@@ -17653,7 +17653,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17661,7 +17661,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">确认并部署到所选系统</target>
       </trans-unit>
@@ -17669,7 +17669,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件：选择部署到的系统</target>
       </trans-unit>
@@ -17677,7 +17677,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">请选择您要将所选文件部署到的系统。</target>
       </trans-unit>
@@ -17685,7 +17685,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;请注意，如果您尝试从 {0} 配置频道部署的任何文件被排名更高的频道中的同名文件覆盖或级别比其低，该文件的覆盖/高级别版本（而不是 {0} 配置频道中的版本）将部署到该系统。</target>
       </trans-unit>
@@ -21183,7 +21183,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.operations.viewlog.description" xml:space="preserve">
           <source>Description</source>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/ViewLog.do</context>
           <context context-type="sourcefile">/rhn/ssm/ViewAllLog.do</context>
@@ -21273,7 +21273,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.operations.inprogress.summary" xml:space="preserve">
           <source>The following tasks are currently taking place. Click on a task's description to see more details.</source>
-        <target state="translated">当前正在执行以下任务。请单击任务的描述查看更多细节。</target>
+        <target state="translated">当前正在执行以下任务。请单击任务的说明查看更多细节。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/ViewLog.do</context>
           <context context-type="sourcefile">/rhn/ssm/ViewAllLog.do</context>
@@ -21282,7 +21282,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.operations.all.summary" xml:space="preserve">
           <source>The following lists all tasks performed against servers in the SSM. Click on an task's description to see more details.</source>
-        <target state="translated">下面列出了针对 SSM 中的服务器执行的所有任务。请单击任务的描述查看更多细节。</target>
+        <target state="translated">下面列出了针对 SSM 中的服务器执行的所有任务。请单击任务的说明查看更多细节。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/ViewLog.do</context>
           <context context-type="sourcefile">/rhn/ssm/ViewAllLog.do</context>
@@ -21291,7 +21291,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.operations.completed.summary" xml:space="preserve">
           <source>The following lists all tasks that have finished running. Click on an task's description to see more details.</source>
-        <target state="translated">下面列出了所有运行完的任务。请单击任务的描述查看更多细节。</target>
+        <target state="translated">下面列出了所有运行完的任务。请单击任务的说明查看更多细节。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/ViewLog.do</context>
           <context context-type="sourcefile">/rhn/ssm/ViewAllLog.do</context>
@@ -22012,7 +22012,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEdit.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.noprofiles" xml:space="preserve">
         <source>No kickstart profiles.</source>
@@ -22610,7 +22610,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="translated">描述：</target>
+        <target state="translated">说明：</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.time" xml:space="preserve">
         <source>Time:</source>
@@ -24283,7 +24283,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">描述：</target>
+        <target state="translated">说明：</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.location" xml:space="preserve">
         <source>Location:</source>
@@ -24831,7 +24831,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="translated">描述：</target>
+        <target state="translated">说明：</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.address" xml:space="preserve">
         <source>Facility Address:</source>
@@ -25712,7 +25712,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CrytpoKeysList</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokey.type" xml:space="preserve">
         <source>Type</source>
@@ -26858,7 +26858,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.description" xml:space="preserve">
         <source>Description</source>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.value" xml:space="preserve">
         <source>Value</source>
@@ -26922,7 +26922,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.description" xml:space="preserve">
         <source>Description</source>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.created" xml:space="preserve">
         <source>Created</source>
@@ -27026,7 +27026,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.description" xml:space="preserve">
         <source>Description</source>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="package.jsp.arch" xml:space="preserve">
         <source>Package Architecture</source>
@@ -27358,7 +27358,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">频道描述</target>
+        <target state="translated">频道说明</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.maintainername" xml:space="preserve">
         <source>Maintainer Name</source>
@@ -27856,7 +27856,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">组描述</target>
+        <target state="translated">组说明</target>
       </trans-unit>
       <trans-unit id="bunch.edit.jsp.button-schedule" xml:space="preserve">
         <source>Single Run Schedule</source>
