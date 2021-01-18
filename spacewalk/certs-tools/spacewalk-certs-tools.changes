@@ -1,3 +1,5 @@
+- drop the --noSSLServerURL option
+
 -------------------------------------------------------------------
 Thu Dec 03 13:44:00 CET 2020 - jgonzalez@suse.com
 
