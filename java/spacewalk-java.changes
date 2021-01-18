@@ -1,3 +1,5 @@
+- Fix: login gets an ISE when SSO is enabled (bsc#1181048)
+
 -------------------------------------------------------------------
 Thu Jan 14 09:18:08 CET 2021 - jgonzalez@suse.com
 
