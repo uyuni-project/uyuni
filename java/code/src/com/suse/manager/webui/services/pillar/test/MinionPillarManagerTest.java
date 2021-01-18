@@ -91,6 +91,10 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
         assertTrue(map.containsKey("org_id"));
         assertEquals(minion.getOrg().getId(), Long.valueOf((int) map.get("org_id")));
+        assertTrue(map.containsKey("mgr_server"));
+        assertEquals(ConfigDefaults.get().getCobblerHost(), map.get("mgr_server"));
+        assertTrue(map.containsKey("mgr_origin_server"));
+        assertEquals(ConfigDefaults.get().getCobblerHost(), map.get("mgr_origin_server"));
 
         assertTrue(map.containsKey("channels"));
         Map<String, Object> channels = (Map<String, Object>) map.get("channels");
@@ -235,6 +239,11 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
             map = new Yaml().loadAs(fi, Map.class);
         }
+
+        assertTrue(map.containsKey("mgr_server"));
+        assertEquals(proxyHostname, map.get("mgr_server"));
+        assertTrue(map.containsKey("mgr_origin_server"));
+        assertEquals(ConfigDefaults.get().getCobblerHost(), map.get("mgr_origin_server"));
 
         Map<String, Object> channels = (Map<String, Object>) map.get("channels");
         assertEquals(1, channels.size());
